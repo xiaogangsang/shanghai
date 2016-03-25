@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>用户权限管理</title>
+  <link rel="stylesheet" href="../css/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/authorization.css">
+</head>
+<body>
+
+  <div class="container-fluid">
+
+    <div class="row">
+
+      @@include('component/sidebar.inc')
+
+      <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+        <ol class="breadcrumb">
+          <li>用户权限管理</li>
+          <li class="active">数据权限管理</li>
+        </ol>
+
+        <section class="user-edit">
+
+          <div class="edit-section">
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-addon">选择渠道</div>
+                <select id="channelSelect" class="form-control" data-placeholder="选择一个...">
+                  <option value=""></option>
+                  <option value="1">渠道1</option>
+                  <option value="2">渠道2</option>
+                  <option value="3">渠道3</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-addon">分配用户</div>
+                <div class="multi-selection row">
+                  <div class="col-xs-12 col-sm-5">
+                    <select name="from[]" id="userSelect_1" class="form-control" size="8" multiple="multiple">
+                      <option value="1">用户 1</option>
+                      <option value="3">用户 3</option>
+                      <option value="2">用户 2</option>
+                      <option value="4">用户 4</option>
+                      <option value="5">用户 5</option>
+                      <option value="6">用户 6</option>
+                    </select>
+                  </div>
+                  <div class="col-xs-12 col-sm-2">
+                    <button type="button" id="userSelect_1_all" class="btn btn-block btn-default">全选</button>
+                    <button type="button" id="userSelect_1_right" class="btn btn-block btn-default">添加</button>
+                    <button type="button" id="userSelect_1_left" class="btn btn-block btn-default">移除</button>
+                    <button type="button" id="userSelect_1_none" class="btn btn-block btn-default">反选</button>
+                  </div>
+                  <div class="col-xs-12 col-sm-5">
+                    <select name="to[]" id="userSelect_1_to" class="form-control" size="8" multiple="multiple"></select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-4 col-md-3">
+                <button type="submit" class="btn btn-block btn-primary">保存</button>
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+        <section class="user-edit">
+
+          <div class="edit-section">
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-addon">选择城市</div>
+                <select id="citySelect" class="form-control" data-placeholder="选择一个...">
+                  <option value=""></option>
+                  <option value="1">城市1</option>
+                  <option value="2">城市2</option>
+                  <option value="3">城市3</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-addon">分配用户</div>
+                <div class="multi-selection row">
+                  <div class="col-xs-12 col-sm-5">
+                    <select name="from[]" id="userSelect_2" class="form-control" size="8" multiple="multiple">
+                      <option value="1">用户 1</option>
+                      <option value="3">用户 3</option>
+                      <option value="2">用户 2</option>
+                      <option value="4">用户 4</option>
+                      <option value="5">用户 5</option>
+                      <option value="6">用户 6</option>
+                    </select>
+                  </div>
+                  <div class="col-xs-12 col-sm-2">
+                    <button type="button" id="userSelect_2_all" class="btn btn-block btn-default">全选</button>
+                    <button type="button" id="userSelect_2_right" class="btn btn-block btn-default">添加</button>
+                    <button type="button" id="userSelect_2_left" class="btn btn-block btn-default">移除</button>
+                    <button type="button" id="userSelect_2_none" class="btn btn-block btn-default">反选</button>
+                  </div>
+                  <div class="col-xs-12 col-sm-5">
+                    <select name="to[]" id="userSelect_2_to" class="form-control" size="8" multiple="multiple"></select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-4 col-md-3">
+                <button type="submit" class="btn btn-block btn-primary">保存</button>
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="../js/vonder.js"></script>
+  <script src="../js/authorization.js"></script>
+</body>
+</html>
