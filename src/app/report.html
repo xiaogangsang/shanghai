@@ -26,32 +26,90 @@
 
         <form id="formClass" class="search-area">
 
-        <div class="form-group col-sm-6 col-lg-3">
+          <div class="form-group col-sm-6">
             <div class="input-group">
-              <div class="input-group-addon">合作方</div>
+              <div class="input-group-addon">日期范围</div>
               <input type="text" class="form-control" id="partner" placeholder="">
             </div>
           </div>
 
-          <div class="form-group col-sm-6 col-lg-3">
+          <div class="form-group col-sm-6 col-md-3">
             <div class="input-group">
-              <div class="input-group-addon">收款商户号</div>
-              <input type="text" class="form-control" id="merchantCode" placeholder="">
+              <div class="input-group-addon">渠道</div>
+              <select class="form-control" name="">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+              </select>
             </div>
           </div>
 
-          <div class="no-padding col-xs-12 col-sm-6">
-            <div class="form-group col-sm-6">
-              <div class="input-group">
-                <div class="input-group-addon">订单日期</div>
-                <input type="text" class="form-control" id="dateFrom" placeholder="">
-              </div>
+          <div class="form-group col-sm-6 col-md-3">
+            <div class="input-group">
+              <div class="input-group-addon">合作方</div>
+              <select class="form-control" name="">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+              </select>
             </div>
-            <div class="form-group col-sm-6">
-              <div class="input-group">
-                <div class="input-group-addon">至</div>
-                <input type="text" class="form-control" id="dateTo" placeholder="">
-              </div>
+          </div>
+
+          <div class="form-group col-sm-6 col-md-3">
+            <div class="input-group">
+              <div class="input-group-addon">城市</div>
+              <select class="form-control" name="">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group col-sm-6 col-md-3">
+            <div class="input-group">
+              <div class="input-group-addon">院线</div>
+              <select class="form-control" name="">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group col-sm-6 col-md-3">
+            <div class="input-group">
+              <div class="input-group-addon">影院</div>
+              <select class="form-control" name="">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group col-sm-6 col-md-3">
+            <div class="input-group">
+              <div class="input-group-addon">影片</div>
+              <input type="text" class="form-control" name="" placeholder="">
+            </div>
+          </div>
+
+          <div class="form-group col-sm-6 col-md-3">
+            <div class="input-group">
+              <div class="input-group-addon">活动ID</div>
+              <input type="text" class="form-control" name="" placeholder="">
+            </div>
+          </div>
+
+          <div class="form-group col-sm-6 col-md-3">
+            <div class="input-group">
+              <div class="input-group-addon">支付方式</div>
+              <select class="form-control" name="">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+              </select>
             </div>
           </div>
 
@@ -66,8 +124,7 @@
           <div class="row">
 
             <div class="col-xs-12 extra-btns">
-              <button type="button" class="btn btn-default">导出全部</button>
-              <button type="button" class="btn btn-default">导出所选记录明细</button>
+              <button type="button" class="btn btn-default">导出列表</button>
             </div>
 
             <div class="col xs-12 col-sm-6 rowStatics">共 <span id="rowTotal">xxx</span> 条数据，当前显示 <span id="perPage">xxx</span> 条</div>
@@ -96,76 +153,78 @@
             <table class="table table-striped">
               <thead>
                 <tr>
-                  <th><input type="checkbox" value="0"></th>
-                  <th>订单日期</th>
-                  <th>收款商户号</th>
-                  <th>商户名称</th>
-                  <th>拨款日期</th>
-                  <th>应拨金额</th>
-                  <th>实拨金额</th>
-                  <th>应收票款</th>
-                  <th>应收服务费</th>
-                  <th>实收金额</th>
+                  <th></th>
+                  <th>日期</th>
+                  <th>渠道</th>
                   <th>合作方</th>
-                  <th>明细</th>
+                  <th>城市</th>
+                  <th>院线</th>
+                  <th>影院</th>
+                  <th>影片</th>
+                  <th>支付方式</th>
+                  <th>活动ID</th>
+                  <th>签报号</th>
+                  <th>订单数</th>
+                  <th>客户数</th>
+                  <th>出票数</th>
+                  <th>票房</th>
+                  <th>补贴金额</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td><input type="checkbox" value="0"></td>
-                  <td>2015-01-01</td>
-                  <td>123123</td>
-                  <td>xxxxxx</td>
-                  <td>2016-01-01</td>
-                  <td>1,000,000</td>
-                  <td>900,000</td>
-                  <td>800,000</td>
-                  <td>20,000</td>
-                  <td>820,000</td>
-                  <td>万达</td>
-                  <td><button type="button" class="btn btn-xs btn-default">查看</button></td>
+                  <td>汇总</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td>200</td>
+                  <td>200</td>
+                  <td>200</td>
+                  <td>200</td>
+                  <td>200</td>
                 </tr>
                 <tr>
-                  <td><input type="checkbox" value="0"></td>
+                  <td></td>
                   <td>2015-01-01</td>
-                  <td>123123</td>
-                  <td>xxxxxx</td>
-                  <td>2016-01-01</td>
-                  <td>1,000,000</td>
-                  <td>900,000</td>
-                  <td>800,000</td>
-                  <td>20,000</td>
-                  <td>820,000</td>
+                  <td>掌上生活</td>
                   <td>万达</td>
-                  <td><button type="button" class="btn btn-xs btn-default">查看</button></td>
+                  <td>上海</td>
+                  <td>万达</td>
+                  <td>上海五角场万达</td>
+                  <td>万万没想到</td>
+                  <td>现金</td>
+                  <td>500</td>
+                  <td>123456</td>
+                  <td>100</td>
+                  <td>100</td>
+                  <td>100</td>
+                  <td>100</td>
+                  <td>100</td>
                 </tr>
                 <tr>
-                  <td><input type="checkbox" value="0"></td>
+                  <td></td>
                   <td>2015-01-01</td>
-                  <td>123123</td>
-                  <td>xxxxxx</td>
-                  <td>2016-01-01</td>
-                  <td>1,000,000</td>
-                  <td>900,000</td>
-                  <td>800,000</td>
-                  <td>20,000</td>
-                  <td>820,000</td>
+                  <td>掌上生活</td>
                   <td>万达</td>
-                  <td><button type="button" class="btn btn-xs btn-default">查看</button></td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" value="0"></td>
-                  <td>2015-01-01</td>
-                  <td>123123</td>
-                  <td>xxxxxx</td>
-                  <td>2016-01-01</td>
-                  <td>1,000,000</td>
-                  <td>900,000</td>
-                  <td>800,000</td>
-                  <td>20,000</td>
-                  <td>820,000</td>
+                  <td>上海</td>
                   <td>万达</td>
-                  <td><button type="button" class="btn btn-xs btn-default">查看</button></td>
+                  <td>上海五角场万达</td>
+                  <td>万万没想到</td>
+                  <td>现金</td>
+                  <td>500</td>
+                  <td>123456</td>
+                  <td>100</td>
+                  <td>100</td>
+                  <td>100</td>
+                  <td>100</td>
+                  <td>100</td>
                 </tr>
               </tbody>
             </table>
