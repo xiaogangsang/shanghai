@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>活动中心</title>
+  <link rel="stylesheet" href="../css/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/activity.css">
+</head>
+<body>
+
+  <div class="container-fluid">
+
+    <div class="row">
+
+      @@include('component/sidebar.inc')
+
+      <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+        <ol class="breadcrumb">
+          <li>活动中心</li>
+          <li class="active">活动计划管理</li>
+        </ol>
+
+        <form id="formActivity" class="search-area">
+
+          <div class="form-group col-sm-6 col-lg-3">
+            <div class="input-group">
+              <div class="input-group-addon">计划ID</div>
+              <input type="text" class="form-control" name="" placeholder="">
+            </div>
+          </div>
+
+          <div class="form-group col-sm-6 col-lg-3">
+            <div class="input-group">
+              <div class="input-group-addon">计划名称</div>
+              <input type="text" class="form-control" name="" placeholder="">
+            </div>
+          </div>
+
+          <div class="form-group col-sm-6 col-lg-3">
+            <div class="input-group">
+              <div class="input-group-addon">计划状态</div>
+              <select class="form-control" name="">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group col-sm-6 col-lg-3">
+            <div class="input-group">
+              <div class="input-group-addon">预算状态</div>
+              <select class="form-control" name="">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="col-xs-12 col-sm-6 col-lg-4 pull-right">
+            <div class="row">
+              <div class="col-sm-6">
+                <button type="submit" class="btn btn-block btn-primary">查询</button>
+              </div>
+              <div class="col-sm-6">
+                <button type="button" class="btn btn-block btn-default">新增</button>
+              </div>
+            </div>
+          </div>
+
+        </form>
+
+        <div class="content-area">
+
+          <div class="row">
+
+            <div class="col xs-12 col-sm-6 rowStatics">共 <span id="rowTotal">xxx</span> 条数据，当前显示 <span id="perPage">xxx</span> 条</div>
+            <div class="col xs-12 col-sm-6">
+              <nav>
+                <ul class="pagination pagination-sm">
+                  <li>
+                    <a href="#"><span aria-hidden="true">&lt;</span></a>
+                  </li>
+                  <li><span id="pageNow">2</span>/<span id="pageTotal">5</span></li>
+                  <li>
+                    <a href="#"><span aria-hidden="true">&gt;</span></a>
+                  </li>
+                  <li>
+                    <input type="text" id="pageNo" pattern="[0-9]+">
+                  </li>
+                  <li>
+                    <button type="button" class="btn">跳转</button>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>计划ID</th>
+                  <th>计划名称</th>
+                  <th>计划状态</th>
+                  <th>预算状态</th>
+                  <th>总金额预算</th>
+                  <th>总张数预算</th>
+                  <th>日金额预算</th>
+                  <th>日张数预算</th>
+                  <th width="140">操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>0001</td>
+                  <td><a href="#">活动计划A</a></td>
+                  <td>已上线</td>
+                  <td>正常</td>
+                  <td>100/1000</td>
+                  <td>100/1000</td>
+                  <td>100/500</td>
+                  <td>100/500</td>
+                  <td><button type="button" class="btn btn-xs btn-default">下线</button><button type="button" class="btn btn-xs btn-default">编辑</button><button type="button" class="btn btn-xs btn-default">移除</button></td>
+                </tr>
+                <tr>
+                  <td>0001</td>
+                  <td><a href="#">活动计划A</a></td>
+                  <td>已下线</td>
+                  <td>日预算不足</td>
+                  <td>100/1000</td>
+                  <td>100/1000</td>
+                  <td>100/500</td>
+                  <td>100/500</td>
+                  <td><button type="button" class="btn btn-xs btn-default">上线</button><button type="button" class="btn btn-xs btn-default">编辑</button><button type="button" class="btn btn-xs btn-default">移除</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="../js/activity.js"></script>
+</body>
+</html>
