@@ -1,0 +1,15 @@
+.edit-section {
+  padding: 15px 15px 0;
+  overflow: hidden;
+  background-color: #f0f0f0;
+  margin-bottom: 15px;
+  max-width: 768px;
+}
+
+.multi-selection>div {
+  text-align: center;
+}
+.multi-selection .btn {
+  padding: 2px 0;
+  margin: 10px auto;
+}

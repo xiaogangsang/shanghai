@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>合作方管理</title>
+  <link rel="stylesheet" href="../css/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/class.css">
+</head>
+<body>
+
+  <div class="container-fluid">
+
+    <div class="row">
+
+      @@include('component/sidebar.inc')
+
+      <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+        <ol class="breadcrumb">
+          <li>合作方管理</li>
+          <li class="active">万达票类管理</li>
+        </ol>
+
+        <form id="formClass" class="search-area">
+
+          <div class="form-group col-sm-6 col-lg-4">
+            <div class="input-group">
+              <div class="input-group-addon">票类ID</div>
+              <input type="text" class="form-control" id="id" placeholder="">
+            </div>
+          </div>
+
+          <div class="form-group col-sm-6 col-lg-4">
+            <div class="input-group">
+              <div class="input-group-addon">票类名称</div>
+              <input type="text" class="form-control" id="name" placeholder="">
+            </div>
+          </div>
+
+          <div class="no-padding col-sm-6 col-lg-4">
+            <div class="form-group col-sm-6">
+              <div class="input-group">
+                <div class="input-group-addon">城市</div>
+                <select class="form-control" id="cityId">
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group col-sm-6">
+              <div class="input-group">
+                <div class="input-group-addon">状态</div>
+                <select class="form-control" id="status">
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group col-sm-6 col-lg-4">
+            <div class="input-group">
+              <div class="input-group-addon">渠道</div>
+              <select class="form-control" id="channel">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="col-xs-12 col-sm-6 col-lg-4 pull-right">
+            <div class="row">
+              <div class="col-sm-6">
+                <button type="submit" class="btn btn-block btn-primary">查询</button>
+              </div>
+              <div class="col-sm-6">
+                <button type="button" class="btn btn-block btn-default">新建</button>
+              </div>
+            </div>
+          </div>
+
+        </form>
+
+        <div class="content-area">
+
+          <div class="row">
+
+            <div class="col-xs-12"><button type="button" class="btn btn-default">导出列表</button></div>
+
+            <div class="col xs-12 col-sm-6 rowStatics">共 <span id="rowTotal">xxx</span> 条数据，当前显示 <span id="perPage">xxx</span> 条</div>
+            <div class="col xs-12 col-sm-6">
+              <nav>
+                <ul class="pagination pagination-sm">
+                  <li>
+                    <a href="#"><span aria-hidden="true">&lt;</span></a>
+                  </li>
+                  <li><span id="pageNow">2</span>/<span id="pageTotal">5</span></li>
+                  <li>
+                    <a href="#"><span aria-hidden="true">&gt;</span></a>
+                  </li>
+                  <li>
+                    <input type="text" id="pageNo" pattern="[0-9]+">
+                  </li>
+                  <li>
+                    <button type="button" class="btn">跳转</button>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>票类名称</th>
+                  <th>城市</th>
+                  <th>票类级别</th>
+                  <th>渠道</th>
+                  <th width="90">开始时间</th>
+                  <th width="90">结束时间</th>
+                  <th>票类状态</th>
+                  <th>票类类型</th>
+                  <th width="100">操作</th>
+                  <th>检查场次</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>0001</td>
+                  <td>院线-招商银行</td>
+                  <td>全国</td>
+                  <td>万达总部</td>
+                  <td>手机银行</td>
+                  <td>2016-03-01</td>
+                  <td>2016-03-01</td>
+                  <td>已上线</td>
+                  <td>日常票类</td>
+                  <td><button type="button" class="btn btn-xs btn-default">下线</button><button type="button" class="btn btn-xs btn-default">移除</button></td>
+                  <td><a href="#" class="btn-link">CHECK</a></td>
+                </tr>
+                <tr>
+                  <td>0001</td>
+                  <td>院线-招商银行</td>
+                  <td>全国</td>
+                  <td>万达总部</td>
+                  <td>手机银行</td>
+                  <td>2016-03-01</td>
+                  <td>2016-03-01</td>
+                  <td>已上线</td>
+                  <td>日常票类</td>
+                  <td><button type="button" class="btn btn-xs btn-default">下线</button><button type="button" class="btn btn-xs btn-default">移除</button></td>
+                  <td><a href="#" class="btn-link">CHECK</a></td>
+                </tr>
+                <tr>
+                  <td>0001</td>
+                  <td>院线-招商银行</td>
+                  <td>全国</td>
+                  <td>万达总部</td>
+                  <td>手机银行</td>
+                  <td>2016-03-01</td>
+                  <td>2016-03-01</td>
+                  <td>已上线</td>
+                  <td>日常票类</td>
+                  <td><button type="button" class="btn btn-xs btn-default">下线</button><button type="button" class="btn btn-xs btn-default">移除</button></td>
+                  <td><a href="#" class="btn-link">CHECK</a></td>
+                </tr>
+                <tr>
+                  <td>0001</td>
+                  <td>院线-招商银行</td>
+                  <td>全国</td>
+                  <td>万达总部</td>
+                  <td>手机银行</td>
+                  <td>2016-03-01</td>
+                  <td>2016-03-01</td>
+                  <td>已上线</td>
+                  <td>日常票类</td>
+                  <td><button type="button" class="btn btn-xs btn-default">下线</button><button type="button" class="btn btn-xs btn-default">移除</button></td>
+                  <td><a href="#" class="btn-link">CHECK</a></td>
+                </tr>
+                <tr>
+                  <td>0001</td>
+                  <td>院线-招商银行</td>
+                  <td>全国</td>
+                  <td>万达总部</td>
+                  <td>手机银行</td>
+                  <td>2016-03-01</td>
+                  <td>2016-03-01</td>
+                  <td>已上线</td>
+                  <td>日常票类</td>
+                  <td><button type="button" class="btn btn-xs btn-default">下线</button><button type="button" class="btn btn-xs btn-default">移除</button></td>
+                  <td><a href="#" class="btn-link">CHECK</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="../js/class.js"></script>
+</body>
+</html>

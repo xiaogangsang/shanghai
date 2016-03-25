@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>报表查询</title>
+  <link rel="stylesheet" href="../css/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/report.css">
+</head>
+<body>
+
+  <div class="container-fluid">
+
+    <div class="row">
+
+      @@include('component/sidebar.inc')
+
+      <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+        <ol class="breadcrumb">
+          <li>报表查询</li>
+          <li>财务报表</li>
+          <li class="active">明细</li>
+        </ol>
+
+        <div class="content-area">
+
+          <div class="row">
+
+            <div class="col xs-12 col-sm-6 rowStatics">共 <span id="rowTotal">xxx</span> 条数据，当前显示 <span id="perPage">xxx</span> 条</div>
+            <div class="col xs-12 col-sm-6">
+              <nav>
+                <ul class="pagination pagination-sm">
+                  <li>
+                    <a href="#"><span aria-hidden="true">&lt;</span></a>
+                  </li>
+                  <li><span id="pageNow">2</span>/<span id="pageTotal">5</span></li>
+                  <li>
+                    <a href="#"><span aria-hidden="true">&gt;</span></a>
+                  </li>
+                  <li>
+                    <input type="text" id="pageNo" pattern="[0-9]+">
+                  </li>
+                  <li>
+                    <button type="button" class="btn">跳转</button>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>订单日期</th>
+                  <th>拨款日期</th>
+                  <th>订单号</th>
+                  <th>第三方订单号</th>
+                  <th>清算订单号</th>
+                  <th>订单状态</th>
+                  <th>渠道</th>
+                  <th>合作方</th>
+                  <th>院线</th>
+                  <th>城市</th>
+                  <th>影片名</th>
+                  <th>影院</th>
+                  <th>张数</th>
+                  <th>客户支付金额</th>
+                  <th>客户支付积分</th>
+                  <th>结算金额</th>
+                  <th>拨款金额</th>
+                  <th>我方服务费</th>
+                  <th>活动名称</th>
+                  <th>优惠券名称</th>
+                  <th>预算来源</th>
+                  <th>预算使用方式</th>
+                  <th>预付款使用量</th>
+                  <th>票类</th>
+                  <th>收款方</th>
+                  <th>收款商户号</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>2015-01-01</td>
+                  <td>2016-01-01</td>
+                  <td>1234567890</td>
+                  <td>1234567890</td>
+                  <td>1234567890</td>
+                  <td>已出票</td>
+                  <td>手机银行</td>
+                  <td>万达</td>
+                  <td>上海</td>
+                  <td>星球大战</td>
+                  <td>上海影城新华路店</td>
+                  <td>2</td>
+                  <td>50</td>
+                  <td>0</td>
+                  <td>70</td>
+                  <td>50</td>
+                  <td>20</td>
+                  <td>0</td>
+                  <td>立减20元</td>
+                  <td>无</td>
+                  <td>招行卡中心</td>
+                  <td>预付</td>
+                  <td>20</td>
+                  <td>(院线)招行银行</td>
+                  <td>万达</td>
+                  <td>308010700000621</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="../js/report.js"></script>
+</body>
+</html>

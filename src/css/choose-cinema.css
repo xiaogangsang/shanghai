@@ -1,0 +1,31 @@
+.cinema-list {
+  max-height: 400px;
+  overflow: scroll;
+  padding: 0;
+  margin: 15px;
+}
+.cinema-list .input-group {
+  margin: 15px 0 0;
+}
+.cinema-list .input-group-addon {
+  text-align: left;
+  width: 80px;
+  vertical-align: text-top;
+  padding: 0;
+}
+.cinema-list label {
+  margin: 0 5px 5px 5px;
+  padding: 10px 0;
+  cursor: pointer;
+}
+.cinema-list label>input {
+  display: none;
+}
+.cinema-list label>span {
+  border: 1px solid #dedede;
+  padding: 10px 15px;
+}
+.cinema-list label>input:checked+span {
+  border: 1px solid #ff8903;
+  color: #ff8903;
+}

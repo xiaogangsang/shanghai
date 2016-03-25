@@ -1,0 +1,25 @@
+{
+  "name": "moviesys",
+  "description": "CMB Movie Management System.",
+  "main": "dist/app/login.html",
+  "authors": [
+    "66beta"
+  ],
+  "license": "MIT",
+  "moduleType": [],
+  "homepage": "66beta.com",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.6",
+    "chosen": "^1.5.1",
+    "jquery.quicksearch": "quicksearch#^2.2.0",
+    "multiselect": "multiselect-two-sides#^2.2.4"
+  }
+}

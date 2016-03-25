@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>标准影片库</title>
+  <link rel="stylesheet" href="../css/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/movie.css">
+</head>
+<body>
+
+  <div class="container-fluid">
+
+    <div class="row">
+
+      @@include('component/sidebar.inc')
+
+      <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+        <ol class="breadcrumb">
+          <li>影院管理</li>
+          <li class="active">标准影片关联管理</li>
+        </ol>
+
+        <section class="movie-info">
+          <h3>标准影片名</h3>
+          <table>
+            <tr>
+              <th width="100">影片制式：</th>
+              <td>xxxxxxx xxxxxxx</td>
+            </tr>
+            <tr>
+              <th>上映日期：</th>
+              <td>xxxxxxx xxxxxxx</td>
+            </tr>
+            <tr>
+              <th>导演：</th>
+              <td>xxxxxxx xxxxxxx</td>
+            </tr>
+            <tr>
+              <th>主演：</th>
+              <td>xxxxxxx xxxxxxx</td>
+            </tr>
+          </table>
+        </section>
+
+        <div class="movie-bind-list">
+
+          <h4>已关联的合作方影片：</h4>
+
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>合作方影片ID</th>
+                  <th>合作方影片名</th>
+                  <th>合作方</th>
+                  <th>上映日期</th>
+                  <th>影片制式</th>
+                  <th>导演</th>
+                  <th>主演</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>0001</td>
+                  <td><a href="#">星球大战</a></td>
+                  <td>百度</td>
+                  <td>2016-03-01</td>
+                  <td>3D</td>
+                  <td>柴可夫斯基</td>
+                  <td>阿诺德施瓦辛格</td>
+                  <td><button type="button" class="btn btn-xs btn-default">修改关联</button></td>
+                </tr>
+                <tr>
+                  <td>0001</td>
+                  <td><a href="#">星球大战</a></td>
+                  <td>百度</td>
+                  <td>2016-03-01</td>
+                  <td>3D</td>
+                  <td>柴可夫斯基</td>
+                  <td>阿诺德施瓦辛格</td>
+                  <td><button type="button" class="btn btn-xs btn-default">修改关联</button></td>
+                </tr>
+              </tbody>
+            </table>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="../js/movie.js"></script>
+</body>
+</html>

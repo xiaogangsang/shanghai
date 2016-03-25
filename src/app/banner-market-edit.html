@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>前端配置平台</title>
+  <link rel="stylesheet" href="../css/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/banner.css">
+</head>
+<body>
+
+  <div class="container-fluid">
+
+    <div class="row">
+
+      @@include('component/sidebar.inc')
+
+      <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+        <ol class="breadcrumb">
+          <li>前端配置平台</li>
+          <li>首页Banner位</li>
+          <li class="active">编辑</li>
+        </ol>
+
+        <section class="movie-edit">
+          <h3>新建Banner</h3>
+          <form id="formBanner">
+
+            <div class="edit-section">
+
+              <div class="form-group col-sm-6">
+                <div class="input-group">
+                  <div class="input-group-addon">名称</div>
+                  <input type="text" class="form-control" id="name">
+                </div>
+              </div>
+
+              <div class="form-group col-sm-6">
+                <div class="input-group">
+                  <div class="input-group-addon">渠道</div>
+                  <select class="form-control" id="channel">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group col-sm-6">
+                <div class="input-group">
+                  <div class="input-group-addon">城市</div>
+                  <select class="form-control" id="city">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group col-sm-6">
+                <div class="input-group">
+                  <div class="input-group-addon">顺序</div>
+                  <select class="form-control" id="province">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group col-sm-6">
+                <div class="input-group">
+                  <div class="input-group-addon">生效时间</div>
+                  <input type="text" class="form-control" id="latitude">
+                </div>
+              </div>
+
+              <div class="form-group col-sm-6">
+                <div class="input-group">
+                  <div class="input-group-addon">失效时间</div>
+                  <input type="text" class="form-control" id="latitude">
+                </div>
+              </div>
+
+              <div class="form-group col-sm-6">
+                <div class="input-group">
+                  <div class="input-group-addon">跳转链接</div>
+                  <input type="text" class="form-control" id="url">
+                </div>
+              </div>
+
+              <div class="form-group col-sm-6">
+                <div class="input-group">
+                  <div class="input-group-addon">是否显示</div>
+                  <label class="radio-inline">
+                    <input type="radio" name="actived" value="option1"> 是
+                  </label>
+                  <label class="radio-inline">
+                    <input type="radio" name="actived" value="option2"> 否
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-group col-xs-12">
+                <div class="input-group">
+                  <div class="input-group-addon">图片</div>
+                  <input type="file">
+                </div>
+              </div>
+
+            </div>
+
+            <div class="row">
+              <div class="col-sm-4">
+                <button type="submit" class="btn btn-block btn-primary">保存</button>
+              </div>
+            </div>
+
+          </form>
+
+        </section>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="../js/banner.js"></script>
+</body>
+</html>

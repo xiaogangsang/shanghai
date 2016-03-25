@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>订单管理</title>
+  <link rel="stylesheet" href="../css/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/order.css">
+</head>
+<body>
+
+  <div class="container-fluid">
+
+    <div class="row">
+
+      @@include('component/sidebar.inc')
+
+      <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+        <ol class="breadcrumb">
+          <li>订单管理</li>
+          <li class="active">客服</li>
+        </ol>
+
+        <form id="formOrder.html" class="search-area">
+
+          <div class="form-group col-sm-4 col-lg-4">
+            <div class="input-group">
+              <div class="input-group-addon">手机号</div>
+              <input type="text" class="form-control" id="mobile" placeholder="">
+            </div>
+          </div>
+
+          <div class="form-group col-sm-4 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">商品订单状态</div>
+              <select class="form-control" id="status">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group col-sm-4 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">渠道</div>
+              <select class="form-control" id="channel">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group col-sm-6 col-lg-4">
+            <div class="input-group">
+              <div class="input-group-addon">下单时间</div>
+              <input type="text" class="form-control" id="timeFrom" placeholder="">
+            </div>
+          </div>
+
+          <div class="col-xs-12 col-sm-4 pull-right">
+            <div class="row">
+              <div class="col-sm-6">
+                <button type="submit" class="btn btn-block btn-primary">查询</button>
+              </div>
+              <div class="col-sm-6">
+                <button type="button" class="btn btn-block btn-default">新增</button>
+              </div>
+            </div>
+          </div>
+
+        </form>
+
+        <div class="content-area">
+
+          <div class="row">
+
+            <div class="col xs-12 col-sm-6 rowStatics">共 <span id="rowTotal">xxx</span> 条数据，当前显示 <span id="perPage">xxx</span> 条</div>
+            <div class="col xs-12 col-sm-6">
+              <nav>
+                <ul class="pagination pagination-sm">
+                  <li>
+                    <a href="#"><span aria-hidden="true">&lt;</span></a>
+                  </li>
+                  <li><span id="pageNow">2</span>/<span id="pageTotal">5</span></li>
+                  <li>
+                    <a href="#"><span aria-hidden="true">&gt;</span></a>
+                  </li>
+                  <li>
+                    <input type="text" id="pageNo" pattern="[0-9]+">
+                  </li>
+                  <li>
+                    <button type="button" class="btn">跳转</button>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>交易订单号</th>
+                  <th>手机号</th>
+                  <th>下单时间</th>
+                  <th>交易订单状态</th>
+                  <th>商品订单状态</th>
+                  <th>渠道</th>
+                  <th>座位数</th>
+                  <th>支付金额</th>
+                  <th>支付积分</th>
+                  <th>影院</th>
+                  <th>影片</th>
+                  <th>影厅</th>
+                  <th>开场时间</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><a href="#">1234567890</a></td>
+                  <td>13838384388</td>
+                  <td>2016-03-01 00:00:00</td>
+                  <td>支付成功</td>
+                  <td>已出票</td>
+                  <td>掌上生活</td>
+                  <td>2</td>
+                  <td>70</td>
+                  <td>0</td>
+                  <td>上海影城新华路店</td>
+                  <td>疯狂动物园</td>
+                  <td>1号厅</td>
+                  <td>2016-03-01 00:00:00</td>
+                </tr>
+                <tr>
+                  <td><a href="#">1234567890</a></td>
+                  <td>13838384388</td>
+                  <td>2016-03-01 00:00:00</td>
+                  <td>支付成功</td>
+                  <td>已出票</td>
+                  <td>掌上生活</td>
+                  <td>2</td>
+                  <td>70</td>
+                  <td>0</td>
+                  <td>上海影城新华路店</td>
+                  <td>疯狂动物园</td>
+                  <td>1号厅</td>
+                  <td>2016-03-01 00:00:00</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="../js/order.js"></script>
+</body>
+</html>

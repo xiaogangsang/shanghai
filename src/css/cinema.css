@@ -1,0 +1,50 @@
+.cinema-detail h2 {
+  padding: 0 0 15px;
+  margin: 0 0 15px;
+  border-bottom: 1px solid #f0f0f0;
+}
+.detail-item {
+  margin-bottom: 15px;
+}
+.detail-item span {
+  display: inline-block;
+  width: 100px;
+}
+.detail-item table {
+  width: 100%;
+}
+.detail-item td {
+  vertical-align: top;
+}
+.detail-item td:first-child {
+  width: 100px;
+}
+.detail-item td p {
+  margin-bottom: 5px;
+}
+.edit-section {
+  padding: 15px 15px 0;
+  overflow: hidden;
+  background-color: #f0f0f0;
+  margin-bottom: 15px;
+}
+.edit-service .edit-section {
+  padding: 0;
+  box-shadow: 1px 1px 2px rgba(0,0,0,.25);
+}
+.edit-service .btn-default {
+  margin-bottom: 15px;
+}
+
+.modal-header input[type="checkbox"] {
+  outline: 0;
+}
+.modal-footer {
+  text-align: center;
+}
+.modal-footer .btn,
+.modal-footer .btn+.btn {
+  width: 150px;
+  max-width: 40%;
+  margin: 0 15px 5px;
+}

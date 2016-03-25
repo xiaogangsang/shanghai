@@ -1,0 +1,47 @@
+.movie-info {
+  padding: 15px 30px;
+  background-color: #f0f0f0;
+  overflow: hidden;
+  margin-bottom: 15px;
+}
+.movie-info h3 {
+  margin-top: 0;
+}
+.movie-info table {
+  width: 100%;
+}
+.movie-info td {
+  padding: 5px;
+}
+.movie-bind-list {
+  margin-top: 15px;
+}
+.movie-bind-list h4 {
+  margin: 15px 0;
+}
+.movie-detail h2 {
+  padding: 0 0 15px;
+  margin: 0 0 15px;
+  border-bottom: 1px solid #dedede;
+}
+.movie-detail table {
+  width: 100%;
+}
+.movie-detail td {
+  padding: 10px 5px;
+}
+
+/*movie edit*/
+.edit-section {
+  padding: 15px 15px 0;
+  margin-bottom: 15px;
+  background-color: #f0f0f0;
+  overflow: hidden;
+}
+.edit-section .input-group-addon {
+  vertical-align: top;
+}
+.edit-section img {
+  display: block;
+  margin-top: 5px;
+}

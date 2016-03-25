@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>评论管理</title>
+  <link rel="stylesheet" href="../css/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/cinema.css">
+</head>
+<body>
+
+  <div class="container-fluid">
+
+    <div class="row">
+
+      @@include('component/sidebar.inc')
+
+      <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+        <ol class="breadcrumb">
+          <li>评论管理</li>
+          <li class="active">评论查询</li>
+        </ol>
+
+        <form id="formClass" class="search-area">
+
+          <div class="form-group col-sm-6 col-lg-4">
+            <div class="input-group">
+              <div class="input-group-addon">用户名</div>
+              <input type="text" class="form-control" id="username" placeholder="">
+            </div>
+          </div>
+
+          <div class="form-group col-sm-6 col-lg-4">
+            <div class="input-group">
+              <div class="input-group-addon">影片</div>
+              <input type="text" class="form-control" id="movie" placeholder="">
+            </div>
+          </div>
+
+          <div class="form-group col-xs-12">
+            <div class="input-group">
+              <div class="input-group-addon">评论内容</div>
+              <input type="text" class="form-control" id="movie" placeholder="">
+            </div>
+          </div>
+
+          <div class="form-group col-sm-4 col-lg-4">
+            <div class="input-group">
+              <div class="input-group-addon">渠道</div>
+              <select class="form-control" id="channel">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group col-sm-4 col-lg-4">
+            <div class="input-group">
+              <div class="input-group-addon">评论日期</div>
+              <input type="text" class="form-control" id="dateFrom" placeholder="">
+            </div>
+          </div>
+
+          <div class="form-group col-sm-4 col-lg-4">
+            <div class="input-group">
+              <div class="input-group-addon">至</div>
+              <input type="text" class="form-control" id="dateTo" placeholder="">
+            </div>
+          </div>
+
+          <div class="col-xs-12 col-sm-6 col-lg-4 pull-right">
+            <div class="row">
+              <div class="col-sm-6 pull-right">
+                <button type="submit" class="btn btn-block btn-primary">查询</button>
+              </div>
+            </div>
+          </div>
+
+        </form>
+
+        <div class="content-area">
+
+          <div class="row">
+
+            <div class="col-xs-12">
+              <button type="button" class="btn btn-default">批量删除</button>
+            </div>
+
+            <div class="col xs-12 col-sm-6 rowStatics">共 <span id="rowTotal">xxx</span> 条数据，当前显示 <span id="perPage">xxx</span> 条</div>
+            <div class="col xs-12 col-sm-6">
+              <nav>
+                <ul class="pagination pagination-sm">
+                  <li>
+                    <a href="#"><span aria-hidden="true">&lt;</span></a>
+                  </li>
+                  <li><span id="pageNow">2</span>/<span id="pageTotal">5</span></li>
+                  <li>
+                    <a href="#"><span aria-hidden="true">&gt;</span></a>
+                  </li>
+                  <li>
+                    <input type="text" id="pageNo" pattern="[0-9]+">
+                  </li>
+                  <li>
+                    <button type="button" class="btn">跳转</button>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th><input type="checkbox" value="0"></th>
+                  <th>评论内容</th>
+                  <th>渠道</th>
+                  <th>影片</th>comment
+                  <th>发表日期</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><input type="checkbox" value="0"></td>
+                  <td>附近的快乐撒娇的历史，附近的酸辣粉来快点撒。</td>
+                  <td>手机银行</td>
+                  <td>星球大战</td>
+                  <td>2016-03-01</td>
+                  <td><button type="button" class="btn btn-xs btn-default">删除</button></td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox" value="0"></td>
+                  <td>附近的快乐撒娇的历史，附近的酸辣粉来快点撒。</td>
+                  <td>手机银行</td>
+                  <td>星球大战</td>
+                  <td>2016-03-01</td>
+                  <td><button type="button" class="btn btn-xs btn-default">删除</button></td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox" value="0"></td>
+                  <td>附近的快乐撒娇的历史，附近的酸辣粉来快点撒。</td>
+                  <td>手机银行</td>
+                  <td>星球大战</td>
+                  <td>2016-03-01</td>
+                  <td><button type="button" class="btn btn-xs btn-default">删除</button></td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox" value="0"></td>
+                  <td>附近的快乐撒娇的历史，附近的酸辣粉来快点撒。</td>
+                  <td>手机银行</td>
+                  <td>星球大战</td>
+                  <td>2016-03-01</td>
+                  <td><button type="button" class="btn btn-xs btn-default">删除</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="../js/cinema.js"></script>
+</body>
+</html>

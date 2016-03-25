@@ -1,0 +1,21 @@
+.login {
+  text-align: center;
+  display: flex !important;
+  height: 100%;
+}
+.modal-content {
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+.login h1 {
+  margin-bottom: 15px;
+}
+.login .modal-dialog {
+  width: 100%;
+  max-width: 320px;
+  margin: auto;
+}
+.login .btn {
+  border-radius: 0;
+}

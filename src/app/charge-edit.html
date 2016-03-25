@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>场次及价格管理</title>
+  <link rel="stylesheet" href="../css/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/charge.css">
+</head>
+<body>
+
+  <div class="container-fluid">
+
+    <div class="row">
+
+      @@include('component/sidebar.inc')
+
+      <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+        <ol class="breadcrumb">
+          <li>场次及价格管理</li>
+          <li>服务费设置</li>
+          <li class="active">编辑</li>
+        </ol>
+
+        <section class="charge-edit">
+          <h3>编辑服务费</h3>
+          <form id="formCharge">
+
+            <div class="edit-section">
+
+              <div class="form-group">
+                <div class="input-group col-sm-4">
+                  <div class="input-group-addon">渠道</div>
+                  <input type="text" class="form-control" readonly value="xxxxxxxxxxx">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="input-group col-sm-4">
+                  <div class="input-group-addon">服务费</div>
+                  <input type="text" class="form-control" id="name" value="xxxxxxxxxxx">
+                </div>
+              </div>
+
+            </div>
+
+            <div class="row">
+              <div class="col-sm-4">
+                <button type="submit" class="btn btn-block btn-primary">保存</button>
+              </div>
+            </div>
+
+          </form>
+
+        </section>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="../js/charge.js"></script>
+</body>
+</html>

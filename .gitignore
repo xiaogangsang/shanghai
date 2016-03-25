@@ -1,0 +1,12 @@
+### OSX ###
+.DS_Store
+._*
+### Windows ###
+Thumbs.db
+ehthumbs.db
+### Node ###
+npm-debug.log*
+node_modules
+### Custom ###
+dist
+bower_components

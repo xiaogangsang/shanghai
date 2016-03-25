@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>合作方管理</title>
+  <link rel="stylesheet" href="../css/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/class.css">
+  <!-- <link rel="stylesheet" href="../css/choose-city.css"> -->
+  <link rel="stylesheet" href="../css/choose-cinema.css">
+</head>
+<body>
+
+  <div class="container-fluid">
+
+    <div class="row">
+
+      @@include('component/sidebar.inc')
+
+      <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+        <ol class="breadcrumb">
+          <li>合作方管理</li>
+          <li>万达票类管理</li>
+          <li class="active">编辑</li>
+        </ol>
+
+        <section class="movie-edit">
+          <h3>万达票类编辑</h3>
+          <form id="formMovie">
+
+            <div class="edit-section">
+
+              <div class="form-group col-sm-6">
+                <div class="input-group">
+                  <div class="input-group-addon">名称</div>
+                  <input type="text" class="form-control" id="name" value="xxxxxxxxxxx">
+                </div>
+              </div>
+
+              <div class="form-group col-sm-3">
+                <div class="input-group">
+                  <div class="input-group-addon">渠道</div>
+                  <select class="form-control" id="channel">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group col-sm-3">
+                <div class="input-group">
+                  <div class="input-group-addon">城市</div>
+                  <input type="text" class="form-control" id="cityId" value="xxxxxxxxxxx">
+                </div>
+              </div>
+
+              <div class="form-group col-sm-4">
+                <div class="input-group">
+                  <div class="input-group-addon">影院</div>
+                  <input type="text" class="form-control" id="cinemaId" value="xxxxxxxxxxx">
+                </div>
+              </div>
+
+              <div class="form-group col-sm-4">
+                <div class="input-group">
+                  <div class="input-group-addon">开始日期</div>
+                  <input type="text" class="form-control" id="dateFrom" value="0000-00-00">
+                </div>
+              </div>
+
+              <div class="form-group col-sm-4">
+                <div class="input-group">
+                  <div class="input-group-addon">结束日期</div>
+                  <input type="text" class="form-control" id="dateFrom" value="0000-00-00">
+                </div>
+              </div>
+
+              <div class="form-group col-xs-12">
+                <div class="input-group">
+                  <div class="input-group-addon">备注</div>
+                  <textarea class="form-control" id="remark">xxxxxx xxxxxx</textarea>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="edit-section">
+
+              <div class="form-group col-xs-12">
+                <div class="input-group">
+                  <div class="input-group-addon">票类类型</div>
+                  <label class="radio-inline">
+                    <input type="radio" name="type" id="type1" value="option1"> 日常票类
+                  </label>
+                  <label class="radio-inline">
+                    <input type="radio" name="type" id="type2" value="option2"> 活动票类
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-group col-xs-12">
+                <div class="input-group">
+                  <div class="input-group-addon">票类级别</div>
+                  <label class="radio-inline">
+                    <input type="radio" name="level" id="level1" value="option1"> 万达总部
+                  </label>
+                  <label class="radio-inline">
+                    <input type="radio" name="level" id="level2" value="option2"> 万达区域
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-group col-xs-12">
+                <div class="input-group">
+                  <div class="input-group-addon">可否退票</div>
+                  <label class="radio-inline">
+                    <input type="radio" name="returnable" id="returnable1" value="option1"> 支持退票
+                  </label>
+                  <label class="radio-inline">
+                    <input type="radio" name="returnable" id="returnable2" value="option2"> 不支持退票
+                  </label>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="row">
+              <div class="col-xs-12 col-sm-4">
+                <button type="submit" class="btn btn-block btn-primary">保存</button>
+              </div>
+            </div>
+
+          </form>
+
+        </section>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- @@include('component/choose-city.inc') -->
+  @@include('component/choose-cinema.inc')
+  <script src="../js/class.js"></script>
+</body>
+</html>
