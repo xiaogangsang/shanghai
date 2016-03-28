@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>活动中心</title>
+  <link rel="stylesheet" href="../css/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/activity.css">
+</head>
+<body>
+
+  <div class="container-fluid">
+
+    <div class="row">
+
+      @@include('component/sidebar.inc')
+
+      <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+        <ol class="breadcrumb">
+          <li>活动中心</li>
+          <li class="active">优惠券管理</li>
+        </ol>
+
+        <form id="formActivity" class="search-area">
+
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">优惠券规则ID</div>
+              <input type="text" class="form-control" name="">
+            </div>
+          </div>
+
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">优惠券名称</div>
+              <input type="text" class="form-control" name="">
+            </div>
+          </div>
+
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">渠道</div>
+              <select class="form-control" name="">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">成本中心</div>
+              <select class="form-control" name="">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="col-xs-12 col-sm-6 col-lg-4 pull-right">
+            <div class="row">
+              <div class="col-sm-6">
+                <button type="submit" class="btn btn-block btn-primary">查询</button>
+              </div>
+              <div class="col-sm-6">
+                <button type="button" class="btn btn-block btn-default">新增</button>
+              </div>
+            </div>
+          </div>
+
+        </form>
+
+        <div class="content-area">
+
+          <div class="row">
+
+            <div class="col-xs-12 extra-btns">
+              <button type="button" class="btn btn-default">导出列表</button>
+            </div>
+
+            <div class="col xs-12 col-sm-6 rowStatics">共 <span id="rowTotal">xxx</span> 条数据，当前显示 <span id="perPage">xxx</span> 条</div>
+            <div class="col xs-12 col-sm-6">
+              <nav>
+                <ul class="pagination pagination-sm">
+                  <li>
+                    <a href="#"><span aria-hidden="true">&lt;</span></a>
+                  </li>
+                  <li><span id="pageNow">2</span>/<span id="pageTotal">5</span></li>
+                  <li>
+                    <a href="#"><span aria-hidden="true">&gt;</span></a>
+                  </li>
+                  <li>
+                    <input type="text" id="pageNo" pattern="[0-9]+">
+                  </li>
+                  <li>
+                    <button type="button" class="btn">跳转</button>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>优惠券规则ID</th>
+                  <th>优惠券名称</th>
+                  <th>成本中心</th>
+                  <th>渠道</th>
+                  <th>开始日期</th>
+                  <th>结束日期</th>
+                  <th width="80">操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>000100010001</td>
+                  <td>10元抵用券</td>
+                  <td>上海卡部</td>
+                  <td>手机银行</td>
+                  <td>2015-01-01</td>
+                  <td>2016-01-01</td>
+                  <td><button type="button" class="btn btn-xs btn-default">编辑</button></td>
+                </tr>
+                <tr>
+                  <td>000100010001</td>
+                  <td>10元抵用券</td>
+                  <td>上海卡部</td>
+                  <td>手机银行</td>
+                  <td>2015-01-01</td>
+                  <td>2016-01-01</td>
+                  <td><button type="button" class="btn btn-xs btn-default">编辑</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="../js/activity.js"></script>
+</body>
+</html>
