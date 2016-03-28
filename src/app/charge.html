@@ -29,12 +29,23 @@
           <div class="form-group col-sm-4">
             <div class="input-group">
               <div class="input-group-addon">渠道</div>
-              <input type="text" class="form-control" id="channel" placeholder="">
+              <select class="form-control" name="">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+              </select>
             </div>
           </div>
 
-          <div class="col-xs-12 col-sm-3 pull-right">
-            <button type="submit" class="btn btn-block btn-primary">查询</button>
+          <div class="col-xs-12 col-sm-6 col-md-4 pull-right">
+            <div class="row">
+              <div class="col-sm-6">
+                <button type="submit" class="btn btn-block btn-primary">查询</button>
+              </div>
+              <div class="col-sm-6">
+                <a href="charge-edit.html" class="btn btn-block btn-default">新建</a>
+              </div>
+            </div>
           </div>
 
         </form>
@@ -45,7 +56,6 @@
 
             <div class="col-xs-12 extra-btns">
               <button type="button" class="btn btn-default">批量删除</button>
-              <button type="button" class="btn btn-default pull-right">新增</button>
             </div>
 
             <div class="col xs-12 col-sm-6 rowStatics">共 <span id="rowTotal">xxx</span> 条数据，当前显示 <span id="perPage">xxx</span> 条</div>
@@ -74,21 +84,27 @@
             <table class="table table-striped">
               <thead>
                 <tr>
+                  <th><input type="checkbox" class="multi-check-all"></th>
                   <th>ID</th>
                   <th>渠道</th>
                   <th>服务费</th>
+                  <th width="120">操作</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
+                  <td><input type="checkbox" class="multi-check"></td>
                   <td>0001</td>
                   <td>手机银行</td>
                   <td>30</td>
+                  <td><a href="charge-edit.html" class="btn btn-xs btn-default">编辑</a><button type="button" class="btn btn-xs btn-default" onclick="window.confirm('操作不可逆，确定要删除该服务费设置吗？');">删除</button></td>
                 </tr>
                 <tr>
+                  <td><input type="checkbox" class="multi-check"></td>
                   <td>0001</td>
                   <td>掌上生活</td>
                   <td>30</td>
+                  <td><a href="charge-edit.html" class="btn btn-xs btn-default">编辑</a><button type="button" class="btn btn-xs btn-default" onclick="window.confirm('操作不可逆，确定要删除该服务费设置吗？');">删除</button></td>
                 </tr>
               </tbody>
             </table>
@@ -102,6 +118,7 @@
 
   </div>
 
+  <script src="../js/vonder.js"></script>
   <script src="../js/charge.js"></script>
 </body>
 </html>

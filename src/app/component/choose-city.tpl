@@ -1,4 +1,4 @@
-<div class="modal show">
+<div class="modal fake" id="">
   <div class="modal-dialog">
     <div class="modal-content">
 

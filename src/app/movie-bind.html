@@ -67,23 +67,23 @@
               <tbody>
                 <tr>
                   <td>0001</td>
-                  <td><a href="#">星球大战</a></td>
+                  <td><a href="movie-detail-partner.html">星球大战</a></td>
                   <td>百度</td>
                   <td>2016-03-01</td>
                   <td>3D</td>
                   <td>柴可夫斯基</td>
                   <td>阿诺德施瓦辛格</td>
-                  <td><button type="button" class="btn btn-xs btn-default">修改关联</button></td>
+                  <td><button type="button" class="btn btn-xs btn-default" onclick="$('#popup-movie-bind').modal('show');">修改关联</button></td>
                 </tr>
                 <tr>
                   <td>0001</td>
-                  <td><a href="#">星球大战</a></td>
+                  <td><a href="movie-detail-partner.html">星球大战</a></td>
                   <td>百度</td>
                   <td>2016-03-01</td>
                   <td>3D</td>
                   <td>柴可夫斯基</td>
                   <td>阿诺德施瓦辛格</td>
-                  <td><button type="button" class="btn btn-xs btn-default">修改关联</button></td>
+                  <td><button type="button" class="btn btn-xs btn-default" onclick="$('#popup-movie-bind').modal('show');">修改关联</button></td>
                 </tr>
               </tbody>
             </table>
@@ -98,6 +98,10 @@
 
   </div>
 
+  <script src="../js/vonder.js"></script>
   <script src="../js/movie.js"></script>
+
+  @@include('component/popup-movie-bind.tpl')
+
 </body>
 </html>

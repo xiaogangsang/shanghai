@@ -24,47 +24,26 @@
           <li class="active">合作方影院库</li>
         </ol>
 
-        <form id="formClass" class="search-area">
+        <form id="formCinemaPartner" class="search-area">
 
-          <div class="form-group col-sm-6 col-lg-4">
-            <div class="input-group">
-              <div class="input-group-addon">院线</div>
-              <input type="text" class="form-control" id="lineId" placeholder="">
-            </div>
-          </div>
-
-          <div class="form-group col-sm-6 col-lg-4">
-            <div class="input-group">
-              <div class="input-group-addon">合作方</div>
-              <input type="text" class="form-control" id="partnerName" placeholder="">
-            </div>
-          </div>
-
-          <div class="form-group col-sm-6 col-lg-4">
+          <div class="form-group col-sm-6">
             <div class="input-group">
               <div class="input-group-addon">合作方影院名</div>
-              <input type="text" class="form-control" id="partnerCinemaName" placeholder="">
+              <input type="text" class="form-control" id="partnerCinemaName">
             </div>
           </div>
 
-          <div class="form-group col-sm-6 col-lg-4">
+          <div class="form-group col-sm-6">
             <div class="input-group">
               <div class="input-group-addon">标准影院名</div>
-              <input type="text" class="form-control" id="cinemaName" placeholder="">
+              <input type="text" class="form-control" id="cinemaName">
             </div>
           </div>
 
-          <div class="form-group col-sm-6 col-lg-4">
+          <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
-              <div class="input-group-addon">城市</div>
-              <input type="text" class="form-control" id="cityId" placeholder="">
-            </div>
-          </div>
-
-          <div class="form-group col-sm-6 col-lg-4">
-            <div class="input-group">
-              <div class="input-group-addon">关联关系</div>
-              <select class="form-control" id="bind">
+              <div class="input-group-addon">院线</div>
+              <select class="form-control" name="">
                 <option>1</option>
                 <option>2</option>
                 <option>3</option>
@@ -72,18 +51,50 @@
             </div>
           </div>
 
-          <div class="no-padding col-xs-12 col-sm-12 col-lg-8">
-            <div class="form-group col-sm-6">
-              <div class="input-group">
-              <div class="input-group-addon">开始时间</div>
-                <input type="text" class="form-control" id="timeFrom" placeholder="">
-              </div>
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">合作方</div>
+              <select class="form-control" name="">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+              </select>
             </div>
-            <div class="form-group col-sm-6">
-              <div class="input-group">
-                <div class="input-group-addon">结束时间</div>
-                <input type="text" class="form-control" id="timeTo" placeholder="">
-              </div>
+          </div>
+
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">城市</div>
+              <select class="form-control" name="">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">关联关系</div>
+              <select class="form-control" name="">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">开始时间</div>
+              <input type="text" class="form-control" name="">
+            </div>
+          </div>
+
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">结束时间</div>
+              <input type="text" class="form-control" name="">
             </div>
           </div>
 
@@ -124,7 +135,7 @@
           </div>
 
           <div class="table-responsive">
-            <table class="table table-striped">
+            <table class="table">
               <thead>
                 <tr>
                   <th>ID</th>
@@ -142,39 +153,27 @@
               <tbody>
                 <tr>
                   <td>0101</td>
-                  <td><a href="#">五角场万达</a></td>
+                  <td><a href="cinema-detail-partner.html">五角场万达</a></td>
                   <td>百度</td>
                   <td>万达</td>
                   <td>上海</td>
                   <td>已关联</td>
                   <td>2016-03-01 00:00:00</td>
                   <td>0001</td>
-                  <td><a href="#">万达五角场店</a></td>
-                  <td><button type="button" class="btn btn-xs btn-default">修改关联</button><button type="button" class="btn btn-xs btn-default">移除关联</button></td>
+                  <td><a href="cinema-detail.html">万达五角场店</a></td>
+                  <td><button type="button" class="btn btn-xs btn-default" onclick="$('#popup-movie-bind').modal('show');">修改关联</button><button type="button" class="btn btn-xs btn-default" onclick="window.confirm('确定要移除关联吗?');">移除关联</button></td>
                 </tr>
                 <tr>
                   <td>0101</td>
-                  <td><a href="#">五角场万达</a></td>
+                  <td><a href="cinema-detail-partner.html">五角场万达</a></td>
                   <td>百度</td>
                   <td>万达</td>
                   <td>上海</td>
                   <td>已关联</td>
-                  <td>2016-03-01 00:00:00</td>
-                  <td>0001</td>
-                  <td><a href="#">万达五角场店</a></td>
-                  <td><button type="button" class="btn btn-xs btn-default">修改关联</button><button type="button" class="btn btn-xs btn-default">移除关联</button></td>
-                </tr>
-                <tr>
-                  <td>0101</td>
-                  <td><a href="#">五角场万达</a></td>
-                  <td>百度</td>
-                  <td>万达</td>
-                  <td>上海</td>
-                  <td>已关联</td>
-                  <td>2016-03-01 00:00:00</td>
-                  <td>0001</td>
-                  <td><a href="#">万达五角场店</a></td>
-                  <td><button type="button" class="btn btn-xs btn-default">修改关联</button><button type="button" class="btn btn-xs btn-default">移除关联</button></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td><button type="button" class="btn btn-xs btn-default" onclick="$('#popup-movie-bind').modal('show');">添加关联</button></td>
                 </tr>
               </tbody>
             </table>
@@ -188,6 +187,10 @@
 
   </div>
 
+  <script src="../js/vonder.js"></script>
   <script src="../js/cinema.js"></script>
+
+  @@include('component/popup-movie-bind.tpl')
+
 </body>
 </html>

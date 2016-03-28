@@ -47,21 +47,6 @@
             </div>
           </div>
 
-          <div class="no-padding col-xs-12 col-sm-12 col-lg-8">
-            <div class="form-group col-sm-6">
-              <div class="input-group">
-              <div class="input-group-addon">起始日期</div>
-                <input type="text" class="form-control" id="dateFrom" placeholder="">
-              </div>
-            </div>
-            <div class="form-group col-sm-6">
-              <div class="input-group">
-                <div class="input-group-addon">截止日期</div>
-                <input type="text" class="form-control" id="dateTo" placeholder="">
-              </div>
-            </div>
-          </div>
-
           <div class="form-group col-sm-6 col-lg-4">
             <div class="input-group">
               <div class="input-group-addon">影片制式</div>
@@ -70,6 +55,21 @@
                 <option>2D</option>
                 <option>IMAX</option>
               </select>
+            </div>
+          </div>
+
+          <div class="no-padding col-xs-12 col-sm-12 col-lg-8">
+            <div class="form-group col-sm-6">
+              <div class="input-group">
+                <div class="input-group-addon">起始日期</div>
+                <input type="text" class="form-control" id="dateFrom" placeholder="">
+              </div>
+            </div>
+            <div class="form-group col-sm-6">
+              <div class="input-group">
+                <div class="input-group-addon">截止日期</div>
+                <input type="text" class="form-control" id="dateTo" placeholder="">
+              </div>
             </div>
           </div>
 
@@ -150,25 +150,25 @@
               <tbody>
                 <tr>
                   <td>0001</td>
-                  <td>星球大战</td>
+                  <td><a href="movie-detail.html">星球大战</a></td>
                   <td>2016-03-01</td>
                   <td>正在热映</td>
                   <td>3D</td>
                   <td>万达</td>
                   <td>21世纪福克斯</td>
-                  <td><a href="#">已关联</a></td>
-                  <td><button type="button" class="btn btn-xs btn-default">编辑</button><button type="button" class="btn btn-xs btn-default">删除</button></td>
+                  <td><a href="movie-bind.html">已关联</a></td>
+                  <td><a href="movie-edit.html" class="btn btn-xs btn-default">编辑</a><button type="button" class="btn btn-xs btn-default" onclick="window.confirm('删除后将不能恢复，确定要删除吗?');">删除</button></td>
                 </tr>
                 <tr>
                   <td>0001</td>
-                  <td>星球大战</td>
+                  <td><a href="movie-detail.html">星球大战</a></td>
                   <td>2016-03-01</td>
                   <td>正在热映</td>
                   <td>3D</td>
                   <td>万达</td>
                   <td>21世纪福克斯</td>
-                  <td><a href="#">已关联</a></td>
-                  <td><button type="button" class="btn btn-xs btn-default">编辑</button><button type="button" class="btn btn-xs btn-default">删除</button></td>
+                  <td><a href="movie-bind.html">已关联</a></td>
+                  <td><a href="movie-edit.html" class="btn btn-xs btn-default">编辑</a><button type="button" class="btn btn-xs btn-default" onclick="window.confirm('删除后将不能恢复，确定要删除吗?');">删除</button></td>
                 </tr>
               </tbody>
             </table>
@@ -182,6 +182,8 @@
 
   </div>
 
+  <script src="../js/vonder.js"></script>
   <script src="../js/movie.js"></script>
+
 </body>
 </html>

@@ -24,33 +24,36 @@
           <li class="active">场次查询</li>
         </ol>
 
-        <form id="formClass" class="search-area">
+        <form id="formShowtime" class="search-area">
 
-          <div class="form-group col-sm-6 col-lg-4">
+          <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">影片名</div>
               <input type="text" class="form-control" id="name" placeholder="">
             </div>
           </div>
 
-          <div class="form-group col-sm-6 col-lg-4">
+          <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">影院名</div>
               <input type="text" class="form-control" id="cinema" placeholder="">
             </div>
           </div>
 
-          <div class="form-group col-sm-6 col-lg-4">
+          <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">合作方</div>
-              <input type="text" class="form-control" id="partner" placeholder="">
+              <select class="form-control" name="">
+                <option>1</option>
+                <option>2</option>
+              </select>
             </div>
           </div>
 
-          <div class="form-group col-sm-6 col-lg-4">
+          <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">影片制式</div>
-              <select class="form-control" id="status">
+              <select class="form-control" name="status">
                 <option>3D</option>
                 <option>2D</option>
                 <option>IMAX</option>
@@ -58,18 +61,17 @@
             </div>
           </div>
 
-          <div class="no-padding col-xs-12 col-sm-6">
-            <div class="form-group col-sm-6">
-              <div class="input-group">
-                <div class="input-group-addon">上映时间</div>
-                <input type="text" class="form-control" id="dateFrom" placeholder="">
-              </div>
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">上映日期</div>
+              <input type="date" class="form-control" id="dateFrom" placeholder="">
             </div>
-            <div class="form-group col-sm-6">
-              <div class="input-group">
-                <div class="input-group-addon">至</div>
-                <input type="text" class="form-control" id="dateTo" placeholder="">
-              </div>
+          </div>
+
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">至</div>
+              <input type="date" class="form-control" id="dateTo" placeholder="">
             </div>
           </div>
 
@@ -147,17 +149,6 @@
                   <td>0</td>
                   <td>30</td>
                 </tr>
-                <tr>
-                  <td>0001</td>
-                  <td>百度</td>
-                  <td>上海影城新华路店</td>
-                  <td>星球大战</td>
-                  <td>3D</td>
-                  <td>无</td>
-                  <td>30</td>
-                  <td>0</td>
-                  <td>30</td>
-                </tr>
               </tbody>
             </table>
           </div>
@@ -170,6 +161,7 @@
 
   </div>
 
+  <script src="../js/vonder.js"></script>
   <script src="../js/showtime.js"></script>
 </body>
 </html>
