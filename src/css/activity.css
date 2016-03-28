@@ -8,7 +8,11 @@
 .tab-pane {
   padding: 15px 0;
 }
-.pane-activity-type {
+.pane-activity-type .nav-tabs,
+.pane-activity-type .tab-content {
+  max-width: 640px;
+}
+.pane-activity-type .tab-content {
   background-color: #fff;
   padding: 0 15px;
   margin-bottom: 15px;
@@ -20,3 +24,27 @@
   padding: 5px 0 0;
   vertical-align: middle;
 }
+
+.activity-unit-edit .unit-limitation td {
+  padding-left: 15px;
+}
+.unit-limitation th .btn {
+  width: 100%;
+}
+
+.modal-body{
+  max-height: 500px;
+  overflow: scroll;
+}
+/*.modal-body .row {
+  margin-bottom: 15px;
+  }*/
+  .modal .edit-section {
+    padding: 15px 0;
+  }
+  .modal-footer {
+    text-align: center;
+  }
+  .modal-footer .btn {
+    padding: 5px 60px;
+  }
