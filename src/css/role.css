@@ -5,6 +5,17 @@
   margin-bottom: 15px;
   max-width: 768px;
 }
+.edit-section h5 {
+  margin-top: 0;
+}
+.edit-section .table>tbody>tr>th,
+.edit-section .table>tbody>tr>td {
+  border: 0;
+}
+.edit-section .table>tbody>tr>th {
+  vertical-align: middle;
+  text-align: right;
+}
 
 .multi-selection>div {
   text-align: center;

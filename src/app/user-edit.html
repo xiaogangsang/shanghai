@@ -25,151 +25,118 @@
           <li class="active">编辑</li>
         </ol>
 
-        <section class="user-edit">
+        <section class="user-edit" style="max-width: 640px;">
           <h3>编辑用户</h3>
           <form id="formUser">
 
             <div class="edit-section">
 
-              <div class="form-group col-xs-12">
-                <div class="input-group col-sm-">
-                  <div class="input-group-addon">登录ID</div>
-                  <input type="text" class="form-control" name="">
-                </div>
+              <div class="table-responsive">
+                <table class="table">
+                  <tbody>
+                    <tr>
+                      <th width="80">登录ID</th>
+                      <td><input type="text" class="form-control" name=""></td>
+                    </tr>
+                    <tr>
+                      <th>姓名</th>
+                      <td><input type="text" class="form-control" name=""></td>
+                    </tr>
+                    <tr>
+                      <th>密码</th>
+                      <td><input type="text" class="form-control" name=""></td>
+                    </tr>
+                    <tr>
+                      <th>所在城市</th>
+                      <td><input type="text" class="form-control" name=""></td>
+                    </tr>
+                    <tr>
+                      <th>所在单位</th>
+                      <td><input type="text" class="form-control" name=""></td>
+                    </tr>
+                    <tr>
+                      <th>手机号码</th>
+                      <td><input type="number" class="form-control" name=""></td>
+                    </tr>
+                    <tr>
+                      <th>邮箱地址</th>
+                      <td><input type="email" class="form-control" name=""></td>
+                    </tr>
+                    <tr>
+                      <th>配置渠道</th>
+                      <td>
+                        <div class="checkbox-inline"><label><input type="checkbox"> 账上生活</label></div>
+                        <div class="checkbox-inline"><label><input type="checkbox"> 手机银行</label></div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
 
-              <div class="form-group col-sm-6">
-                <div class="input-group">
-                  <div class="input-group-addon">姓名</div>
-                  <input type="text" class="form-control" name="">
-                </div>
-              </div>
+            </div>
 
-              <div class="form-group col-sm-6">
-                <div class="input-group">
-                  <div class="input-group-addon">密码</div>
-                  <input type="text" class="form-control" name="">
-                </div>
+            <div class="edit-section">
+
+              <h5>配置角色</h5>
+              <div class="multi-selection table-responsive">
+                <table class="table">
+                  <tbody>
+                    <tr>
+                      <td width="260">
+                        <select name="from[]" id="roleSelect" class="form-control" size="8" multiple="multiple">
+                          <option value="1">Item 1</option>
+                          <option value="3">Item 3</option>
+                          <option value="2">Item 2</option>
+                          <option value="4">Item 4</option>
+                          <option value="5">Item 5</option>
+                          <option value="6">Item 6</option>
+                        </select>
+                      </td>
+                      <td width="60">
+                        <button type="button" id="roleSelect_all" class="btn btn-block btn-default">全选</button>
+                        <button type="button" id="roleSelect_right" class="btn btn-block btn-default">添加</button>
+                        <button type="button" id="roleSelect_left" class="btn btn-block btn-default">移除</button>
+                        <button type="button" id="roleSelect_none" class="btn btn-block btn-default">反选</button>
+                      </td>
+                      <td>
+                        <select name="to[]" id="roleSelect_to" class="form-control" size="8" multiple="multiple"></select>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
 
             </div>
 
             <div class="edit-section">
 
-              <div class="form-group col-sm-6">
-                <div class="input-group">
-                  <div class="input-group-addon">所在城市</div>
-                  <input type="text" class="form-control" name="">
-                </div>
-              </div>
-
-              <div class="form-group col-sm-6">
-                <div class="input-group">
-                  <div class="input-group-addon">所在单位</div>
-                  <input type="text" class="form-control" name="">
-                </div>
-              </div>
-
-              <div class="form-group col-sm-6">
-                <div class="input-group">
-                  <div class="input-group-addon">手机号码</div>
-                  <input type="text" class="form-control" name="">
-                </div>
-              </div>
-
-              <div class="form-group col-sm-6">
-                <div class="input-group">
-                  <div class="input-group-addon">邮箱地址</div>
-                  <input type="text" class="form-control" name="">
-                </div>
-              </div>
-
-            </div>
-
-            <div class="edit-section">
-              <div class="form-group">
-                <div class="input-group">
-                  <div class="input-group-addon">配置渠道</div>
-                  <div class="multi-selection">
-                    <div class="col-xs-12 col-sm-5">
-                      <select name="from[]" id="channelSelect" class="form-control" size="8" multiple="multiple">
-                        <option value="1">Item 1</option>
-                        <option value="3">Item 3</option>
-                        <option value="2">Item 2</option>
-                        <option value="4">Item 4</option>
-                        <option value="5">Item 5</option>
-                        <option value="6">Item 6</option>
-                      </select>
-                    </div>
-                    <div class="col-xs-12 col-sm-2">
-                      <button type="button" id="channelSelect_all" class="btn btn-block btn-default">全选</button>
-                      <button type="button" id="channelSelect_right" class="btn btn-block btn-default">添加</button>
-                      <button type="button" id="channelSelect_left" class="btn btn-block btn-default">移除</button>
-                      <button type="button" id="channelSelect_none" class="btn btn-block btn-default">反选</button>
-                    </div>
-                    <div class="col-xs-12 col-sm-5">
-                      <select name="to[]" id="channelSelect_to" class="form-control" size="8" multiple="multiple"></select>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="edit-section">
-              <div class="form-group">
-                <div class="input-group">
-                  <div class="input-group-addon">配置角色</div>
-                  <div class="multi-selection">
-                    <div class="col-xs-12 col-sm-5">
-                      <select name="from[]" id="roleSelect" class="form-control" size="8" multiple="multiple">
-                        <option value="1">Item 1</option>
-                        <option value="3">Item 3</option>
-                        <option value="2">Item 2</option>
-                        <option value="4">Item 4</option>
-                        <option value="5">Item 5</option>
-                        <option value="6">Item 6</option>
-                      </select>
-                    </div>
-                    <div class="col-xs-12 col-sm-2">
-                      <button type="button" id="roleSelect_all" class="btn btn-block btn-default">全选</button>
-                      <button type="button" id="roleSelect_right" class="btn btn-block btn-default">添加</button>
-                      <button type="button" id="roleSelect_left" class="btn btn-block btn-default">移除</button>
-                      <button type="button" id="roleSelect_none" class="btn btn-block btn-default">反选</button>
-                    </div>
-                    <div class="col-xs-12 col-sm-5">
-                      <select name="to[]" id="roleSelect_to" class="form-control" size="8" multiple="multiple"></select>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="edit-section">
-              <div class="form-group">
-                <div class="input-group">
-                  <div class="input-group-addon">配置城市</div>
-                  <div class="multi-selection">
-                    <div class="col-xs-12 col-sm-5">
-                      <select name="from[]" id="citySelect" class="form-control" size="8" multiple="multiple">
-                        <option value="1">Item 1</option>
-                        <option value="3">Item 3</option>
-                        <option value="2">Item 2</option>
-                        <option value="4">Item 4</option>
-                        <option value="5">Item 5</option>
-                        <option value="6">Item 6</option>
-                      </select>
-                    </div>
-                    <div class="col-xs-12 col-sm-2">
-                      <button type="button" id="citySelect_all" class="btn btn-block btn-default">全选</button>
-                      <button type="button" id="citySelect_right" class="btn btn-block btn-default">添加</button>
-                      <button type="button" id="citySelect_left" class="btn btn-block btn-default">移除</button>
-                      <button type="button" id="citySelect_none" class="btn btn-block btn-default">反选</button>
-                    </div>
-                    <div class="col-xs-12 col-sm-5">
-                      <select name="to[]" id="citySelect_to" class="form-control" size="8" multiple="multiple"></select>
-                    </div>
-                  </div>
-                </div>
+              <h5>配置城市</h5>
+              <div class="multi-selection table-responsive">
+                <table class="table">
+                  <tbody>
+                    <tr>
+                      <td width="260">
+                        <select name="from[]" id="citySelect" class="form-control" size="8" multiple="multiple">
+                          <option value="1">Item 1</option>
+                          <option value="3">Item 3</option>
+                          <option value="2">Item 2</option>
+                          <option value="4">Item 4</option>
+                          <option value="5">Item 5</option>
+                          <option value="6">Item 6</option>
+                        </select>
+                      </td>
+                      <td width="60">
+                        <button type="button" id="citySelect_all" class="btn btn-block btn-default">全选</button>
+                        <button type="button" id="citySelect_right" class="btn btn-block btn-default">添加</button>
+                        <button type="button" id="citySelect_left" class="btn btn-block btn-default">移除</button>
+                        <button type="button" id="citySelect_none" class="btn btn-block btn-default">反选</button>
+                      </td>
+                      <td>
+                        <select name="to[]" id="citySelect_to" class="form-control" size="8" multiple="multiple"></select>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
 
             </div>

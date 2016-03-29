@@ -1,14 +1,13 @@
-.order-detail>section {
-  margin-top: 15px;
+.edit-section {
+  padding: 15px 15px;
   overflow: hidden;
   background-color: #f0f0f0;
-  padding: 5px 15px;
-  border-radius: 4px;
+  margin-bottom: 15px;
 }
-.order-detail>section>div {
+.order-detail .edit-section>div {
   display: table;
 }
-.order-detail>section label {
+.order-detail .edit-section label {
   display: table-cell;
   width: 130px;
   padding: 3px 0;

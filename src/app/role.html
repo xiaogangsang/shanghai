@@ -29,28 +29,28 @@
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">角色ID</div>
-              <input type="text" class="form-control" id="userName" placeholder="">
+              <input type="text" class="form-control" name="">
             </div>
           </div>
 
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">角色名称</div>
-              <input type="text" class="form-control" id="userId" placeholder="">
+              <input type="text" class="form-control" name="">
             </div>
           </div>
 
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">功能</div>
-              <input type="text" class="form-control" id="cityId" placeholder="">
+              <input type="text" class="form-control" name="">
             </div>
           </div>
 
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">创建人</div>
-              <input type="text" class="form-control" id="creator" placeholder="">
+              <input type="text" class="form-control" name="">
             </div>
           </div>
 
@@ -60,7 +60,7 @@
                 <button type="submit" class="btn btn-block btn-primary">查询</button>
               </div>
               <div class="col-sm-6">
-                <button type="button" class="btn btn-block btn-default">新增角色</button>
+                <a href="role-edit.html" class="btn btn-block btn-default">新增角色</a>
               </div>
             </div>
           </div>
@@ -72,7 +72,7 @@
           <div class="row">
 
             <div class="col-xs-12 extra-btns">
-              <button type="button" class="btn btn-default">批量删除</button>
+              <button type="button" class="btn btn-default" onclick="window.confirm('确定要删除选中的角色吗？');">批量删除</button>
               <button type="button" class="btn btn-default">导出列表</button>
             </div>
 
@@ -102,30 +102,33 @@
             <table class="table table-striped">
               <thead>
                 <tr>
+                  <th><input type="checkbox" class="multi-check-all"></th>
                   <th>角色ID</th>
                   <th>角色名称</th>
                   <th>功能</th>
                   <th>创建人</th>
                   <th>备注</th>
-                  <th width="160">操作</th>
+                  <th width="180">操作</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
+                  <td><input type="checkbox" class="multi-check"></td>
                   <td>666666</td>
                   <td>客服</td>
                   <td>新增用户，编辑用户</td>
                   <td>admin</td>
                   <td>这些人都是客服</td>
-                  <td><button type="button" class="btn btn-xs btn-default">分配用户</button><button type="button" class="btn btn-xs btn-default">编辑</button><button type="button" class="btn btn-xs btn-default">删除</button></td>
+                  <td><a href="role-edit.html" class="btn btn-xs btn-default">编辑</a><button type="button" class="btn btn-xs btn-default" onclick="window.confirm('确定要删除此角色吗？');">删除</button></td>
                 </tr>
                 <tr>
+                  <td><input type="checkbox" class="multi-check"></td>
                   <td>666666</td>
                   <td>客服</td>
                   <td>新增用户，编辑用户</td>
                   <td>admin</td>
                   <td>这些人都是客服</td>
-                  <td><button type="button" class="btn btn-xs btn-default">分配用户</button><button type="button" class="btn btn-xs btn-default">编辑</button><button type="button" class="btn btn-xs btn-default">删除</button></td>
+                  <td><a href="role-edit.html" class="btn btn-xs btn-default">编辑</a><button type="button" class="btn btn-xs btn-default" onclick="window.confirm('确定要删除此角色吗？');">删除</button></td>
                 </tr>
               </tbody>
             </table>
@@ -141,5 +144,8 @@
 
   <script src="../js/vonder.js"></script>
   <script src="../js/role.js"></script>
+
+  @@include('component/popup-user.tpl')
+
 </body>
 </html>

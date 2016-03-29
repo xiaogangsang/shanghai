@@ -25,79 +25,65 @@
           <li class="active">编辑</li>
         </ol>
 
-        <section class="movie-edit">
+        <section class="movie-edit" style="max-width: 640px;">
           <h3>新建热门影片</h3>
           <form id="formBanner">
 
             <div class="edit-section">
 
-              <div class="form-group col-sm-6">
-                <div class="input-group">
-                  <div class="input-group-addon">影片</div>
-                  <input type="text" class="form-control" id="movie">
-                </div>
-              </div>
-
-              <div class="form-group col-sm-6">
-                <div class="input-group">
-                  <div class="input-group-addon">城市</div>
-                  <input type="text" class="form-control" id="city">
-                </div>
-              </div>
-
-              <div class="form-group col-sm-6">
-                <div class="input-group">
-                  <div class="input-group-addon">渠道</div>
-                  <select class="form-control" id="channel">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="form-group col-sm-6">
-                <div class="input-group">
-                  <div class="input-group-addon">顺序</div>
-                  <select class="form-control" id="province">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="form-group col-sm-6">
-                <div class="input-group">
-                  <div class="input-group-addon">生效时间</div>
-                  <input type="text" class="form-control" id="latitude">
-                </div>
-              </div>
-
-              <div class="form-group col-sm-6">
-                <div class="input-group">
-                  <div class="input-group-addon">失效时间</div>
-                  <input type="text" class="form-control" id="latitude">
-                </div>
-              </div>
-
-              <div class="form-group col-sm-6">
-                <div class="input-group">
-                  <div class="input-group-addon">是否显示</div>
-                  <label class="radio-inline">
-                    <input type="radio" name="actived" value="option1"> 是
-                  </label>
-                  <label class="radio-inline">
-                    <input type="radio" name="actived" value="option2"> 否
-                  </label>
-                </div>
-              </div>
-
-              <div class="form-group col-xs-12">
-                <div class="input-group">
-                  <div class="input-group-addon">图片</div>
-                  <input type="file">
-                </div>
+              <div class="table-responsive">
+                <table class="table">
+                  <tbody>
+                    <tr>
+                      <th width="100">影片</th>
+                      <td>
+                        <select class="form-control" name="">
+                          <option>1</option>
+                          <option>2</option>
+                          <option>3</option>
+                        </select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>渠道</th>
+                      <td>
+                        <div class="checkbox-inline"><label><input type="checkbox"> 手机银行</label></div>
+                        <div class="checkbox-inline"><label><input type="checkbox"> 掌上生活</label></div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th><button type="button" class="btn btn-default" onclick="$('#popup-city').modal('show');">城市</button></th>
+                      <td>xxx</td>
+                    </tr>
+                    <tr>
+                      <th>顺序</th>
+                      <td><input type="text" class="form-control" name=""></td>
+                    </tr>
+                    <tr>
+                      <th>生效日期</th>
+                      <td><input type="text" class="form-control" id="latitude"></td>
+                    </tr>
+                    <tr>
+                      <th>失效日期</th>
+                      <td><input type="text" class="form-control" id="latitude"></td>
+                    </tr>
+                    <tr>
+                      <th>跳转链接</th>
+                      <td><input type="url" name="" class="form-control"></td>
+                    </tr>
+                    <tr>
+                      <th>是否显示</th>
+                      <td>
+                        <label class="radio-inline"><input type="radio" name="actived" value="option1"> 是</label>
+                        <label class="radio-inline"><input type="radio" name="actived" value="option2"> 否</label>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>图片</th>
+                      <td><input type="file"></td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
 
             </div>
@@ -118,6 +104,10 @@
 
   </div>
 
+  <script src="../js/vonder.js"></script>
   <script src="../js/banner.js"></script>
+
+  @@include('component/popup-city.tpl')
+
 </body>
 </html>

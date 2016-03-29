@@ -41,26 +41,32 @@
             <div class="form-group">
               <div class="input-group">
                 <div class="input-group-addon">分配用户</div>
-                <div class="multi-selection row">
-                  <div class="col-xs-12 col-sm-5">
-                    <select name="from[]" id="userSelect_1" class="form-control" size="8" multiple="multiple">
-                      <option value="1">用户 1</option>
-                      <option value="3">用户 3</option>
-                      <option value="2">用户 2</option>
-                      <option value="4">用户 4</option>
-                      <option value="5">用户 5</option>
-                      <option value="6">用户 6</option>
-                    </select>
-                  </div>
-                  <div class="col-xs-12 col-sm-2">
-                    <button type="button" id="userSelect_1_all" class="btn btn-block btn-default">全选</button>
-                    <button type="button" id="userSelect_1_right" class="btn btn-block btn-default">添加</button>
-                    <button type="button" id="userSelect_1_left" class="btn btn-block btn-default">移除</button>
-                    <button type="button" id="userSelect_1_none" class="btn btn-block btn-default">反选</button>
-                  </div>
-                  <div class="col-xs-12 col-sm-5">
-                    <select name="to[]" id="userSelect_1_to" class="form-control" size="8" multiple="multiple"></select>
-                  </div>
+                <div class="multi-selection table-responsive">
+                  <table class="table">
+                    <tbody>
+                      <tr>
+                        <td>
+                          <select name="from[]" id="userSelect_1" class="form-control" size="8" multiple="multiple">
+                            <option value="1">用户 1</option>
+                            <option value="3">用户 3</option>
+                            <option value="2">用户 2</option>
+                            <option value="4">用户 4</option>
+                            <option value="5">用户 5</option>
+                            <option value="6">用户 6</option>
+                          </select>
+                        </td>
+                        <td width="60">
+                          <button type="button" id="userSelect_1_all" class="btn btn-block btn-default">全选</button>
+                          <button type="button" id="userSelect_1_right" class="btn btn-block btn-default">添加</button>
+                          <button type="button" id="userSelect_1_left" class="btn btn-block btn-default">移除</button>
+                          <button type="button" id="userSelect_1_none" class="btn btn-block btn-default">反选</button>
+                        </td>
+                        <td>
+                          <select name="to[]" id="userSelect_1_to" class="form-control" size="8" multiple="multiple"></select>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
@@ -90,26 +96,32 @@
             <div class="form-group">
               <div class="input-group">
                 <div class="input-group-addon">分配用户</div>
-                <div class="multi-selection row">
-                  <div class="col-xs-12 col-sm-5">
-                    <select name="from[]" id="userSelect_2" class="form-control" size="8" multiple="multiple">
-                      <option value="1">用户 1</option>
-                      <option value="3">用户 3</option>
-                      <option value="2">用户 2</option>
-                      <option value="4">用户 4</option>
-                      <option value="5">用户 5</option>
-                      <option value="6">用户 6</option>
-                    </select>
-                  </div>
-                  <div class="col-xs-12 col-sm-2">
-                    <button type="button" id="userSelect_2_all" class="btn btn-block btn-default">全选</button>
-                    <button type="button" id="userSelect_2_right" class="btn btn-block btn-default">添加</button>
-                    <button type="button" id="userSelect_2_left" class="btn btn-block btn-default">移除</button>
-                    <button type="button" id="userSelect_2_none" class="btn btn-block btn-default">反选</button>
-                  </div>
-                  <div class="col-xs-12 col-sm-5">
-                    <select name="to[]" id="userSelect_2_to" class="form-control" size="8" multiple="multiple"></select>
-                  </div>
+                <div class="table-responsive multi-selection">
+                  <table class="table">
+                    <tbody>
+                      <tr>
+                        <td>
+                          <select name="from[]" id="userSelect_2" class="form-control" size="8" multiple="multiple">
+                            <option value="1">用户 1</option>
+                            <option value="3">用户 3</option>
+                            <option value="2">用户 2</option>
+                            <option value="4">用户 4</option>
+                            <option value="5">用户 5</option>
+                            <option value="6">用户 6</option>
+                          </select>
+                        </td>
+                        <td width="60">
+                          <button type="button" id="userSelect_2_all" class="btn btn-block btn-default">全选</button>
+                          <button type="button" id="userSelect_2_right" class="btn btn-block btn-default">添加</button>
+                          <button type="button" id="userSelect_2_left" class="btn btn-block btn-default">移除</button>
+                          <button type="button" id="userSelect_2_none" class="btn btn-block btn-default">反选</button>
+                        </td>
+                        <td>
+                          <select name="to[]" id="userSelect_2_to" class="form-control" size="8" multiple="multiple"></select>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>

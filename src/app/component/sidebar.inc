@@ -49,7 +49,7 @@
         <div class="list-group">
           <a href="activity-plan.html" class="list-group-item">活动计划管理</a>
           <a href="activity-unit.html" class="list-group-item">活动单元管理</a>
-          <a href="coupon.html" class="list-group-item">优惠券管理</a>
+          <a href="activity-coupon.html" class="list-group-item">优惠券管理</a>
         </div>
       </div>
     </div>
@@ -77,7 +77,6 @@
       <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu8"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 报表查询</a>
       <div id="menu8" class="panel-collapse collapse" role="tabpanel">
         <div class="list-group">
-          <a href="report-finance.html" class="list-group-item">财务报表</a>
           <a href="report-operation.html" class="list-group-item">运营报表</a>
         </div>
       </div>
@@ -88,7 +87,7 @@
       <div id="menu9" class="panel-collapse collapse" role="tabpanel">
         <div class="list-group">
           <a href="comment.html" class="list-group-item">评论编辑</a>
-          <a href="comment-filtering.html" class="list-group-item">敏感词导入</a>
+          <a href="comment-forbidden.html" class="list-group-item">敏感词管理</a>
         </div>
       </div>
     </div>
@@ -98,7 +97,7 @@
       <div id="menu10" class="panel-collapse collapse" role="tabpanel">
         <div class="list-group">
           <a href="user.html" class="list-group-item">用户管理</a>
-          <a href="authority.html" class="list-group-item">权限管理</a>
+          <a href="authorization.html" class="list-group-item">权限管理</a>
           <a href="role.html" class="list-group-item">角色管理</a>
           <a href="ability.html" class="list-group-item">功能管理</a>
         </div>

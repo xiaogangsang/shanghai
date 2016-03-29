@@ -25,26 +25,24 @@
           <li class="active">导入</li>
         </ol>
 
-        <section class="forbidden-edit">
+        <section class="forbidden-edit" style="max-width: 640px;">
           <h3>导入敏感词</h3>
           <form id="formForbidden">
 
             <div class="edit-section">
 
-              <div class="form-group">
-                <div class="input-group col-sm-4">
+              <div class="form-group col-xs-12">
+                <div class="input-group">
                   <div class="input-group-addon">选择要导入的文件</div>
                   <input type="file">
                 </div>
-                <p class="help-block">大小多少，xls、xlsx、csv文件。</p>
+                <p class="help-block">大小100K内，xls、xlsx、csv文件，请将敏感词放在第一个sheet的A列。</p>
               </div>
 
             </div>
 
-            <div class="row">
-              <div class="col-sm-4">
-                <button type="submit" class="btn btn-block btn-primary">上传</button>
-              </div>
+            <div class="col-xs-12 col-sm-6">
+              <button type="submit" class="btn btn-block btn-primary">上传</button>
             </div>
 
           </form>
@@ -57,6 +55,7 @@
 
   </div>
 
+  <script src="../js/vonder.js"></script>
   <script src="../js/comment.js"></script>
 </body>
 </html>

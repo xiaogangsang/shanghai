@@ -26,21 +26,21 @@
 
         <form id="formActivity" class="search-area">
 
-          <div class="form-group col-sm-6 col-lg-3">
+          <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">计划ID</div>
               <input type="text" class="form-control" name="" placeholder="">
             </div>
           </div>
 
-          <div class="form-group col-sm-6 col-lg-3">
+          <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">计划名称</div>
               <input type="text" class="form-control" name="" placeholder="">
             </div>
           </div>
 
-          <div class="form-group col-sm-6 col-lg-3">
+          <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">计划状态</div>
               <select class="form-control" name="">
@@ -51,7 +51,7 @@
             </div>
           </div>
 
-          <div class="form-group col-sm-6 col-lg-3">
+          <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">预算状态</div>
               <select class="form-control" name="">
@@ -62,13 +62,13 @@
             </div>
           </div>
 
-          <div class="col-xs-12 col-sm-6 col-lg-4 pull-right">
+          <div class="col-xs-12 col-sm-6 col-md-4 pull-right">
             <div class="row">
               <div class="col-sm-6">
                 <button type="submit" class="btn btn-block btn-primary">查询</button>
               </div>
               <div class="col-sm-6">
-                <button type="button" class="btn btn-block btn-default">新增</button>
+                <a href="activity-plan-edit.html" class="btn btn-block btn-default">新增</a>
               </div>
             </div>
           </div>
@@ -119,25 +119,25 @@
               <tbody>
                 <tr>
                   <td>0001</td>
-                  <td><a href="#">活动计划A</a></td>
+                  <td><a href="activity-unit.html">活动计划A</a></td>
                   <td>已上线</td>
                   <td>正常</td>
                   <td>100/1000</td>
                   <td>100/1000</td>
                   <td>100/500</td>
                   <td>100/500</td>
-                  <td><button type="button" class="btn btn-xs btn-default">下线</button><button type="button" class="btn btn-xs btn-default">编辑</button><button type="button" class="btn btn-xs btn-default">移除</button></td>
+                  <td><button type="button" class="btn btn-xs btn-default" onclick="window.confirm('确定要下线此计划吗？');">下线</button><a href="activity-plan-edit.html" class="btn btn-xs btn-default">编辑</a><button type="button" class="btn btn-xs btn-default" onclick="window.confirm('确定要删除此计划吗？');">删除</button></td>
                 </tr>
                 <tr>
                   <td>0001</td>
-                  <td><a href="#">活动计划A</a></td>
+                  <td><a href="activity-unit.html">活动计划A</a></td>
                   <td>已下线</td>
                   <td>日预算不足</td>
                   <td>100/1000</td>
                   <td>100/1000</td>
                   <td>100/500</td>
                   <td>100/500</td>
-                  <td><button type="button" class="btn btn-xs btn-default">上线</button><button type="button" class="btn btn-xs btn-default">编辑</button><button type="button" class="btn btn-xs btn-default">移除</button></td>
+                  <td><button type="button" class="btn btn-xs btn-default" onclick="window.confirm('确定要下线此计划吗？');">下线</button><a href="activity-plan-edit.html" class="btn btn-xs btn-default">编辑</a><button type="button" class="btn btn-xs btn-default" onclick="window.confirm('确定要删除此计划吗？');">删除</button></td>
                 </tr>
               </tbody>
             </table>
@@ -151,6 +151,7 @@
 
   </div>
 
+  <script src="../js/vonder.js"></script>
   <script src="../js/activity.js"></script>
 </body>
 </html>

@@ -212,7 +212,7 @@ fieldset[disabled] .form-control {
 .content-area table {
   border: 1px solid #dedede;
 }
-td .btn+.btn {
+td .btn-xs+.btn-xs {
   margin-left: 5px;
 }
 .log-list dt {

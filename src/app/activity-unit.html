@@ -79,7 +79,7 @@
                 <button type="submit" class="btn btn-block btn-primary">查询</button>
               </div>
               <div class="col-sm-6">
-                <button type="button" class="btn btn-block btn-default">新增</button>
+                <a href="activity-unit-edit.html" class="btn btn-block btn-default">新增</a>
               </div>
             </div>
           </div>
@@ -91,8 +91,8 @@
           <div class="row">
 
             <div class="col-xs-12 extra-btns">
-              <button type="button" class="btn btn-default">批量上线</button>
-              <button type="button" class="btn btn-default">批量下线</button>
+              <button type="button" class="btn btn-default" onclick="window.confirm('确定要上线选中的单元吗？');">批量上线</button>
+              <button type="button" class="btn btn-default" onclick="window.confirm('确定要下线选中的单元吗？');">批量下线</button>
               <button type="button" class="btn btn-default pull-right">导出列表</button>
             </div>
 
@@ -132,10 +132,10 @@
                   <th>成本中心</th>
                   <th>开始时间</th>
                   <th>结束时间</th>
-                  <th>总金额预算</th>
+                  <!-- <th>总金额预算</th>
                   <th>总张数预算</th>
                   <th>日金额预算</th>
-                  <th>日张数预算</th>
+                  <th>日张数预算</th> -->
                   <th width="140">操作</th>
                 </tr>
               </thead>
@@ -151,11 +151,11 @@
                   <td>上海卡部</td>
                   <td>2015-01-01 00:00:00</td>
                   <td>2016-01-01 00:00:00</td>
-                  <td>100/1000</td>
+                  <!-- <td>100/1000</td>
                   <td>100/1000</td>
                   <td>100/500</td>
-                  <td>100/500</td>
-                  <td><button type="button" class="btn btn-xs btn-default">下线</button><button type="button" class="btn btn-xs btn-default">编辑</button><button type="button" class="btn btn-xs btn-default">移除</button></td>
+                  <td>100/500</td> -->
+                  <td><button type="button" class="btn btn-xs btn-default" onclick="window.confirm('确定要下线此单元吗？');">下线</button><a href="activity-unit-edit.html" class="btn btn-xs btn-default">编辑</a><button type="button" class="btn btn-xs btn-default" onclick="window.confirm('确定要删除此单元吗？');">删除</button></td>
                 </tr>
                 <tr>
                   <td><input type="checkbox" value="0"></td>
@@ -168,11 +168,11 @@
                   <td>上海卡部</td>
                   <td>2015-01-01 00:00:00</td>
                   <td>2016-01-01 00:00:00</td>
-                  <td>100/1000</td>
+                  <!-- <td>100/1000</td>
                   <td>100/1000</td>
                   <td>100/500</td>
-                  <td>100/500</td>
-                  <td><button type="button" class="btn btn-xs btn-default">下线</button><button type="button" class="btn btn-xs btn-default">编辑</button><button type="button" class="btn btn-xs btn-default">移除</button></td>
+                  <td>100/500</td> -->
+                  <td><button type="button" class="btn btn-xs btn-default" onclick="window.confirm('确定要下线此单元吗？');">下线</button><a href="activity-unit-edit.html" class="btn btn-xs btn-default">编辑</a><button type="button" class="btn btn-xs btn-default" onclick="window.confirm('确定要删除此单元吗？');">删除</button></td>
                 </tr>
               </tbody>
             </table>
@@ -186,6 +186,7 @@
 
   </div>
 
+  <script src="../js/vonder.js"></script>
   <script src="../js/activity.js"></script>
 </body>
 </html>

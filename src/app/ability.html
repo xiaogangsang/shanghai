@@ -24,31 +24,32 @@
           <li class="active">功能管理</li>
         </ol>
 
-        <section class="user-edit">
+        <section class="user-edit" style="max-width: 640px;">
 
-            <div class="edit-section">
-              <div class="form-group">
-                <div class="input-group">
-                  <div class="input-group-addon">选择功能</div>
-                  <select id="abilitySelect" class="form-control" data-placeholder="选择一个功能...">
-                    <option value=""></option>
-                    <option value="1">功能1</option>
-                    <option value="2">功能2</option>
-                    <option value="3">功能3</option>
-                    <option value="4">功能4</option>
-                    <option value="5">功能5</option>
-                  </select>
-                </div>
+          <div class="edit-section">
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-addon">选择功能</div>
+                <select id="abilitySelect" class="form-control" data-placeholder="选择一个功能...">
+                  <option value=""></option>
+                  <option value="1">功能1</option>
+                  <option value="2">功能2</option>
+                  <option value="3">功能3</option>
+                  <option value="4">功能4</option>
+                  <option value="5">功能5</option>
+                </select>
               </div>
             </div>
+          </div>
 
-            <div class="edit-section">
+          <div class="edit-section">
 
-              <div class="form-group">
-                <div class="input-group">
-                  <div class="input-group-addon">分配角色</div>
-                  <div class="multi-selection">
-                    <div class="col-xs-12 col-sm-5">
+            <h5>分配角色</h5>
+            <div class="table-responsive multi-selection">
+              <table class="table">
+                <tbody>
+                  <tr>
+                    <td width="260">
                       <select name="from[]" id="roleSelect" class="form-control" size="8" multiple="multiple">
                         <option value="1">Item 1</option>
                         <option value="3">Item 3</option>
@@ -57,27 +58,28 @@
                         <option value="5">Item 5</option>
                         <option value="6">Item 6</option>
                       </select>
-                    </div>
-                    <div class="col-xs-12 col-sm-2">
+                    </td>
+                    <td width="60">
                       <button type="button" id="roleSelect_all" class="btn btn-block btn-default">全选</button>
                       <button type="button" id="roleSelect_right" class="btn btn-block btn-default">添加</button>
                       <button type="button" id="roleSelect_left" class="btn btn-block btn-default">移除</button>
                       <button type="button" id="roleSelect_none" class="btn btn-block btn-default">反选</button>
-                    </div>
-                    <div class="col-xs-12 col-sm-5">
+                    </td>
+                    <td>
                       <select name="to[]" id="roleSelect_to" class="form-control" size="8" multiple="multiple"></select>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row" style="margin-bottom: 15px;">
-                <div class="col-sm-4 col-md-3">
-                  <button type="submit" class="btn btn-block btn-primary">保存</button>
-                </div>
-              </div>
-
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
+
+          </div>
+
+          <div class="row">
+            <div class="col-sm-4">
+              <button type="submit" class="btn btn-block btn-primary">保存</button>
+            </div>
+          </div>
 
         </section>
 

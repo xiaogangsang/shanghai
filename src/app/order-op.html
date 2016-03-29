@@ -26,31 +26,31 @@
 
         <form id="formOrder.html" class="search-area">
 
-          <div class="form-group col-sm-4 col-lg-3">
+          <div class="form-group col-sm-4 col-md-3">
             <div class="input-group">
               <div class="input-group-addon">交易订单号</div>
-              <input type="text" class="form-control" id="payOrderId" placeholder="">
+              <input type="text" class="form-control" id="payOrderId">
             </div>
           </div>
 
-          <div class="form-group col-sm-4 col-lg-3">
+          <div class="form-group col-sm-4 col-md-3">
             <div class="input-group">
               <div class="input-group-addon">第三方订单号</div>
-              <input type="text" class="form-control" id="thirdOrderId" placeholder="">
+              <input type="text" class="form-control" id="thirdOrderId">
             </div>
           </div>
 
-          <div class="form-group col-sm-4 col-lg-3">
+          <div class="form-group col-sm-4 col-md-3">
             <div class="input-group">
               <div class="input-group-addon">手机号</div>
-              <input type="text" class="form-control" id="mobile" placeholder="">
+              <input type="text" class="form-control" id="mobile">
             </div>
           </div>
 
-          <div class="form-group col-sm-4 col-lg-3">
+          <div class="form-group col-sm-4 col-md-3">
             <div class="input-group">
               <div class="input-group-addon">优惠券码</div>
-              <input type="text" class="form-control" id="coupon" placeholder="">
+              <input type="text" class="form-control" id="coupon">
             </div>
           </div>
 
@@ -76,22 +76,22 @@
             </div>
           </div>
 
-          <div class="form-group col-sm-6">
+          <div class="form-group col-sm-4 col-md-3">
             <div class="input-group">
               <div class="input-group-addon">下单时间</div>
-              <input type="text" class="form-control" id="timeFrom" placeholder="">
+              <input type="date" class="form-control" id="timeFrom">
             </div>
           </div>
 
-          <div class="col-xs-12 col-sm-6 col-lg-4 pull-right">
-            <div class="row">
-              <div class="col-sm-6">
-                <button type="submit" class="btn btn-block btn-primary">查询</button>
-              </div>
-              <div class="col-sm-6">
-                <button type="button" class="btn btn-block btn-default">新增</button>
-              </div>
+          <div class="form-group col-sm-4 col-md-3">
+            <div class="input-group">
+              <div class="input-group-addon">至</div>
+              <input type="date" class="form-control" id="timeFrom">
             </div>
+          </div>
+
+          <div class="col-xs-12 col-sm-4 col-md-2 pull-right">
+            <button type="submit" class="btn btn-block btn-primary">查询</button>
           </div>
 
         </form>
@@ -141,7 +141,7 @@
               </thead>
               <tbody>
                 <tr>
-                  <td><a href="#">1234567890</a></td>
+                  <td><a href="order-op-detail.html">1234567890</a></td>
                   <td>13838384388</td>
                   <td>2016-03-01 00:00:00</td>
                   <td>支付成功</td>
@@ -154,7 +154,7 @@
                   <td>123456</td>
                 </tr>
                 <tr>
-                  <td><a href="#">1234567890</a></td>
+                  <td><a href="order-op-detail.html">1234567890</a></td>
                   <td>13838384388</td>
                   <td>2016-03-01 00:00:00</td>
                   <td>支付成功</td>
@@ -178,6 +178,7 @@
 
   </div>
 
+  <script src="../js/vonder.js"></script>
   <script src="../js/order.js"></script>
 </body>
 </html>

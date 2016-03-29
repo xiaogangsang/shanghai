@@ -26,28 +26,28 @@
 
         <form id="formClass" class="search-area">
 
-          <div class="form-group col-sm-6 col-lg-4">
+          <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">手机号码</div>
               <input type="text" class="form-control" placeholder="">
             </div>
           </div>
 
-          <div class="form-group col-sm-6 col-lg-4">
+          <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">影片</div>
               <input type="text" class="form-control" id="movie" placeholder="">
             </div>
           </div>
 
-          <div class="form-group col-xs-12">
+          <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">评论内容</div>
               <input type="text" class="form-control" id="movie" placeholder="">
             </div>
           </div>
 
-          <div class="form-group col-sm-4 col-lg-4">
+          <div class="form-group col-sm-4 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">渠道</div>
               <select class="form-control" id="channel">
@@ -58,21 +58,21 @@
             </div>
           </div>
 
-          <div class="form-group col-sm-4 col-lg-4">
+          <div class="form-group col-sm-4 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">评论日期</div>
-              <input type="text" class="form-control" id="dateFrom" placeholder="">
+              <input type="date" class="form-control" id="dateFrom" placeholder="">
             </div>
           </div>
 
           <div class="form-group col-sm-4 col-lg-4">
             <div class="input-group">
               <div class="input-group-addon">至</div>
-              <input type="text" class="form-control" id="dateTo" placeholder="">
+              <input type="date" class="form-control" id="dateTo" placeholder="">
             </div>
           </div>
 
-          <div class="col-xs-12 col-sm-6 col-lg-4 pull-right">
+          <div class="col-xs-12 col-sm-6 col-md-4 pull-right">
             <div class="row">
               <div class="col-sm-6 pull-right">
                 <button type="submit" class="btn btn-block btn-primary">查询</button>
@@ -87,7 +87,7 @@
           <div class="row">
 
             <div class="col-xs-12">
-              <button type="button" class="btn btn-default">批量删除</button>
+              <button type="button" class="btn btn-default" onclick="window.confirm('确定要删除选中的评论吗？');">批量删除</button>
             </div>
 
             <div class="col xs-12 col-sm-6 rowStatics">共 <span id="rowTotal">xxx</span> 条数据，当前显示 <span id="perPage">xxx</span> 条</div>
@@ -116,46 +116,33 @@
             <table class="table table-striped">
               <thead>
                 <tr>
-                  <th><input type="checkbox" value="0"></th>
+                  <th><input type="checkbox" class="multi-check-all"></th>
+                  <th>手机号码</th>
                   <th>评论内容</th>
+                  <th>影片</th>
                   <th>渠道</th>
-                  <th>影片</th>comment
                   <th>发表日期</th>
-                  <th>操作</th>
+                  <th width="80">操作</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td><input type="checkbox" value="0"></td>
+                  <td><input type="checkbox" class="multi-check"></td>
+                  <td>12345678901</td>
                   <td>附近的快乐撒娇的历史，附近的酸辣粉来快点撒。</td>
-                  <td>手机银行</td>
                   <td>星球大战</td>
+                  <td>手机银行</td>
                   <td>2016-03-01</td>
-                  <td><button type="button" class="btn btn-xs btn-default">删除</button></td>
+                  <td><button type="button" class="btn btn-xs btn-default" onclick="window.confirm('确定要删除该评论吗？');">删除</button></td>
                 </tr>
                 <tr>
-                  <td><input type="checkbox" value="0"></td>
+                  <td><input type="checkbox" class="multi-check"></td>
+                  <td>12345678901</td>
                   <td>附近的快乐撒娇的历史，附近的酸辣粉来快点撒。</td>
-                  <td>手机银行</td>
                   <td>星球大战</td>
-                  <td>2016-03-01</td>
-                  <td><button type="button" class="btn btn-xs btn-default">删除</button></td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" value="0"></td>
-                  <td>附近的快乐撒娇的历史，附近的酸辣粉来快点撒。</td>
                   <td>手机银行</td>
-                  <td>星球大战</td>
                   <td>2016-03-01</td>
-                  <td><button type="button" class="btn btn-xs btn-default">删除</button></td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" value="0"></td>
-                  <td>附近的快乐撒娇的历史，附近的酸辣粉来快点撒。</td>
-                  <td>手机银行</td>
-                  <td>星球大战</td>
-                  <td>2016-03-01</td>
-                  <td><button type="button" class="btn btn-xs btn-default">删除</button></td>
+                  <td><button type="button" class="btn btn-xs btn-default" onclick="window.confirm('确定要删除该评论吗？');">删除</button></td>
                 </tr>
               </tbody>
             </table>
@@ -169,6 +156,7 @@
 
   </div>
 
+  <script src="../js/vonder.js"></script>
   <script src="../js/cinema.js"></script>
 </body>
 </html>

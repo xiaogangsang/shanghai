@@ -24,7 +24,10 @@
   padding: 5px 0 0;
   vertical-align: middle;
 }
-
+.activity-unit-edit .table th {
+  vertical-align: middle;
+  text-align: center;
+}
 .activity-unit-edit .unit-limitation td {
   padding-left: 15px;
 }

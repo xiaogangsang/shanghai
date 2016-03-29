@@ -1,4 +1,4 @@
-<div class="modal fade">
+<div class="modal fade" id="popup-role">
   <div class="modal-dialog">
     <div class="modal-content">
 
