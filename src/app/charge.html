@@ -24,60 +24,15 @@
           <li class="active">服务费设置</li>
         </ol>
 
-        <form id="formClass" class="search-area">
-
-          <div class="form-group col-sm-4">
-            <div class="input-group">
-              <div class="input-group-addon">渠道</div>
-              <select class="form-control" name="">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="col-xs-12 col-sm-6 col-md-4 pull-right">
-            <div class="row">
-              <div class="col-sm-6">
-                <button type="submit" class="btn btn-block btn-primary">查询</button>
-              </div>
-              <div class="col-sm-6">
-                <a href="charge-edit.html" class="btn btn-block btn-default">新建</a>
-              </div>
-            </div>
-          </div>
-
-        </form>
-
         <div class="content-area">
 
           <div class="row">
 
             <div class="col-xs-12 extra-btns">
               <button type="button" class="btn btn-default">批量删除</button>
+              <a href="charge-edit.html" class="btn btn-block btn-default pull-right">新建</a>
             </div>
 
-            <div class="col xs-12 col-sm-6 rowStatics">共 <span id="rowTotal">xxx</span> 条数据，当前显示 <span id="perPage">xxx</span> 条</div>
-            <div class="col xs-12 col-sm-6">
-              <nav>
-                <ul class="pagination pagination-sm">
-                  <li>
-                    <a href="#"><span aria-hidden="true">&lt;</span></a>
-                  </li>
-                  <li><span id="pageNow">2</span>/<span id="pageTotal">5</span></li>
-                  <li>
-                    <a href="#"><span aria-hidden="true">&gt;</span></a>
-                  </li>
-                  <li>
-                    <input type="text" id="pageNo" pattern="[0-9]+">
-                  </li>
-                  <li>
-                    <button type="button" class="btn">跳转</button>
-                  </li>
-                </ul>
-              </nav>
-            </div>
           </div>
 
           <div class="table-responsive">

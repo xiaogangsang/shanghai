@@ -18,7 +18,6 @@
         <div class="list-group">
           <a href="cinema.html" class="list-group-item">标准影院库</a>
           <a href="cinema-partner.html" class="list-group-item">合作方影院库</a>
-          <a href="cinema-service.html" class="list-group-item">服务类别维护</a>
         </div>
       </div>
     </div>
@@ -28,7 +27,6 @@
       <div id="menu3" class="panel-collapse collapse" role="tabpanel">
         <div class="list-group">
           <a href="movie.html" class="list-group-item">标准影片库</a>
-          <a href="movie-partner.html" class="list-group-item">合作方影片库</a>
         </div>
       </div>
     </div>
@@ -77,7 +75,7 @@
       <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu8"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 报表查询</a>
       <div id="menu8" class="panel-collapse collapse" role="tabpanel">
         <div class="list-group">
-          <a href="report-operation.html" class="list-group-item">运营报表</a>
+          <a href="report.html" class="list-group-item">运营报表</a>
         </div>
       </div>
     </div>
@@ -97,9 +95,10 @@
       <div id="menu10" class="panel-collapse collapse" role="tabpanel">
         <div class="list-group">
           <a href="user.html" class="list-group-item">用户管理</a>
-          <a href="authorization.html" class="list-group-item">权限管理</a>
           <a href="role.html" class="list-group-item">角色管理</a>
-          <a href="ability.html" class="list-group-item">功能管理</a>
+          <a href="ability-function.html" class="list-group-item">功能权限管理</a>
+          <a href="ability-channel.html" class="list-group-item">渠道权限管理</a>
+          <a href="ability-city.html" class="list-group-item">城市权限管理</a>
         </div>
       </div>
     </div>
