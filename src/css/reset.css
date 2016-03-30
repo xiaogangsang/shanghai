@@ -2,6 +2,28 @@ body {
   font-family: STHeiti,"黑体","Microsoft Yahei",Helvetica,Arial,sans-serif;
   color: #383838;
 }
+a {
+  color: #ff8903;
+}
+.navbar {
+  border-radius: 0;
+  border: none;
+  border-bottom: 1px solid #e7e7e7;
+}
+.navbar-default .navbar-brand {
+  color: #ff8903;
+}
+.navbar a:focus,
+.navbar a:hover {
+  color: #ff8903;
+}
+.navbar-text.navbar-right {
+  margin-right: 15px;
+}
+.container .jumbotron,
+.container-fluid .jumbotron {
+  border-radius: 0;
+}
 .form-control {
   border-radius: 0;
   border: 1px solid #dedede;
@@ -226,7 +248,7 @@ td .btn-xs+.btn-xs {
 @media (min-width: 768px) {
   .sidebar {
     position: fixed;
-    top: 0;
+    top: 51px;
     bottom: 0;
     left: 0;
     z-index: 1000;
