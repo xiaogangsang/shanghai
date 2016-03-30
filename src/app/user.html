@@ -15,7 +15,7 @@
 
     <div class="row">
 
-      @@include('component/sidebar.inc')
+      @@include('component/sidebar.tpl')
 
       <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
@@ -42,11 +42,8 @@
 
           <div class="form-group col-sm-4 col-md-3">
             <div class="input-group">
-              <div class="input-group-addon">城市</div>
-              <select name="" class="form-control">
-                <option value="">111</option>
-                <option value="">222</option>
-              </select>
+            <div class="input-group-addon">所在城市</div>
+              <input type="text" class="form-control" id="userId" placeholder="">
             </div>
           </div>
 
@@ -80,7 +77,7 @@
                 <button type="submit" class="btn btn-block btn-primary">查询</button>
               </div>
               <div class="col-sm-6">
-              <a href="user-edit.html" class="btn btn-block btn-default">新增用户</a>
+                <a href="user-edit.html" class="btn btn-block btn-default">新增用户</a>
               </div>
             </div>
           </div>
@@ -126,7 +123,7 @@
                   <th><input type="checkbox" class="multi-check-all"></th>
                   <th>登录ID</th>
                   <th>姓名</th>
-                  <th>城市</th>
+                  <th>所在城市</th>
                   <th>所属单位</th>
                   <th>手机号码</th>
                   <th>邮箱</th>
