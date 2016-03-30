@@ -23,6 +23,7 @@
     "gulp-util": "^3.0.7",
     "gulp-watch": "^4.3.5",
     "html-loader": "^0.4.3",
+    "json-server": "^0.8.9",
     "node-sass": "^3.4.2",
     "sass-loader": "^3.2.0",
     "style-loader": "^0.13.0",
@@ -34,7 +35,8 @@
   "scripts": {
     "gulp": "gulp",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "webpack-dev-server --devtool eval --progress --colors --hot --content-base build"
+    "dev": "webpack-dev-server --devtool eval --progress --colors --hot --content-base build",
+    "mock": "json-server --watch db.json --port 4000"
   },
   "license": "MIT"
 }

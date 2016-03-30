@@ -20,6 +20,9 @@
     "bootstrap": "^3.3.6",
     "chosen": "^1.5.1",
     "jquery.quicksearch": "quicksearch#^2.2.0",
-    "multiselect": "multiselect-two-sides#^2.2.4"
+    "multiselect": "multiselect-two-sides#^2.2.4",
+    "parsleyjs": "~2.3.7",
+    "webshim": "~1.15.10",
+    "js-cookie": "~2.1.0"
   }
 }
