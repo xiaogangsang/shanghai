@@ -11,11 +11,13 @@
 </head>
 <body>
 
+  @@include('component/header.tpl')
+
   <div class="container-fluid">
 
     <div class="row">
 
-      @@include('component/sidebar.inc')
+      @@include('component/sidebar.tpl')
 
       <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
@@ -24,104 +26,146 @@
           <li class="active">前端配置平台</li>
         </ol>
 
+        <form id="formBanner" class="search-area clearfix">
+
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">名称</div>
+              <input type="text" class="form-control" name="">
+            </div>
+          </div>
+
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">类型</div>
+              <select name="" class="form-control">
+                <option value="">1</option>
+                <option value="">2</option>
+                <option value="">3</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">渠道</div>
+              <select name="" class="form-control">
+                <option value="">1</option>
+                <option value="">2</option>
+                <option value="">3</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">城市</div>
+              <select class="form-control" name="">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">展示时间</div>
+              <input type="date" class="form-control" name="">
+            </div>
+          </div>
+
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">至</div>
+              <input type="date" class="form-control" name="">
+            </div>
+          </div>
+
+          <div class="col-xs-12 col-sm-6 col-md-4 pull-right">
+            <div class="row">
+              <div class="col-sm-6">
+                <button type="submit" class="btn btn-block btn-primary">查询</button>
+              </div>
+              <div class="col-sm-6">
+                <a class="btn btn-block btn-default" href="cinema-edit.html">新增</a>
+              </div>
+            </div>
+          </div>
+
+        </form>
+
         <div class="content-area">
 
-          <section>
-            <div class="row">
-              <div class="col-xs-12 extra-btns">
-                <h3>顶部Banner</h3>
-                <a href="banner-market-edit.html" class="btn btn-default pull-right">新增</a>
-              </div>
-            </div>
-            <div class="table-responsive">
-              <table class="table table-striped">
-                <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>名称</th>
-                    <th>渠道</th>
-                    <th>城市</th>
-                    <th>顺序</th>
-                    <th>是否显示</th>
-                    <th>展示时间</th>
-                    <th>跳转链接</th>
-                    <th width="100">操作</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>0001</td>
-                    <td>星球大战买一送一</td>
-                    <td>掌上生活</td>
-                    <td>全国</td>
-                    <td>1</td>
-                    <td>是</td>
-                    <td>2016-01-01 ~ 2016-02-01</td>
-                    <td>http://www.baidu.com</td>
-                    <td><a href="banner-market-edit.html" class="btn btn-xs btn-default">编辑</a><button type="button" class="btn btn-xs btn-default" onclick="window.confirm('确定要下线该Banner吗？');">下线</button></td>
-                  </tr>
-                  <tr>
-                    <td>0001</td>
-                    <td>星球大战买一送一</td>
-                    <td>掌上生活</td>
-                    <td>全国</td>
-                    <td>1</td>
-                    <td>是</td>
-                    <td>2016-01-01 ~ 2016-02-01</td>
-                    <td>http://www.baidu.com</td>
-                    <td><a href="banner-market-edit.html" class="btn btn-xs btn-default">编辑</a><button type="button" class="btn btn-xs btn-default" onclick="window.confirm('确定要下线该Banner吗？');">下线</button></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </section>
+          <div class="row">
 
-          <section>
-            <div class="row">
-              <div class="col-xs-12 extra-btns">
-                <h3>热门影片</h3>
-                <a href="banner-movie-edit.html" class="btn btn-default pull-right">新增</a>
-              </div>
+            <div class="col xs-12 col-sm-6 rowStatics">共 <span id="rowTotal">xxx</span> 条数据，当前显示 <span id="perPage">xxx</span> 条</div>
+            <div class="col xs-12 col-sm-6">
+              <nav>
+                <ul class="pagination pagination-sm">
+                  <li>
+                    <a href="#"><span aria-hidden="true">&lt;</span></a>
+                  </li>
+                  <li><span id="pageNow">2</span>/<span id="pageTotal">5</span></li>
+                  <li>
+                    <a href="#"><span aria-hidden="true">&gt;</span></a>
+                  </li>
+                  <li>
+                    <input type="text" id="pageNo" pattern="[0-9]+">
+                  </li>
+                  <li>
+                    <button type="button" class="btn">跳转</button>
+                  </li>
+                </ul>
+              </nav>
             </div>
-            <div class="table-responsive">
-              <table class="table table-striped">
-                <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>影片</th>
-                    <th>渠道</th>
-                    <th>城市</th>
-                    <th>顺序</th>
-                    <th>是否显示</th>
-                    <th>展示时间</th>
-                    <th width="100">操作</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>0001</td>
-                    <td>星球大战</td>
-                    <td>掌上生活</td>
-                    <td>全国</td>
-                    <td>1</td>
-                    <td>是</td>
-                    <td>2016-01-01 ~ 2016-02-01</td>
-                    <td><a href="banner-movie-edit.html" class="btn btn-xs btn-default">编辑</a><button type="button" class="btn btn-xs btn-default" onclick="window.confirm('确定要下线该影片Banner吗？');">下移</button></td>
-                  </tr>
-                  <tr>
-                    <td>0001</td>
-                    <td>星球大战</td>
-                    <td>掌上生活</td>
-                    <td>全国</td>
-                    <td>1</td>
-                    <td>是</td>
-                    <td>2016-01-01 ~ 2016-02-01</td>
-                    <td><a href="banner-movie-edit.html" class="btn btn-xs btn-default">编辑</a><button type="button" class="btn btn-xs btn-default" onclick="window.confirm('确定要下线该影片Banner吗？');">下移</button></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </section>
+
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>名称</th>
+                  <th>类型</th>
+                  <th>渠道</th>
+                  <th>城市</th>
+                  <th>顺序</th>
+                  <th>是否显示</th>
+                  <th>展示时间</th>
+                  <th>跳转链接</th>
+                  <th width="100">操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>0001</td>
+                  <td>星球大战买一送一</td>
+                  <td>首页banner位</td>
+                  <td>掌上生活</td>
+                  <td>全国</td>
+                  <td>1</td>
+                  <td>是</td>
+                  <td>2016-01-01 ~ 2016-02-01</td>
+                  <td>http://www.baidu.com</td>
+                  <td><a href="banner-market-edit.html" class="btn btn-xs btn-default">编辑</a><button type="button" class="btn btn-xs btn-default" onclick="window.confirm('确定要下线该Banner吗？');">下线</button></td>
+                </tr>
+                <tr>
+                  <td>0001</td>
+                  <td>星球大战买一送一</td>
+                  <td>热门影片</td>
+                  <td>掌上生活</td>
+                  <td>全国</td>
+                  <td>10</td>
+                  <td>是</td>
+                  <td>2016-01-01 ~ 2016-02-01</td>
+                  <td></td>
+                  <td><a href="banner-market-edit.html" class="btn btn-xs btn-default">编辑</a><button type="button" class="btn btn-xs btn-default" onclick="window.confirm('确定要下线该Banner吗？');">下线</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
         </div>
 

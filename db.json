@@ -10,6 +10,9 @@
     }, {
       "channelId": 2,
       "channelName": "掌上生活"
+    }, {
+      "channelId": 3,
+      "channelName": "招赢APP"
     }]
   },
   "common/provinceList": {
@@ -58,6 +61,13 @@
       }, {
         "cityId": 4,
         "cityName": "保山"
+      }],
+      "c": [{
+        "cityId": 5,
+        "cityName": "重庆"
+      }, {
+        "cityId": 6,
+        "cityName": "长沙"
       }]
     }
   },
@@ -143,27 +153,27 @@
       "msg": ""
     },
     "data": {
-      "total": 100,
+      "total": 2,
       "pageIndex": 1,
       "pageSize": 10,
       "rows": [{
         "id": 1,
-        "realName": "xx",
-        "loginId": "xx",
-        "city": "xx",
-        "department": "xx",
-        "mobile": "xx",
-        "email": "xx",
-        "createdBy": "xx"
+        "realName": "蒋凡琨",
+        "loginId": "jiangfankun",
+        "city": "上海",
+        "department": "上海卡部",
+        "mobile": "12345678901",
+        "email": "jfk@cmb.com",
+        "createdBy": "admin"
       }, {
         "id": 1,
-        "realName": "xx",
-        "loginId": "xx",
-        "city": "xx",
-        "department": "xx",
-        "mobile": "xx",
-        "email": "xx",
-        "createdBy": "xx"
+        "realName": "蒋潇",
+        "loginId": "jiangxiao",
+        "city": "北京",
+        "department": "卡中心",
+        "mobile": "12345678901",
+        "email": "jx@cmb.com",
+        "createdBy": "admin"
       }]
     }
   },
@@ -177,27 +187,17 @@
     },
     "data": {
       "id": 1,
-      "realName": "xx",
-      "loginId": "xx",
-      "city": "xx",
-      "department": "xx",
-      "mobile": "xx",
-      "email": "xx",
-      "createdBy": "xx",
-      "roles": [
-        { "id": 1, "roleName": "xx" },
-        { "id": 1, "roleName": "xx" }
-      ],
-      "channelAuthority": [
-        { "channelId": 1, "channelName": "xx" },
-        { "channelId": 2, "channelName": "xx" }
-      ],
-      "cityAuthority": [
-        { "cityId": 1, "cityName": "xx" },
-        { "cityId": 2, "cityName": "xx" }
-      ]
+      "realName": "蒋凡琨",
+      "loginId": "jiangfankun",
+      "city": "上海市",
+      "department": "上海卡部",
+      "mobile": "12345678901",
+      "email": "jfk@cmb.com",
+      "createdBy": "admin",
+      "roles": [1,2],
+      "channelAuthority": [1,2],
+      "cityAuthority": [1,2]
     }
-
   },
   "role/getAllRoles": {
     "meta": {
@@ -205,8 +205,9 @@
       "msg": ""
     },
     "data": [
-      { "id": 1, "roleName": "xxx" },
-      { "id": 2, "roleName": "xxx" }
+      { "id": 1, "roleName": "客服" },
+      { "id": 2, "roleName": "运营" },
+      { "id": 3, "roleName": "产品" }
     ]
   },
   "user/saveUser": {
@@ -231,7 +232,6 @@
     "request": {
       "id": "xx",
       "realName": "xx",
-      "loginId": "xx",
       "city": "xx",
       "department": "xx",
       "mobile": "xx",

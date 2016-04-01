@@ -21,3 +21,7 @@
   display: block;
   margin-top: 5px;
 }
+.edit-section .table>tbody>tr>th,
+.edit-section .table>tbody>tr>td {
+  border: 0;
+}

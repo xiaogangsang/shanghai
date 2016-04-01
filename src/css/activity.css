@@ -34,20 +34,3 @@
 .unit-limitation th .btn {
   width: 100%;
 }
-
-.modal-body{
-  max-height: 500px;
-  overflow: scroll;
-}
-/*.modal-body .row {
-  margin-bottom: 15px;
-  }*/
-  .modal .edit-section {
-    padding: 15px 0;
-  }
-  .modal-footer {
-    text-align: center;
-  }
-  .modal-footer .btn {
-    padding: 5px 60px;
-  }

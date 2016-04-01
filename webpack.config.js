@@ -56,17 +56,28 @@ module.exports = {
             'bootstrap': path.resolve(bower_components, 'bootstrap/dist/js/bootstrap.min.js'),
             'multiselect': path.resolve(bower_components, 'multiselect/js/multiselect.min.js'),
             'chosen': path.resolve(bower_components, 'chosen/chosen.jquery.js'),
-            'core': srcDir + "/js/core",
-            'ui': srcDir + "/js/ui",
+            'handlebars': path.resolve(bower_components, 'handlebars/handlebars.js'),
+            'lodash': path.resolve(bower_components, 'lodash/dist/lodash.min.js'),
+            'parsley': path.resolve(bower_components, 'parsleyjs/dist/parsley.min.js'),
+            'parsley-lang': path.resolve(bower_components, 'parsleyjs/dist/i18n/zh_cn.js'),
+            'common': srcDir + "/lib/common.js"
         }
     },
     module: {
-        noParse: ['jquery', 'bootstrap', 'multiselect'],
+        noParse: ['jquery', 'bootstrap', 'multiselect', 'chosen', 'handlebars', 'lodash', 'parsley', 'parsley-lang'],
         //各种加载器，即让各种文件格式可用require引用
         loaders: [
             {
                 test: path.resolve(bower_components, 'jquery/dist/jquery.min'),
                 loader: 'expose?jQuery!expose?$'
+            },
+            {
+                test: path.resolve(bower_components, 'handlebars/handlebars.js'),
+                loader: 'expose?Handlebars'
+            },
+            {
+                test: path.resolve(bower_components, 'lodash/dist/lodash.min.js'),
+                loader: 'expose?_'
             },
             // { test: /\.css$/, loader: "style-loader!css-loader"},
             // { test: /\.less$/, loader: "style-loader!csss-loader!less-loader"}
@@ -87,7 +98,8 @@ module.exports = {
         //提供全局的变量，在模块中使用无需用require引入
         // new webpack.ProvidePlugin({
         //     'jQuery': 'jquery',
-        //     '$': 'jquery'
+        //     '$': 'jquery',
+        //     'Handlebars': 'handlebars'
         // }),
         //将公共代码抽离出来合并为一个文件
         // new CommonsChunkPlugin("admin-commons.js", ["ap1", "ap2"]),

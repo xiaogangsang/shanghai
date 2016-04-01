@@ -24,16 +24,39 @@
           <li class="active">合作方影院库</li>
         </ol>
 
-        <form id="formCinemaPartner" class="search-area">
+        <form id="formCinemaPartner" class="search-area clearfix">
 
-          <div class="form-group col-sm-6">
+        <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">关联关系</div>
+              <select class="form-control" name="">
+                <option value="1">已关联</option>
+                <option value="2">未关联</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">合作方影院名</div>
               <input type="text" class="form-control" id="partnerCinemaName">
             </div>
           </div>
 
-          <div class="form-group col-sm-6">
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">合作方</div>
+              <select class="form-control" name="">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group col-xs-12">============================</div>
+
+          <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">标准影院名</div>
               <input type="text" class="form-control" id="cinemaName">
@@ -43,17 +66,6 @@
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">院线</div>
-              <select class="form-control" name="">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-group col-sm-6 col-md-4">
-            <div class="input-group">
-              <div class="input-group-addon">合作方</div>
               <select class="form-control" name="">
                 <option>1</option>
                 <option>2</option>
@@ -75,30 +87,19 @@
 
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
-              <div class="input-group-addon">关联关系</div>
-              <select class="form-control" name="">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-group col-sm-6 col-md-4">
-            <div class="input-group">
-              <div class="input-group-addon">开始时间</div>
+              <div class="input-group-addon">关联时间</div>
               <input type="text" class="form-control" name="">
             </div>
           </div>
 
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
-              <div class="input-group-addon">结束时间</div>
+              <div class="input-group-addon">至</div>
               <input type="text" class="form-control" name="">
             </div>
           </div>
 
-          <div class="col-xs-12 col-sm-6 col-lg-4 pull-right">
+          <div class="col-xs-12 col-sm-6 col-md-4 pull-right">
             <div class="row">
               <div class="col-sm-6 pull-right">
                 <button type="submit" class="btn btn-block btn-primary">查询</button>
@@ -167,9 +168,9 @@
                   <td>0101</td>
                   <td><a href="cinema-detail-partner.html">五角场万达</a></td>
                   <td>百度</td>
-                  <td>万达</td>
-                  <td>上海</td>
-                  <td>已关联</td>
+                  <td></td>
+                  <td></td>
+                  <td>未关联</td>
                   <td></td>
                   <td></td>
                   <td></td>

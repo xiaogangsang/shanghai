@@ -9,4 +9,4 @@
 `gulp`
 
 接口：
-http://172.16.0.237:8080/movie-ops/
+http://180.169.45.105/MovieOps/

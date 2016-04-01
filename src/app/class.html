@@ -11,11 +11,13 @@
 </head>
 <body>
 
+  @@include('component/header.tpl')
+
   <div class="container-fluid">
 
     <div class="row">
 
-      @@include('component/sidebar.inc')
+      @@include('component/sidebar.tpl')
 
       <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
@@ -24,7 +26,7 @@
           <li class="active">万达票类管理</li>
         </ol>
 
-        <form id="formClass" class="search-area">
+        <form id="formSearch" class="search-area clearfix">
 
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
@@ -40,35 +42,31 @@
             </div>
           </div>
 
-            <div class="form-group col-sm-6 col-md-4">
-              <div class="input-group">
-                <div class="input-group-addon">城市</div>
-                <select class="form-control" name="">
-                  <option>1</option>
-                  <option>2</option>
-                  <option>3</option>
-                </select>
-              </div>
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">城市</div>
+              <select class="form-control" name="city" id="city">
+                <option>全部</option>
+              </select>
             </div>
+          </div>
 
-            <div class="form-group col-sm-6 col-md-4">
-              <div class="input-group">
-                <div class="input-group-addon">状态</div>
-                <select class="form-control" name="">
-                  <option>1</option>
-                  <option>2</option>
-                  <option>3</option>
-                </select>
-              </div>
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">状态</div>
+              <select class="form-control" name="">
+                <option>全部</option>
+                <option value="1">已上线</option>
+                <option value="2">已下线</option>
+              </select>
             </div>
+          </div>
 
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">渠道</div>
-              <select class="form-control" name="">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
+              <select class="form-control" name="channel" id="channel">
+                <option>全部</option>
               </select>
             </div>
           </div>

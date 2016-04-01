@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>前端配置平台</title>
+  <link rel="stylesheet" href="../css/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/banner.css">
+</head>
+<body>
+
+  @@include('component/header.tpl')
+
+  <div class="container-fluid">
+
+    <div class="row">
+
+      @@include('component/sidebar.tpl')
+
+      <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+        <ol class="breadcrumb">
+          <li>前端配置平台</li>
+          <li class="active">编辑</li>
+        </ol>
+
+        <section class="movie-edit" style="max-width: 640px;">
+
+          <form id="formBanner">
+
+            <div class="edit-section">
+
+              <div class="table-responsive">
+                <table class="table">
+                  <tbody>
+                    <tr>
+                      <th width="100">配置类型</th>
+                      <td>
+                        <select class="form-control" name="">
+                          <option>1</option>
+                          <option>2</option>
+                        </select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>配置名称</th>
+                      <td><input type="text" class="form-control" name=""></td>
+                    </tr>
+                    <tr>
+                      <th><button type="button" class="btn btn-default" onclick="$('#popup-movie').modal('show');">影片</button></th>
+                      <td>xxx</td>
+                    </tr>
+                    <tr>
+                      <th>跳转链接</th>
+                      <td><input type="text" class="form-control" name=""></td>
+                    </tr>
+                    <tr>
+                      <th>图片</th>
+                      <td><input type="file"></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+            </div>
+
+            <div class="edit-section">
+
+              <div class="table-responsive">
+                <table class="table">
+                  <tbody>
+                    <tr>
+                      <th>渠道</th>
+                      <td>
+                        <select class="form-control" name="">
+                          <option>手机银行</option>
+                          <option>掌上生活</option>
+                        </select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th><button type="button" class="btn btn-default" onclick="$('#popup-city').modal('show');">城市</button></th>
+                      <td>xxx</td>
+                    </tr>
+                    <tr>
+                      <th>展示顺序</th>
+                      <td><input type="number" class="form-control" name=""></td>
+                    </tr>
+                    <tr>
+                      <th>上线日期</th>
+                      <td><input type="date" class="form-control"></td>
+                    </tr>
+                    <tr>
+                      <th>下线日期</th>
+                      <td><input type="date" class="form-control"></td>
+                    </tr>
+                    <tr>
+                      <th>是否显示</th>
+                      <td>
+                        <label class="radio-inline"><input type="radio" name="actived" value="option1"> 是</label>
+                        <label class="radio-inline"><input type="radio" name="actived" value="option2"> 否</label>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+            </div>
+
+            <div class="row">
+              <div class="col-sm-4">
+                <button type="submit" class="btn btn-block btn-primary">保存</button>
+              </div>
+            </div>
+
+          </form>
+
+        </section>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="../js/vonder.js"></script>
+  <script src="../js/banner.js"></script>
+
+  @@include('component/popup-city.tpl')
+
+</body>
+</html>
