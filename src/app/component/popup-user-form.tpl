@@ -152,7 +152,7 @@
           </tr>
           <tr>
             <th>密码</th>
-            <td><input type="password" class="form-control" name="password" id="password" required data-parsley-minlength="5"><span class="bg-danger"></span></td>
+            <td><input type="password" class="form-control" name="password" id="password" required data-parsley-minlength="5"></td>
           </tr>
           <tr>
             <th>确认密码</th>
@@ -193,7 +193,7 @@
       <table class="table">
         <tbody>
           <tr>
-            <td width="260">
+            <td width="250">
               <select name="from[]" id="roleSelect" class="form-control" size="8" multiple="multiple">
                 {{#roles}}
                 <option value="{{id}}">{{roleName}}</option>
@@ -207,11 +207,12 @@
               <button type="button" id="roleSelect_none" class="btn btn-block btn-default">反选</button>
             </td>
             <td>
-              <select name="to[]" id="roleSelect_to" class="form-control" size="8" multiple="multiple" required></select>
+              <select name="to[]" id="roleSelect_to" class="form-control" size="8" multiple="multiple" required data-parsley-errors-container="#error-role"></select>
             </td>
           </tr>
         </tbody>
       </table>
+      <div id="error-role"></div>
     </div>
   </div>
   <div class="edit-section">
@@ -220,7 +221,7 @@
       <table class="table">
         <tbody>
           <tr>
-            <td width="260">
+          <td width="250">
               <select name="from[]" id="citySelect" class="form-control" size="8" multiple="multiple">
                 {{#cities}}
                 <option value="{{cityId}}">{{cityName}}</option>
@@ -234,11 +235,12 @@
               <button type="button" id="citySelect_none" class="btn btn-block btn-default">反选</button>
             </td>
             <td>
-              <select name="to[]" id="citySelect_to" class="form-control" size="8" multiple="multiple" required></select>
+              <select name="to[]" id="citySelect_to" class="form-control" size="8" multiple="multiple" required data-parsley-errors-container="#error-city"></select>
             </td>
           </tr>
         </tbody>
       </table>
+      <div id="error-city"></div>
     </div>
   </div>
 </script>

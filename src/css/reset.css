@@ -283,6 +283,17 @@ fieldset[disabled] .form-control {
 .edit-section+.edit-section {
   margin-top: 15px;
 }
+.edit-section h5 {
+  margin-top: 0;
+}
+.edit-section .table>tbody>tr>th,
+.edit-section .table>tbody>tr>td {
+  border: 0;
+}
+.edit-section .table>tbody>tr>th {
+  vertical-align: middle;
+  text-align: right;
+}
 
 @media (min-width: 768px) {
   .sidebar {
@@ -309,6 +320,7 @@ fieldset[disabled] .form-control {
 .parsley-errors-list>li {
   list-style: none;
   padding: 3px;
+  text-align: left;
 }
 .parsley-error {
   /*border: 1px solid #f2dede;*/

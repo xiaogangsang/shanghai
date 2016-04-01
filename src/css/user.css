@@ -1,19 +1,18 @@
-.edit-section h5 {
-  margin-top: 0;
+.multi-selection {
+  padding-bottom: 15px;
 }
-.edit-section .table>tbody>tr>th,
-.edit-section .table>tbody>tr>td {
-  border: 0;
+.multi-selection .table {
+  margin-bottom: 0;
+  max-width: 640px;
 }
-.edit-section .table>tbody>tr>th {
-  vertical-align: middle;
-  text-align: right;
+.multi-selection .table td {
+  padding: 0;
 }
-
-.multi-selection>div {
-  text-align: center;
+.multi-selection select {
+  height: 150px;
 }
 .multi-selection .btn {
-  padding: 2px 0;
+  padding: 1px 0;
   margin: 10px auto;
+  width: 40px;
 }
