@@ -1,8 +1,10 @@
 require('jquery');
-require('lodash');
+require('cookie');
 require('bootstrap');
-require('multiselect');
-require('chosen');
-require('handlebars');
+
+require('lodash');
+require('mustache');
 require('parsley');
 require('parsley-lang');
+require('multiselect');
+require('chosen');

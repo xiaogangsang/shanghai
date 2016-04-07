@@ -11,6 +11,8 @@
 </head>
 <body>
 
+  @@include('component/header.tpl')
+
   <div class="container-fluid">
 
     <div class="row">
@@ -24,110 +26,46 @@
           <li class="active">角色管理</li>
         </ol>
 
-        <form id="formRole" class="search-area">
-
+        <form id="formSearch" class="search-area clearfix">
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">角色</div>
-              <select class="form-control">
-                <option value="">111</option>
-                <option value="">222</option>
+              <select class="form-control" id="search_roleId">
+                <option>全部</option>
               </select>
             </div>
           </div>
-
-          <div class="form-group col-sm-6 col-md-4">
-            <div class="input-group">
-              <div class="input-group-addon">功能</div>
-              <input type="text" class="form-control" name="">
-            </div>
-          </div>
-
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">创建人</div>
-              <input type="text" class="form-control" name="">
+              <input type="text" class="form-control" id="search_createdBy">
             </div>
           </div>
-
           <div class="col-xs-12 col-sm-6 col-md-4 pull-right">
             <div class="row">
               <div class="col-sm-6">
                 <button type="submit" class="btn btn-block btn-primary">查询</button>
               </div>
               <div class="col-sm-6">
-                <a href="role-edit.html" class="btn btn-block btn-default">新增角色</a>
+                <button type="button" class="btn btn-block btn-default" id="btn-create">新增角色</button>
               </div>
             </div>
           </div>
-
         </form>
 
         <div class="content-area">
 
           <div class="row">
-
             <div class="col-xs-12 extra-btns">
-              <button type="button" class="btn btn-default" onclick="window.confirm('确定要删除选中的角色吗？');">批量删除</button>
-              <button type="button" class="btn btn-default">导出列表</button>
-            </div>
-
-            <div class="col xs-12 col-sm-6 rowStatics">共 <span id="rowTotal">xxx</span> 条数据，当前显示 <span id="perPage">xxx</span> 条</div>
-            <div class="col xs-12 col-sm-6">
-              <nav>
-                <ul class="pagination pagination-sm">
-                  <li>
-                    <a href="#"><span aria-hidden="true">&lt;</span></a>
-                  </li>
-                  <li><span id="pageNow">2</span>/<span id="pageTotal">5</span></li>
-                  <li>
-                    <a href="#"><span aria-hidden="true">&gt;</span></a>
-                  </li>
-                  <li>
-                    <input type="text" id="pageNo" pattern="[0-9]+">
-                  </li>
-                  <li>
-                    <button type="button" class="btn">跳转</button>
-                  </li>
-                </ul>
-              </nav>
+              <button type="button" class="btn btn-default" id="btn-delete-multi">批量删除</button>
+              <button type="button" class="btn btn-default" id="btn-export" disabled>导出列表</button>
             </div>
           </div>
 
-          <div class="table-responsive">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th><input type="checkbox" class="multi-check-all"></th>
-                  <th>角色ID</th>
-                  <th>角色名称</th>
-                  <th>功能</th>
-                  <th>创建人</th>
-                  <th>备注</th>
-                  <th width="140">操作</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><input type="checkbox" class="multi-check"></td>
-                  <td>666666</td>
-                  <td>客服</td>
-                  <td>新增用户，编辑用户</td>
-                  <td>admin</td>
-                  <td>这些人都是客服</td>
-                  <td><a href="role-edit.html" class="btn btn-xs btn-default">编辑</a><button type="button" class="btn btn-xs btn-default" onclick="window.confirm('确定要删除此角色吗？');">删除</button></td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" class="multi-check"></td>
-                  <td>666666</td>
-                  <td>客服</td>
-                  <td>新增用户，编辑用户</td>
-                  <td>admin</td>
-                  <td>这些人都是客服</td>
-                  <td><a href="role-edit.html" class="btn btn-xs btn-default">编辑</a><button type="button" class="btn btn-xs btn-default" onclick="window.confirm('确定要删除此角色吗？');">删除</button></td>
-                </tr>
-              </tbody>
-            </table>
+          <div class="row" id="pager"></div>
+
+          <div class="table-responsive" id="dataTable">
+            <p style="text-align: center;">查询角色</p>
           </div>
 
         </div>
@@ -141,7 +79,61 @@
   <script src="../js/vonder.js"></script>
   <script src="../js/role.js"></script>
 
-  @@include('component/popup-user.tpl')
+  <script id="pager-template" type="text/x-handlebars-template">
+    <div class="col xs-12 col-sm-6 rowStatics">共 <span id="total">{{total}}</span> 条数据，当前显示 <span id="pageSize">{{pageSize}}</span> 条</div>
+    {{#pageTotal}}
+    <div class="col xs-12 col-sm-6">
+      <nav>
+        <ul class="pagination pagination-sm">
+          <li>
+            <a href="#pager"><span aria-hidden="true">&lt;</span></a>
+          </li>
+          <li><span id="pageIndex">{{pageIndex}}</span>/<span id="pageTotal">{{pageTotal}}</span></li>
+          <li>
+            <a href="#pager"><span aria-hidden="true">&gt;</span></a>
+          </li>
+          <li>
+            <input type="number" name="pageNo" id="pageNo" pattern="[0-9]+">
+          </li>
+          <li>
+            <button type="button" class="btn" id="btn-page-jump">跳转</button>
+          </li>
+        </ul>
+      </nav>
+    </div>
+    {{/pageTotal}}
+  </script>
+  <script id="table-template" type="text/x-handlebars-template">
+    <table class="table">
+      <thead>
+        <tr>
+          <th><input type="checkbox" class="multi-check-all"></th>
+          <th>角色ID</th>
+          <th>角色名称</th>
+          <th>备注</th>
+          <th>创建人</th>
+          <th width="140">操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#rows}}
+        <tr data-id="{{id}}">
+          <td><input type="checkbox" class="multi-check"></td>
+          <td>{{id}}</td>
+          <td>{{roleName}}</td>
+          <td>{{desc}}</td>
+          <td>{{createdBy}}</td>
+          <td>
+            <button type="button" class="btn btn-xs btn-default btn-edit">编辑</button>
+            <button type="button" class="btn btn-xs btn-default btn-delete">删除</button>
+          </td>
+        </tr>
+        {{/rows}}
+      </tbody>
+    </table>
+  </script>
+
+  @@include('component/popup-role-form.tpl')
 
 </body>
 </html>

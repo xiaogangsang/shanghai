@@ -7,7 +7,6 @@
   <title>合作方管理</title>
   <link rel="stylesheet" href="../css/bootstrap.min.css">
   <link rel="stylesheet" href="../css/reset.css">
-  <link rel="stylesheet" href="../css/class.css">
 </head>
 <body>
 
@@ -31,22 +30,22 @@
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">票类ID</div>
-              <input type="text" class="form-control" name="">
+              <input type="text" class="form-control" id="search_id">
             </div>
           </div>
 
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">票类名称</div>
-              <input type="text" class="form-control" name="">
+              <input type="text" class="form-control" id="search_ticketName">
             </div>
           </div>
 
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">城市</div>
-              <select class="form-control" name="city" id="city">
-                <option>全部</option>
+              <select class="form-control" id="search_cityId" data-placeholder="全部">
+                <option></option>
               </select>
             </div>
           </div>
@@ -54,10 +53,10 @@
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">状态</div>
-              <select class="form-control" name="">
-                <option>全部</option>
+              <select class="form-control" id="search_status" data-placeholder="全部">
+                <option></option>
                 <option value="1">已上线</option>
-                <option value="2">已下线</option>
+                <option value="0">已下线</option>
               </select>
             </div>
           </div>
@@ -65,8 +64,8 @@
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">渠道</div>
-              <select class="form-control" name="channel" id="channel">
-                <option>全部</option>
+              <select class="form-control" id="search_channelId" data-placeholder="全部">
+                <option></option>
               </select>
             </div>
           </div>
@@ -77,7 +76,7 @@
                 <button type="submit" class="btn btn-block btn-primary">查询</button>
               </div>
               <div class="col-sm-6">
-                <a href="class-edit.html" class="btn btn-block btn-default">新建</a>
+              <button type="button" class="btn btn-block btn-default" id="btn-create">新建</button>
               </div>
             </div>
           </div>
@@ -87,79 +86,15 @@
         <div class="content-area">
 
           <div class="row">
-
             <div class="col-xs-12 extra-btns">
-              <button type="button" class="btn btn-default">导出列表</button>
-            </div>
-
-            <div class="col xs-12 col-sm-6 rowStatics">共 <span id="rowTotal">xxx</span> 条数据，当前显示 <span id="perPage">xxx</span> 条</div>
-            <div class="col xs-12 col-sm-6">
-              <nav>
-                <ul class="pagination pagination-sm">
-                  <li>
-                    <a href="#"><span aria-hidden="true">&lt;</span></a>
-                  </li>
-                  <li><span id="pageNow">2</span>/<span id="pageTotal">5</span></li>
-                  <li>
-                    <a href="#"><span aria-hidden="true">&gt;</span></a>
-                  </li>
-                  <li>
-                    <input type="text" id="pageNo" pattern="[0-9]+">
-                  </li>
-                  <li>
-                    <button type="button" class="btn">跳转</button>
-                  </li>
-                </ul>
-              </nav>
+              <button type="button" class="btn btn-default" id="btn-export" disabled>导出列表</button>
             </div>
           </div>
 
-          <div class="table-responsive">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>票类名称</th>
-                  <th>城市</th>
-                  <th>票类级别</th>
-                  <th>渠道</th>
-                  <th width="90">开始时间</th>
-                  <th width="90">结束时间</th>
-                  <th>票类状态</th>
-                  <th>票类类型</th>
-                  <th width="100">操作</th>
-                  <th>检查场次</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>0001</td>
-                  <td>院线-招商银行</td>
-                  <td>全国</td>
-                  <td>万达总部</td>
-                  <td>手机银行</td>
-                  <td>2016-03-01</td>
-                  <td>2016-03-01</td>
-                  <td>已上线</td>
-                  <td>日常票类</td>
-                  <td><button type="button" class="btn btn-xs btn-default" onclick="window.confirm('确定要下线该票类吗？');">下线</button><a href="class-edit.html" class="btn btn-xs btn-default">编辑</a></td>
-                  <td><a href="#" class="btn-link" onclick="alert('票类正常，且排期正常！');">CHECK</a></td>
-                </tr>
-                <tr>
-                  <td>0001</td>
-                  <td>院线-招商银行</td>
-                  <td>全国</td>
-                  <td>万达总部</td>
-                  <td>手机银行</td>
-                  <td>2016-03-01</td>
-                  <td>2016-03-01</td>
-                  <td>已下线</td>
-                  <td>日常票类</td>
-                  <td><button type="button" class="btn btn-xs btn-default" onclick="window.confirm('确定要下线该票类吗？');">下线</button><a href="class-edit.html" class="btn btn-xs btn-default">编辑</a></td>
-                  <td><a href="#" class="btn-link" onclick="alert('票类正常，暂无排期！');">CHECK</a></td>
-                </tr>
-              </tbody>
-            </table>
+          <div class="row" id="pager"></div>
+
+          <div class="table-responsive" id="dataTable">
+            <p style="text-align: center;">查询角色</p>
           </div>
 
         </div>
@@ -172,5 +107,78 @@
 
   <script src="../js/vonder.js"></script>
   <script src="../js/class.js"></script>
+
+  <script id="pager-template" type="text/x-tmpl-mustache">
+    <div class="col xs-12 col-sm-6 rowStatics">共 <span id="total">{{total}}</span> 条数据，当前显示 <span id="pageSize">{{pageSize}}</span> 条</div>
+    {{#pageTotal}}
+    <div class="col xs-12 col-sm-6">
+      <nav>
+        <ul class="pagination pagination-sm">
+          <li>
+            <a href="#pager"><span aria-hidden="true">&lt;</span></a>
+          </li>
+          <li><span id="pageIndex">{{pageIndex}}</span>/<span id="pageTotal">{{pageTotal}}</span></li>
+          <li>
+            <a href="#pager"><span aria-hidden="true">&gt;</span></a>
+          </li>
+          <li>
+            <input type="number" name="pageNo" id="pageNo" pattern="[0-9]+">
+          </li>
+          <li>
+            <button type="button" class="btn" id="btn-page-jump">跳转</button>
+          </li>
+        </ul>
+      </nav>
+    </div>
+    {{/pageTotal}}
+  </script>
+  <script id="table-template" type="text/x-tmpl-mustache">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>票类名称</th>
+          <th>城市</th>
+          <th>票类级别</th>
+          <th>渠道</th>
+          <th width="90">开始时间</th>
+          <th width="90">结束时间</th>
+          <th>票类状态</th>
+          <th>票类类型</th>
+          <th width="100">操作</th>
+          <th>检查场次</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#rows}}
+        <tr data-id="{{id}}">
+          <td>{{id}}</td>
+          <td>{{ticketName}}</td>
+          <td>{{city}}</td>
+          <td>{{settleName}}</td>
+          <td>{{channelId}}</td>
+          <td>{{beginTime}}</td>
+          <td>{{endTime}}</td>
+          <td>{{statusName}}</td>
+          <td>{{ticketType}}</td>
+          <td>
+            {{#status}}
+            <button type="button" class="btn btn-xs btn-default btn-offline">下线</button>
+            {{/status}}
+            {{^status}}
+            <button type="button" class="btn btn-xs btn-default btn-online">上线</button>
+            {{/status}}
+            <button type="button" class="btn btn-xs btn-default btn-edit">编辑</button>
+          </td>
+          <td><button type="button" class="btn btn-xs btn-check">CHECK</a></td>
+        </tr>
+        {{/rows}}
+      </tbody>
+    </table>
+  </script>
+
+  @@include('component/popup-class-form.tpl')
+  @@include('component/popup-cinema.tpl')
+
 </body>
 </html>

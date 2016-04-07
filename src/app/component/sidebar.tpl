@@ -95,7 +95,7 @@
         <div class="list-group">
           <a href="user.html" class="list-group-item" id="menu-user">用户管理</a>
           <a href="role.html" class="list-group-item" id="menu-role">角色管理</a>
-          <a href="ability-function.html" class="list-group-item" id="menu-ability-function">功能权限管理</a>
+          <a href="ability-resource.html" class="list-group-item" id="menu-ability-resource">功能权限管理</a>
           <a href="ability-channel.html" class="list-group-item" id="menu-ability-channel">渠道权限管理</a>
           <a href="ability-city.html" class="list-group-item" id="menu-ability-city">城市权限管理</a>
         </div>

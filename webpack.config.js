@@ -28,20 +28,6 @@ module.exports = {
     cache: true,
     devtool: "source-map",
     entry: getEntry(),
-    // {
-    //     banner: path.resolve(srcDir, 'js/banner.js'),
-    //     charge: path.resolve(srcDir, 'js/charge.js'),
-    //     cinema: path.resolve(srcDir, 'js/cinema.js'),
-    //     class: path.resolve(srcDir, 'js/class.js'),
-    //     comment: path.resolve(srcDir, 'js/comment.js'),
-    //     login: path.resolve(srcDir, 'js/login.js'),
-    //     movie: path.resolve(srcDir, 'js/movie.js'),
-    //     order: path.resolve(srcDir, 'js/order.js'),
-    //     report: path.resolve(srcDir, 'js/report.js'),
-    //     showtime: path.resolve(srcDir, 'js/showtime.js'),
-    //     user: [path.resolve(srcDir, 'js/user.js'), 'multiselect'],
-    //     vendor: ['jquery', 'bootstrap']
-    // },
     output: {
         path: path.join(__dirname, "dist/js/"),
         publicPath: path.join(__dirname, "dist/js/"),
@@ -56,15 +42,17 @@ module.exports = {
             'bootstrap': path.resolve(bower_components, 'bootstrap/dist/js/bootstrap.min.js'),
             'multiselect': path.resolve(bower_components, 'multiselect/js/multiselect.min.js'),
             'chosen': path.resolve(bower_components, 'chosen/chosen.jquery.js'),
-            'handlebars': path.resolve(bower_components, 'handlebars/handlebars.js'),
-            'lodash': path.resolve(bower_components, 'lodash/dist/lodash.min.js'),
+            'mustache': path.resolve(bower_components, 'mustache.js/mustache.js'),
+            'lodash': path.resolve(bower_components, 'lodash/dist/lodash.core.js'),
             'parsley': path.resolve(bower_components, 'parsleyjs/dist/parsley.min.js'),
             'parsley-lang': path.resolve(bower_components, 'parsleyjs/dist/i18n/zh_cn.js'),
+            'cookie': path.resolve(bower_components, 'js-cookie/src/js.cookie.js'),
+            'datetimepicker': path.resolve(bower_components, 'smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker.js'),
             'common': srcDir + "/lib/common.js"
         }
     },
     module: {
-        noParse: ['jquery', 'bootstrap', 'multiselect', 'chosen', 'handlebars', 'lodash', 'parsley', 'parsley-lang'],
+        noParse: ['jquery', 'cookie', 'bootstrap', 'multiselect', 'chosen', 'mustache', 'lodash', 'parsley', 'parsley-lang', 'datetimepicker'],
         //各种加载器，即让各种文件格式可用require引用
         loaders: [
             {
@@ -72,12 +60,16 @@ module.exports = {
                 loader: 'expose?jQuery!expose?$'
             },
             {
-                test: path.resolve(bower_components, 'handlebars/handlebars.js'),
-                loader: 'expose?Handlebars'
+                test: path.resolve(bower_components, 'mustache.js/mustache.js'),
+                loader: 'expose?Mustache'
             },
             {
                 test: path.resolve(bower_components, 'lodash/dist/lodash.min.js'),
                 loader: 'expose?_'
+            },
+            {
+                test: path.resolve(bower_components, 'js-cookie/src/js.cookie.js'),
+                loader: 'expose?Cookies'
             },
             // { test: /\.css$/, loader: "style-loader!css-loader"},
             // { test: /\.less$/, loader: "style-loader!csss-loader!less-loader"}
@@ -98,8 +90,7 @@ module.exports = {
         //提供全局的变量，在模块中使用无需用require引入
         // new webpack.ProvidePlugin({
         //     'jQuery': 'jquery',
-        //     '$': 'jquery',
-        //     'Handlebars': 'handlebars'
+        //     '$': 'jquery'
         // }),
         //将公共代码抽离出来合并为一个文件
         // new CommonsChunkPlugin("admin-commons.js", ["ap1", "ap2"]),

@@ -1,6 +1,6 @@
 {
   "name": "moviesys",
-  "description": "CMB Movie Management System.",
+  "description": "CMB Movie Management System",
   "main": "dist/app/login.html",
   "authors": [
     "66beta"
@@ -22,10 +22,10 @@
     "jquery.quicksearch": "quicksearch#^2.2.0",
     "multiselect": "multiselect-two-sides#^2.2.4",
     "parsleyjs": "~2.3.7",
-    "webshim": "~1.15.10",
     "js-cookie": "~2.1.0",
     "jquery": "1.12",
-    "handlebars": "~4.0.5",
-    "lodash": "~4.7.0"
+    "lodash": "~4.7.0",
+    "smalot-bootstrap-datetimepicker": "^2.3.8",
+    "mustache.js": "mustache#^2.2.1"
   }
 }

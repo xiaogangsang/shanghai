@@ -166,7 +166,7 @@
         "email": "jfk@cmb.com",
         "createdBy": "admin"
       }, {
-        "id": 1,
+        "id": 2,
         "realName": "蒋潇",
         "loginId": "jiangxiao",
         "city": "北京",
@@ -188,7 +188,7 @@
     "data": {
       "id": 1,
       "realName": "蒋凡琨",
-      "loginId": "jiangfankun",
+      "loginId": "666666",
       "city": "上海市",
       "department": "上海卡部",
       "mobile": "12345678901",
@@ -268,7 +268,6 @@
   "role/roleList": {
     "request": {
       "roleId": 1,
-      "roleName": "xxxxx",
       "createdBy": "xxx",
       "pageIndex": 1,
       "pageSize": 10
@@ -283,14 +282,14 @@
       "pageSize": 10,
       "rows": [{
         "id": 1,
-        "roleName": "xx",
-        "desc": "xx",
-        "createdBy": "xx"
+        "roleName": "客服",
+        "desc": "人人都是客服",
+        "createdBy": "admin"
       }, {
-        "id": 1,
-        "roleName": "xx",
-        "desc": "xx",
-        "createdBy": "xx"
+        "id": 2,
+        "roleName": "运营",
+        "desc": "人人都是运营",
+        "createdBy": "admin"
       }]
     }
   },
@@ -302,16 +301,10 @@
     },
     "data": {
       "id": 1,
-      "roleName": "xx",
-      "desc": "xx",
-      "users": [
-        { "id": 1, "loginId": "xx", "realName": "xx" },
-        { "id": 2, "loginId": "xx", "realName": "xx" }
-      ],
-      "resources": [
-        { "id": 1, "name": "xx" },
-        { "id": 2, "name": "xx" }
-      ]
+      "roleName": "运营",
+      "desc": "人人都是运营",
+      "users": [2],
+      "resources": [1]
     }
   },
   "user/getAllUsers": {
@@ -320,8 +313,8 @@
       "msg": ""
     },
     "data": [
-      { "id": 1, "realName": "xx", "loginId": "xx" },
-      { "id": 2, "realName": "xx", "loginId": "xx" }
+      { "id": 1, "loginId": "123456", "realName": "蒋凡琨" },
+      { "id": 2, "loginId": "654321", "realName": "蒋潇" }
     ]
   },
   "resource/getAllResources": {
@@ -330,12 +323,18 @@
       "msg": ""
     },
     "data": [
-      { "id": 1, "name": "xx", "url": "xx", "resourceType": 1 },
-      { "id": 2, "name": "xx", "url": "xx", "resourceType": 1 }
+      { "id": 1, "name": "编辑用户", "url": "xx", "resourceType": 1 },
+      { "id": 2, "name": "编辑角色", "url": "xx", "resourceType": 1 }
     ]
   },
   "role/deleteRole": {
     "request": { "id": [1, 2, 3, 4] },
+    "meta": {
+      "result": "1",
+      "msg": ""
+    }
+  },
+  "role/exportRoles": {
     "meta": {
       "result": "1",
       "msg": ""
@@ -348,28 +347,11 @@
       "msg": ""
     },
     "data": {
-      "total": 100,
-      "pageIndex": 1,
-      "pageSize": 10,
-      "rows": [{
-        "id": 1,
-        "name": "xx",
-        "resourceType": "xx",
-        "url": "xx",
-        "roles": [
-          { "id": 1, "roleName": "xx" },
-          { "id": 2, "roleName": "xx" }
-        ]
-      }, {
-        "id": 1,
-        "name": "xx",
-        "resourceType": "xx",
-        "url": "xx",
-        "roles": [
-          { "id": 1, "roleName": "xx" },
-          { "id": 2, "roleName": "xx" }
-        ]
-      }]
+      "id": 1,
+      "name": "功能名称",
+      "resourceType": 1,
+      "url": "resource/url",
+      "roles": [1,2]
     }
   },
   "resource/updateResource": {

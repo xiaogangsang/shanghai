@@ -2,18 +2,14 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <form>
-
         <div class="modal-header">
           <h4 class="modal-title">编辑用户</h4>
         </div>
-
         <div class="modal-body"></div>
-
         <div class="modal-footer">
           <button type="submit" class="btn btn-primary">保存</button>
           <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
         </div>
-
       </form>
     </div>
   </div>
@@ -31,30 +27,31 @@
           </tr>
           <tr>
             <th>姓名</th>
-            <td><input type="text" class="form-control" name="realName" id="realName" value="{{user.realName}}"></td>
+            <td><input type="text" class="form-control" name="realName" id="realName" value="{{user.realName}}" required data-parsley-minlength="2"></td>
           </tr>
           <tr>
             <th>所在城市</th>
-            <td><input type="text" class="form-control" name="city" id="city" value="{{user.city}}"></td>
+            <td><input type="text" class="form-control" name="city" id="city" value="{{user.city}}" required></td>
           </tr>
           <tr>
             <th>所在单位</th>
-            <td><input type="text" class="form-control" name="department" id="department" value="{{user.department}}"></td>
+            <td><input type="text" class="form-control" name="department" id="department" value="{{user.department}}" required></td>
           </tr>
           <tr>
             <th>手机号码</th>
-            <td><input type="number" class="form-control" name="mobile" id="mobile" value="{{user.mobile}}"></td>
+            <td><input type="number" class="form-control" name="mobile" id="mobile" value="{{user.mobile}}" required></td>
           </tr>
           <tr>
             <th>邮箱地址</th>
-            <td><input type="email" class="form-control" name="email" id="email" value="{{user.email}}"></td>
+            <td><input type="email" class="form-control" name="email" id="email" value="{{user.email}}" required></td>
           </tr>
           <tr>
             <th>配置渠道</th>
             <td>
               {{#channels}}
-              <div class="checkbox-inline"><label><input type="checkbox" value="{{channelId}}" {{#selected}}checked{{/selected}}> {{channelName}}</label></div>
+              <div class="checkbox-inline"><label><input type="checkbox" name="channel" value="{{channelId}}" {{#selected}}checked{{/selected}} required data-parsley-errors-container="#error-channel"> {{channelName}}</label></div>
               {{/channels}}
+              <div id="error-channel"></div>
             </td>
           </tr>
         </tbody>
@@ -86,10 +83,10 @@
               <button type="button" id="roleSelect_none" class="btn btn-block btn-default">反选</button>
             </td>
             <td>
-              <select name="to[]" id="roleSelect_to" class="form-control" size="8" multiple="multiple">
+              <select name="to[]" id="roleSelect_to" class="form-control" size="8" multiple="multiple" data-parsley-required data-parsley-errors-container="#error-role">
                 {{#roles}}
                 {{#selected}}
-                <option value="{{id}}">{{roleName}}</option>
+                <option selected value="{{id}}">{{roleName}}</option>
                 {{/selected}}
                 {{/roles}}
               </select>
@@ -97,6 +94,7 @@
           </tr>
         </tbody>
       </table>
+      <div id="error-role"></div>
     </div>
 
   </div>
@@ -124,10 +122,10 @@
               <button type="button" id="citySelect_none" class="btn btn-block btn-default">反选</button>
             </td>
             <td>
-              <select name="to[]" id="citySelect_to" class="form-control" size="8" multiple="multiple">
+              <select name="to[]" id="citySelect_to" class="form-control" size="8" multiple="multiple" data-parsley-required data-parsley-errors-container="#error-city">
                 {{#cities}}
                 {{#selected}}
-                <option value="{{cityId}}">{{cityName}}</option>
+                <option selected value="{{cityId}}">{{cityName}}</option>
                 {{/selected}}
                 {{/cities}}
               </select>
@@ -135,6 +133,7 @@
           </tr>
         </tbody>
       </table>
+      <div id="error-city"></div>
     </div>
 
   </div>
@@ -147,8 +146,8 @@
       <table class="table">
         <tbody>
           <tr>
-            <th width="80">姓名</th>
-            <td><input type="text" class="form-control" name="realName" id="realName" required data-parsley-minlength="2"></td>
+            <th width="80">登录ID</th>
+            <td><input type="number" class="form-control" name="loginId" id="loginId" required data-parsley-minlength="6"></td>
           </tr>
           <tr>
             <th>密码</th>
@@ -157,6 +156,10 @@
           <tr>
             <th>确认密码</th>
             <td><input type="password" class="form-control" required data-parsley-equalto="#password"></td>
+          </tr>
+          <tr>
+            <th width="80">姓名</th>
+            <td><input type="text" class="form-control" name="realName" id="realName" required data-parsley-minlength="2"></td>
           </tr>
           <tr>
             <th>所在城市</th>
@@ -178,7 +181,7 @@
             <th>配置渠道</th>
             <td>
               {{#channels}}
-              <div class="checkbox-inline"><label><input type="checkbox" name="channel" value="{{channelId}}" required data-parsley-errors-container="#error-channel"> {{channelName}}</label></div>
+              <div class="checkbox-inline"><label><input type="checkbox" name="channel" value="{{this.channelId}}" required data-parsley-errors-container="#error-channel"> {{this.channelName}}</label></div>
               {{/channels}}
               <div id="error-channel"></div>
             </td>
@@ -193,7 +196,7 @@
       <table class="table">
         <tbody>
           <tr>
-            <td width="250">
+            <td>
               <select name="from[]" id="roleSelect" class="form-control" size="8" multiple="multiple">
                 {{#roles}}
                 <option value="{{id}}">{{roleName}}</option>
@@ -207,7 +210,7 @@
               <button type="button" id="roleSelect_none" class="btn btn-block btn-default">反选</button>
             </td>
             <td>
-              <select name="to[]" id="roleSelect_to" class="form-control" size="8" multiple="multiple" required data-parsley-errors-container="#error-role"></select>
+              <select name="to[]" id="roleSelect_to" class="form-control" size="8" multiple="multiple" data-parsley-required data-parsley-errors-container="#error-role"></select>
             </td>
           </tr>
         </tbody>
@@ -221,7 +224,7 @@
       <table class="table">
         <tbody>
           <tr>
-          <td width="250">
+            <td>
               <select name="from[]" id="citySelect" class="form-control" size="8" multiple="multiple">
                 {{#cities}}
                 <option value="{{cityId}}">{{cityName}}</option>
@@ -235,7 +238,7 @@
               <button type="button" id="citySelect_none" class="btn btn-block btn-default">反选</button>
             </td>
             <td>
-              <select name="to[]" id="citySelect_to" class="form-control" size="8" multiple="multiple" required data-parsley-errors-container="#error-city"></select>
+              <select name="to[]" id="citySelect_to" class="form-control" size="8" multiple="multiple" data-parsley-required data-parsley-errors-container="#error-city"></select>
             </td>
           </tr>
         </tbody>
