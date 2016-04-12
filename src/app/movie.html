@@ -11,11 +11,13 @@
 </head>
 <body>
 
+@@include('component/header.tpl')
+
   <div class="container-fluid">
 
     <div class="row">
 
-      @@include('component/sidebar.inc')
+      @@include('component/sidebar.tpl')
 
       <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
@@ -24,30 +26,30 @@
           <li class="active">标准影片库</li>
         </ol>
 
-        <form id="formClass" class="search-area">
+        <form id="formSearch" class="search-area clearfix">
 
-          <div class="form-group col-sm-6 col-lg-4">
+          <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">影片名</div>
               <input type="text" class="form-control" id="name" placeholder="">
             </div>
           </div>
 
-          <div class="form-group col-sm-6 col-lg-4">
+          <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">发行方</div>
               <input type="text" class="form-control" id="issuer" placeholder="">
             </div>
           </div>
 
-          <div class="form-group col-sm-6 col-lg-4">
+          <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">制片方</div>
               <input type="text" class="form-control" id="producer" placeholder="">
             </div>
           </div>
 
-          <div class="form-group col-sm-6 col-lg-4">
+          <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">影片制式</div>
               <select class="form-control" id="status">
@@ -58,22 +60,21 @@
             </div>
           </div>
 
-          <div class="no-padding col-xs-12 col-sm-12 col-lg-8">
-            <div class="form-group col-sm-6">
-              <div class="input-group">
-                <div class="input-group-addon">起始日期</div>
-                <input type="text" class="form-control" id="dateFrom" placeholder="">
-              </div>
-            </div>
-            <div class="form-group col-sm-6">
-              <div class="input-group">
-                <div class="input-group-addon">截止日期</div>
-                <input type="text" class="form-control" id="dateTo" placeholder="">
-              </div>
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">开始日期</div>
+              <input type="text" class="form-control" id="dateFrom" placeholder="">
             </div>
           </div>
 
-          <div class="form-group col-sm-6 col-lg-4">
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">结束日期</div>
+              <input type="text" class="form-control" id="dateTo" placeholder="">
+            </div>
+          </div>
+
+          <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">上映状态</div>
               <select class="form-control" id="status">
@@ -85,7 +86,7 @@
             </div>
           </div>
 
-          <div class="form-group col-sm-6 col-lg-4">
+          <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">关联关系</div>
               <select class="form-control" id="channel">
@@ -96,7 +97,7 @@
             </div>
           </div>
 
-          <div class="col-xs-12 col-sm-6 col-lg-4 pull-right">
+          <div class="col-xs-12 col-sm-6 col-md-4 pull-right">
             <div class="row">
               <div class="col-sm-6 pull-right">
                 <button type="submit" class="btn btn-block btn-primary">查询</button>
