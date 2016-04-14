@@ -28,6 +28,7 @@
           <th>院线</th>
           <td>
             <select class="form-control" id="brandId" required data-parsley-errors-container="#error-brand">
+              <option value=""></option>
               {{#brands}}
               <option value="{{id}}"{{#selected}} selected{{/selected}}>{{name}}</option>
               {{/brands}}

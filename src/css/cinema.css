@@ -46,3 +46,16 @@
   max-width: 40%;
   margin: 0 15px 5px;
 }*/
+
+/* cinema-tp */
+#association {
+  display: none;
+}
+#cinemaTable tbody td {
+  vertical-align: middle;
+  border-top: 1px solid #ddd;
+}
+#cinemaTable tbody .selected td {
+  background-color: #ff8903;
+  color: #fff;
+}

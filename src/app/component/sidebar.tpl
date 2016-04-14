@@ -16,7 +16,7 @@
       <div id="menu2" class="panel-collapse collapse" role="tabpanel">
         <div class="list-group">
           <a href="cinema.html" class="list-group-item" id="menu-cinema">标准影院库</a>
-          <a href="cinema-partner.html" class="list-group-item" id="menu-cinema-partner">合作方影院库</a>
+          <a href="cinema-tp.html" class="list-group-item" id="menu-cinema-tp">合作方影院库</a>
         </div>
       </div>
     </div>

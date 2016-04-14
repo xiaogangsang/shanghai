@@ -139,7 +139,7 @@ $('#dataTable').on('click', '.btn-detail', function(e) {
     data: { cinemaId: $(this).closest('tr').data('id') }
   })
   .done(function(res) {
-    console.log(res);
+    // console.log(res);
     if (true == res.meta.result) {
       var data = res.data;
       data.service = undefined != data.service || '' != data.service ? data.service = JSON.parse(data.service) : [];
@@ -162,7 +162,7 @@ $('#dataTable').on('click', '.btn-edit', function(e) {
     data: { cinemaId: $(this).closest('tr').data('id') }
   })
   .done(function(res) {
-    console.log(res);
+    // console.log(res);
     if (true == res.meta.result) {
       setModal(res.data);
       $('#popup-cinema-form').modal('show');
@@ -251,7 +251,7 @@ $(document).on('submit', '#popup-cinema-form form', function(e) {
     sendData.cinemaId = $('#popup-cinema-form #cinemaId').val();
     ajaxUrl = common.API_HOST + 'cinema/standard/cinemaUpdate';
   }
-  console.log( sendData );
+  // console.log( sendData );
   $.ajax({
     url: ajaxUrl,
     type: 'POST',
@@ -320,24 +320,6 @@ function setModal(cinemaData) {
   }
   $('#popup-cinema-form .modal-body').html(html);
 
-  $('#popup-cinema-form').on('change', '#btn-service', function(e) {
-    var serviceId = parseInt( $(this).val() );
-    if ( NaN == serviceId || undefined == serviceId  || '' == serviceId ) {
-      return false;
-    }
-    var service = _.find(_services, {'id': serviceId});
-    data = {service: service};
-    template = $('#service-template').html();
-    Mustache.parse(template);
-    var html = Mustache.render(template, data);
-    $(this).before(html);
-    $('#btn-service option').each(function() {
-      if ( serviceId == $(this).val() ) {
-        $(this).remove();
-      }
-    });
-    $('#popup-cinema-form').scrollTop($('#popup-cinema-form').height());
-  });
   $('#popup-cinema-form').on('change', '#provinceId', function(e) {
     var provinceId = parseInt( $(this).val() );
     if ( NaN != provinceId || undefined != provinceId  || '' != provinceId ) {
@@ -390,19 +372,34 @@ function setModal(cinemaData) {
     }
     return false;
   });
+  $('#popup-cinema-form').on('change', '#btn-service', function(e) {
+    var serviceId = parseInt( $(this).val() );
+    if ( NaN == serviceId || undefined == serviceId  || '' == serviceId ) {
+      return false;
+    }
+    var service = _.find(_services, {'id': serviceId});
+    data = {service: service};
+    template = $('#service-template').html();
+    Mustache.parse(template);
+    var html = Mustache.render(template, data);
+    $(this).before(html);
+    $('#btn-service option').each(function() {
+      if ( serviceId == $(this).val() ) {
+        $(this).remove();
+      }
+    });
+    $('#popup-cinema-form').scrollTop($('#popup-cinema-form').height());
+  });
   $('#popup-cinema-form').on('click', '.btn-service-delete', function(e) {
     e.preventDefault();
     var $parent = $(this).closest('.service-item');
-    if ($parent.find('textarea').val() !== '') {
-      if (window.confirm('确定要删除此服务吗？')) {
-        var serviceId = $parent.data('id');
-        var service = _.find(_services, {'id': serviceId});
-        $('#btn-service').append($('<option></option>').attr('value', service.id).text(service.name));
-        $parent.remove();
-      }
-    } else {
-      $parent.remove();
+    if ($parent.find('textarea').val() !== '' && false == window.confirm('确定要删除此服务吗？')) {
+      return false;
     }
+    var serviceId = $parent.data('id');
+    var service = _.find(_services, {'id': serviceId});
+    $('#btn-service').append($('<option></option>').attr('value', service.id).text(service.name));
+    $parent.remove();
     return false;
   });
 }
