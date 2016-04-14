@@ -288,8 +288,8 @@ fieldset[disabled] .form-control {
 .content-area table {
   border: 1px solid #dedede;
 }
-.content-area td .btn-xs+.btn-xs {
-  margin-left: 5px;
+.content-area td .btn-xs {
+  margin-bottom: 5px;
 }
 .edit-section {
   padding: 15px 15px 0;

@@ -121,7 +121,7 @@
                     <th>关联时间</th>
                     <th>关联标准影院ID</th>
                     <th>关联标准影院名</th>
-                    <th width="150">操作</th>
+                    <th>操作</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -174,13 +174,15 @@
       <td>{{name}}</td>
       <td>
         <button type="button" class="btn btn-xs btn-default btn-bind">设置关联</button>
-        <button type="button" class="btn btn-xs btn-default btn-bind-delete">移除关联</button>
+        {{^associationStatus}}<button type="button" class="btn btn-xs btn-default btn-bind-create">新建并关联</button>{{/associationStatus}}
+        {{#associationStatus}}<button type="button" class="btn btn-xs btn-default btn-bind-delete">移除关联</button>{{/associationStatus}}
       </td>
     </tr>
     {{/rows}}
   </script>
 
   @@include('component/popup-cinema-bind.tpl')
+  @@include('component/popup-cinema-tp-detail.tpl')
 
 </body>
 </html>
