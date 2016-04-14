@@ -8,21 +8,19 @@
 }
 .detail-item span {
   display: inline-block;
-  width: 100px;
-}
-.detail-item table {
-  width: 100%;
+  font-weight: bold;
 }
 .detail-item td {
   vertical-align: top;
 }
-.detail-item td:first-child {
-  width: 100px;
-}
 .detail-item td p {
+  margin-bottom: 3px;
+}
+.service-item {
+  padding-bottom: 1px;
   margin-bottom: 5px;
 }
-.edit-section {
+/*.edit-section {
   padding: 15px 15px 0;
   overflow: hidden;
   background-color: #f0f0f0;
@@ -34,9 +32,9 @@
 }
 .edit-service .btn-default {
   margin-bottom: 15px;
-}
+}*/
 
-.modal-header input[type="checkbox"] {
+/*.modal-header input[type="checkbox"] {
   outline: 0;
 }
 .modal-footer {
@@ -47,4 +45,4 @@
   width: 150px;
   max-width: 40%;
   margin: 0 15px 5px;
-}
+}*/

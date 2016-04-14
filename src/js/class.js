@@ -23,7 +23,7 @@ $('#formSearch').on('submit', function(e) {
     cityId: $('#search_cityId').val(),
     status: $('#search_status').val()
   };
-  console.log(sendData);
+  // console.log(sendData);
   $.ajax({
     url: common.API_HOST + 'wandaTicket/ticketList',
     type: 'POST',
