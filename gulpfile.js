@@ -14,8 +14,10 @@ var gulp = require('gulp'),
     browserSync = require('browser-sync');
 
 //将图片拷贝到目标目录
-gulp.task('copy:images', function (done) {
-    gulp.src(['src/images/**/*']).pipe(gulp.dest('dist/images/')).on('end', done);
+gulp.task('copy', function (done) {
+    gulp.src(['src/images/**/*']).pipe(gulp.dest('dist/images/'));
+    gulp.src(['src/fonts/**/*']).pipe(gulp.dest('dist/fonts/'));
+    gulp.src(['src/lib/**/*']).pipe(gulp.dest('dist/lib/')).on('end', done);
 });
 
 //压缩合并css, css中既有自己写的.less, 也有引入第三方库的.css
@@ -96,4 +98,4 @@ gulp.task("build-js", ['fileinclude'], function(callback) {
 gulp.task('default', ['connect', 'fileinclude', 'md5:css', 'md5:js', 'open']);
 
 //开发
-gulp.task('dev', ['connect', 'copy:images', 'fileinclude', 'lessmin', 'build-js', 'watch']);
+gulp.task('dev', ['connect', 'copy', 'fileinclude', 'lessmin', 'build-js', 'watch']);

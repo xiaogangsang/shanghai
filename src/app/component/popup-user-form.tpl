@@ -15,8 +15,8 @@
   </div>
 </div>
 
-<script id="edit-template" type="text/x-handlebars-template">
-  <input type="hidden" name="userId" id="userId" value="{{user.id}}">
+<script id="edit-template" type="text/x-tmpl-mustache">
+  <input type="hidden" id="userId" value="{{user.id}}">
   <div class="edit-section">
     <div class="table-responsive">
       <table class="table">
@@ -49,7 +49,7 @@
             <th>配置渠道</th>
             <td>
               {{#channels}}
-              <div class="checkbox-inline"><label><input type="checkbox" name="channel" value="{{channelId}}" {{#selected}}checked{{/selected}} required data-parsley-errors-container="#error-channel"> {{channelName}}</label></div>
+              <div class="checkbox-inline"><label><input type="checkbox" name="channel" value="{{channelId}}" {{#selected}}checked{{/selected}} required data-parsley-errors-container="#error-channel"><span>{{channelName}}</span></label></div>
               {{/channels}}
               <div id="error-channel"></div>
             </td>
@@ -140,18 +140,18 @@
 
 </script>
 
-<script id="create-template" type="text/x-handlebars-template">
+<script id="create-template" type="text/x-tmpl-mustache">
   <div class="edit-section">
     <div class="table-responsive">
       <table class="table">
         <tbody>
           <tr>
             <th width="80">登录ID</th>
-            <td><input type="number" class="form-control" name="loginId" id="loginId" required data-parsley-minlength="6"></td>
+            <td><input type="text" class="form-control" id="loginId" required data-parsley-minlength="6"></td>
           </tr>
           <tr>
             <th>密码</th>
-            <td><input type="password" class="form-control" name="password" id="password" required data-parsley-minlength="5"></td>
+            <td><input type="password" class="form-control" id="password" required data-parsley-minlength="5"></td>
           </tr>
           <tr>
             <th>确认密码</th>
@@ -159,29 +159,29 @@
           </tr>
           <tr>
             <th width="80">姓名</th>
-            <td><input type="text" class="form-control" name="realName" id="realName" required data-parsley-minlength="2"></td>
+            <td><input type="text" class="form-control" id="realName" required data-parsley-minlength="2"></td>
           </tr>
           <tr>
             <th>所在城市</th>
-            <td><input type="text" class="form-control" name="city" id="city" required></td>
+            <td><input type="text" class="form-control" id="city" required></td>
           </tr>
           <tr>
             <th>所在单位</th>
-            <td><input type="text" class="form-control" name="department" id="department" required></td>
+            <td><input type="text" class="form-control" id="department" required></td>
           </tr>
           <tr>
             <th>手机号码</th>
-            <td><input type="number" class="form-control" name="mobile" id="mobile" required></td>
+            <td><input type="number" class="form-control" id="mobile" required></td>
           </tr>
           <tr>
             <th>邮箱地址</th>
-            <td><input type="email" class="form-control" name="email" id="email" required></td>
+            <td><input type="email" class="form-control" id="email" required></td>
           </tr>
           <tr>
             <th>配置渠道</th>
             <td>
               {{#channels}}
-              <div class="checkbox-inline"><label><input type="checkbox" name="channel" value="{{this.channelId}}" required data-parsley-errors-container="#error-channel"> {{this.channelName}}</label></div>
+              <div class="checkbox-inline"><label><input type="checkbox" name="channel" id="channel" value="{{channelId}}" required data-parsley-errors-container="#error-channel"><span>{{channelName}}</span></label></div>
               {{/channels}}
               <div id="error-channel"></div>
             </td>

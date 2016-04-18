@@ -1,12 +1,13 @@
 var common = require('common');
-var _users = {};
+var _users = [];
 var _cities = [];
 
 $(function() {
   common.setMenu('ability-city');
-  getUsers();
   //set search form
   setCity();
+  //data cache
+  getUsers();
 
   $('#userSelect').multiselect({
     search: {
@@ -19,24 +20,31 @@ $(function() {
     leftSelected: '#userSelect_left',
     leftAll: '#userSelect_none'
   });
+
+  $('#formCity').parsley();
 });
 
 function getUsers() {
   $.ajax({
-    url: common.API_HOST + 'user/getAllUsers',
-    type: 'GET',
-    dataType: 'json'
+    url: common.API_HOST + 'security/user/userList',
+    type: 'POST',
+    dataType: 'json',
+    data: {
+      pageIndex: 1,
+      pageSize: 9999
+    }
   })
   .done(function(res) {
-    // console.log(res.meta);
+    // console.log(res);
     if (true == res.meta.result) {
-      _users = res.data;
+      _(res.data.rows).forEach(function(value, key){
+        _users.push({id:value.id, realName: value.realName, cityAuthority: value.cityAuthority});
+      });
     } else {
-      alert('获取用户列表失败：'+res.msg);
+      alert('接口错误：'+res.meta.msg);
     }
   });
 }
-
 function setCity() {
   $.ajax({
     url: common.API_HOST + 'common/cityList',
@@ -58,60 +66,62 @@ function setCity() {
     }
   });
 }
-
 function setUser(cityId) {
   $.ajax({
-    url: common.API_HOST + 'resource/userList',
-    type: 'GET',
+    url: common.API_HOST + 'security/authority/userCity/getUsersByCityId',
+    type: 'POST',
     dataType: 'json',
-    contentType: 'application/json; charset=utf-8',
-    data: {id: cityId}
+    data: {cityId: cityId}
   })
   .done(function(res) {
-    // console.log(res);
+    console.log(res);
     if (true == res.meta.result) {
-      _(_users).forEach(function(value){
-        if( _.includes(res.data.users, value.id) ) {
+      _(_users).forEach(function(value, key){
+        if( res.data.indexOf(value.id.toString()) > -1 ) {
           $('#userSelect_to').append($('<option></option>').attr('value', value.id).text(value.realName));
         } else {
           $('#userSelect').append($('<option></option>').attr('value', value.id).text(value.realName));
         }
       });
-      $('#formCity button').prop('disabled', false);
-      $('#formCity').parsley();
+      $('#formCity button[type=submit]').prop('disabled', false).text('保存');
+    } else {
+      alert('接口错误：'+res.meta.msg);
     }
   });
 }
-
 $("#citySelect").on('change', function(e) {
   e.preventDefault();
   $('#userSelect_to').html('');
   $('#userSelect').html('');
   setUser($(this).val());
+  $('#formCity button[type=submit]').prop('disabled', true).text('加载中...');
 });
-
+$('#formCity').on('click', 'button[type=submit]', function(event) {
+  event.preventDefault();
+  $('.multi-selection option').attr('selected','selected');
+  $('#formCity').trigger('submit');
+});
 $('#formCity').on('submit', function(e) {
   e.preventDefault()
-  $('select option').attr('selected','selected'); //hack for firefox
   $('#formCity').parsley().on('form:success', function(){
-    alert('可以提交');
-    // $.ajax({
-    //   url: common.API_HOST + 'resource/updateChannel',
-    //   type: 'GET',
-    //   dataType: 'json',
-    //   contentType: 'application/json; charset=utf-8',
-    //   data: {
-    //     id: $('#channelSelect').val(),
-    //     userIds: $('#userSelect_to').val()
-    //   }
-    // })
-    // .done(function(res) {
-    //   if (true == res.meta.result) {
-    //     alert('保存成功！');
-    //   } else {
-    //     alert(res.msg);
-    //   }
-    // });
+    var sendData = {
+      cityId: $('#citySelect').val(),
+      userIds: $('#userSelect_to').val()
+    };
+    $.ajax({
+      url: common.API_HOST + 'security/authority/userCity/updateCityAuthority',
+      type: 'POST',
+      dataType: 'json',
+      contentType: 'application/json; charset=utf-8',
+      data: JSON.stringify(sendData)
+    })
+    .done(function(res) {
+      if (true == res.meta.result) {
+        alert('保存成功！');
+      } else {
+        alert('接口错误：'+res.meta.msg);
+      }
+    });
   });
   return false;
 });

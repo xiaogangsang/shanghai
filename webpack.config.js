@@ -34,7 +34,7 @@ module.exports = {
         filename: "[name].js",
         chunkFilename: "[chunkhash].js"
     },
-    modulesDirectories: ['node_modules'],
+    modulesDirectories: ['node_modules', 'bower_components'],
     resolve: {
         //配置别名，在项目中可缩减引用路径
         alias: {
@@ -48,7 +48,7 @@ module.exports = {
             'parsley-lang': path.resolve(bower_components, 'parsleyjs/dist/i18n/zh_cn.js'),
             'cookie': path.resolve(bower_components, 'js-cookie/src/js.cookie.js'),
             'datetimepicker': path.resolve(bower_components, 'smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker.js'),
-            'common': srcDir + "/lib/common.js"
+            'common': srcDir+'/common/common.js'
         }
     },
     module: {
@@ -71,8 +71,6 @@ module.exports = {
                 test: path.resolve(bower_components, 'js-cookie/src/js.cookie.js'),
                 loader: 'expose?Cookies'
             },
-            // { test: /\.css$/, loader: "style-loader!css-loader"},
-            // { test: /\.less$/, loader: "style-loader!csss-loader!less-loader"}
             {
                 test: /\.jsx?$/,
                 loader: 'babel',
@@ -93,7 +91,7 @@ module.exports = {
         //     '$': 'jquery'
         // }),
         //将公共代码抽离出来合并为一个文件
-        // new CommonsChunkPlugin("admin-commons.js", ["ap1", "ap2"]),
+        // new CommonsChunkPlugin("upload.js", ["jquery.ui.widget.js", "jquery.iframe-transport.js", "jquery.fileupload.js"]),
         // new CommonsChunkPlugin("commons.js", ["p1", "p2", "admin-commons.js"])
         // 在不同页面用<script>标签引入如下js:
         // page1.html: commons.js, p1.js

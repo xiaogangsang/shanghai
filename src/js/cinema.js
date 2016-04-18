@@ -86,10 +86,18 @@ $('#pager').on('click', '.prev,.next', function(e) {
   $("#formSearch").trigger('submit');
   return false;
 });
+$('#formSearch').on('click', 'button[type=submit]', function(event) {
+  event.preventDefault();
+  _pageIndex = 1;
+  $("#formSearch").trigger('submit');
+});
 $('#pager').on('click', '#btn-pager', function(e) {
   e.preventDefault();
+  if ('' ==$('#pageNo').val()) {
+    return false;
+  }
   var pageNo = parseInt( $('#pageNo').val() );
-  if (pageNo < 1 || pageNo > _pageTotal) {
+  if (NaN == pageNo || pageNo < 1 || pageNo > _pageTotal) {
     alert('要跳转的页码超过了范围！');
     return false;
   }
@@ -221,7 +229,7 @@ $(document).on('click', '#btn-online-multi,#btn-offline-multi', function(e) {
 });
 $(document).on('submit', '#popup-cinema-form form', function(e) {
   e.preventDefault();
-  // $('select option').attr('selected','selected'); //hack for firefox
+  // $('.multi-selection option').attr('selected','selected'); //hack for firefox
   var sendData = {
     'cinemaName': $.trim( $('#popup-cinema-form #cinemaName').val() ),
     'brandId': $('#popup-cinema-form #brandId').val(),
@@ -311,6 +319,7 @@ function setModal(cinemaData) {
     Mustache.parse(template);
     var html = Mustache.render(template, data);
     setArea(cinemaData.cityId, cinemaData.areaId, cinemaData.districtId);
+    $('#popup-cinema-form .modal-title').html('编辑标准影院');
   } else {
     data = {brands: _brands, provinces:_provinces, services: _services};
     template = $('#create-template').html();

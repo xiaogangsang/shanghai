@@ -90,6 +90,11 @@ $('#formSearch').on('submit', function(e) {
   });
   return false;
 });
+$('#formSearch').on('click', 'button[type=submit]', function(event) {
+  event.preventDefault();
+  _pageIndex = 1;
+  $("#formSearch").trigger('submit');
+});
 $('#pager').on('click', '.prev,.next', function(e) {
   e.preventDefault();
   if ($(this).hasClass('prev')) {
@@ -112,8 +117,11 @@ $('#pager').on('click', '.prev,.next', function(e) {
 });
 $('#pager').on('click', '#btn-pager', function(e) {
   e.preventDefault();
+  if ('' ==$('#pageNo').val()) {
+    return false;
+  }
   var pageNo = parseInt( $('#pageNo').val() );
-  if (pageNo < 1 || pageNo > _pageTotal) {
+  if (NaN == pageNo || pageNo < 1 || pageNo > _pageTotal) {
     alert('要跳转的页码超过了范围！');
     return false;
   }
@@ -297,6 +305,7 @@ function setModal(cinemaData) {
     Mustache.parse(template);
     var html = Mustache.render(template, data);
     setArea(cinemaData.cityId, cinemaData.areaId, cinemaData.districtId);
+    $('#popup-cinema-form .modal-title').html('编辑标准影院');
   } else {
     data = {brands: _brands, provinces:_provinces, services: _services};
     template = $('#create-template').html();

@@ -26,6 +26,7 @@
     "jquery": "1.12",
     "lodash": "~4.7.0",
     "smalot-bootstrap-datetimepicker": "^2.3.8",
-    "mustache.js": "mustache#^2.2.1"
+    "mustache.js": "mustache#^2.2.1",
+    "blueimp-file-upload": "jquery-file-upload#^9.12.3"
   }
 }
