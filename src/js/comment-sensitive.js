@@ -1,44 +1,37 @@
-require('datetimepicker');
 var common = require('common');
-var _channels = {};
 var _pageIndex = 1;
 var _pageSize = 10;
 var _pageTotal = 0;
 var _querying = false;
 
 $(function() {
-  common.setMenu('comment');
-  //set search form
-  setChannel();
-  // setCity();
+  common.setMenu('comment-forbidden');
 
-  $.fn.datetimepicker.dates['zh-CN'] = {
-    days: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"],
-    daysShort: ["周日", "周一", "周二", "周三", "周四", "周五", "周六", "周日"],
-    daysMin:  ["日", "一", "二", "三", "四", "五", "六", "日"],
-    months: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
-    monthsShort: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
-    today: "今天",
-    suffix: [],
-    meridiem: ["上午", "下午"]
-  };
-  $('#search_beginDate,#search_endDate').datetimepicker({format: 'yyyy-mm-dd', language: 'zh-CN', minView: 2, todayHighlight: true, autoclose: true});
-
-  //data cache
-  // getProvince();
-  // getService();
+  $('#fileupload').data('url', common.API_HOST+'comment/importSensitive').fileupload({
+    dataType: 'json',
+    add: function (e, data) {
+      $('#popup-sensitive-import button[type=submit]').click(function () {
+        $(this).prop('disable', true).text('上传中...');
+        data.submit();
+      });
+    },
+    done: function (e, data) {
+console.log(data.result);
+      if (true == data.result.meta.result) {
+        alert('导入成功！');
+      } else {
+        alert('导入失败：'+data.result.meta.msg);
+      }
+      $('#popup-user-import button[type=submit]').prop('disable', false).text('上传');
+    }
+  });
 });
 
 //handle search form
 $('#formSearch').on('submit', function(e) {
   e.preventDefault();
   var sendData = {
-    tel: $.trim( $('#tel').val() ),
-    channelId: $('#search_channelId').val(),
-    filmName: $.trim( $('#search_filmName').val() ),
-    content: $.trim( $('#search_content').val() ),
-    beginDate: $.trim( $('#search_beginDate').val() ),
-    endDate: $.trim( $('#search_endDate').val() ),
+    word: $.trim( $('#search_word').val() ),
     pageIndex: _pageIndex,
     pageSize: _pageSize
   };
@@ -48,29 +41,22 @@ $('#formSearch').on('submit', function(e) {
   }
   _querying = true;
   $.ajax({
-    url: common.API_HOST + 'comment/commentList',
+    url: common.API_HOST + 'comment/sensitiveList',
     type: 'POST',
     dataType: 'json',
     data: sendData
   })
   .done(function(res) {
     _querying = false;
-    // console.log(res);
+    console.log(res);
     if (true == res.meta.result) {
       if (res.data.rows.length <= 0 ) {
-        $('#dataTable tbody').html('<tr><td colspan="7" align="center">请点击“查询”按钮！</td></tr>');
+        $('#dataTable tbody').html('<tr><td colspan="3" align="center">请点击“查询”按钮！</td></tr>');
         return false;
       }
       _pageIndex = res.data.pageIndex;
       _pageTotal = Math.ceil(res.data.total/_pageSize);
       setPager(res.data.total, _pageIndex, res.data.rows.length, _pageTotal);
-      _(res.data.rows).forEach(function(value, key){
-        _(_channels).forEach(function(item){
-          if (value.channelId == item.channelId) {
-            res.data.rows[key].channelName = item.channelName;
-          }
-        });
-      });
       setTableData(res.data.rows);
     } else {
       alert('接口错误：'+res.meta.msg);
@@ -117,12 +103,53 @@ $('#pager').on('click', '#btn-pager', function(e) {
   $("#formSearch").trigger('submit');
   return false;
 });
+$(document).on('click', '#btn-create', function(e) {
+  e.preventDefault();
+  $('#popup-comment-form .form-group').remove();
+  $('#btn-add').before('<div class="form-group"><div class="input-group"><div class="input-group-addon">敏感词</div><input type="text" class="form-control"></div></div>');
+  $('#popup-comment-form').modal('show');
+});
+$(document).on('click', '#btn-add', function(event) {
+  event.preventDefault();
+  $(this).before('<div class="form-group"><div class="input-group"><div class="input-group-addon">敏感词</div><input type="text" class="form-control"></div></div>');
+});
+$(document).on('submit', '#popup-comment-form form', function(event) {
+  event.preventDefault();
+  var word = [];
+  $('#popup-comment-form input[type=text]').each(function(index) {
+    var text = $.trim($(this).val());
+    if ( '' != text ) {
+      word.push(text);
+    }
+  });
+  if (word.length > 0) {
+    $.ajax({
+      url: common.API_HOST + 'comment/sensitiveSave',
+      type: 'POST',
+      dataType: 'json',
+      contentType: 'application/json; charset=utf-8',
+      data: JSON.stringify(word)
+    })
+    .done(function(res) {
+      // console.log(res);
+      if (true == res.meta.result) {
+        alert('添加成功！');
+        $('#popup-comment-form').modal('hide');
+        _pageIndex = 1;
+        $('#formSearch').trigger('submit');
+      } else {
+        alert('接口错误：'+res.meta.msg);
+      }
+    });
+  }
+  return false;
+});
 $('#dataTable').on('click', '.btn-delete', function(e) {
   e.preventDefault();
   var that = $(this).parents('tr');
-  if (window.confirm('确定要删除此评论吗？')) {
+  if (window.confirm('确定要删除此敏感词吗？')) {
     $.ajax({
-      url: common.API_HOST + 'comment/commentDelete',
+      url: common.API_HOST + 'comment/sensitiveDelete',
       type: 'POST',
       dataType: 'json',
       contentType: 'application/json; charset=utf-8',
@@ -148,14 +175,14 @@ $(document).on('click', '#btn-delete-multi', function(e) {
     alert('请至少选中一个！');
     return false;
   }
-  if (window.confirm('确定要删除选中的评论吗？')) {
+  if (window.confirm('确定要删除选中的敏感词吗？')) {
     var commentIds = [];
     var checked_items = $('.multi-check:checked');
     checked_items.each(function(index, el) {
       commentIds.push( $(this).closest('tr').data('id') );
     });
     $.ajax({
-      url: common.API_HOST + 'comment/commentDelete',
+      url: common.API_HOST + 'comment/sensitiveDelete',
       type: 'POST',
       dataType: 'json',
       contentType: 'application/json; charset=utf-8',
@@ -176,6 +203,10 @@ $(document).on('click', '#btn-delete-multi', function(e) {
     });
   }
   return false;
+});
+$(document).on('click', '#btn-import', function(event) {
+  event.preventDefault();
+  $('#popup-sensitive-import').modal('show');
 });
 $(document).on('click', '.multi-check-all', function() {
   var items = $(this).closest('table').find('.multi-check');

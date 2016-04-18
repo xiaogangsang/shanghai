@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>评论管理</title>
+  <link rel="stylesheet" href="../css/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/cinema.css">
+</head>
+<body>
+
+  @@include('component/header.tpl')
+
+  <div class="container-fluid">
+
+    <div class="row">
+
+      @@include('component/sidebar.tpl')
+
+      <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+        <ol class="breadcrumb">
+          <li>评论管理</li>
+          <li class="active">敏感词管理</li>
+        </ol>
+
+        <form id="formSearch" class="search-area clearfix">
+
+          <div class="form-group col-sm-6">
+            <div class="input-group">
+              <div class="input-group-addon">敏感词</div>
+              <input type="text" class="form-control" id="search_word">
+            </div>
+          </div>
+
+          <div class="col-xs-12 col-sm-6 col-md-4 pull-right">
+            <div class="row">
+              <div class="col-sm-6">
+                <button type="submit" class="btn btn-block btn-primary">查询</button>
+              </div>
+              <div class="col-sm-6">
+                <button type="button" class="btn btn-block btn-default" id="btn-create">新建</button>
+              </div>
+            </div>
+          </div>
+
+        </form>
+
+        <div class="content-area">
+
+          <div class="row">
+            <div class="col-xs-12 extra-btns">
+              <button type="button" class="btn btn-default" id="btn-delete-multi">批量删除</button>
+              <button type="button" class="btn btn-default" id="btn-import">批量导入</button>
+            </div>
+          </div>
+
+          <div class="row" id="pager"></div>
+
+          <div class="table-responsive" id="dataTable">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th width="60"><input type="checkbox" class="multi-check-all"></th>
+                  <th>敏感词</th>
+                  <th width="80">操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td colspan="3" align="center">请点击“查询”按钮！</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="../js/vendor.js"></script>
+  <script src="../lib/blueimp-file-upload/jquery.ui.widget.js"></script>
+  <script src="../lib/blueimp-file-upload/jquery.iframe-transport.js"></script>
+  <script src="../lib/blueimp-file-upload/jquery.fileupload.js"></script>
+  <script src="../js/comment-sensitive.js"></script>
+
+  <script id="pager-template" type="text/x-tmpl-mustache">
+    <div class="col xs-12 col-sm-6 rowStatics">共 <span id="total">{{total}}</span> 条数据，当前显示 <span id="rowsSize">{{rowsSize}}</span> 条</div>
+    {{#pageTotal}}
+    <div class="col xs-12 col-sm-6">
+      <nav>
+        <ul class="pagination pagination-sm">
+          <li><a href="#" class="prev"><span>&lt;</span></a></li>
+          <li><span id="pageIndex">{{pageIndex}}</span> / <span id="pageTotal">{{pageTotal}}</span></li>
+          <li><a href="#" class="next"><span>&gt;</span></a></li>
+          <li><input type="number" name="pageNo" id="pageNo" pattern="[0-9]+"></li>
+          <li><button type="button" class="btn" id="btn-pager">跳转</button></li>
+        </ul>
+      </nav>
+    </div>
+    {{/pageTotal}}
+  </script>
+  <script id="table-template" type="text/x-tmpl-mustache">
+    {{#rows}}
+    <tr data-id="{{id}}">
+      <td><input type="checkbox" class="multi-check"></td>
+      <td>{{word}}</td>
+      <td><button type="button" class="btn btn-xs btn-default btn-delete">删除</button></td>
+    </tr>
+    {{/rows}}
+  </script>
+
+  @@include('component/popup-sensitive-form.tpl')
+  @@include('component/popup-sensitive-import.tpl')
+</body>
+</html>

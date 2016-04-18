@@ -84,7 +84,7 @@
       <div id="menu9" class="panel-collapse collapse" role="tabpanel">
         <div class="list-group">
           <a href="comment.html" class="list-group-item" id="menu-comment">评论编辑</a>
-          <a href="comment-forbidden.html" class="list-group-item" id="menu-comment-forbidden">敏感词管理</a>
+          <a href="comment-sensitive.html" class="list-group-item" id="menu-comment-sensitive">敏感词管理</a>
         </div>
       </div>
     </div>

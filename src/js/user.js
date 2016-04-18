@@ -81,7 +81,7 @@ $('#formSearch').on('submit', function(e) {
     // console.log(res);
     if (true == res.meta.result) {
       _pageIndex = res.data.pageIndex;
-      _pageTotal = Math.ceil(res.data.total/_pageSize);
+      _pageTotal = Math.floor(res.data.total/_pageSize);
       setPager(res.data.total, _pageIndex, res.data.rows.length, _pageTotal);
       setTableData(res.data.rows);
     } else {

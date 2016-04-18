@@ -31,35 +31,35 @@
           <div class="form-group col-sm-4 col-lg-3">
             <div class="input-group">
               <div class="input-group-addon">姓名</div>
-              <input type="text" class="form-control" id="search_name" name="name">
+              <input type="text" class="form-control" id="search_name">
             </div>
           </div>
 
           <div class="form-group col-sm-4 col-lg-3">
             <div class="input-group">
               <div class="input-group-addon">登录ID</div>
-              <input type="text" class="form-control" id="search_loginId" name="loginId">
+              <input type="text" class="form-control" id="search_loginId">
             </div>
           </div>
 
           <div class="form-group col-sm-4 col-lg-3">
             <div class="input-group">
               <div class="input-group-addon">所在城市</div>
-              <input type="text" class="form-control" id="search_city" name="city">
+              <input type="text" class="form-control" id="search_city">
             </div>
           </div>
 
           <div class="form-group col-sm-4 col-lg-3">
             <div class="input-group">
               <div class="input-group-addon">所属单位</div>
-              <input type="text" class="form-control" id="search_department" name="department">
+              <input type="text" class="form-control" id="search_department">
             </div>
           </div>
 
           <div class="form-group col-sm-4 col-lg-3">
             <div class="input-group">
               <div class="input-group-addon">角色</div>
-              <select class="form-control" id="search_roleId" name="roleId">
+              <select class="form-control" id="search_roleId">
                 <option value="">全部</option>
               </select>
             </div>
@@ -68,7 +68,7 @@
           <div class="form-group col-sm-4 col-lg-3">
             <div class="input-group">
               <div class="input-group-addon">创建人</div>
-              <input type="text" class="form-control" id="search_createdBy" name="createdBy">
+              <input type="text" class="form-control" id="search_createdBy">
             </div>
           </div>
 
@@ -98,26 +98,28 @@
           <div class="row" id="pager"></div>
 
           <div class="table-responsive" id="dataTable">
-           <table class="table">
-            <thead>
-              <tr>
-                <th><input type="checkbox" class="multi-check-all"></th>
-                <th>登录ID</th>
-                <th>姓名</th>
-                <th>所在城市</th>
-                <th>所属单位</th>
-                <th>手机号码</th>
-                <th>邮箱</th>
-                <th>创建人</th>
-                <th width="180">操作</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td colspan="9" align="center">请点击“查询”按钮！</td>
-              </tr>
-            </tbody>
-          </table>
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th><input type="checkbox" class="multi-check-all"></th>
+                  <th>登录ID</th>
+                  <th>姓名</th>
+                  <th>所在城市</th>
+                  <th>所属单位</th>
+                  <th>手机号码</th>
+                  <th>邮箱</th>
+                  <th>创建人</th>
+                  <th width="180">操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td colspan="9" align="center">请点击“查询”按钮！</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
         </div>
 
       </div>
@@ -126,15 +128,13 @@
 
   </div>
 
-</div>
+  <script src="../js/vendor.js"></script>
+  <script src="../lib/blueimp-file-upload/jquery.ui.widget.js"></script>
+  <script src="../lib/blueimp-file-upload/jquery.iframe-transport.js"></script>
+  <script src="../lib/blueimp-file-upload/jquery.fileupload.js"></script>
+  <script src="../js/user.js"></script>
 
-<script src="../js/vendor.js"></script>
-<script src="../lib/blueimp-file-upload/jquery.ui.widget.js"></script>
-<script src="../lib/blueimp-file-upload/jquery.iframe-transport.js"></script>
-<script src="../lib/blueimp-file-upload/jquery.fileupload.js"></script>
-<script src="../js/user.js"></script>
-
-<script id="pager-template" type="text/x-tmpl-mustache">
+  <script id="pager-template" type="text/x-tmpl-mustache">
     <div class="col xs-12 col-sm-6 rowStatics">共 <span id="total">{{total}}</span> 条数据，当前显示 <span id="rowsSize">{{rowsSize}}</span> 条</div>
     {{#pageTotal}}
     <div class="col xs-12 col-sm-6">
@@ -151,28 +151,28 @@
     {{/pageTotal}}
   </script>
 
-<script id="table-template" type="text/x-handlebars-template">
-  {{#rows}}
-  <tr data-id="{{id}}">
-    <td><input type="checkbox" class="multi-check"></td>
-    <td>{{loginId}}</td>
-    <td>{{realName}}</td>
-    <td>{{city}}</td>
-    <td>{{department}}</td>
-    <td>{{mobile}}</td>
-    <td>{{email}}</td>
-    <td>{{createdBy}}</td>
-    <td>
-      <button type="button" class="btn btn-xs btn-default btn-edit">编辑</button>
-      <button type="button" class="btn btn-xs btn-default btn-reset">重置密码</button>
-      <button type="button" class="btn btn-xs btn-default btn-delete">删除</button>
-    </td>
-  </tr>
-  {{/rows}}
-</script>
+  <script id="table-template" type="text/x-handlebars-template">
+    {{#rows}}
+    <tr data-id="{{id}}">
+      <td><input type="checkbox" class="multi-check"></td>
+      <td>{{loginId}}</td>
+      <td>{{realName}}</td>
+      <td>{{city}}</td>
+      <td>{{department}}</td>
+      <td>{{mobile}}</td>
+      <td>{{email}}</td>
+      <td>{{createdBy}}</td>
+      <td>
+        <button type="button" class="btn btn-xs btn-default btn-edit">编辑</button>
+        <button type="button" class="btn btn-xs btn-default btn-reset">重置密码</button>
+        <button type="button" class="btn btn-xs btn-default btn-delete">删除</button>
+      </td>
+    </tr>
+    {{/rows}}
+  </script>
 
-@@include('component/popup-user-form.tpl')
-@@include('component/popup-user-import.tpl')
+  @@include('component/popup-user-form.tpl')
+  @@include('component/popup-user-import.tpl')
 
 </body>
 </html>
