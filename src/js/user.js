@@ -10,8 +10,8 @@ $(function() {
   //set search form
   setRole();
   //cache data
-  getChannels();
-  getCities();
+  // getChannels();
+  // getCities();
 });
 
 function getChannels() {
@@ -311,17 +311,21 @@ function setPager(total, pageIndex, pageSize) {
 
 function setRole() {
   $.ajax({
-    url: common.API_HOST + 'role/getAllRoles',
-    type: 'GET',
-    dataType: 'json'
+    url: common.API_HOST + 'security/role/roleList',
+    type: 'POST',
+    dataType: 'json',
+    data: {
+      pageIndex: 1,
+      pageSize: 9999
+    }
   })
   .done(function(res) {
-    // console.log(res.data);
+    console.log(res);
     if (true == res.meta.result) {
-      _roles = res.data;
-      $.each(_roles, function(index, role) {
-        $('#search_roleId').append($('<option></option>').attr('value', role.id).text(role.roleName));
-      });
+      // _roles = res.data;
+      // $.each(_roles, function(index, role) {
+      //   $('#search_roleId').append($('<option></option>').attr('value', role.id).text(role.roleName));
+      // });
     }
- });
+  });
 }

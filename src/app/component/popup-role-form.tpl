@@ -15,8 +15,8 @@
   </div>
 </div>
 
-<script id="edit-template" type="text/x-handlebars-template">
-  <input type="hidden" name="roleId" id="userId" value="{{role.id}}">
+<script id="edit-template" type="text/x-tmpl-mustache">
+  <input type="hidden" id="roleId" value="{{role.id}}">
   <div class="edit-section">
     <div class="table-responsive">
       <table class="table">
@@ -27,7 +27,7 @@
           </tr>
           <tr>
             <th>角色备注</th>
-            <td><input type="text" class="form-control" id="desc" value="{{role.desc}}" required></td>
+            <td><input type="text" class="form-control" id="desc" value="{{role.desc}}"></td>
           </tr>
         </tbody>
       </table>
@@ -109,7 +109,7 @@
   </div>
 </script>
 
-<script id="create-template" type="text/x-handlebars-template">
+<script id="create-template" type="text/x-tmpl-mustache">
   <div class="edit-section">
     <div class="table-responsive">
       <table class="table">
@@ -120,7 +120,7 @@
           </tr>
           <tr>
             <th>角色备注</th>
-            <td><input type="text" class="form-control" id="desc" value="{{role.desc}}" required></td>
+            <td><input type="text" class="form-control" id="desc" value="{{role.desc}}"></td>
           </tr>
         </tbody>
       </table>
@@ -136,9 +136,7 @@
             <td>
               <select name="from[]" id="resourceSelect" class="form-control" size="8" multiple="multiple">
                 {{#resources}}
-                {{^selected}}
                 <option value="{{id}}">{{name}}</option>
-                {{/selected}}
                 {{/resources}}
               </select>
             </td>
@@ -149,13 +147,7 @@
               <button type="button" id="resourceSelect_none" class="btn btn-block btn-default">反选</button>
             </td>
             <td>
-              <select name="to[]" id="resourceSelect_to" class="form-control" size="8" multiple="multiple" data-parsley-required data-parsley-errors-container="#error-resource">
-                {{#resources}}
-                {{#selected}}
-                <option value="{{id}}">{{name}}</option>
-                {{/selected}}
-                {{/resources}}
-              </select>
+              <select name="to[]" id="resourceSelect_to" class="form-control" size="8" multiple="multiple" data-parsley-required data-parsley-errors-container="#error-resource"></select>
             </td>
           </tr>
         </tbody>
@@ -173,9 +165,7 @@
             <td>
               <select name="from[]" id="userSelect" class="form-control" size="8" multiple="multiple">
                 {{#users}}
-                {{^selected}}
                 <option value="{{id}}">{{realName}}</option>
-                {{/selected}}
                 {{/users}}
               </select>
             </td>
@@ -186,13 +176,7 @@
               <button type="button" id="userSelect_none" class="btn btn-block btn-default">反选</button>
             </td>
             <td>
-              <select name="to[]" id="userSelect_to" class="form-control" size="8" multiple="multiple" data-parsley-required data-parsley-errors-container="#error-user">
-                {{#users}}
-                {{#selected}}
-                <option value="{{id}}">{{realName}}</option>
-                {{/selected}}
-                {{/users}}
-              </select>
+              <select name="to[]" id="userSelect_to" class="form-control" size="8" multiple="multiple" data-parsley-required data-parsley-errors-container="#error-user"></select>
             </td>
           </tr>
         </tbody>

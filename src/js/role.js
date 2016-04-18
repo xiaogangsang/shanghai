@@ -7,74 +7,31 @@ var _resources = {};
 
 $(function() {
   common.setMenu('role');
+  $('#btn-export').attr('href', common.API_HOST+'security/role/exportRoles');
   //set search form
   setRole();
   getUsers();
   getResources();
 });
 
-function setRole() {
-  $.ajax({
-    url: common.API_HOST + 'role/getAllRoles',
-    type: 'GET',
-    dataType: 'json'
-  })
-  .done(function(res) {
-    // console.log(res);
-    if (true == res.meta.result) {
-      _roles = res.data;
-      $.each(_roles, function(index, role) {
-        $('#search_roleId').append($('<option></option>').attr('value', role.id).text(role.roleName));
-      });
-    }
-  });
-}
-function getUsers() {
-  $.ajax({
-    url: common.API_HOST + 'user/getAllUsers',
-    type: 'GET',
-    dataType: 'json'
-  })
-  .done(function(res) {
-    // console.log(res);
-    if (true == res.meta.result) {
-      _users = res.data;
-    } else {
-      alert('获取用户列表失败：'+res.msg);
-    }
-  });
-}
-function getResources() {
-  $.ajax({
-    url: common.API_HOST + 'resource/getAllResources',
-    type: 'GET',
-    dataType: 'json'
-  })
-  .done(function(res) {
-    // console.log(res);
-    if (true == res.meta.result) {
-      _resources = res.data;
-    } else {
-      alert('获取功能列表失败：'+res.msg);
-    }
-  });
-}
-
 //handle search form
 $('#formSearch').on('submit', function(e) {
   e.preventDefault()
   var sendData = {
-    roleId: $('#search_roleId').val(),
-    createdBy: $.trim($('#search_createdBy').val()),
     pageIndex: _pageIndex,
     pageSize: _pageSize
   };
+  if ($('#search_roleId').val() != '') {
+    sendData.roleId = $('#search_roleId').val();
+  }
+  if ($.trim($('#search_createdBy').val()) != '') {
+    createdBy = $.trim($('#search_createdBy').val());
+  }
   // console.log(sendData);
   $.ajax({
-    url: common.API_HOST + 'role/roleList',
-    type: 'GET',
+    url: common.API_HOST + 'security/role/roleList',
+    type: 'POST',
     dataType: 'json',
-    contentType: 'application/json; charset=utf-8',
     data: sendData
   })
   .done(function(res) {
@@ -83,31 +40,28 @@ $('#formSearch').on('submit', function(e) {
       _pageIndex = res.data.pageIndex;
       setPager(res.data.total, res.data.pageIndex, res.data.rows.length);
       setTableData(res.data.rows);
-      $('#btn-export').prop('disabled', false);
     } else {
-      alert(res.msg);
+      alert('接口错误：'+res.msg);
     }
   });
   return false;
 });
 $('#dataTable').on('click', '.btn-edit', function(e) {
   e.preventDefault();
-  var userId = $(this).parents('tr').data('id');
   $.ajax({
-    url: common.API_HOST + 'role/roleDetail',
-    type: 'GET',
+    url: common.API_HOST + 'security/role/roleDetail',
+    type: 'POST',
     dataType: 'json',
-    contentType: 'application/json; charset=utf-8',
-    data: { id: userId }
+    data: { roleId: $(this).parents('tr').data('id') }
   })
   .done(function(res) {
-    // console.log(res);
+    // console.log(res.data);
     if (true == res.meta.result) {
       setModal(res.data);
       $('#popup-role-form').modal('show');
       $('#popup-role-form form').parsley();
     } else {
-      alert(res.msg);
+      alert('接口错误：'+res.meta.msg);
     }
   });
 });
@@ -119,25 +73,25 @@ $(document).on('click', '#btn-create', function(e) {
 });
 $(document).on('submit', '#popup-role-form form', function(e) {
   e.preventDefault();
-  $('select option').attr('selected','selected'); //hack for firefox
+  $('#popup-role-form select option').attr('selected','selected'); //hack for firefox
   var sendData = {
-    'roleName': $.trim( $('#popup-role-form #roleName').val() ),
-    'desc': $.trim( $('#popup-role-form #desc').val() ),
-    'resources': $('#ressourceSelect_to').val(),
-    'users':$('#userSelect_to').val()
+    roleName: $.trim( $('#popup-role-form #roleName').val() ),
+    desc: $.trim( $('#popup-role-form #desc').val() ),
+    resources: $('#resourceSelect_to').val(),
+    userIds: $('#userSelect_to').val()
   };
-  var ajaxUrl = common.API_HOST + 'user/saveRole';
+  var ajaxUrl = common.API_HOST + 'security/role/saveRole';
   if( $('#roleId').length > 0) {
     sendData.roleId = $('#popup-role-form #roleId').val();
-    ajaxUrl = common.API_HOST + 'user/updateRole'
+    ajaxUrl = common.API_HOST + 'security/role/updateRole'
   }
   // console.log( sendData );
   $.ajax({
     url: ajaxUrl,
-    type: 'GET',
+    type: 'POST',
     dataType: 'json',
     contentType: 'application/json; charset=utf-8',
-    data: sendData
+    data: JSON.stringify(sendData)
   })
   .done(function(res) {
     // console.log(res);
@@ -147,39 +101,41 @@ $(document).on('submit', '#popup-role-form form', function(e) {
       } else {
         alert('角色已添加！');
       }
-      alert('骗你的啦，后台接口还没好呢！');
+      $('#popup-role-form').modal('hide');
+      $('#formSearch').trigger('submit');
     } else {
-      alert('操作失败：'+res.msg);
+      alert('接口错误：'+res.meta.msg);
     }
   });
   return false;
 });
 $('#dataTable').on('click', '.btn-delete', function(e) {
   e.preventDefault();
-  var that = $(this).parents('tr');
+  var tr = $(this).parents('tr');
   if (window.confirm('确定要删除此角色吗？')) {
+    var sendData = {
+      id: []
+    };
+    sendData.id.push(tr.data('id'));
     $.ajax({
-      url: common.API_HOST + 'role/deleteRole',
-      type: 'GET',
+      url: common.API_HOST + 'security/role/deleteRole',
+      type: 'POST',
       dataType: 'json',
-      data: {id:[that.data('id')]}
+      contentType: 'application/json; charset=utf-8',
+      data: JSON.stringify(sendData)
     })
     .done(function(res) {
       // console.log(res);
       if (true == res.meta.result) {
-        that.fadeOut(500,function(){
-          that.remove();
-          alert('骗你的啦，后台接口还没好呢！');
+        tr.fadeOut(500,function(){
+          tr.remove();
         });
       } else {
-        alert('删除失败：'+res.msg);
+        alert('删除失败：'+res.meta.msg);
       }
     });
   }
   return false;
-});
-$(document).on('click', '#btn-export', function() {
-  alert('后台接口还没好呢！');
 });
 $(document).on('click', '.multi-check-all', function() {
   var items = $(this).closest('table').find('.multi-check');
@@ -192,10 +148,10 @@ $(document).on('click', '.multi-check-all', function() {
 $(document).on('click', '#btn-delete-multi', function(e) {
   e.preventDefault();
   if($('.multi-check:checked').length < 1) {
-    alert('请至少选中一个用户！');
+    alert('请至少选中一个！');
     return false;
   }
-  if (window.confirm('确定要删除选中的用户吗？')) {
+  if (window.confirm('确定要删除选中的角色吗？')) {
     var userIds = [];
     var checked_items = $('.multi-check:checked');
     checked_items.each(function(index, el) {
@@ -227,40 +183,46 @@ $(document).on('click', '#btn-delete-multi', function(e) {
 
 function setTableData(rows) {
   var data = {rows:rows};
-  var source = $('#table-template').html();
-  var template = Handlebars.compile(source);
-  var html = template(data);
-  $('#dataTable').html(html);
+  var template = $('#table-template').html();
+  Mustache.parse(template);
+  var html = Mustache.render(template, data);
+  $('#dataTable tbody').html(html);
 }
-function setPager(total, pageIndex, pageSize) {
-  var data = {total:total,pageIndex:pageIndex,pageSize:pageSize};
-  var pageTotal = _.ceil(total/pageSize);
-  pageTotal = pageTotal > 1 ? pageTotal : 0;
-  var source = $('#pager-template').html();
-  var template = Handlebars.compile(source);
-  var html = template(data);
+function setPager(total, pageIndex, rowsSize, pageTotal) {
+  var data = {total:total,pageIndex:pageIndex,rowsSize:rowsSize,pageTotal:pageTotal};
+  var template = $('#pager-template').html();
+  Mustache.parse(template);
+  var html = Mustache.render(template, data);
   $('#pager').html(html);
 }
 function setModal(roleData) {
-  var data, source;
+  var data, template;
   if (roleData) {
     _(_resources).forEach(function(value, key){
-      _resources[key].selected = _.includes(roleData.resources, value.id) ? true : false;
+      _(roleData.resources).forEach(function(item){
+        if (item == value.id) {
+          _resources[key].selected = true;
+        }
+      });
     });
     delete roleData.resources;
     _(_users).forEach(function(value, key){
-      _users[key].selected = _.includes(roleData.users, value.id) ? true : false;
+      _(roleData.users).forEach(function(item){
+        if (item == value.id) {
+          _users[key].selected = true;
+        }
+      });
     });
     delete roleData.users;
     data = {role:roleData, resources:_resources, users:_users};
-    source = $('#edit-template').html();
+    template = $('#edit-template').html();
   } else {
     data = {resources:_resources, users:_users};
-    source = $('#create-template').html();
+    template = $('#create-template').html();
     $('#popup-role-form .modal-title').html('新增角色');
   }
-  var template = Handlebars.compile(source);
-  var html = template(data);
+  Mustache.parse(template);
+  var html = Mustache.render(template, data);
   $('#popup-role-form .modal-body').html(html);
 
   $('#resourceSelect').multiselect({
@@ -284,5 +246,64 @@ function setModal(roleData) {
     rightSelected: '#userSelect_right',
     leftSelected: '#userSelect_left',
     leftAll: '#userSelect_none'
+  });
+}
+
+function setRole() {
+  $.ajax({
+    url: common.API_HOST + 'security/role/roleList',
+    type: 'POST',
+    dataType: 'json',
+    data: {
+      pageIndex: 1,
+      pageSize: 9999
+    }
+  })
+  .done(function(res) {
+    // console.log(res);
+    if (true == res.meta.result) {
+      _roles = res.data.rows;
+      _(_roles).forEach(function(role, key) {
+        $('#search_roleId').append($('<option></option>').attr('value', role.id).text(role.roleName));
+      });
+    }
+  });
+}
+function getUsers() {
+  $.ajax({
+    url: common.API_HOST + 'security/user/userList',
+    type: 'POST',
+    dataType: 'json',
+    data: {
+      pageIndex: 1,
+      pageSize: 9999
+    }
+  })
+  .done(function(res) {
+    // console.log(res);
+    if (true == res.meta.result) {
+      _users = res.data.rows;
+    } else {
+      alert('获取用户列表失败：'+res.msg);
+    }
+  });
+}
+function getResources() {
+  $.ajax({
+    url: common.API_HOST + 'security/resource/resourceList',
+    type: 'POST',
+    dataType: 'json',
+    data: {
+      pageIndex: 1,
+      pageSize: 9999
+    }
+  })
+  .done(function(res) {
+    // console.log(res);
+    if (true == res.meta.result) {
+      _resources = res.data.rows;
+    } else {
+      alert('获取功能列表失败：'+res.msg);
+    }
   });
 }
