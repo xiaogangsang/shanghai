@@ -52,7 +52,7 @@ $('#formSearch').on('submit', function(e) {
         return false;
       }
       _pageIndex = res.data.pageIndex;
-      _pageTotal = Math.ceil(res.data.total/_pageSize);
+      _pageTotal = Math.floor(res.data.total/_pageSize);
       setPager(res.data.total, _pageIndex, res.data.rows.length, _pageTotal);
       _(res.data.rows).forEach(function(item){
         item.onlineStatusName = item.onlineStatus == 1 ? '已上线' : '已下线';
