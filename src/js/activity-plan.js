@@ -150,3 +150,44 @@ function setPager(total, pageIndex, rowsSize, pageTotal) {
   var html = Mustache.render(template, data);
   $('#pager').html(html);
 }
+
+// TODO: 这里有问题, 如果点击查询以后修改了查询条件, 那么再点击页码跳转就会出问题, 不再是当前搜索结果的页码跳转
+// 上一页 下一页 页面跳转
+$('#pager').on('click', '.prev,.next', function(e) {
+  e.preventDefault();
+  if ($(this).hasClass('prev')) {
+    if (_pageIndex <= 1) {
+      _pageIndex = 1;
+      alert('已经是第一页！');
+      return false;
+    }
+    _pageIndex--;
+  } else {
+    if (_pageIndex >= _pageTotal) {
+      _pageIndex = _pageTotal;
+      alert('已经是最后一页！');
+      return false;
+    }
+    _pageIndex++
+  }
+  $("#formSearch").trigger('submit');
+  return false;
+});
+
+// 直接输入页码页面跳转
+$('#pager').on('click', '#btn-pager', function(e) {
+  e.preventDefault();
+  if ('' ==$('#pageNo').val()) {
+    return false;
+  }
+  var pageNo = parseInt( $('#pageNo').val() );
+  if (NaN == pageNo || pageNo < 1 || pageNo > _pageTotal) {
+    alert('要跳转的页码超过了范围！');
+    return false;
+  }
+  _pageIndex = pageNo;
+  $("#formSearch").trigger('submit');
+  return false;
+});
+
+
