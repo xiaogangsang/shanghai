@@ -129,7 +129,7 @@
       <tbody>
         <tr>
           <th width="80">影院名</th>
-          <td><input type="text" class="form-control" id="name" required></td>
+          <td><input type="text" class="form-control" id="cinemaName" required></td>
         </tr>
         <tr>
           <th>院线</th>

@@ -80,10 +80,14 @@ $('#formSearch').on('submit', function(e) {
   .done(function(res) {
     // console.log(res);
     if (true == res.meta.result) {
-      _pageIndex = res.data.pageIndex;
-      _pageTotal = Math.floor(res.data.total/_pageSize);
-      setPager(res.data.total, _pageIndex, res.data.rows.length, _pageTotal);
-      setTableData(res.data.rows);
+      if (res.data.rows.length < 1) {
+        $('#dataTable tbody').html('<tr><td colspan="9" align="center">查不到相关数据，请修改查询条件！</td></tr>');
+      } else {
+        _pageIndex = res.data.pageIndex;
+        _pageTotal = Math.floor(res.data.total/_pageSize);
+        setPager(res.data.total, _pageIndex, res.data.rows.length, _pageTotal);
+        setTableData(res.data.rows);
+      }
     } else {
       alert('接口错误：'+res.meta.msg);
     }

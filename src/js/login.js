@@ -28,7 +28,7 @@ $('#form-login').on('submit', function(e) {
     if (true == res.meta.result) {
       Cookies.set('x-token', res.data['x-token']);
       alert('登陆成功！');
-      window.location.href = 'index.html';
+      // window.location.href = 'index.html';
     } else {
       $('<div class="alert alert-danger" role="alert">'+res.meta.msg+'</div>').prependTo(that).fadeTo(5000, 1).slideUp(500, function(){$(".alert").alert('close');});
     }

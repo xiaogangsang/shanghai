@@ -10,6 +10,11 @@ a {
   border: none;
   border-bottom: 1px solid #e7e7e7;
   margin-bottom: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
 }
 .navbar-default .navbar-brand {
   color: #ff8903;
@@ -243,6 +248,7 @@ fieldset[disabled] .form-control {
   color: #ff8903;
 }
 .main {
+  margin-top: 52px;
   margin-bottom: 60px;
 }
 .search-area {
