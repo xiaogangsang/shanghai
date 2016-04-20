@@ -1,4 +1,3 @@
-require('datetimepicker');
 var common = require('common');
 var _channels = {};
 var _pageIndex = 1;
@@ -23,10 +22,6 @@ $(function() {
     meridiem: ["上午", "下午"]
   };
   $('#search_beginDate,#search_endDate').datetimepicker({format: 'yyyy-mm-dd', language: 'zh-CN', minView: 2, todayHighlight: true, autoclose: true});
-
-  //data cache
-  // getProvince();
-  // getService();
 });
 
 //handle search form

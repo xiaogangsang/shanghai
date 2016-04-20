@@ -8,3 +8,4 @@ require('parsley');
 require('parsley-lang');
 require('multiselect');
 require('chosen');
+require('datetimepicker');
