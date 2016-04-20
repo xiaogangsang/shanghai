@@ -5,7 +5,7 @@
 //     $('#'+eleName).modal('show');
 //   }
 // });
-require('datetimepicker');
+// require('datetimepicker');
 var common = require('common');
 // var _brands = {};
 // var _cities = [];
@@ -187,6 +187,97 @@ $('#pager').on('click', '#btn-pager', function(e) {
   }
   _pageIndex = pageNo;
   $("#formSearch").trigger('submit');
+  return false;
+});
+
+// 新增
+$(document).on('click', '#btn-create', function(e) {
+  e.preventDefault();
+  setModal(false);
+  $('#popup-plan-form').modal('show');
+  $('#popup-plan-form form').parsley();
+});
+
+$('#dataTable').on('click', '.btn-edit', function(e) {
+  e.preventDefault();
+  $.ajax({
+    url: common.API_HOST + 'plan/planDetail',
+    type: 'POST',
+    dataType: 'json',
+    data: { id: $(this).closest('tr').data('id') }
+  })
+  .done(function(res) {
+    if (true == res.meta.result) {
+      setModal(res.data);
+      $('#popup-plan-form').modal('show');
+      $('#popup-plan-form form').parsley();
+    } else {
+      alert('接口错误：'+res.meta.msg);
+    }
+  });
+});
+
+function setModal(planData) {
+
+  var template, html;
+
+  if (planData) {
+    template = $('#edit-template').html();
+    Mustache.parse(template);
+    var data = {plan: planData};
+    html = Mustache.render(template, data);
+    $('#popup-plan-form .modal-title').html('编辑活动计划');
+  } else {
+    template = $('#create-template').html();
+    $('#popup-plan-form .modal-title').html('新增活动计划');
+    Mustache.parse(template);
+    html = Mustache.render(template);
+  }
+
+  $('#popup-plan-form .modal-body').html(html);
+}
+
+// 新增 / 更新 modal 的 submmit
+$(document).on('submit', '#popup-plan-form form', function(e) {
+  e.preventDefault();
+  // $('.multi-selection option').attr('selected','selected'); //hack for firefox
+  var sendData = {
+    'name': $.trim( $('#popup-plan-form #name').val() ),
+    'dailyAmount': $('#popup-plan-form #dailyAmount').val(),
+    'dailyTicket': $('#popup-plan-form #dailyTicket').val(),
+    'totalAmount': $('#popup-plan-form #totalAmount').val(),
+    'totalTicket': $('#popup-plan-form #totalTicket').val()
+  };
+
+  var ajaxUrl = common.API_HOST + 'plan/savePlan';
+
+  var isUpdate = ($('#popup-plan-form #id').length > 0);
+
+  if (isUpdate) {
+    sendData.id = $('#popup-plan-form #id').val();
+    ajaxUrl = common.API_HOST + 'plan/updatePlan';
+  }
+  // console.log( sendData );
+  $.ajax({
+    url: ajaxUrl,
+    type: 'POST',
+    dataType: 'json',
+    data: sendData
+  })
+  .done(function(res) {
+    // console.log(res);
+    if (true == res.meta.result) {
+      if(isUpdate) {
+        alert('更新成功！');
+      } else {
+        alert('添加成功！');
+      }
+      $('#popup-plan-form').modal('hide');
+      $('#formSearch').trigger('submit');
+    } else {
+      alert('接口错误：'+res.meta.msg);
+    }
+  });
   return false;
 });
 
