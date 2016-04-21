@@ -116,7 +116,7 @@ $('#dataTable').on('click', '.btn-status', function(e) {
   e.preventDefault();
   var sendData = {
     ids: $(this).closest('tr').data('id'),
-    onlineStatus: $(this).data('onlineStatus')==1 ? 0 : 1
+    onlineStatus: $(this).data('onlinestatus') == 1 ? 0 : 1
   };
   // console.log(sendData);
   var statusName = sendData.onlineStatus ? '上线' : '下线';
