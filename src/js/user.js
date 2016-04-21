@@ -84,7 +84,7 @@ $('#formSearch').on('submit', function(e) {
         $('#dataTable tbody').html('<tr><td colspan="9" align="center">查不到相关数据，请修改查询条件！</td></tr>');
       } else {
         _pageIndex = res.data.pageIndex;
-        _pageTotal = Math.floor(res.data.total/_pageSize);
+        _pageTotal = Math.ceil(res.data.total/_pageSize);
         setPager(res.data.total, _pageIndex, res.data.rows.length, _pageTotal);
         setTableData(res.data.rows);
       }
