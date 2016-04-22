@@ -206,6 +206,7 @@ fieldset[disabled] .form-control {
 .table>tbody>tr>th,
 .table>tbody>tr>td {
   border: 0;
+  vertical-align: middle;
 }
 .table>tbody>tr>th {
   vertical-align: middle;
@@ -379,9 +380,9 @@ fieldset[disabled] .form-control {
   padding: 3px;
   text-align: left;
 }
-.parsley-error {
-  /*border: 1px solid #f2dede;*/
-}
+/*.parsley-error {
+  background: #f2dede !important;
+}*/
 
 
 

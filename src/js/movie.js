@@ -51,7 +51,7 @@ $('#formSearch').on('submit', function(e) {
     data: sendData
   })
   .done(function(res) {
-    console.log(res);
+    // console.log(res);
     if (true == res.meta.result) {
       if (res.data.rows.length < 1) {
         $('#dataTable tbody').html('<tr><td colspan="8" align="center">请点击“查询”按钮！</td></tr>');
@@ -91,10 +91,7 @@ $(document).on('submit', '#popup-movie-form form', function(e) {
     'area': $.trim( $('#popup-movie-form #area').val() ),
     'produceCorp': $.trim( $('#popup-movie-form #produceCorp').val() ),
     'poster': $.trim( $('#popup-movie-form #poster').val() ),
-    'status': $('#popup-movie-form #status').val(),
-    'actor': $.trim( $('#popup-movie-form #actor').val() ),
-    'director': $.trim( $('#popup-movie-form #director').val() ),
-    'theme': $.trim( $('#popup-movie-form #theme').val() )
+    'status': $('#popup-movie-form #status').val()
   };
   // console.log( sendData );
   $.ajax({
@@ -126,6 +123,7 @@ $('#dataTable').on('click', '.btn-edit', function(e) {
   .done(function(res) {
     // console.log(res);
     if (true == res.meta.result) {
+      res.data.showDate = res.data.showDate.split(' ')[0];
       setModal(res.data);
       $('#popup-movie-form').modal('show');
       $('#showDate').datetimepicker({format: 'yyyy-mm-dd', language: 'zh-CN', minView: 2, todayHighlight: true, autoclose: true});

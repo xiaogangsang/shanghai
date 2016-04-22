@@ -28,7 +28,7 @@ $(function() {
 $('#formSearch').on('submit', function(e) {
   e.preventDefault();
   var sendData = {
-    tel: $.trim( $('#tel').val() ),
+    tel: $.trim( $('#search_tel').val() ),
     channelId: $('#search_channelId').val(),
     filmName: $.trim( $('#search_filmName').val() ),
     content: $.trim( $('#search_content').val() ),

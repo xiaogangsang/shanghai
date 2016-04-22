@@ -39,20 +39,20 @@
           <td><input type="text" class="form-control" id="produceCorp" value="{{movie.produceCorp}}" required></td>
         </tr>
         <tr>
-          <th>题材</th>
-          <td><input type="text" class="form-control" id="theme" value="{{movie.theme}}" required></td>
-          <th>导演</th>
-          <td><input type="text" class="form-control" id="director" value="{{movie.director}}" required></td>
-        </tr>
-        <tr>
           <th>时长</th>
           <td><input type="text" class="form-control" id="duration" value="{{movie.duration}}" required></td>
           <th>国家</th>
           <td><input type="text" class="form-control" id="area" value="{{movie.area}}" required></td>
         </tr>
         <tr>
+          <th>题材</th>
+          <td>{{movie.theme}}</td>
+          <th>导演</th>
+          <td>{{movie.director}}</td>
+        </tr>
+        <tr>
           <th>主演</th>
-          <td colspan="3"><input type="text" class="form-control" id="actor" value="{{movie.actor}}" required></td>
+          <td colspan="3">{{movie.actor}}</td>
         </tr>
         <tr>
           <th>影片制式</th>
