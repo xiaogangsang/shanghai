@@ -81,24 +81,28 @@ $('#formSearch').on('submit', function(e) {
 $(document).on('submit', '#popup-movie-form form', function(e) {
   e.preventDefault();
   var sendData = {
-    'id': $('#popup-movie-form #id').val(),
-    'name': $.trim( $('#popup-movie-form #name').val() ),
-    'dimenId': $('#popup-movie-form #dimenId').val(),
-    'showDate': $('#popup-movie-form #showDate').val(),
-    'duration': $.trim( $('#popup-movie-form #duration').val() ),
-    'summary': $.trim( $('#popup-movie-form #summary').val() ),
-    'description': $.trim( $('#popup-movie-form #description').val() ),
-    'area': $.trim( $('#popup-movie-form #area').val() ),
-    'produceCorp': $.trim( $('#popup-movie-form #produceCorp').val() ),
-    'poster': $.trim( $('#popup-movie-form #poster').val() ),
-    'status': $('#popup-movie-form #status').val()
+    id: $('#popup-movie-form #id').val(),
+    name: $.trim( $('#popup-movie-form #name').val() ),
+    dimenId: [],
+    showDate: $('#popup-movie-form #showDate').val(),
+    duration: $.trim( $('#popup-movie-form #duration').val() ),
+    summary: $.trim( $('#popup-movie-form #summary').val() ),
+    description: $.trim( $('#popup-movie-form #description').val() ),
+    area: $.trim( $('#popup-movie-form #area').val() ),
+    produceCorp: $.trim( $('#popup-movie-form #produceCorp').val() ),
+    poster: $.trim( $('#popup-movie-form #poster').val() ),
+    status: $('#popup-movie-form #status').val()
   };
+  $('#popup-movie-form input[name=dimenId]:checked').each(function() {
+    sendData.dimenId.push($(this).val());
+  });
   // console.log( sendData );
   $.ajax({
     url: common.API_HOST + '/film/standardFilm/saveOrUpdate',
     type: 'POST',
     dataType: 'json',
-    data: sendData
+    contentType: 'application/json; charset=utf-8',
+    data: JSON.stringify( sendData )
   })
   .done(function(res) {
     // console.log(res);

@@ -23,7 +23,7 @@
         <tbody>
           <tr>
             <th width="80">角色名称</th>
-            <td><input type="text" class="form-control" id="roleName" value="{{role.roleName}}" required></td>
+            <td><input type="text" class="form-control" id="roleName" value="{{role.roleName}}" size="10" required></td>
           </tr>
           <tr>
             <th>角色备注</th>

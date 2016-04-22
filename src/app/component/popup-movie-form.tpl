@@ -58,7 +58,7 @@
           <th>影片制式</th>
           <td colspan="3">
             {{#versions}}
-            <div class="checkbox-inline"><label><input type="checkbox" name="dimenId" id="dimenId" value="{{id}}"{{#selected}} checked{{/selected}}><span>{{name}}</span></label></div>
+            <div class="checkbox-inline"><label><input type="checkbox" name="dimenId" value="{{id}}"{{#selected}} checked{{/selected}}><span>{{name}}</span></label></div>
             {{/versions}}
           </td>
         </tr>
