@@ -45,7 +45,7 @@ $('#formSearch').on('submit', function(e) {
   };
   // console.log(sendData);
   $.ajax({
-    url: common.API_HOST + '/film/standardFilm/list',
+    url: common.API_HOST + 'film/standardFilm/list',
     type: 'POST',
     dataType: 'json',
     data: sendData
@@ -98,7 +98,7 @@ $(document).on('submit', '#popup-movie-form form', function(e) {
   });
   // console.log( sendData );
   $.ajax({
-    url: common.API_HOST + '/film/standardFilm/saveOrUpdate',
+    url: common.API_HOST + 'film/standardFilm/saveOrUpdate',
     type: 'POST',
     dataType: 'json',
     contentType: 'application/json; charset=utf-8',
@@ -119,7 +119,7 @@ $(document).on('submit', '#popup-movie-form form', function(e) {
 $('#dataTable').on('click', '.btn-edit', function(e) {
   e.preventDefault();
   $.ajax({
-    url: common.API_HOST + '/film/standardFilm/detail',
+    url: common.API_HOST + 'film/standardFilm/detail',
     type: 'POST',
     dataType: 'json',
     data: { id: $(this).closest('tr').data('id') }
@@ -140,7 +140,7 @@ $('#dataTable').on('click', '.btn-edit', function(e) {
 $('#dataTable').on('click', '.btn-detail', function(e) {
   e.preventDefault();
   $.ajax({
-    url: common.API_HOST + '/film/standardFilm/detail',
+    url: common.API_HOST + 'film/standardFilm/detail',
     type: 'POST',
     dataType: 'json',
     data: { id: $(this).closest('tr').data('id') }
@@ -169,7 +169,7 @@ $('#dataTable').on('click', '.btn-bind', function(e) {
   e.preventDefault();
   var tr = $(this).closest('tr');
   $.ajax({
-    url: common.API_HOST + '/film/standardFilm/detail',
+    url: common.API_HOST + 'film/standardFilm/detail',
     type: 'POST',
     dataType: 'json',
     data: { id: tr.data('id') }
@@ -188,7 +188,7 @@ $('#dataTable').on('click', '.btn-bind', function(e) {
     }
   });
   $.ajax({
-    url: common.API_HOST + '/film/standardFilm/associationTpFilms',
+    url: common.API_HOST + 'film/standardFilm/associationTpFilms',
     type: 'POST',
     dataType: 'json',
     data: { id: tr.data('id') }

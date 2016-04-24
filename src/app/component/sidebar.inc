@@ -65,7 +65,7 @@
       <div id="menu7" class="panel-collapse collapse" role="tabpanel">
         <div class="list-group">
           <a href="order-cs.html" class="list-group-item" id="menu-order-cs">客服</a>
-          <a href="order-op.html" class="list-group-item" id="menu-order-op">运营</a>
+          <a href="order.html" class="list-group-item" id="menu-order">运营</a>
         </div>
       </div>
     </div>
@@ -98,6 +98,24 @@
           <a href="ability-resource.html" class="list-group-item" id="menu-ability-resource">功能权限管理</a>
           <a href="ability-channel.html" class="list-group-item" id="menu-ability-channel">渠道权限管理</a>
           <a href="ability-city.html" class="list-group-item" id="menu-ability-city">城市权限管理</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu11"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 优惠券使用记录</a>
+      <div id="menu11" class="panel-collapse collapse" role="tabpanel">
+        <div class="list-group">
+          <a href="record-coupon.html" class="list-group-item" id="menu-record-coupon">查询</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu12"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 操作流水记录</a>
+      <div id="menu12" class="panel-collapse collapse" role="tabpanel">
+        <div class="list-group">
+          <a href="record-operation.html" class="list-group-item" id="menu-record-operation">查询</a>
         </div>
       </div>
     </div>
