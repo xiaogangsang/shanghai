@@ -161,6 +161,7 @@ function handle1stLevelBudgetSourceChange() {
 	var html = '';
 
 	if (secondLevelBudgetSources) {
+    html = '<option value="">全部</option>';
 		for (var i = 0; i < secondLevelBudgetSources.length; i++) {
 			var budgetSource = secondLevelBudgetSources[i];
 			var option = '<option value="' + budgetSource.id + '">' + budgetSource.sourceName + '</option>';

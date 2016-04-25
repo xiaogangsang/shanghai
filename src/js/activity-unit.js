@@ -176,6 +176,16 @@ $('.toggle-selection-all').change(function(e) {
 	}
 });
 
+$('body').on('change', 'tr > td :checkbox', function(e) {
+	e.preventDefault();
+
+	var isChecked = $(this).is(':checked');
+
+	if (!isChecked) {
+		$('.toggle-selection-all').prop('checked', false);
+	}
+});
+
 
 // 导出
 $('.btn-export').click(function(e) {
