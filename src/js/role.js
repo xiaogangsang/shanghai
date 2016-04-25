@@ -41,6 +41,13 @@ $('#formSearch').on('submit', function(e) {
       if (res.data.rows.length < 1) {
         $('#dataTable tbody').html('<tr><td colspan="6" align="center">查不到相关数据，请修改查询条件！</td></tr>');
       } else {
+        _(res.data.rows).forEach(function(item){
+          if (item.desc.length > 12) {
+            item.short = item.desc.substr(0,10)+'...';
+          } else {
+            item.short = item.desc;
+          }
+        });
         _pageIndex = res.data.pageIndex;
         _pageTotal = Math.ceil(res.data.total/_pageSize);
         setPager(res.data.total, res.data.pageIndex, res.data.rows.length, _pageTotal);
@@ -79,7 +86,7 @@ $(document).on('click', '#btn-create', function(e) {
 });
 $(document).on('click', '#popup-role-form button[type=submit]', function(event) {
   event.preventDefault();
-  $('.multi-selection option').attr('selected','selected');
+  $('.multi-selection option').prop('selected', true);
   $('#popup-role-form form').trigger('submit');
 });
 $(document).on('submit', '#popup-role-form form', function(e) {

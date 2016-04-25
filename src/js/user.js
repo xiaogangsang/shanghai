@@ -37,12 +37,12 @@ $(function() {
 $('#formSearch').on('submit', function(e) {
   e.preventDefault()
   var sendData = {
-    // name: $.trim($('#search_name').val()),
-    // loginId: $.trim($('#search_loginId').val()),
-    // city: $.trim($('#search_city').val()),
-    // department: $.trim($('#search_department').val()),
-    // roleId: $('#search_roleId').val(),
-    // createdBy: $.trim($('#search_createdBy').val()),
+    name: $.trim($('#search_name').val()),
+    loginId: $.trim($('#search_loginId').val()),
+    city: $.trim($('#search_city').val()),
+    department: $.trim($('#search_department').val()),
+    roleId: $('#search_roleId').val(),
+    createdBy: $.trim($('#search_createdBy').val()),
     pageIndex: _pageIndex,
     pageSize: _pageSize
   };
@@ -84,7 +84,7 @@ $('#formSearch').on('submit', function(e) {
         $('#dataTable tbody').html('<tr><td colspan="9" align="center">查不到相关数据，请修改查询条件！</td></tr>');
       } else {
         _pageIndex = res.data.pageIndex;
-        _pageTotal = Math.floor(res.data.total/_pageSize);
+        _pageTotal = Math.ceil(res.data.total/_pageSize);
         setPager(res.data.total, _pageIndex, res.data.rows.length, _pageTotal);
         setTableData(res.data.rows);
       }
@@ -252,7 +252,7 @@ $(document).on('click', '#btn-delete-multi', function(e) {
 });
 $(document).on('click', '#popup-user-form button[type=submit]', function(event) {
   event.preventDefault();
-  $('.multi-selection option').attr('selected','selected');
+  $('.multi-selection option').prop('selected', true);
   $('#popup-user-form form').trigger('submit');
 });
 $(document).on('submit', '#popup-user-form form', function(e) {

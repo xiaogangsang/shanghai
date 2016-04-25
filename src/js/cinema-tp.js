@@ -1,4 +1,3 @@
-require('datetimepicker');
 var common = require('common');
 var _sources = {};
 var _brands = {};

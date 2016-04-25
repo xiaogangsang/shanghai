@@ -52,7 +52,7 @@ $('#formSearch').on('submit', function(e) {
         return false;
       }
       _pageIndex = res.data.pageIndex;
-      _pageTotal = Math.floor(res.data.total/_pageSize);
+      _pageTotal = Math.ceil(res.data.total/_pageSize);
       setPager(res.data.total, _pageIndex, res.data.rows.length, _pageTotal);
       _(res.data.rows).forEach(function(item){
         item.onlineStatusName = item.onlineStatus == 1 ? '已上线' : '已下线';
@@ -116,7 +116,7 @@ $('#dataTable').on('click', '.btn-status', function(e) {
   e.preventDefault();
   var sendData = {
     ids: $(this).closest('tr').data('id'),
-    onlineStatus: $(this).data('onlineStatus')==1 ? 0 : 1
+    onlineStatus: $(this).data('onlinestatus') == 1 ? 0 : 1
   };
   // console.log(sendData);
   var statusName = sendData.onlineStatus ? '上线' : '下线';
@@ -228,18 +228,17 @@ $(document).on('click', '#btn-online-multi,#btn-offline-multi', function(e) {
 });
 $(document).on('submit', '#popup-cinema-form form', function(e) {
   e.preventDefault();
-  // $('.multi-selection option').attr('selected','selected'); //hack for firefox
   var sendData = {
-    'cinemaName': $.trim( $('#popup-cinema-form #cinemaName').val() ),
-    'brandId': $('#popup-cinema-form #brandId').val(),
-    'provinceId': $('#popup-cinema-form #provinceId').val(),
-    'cityId': $('#popup-cinema-form #cityId').val(),
-    'areaId': $('#popup-cinema-form #areaId').val(),
-    'districtId': $('#popup-cinema-form #districtId').val(),
-    'address': $.trim( $('#popup-cinema-form #address').val() ),
-    'tel': $.trim( $('#popup-cinema-form #tel').val() ),
-    'longitude': $.trim( $('#popup-cinema-form #longitude').val() ),
-    'latitude': $.trim( $('#popup-cinema-form #latitude').val() )
+    cinemaName: $.trim( $('#popup-cinema-form #cinemaName').val() ),
+    brandId: $('#popup-cinema-form #brandId').val(),
+    provinceId: $('#popup-cinema-form #provinceId').val(),
+    cityId: $('#popup-cinema-form #cityId').val(),
+    areaId: $('#popup-cinema-form #areaId').val(),
+    districtId: $('#popup-cinema-form #districtId').val(),
+    address: $.trim( $('#popup-cinema-form #address').val() ),
+    tel: $.trim( $('#popup-cinema-form #tel').val() ),
+    longitude: $.trim( $('#popup-cinema-form #longitude').val() ),
+    latitude: $.trim( $('#popup-cinema-form #latitude').val() )
   };
   var id_arr = [];
   var des_arr = [];

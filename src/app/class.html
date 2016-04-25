@@ -44,8 +44,8 @@
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">城市</div>
-              <select class="form-control" id="search_cityId" data-placeholder="全部">
-                <option></option>
+              <select class="form-control" id="search_cityId">
+                <option value="">全部</option>
               </select>
             </div>
           </div>
@@ -53,8 +53,8 @@
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">状态</div>
-              <select class="form-control" id="search_status" data-placeholder="全部">
-                <option></option>
+              <select class="form-control" id="search_status">
+                <option value="">全部</option>
                 <option value="1">已上线</option>
                 <option value="0">已下线</option>
               </select>
@@ -64,8 +64,8 @@
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">渠道</div>
-              <select class="form-control" id="search_channelId" data-placeholder="全部">
-                <option></option>
+              <select class="form-control" id="search_channelId">
+                <option value="">全部</option>
               </select>
             </div>
           </div>
@@ -76,7 +76,7 @@
                 <button type="submit" class="btn btn-block btn-primary">查询</button>
               </div>
               <div class="col-sm-6">
-              <button type="button" class="btn btn-block btn-default" id="btn-create">新建</button>
+                <button type="button" class="btn btn-block btn-default" id="btn-create">新建</button>
               </div>
             </div>
           </div>
@@ -94,7 +94,27 @@
           <div class="row" id="pager"></div>
 
           <div class="table-responsive" id="dataTable">
-            <p style="text-align: center;">查询角色</p>
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>票类名称</th>
+                  <th>城市</th>
+                  <th>票类级别</th>
+                  <th>渠道</th>
+                  <th>开始时间</th>
+                  <th>结束时间</th>
+                  <th>票类状态</th>
+                  <th>票类类型</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td colspan="10" align="center">请点击“查询”按钮！</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
 
         </div>
@@ -109,72 +129,40 @@
   <script src="../js/class.js"></script>
 
   <script id="pager-template" type="text/x-tmpl-mustache">
-    <div class="col xs-12 col-sm-6 rowStatics">共 <span id="total">{{total}}</span> 条数据，当前显示 <span id="pageSize">{{pageSize}}</span> 条</div>
+    <div class="col xs-12 col-sm-6 rowStatics">共 <span id="total">{{total}}</span> 条数据，当前显示 <span id="rowsSize">{{rowsSize}}</span> 条</div>
     {{#pageTotal}}
     <div class="col xs-12 col-sm-6">
       <nav>
         <ul class="pagination pagination-sm">
-          <li>
-            <a href="#pager"><span aria-hidden="true">&lt;</span></a>
-          </li>
-          <li><span id="pageIndex">{{pageIndex}}</span>/<span id="pageTotal">{{pageTotal}}</span></li>
-          <li>
-            <a href="#pager"><span aria-hidden="true">&gt;</span></a>
-          </li>
-          <li>
-            <input type="number" name="pageNo" id="pageNo" pattern="[0-9]+">
-          </li>
-          <li>
-            <button type="button" class="btn" id="btn-page-jump">跳转</button>
-          </li>
+          <li><a href="#" class="prev"><span>&lt;</span></a></li>
+          <li><span id="pageIndex">{{pageIndex}}</span> / <span id="pageTotal">{{pageTotal}}</span></li>
+          <li><a href="#" class="next"><span>&gt;</span></a></li>
+          <li><input type="number" name="pageNo" id="pageNo" pattern="[0-9]+"></li>
+          <li><button type="button" class="btn" id="btn-pager">跳转</button></li>
         </ul>
       </nav>
     </div>
     {{/pageTotal}}
   </script>
   <script id="table-template" type="text/x-tmpl-mustache">
-    <table class="table">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>票类名称</th>
-          <th>城市</th>
-          <th>票类级别</th>
-          <th>渠道</th>
-          <th width="90">开始时间</th>
-          <th width="90">结束时间</th>
-          <th>票类状态</th>
-          <th>票类类型</th>
-          <th width="100">操作</th>
-          <th>检查场次</th>
-        </tr>
-      </thead>
-      <tbody>
-        {{#rows}}
-        <tr data-id="{{id}}">
-          <td>{{id}}</td>
-          <td>{{ticketName}}</td>
-          <td>{{city}}</td>
-          <td>{{settleName}}</td>
-          <td>{{channelId}}</td>
-          <td>{{beginTime}}</td>
-          <td>{{endTime}}</td>
-          <td>{{statusName}}</td>
-          <td>{{ticketType}}</td>
-          <td>
-            {{#status}}
-            <button type="button" class="btn btn-xs btn-default btn-offline">下线</button>
-            {{/status}}
-            {{^status}}
-            <button type="button" class="btn btn-xs btn-default btn-online">上线</button>
-            {{/status}}
-            <button type="button" class="btn btn-xs btn-default btn-edit">编辑</button>
-          </td>
-          <td><button type="button" class="btn btn-xs btn-check">CHECK</a></td>
-        </tr>
-        {{/rows}}
-      </tbody>
-    </table>
+    {{#rows}}
+    <tr data-id="{{id}}">
+      <td>{{id}}</td>
+      <td>{{ticketId}}</td>
+      <td title="{{cityNames}}">{{cityShort}}</td>
+      <td>{{settleName}}</td>
+      <td>{{channelName}}</td>
+      <td>{{beginTime}}</td>
+      <td>{{endTime}}</td>
+      <td>{{statusName}}</td>
+      <td>{{typeName}}</td>
+      <td>
+        <button type="button" class="btn btn-xs btn-default btn-status" data-status="{{status}}">{{#status}}下线{{/status}}{{^status}}上线{{/status}}</button>
+        <button type="button" class="btn btn-xs btn-default btn-edit">编辑</button>
+        <button type="button" class="btn btn-xs btn-default btn-check">检查场次</button>
+      </td>
+    </tr>
+    {{/rows}}
   </script>
 
   @@include('component/popup-class-form.tpl')

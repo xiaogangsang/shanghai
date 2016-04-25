@@ -1,7 +1,6 @@
 var common = require('common');
 var _channels = {};
 var _status = [{id:1, name:'出票中'}, {id:2, name:'已出票'}, {id:3, name:'出票失败'},{id:4, name:'已退票'}];
-var _sources = {};
 var _pageIndex = 1;
 var _pageSize = 10;
 var _pageTotal = 0;
@@ -9,9 +8,10 @@ var searchCache = {};
 var useCache = false;
 
 $(function() {
-  common.setMenu('order');
+  common.setMenu('order-cs');
+  //set search form
   setChannel();
-  getSource();
+  // setSource();
   $.fn.datetimepicker.dates['zh-CN'] = {
     days: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"],
     daysShort: ["周日", "周一", "周二", "周三", "周四", "周五", "周六", "周日"],
@@ -30,8 +30,6 @@ $('#formSearch').on('submit', function(e) {
   e.preventDefault();
   var sendData = {
     mobile: $.trim( $('#search_mobile').val() ),
-    transOrderNo: $.trim( $('#search_transOrderNo').val() ),
-    tpOrderNo: $.trim( $('#search_tpOrderNo').val() ),
     productOrderStatus: $('#search_productOrderStatus').val(),
     channelId: $('#search_channelId').val(),
     placeOrderStartTime: $('#search_placeOrderStartTime').val(),
@@ -46,7 +44,7 @@ $('#formSearch').on('submit', function(e) {
   sendData.pageIndex = _pageIndex;
   // console.log(sendData);
   $.ajax({
-    url: common.API_HOST + '/order/op/orderList',
+    url: common.API_HOST + '/order/kf/orderList',
     type: 'POST',
     dataType: 'json',
     data: sendData
@@ -73,11 +71,6 @@ $('#formSearch').on('submit', function(e) {
               item.channelName = channel.channelName;
             }
           });
-          _(_sources).forEach(function(source){
-            if (source.sourceId == item.thirdParty) {
-              item.thirdParty = source.sourceName;
-            }
-          });
         });
         setTableData(res.data.rows);
       }
@@ -90,7 +83,7 @@ $('#formSearch').on('submit', function(e) {
 $('#dataTable').on('click', '.btn-detail', function(event) {
   event.preventDefault();
   $.ajax({
-    url: common.API_HOST + '/order/op/orderDetail',
+    url: common.API_HOST + '/order/kf/orderDetail',
     type: 'POST',
     dataType: 'json',
     data: {transOrderNo:$(this).closest('tr').data('id')}
@@ -99,7 +92,7 @@ $('#dataTable').on('click', '.btn-detail', function(event) {
     console.log(res);
     if (true == res.meta.result) {
       setModal(res.data);
-      $('#popup-order-detail').modal('show');
+      $('#popup-order-cs-detail').modal('show');
     } else {
       alert('接口错误：'+res.meta.msg);
     }
@@ -117,7 +110,7 @@ $(document).on('click', '#btn-sendsms', function(event) {
     return false;
   }
   $.ajax({
-    url: common.API_HOST + '/order/op/sendMessage',
+    url: common.API_HOST + '/order/kf/sendMessage',
     type: 'POST',
     dataType: 'json',
     data: {
@@ -134,45 +127,21 @@ $(document).on('click', '#btn-sendsms', function(event) {
     }
   });
 });
-// $(document).on('click', '#btn-refund', function(event) {
-//   event.preventDefault();
-//   if (false == window.confirm('确定要退款吗？')) {
-//     return false;
-//   }
-//   var sendData = {
-//     transOrderNo: $('#transOrderNo').val(),
-//     productOrderNo: $('#productOrderNo').val(),
-//     refundReason: $.trim( $('#refundReason').val() ),
-//     channelId: $('#channelId').val(),
-//     refundAmount: $('#refundAmount').val(),
-//     refundPoint: $('#refundPoint').val(),
-//   };
-//   $.ajax({
-//     url: common.API_HOST + '/order/op/refundMoney',
-//     type: 'POST',
-//     dataType: 'json',
-//     data: sendData
-//   })
-//   .done(function(res) {
-//     // console.log(res);
-//     if (true == res.meta.result) {
-//       alert('退优惠券成功！');
-//       $('#popup-order-return-ticket').modal('hide');
-//     } else {
-//       alert('接口错误：'+res.meta.msg);
-//     }
-//   });
-// });
 $(document).on('click', '#btn-returnCoupon', function(event) {
   event.preventDefault();
   if (false == window.confirm('确定退优惠券吗？')) {
+    return false;
+  }
+  var productOrderNo = $('#productOrderNo').val();
+  if ( productOrderNo=='' ) {
+    alert('非法操作，无法获取订单号！');
     return false;
   }
   $.ajax({
     url: common.API_HOST + '/order/kf/refundCoupon',
     type: 'POST',
     dataType: 'json',
-    data: {productOrderNo: $('#productOrderNo').val()}
+    data: {productOrderNo: productOrderNo}
   })
   .done(function(res) {
     // console.log(res);
@@ -198,6 +167,11 @@ $(document).on('submit', '#popup-order-return-ticket form', function(event) {
   var refundReason = $('#refundReason').val();
   if (refundReason == '') {
     alert('退款原因不能为空！');
+    return false;
+  }
+  if ( transOrderNo=='' || productOrderNo=='' ) {
+    alert('非法操作，无法获取订单号！');
+    $('#popup-order-return-ticket').modal('hide');
     return false;
   }
   $.ajax({
@@ -265,7 +239,6 @@ $('#pager').on('click', '#btn-pager', function(e) {
 
 function setModal(orderData) {
   if (orderData) {
-    orderData.canRefund = false; //支付成功
     orderData.canReturnTicket = false; //已出票+支付成功+支持退票的万达票类影院
     orderData.canReturnCoupon = false; //不是已出票+有优惠券
     var data = {order:orderData};
@@ -289,21 +262,6 @@ function setChannel() {
       $.each(_channels, function(index, item) {
         $('#search_channelId').append($('<option></option>').attr('value', item.channelId).text(item.channelName));
       });
-    }
-  });
-}
-function getSource() {
-  $.ajax({
-    url: common.API_HOST + 'common/sourceList',
-    type: 'GET',
-    dataType: 'json'
-  })
-  .done(function(res) {
-    // console.log(res.data);
-    if (true == res.meta.result) {
-      _sources = res.data;
-    } else {
-      alert('接口错误：'+res.meta.msg);
     }
   });
 }

@@ -14,7 +14,7 @@ a {
   top: 0;
   left: 0;
   right: 0;
-  z-index: 2;
+  z-index: 99;
 }
 .navbar-default .navbar-brand {
   color: #ff8903;
@@ -206,6 +206,7 @@ fieldset[disabled] .form-control {
 .table>tbody>tr>th,
 .table>tbody>tr>td {
   border: 0;
+  vertical-align: middle;
 }
 .table>tbody>tr>th {
   vertical-align: middle;
@@ -379,9 +380,9 @@ fieldset[disabled] .form-control {
   padding: 3px;
   text-align: left;
 }
-.parsley-error {
-  /*border: 1px solid #f2dede;*/
-}
+/*.parsley-error {
+  background: #f2dede !important;
+}*/
 
 
 

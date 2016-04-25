@@ -1,6 +1,5 @@
 var common = require('common');
-var _sources = {};
-var _versions = {};
+var _channels = {};
 var _pageIndex = 1;
 var _pageSize = 10;
 var _pageTotal = 0;
@@ -8,33 +7,15 @@ var searchCache = {};
 var useCache = false;
 
 $(function() {
-  common.setMenu('showtime');
-  //set search form
-  setVersion();
-  setSource();
-  $.fn.datetimepicker.dates['zh-CN'] = {
-    days: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"],
-    daysShort: ["周日", "周一", "周二", "周三", "周四", "周五", "周六", "周日"],
-    daysMin:  ["日", "一", "二", "三", "四", "五", "六", "日"],
-    months: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
-    monthsShort: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
-    today: "今天",
-    suffix: [],
-    meridiem: ["上午", "下午"]
-  };
-  $('#search_beginShowDate,#search_endShowDate').datetimepicker({format: 'yyyy-mm-dd hh:ii', language: 'zh-CN', todayHighlight: true, autoclose: true});
+  common.setMenu('record-coupon');
+  getChannel();
 });
 
 //handle search form
 $('#formSearch').on('submit', function(e) {
   e.preventDefault();
   var sendData = {
-    filmName: $.trim( $('#search_filmName').val() ),
-    cinemaName: $.trim( $('#search_cinemaName').val() ),
-    dimenId: $('#search_dimenId').val(),
-    tpId: $('#search_tpId').val(),
-    beginShowDate: $('#search_beginShowDate').val(),
-    endShowDate: $('#search_endShowDate').val(),
+    couponCode: $.trim( $('#search_couponCode').val() ),
     pageSize: _pageSize
   };
   if (useCache) {
@@ -45,7 +26,7 @@ $('#formSearch').on('submit', function(e) {
   sendData.pageIndex = _pageIndex;
   // console.log(sendData);
   $.ajax({
-    url: common.API_HOST + 'timeTable/timeTableList',
+    url: common.API_HOST + 'usedCouponLog/List',
     type: 'POST',
     dataType: 'json',
     data: sendData
@@ -61,13 +42,13 @@ $('#formSearch').on('submit', function(e) {
         _pageIndex = res.data.pageIndex;
         _pageTotal = Math.ceil(res.data.total/_pageSize);
         setPager(res.data.total, _pageIndex, res.data.rows.length, _pageTotal);
-        _(res.data.rows).forEach(function(item){
-          _(_versions).forEach(function(value, key){
-            if (value.id == item.dimen) {
-              item.dimenName = value.name;
-            }
-          });
-        });
+        // _(res.data.rows).forEach(function(item){
+        //   _(_versions).forEach(function(value, key){
+        //     if (value.id == item.dimen) {
+        //       item.dimenName = value.name;
+        //     }
+        //   });
+        // });
         setTableData(res.data.rows);
       }
     } else {
@@ -76,6 +57,7 @@ $('#formSearch').on('submit', function(e) {
   });
   return false;
 });
+
 $('#pager').on('click', '.prev,.next', function(e) {
   e.preventDefault();
   if ($(this).hasClass('prev')) {
@@ -117,39 +99,18 @@ $('#pager').on('click', '#btn-pager', function(e) {
   return false;
 });
 
-function setVersion() {
+function getChannel() {
   $.ajax({
-    url: common.API_HOST + 'common/dimenList',
+    url: common.API_HOST + 'common/channelList',
     type: 'GET',
     dataType: 'json'
   })
   .done(function(res) {
     // console.log(res);
     if (true == res.meta.result) {
-      _versions = res.data;
-      _(_versions).forEach(function(item){
-        $('#search_dimenId').append($('<option></option>').attr('value', item.id).text(item.name));
-      });
+      _channels = res.data;
     } else {
-      alert('接口错误：'+res.meta.msg);
-    }
-  });
-}
-function setSource() {
-  $.ajax({
-    url: common.API_HOST + 'common/sourceList',
-    type: 'GET',
-    dataType: 'json'
-  })
-  .done(function(res) {
-    // console.log(res.data);
-    if (true == res.meta.result) {
-      _sources = res.data;
-      _(_sources).forEach(function(source){
-        $('#search_tpId').append($('<option></option>').attr('value', source.sourceId).text(source.sourceName));
-      });
-    } else {
-      alert('接口错误：'+res.meta.msg);
+      alert('获取渠道列表失败：'+res.meta.msg);
     }
   });
 }

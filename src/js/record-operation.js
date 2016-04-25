@@ -1,6 +1,21 @@
 var common = require('common');
-var _sources = {};
-var _versions = {};
+var _types = [
+{id:'USER', name:'用户管理'},
+{id:'ROLE', name:'角色管理'},
+{id:'RESOURCE', name:'功能管理'},
+{id:'USER_CITY_AUTHORITY', name:'城市权限管理'},
+{id:'USER_CHANNEL_AUTHORITY', name:'用户权限管理'},
+{id:'CINEMA', name:'影院管理'},
+{id:'FILM', name:'影片管理'},
+{id:'BANNER', name:'前端配置平台'},
+{id:'PLAN', name:'活动计划管理'},
+{id:'ACTIVITY', name:'活动单元管理'},
+{id:'COUPON', name:'优惠券管理'},
+{id:'COMMENT', name:'评论管理'},
+{id:'ORDER', name:'订单管理'},
+{id:'TICKET', name:'票类管理'},
+{id:'CHANNELFEE', name:'服务费管理'}
+];
 var _pageIndex = 1;
 var _pageSize = 10;
 var _pageTotal = 0;
@@ -8,10 +23,9 @@ var searchCache = {};
 var useCache = false;
 
 $(function() {
-  common.setMenu('showtime');
-  //set search form
-  setVersion();
-  setSource();
+  common.setMenu('record-operation');
+  setType();
+
   $.fn.datetimepicker.dates['zh-CN'] = {
     days: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"],
     daysShort: ["周日", "周一", "周二", "周三", "周四", "周五", "周六", "周日"],
@@ -22,19 +36,16 @@ $(function() {
     suffix: [],
     meridiem: ["上午", "下午"]
   };
-  $('#search_beginShowDate,#search_endShowDate').datetimepicker({format: 'yyyy-mm-dd hh:ii', language: 'zh-CN', todayHighlight: true, autoclose: true});
+  $('#search_beginDate, #search_endDate').datetimepicker({format: 'yyyy-mm-dd hh:00', language: 'zh-CN', todayHighlight: true, autoclose: true, minView:1});
 });
 
 //handle search form
 $('#formSearch').on('submit', function(e) {
   e.preventDefault();
   var sendData = {
-    filmName: $.trim( $('#search_filmName').val() ),
-    cinemaName: $.trim( $('#search_cinemaName').val() ),
-    dimenId: $('#search_dimenId').val(),
-    tpId: $('#search_tpId').val(),
-    beginShowDate: $('#search_beginShowDate').val(),
-    endShowDate: $('#search_endShowDate').val(),
+    type: $('#search_type').val(),
+    beginDate: $.trim( $('#search_beginDate').val() ),
+    endDate: $.trim( $('#search_endDate').val() ),
     pageSize: _pageSize
   };
   if (useCache) {
@@ -45,7 +56,7 @@ $('#formSearch').on('submit', function(e) {
   sendData.pageIndex = _pageIndex;
   // console.log(sendData);
   $.ajax({
-    url: common.API_HOST + 'timeTable/timeTableList',
+    url: common.API_HOST + 'log/operationLog',
     type: 'POST',
     dataType: 'json',
     data: sendData
@@ -62,9 +73,9 @@ $('#formSearch').on('submit', function(e) {
         _pageTotal = Math.ceil(res.data.total/_pageSize);
         setPager(res.data.total, _pageIndex, res.data.rows.length, _pageTotal);
         _(res.data.rows).forEach(function(item){
-          _(_versions).forEach(function(value, key){
-            if (value.id == item.dimen) {
-              item.dimenName = value.name;
+          _(_types).forEach(function(type){
+            if (type.id == item.objectType) {
+              item.objectType = type.name;
             }
           });
         });
@@ -76,6 +87,7 @@ $('#formSearch').on('submit', function(e) {
   });
   return false;
 });
+
 $('#pager').on('click', '.prev,.next', function(e) {
   e.preventDefault();
   if ($(this).hasClass('prev')) {
@@ -117,40 +129,9 @@ $('#pager').on('click', '#btn-pager', function(e) {
   return false;
 });
 
-function setVersion() {
-  $.ajax({
-    url: common.API_HOST + 'common/dimenList',
-    type: 'GET',
-    dataType: 'json'
-  })
-  .done(function(res) {
-    // console.log(res);
-    if (true == res.meta.result) {
-      _versions = res.data;
-      _(_versions).forEach(function(item){
-        $('#search_dimenId').append($('<option></option>').attr('value', item.id).text(item.name));
-      });
-    } else {
-      alert('接口错误：'+res.meta.msg);
-    }
-  });
-}
-function setSource() {
-  $.ajax({
-    url: common.API_HOST + 'common/sourceList',
-    type: 'GET',
-    dataType: 'json'
-  })
-  .done(function(res) {
-    // console.log(res.data);
-    if (true == res.meta.result) {
-      _sources = res.data;
-      _(_sources).forEach(function(source){
-        $('#search_tpId').append($('<option></option>').attr('value', source.sourceId).text(source.sourceName));
-      });
-    } else {
-      alert('接口错误：'+res.meta.msg);
-    }
+function setType() {
+  _(_types).forEach(function(value){
+    $('#search_type').append($('<option></option>').attr('value', value.id).text(value.name));
   });
 }
 function setTableData(rows) {
