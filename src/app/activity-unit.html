@@ -29,21 +29,21 @@
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">单元ID</div>
-              <input type="text" class="form-control" name="">
+              <input type="text" class="form-control" name="" id="search_id">
             </div>
           </div>
 
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">单元名称</div>
-              <input type="text" class="form-control" name="">
+              <input type="text" class="form-control" name="" id="search_name">
             </div>
           </div>
 
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">单元状态</div>
-              <select class="form-control" name="">
+              <select class="form-control" name="" id="search_status">
                 <option>1</option>
                 <option>2</option>
                 <option>3</option>
@@ -54,7 +54,7 @@
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">预算状态</div>
-              <select class="form-control" name="">
+              <select class="form-control" name="" id="search_budgetStatus">
                 <option>1</option>
                 <option>2</option>
                 <option>3</option>
@@ -65,7 +65,18 @@
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">成本中心</div>
-              <select class="form-control" name="">
+              <select class="form-control" name="" id="search_budgetSource">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">成本中心</div>
+              <select class="form-control" name="" id="search_budgetSource">
                 <option>1</option>
                 <option>2</option>
                 <option>3</option>
@@ -118,7 +129,7 @@
             </div>
           </div>
 
-          <div class="table-responsive">
+          <div class="table-responsive" id="dataTable">
             <table class="table table-striped">
               <thead>
                 <tr>
@@ -132,61 +143,69 @@
                   <th>成本中心</th>
                   <th>开始时间</th>
                   <th>结束时间</th>
-                  <!-- <th>总金额预算</th>
+                  <th>总金额预算</th>
                   <th>总张数预算</th>
                   <th>日金额预算</th>
-                  <th>日张数预算</th> -->
+                  <th>日张数预算</th>
                   <th width="140">操作</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td><input type="checkbox" value="0"></td>
-                  <td>0001</td>
-                  <td>活动单元A</td>
-                  <td><a href="#">活动计划A</a></td>
-                  <td>已上线</td>
-                  <td>正常</td>
-                  <td>111</td>
-                  <td>上海卡部</td>
-                  <td>2015-01-01 00:00:00</td>
-                  <td>2016-01-01 00:00:00</td>
-                  <!-- <td>100/1000</td>
-                  <td>100/1000</td>
-                  <td>100/500</td>
-                  <td>100/500</td> -->
-                  <td><button type="button" class="btn btn-xs btn-default" onclick="window.confirm('确定要下线此单元吗？');">下线</button><a href="activity-unit-edit.html" class="btn btn-xs btn-default">编辑</a><button type="button" class="btn btn-xs btn-default" onclick="window.confirm('确定要删除此单元吗？');">删除</button></td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" value="0"></td>
-                  <td>0001</td>
-                  <td>活动单元F</td>
-                  <td><a href="#">活动计划C</a></td>
-                  <td>已上线</td>
-                  <td>正常</td>
-                  <td>111</td>
-                  <td>上海卡部</td>
-                  <td>2015-01-01 00:00:00</td>
-                  <td>2016-01-01 00:00:00</td>
-                  <!-- <td>100/1000</td>
-                  <td>100/1000</td>
-                  <td>100/500</td>
-                  <td>100/500</td> -->
-                  <td><button type="button" class="btn btn-xs btn-default" onclick="window.confirm('确定要下线此单元吗？');">下线</button><a href="activity-unit-edit.html" class="btn btn-xs btn-default">编辑</a><button type="button" class="btn btn-xs btn-default" onclick="window.confirm('确定要删除此单元吗？');">删除</button></td>
+                  <td colspan="9" align="center">请点击“查询”按钮！</td>
                 </tr>
               </tbody>
             </table>
           </div>
-
         </div>
-
       </div>
-
     </div>
-
   </div>
 
   <script src="../js/vendor.js"></script>
-  <script src="../js/activity.js"></script>
+  <script src="../js/activity-unit.js"></script>
+
+  <script id="pager-template" type="text/x-tmpl-mustache">
+    <div class="col xs-12 col-sm-6 rowStatics">共 <span id="total">{{total}}</span> 条数据，当前显示 <span id="rowsSize">{{rowsSize}}</span> 条</div>
+    {{#pageTotal}}
+    <div class="col xs-12 col-sm-6">
+      <nav>
+        <ul class="pagination pagination-sm">
+          <li><a href="#" class="prev"><span>&lt;</span></a></li>
+          <li><span id="pageIndex">{{pageIndex}}</span> / <span id="pageTotal">{{pageTotal}}</span></li>
+          <li><a href="#" class="next"><span>&gt;</span></a></li>
+          <li><input type="number" name="pageNo" id="pageNo" pattern="[0-9]+"></li>
+          <li><button type="button" class="btn" id="btn-pager">跳转</button></li>
+        </ul>
+      </nav>
+    </div>
+    {{/pageTotal}}
+  </script>
+  <script id="table-template" type="text/x-tmpl-mustache">
+    {{#rows}}
+    <tr data-id="{{id}}">
+      <td><input type="checkbox" value="0"></td>
+      <td>{{id}}</td>
+      <td>{{name}}</td>
+      <td>{{planName}}</td>
+      <td>{{statusName}}</td>
+      <td>{{budgetStatusName}}</td>
+      <td>{{priority}}</td>
+      <td>{{budgetSource}}</td>
+      <td>{{beginDate}}</td>
+      <td>{{endDate}}</td>
+      <td>{{usedTotalAmount}}/{{totalAmount}}</td>
+      <td>{{usedTotalTicket}}/{{totalTicket}}</td>
+      <td>{{usedDailyAmount}}/{{dailyAmount}}</td>
+      <td>{{usedDailyTicket}}/{{dailyTicket}}</td>
+      <td>
+        <button type="button" class="btn btn-xs btn-default btn-status" data-status="{{status}}">{{#status}}下线{{/status}}{{^status}}上线{{/status}}</button>
+        <button type="button" class="btn btn-xs btn-default btn-edit">编辑</button>
+        <button type="button" class="btn btn-xs btn-default btn-delete">删除</button>
+      </td>
+    </tr>
+    {{/rows}}
+  </script>
+
 </body>
 </html>

@@ -100,11 +100,11 @@ module.exports = {
         // admin-page1.html: commons.js, admin-commons.js, ap1.js
         // admin-page2.html: commons.js, admin-commons.js, ap2.js
         // new CommonsChunkPlugin('common.js'),
-        new uglifyJsPlugin({
-            compress: {
-                warnings: false
-            }
-        }),
+        // new uglifyJsPlugin({
+        //     compress: {
+        //         warnings: false
+        //     }
+        // }),
         // new webpack.HotModuleReplacementPlugin()
     ]
 };
