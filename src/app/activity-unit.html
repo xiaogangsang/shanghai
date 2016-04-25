@@ -24,7 +24,7 @@
           <li class="active">活动单元管理</li>
         </ol>
 
-        <form id="formActivity" class="search-area">
+        <form id="formSearch" class="search-area">
 
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
@@ -44,9 +44,9 @@
             <div class="input-group">
               <div class="input-group-addon">单元状态</div>
               <select class="form-control" name="" id="search_status">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
+                <option value="1">已上线</option>
+                <option value="0">已下线</option>
+                <option value="2">计划下线</option>
               </select>
             </div>
           </div>
@@ -55,9 +55,9 @@
             <div class="input-group">
               <div class="input-group-addon">预算状态</div>
               <select class="form-control" name="" id="search_budgetStatus">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
+                <option value="3">正常</option>
+                <option value="1">总预算不足</option>
+                <option value="2">日预算不足</option>
               </select>
             </div>
           </div>
@@ -66,20 +66,19 @@
             <div class="input-group">
               <div class="input-group-addon">成本中心</div>
               <select class="form-control" name="" id="search_budgetSource">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
+                <option value="0">总行</option>
+                <option value="1">支行</option>
+                <option value="2">卡中心</option>
+                <option value="3">卡部</option>
+                <option value="4">O2O项目组</option>
               </select>
             </div>
           </div>
 
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
-              <div class="input-group-addon">成本中心</div>
-              <select class="form-control" name="" id="search_budgetSource">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
+              <div class="input-group-addon">成本中心(二级)</div>
+              <select class="form-control" name="" id="search_2nd_level_budgetSource">
               </select>
             </div>
           </div>
@@ -102,12 +101,14 @@
           <div class="row">
 
             <div class="col-xs-12 extra-btns">
-              <button type="button" class="btn btn-default" onclick="window.confirm('确定要上线选中的单元吗？');">批量上线</button>
-              <button type="button" class="btn btn-default" onclick="window.confirm('确定要下线选中的单元吗？');">批量下线</button>
-              <button type="button" class="btn btn-default pull-right">导出列表</button>
+              <button type="button" class="btn btn-default btn-batch-online">批量上线</button>
+              <button type="button" class="btn btn-default btn-batch-offline">批量下线</button>
+              <button type="button" class="btn btn-default btn-export pull-right">导出列表</button>
             </div>
 
-            <div class="col xs-12 col-sm-6 rowStatics">共 <span id="rowTotal">xxx</span> 条数据，当前显示 <span id="perPage">xxx</span> 条</div>
+            <div class="row" id="pager"></div>
+
+<!--             <div class="col xs-12 col-sm-6 rowStatics">共 <span id="rowTotal">xxx</span> 条数据，当前显示 <span id="perPage">xxx</span> 条</div>
             <div class="col xs-12 col-sm-6">
               <nav>
                 <ul class="pagination pagination-sm">
@@ -127,13 +128,13 @@
                 </ul>
               </nav>
             </div>
-          </div>
+          </div> -->
 
           <div class="table-responsive" id="dataTable">
             <table class="table table-striped">
               <thead>
                 <tr>
-                  <th><input type="checkbox" value="0"></th>
+                  <th><input type="checkbox" class="toggle-selection-all"></th>
                   <th>单元ID</th>
                   <th>单元名称</th>
                   <th>所属计划</th>
@@ -152,7 +153,7 @@
               </thead>
               <tbody>
                 <tr>
-                  <td colspan="9" align="center">请点击“查询”按钮！</td>
+                  <td colspan="20" align="center">请点击“查询”按钮！</td>
                 </tr>
               </tbody>
             </table>
@@ -184,7 +185,7 @@
   <script id="table-template" type="text/x-tmpl-mustache">
     {{#rows}}
     <tr data-id="{{id}}">
-      <td><input type="checkbox" value="0"></td>
+      <td><input type="checkbox"></td>
       <td>{{id}}</td>
       <td>{{name}}</td>
       <td>{{planName}}</td>

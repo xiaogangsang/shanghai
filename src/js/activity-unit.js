@@ -4,6 +4,7 @@ var _pageIndex = 1;
 var _pageSize = 10;
 var _pageTotal = 0;
 var _querying = false;
+var _budgetSource;
 
 $(function() {
   common.setMenu('activity-unit');
@@ -13,44 +14,38 @@ $(function() {
   //data cache
   // getProvince();
   // getService();
+
+  getBudgetSource();
 });
 
-$('#formActivity').on('submit', function(e) {
+$('#formSearch').on('submit', function(e) {
   e.preventDefault();
-  var sendData = {
-    id: $.trim( $('#search_id').val() ),
-    name: $.trim( $('#search_name').val() ),
-    status: $('#search_status').val(),
-    budgetStatus: $('#search_budgetStatus').val(),
-    // budgetSource: $('#search_budgetSource').val(),
-    pageIndex: _pageIndex,
-    pageSize: _pageSize
-  };
-  // console.log(sendData);
+
   if (true == _querying) {
     return false;
   }
   _querying = true;
+
   $.ajax({
     url: common.API_HOST + 'activity/activityList',
     type: 'POST',
     dataType: 'json',
-    data: sendData
+    data: formParams()
   })
   .done(function(res) {
     _querying = false;
     console.log(res);
     if (true == res.meta.result) {
       if (res.data.rows.length < 1) {
-        $('#dataTable tbody').html('<tr><td colspan="9" align="center">查不到相关数据，请修改查询条件！</td></tr>');
+        $('#dataTable tbody').html('<tr><td colspan="20" align="center">查不到相关数据，请修改查询条件！</td></tr>');
       } else {
         _pageIndex = res.data.pageIndex;
         _pageTotal = Math.ceil(res.data.total/_pageSize);
         setPager(res.data.total, _pageIndex, res.data.rows.length, _pageTotal);
         _(res.data.rows).forEach( function(value, key) {
+          value.status = parseInt(value.status);
           value.statusName = statusName(value.status);
           value.budgetStatusName = budgetStatusName(value.budgetStatus);
-          
         });
         setTableData(res.data.rows);
       }
@@ -58,6 +53,43 @@ $('#formActivity').on('submit', function(e) {
       alert('接口错误：'+res.meta.msg);
     }
   });
+  return false;
+});
+
+// 上下线
+$('#dataTable').on('click', '.btn-status', function(e) {
+  e.preventDefault();
+
+  var btn = $(this);
+
+  var currentStatus = btn.data('status');
+  var  id = btn.closest('tr').data('id');
+
+  setOnlineOffline([id], currentStatus == '1' ? 0 : 1);
+});
+
+$('#dataTable').on('click', '.btn-delete', function(e) {
+  e.preventDefault();
+  var tr = $(this).closest('tr');
+  if (window.confirm('确定要删除此计划吗？')) {
+    $.ajax({
+      url: common.API_HOST + 'activity/deleteActivity',
+      type: 'POST',
+      dataType: 'json',
+      data: {id: tr.data('id')}
+    })
+    .done(function(res) {
+      // console.log(res);
+      if (true == res.meta.result) {
+        alert('删除成功！');
+        tr.fadeOut(500,function(){
+          tr.remove();
+        });
+      } else {
+        alert('接口错误：'+res.meta.msg);
+      }
+    });
+  }
   return false;
 });
 
@@ -116,7 +148,147 @@ $('#pager').on('click', '#btn-pager', function(e) {
   return false;
 });
 
-/*********************************** utilities method *********************************/
+// TODO: 新增 / 编辑
+
+
+
+// 批量操作 - 批量上线
+$('.btn-batch-online').click(function(e) {
+  e.preventDefault();
+  setOnline(selectedActivityIds());
+});
+
+// 批量操作 - 批量下线
+$('.btn-batch-offline').click(function(e) {
+	e.preventDefault();
+	setOffline(selectedActivityIds());
+});
+
+// 批量操作 - 批量选中/取消选中
+$('.toggle-selection-all').change(function(e) {
+	e.preventDefault();
+	var isChecked = $(this).is(':checked');
+
+	if (isChecked) {
+		$(':checkbox:not(:checked)').prop('checked', true);
+	} else {
+		$(':checkbox:checked').prop('checked', false);
+	}
+});
+
+
+// 导出
+$('.btn-export').click(function(e) {
+  e.preventDefault();
+  window.location.href = common.API_HOST + 'activity/exportActivities?' + $.param(formParams());
+});
+
+// 成本中心的交互逻辑
+$('#search_budgetSource').change(handle1stLevelBudgetSourceChange);
+
+/*********************************** logic utilities method *********************************/
+
+// form params
+
+function formParams() {
+  var params = {
+    id: $.trim( $('#search_id').val() ),
+    name: $.trim( $('#search_name').val() ),
+    status: $('#search_status').val(),
+    budgetStatus: $('#search_budgetStatus').val(),
+    budgetSource: $('#search_2nd_level_budgetSource').val(),
+    pageIndex: _pageIndex,
+    pageSize: _pageSize
+  };
+
+  return params;
+}
+
+// online
+function setOnline(activities) {
+	setOnlineOffline(activities, 1);
+}
+
+// offline
+function setOffline(activities) {
+	setOnlineOffline(activities, 0);
+}
+
+// activities online / offline
+function setOnlineOffline(activities, targetStatus){
+
+  if (activities.length == 0) {
+    alert('请先选择活动后再操作');
+  	return;
+  }
+
+  var requestURL = (targetStatus == 1 ? 'activity/activityOnline' : 'activity/activityOffline')
+
+  $.ajax({
+    url: common.API_HOST + requestURL,
+    type: 'POST',
+    dataType: 'json',
+    contentType: 'application/json; charset=utf-8',
+    data: JSON.stringify(activities)
+  })
+  .done(function(res) {
+    // console.log(res);
+    if (true == res.meta.result) {
+      $("#formSearch").trigger('submit');
+      alert('操作成功!');
+    } else {
+      alert("接口错误："+res.meta.msg);
+    }
+  });
+}
+
+function selectedActivityIds() {
+	var selectedActivities = [];
+	$(':checkbox:checked').each(function(index) {
+		var id = $(this).closest('tr').data('id');
+		selectedActivities.push(id);
+	});
+
+	return selectedActivities;
+}
+
+// Get budget source
+function getBudgetSource() {
+  $.ajax({
+    url: common.API_HOST + 'activity/budgetSourceList',
+    type: 'POST',
+    dataType: 'json'
+  })
+  .done(function(res) {
+    console.log(res);
+    if (true == res.meta.result) {
+    	_budgetSource = res.data;
+    	handle1stLevelBudgetSourceChange();
+    } else {
+      alert('接口错误：'+res.meta.msg);
+    }
+  });
+}
+
+function handle1stLevelBudgetSourceChange() {
+	var firstLevelBudget = $('#search_budgetSource').val();
+
+	var secondLevelBudgetSources = _budgetSource[firstLevelBudget];
+	var html = '';
+
+	if (secondLevelBudgetSources) {
+		for (var i = 0; i < secondLevelBudgetSources.length; i++) {
+			var budgetSource = secondLevelBudgetSources[i];
+			var option = '<option value="' + budgetSource.id + '">' + budgetSource.sourceName + '</option>';
+			html += option;
+		}
+	}
+
+	$('#search_2nd_level_budgetSource').html(html);
+}
+
+
+/*********************************** sugar utilities method *********************************/
 
 function budgetStatusName(status) {
   var name;
@@ -134,7 +306,7 @@ function budgetStatusName(status) {
     name = '';
     break;
   }
-  
+
   return name;
 }
 
