@@ -106,6 +106,7 @@ $('#formCity').on('submit', function(e) {
   $('#formCity').parsley().on('form:success', function(){
     var sendData = {
       cityId: $('#citySelect').val(),
+      cityName: $('#citySelect option:selected').text(),
       userIds: $('#userSelect_to').val()
     };
     $.ajax({

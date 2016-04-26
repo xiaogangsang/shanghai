@@ -7,6 +7,7 @@ var _querying = false;
 
 $(function() {
   common.setMenu('comment');
+  common.setLoginName();
   //set search form
   setChannel();
   // setCity();

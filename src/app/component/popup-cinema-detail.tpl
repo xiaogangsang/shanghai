@@ -44,7 +44,7 @@
       <span>维度：</span>{{latitude}}
     </div>
     <div class="detail-item col-xs-12 col-sm-6">
-      <span>创建时间：</span>{{createDate}}
+      <span>创建时间：</span>{{createdDate}}
     </div>
     <div class="detail-item col-xs-12 col-sm-6">
       <table>

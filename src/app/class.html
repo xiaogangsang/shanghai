@@ -56,7 +56,7 @@
               <select class="form-control" id="search_status">
                 <option value="">全部</option>
                 <option value="1">已上线</option>
-                <option value="0">已下线</option>
+                <option value="2">已下线</option>
               </select>
             </div>
           </div>
@@ -157,16 +157,48 @@
       <td>{{statusName}}</td>
       <td>{{typeName}}</td>
       <td>
-        <button type="button" class="btn btn-xs btn-default btn-status" data-status="{{status}}">{{#status}}下线{{/status}}{{^status}}上线{{/status}}</button>
+        <button type="button" class="btn btn-xs btn-default btn-status" data-status="{{status}}">{{#onlineStatus}}下线{{/onlineStatus}}{{^onlineStatus}}上线{{/onlineStatus}}</button>
         <button type="button" class="btn btn-xs btn-default btn-edit">编辑</button>
+        {{#onlineStatus}}
         <button type="button" class="btn btn-xs btn-default btn-check">检查场次</button>
+        {{/onlineStatus}}
       </td>
     </tr>
     {{/rows}}
   </script>
 
   @@include('component/popup-class-form.tpl')
-  @@include('component/popup-cinema.tpl')
-
+  <div class="modal fade" id="popup-class-check">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form>
+          <div class="modal-header">
+            <h4 class="modal-title">检查场次</h4>
+          </div>
+          <div class="modal-body">
+            <input type="hidden" id="check_id" value="{{id}}">
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-addon">检查影院</div>
+                <select class="form-control" id="check_cinemaId" required>
+                  <option value=""></option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-addon">检查日期</div>
+                <input type="text" class="form-control" id="check_date" required>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">检查</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

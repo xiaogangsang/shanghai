@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>合作方影院库</title>
+  <link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="../images/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="../css/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/cinema.css">
+</head>
+<body>
+
+  @@include('component/header.tpl')
+
+  <div class="container-fluid">
+
+    <div class="row">
+
+      @@include('component/sidebar.tpl')
+
+      <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+        <ol class="breadcrumb">
+          <li>影院管理</li>
+          <li>合作方影院库</li>
+          <li class="active">创建标准影院并关联</li>
+        </ol>
+
+        <div class="content-area">
+
+          <div class="row">
+
+            <div class="col-xs-12 col-sm-6">
+              <h3>新建标准影院</h3>
+              <form id="formCinema">
+                <input type="hidden" id="" value="">
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-addon">影院名</div>
+                    <input type="text" class="form-control" id="cinemaName" required>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-addon">院线</div>
+                    <select class="form-control" id="brandId" required data-parsley-errors-container="#error-brand">
+                      <option value="">选择院线</option>
+                    </select>
+                    <div id="error-brand"></div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-addon">省份</div>
+                    <select class="form-control" id="provinceId" required data-parsley-errors-container="#error-province">
+                      <option value="">选择省份</option>
+                    </select>
+                    <div id="error-province"></div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-addon">城市</div>
+                    <select class="form-control" id="cityId" required data-parsley-errors-container="#error-city">
+                      <option value=""></option>
+                    </select>
+                    <div id="error-city"></div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-addon">行政区</div>
+                    <select class="form-control" id="areaId" required data-parsley-errors-container="#error-area">
+                      <option value=""></option>
+                    </select>
+                    <div id="error-area"></div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-addon">商圈</div>
+                    <select class="form-control" id="districtId" required data-parsley-errors-container="#error-district">
+                      <option value=""></option>
+                    </select>
+                    <div id="error-district"></div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-addon">地址</div>
+                    <input type="text" class="form-control" id="address" required>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-addon">电话</div>
+                    <input type="text" class="form-control" id="tel" required>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-addon">经度</div>
+                    <input type="text" class="form-control" id="longitude" required>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-addon">维度</div>
+                    <input type="text" class="form-control" id="latitude" required>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-addon">影院服务</div>
+                    <select class="btn btn-default" id="btn-service">
+                      <option value="">添加一项服务</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-12 col-sm-6">
+                    <button type="submit" class="btn btn-block btn-primary">保存</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+
+            <div class="col-xs-12 col-sm-6">
+              <h3>合作方影院详情</h3>
+              <div class="cinema-detail edit-section clearfix">
+                <p>合作方影院数据加载中，请稍后...</p>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="../js/vendor.js"></script>
+  <script src="../js/cinema-tp-create.js"></script>
+  <script id="service-template" type="text/x-tmpl-mustache">
+    {{#service}}
+    <div class="edit-section service-item" data-id="{{id}}">
+      <div class="form-group">
+        <div class="input-group">
+          <div class="input-group-addon">服务类型</div>
+          {{name}}<button type="button" class="btn btn-xs btn-primary pull-right btn-service-delete">删除</button>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="input-group">
+          <div class="input-group-addon">服务详细</div>
+          <textarea class="form-control" required></textarea>
+        </div>
+      </div>
+    </div>
+    {{/service}}
+  </script>
+</body>
+</html>

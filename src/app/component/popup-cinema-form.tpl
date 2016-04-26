@@ -220,8 +220,7 @@
     <div class="form-group">
       <div class="input-group">
         <div class="input-group-addon">服务类型</div>
-        <div class="input-group-addon">{{name}}</div>
-        <button type="button" class="btn btn-xs btn-primary pull-right btn-service-delete">删除</button>
+        {{name}}<button type="button" class="btn btn-xs btn-primary pull-right btn-service-delete">删除</button>
       </div>
     </div>
     <div class="form-group">

@@ -146,7 +146,7 @@ $('#dataTable').on('click', '.btn-detail', function(e) {
     data: { cinemaId: $(this).closest('tr').data('id') }
   })
   .done(function(res) {
-    // console.log(res);
+    console.log(res);
     if (true == res.meta.result) {
       var data = res.data;
       data.service = undefined != data.service || '' != data.service ? data.service = JSON.parse(data.service) : [];

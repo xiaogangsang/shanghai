@@ -16,8 +16,7 @@
 </div>
 
 <script id="index-template" type="text/x-tmpl-mustache">
-  <input type="hidden" id="configId" value="{{banner.configId}}">
-  <input type="hidden" id="infoId" value="{{banner.infoId}}">
+  <input type="hidden" id="id" value="{{banner.id}}">
   <input type="hidden" id="bannerType" value="1">
   <div class="table-responsive">
     <table class="table">
@@ -74,19 +73,18 @@
 </script>
 
 <script id="movie-template" type="text/x-tmpl-mustache">
-  <input type="hidden" id="configId" value="{{banner.configId}}">
-  <input type="hidden" id="infoId" value="{{banner.infoId}}">
+  <input type="hidden" id="id" value="{{banner.id}}">
   <input type="hidden" id="bannerType" value="2">
   <div class="table-responsive">
     <table class="table">
       <tbody>
         <tr>
           <th>配置名称</th>
-          <td><input type="text" class="form-control" id="bannerName" required></td>
+          <td><input type="text" class="form-control" id="bannerName" value="{{banner.bannerName}}" required></td>
         </tr>
         <tr>
           <th>影片</th>
-          <td>{{filmName}}</td>
+          <td>{{banner.filmId}}</td>
         </tr>
         <tr>
           <th><button type="button" class="btn btn-default" id="btn-city">选择城市</button></th>
@@ -147,12 +145,13 @@
         <tr class="type-2" style="display:none;">
           <th>影片</th>
           <td>
-            <select class="form-control" id="filmId">
+            <select class="form-control" id="filmId" required data-placeholder="选择一个影片" data-parsley-errors-container="#error-film">
               <option value=""></option>
               {{#movies}}
               <option value="{{filmId}}">{{filmName}}</option>
               {{/movies}}
             </select>
+            <div id="error-film"></div>
           </td>
         </tr>
         <tr class="type-1">

@@ -26,7 +26,7 @@ $('#formSearch').on('submit', function(e) {
   sendData.pageIndex = _pageIndex;
   // console.log(sendData);
   $.ajax({
-    url: common.API_HOST + 'usedCouponLog/List',
+    url: common.API_HOST + 'usedCouponLog/list',
     type: 'POST',
     dataType: 'json',
     data: sendData
@@ -34,7 +34,7 @@ $('#formSearch').on('submit', function(e) {
   .done(function(res) {
     // console.log(res);
     if (true == res.meta.result) {
-      if (res.data.rows.length < 1) {
+      if (res.data == null || res.data.rows.length < 1) {
         $('#dataTable tbody').html('<tr><td colspan="9" align="center">查不到相关数据，请修改查询条件！</td></tr>');
         return false;
       } else {

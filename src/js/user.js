@@ -37,7 +37,7 @@ $(function() {
 $('#formSearch').on('submit', function(e) {
   e.preventDefault()
   var sendData = {
-    name: $.trim($('#search_name').val()),
+    realName: $.trim($('#search_realName').val()),
     loginId: $.trim($('#search_loginId').val()),
     city: $.trim($('#search_city').val()),
     department: $.trim($('#search_department').val()),
@@ -266,6 +266,10 @@ $(document).on('submit', '#popup-user-form form', function(e) {
     'roles': $('#roleSelect_to').val(),
     'cities':$('#citySelect_to').val()
   };
+  sendData.cityNames = [];
+  $('#citySelect_to option').each(function(index, el) {
+    sendData.cityNames.push($(this).text());
+  });
   var checked_channels = [];
   $('input[name="channel"]:checked').each(function(){
     checked_channels.push($(this).val());

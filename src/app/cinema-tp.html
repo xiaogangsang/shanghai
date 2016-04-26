@@ -174,7 +174,7 @@
       <td>{{name}}</td>
       <td>
         <button type="button" class="btn btn-xs btn-default btn-bind">设置关联</button>
-        {{^associationStatus}}<button type="button" class="btn btn-xs btn-default btn-bind-create">新建并关联</button>{{/associationStatus}}
+        {{^associationStatus}}<a href="cinema-tp-create.html?tpCinemaId={{tpCinemaId}}&sourceId={{thirdParty}}" class="btn btn-xs btn-default">新建并关联</a>{{/associationStatus}}
         {{#associationStatus}}<button type="button" class="btn btn-xs btn-default btn-bind-delete">移除关联</button>{{/associationStatus}}
       </td>
     </tr>

@@ -315,6 +315,7 @@ fieldset[disabled] .form-control {
 .multi-selection .table {
   margin-bottom: 0;
   max-width: 640px;
+  background-color: transparent;
 }
 .multi-selection .table td {
   padding: 0;

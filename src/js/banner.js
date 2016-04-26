@@ -25,6 +25,13 @@ $(function() {
     meridiem: ["上午", "下午"]
   };
   $('#search_startTime, #search_endTime').datetimepicker({format: 'yyyy-mm-dd', language: 'zh-CN', minView: 2, todayHighlight: true, autoclose: true});
+  var beginDate = new Date();
+  var endDate = new Date();
+  endDate.setDate(endDate.getDate()+7);
+  beginDate = common.getDate(beginDate);
+  endDate = common.getDate(endDate);
+  $('#search_startTime').val(beginDate);
+  $('#search_endTime').val(endDate);
 
   //data cache
   getCity();
@@ -91,6 +98,7 @@ $(document).on('click', '#btn-create', function(e) {
   $('#popup-banner-form').modal('show');
   $('#startTime,#endTime').datetimepicker({format: 'yyyy-mm-dd', language: 'zh-CN', minView: 2, todayHighlight: true, autoclose: true});
   $('#popup-banner-form form').parsley();
+  $('#popup-banner-form #filmId').chosen();
 
   $('#popup-banner-form').on('change', '#bannerType', function(event) {
     event.preventDefault();
@@ -104,6 +112,7 @@ $(document).on('click', '#btn-create', function(e) {
       $('.type-2').show();
       $('.type-1').find('input,select').prop('required', false);
       $('.type-2').find('input,select').prop('required', true);
+      $('.chosen-search input').prop('required', false);
     }
     $('#popup-banner-form form').parsley().reset();
   });
@@ -113,15 +122,22 @@ $('#dataTable').on('click', '.btn-edit', function(e) {
   var id = $(this).closest('tr').data('id');
   var banner;
   _(dataCache).forEach(function(item){
-    if (item.configId == id) {
+    if (item.id == id) {
       banner = item;
     }
   });
-  // console.log(banner);
+  console.log(banner);
+  _(_channels).forEach(function(channel){
+    channel.selected = banner.channelId == channel.channelId ? true : false;
+  });
+  _choosed = banner.cityList;
   setModal(banner);
   $('#popup-banner-form').modal('show');
   $('#startTime,#endTime').datetimepicker({format: 'yyyy-mm-dd', language: 'zh-CN', minView: 2, todayHighlight: true, autoclose: true});
   $('#popup-banner-form form').parsley();
+  if (banner.bannerType == 2) {
+    $('#popup-banner-form #filmId').chosen();
+  }
 });
 $(document).on('submit', '#popup-city form', function(event) {
   event.preventDefault();
@@ -130,14 +146,14 @@ $(document).on('submit', '#popup-city form', function(event) {
     choosedCity.push( $(this).data('id') );
   });
   _choosed = choosedCity;
-  console.log(_choosed);
+  // console.log(_choosed);
   $('#popup-city').modal('hide');
 });
 $('#dataTable').on('click', '.btn-status', function(event) {
   event.preventDefault();
   var tr = $(this).closest('tr');
   var sendData = {
-    configId: tr.data('id'),
+    id: tr.data('id'),
     status: $(this).data('status') == 1 ? 0 : 1
   };
   // console.log(sendData);
@@ -171,6 +187,10 @@ $(document).on('submit', '#popup-banner-form form', function(event) {
     endTime: $.trim( $('#popup-banner-form #endTime').val() ),
     cityList: _choosed
   };
+  if (sendData.cityList.length < 1) {
+    alert('请选择城市！');
+    return false;
+  }
   if ( 1 == sendData.bannerType ) {
     sendData.imageUrl = $('#popup-banner-form #imageUrl').val();
     sendData.link = $('#popup-banner-form #link').val();
@@ -178,9 +198,8 @@ $(document).on('submit', '#popup-banner-form form', function(event) {
     sendData.filmId = $('#popup-banner-form #filmId').val();
   }
   var ajaxUrl = common.API_HOST + 'banner/saveBanner';
-  if( $('#popup-banner-form #configId').length > 0) {
-    sendData.configId = $('#popup-banner-form #configId').val();
-    sendData.infoId = $('#popup-banner-form #infoId').val();
+  if( $('#popup-banner-form #id').length > 0) {
+    sendData.id = $('#popup-banner-form #id').val();
     ajaxUrl = common.API_HOST + 'banner/updateBanner';
   }
   // console.log( sendData );
@@ -194,13 +213,17 @@ $(document).on('submit', '#popup-banner-form form', function(event) {
   .done(function(res) {
     // console.log(res);
     if (true == res.meta.result) {
-      if( $('#popup-banner-form #configId').length > 0) {
+      if( $('#popup-banner-form #id').length > 0) {
         alert('更新成功！');
       } else {
         alert('添加成功！');
       }
       $('#popup-banner-form').modal('hide');
       $('#formSearch').trigger('submit');
+      _choosed = [];
+      _(_cities).forEach(function(city){
+        city.selected = false;
+      });
     } else {
       alert('接口错误：'+res.meta.msg);
     }
@@ -251,7 +274,7 @@ $(document).on('click', '#popup-banner-form #btn-city', function(event) {
 
     html_group = '<div class="input-group"><div class="input-group-addon">'+group.key+'</div>';
     _(group.group).forEach(function(city, key){
-      if (_choosed.indexOf(city.cityId) > -1) {
+      if (_choosed.indexOf(city.cityId.toString()) > -1) {
         html_group += '<label><input type="checkbox" value="'+city.cityId+'" checked><span>'+city.cityName+'</span></label>';
         html_choosed += '<span class="label label-default" data-id="'+city.cityId+'">'+city.cityName+' <button type="button" class="close"><span>&times;</span></button></span>';
       } else {
@@ -313,11 +336,17 @@ $(document).on('click', '#popup-banner-form #btn-city', function(event) {
 function setModal(bannerData) {
   var data, template, html;
   if (bannerData) {
-    data = {banner:bannerData, movies: _movies, channels:_channels};
+    data = {banner:bannerData, channels:_channels};
     if (bannerData.bannerType == 1) {
       template = $('#index-template').html();
       $('#popup-banner-form .modal-title').html('编辑[首页]Banner');
     } else {
+      data.movies = _movies;
+      _(_movies).forEach(function(movie){
+        if(movie.filmId == bannerData.filmId) {
+          data.banner.filmId = movie.filmName;
+        }
+      });
       template = $('#movie-template').html();
       $('#popup-banner-form .modal-title').html('编辑[热门影片]Banner');
     }
