@@ -217,28 +217,27 @@ $(document).on('submit', '#formSearchCinema', function(e) {
     data: {cinemaName: bindCinemaName}
   })
   .done(function(res) {
-// console.log(res);
-_querying = false;
-if (true == res.meta.result) {
-  if (res.data.length <= 0 ) {
-    $('#popup-cinema-bind tbody').html('<tr><td colspan="5" align="center">暂无匹配，请尝试搜索其他影院名</td></tr>');
-    return false;
-  }
-  var data = {rows:res.data};
-  var template = $('#tr-template').html();
-  Mustache.parse(template);
-  var html = Mustache.render(template, data);
-  $('#popup-cinema-bind tbody').html(html);
-  $('#popup-cinema-bind').on('click', '#cinemaTable tbody tr', function(e) {
-    e.preventDefault();
-    $('#cinemaTable tbody tr.selected').removeClass('selected');
-    $(this).addClass('selected');
-    $('#cinemaId').val( $(this).data('id') );
+    _querying = false;
+    if (true == res.meta.result) {
+      if (res.data.length <= 0 ) {
+        $('#popup-cinema-bind tbody').html('<tr><td colspan="5" align="center">暂无匹配，请尝试搜索其他影院名</td></tr>');
+        return false;
+      }
+      var data = {rows:res.data};
+      var template = $('#tr-template').html();
+      Mustache.parse(template);
+      var html = Mustache.render(template, data);
+      $('#popup-cinema-bind tbody').html(html);
+      $('#popup-cinema-bind').on('click', '#cinemaTable tbody tr', function(e) {
+        e.preventDefault();
+        $('#cinemaTable tbody tr.selected').removeClass('selected');
+        $(this).addClass('selected');
+        $('#cinemaId').val( $(this).data('id') );
+      });
+    } else {
+      alert('接口错误：'+res.meta.msg);
+    }
   });
-} else {
-  alert('接口错误：'+res.meta.msg);
-}
-});
 });
 $(document).on('submit', '#formBindCinema', function(e) {
   e.preventDefault();

@@ -133,6 +133,9 @@
   </div>
 
   <script src="../js/vendor.js"></script>
+  <script src="../lib/blueimp-file-upload/jquery.ui.widget.js"></script>
+  <script src="../lib/blueimp-file-upload/jquery.iframe-transport.js"></script>
+  <script src="../lib/blueimp-file-upload/jquery.fileupload.js"></script>
   <script src="../js/movie.js"></script>
 
   <script id="pager-template" type="text/x-tmpl-mustache">
@@ -162,7 +165,7 @@
       <td>{{produceCorp}}</td>
       <td>{{associationStatus}}</td>
       <td>
-        <button type="button" class="btn btn-xs btn-default btn-bind">关联设置</button>
+        <a href="movie-bind.html?movieId={{id}}" class="btn btn-xs btn-default" target="_blank">关联设置</a>
         <button type="button" class="btn btn-xs btn-default btn-edit">编辑</button>
       </td>
     </tr>
@@ -171,6 +174,6 @@
 
   @@include('component/popup-movie-detail.tpl')
   @@include('component/popup-movie-form.tpl')
-  @@include('component/popup-movie-bind.tpl')
+  @@include('component/popup-movie-upload.tpl')
 </body>
 </html>

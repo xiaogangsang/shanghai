@@ -11,97 +11,85 @@
 </head>
 <body>
 
-  <div class="container-fluid">
+ @@include('component/header.tpl')
 
-    <div class="row">
+ <div class="container-fluid">
 
-      @@include('component/sidebar.inc')
+  <div class="row">
 
-      <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    @@include('component/sidebar.tpl')
 
-        <ol class="breadcrumb">
-          <li>影院管理</li>
-          <li class="active">标准影片关联管理</li>
-        </ol>
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
-        <section class="movie-info">
-          <h3>标准影片名</h3>
-          <table>
+      <ol class="breadcrumb">
+        <li>影片管理</li>
+        <li>标准影片管理</li>
+        <li class="active">关联设置</li>
+      </ol>
+
+      <div class="movie-detail clearfix">
+        <p>加载中...</p>
+      </div>
+
+      <div class="table-responsive" id="tpMovieTable">
+        <table class="table table-bordered table-hover">
+          <thead>
             <tr>
-              <th width="100">影片制式：</th>
-              <td>xxxxxxx xxxxxxx</td>
+              <th>合作方影片ID</th>
+              <th>合作方影片名</th>
+              <th>合作方</th>
+              <th>上映日期</th>
+              <th>影片制式</th>
+              <th>导演</th>
+              <th>主演</th>
+              <th>操作</th>
             </tr>
-            <tr>
-              <th>上映日期：</th>
-              <td>xxxxxxx xxxxxxx</td>
-            </tr>
-            <tr>
-              <th>导演：</th>
-              <td>xxxxxxx xxxxxxx</td>
-            </tr>
-            <tr>
-              <th>主演：</th>
-              <td>xxxxxxx xxxxxxx</td>
-            </tr>
-          </table>
-        </section>
-
-        <div class="movie-bind-list">
-
-          <h4>已关联的合作方影片：</h4>
-
-          <div class="table-responsive">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th>合作方影片ID</th>
-                  <th>合作方影片名</th>
-                  <th>合作方</th>
-                  <th>上映日期</th>
-                  <th>影片制式</th>
-                  <th>导演</th>
-                  <th>主演</th>
-                  <th>操作</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>0001</td>
-                  <td><a href="movie-detail-partner.html">星球大战</a></td>
-                  <td>百度</td>
-                  <td>2016-03-01</td>
-                  <td>3D</td>
-                  <td>柴可夫斯基</td>
-                  <td>阿诺德施瓦辛格</td>
-                  <td><button type="button" class="btn btn-xs btn-default" onclick="$('#popup-movie-bind').modal('show');">修改关联</button></td>
-                </tr>
-                <tr>
-                  <td>0001</td>
-                  <td><a href="movie-detail-partner.html">星球大战</a></td>
-                  <td>百度</td>
-                  <td>2016-03-01</td>
-                  <td>3D</td>
-                  <td>柴可夫斯基</td>
-                  <td>阿诺德施瓦辛格</td>
-                  <td><button type="button" class="btn btn-xs btn-default" onclick="$('#popup-movie-bind').modal('show');">修改关联</button></td>
-                </tr>
-              </tbody>
-            </table>
-
-          </div>
-
-        </div>
-
+          </thead>
+          <tbody>
+            <tr><td colspan="8" align="center">:)</td></tr>
+          </tbody>
+        </table>
       </div>
 
     </div>
 
   </div>
 
-  <script src="../js/vendor.js"></script>
-  <script src="../js/movie.js"></script>
+</div>
 
-  @@include('component/popup-movie-bind.tpl')
+<script src="../js/vendor.js"></script>
+<script src="../js/movie-bind.js"></script>
 
+<script id="movie-template" type="text/x-tmpl-mustache">
+  <h2>{{name}}</h2>
+  <div class="detail-item col-xs-12 col-sm-6">
+    <span>影片制式：</span>{{dimenName}}
+  </div>
+  <div class="detail-item col-xs-12 col-sm-6">
+    <span>上映日期：</span>{{showDate}}
+  </div>
+  <div class="detail-item col-xs-12 col-sm-6">
+    <span>导演：</span>{{director}}
+  </div>
+  <div class="detail-item col-xs-12 col-sm-6">
+    <span>主演：</span>{{actor}}
+  </div>
+</script>
+<script id="tpmovie-template" type="text/x-tmpl-mustache">
+  {{#movies}}
+  <tr data-id="{{id}}" data-tpid="{{thirdPartyId}}">
+    <td>{{tpFilmId}}</td>
+    <td>{{tpFilmName}}</td>
+    <td>{{thirdPartyName}}</td>
+    <td>{{showDate}}</td>
+    <td>{{dimenName}}</td>
+    <td>{{director}}</td>
+    <td>{{actor}}</td>
+    <td><button type="button" class="btn btn-xs btn-default btn-bind">修改关联</button></td>
+  </tr>
+  {{/movies}}
+</script>
+
+@@include('component/popup-movie-bind.tpl')
 </body>
 </html>

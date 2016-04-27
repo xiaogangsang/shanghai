@@ -7,6 +7,7 @@ var _pageTotal = 0;
 
 $(function() {
   common.setMenu('movie');
+  common.setLoginName();
   //set search form
   setVersion();
   $.fn.datetimepicker.dates['zh-CN'] = {
@@ -137,6 +138,31 @@ $('#dataTable').on('click', '.btn-edit', function(e) {
     }
   });
 });
+$(document).on('click', '#btn-upload', function(event) {
+  event.preventDefault();
+  $('#popup-movie-upload').modal('show');
+  $('#fileupload').data('url', common.API_HOST+'film/standardFilm/uploadPoster').fileupload({
+    dataType: 'json',
+    add: function (e, data) {
+      $('#popup-movie-upload button[type=submit]').click(function () {
+        $(this).prop('disable', true).text('上传中...');
+        data.submit();
+      });
+    },
+    done: function (e, data) {
+      // console.log(data.result);
+      $('#popup-movie-upload button[type=submit]').prop('disable', false).text('上传');
+      if (true == data.result.meta.result) {
+        $('#poster').val(common.API_HOST+data.result.data.savePath);
+        $('.poster-preview').attr('src', common.API_HOST+data.result.data.savePath);
+        alert('上传成功！');
+        $('#popup-movie-upload').modal('hide');
+      } else {
+        alert('上传失败：'+data.result.meta.msg);
+      }
+    }
+  });
+});
 $('#dataTable').on('click', '.btn-detail', function(e) {
   e.preventDefault();
   $.ajax({
@@ -165,49 +191,7 @@ $('#dataTable').on('click', '.btn-detail', function(e) {
     }
   });
 });
-$('#dataTable').on('click', '.btn-bind', function(e) {
-  e.preventDefault();
-  var tr = $(this).closest('tr');
-  $.ajax({
-    url: common.API_HOST + 'film/standardFilm/detail',
-    type: 'POST',
-    dataType: 'json',
-    data: { id: tr.data('id') }
-  })
-  .done(function(res) {
-    console.log(res);
-    if (true == res.meta.result) {
-      var data = res.data;
-      res.data.dimenName = res.data.dimenNames.join(',');
-      var template = $('#movie-template').html();
-      Mustache.parse(template);
-      var html = Mustache.render(template, data);
-      $('#popup-movie-bind .movie-detail').html(html);
-    } else {
-      alert('接口错误：'+res.meta.msg);
-    }
-  });
-  $.ajax({
-    url: common.API_HOST + 'film/standardFilm/associationTpFilms',
-    type: 'POST',
-    dataType: 'json',
-    data: { id: tr.data('id') }
-  })
-  .done(function(res) {
-    console.log(res);
-    if (true == res.meta.result) {
-      var data = {movies:res.data};
-      var template = $('#tpmovie-template').html();
-      Mustache.parse(template);
-      var html = Mustache.render(template, data);
-      $('#tpMovieTable tbody').html(html);
-    } else {
-      alert('接口错误：'+res.meta.msg);
-    }
-  });
 
-  $('#popup-movie-bind').modal('show');
-});
 $('#pager').on('click', '.prev,.next', function(e) {
   e.preventDefault();
   if ($(this).hasClass('prev')) {

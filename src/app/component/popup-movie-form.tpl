@@ -73,9 +73,9 @@
         <tr>
           <th>海报</th>
           <td colspan="3">
-            <button type="button" class="btn btn-xs btn-default">上传图片</button> <span>图片大小不超过100k</span>
-            <input type="hidden" id="poster" value="{{movie.poster}}">
-            <img src="{{movie.poster}}" width="160" style="display: block;">
+            <input type="text" class="form-control" id="poster" value="{{movie.poster}}">
+            <button type="button" class="btn btn-xs btn-default" id="btn-upload">上传图片</button> <span>图片大小不超过100k</span>
+            <img class="poster-preview" src="{{movie.poster}}" width="160" style="display: block;">
           </td>
         </tr>
       </tbody>

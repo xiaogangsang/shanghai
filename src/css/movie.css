@@ -16,3 +16,12 @@
 .detail-item td p {
   margin-bottom: 3px;
 }
+
+#movieTable tbody td {
+  vertical-align: middle;
+  border-top: 1px solid #ddd;
+}
+#movieTable tbody .selected td {
+  background-color: #ff8903;
+  color: #fff;
+}

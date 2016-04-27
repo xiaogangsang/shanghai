@@ -130,7 +130,7 @@ $(document).on('change', '#btn-service', function(e) {
   var template = $('#service-template').html();
   Mustache.parse(template);
   var html = Mustache.render(template, data);
-  $('#formCinema').append(html);
+  $('.service-list').append(html);
   $('#btn-service option').each(function() {
     if ( serviceId == $(this).val() ) {
       $(this).remove();
