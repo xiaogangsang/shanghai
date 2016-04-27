@@ -31,6 +31,13 @@
 .activity-unit-edit .unit-limitation td {
   padding-left: 15px;
 }
+.activity-unit-edit .time-input {
+  float:none;
+  width: 44px;
+}
 .unit-limitation th .btn {
   width: 100%;
+}
+#dailyBudgetTable table {
+  border: 1px solid #ddd;
 }

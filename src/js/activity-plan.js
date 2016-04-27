@@ -1,32 +1,21 @@
-// $('.unit-limitation th').on('click', '.btn', function(e) {
-//   e.preventDefault();
-//   if(!!$(this).attr('id') ) {
-//     var eleName = $(this).attr('id').substring(4);
-//     $('#'+eleName).modal('show');
-//   }
-// });
-// require('datetimepicker');
 var common = require('common');
-// var _brands = {};
-// var _cities = [];
-// var _provinces = {};
-// var _areas = [];
-// var _services = {};
 var _pageIndex = 1;
 var _pageSize = 10;
 var _pageTotal = 0;
 var _querying = false;
+var searchCache = {};
+var useCache = false;
 
 $(function() {
   common.setMenu('activity-plan');
-  //set search form
-  // setBrand();
-  // setCity();
-  //data cache
-  // getProvince();
-  // getService();
 });
 
+$('#formSearch').on('click', 'button[type=submit]', function(event) {
+  event.preventDefault();
+  _pageIndex = 1;
+  useCache = false;
+  $("#formSearch").trigger('submit');
+});
 $('#formSearch').on('submit', function(e) {
   e.preventDefault();
   var sendData = {
@@ -37,11 +26,16 @@ $('#formSearch').on('submit', function(e) {
     pageIndex: _pageIndex,
     pageSize: _pageSize
   };
-  // console.log(sendData);
   if (true == _querying) {
     return false;
   }
   _querying = true;
+  if (useCache) {
+    sendData = searchCache;
+  } else {
+    searchCache = sendData;
+  }
+  sendData.pageIndex = _pageIndex;
   $.ajax({
     url: common.API_HOST + 'plan/planList',
     type: 'POST',
@@ -50,6 +44,7 @@ $('#formSearch').on('submit', function(e) {
   })
   .done(function(res) {
     _querying = false;
+    useCache = true;
     console.log(res);
     if (true == res.meta.result) {
       if (res.data.rows.length < 1) {
@@ -91,7 +86,6 @@ $('#dataTable').on('click', '.btn-status', function(e) {
     id: btn.closest('tr').data('id'),
     status: btn.data('status') == 1 ? 0 : 1
   };
-  // console.log(sendData);
   $.ajax({
     url: common.API_HOST + 'plan/updatePlanStatus',
     type: 'POST',
@@ -99,7 +93,6 @@ $('#dataTable').on('click', '.btn-status', function(e) {
     data: sendData
   })
   .done(function(res) {
-    // console.log(res);
     if (true == res.meta.result) {
       var statusName = sendData.status == 1 ? '上线' : '下线';
       var btnStatusName = sendData.status == 1 ? '下线' : '上线';
@@ -122,7 +115,6 @@ $('#dataTable').on('click', '.btn-delete', function(e) {
       data: {id: tr.data('id')}
     })
     .done(function(res) {
-      // console.log(res);
       if (true == res.meta.result) {
         alert('删除成功！');
         tr.fadeOut(500,function(){
@@ -151,8 +143,6 @@ function setPager(total, pageIndex, rowsSize, pageTotal) {
   $('#pager').html(html);
 }
 
-// TODO: 这里有问题, 如果点击查询以后修改了查询条件, 那么再点击页码跳转就会出问题, 不再是当前搜索结果的页码跳转
-// 上一页 下一页 页面跳转
 $('#pager').on('click', '.prev,.next', function(e) {
   e.preventDefault();
   if ($(this).hasClass('prev')) {
@@ -280,5 +270,3 @@ $(document).on('submit', '#popup-plan-form form', function(e) {
   });
   return false;
 });
-
-

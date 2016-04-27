@@ -45,7 +45,7 @@
       <div id="menu5" class="panel-collapse collapse" role="tabpanel">
         <div class="list-group">
           <a href="activity-plan.html" class="list-group-item" id="menu-activity-plan">活动计划管理</a>
-          <a href="activity-unit.html" class="list-group-item" id="menu-activity-nuit">活动单元管理</a>
+          <a href="activity-unit.html" class="list-group-item" id="menu-activity-unit">活动单元管理</a>
           <a href="activity-coupon.html" class="list-group-item" id="menu-activity-coupon">优惠券管理</a>
         </div>
       </div>

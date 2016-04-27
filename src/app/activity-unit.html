@@ -11,6 +11,8 @@
 </head>
 <body>
 
+  @@include('component/header.tpl')
+
   <div class="container-fluid">
 
     <div class="row">
@@ -24,26 +26,29 @@
           <li class="active">活动单元管理</li>
         </ol>
 
-        <form id="formSearch" class="search-area">
-
+        <form id="formSearch" class="search-area clearfix">
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">计划ID</div>
+              <input type="text" class="form-control" id="search_planId">
+            </div>
+          </div>
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">单元ID</div>
-              <input type="text" class="form-control" name="" id="search_id">
+              <input type="text" class="form-control" id="search_id">
             </div>
           </div>
-
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">单元名称</div>
-              <input type="text" class="form-control" name="" id="search_name">
+              <input type="text" class="form-control" id="search_name">
             </div>
           </div>
-
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">单元状态</div>
-              <select class="form-control" name="" id="search_status">
+              <select class="form-control" id="search_status">
                 <option value="">全部</option>
                 <option value="1">已上线</option>
                 <option value="0">已下线</option>
@@ -51,11 +56,10 @@
               </select>
             </div>
           </div>
-
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">预算状态</div>
-              <select class="form-control" name="" id="search_budgetStatus">
+              <select class="form-control" id="search_budgetStatus">
                 <option value="">全部</option>
                 <option value="3">正常</option>
                 <option value="1">总预算不足</option>
@@ -63,11 +67,10 @@
               </select>
             </div>
           </div>
-
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
-              <div class="input-group-addon">成本中心</div>
-              <select class="form-control" name="" id="search_budgetSource">
+              <div class="input-group-addon">成本中心类别</div>
+              <select class="form-control" id="search_level">
                 <option value="">全部</option>
                 <option value="0">总行</option>
                 <option value="1">支行</option>
@@ -77,15 +80,14 @@
               </select>
             </div>
           </div>
-
-          <div class="form-group col-sm-6 col-md-4">
+          <div class="form-group col-sm-6 col-md-4" style="display: none;">
             <div class="input-group">
-              <div class="input-group-addon">成本中心(二级)</div>
-              <select class="form-control" name="" id="search_2nd_level_budgetSource">
+              <div class="input-group-addon">成本中心</div>
+              <select class="form-control" id="search_budgetSource">
+                <option value="">全部</option>
               </select>
             </div>
           </div>
-
           <div class="col-xs-12 col-sm-6 col-lg-4 pull-right">
             <div class="row">
               <div class="col-sm-6">
@@ -96,48 +98,25 @@
               </div>
             </div>
           </div>
-
         </form>
 
         <div class="content-area">
 
           <div class="row">
-
             <div class="col-xs-12 extra-btns">
-              <button type="button" class="btn btn-default btn-batch-online">批量上线</button>
-              <button type="button" class="btn btn-default btn-batch-offline">批量下线</button>
-              <button type="button" class="btn btn-default btn-export pull-right">导出列表</button>
+              <button type="button" class="btn btn-default" id="btn-online-multi">批量上线</button>
+              <button type="button" class="btn btn-default" id="btn-offline-multi">批量下线</button>
+              <button type="button" class="btn btn-default pull-right" id="btn-export" disabled>导出列表</button>
             </div>
+          </div>
 
-            <div class="row" id="pager"></div>
-
-<!--             <div class="col xs-12 col-sm-6 rowStatics">共 <span id="rowTotal">xxx</span> 条数据，当前显示 <span id="perPage">xxx</span> 条</div>
-            <div class="col xs-12 col-sm-6">
-              <nav>
-                <ul class="pagination pagination-sm">
-                  <li>
-                    <a href="#"><span aria-hidden="true">&lt;</span></a>
-                  </li>
-                  <li><span id="pageNow">2</span>/<span id="pageTotal">5</span></li>
-                  <li>
-                    <a href="#"><span aria-hidden="true">&gt;</span></a>
-                  </li>
-                  <li>
-                    <input type="text" id="pageNo" pattern="[0-9]+">
-                  </li>
-                  <li>
-                    <button type="button" class="btn">跳转</button>
-                  </li>
-                </ul>
-              </nav>
-            </div>
-          </div> -->
+          <div class="row" id="pager"></div>
 
           <div class="table-responsive" id="dataTable">
             <table class="table table-striped">
               <thead>
                 <tr>
-                  <th><input type="checkbox" class="toggle-selection-all"></th>
+                  <th><input type="checkbox" class="multi-check-all"></th>
                   <th>单元ID</th>
                   <th>单元名称</th>
                   <th>所属计划</th>
@@ -151,7 +130,7 @@
                   <th>总张数预算</th>
                   <th>日金额预算</th>
                   <th>日张数预算</th>
-                  <th width="140">操作</th>
+                  <th>操作</th>
                 </tr>
               </thead>
               <tbody>
@@ -188,10 +167,10 @@
   <script id="table-template" type="text/x-tmpl-mustache">
     {{#rows}}
     <tr data-id="{{id}}">
-      <td><input type="checkbox"></td>
+      <td><input type="checkbox" class="multi-check"></td>
       <td>{{id}}</td>
       <td>{{name}}</td>
-      <td>{{planName}}</td>
+      <td><a class="btn-link" href="activity-unit.html?planId={{planId}}">{{planName}}</a></td>
       <td>{{statusName}}</td>
       <td>{{budgetStatusName}}</td>
       <td>{{priority}}</td>

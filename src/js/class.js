@@ -5,6 +5,7 @@ var _cinemas = {};
 var _choosed = {};
 var _pageIndex = 1;
 var _pageSize = 10;
+var _querying = false;
 var searchCache = {};
 var useCache = false;
 
@@ -28,9 +29,20 @@ $(function() {
   getCinema();
 });
 
-//handle search form
+$('#formSearch').on('click', 'button[type=submit]', function(event) {
+  event.preventDefault();
+  _pageIndex = 1;
+  useCache = false;
+  $("#formSearch").trigger('submit');
+});
 $('#formSearch').on('submit', function(e) {
   e.preventDefault();
+
+  if (true == _querying) {
+    return false;
+  }
+  _querying = true;
+
   var sendData = {
     id: $.trim( $('#search_id').val() ),
     ticketName: $.trim( $('#search_ticketName').val() ),
@@ -54,8 +66,9 @@ $('#formSearch').on('submit', function(e) {
   })
   .done(function(res) {
     console.log(res);
+    _querying = false;
+    useCache = true;
     if (true == res.meta.result) {
-      useCache = true;
       _pageIndex = res.data.pageIndex != undefined ? res.data.pageIndex : _pageIndex;
       setPager(res.data.total, res.data.pageIndex, res.data.rows.length);
       _(res.data.rows).forEach(function(item){
@@ -317,12 +330,6 @@ $('#pager').on('click', '.prev,.next', function(e) {
   }
   $("#formSearch").trigger('submit');
   return false;
-});
-$('#formSearch').on('click', 'button[type=submit]', function(event) {
-  event.preventDefault();
-  _pageIndex = 1;
-  useCache = false;
-  $("#formSearch").trigger('submit');
 });
 $('#pager').on('click', '#btn-pager', function(e) {
   e.preventDefault();

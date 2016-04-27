@@ -97,7 +97,7 @@ $("#channelSelect").on('change', function(e) {
 });
 $('#formChannel').on('click', 'button[type=submit]', function(event) {
   event.preventDefault();
-  $('.multi-selection option').attr('selected','selected');
+  $('.multi-selection select:eq(1) option').prop('selected', true);
   $('#formChannel').trigger('submit');
 });
 $('#formChannel').on('submit', function(e) {

@@ -84,7 +84,6 @@ $(document).on('submit', '#popup-movie-form form', function(e) {
   var sendData = {
     id: $('#popup-movie-form #id').val(),
     name: $.trim( $('#popup-movie-form #name').val() ),
-    dimenId: [],
     showDate: $('#popup-movie-form #showDate').val(),
     duration: $.trim( $('#popup-movie-form #duration').val() ),
     summary: $.trim( $('#popup-movie-form #summary').val() ),
@@ -94,16 +93,18 @@ $(document).on('submit', '#popup-movie-form form', function(e) {
     poster: $.trim( $('#popup-movie-form #poster').val() ),
     status: $('#popup-movie-form #status').val()
   };
+  var dimenIds = [];
   $('#popup-movie-form input[name=dimenId]:checked').each(function() {
-    sendData.dimenId.push($(this).val());
+    dimenIds.push($(this).val());
   });
+  sendData.dimenId = dimenIds.join('|');
   // console.log( sendData );
   $.ajax({
     url: common.API_HOST + 'film/standardFilm/saveOrUpdate',
     type: 'POST',
     dataType: 'json',
-    contentType: 'application/json; charset=utf-8',
-    data: JSON.stringify( sendData )
+    // contentType: 'application/json; charset=utf-8',
+    data: sendData
   })
   .done(function(res) {
     // console.log(res);

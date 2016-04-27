@@ -74,7 +74,7 @@ $(document).on('submit', '#formBindMovie', function(e) {
   var sendData = {
     id: $('#cinemaId').val(),
     thirdPartyFilmId: $('#thirdPartyFilmId').val(),
-    thirdPartyId: $('#thirdPartyId').val(),
+    sourceId: $('#thirdPartyId').val(),
     status: 1
   };
   $.ajax({

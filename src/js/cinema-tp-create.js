@@ -167,7 +167,7 @@ $(document).on('submit', '#formCinema', function(e) {
       tel: $.trim( $('#tel').val() ),
       longitude: $.trim( $('#longitude').val() ),
       latitude: $.trim( $('#latitude').val() ),
-      tpCinemaId: _tpCinemaId,
+      thirdPartyCinemaId: _tpCinemaId,
       sourceId: _sourceId,
       associationStatus: 1
     }

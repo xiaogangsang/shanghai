@@ -11,6 +11,8 @@
 </head>
 <body>
 
+  @@include('component/header.tpl')
+
   <div class="container-fluid">
 
     <div class="row">
@@ -22,126 +24,117 @@
         <ol class="breadcrumb">
           <li>活动中心</li>
           <li>活动单元管理</li>
-          <li class="active">编辑</li>
+          <li class="active">新建</li>
         </ol>
 
-        <section class="activity-unit-edit" style="max-width: 640px;">
-          <h3>编辑活动单元</h3>
+        <section class="activity-unit-edit">
+          <h3>新建活动单元</h3>
           <form id="formUnit">
 
             <div class="edit-section">
-
               <h4>基本信息</h4>
-
               <div class="form-group col-sm-6">
                 <div class="input-group">
                   <div class="input-group-addon">活动名称</div>
-                  <input type="text" class="form-control" value="xxxxxxxxxxx">
+                  <input type="text" class="form-control" id="name" required>
                 </div>
               </div>
-
               <div class="form-group col-sm-6">
                 <div class="input-group">
                   <div class="input-group-addon">所属活动计划</div>
-                  <select class="form-control" name="">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
+                  <select class="form-control" id="planId" required data-parsley-errors-container="#error-planId">
+                    <option value="">选择计划</option>
+                  </select>
+                  <div id="error-planId"></div>
+                </div>
+              </div>
+              <div class="form-group col-sm-6">
+                <div class="input-group">
+                  <div class="input-group-addon">开始日期</div>
+                  <input type="text" class="form-control" id="beginDate" required>
+                </div>
+              </div>
+              <div class="form-group col-sm-6">
+                <div class="input-group">
+                  <div class="input-group-addon">结束日期</div>
+                  <input type="text" class="form-control" id="endDate" required>
+                </div>
+              </div>
+              <div class="form-group col-sm-12">
+                <div class="input-group">
+                  <div class="input-group-addon">每日生效时间</div>
+                  <input type="number" class="form-control time-input" maxlength="2" id="beginHH">时
+                  <input type="number" class="form-control time-input" maxlength="2" id="beginMM">分
+                  <input type="number" class="form-control time-input" maxlength="2" id="beginSS">秒
+                  <span> - </span>
+                  <input type="number" class="form-control time-input" maxlength="2" id="endHH">时
+                  <input type="number" class="form-control time-input" maxlength="2" id="endMM">分
+                  <input type="number" class="form-control time-input" maxlength="2" id="endSS">秒
+                </div>
+              </div>
+              <div class="form-group col-sm-12">
+                <div class="input-group">
+                  <div class="input-group-addon">周期重复选择</div>
+                  <div class="checkbox-inline"><label><input type="checkbox" name="repeatedDay" value="1" required data-parsley-errors-container="#error-repeatedDay"><span>周一</span></label></div>
+                  <div class="checkbox-inline"><label><input type="checkbox" name="repeatedDay" value="2" required data-parsley-errors-container="#error-repeatedDay"><span>周二</span></label></div>
+                  <div class="checkbox-inline"><label><input type="checkbox" name="repeatedDay" value="3" required data-parsley-errors-container="#error-repeatedDay"><span>周三</span></label></div>
+                  <div class="checkbox-inline"><label><input type="checkbox" name="repeatedDay" value="4" required data-parsley-errors-container="#error-repeatedDay"><span>周四</span></label></div>
+                  <div class="checkbox-inline"><label><input type="checkbox" name="repeatedDay" value="5" required data-parsley-errors-container="#error-repeatedDay"><span>周五</span></label></div>
+                  <div class="checkbox-inline"><label><input type="checkbox" name="repeatedDay" value="6" required data-parsley-errors-container="#error-repeatedDay"><span>周六</span></label></div>
+                  <div class="checkbox-inline"><label><input type="checkbox" name="repeatedDay" value="7" required data-parsley-errors-container="#error-repeatedDay"><span>周日</span></label></div>
+                  <div id="error-repeatedDay"></div>
+                </div>
+              </div>
+              <div class="form-group col-sm-6">
+                <div class="input-group">
+                  <div class="input-group-addon">成本中心类别</div>
+                  <select class="form-control" id="level">
+                    <option value="">选择一个</option>
                   </select>
                 </div>
               </div>
-
-              <div class="form-group col-xs-12">
-                <div class="input-group">
-                  <div class="input-group-addon">活动日期</div>
-                  <input type="text" class="form-control" value="xxxxxxxxxxx">
-                </div>
-              </div>
-
-              <div class="form-group col-xs-12">
-                <div class="input-group">
-                  <div class="input-group-addon">每日生效时间</div>
-                  <input type="text" class="form-control" maxlength="2" style="float:none;width: 44px;" value="24">时
-                  <input type="text" class="form-control" maxlength="2" style="float:none;width: 44px;" value="24">分
-                  <input type="text" class="form-control" maxlength="2" style="float:none;width: 44px;" value="24">秒
-                  &nbsp;—&nbsp;
-                  <input type="text" class="form-control" maxlength="2" style="float:none;width: 44px;" value="24">时
-                  <input type="text" class="form-control" maxlength="2" style="float:none;width: 44px;" value="24">分
-                  <input type="text" class="form-control" maxlength="2" style="float:none;width: 44px;" value="24">秒
-                </div>
-              </div>
-
-              <div class="form-group col-xs-12">
-                <div class="input-group">
-                  <div class="input-group-addon">周期重复选择</div>
-                  <div class="btn-group" data-toggle="buttons">
-                    <label class="btn btn-primary"><input type="checkbox" autocomplete="off">周一</label>
-                    <label class="btn btn-primary"><input type="checkbox" autocomplete="off">周二</label>
-                    <label class="btn btn-primary"><input type="checkbox" autocomplete="off">周三</label>
-                    <label class="btn btn-primary"><input type="checkbox" autocomplete="off">周四</label>
-                    <label class="btn btn-primary"><input type="checkbox" autocomplete="off">周五</label>
-                    <label class="btn btn-primary"><input type="checkbox" autocomplete="off">周六</label>
-                    <label class="btn btn-primary"><input type="checkbox" autocomplete="off">周日</label>
-                  </div>
-                </div>
-              </div>
-
               <div class="form-group col-sm-6">
                 <div class="input-group">
                   <div class="input-group-addon">成本中心</div>
-                  <select class="form-control" name="">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
+                  <select class="form-control" id="budgetSource" required data-parsley-errors-container="#error-budgetSource">
+                    <option value="">请选择类别</option>
                   </select>
+                  <div id="error-budgetSource"></div>
                 </div>
               </div>
-
               <div class="form-group col-sm-6">
                 <div class="input-group">
                   <div class="input-group-addon">万达活动票类</div>
-                  <select class="form-control" name="">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
+                  <select class="form-control" id="wandaTicketId">
+                    <option value="">不选</option>
                   </select>
                 </div>
               </div>
-
-              <div class="form-group col-sm-6">
-                <div class="input-group">
-                  <div class="input-group-addon">是否使用预付款</div>
-                  <div class="btn-group" data-toggle="buttons">
-                    <label class="btn btn-primary">
-                      <input type="radio" name="options" autocomplete="off">是
-                    </label>
-                    <label class="btn btn-primary">
-                      <input type="radio" name="options" autocomplete="off">否
-                    </label>
-                  </div>
-                </div>
-              </div>
-
               <div class="form-group col-sm-6">
                 <div class="input-group">
                   <div class="input-group-addon">活动优先级</div>
-                  <input type="text" class="form-control" value="123">
+                  <input type="number" class="form-control" id="priority" required>
+                </div>
+              </div>
+              <div class="form-group col-sm-6">
+                <div class="input-group">
+                  <div class="input-group-addon">是否使用预付款</div>
+                  <div class="checkbox-inline"><label><input type="radio" name="advancePayment" value="1" required data-parsley-errors-container="#error-advancePayment"><span>是</span></label></div>
+                  <div class="checkbox-inline"><label><input type="radio" name="advancePayment" value="0" required data-parsley-errors-container="#error-advancePayment"><span>否</span></label></div>
+                  <div id="error-advancePayment"></div>
                 </div>
               </div>
             </div>
 
             <div class="edit-section pane-activity-type">
-
               <h4>活动形式</h4>
-
-              <ul class="nav nav-tabs" role="tablist">
+              <ul class="nav nav-tabs" role="tablist" id="activityPattern">
                 <li class="active"><a href="#type_1" aria-controls="type_1" data-toggle="tab">固定价</a></li>
                 <li><a href="#type_2" aria-controls="type_2" data-toggle="tab">立减</a></li>
                 <li><a href="#type_3" aria-controls="type_3" data-toggle="tab">N折</a></li>
                 <li><a href="#type_4" aria-controls="type_4" data-toggle="tab">买N减一</a></li>
                 <li><a href="#type_5" aria-controls="type_5" data-toggle="tab">积分</a></li>
               </ul>
-
               <div class="tab-content">
                 <div class="tab-pane active" id="type_1">
                   <button class="btn btn-sm btn-default">添加</button>
@@ -271,31 +264,31 @@
               <div class="form-group col-sm-6">
                 <div class="input-group">
                   <div class="input-group-addon">影院页</div>
-                  <input type="text" class="form-control" value="xxxxxxxxxxx">
+                  <input type="text" class="form-control" id="cinemaPageDesc" required>
                 </div>
               </div>
               <div class="form-group col-sm-6">
                 <div class="input-group">
                   <div class="input-group-addon">场次活动icon</div>
-                  <input type="text" class="form-control" value="xxxxxxxxxxx">
+                  <input type="text" class="form-control" id="activityIcon" required>
                 </div>
               </div>
               <div class="form-group col-sm-6">
                 <div class="input-group">
                   <div class="input-group-addon">场次页</div>
-                  <input type="text" class="form-control" value="xxxxxxxxxxx">
+                  <input type="text" class="form-control" id="timetableDesc" required>
                 </div>
               </div>
               <div class="form-group col-sm-6">
                 <div class="input-group">
                   <div class="input-group-addon">活动列表描述</div>
-                  <input type="text" class="form-control" value="xxxxxxxxxxx">
+                  <input type="text" class="form-control" id="activityDesc" required>
                 </div>
               </div>
               <div class="form-group col-xs-12">
                 <div class="input-group">
                   <div class="input-group-addon">跳转链接</div>
-                  <input type="text" class="form-control" value="xxxxxxxxxxx">
+                  <input type="text" class="form-control" id="activityLink" required>
                 </div>
               </div>
             </div>
@@ -306,47 +299,48 @@
                 <table class="table">
                   <tbody>
                     <tr>
-                      <th width="100"><button class="btn btn-default" id="btn-popup-budget">活动预算</button></th>
-                      <td>xxxxxxxxxx</td>
+                      <th width="100"><button type="button" class="btn btn-default" id="btn-set-daily">活动预算</button></th>
+                      <td id="preview-budget">不限</td>
                     </tr>
                     <tr>
-                      <th><button class="btn btn-default">客群</button></th>
+                      <th>客群</th>
                       <td>
-                        <div class="checkbox-inline"><label><input type="checkbox"> 新户</label></div>
-                        <div class="checkbox-inline"><label><input type="checkbox"> 老户</label></div>
+                        <div class="checkbox-inline"><label><input type="checkbox" name="customerType" value="1" required data-parsley-errors-container="#error-customerType" checked><span>新户</span></label></div>
+                        <div class="checkbox-inline"><label><input type="checkbox" name="customerType" value="2" required data-parsley-errors-container="#error-customerType" checked><span>老户</span></label></div>
+                        <div id="error-customerType"></div>
                       </td>
                     </tr>
                     <tr>
-                      <th><button class="btn btn-default" id="btn-popup-restriction">单户限购</button></th>
-                      <td>xxxxxxxxxx</td>
+                      <th><button type="button" class="btn btn-default" id="btn-set-restriction">单户限购</button></th>
+                      <td id="preview-restriction">不限</td>
                     </tr>
                     <tr>
-                      <th><button class="btn btn-default">渠道</button></th>
+                      <th>渠道</th>
                       <td>
-                        <div class="checkbox-inline"><label><input type="checkbox"> 账上生活</label></div>
-                        <div class="checkbox-inline"><label><input type="checkbox"> 手机银行</label></div>
+                        <div class="checkbox-inline"><label><input type="checkbox" name="channels" value="1" required data-parsley-errors-container="#error-channels" checked><span>掌上生活</span></label></div>
+                        <div class="checkbox-inline"><label><input type="checkbox" name="channels" value="2" required data-parsley-errors-container="#error-channels" checked><span>手机银行</span></label></div>
+                        <div id="error-channels"></div>
                       </td>
                     </tr>
                     <tr>
-                      <th><button class="btn btn-default" id="btn-popup-movie">影片</button></th>
-                      <td>xxxxxxxxxx</td>
+                      <th><button type="button" class="btn btn-default" id="btn-set-movie">影片</button></th>
+                      <td id="preview-movie">不限</td>
                     </tr>
                     <tr>
-                      <th><button class="btn btn-default">影片制式</button></th>
+                      <th>影片制式</th>
                       <td>
-                        <div class="checkbox-inline"><label><input type="checkbox"> 2D</label></div>
-                        <div class="checkbox-inline"><label><input type="checkbox"> 3D</label></div>
-                        <div class="checkbox-inline"><label><input type="checkbox"> 4D</label></div>
-                        <div class="checkbox-inline"><label><input type="checkbox"> IMAX</label></div>
+                        <div class="checkbox-inline"><label><input type="checkbox" name="dimens" value="1" required data-parsley-errors-container="#error-dimens" checked><span>3D</span></label></div>
+                        <div class="checkbox-inline"><label><input type="checkbox" name="dimens" value="2" required data-parsley-errors-container="#error-dimens" checked><span>2D</span></label></div>
+                        <div id="error-dimens"></div>
                       </td>
                     </tr>
                     <tr>
-                      <th><button class="btn btn-default" id="btn-popup-cinema">影院</button></th>
-                      <td>xxxxxxxxxx</td>
+                      <th><button type="button" class="btn btn-default" id="btn-set-cinema">影院</button></th>
+                      <td id="preview-cinema">不限</td>
                     </tr>
                     <tr>
-                      <th><button class="btn btn-default" id="btn-popup-showtime">场次</button></th>
-                      <td>xxxxxxxxxx</td>
+                      <th><button class="btn btn-default" id="btn-set-showtime">场次</button></th>
+                      <td id="preview-showtime">不限</td>
                     </tr>
                   </tbody>
                 </table>
@@ -370,13 +364,13 @@
   </div>
 
   <script src="../js/vendor.js"></script>
-  <script src="../js/activity.js"></script>
+  <script src="../js/activity-unit-edit.js"></script>
 
-  @@include('component/popup-budget.tpl')
-  @@include('component/popup-restriction.tpl')
-  @@include('component/popup-movie.tpl')
-  @@include('component/popup-cinema.tpl')
-  @@include('component/popup-showtime.tpl')
+  @@include('component/popup-unit-budget.tpl')
+  @@include('component/popup-unit-restriction.tpl')
+  @@include('component/popup-unit-movie.tpl')
+  @@include('component/popup-unit-cinema.tpl')
+  @@include('component/popup-unit-showtime.tpl')
 
 </body>
 </html>
