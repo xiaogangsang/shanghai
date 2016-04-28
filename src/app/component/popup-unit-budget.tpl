@@ -11,13 +11,13 @@
             <div class="form-group col-sm-6">
               <div class="input-group">
                 <div class="input-group-addon">总金额预算</div>
-                <input type="number" class="form-control" id="totalAmount" required>
+                <input type="number" class="form-control" id="totalAmount">
               </div>
             </div>
             <div class="form-group col-sm-6">
               <div class="input-group">
                 <div class="input-group-addon">总出票预算</div>
-                <input type="number" class="form-control" id="totalTicket" required>
+                <input type="number" class="form-control" id="totalTicket">
               </div>
             </div>
           </div>

@@ -11,6 +11,9 @@
 </head>
 <body>
 
+  @@include('component/header.tpl')
+
+
   <div class="container-fluid">
 
     <div class="row">
@@ -24,26 +27,26 @@
           <li class="active">优惠券管理</li>
         </ol>
 
-        <form id="formSearch" class="search-area">
+        <form id="formSearch" class="search-area clearfix">
 
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">优惠券规则ID</div>
-              <input type="text" class="form-control" name="" id="search-id">
+              <input type="text" class="form-control" name="" id="search_couponId">
             </div>
           </div>
 
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">优惠券名称</div>
-              <input type="text" class="form-control" name="" id="search-name">
+              <input type="text" class="form-control" name="" id="search_name">
             </div>
           </div>
 
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
-              <div class="input-group-addon">成本中心</div>
-              <select class="form-control" name="" id="search_budgetSource">
+              <div class="input-group-addon">成本中心类别</div>
+              <select class="form-control" id="search_level">
                 <option value="">全部</option>
                 <option value="0">总行</option>
                 <option value="1">支行</option>
@@ -53,11 +56,11 @@
               </select>
             </div>
           </div>
-
-          <div class="form-group col-sm-6 col-md-4">
+          <div class="form-group col-sm-6 col-md-4" style="display: none;">
             <div class="input-group">
-              <div class="input-group-addon">成本中心(二级)</div>
-              <select class="form-control" name="" id="search_2nd_level_budgetSource">
+              <div class="input-group-addon">成本中心</div>
+              <select class="form-control" id="search_budgetSource">
+                <option value="">全部</option>
               </select>
             </div>
           </div>
@@ -68,7 +71,7 @@
                 <button type="submit" class="btn btn-block btn-primary">查询</button>
               </div>
               <div class="col-sm-6">
-                <a href="activity-coupon-edit.html" class="btn btn-block btn-default">新增</a>
+                <a href="activity-coupon-edit.html" class="btn btn-block btn-default" target="_blank">新增</a>
               </div>
             </div>
           </div>
@@ -77,16 +80,16 @@
 
         <div class="content-area">
 
-          <div class="row">
-
+          <div class="row extra-btns">
             <div class="col-xs-12">
-              <button type="button" class="btn btn-default btn-export">导出列表</button>
+              <button type="button" class="btn btn-default" id="btn-export">导出列表</button>
             </div>
+          </div>
 
-            <div class="row" id="pager"></div>
+          <div class="row" id="pager"></div>
 
           <div class="table-responsive" id="dataTable">
-            <table class="table table-striped">
+            <table class="table table-hover">
               <thead>
                 <tr>
                   <th>优惠券规则ID</th>
@@ -95,12 +98,12 @@
                   <th>渠道</th>
                   <th>开始日期</th>
                   <th>结束日期</th>
-                  <th width="80">操作</th>
+                  <th>操作</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td colspan="20" align="center">请点击“查询”按钮！</td>
+                  <td colspan="7" align="center">请点击“查询”按钮！</td>
                 </tr>
               </tbody>
             </table>
@@ -143,7 +146,7 @@
       <td>{{beginDate}}</td>
       <td>{{endDate}}</td>
       <td>
-        <button type="button" class="btn btn-xs btn-default btn-edit">编辑</button>
+        <a href="activity-coupon-edit.html?couponId={{id}}" class="btn btn-xs btn-default">编辑</a>
       </td>
     </tr>
     {{/rows}}

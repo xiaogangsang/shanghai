@@ -118,30 +118,22 @@ $('#dataTable').on('click', '.btn-status', function(e) {
 $('#dataTable').on('click', '.btn-check', function(event) {
   event.preventDefault();
   var id = $(this).closest('tr').data('id');
+  var ticketId = $(this).closest('tr').children('td:nth-child(2)').text();
   $.ajax({
-    url: common.API_HOST + 'thirdParty/wandaTicket/ticketDetail',
+    url: common.API_HOST + 'thirdParty/wandaTicket/getCinemasByTicket',
     type: 'POST',
     dataType: 'json',
     data: { id: id }
   })
   .done(function(res) {
+    console.log(res);
     if (true == res.meta.result) {
-      $('#popup-class-check .modal-title').text('检查【'+res.data.wandaTicket.ticketId+'】的场次');
-      $('#check_id').val(res.data.wandaTicket.id);
-
-      var cinemaList = [];
-      _(res.data.ticketStoreRelList).forEach(function(store){
-        cinemaList.push(store.storeId);
+      $('#popup-class-check .modal-title').text('检查【'+ticketId+'】的场次');
+      $('#check_ticketName').val(ticketId);
+      _(res.data.ticketStoreList).forEach(function(cinema){
+        $('#check_cinemaId').append($('<option></option>').attr('value', cinema.sourceCinemaId).text(cinema.cinemaName));
       });
-      _(_cinemas).forEach(function(cinema){
-        if(cinemaList.indexOf(cinema.cinemaId) > -1) {
-          $('#check_cinemaId').append($('<option></option>').attr('value', cinema.cinemaId).text(cinema.cinemaName));
-        }
-      });
-      var beginTimeStr = res.data.wandaTicket.beginTimeStr.split(' ')[0];
-      var endTimeStr = res.data.wandaTicket.endTimeStr.split(' ')[0];
-
-      $('#check_date').datetimepicker({format: 'yyyy-mm-dd', language: 'zh-CN', minView: 2, todayHighlight: true, autoclose: true, startDate: beginTimeStr, endDate: endTimeStr});
+      $('#check_date').datetimepicker({format: 'yyyy-mm-dd', language: 'zh-CN', minView: 2, todayHighlight: true, autoclose: true});
 
       $('#popup-class-check').modal('show');
       $('#popup-class-check form').parsley();
@@ -155,9 +147,9 @@ $(document).on('submit', '#popup-class-check form', function(event) {
   alert('检查时间会有点长，请耐心等待！');
   $(this).find('input[type=submit]').prop('disabled', true).text('检查中...');
   var sendData = {
-    id: $('#check_id').val(),
-    cinemaId: $('#check_cinemaId').val(),
-    date: $.trim( $('#check_date').val() )
+    ticketName: $('#check_ticketName').val(),
+    tpCinemaId: $('#check_cinemaId').val(),
+    playDate: $.trim( $('#check_date').val() )
   };
   // console.log(sendData);
   $.ajax({
@@ -193,7 +185,7 @@ $('#dataTable').on('click', '.btn-edit', function(event) {
       });
       delete res.data.ticketStoreRelList;
       _(_cinemas).forEach(function(cinema){
-        cinema.selected = cinemaList.indexOf(cinema.cinemaId) > -1 ? true : false;
+        cinema.selected = cinemaList.indexOf(cinema.id) > -1 ? true : false;
       });
       var channelList = [];
       _(res.data.ticketChannelRelList).forEach(function(channel){
@@ -404,15 +396,19 @@ function setChannel() {
 }
 function getCinema() {
   $.ajax({
-    url: common.API_HOST + 'common/cinemaList',
+    url: common.API_HOST + 'cinema/standard/cinemaList',
     type: 'POST',
     dataType: 'json',
-    data: {brandId: 1}
+    data: {
+      sourceId: 1,
+      pageIndex: 1,
+      pageSize: 9999
+    }
   })
   .done(function(res) {
-    console.log(res);
+    // console.log(res);
     if (true == res.meta.result) {
-      _cinemas = res.data;
+      _cinemas = res.data.rows;
     } else {
       alert(res.meta.msg);
     }

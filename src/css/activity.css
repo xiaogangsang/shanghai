@@ -18,18 +18,23 @@
   margin-bottom: 15px;
   overflow: hidden;
 }
-.activity-unit-edit .table th,
+/*.activity-unit-edit .table th,
 .activity-unit-edit .table td {
   border: 0;
   padding: 5px 0 0;
   vertical-align: middle;
-}
-.activity-unit-edit .table th {
+}*/
+/*.activity-unit-edit .table th {
   vertical-align: middle;
+}*/
+.activity-unit-edit .unit-limitation th {
   text-align: center;
 }
 .activity-unit-edit .unit-limitation td {
   padding-left: 15px;
+}
+.activity-unit-edit .unit-limitation td p {
+  margin: 0;
 }
 .activity-unit-edit .time-input {
   float:none;
@@ -40,4 +45,19 @@
 }
 #dailyBudgetTable table {
   border: 1px solid #ddd;
+}
+#search-cinema-candidate tr.selected td,
+#search-cinema-choosed tr.selected td {
+  background-color: #ff8903;
+  color: #fff;
+}
+#typeTable input[type=number],
+#typeTable input[type=text] {
+  padding: 6px 12px;
+  border-radius: 4px;
+}
+#typeTable select {
+  padding: 6px 12px;
+  border-radius: 4px;
+  border: 1px solid #dedede;
 }

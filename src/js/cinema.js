@@ -206,9 +206,10 @@ $(document).on('click', '#btn-online-multi,#btn-offline-multi', function(e) {
     // console.log(JSON.stringify(sendData));
     $.ajax({
       url: common.API_HOST + 'cinema/standard/updateStatus',
-      type: 'GET',
+      type: 'POST',
       dataType: 'json',
-      data: sendData
+      contentType: 'application/json; charset=utf-8',
+      data: JSON.stringify(sendData)
     })
     .done(function(res) {
       // console.log(res);

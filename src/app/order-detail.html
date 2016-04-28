@@ -11,6 +11,8 @@
 </head>
 <body>
 
+  @@include('component/header.tpl')
+
   <div class="container-fluid">
 
     <div class="row">
@@ -23,119 +25,30 @@
           <li>订单管理</li>
           <li>运营</li>
           <li class="active">订单详情</li>
-
         </ol>
 
-        <section class="order-detail">
+        <div class="content-area">
 
-          <div class="col-lg-6">
-            <h3>交易订单</h3>
-            <div class="edit-section">
-              <div class="col-xs-12 col-md-6"><label>客户ID：</label>12345678</div>
-              <div class="col-xs-12 col-md-6"><label>手机号：</label>12345678901</div>
+          <h2>订单详情</h2>
+
+          <input type="hidden" id="transOrderNo">
+          <input type="hidden" id="productOrderNo">
+          <input type="hidden" id="channelId">
+
+          <section class="order-detail">
+
+
+            <div class="col-md-6 col-lg-4" id="payOrder">
+              <h3>交易订单</h3>
             </div>
 
-            <div class="edit-section">
-              <div class="col-xs-12 col-sm-6"><label>交易订单号：</label>xxxxxxx xxxxxxx</div>
-              <div class="col-xs-12 col-sm-6"><label>招行订单号：</label>xxxxxxx xxxxxxx</div>
-              <div class="col-xs-12 col-sm-6"><label>下单时间：</label>xxxxxxx xxxxxxx</div>
-              <div class="col-xs-12 col-sm-6"><label>订单完成时间：</label>xxxxxxxx xxxxxx</div>
-              <div class="col-xs-12 col-sm-6"><label>交易订单状态：</label>支付成功</div>
-              <div class="col-xs-12"><button class="btn btn-default pull-right">退款</button></div>
+            <div class="col-md-6 col-lg-8" id="bizOrder">
+              <h3>商品订单</h3>
             </div>
 
-            <div class="edit-section">
-              <div class="col-xs-12 col-sm-6"><label>客户应付金额：</label>xxxxxxx</div>
-              <div class="col-xs-12 col-sm-6"><label>客户实付金额：</label>xxxxxxx</div>
-              <div class="col-xs-12 col-sm-6"><label>客户实付积分：</label>xxxxxxx</div>
-            </div>
+          </section>
 
-            <div class="edit-section">
-              <h4 style="margin-top: 0;">交易明细</h4>
-              <table class="table table-bordered" style="margin-bottom: 0;">
-                <thead>
-                  <tr>
-                    <th>交易类型</th>
-                    <th>交易金额</th>
-                    <th>交易积分</th>
-                    <th>交易状态</th>
-                    <th>交易时间</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>支付</td>
-                    <td>10元</td>
-                    <td>10分</td>
-                    <td>成功</td>
-                    <td>2016-01-01 12:12:12</td>
-                  </tr>
-                  <tr>
-                    <td>支付</td>
-                    <td>10元</td>
-                    <td>10分</td>
-                    <td>成功</td>
-                    <td>2016-01-01 12:12:12</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <div class="col-lg-6">
-            <h3>商品订单</h3>
-            <div class="edit-section">
-              <div class="col-xs-12 col-sm-6"><label>商品订单号：</label>1234567890</div>
-              <div class="col-xs-12 col-sm-6"><label>第三方订单号：</label>1234567890</div>
-              <div class="col-xs-12 col-sm-6"><label>商品订单状态：</label>已出票</div>
-            </div>
-
-            <div class="edit-section">
-              <div class="col-xs-12 col-sm-6"><label>合作方：</label>百度</div>
-              <div class="col-xs-12 col-sm-6"><label>渠道：</label>掌上生活</div>
-              <div class="col-xs-12 col-sm-6"><label>城市：</label>上海</div>
-              <div class="col-xs-12 col-sm-6"><label>影院：</label>上海影城新华路店</div>
-              <div class="col-xs-12 col-sm-6"><label>影院地址：</label>上海市长宁区新华路XXX号</div>
-              <div class="col-xs-12 col-sm-6"><label>影片：</label>疯狂动物园</div>
-              <div class="col-xs-12 col-sm-6"><label>影片制式：</label>东方巨幕</div>
-              <div class="col-xs-12 col-sm-6"><label>影厅：</label>巨幕厅</div>
-              <div class="col-xs-12 col-sm-6"><label>座位：</label>1排1座</div>
-              <div class="col-xs-12 col-sm-6"><label>开场时间：</label>2016-01-01 11:11</div>
-              <div class="col-xs-12"><button class="btn btn-default pull-right">退票并退款</button></div>
-            </div>
-
-            <div class="edit-section">
-              <div class="col-xs-12 col-sm-6"><label>原价（单价）：</label>50</div>
-              <div class="col-xs-12 col-sm-6"><label>张数：</label>2</div>
-              <div class="col-xs-12 col-sm-6"><label>结算总价：</label>80</div>
-              <div class="col-xs-12 col-sm-6"><label>总补贴金额：</label>20</div>
-              <div class="col-xs-12 col-sm-6"><label>补贴金额（预付）：</label>10</div>
-              <div class="col-xs-12 col-sm-6"><label>活动ID：</label>1234</div>
-              <div class="col-xs-12 col-sm-6"><label>活动名称：</label>20元抵用券</div>
-              <div class="col-xs-12 col-sm-6"><label>票类ID：</label>123456</div>
-              <div class="col-xs-12 col-sm-6"><label>优惠券规则ID：</label>123456</div>
-              <div class="col-xs-12 col-sm-6"><label>优惠券名称：</label>20元抵用券</div>
-              <div class="col-xs-12 col-sm-6"><label>优惠券码：</label>123456</div>
-              <div class="col-xs-12 col-sm-6"><label>实际拨款金额：</label>70</div>
-              <div class="col-xs-12 col-sm-6"><label>商户号：</label>123123</div>
-              <div class="col-xs-12"><button class="btn btn-default pull-right">退优惠券</button></div>
-            </div>
-
-            <div class="edit-section">
-              <div class="col-xs-12 col-sm-6"><label>序列号：</label>12345678</div>
-              <div class="col-xs-12 col-sm-6"><label>前台取票吗：</label>12345678</div>
-              <div class="col-xs-12 col-sm-6"><label>第三方取票码：</label>12345678</div>
-              <div class="col-xs-12 col-sm-6"><label>取票号：</label>12345678</div>
-              <div class="col-xs-12 col-sm-6"><label>前台取票验证码：</label>123456</div>
-              <div class="col-xs-12 col-sm-6"><label>第三方取票验证码：</label>123456</div>
-              <div class="col-xs-12 col-sm-6"><label>短信发送状态：</label>已发送</div>
-              <div class="col-xs-12 col-sm-6"><label>短信发送时间：</label>2016-01-01 11:11:11</div>
-              <div class="col-xs-12"><label>短信发送内容：</label>xxxxxxxxxxxx，xxxxxxxxxxxxx，xxxxxxxxxxxxxxxx，xxxxxxxxxxxxxx。</div>
-              <div class="col-xs-12"><button class="btn btn-default pull-right">重发短信</button></div>
-            </div>
-          </div>
-
-        </section>
+        </div>
 
       </div>
 
@@ -144,6 +57,109 @@
   </div>
 
   <script src="../js/vendor.js"></script>
-  <script src="../js/order.js"></script>
+  <script src="../js/order-detail.js"></script>
+
+  <script id="pay-template" type="text/x-tmpl-mustache">
+    <div class="edit-section">
+      <div class="col-xs-12"><label>客户ID：</label>{{customerId}}</div>
+      <div class="col-xs-12"><label>手机号：</label>{{mobile}}</div>
+    </div>
+    <div class="edit-section">
+      <div class="col-xs-12"><label>交易订单号：</label>{{transOrderNo}}</div>
+      <div class="col-xs-12"><label>招行订单号：</label>{{cmbOrderNo}}</div>
+      <div class="col-xs-12"><label>下单时间：</label>{{placeOrderTime}}</div>
+      <div class="col-xs-12"><label>订单完成时间：</label>{{finishOrderTime}}</div>
+      <div class="col-xs-12"><label>实付金额：</label>{{actualPayAmount}}</div>
+      <div class="col-xs-12"><label>实付积分：</label>{{actualPayPoint}}</div>
+      <div class="col-xs-12"><label>交易订单状态：</label>{{transOrderStatus}}</div>
+    </div>
+    <div class="edit-section">
+      <h4 style="margin-top: 0;">交易明细</h4>
+      <table class="table table-bordered" style="margin-bottom: 0;">
+        <thead>
+          <tr>
+            <th>交易类型</th>
+            <th>交易金额</th>
+            <th>交易积分</th>
+            <th>交易状态</th>
+            <th>交易时间</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#transDetailList}}
+          <tr>
+            <td>{{transType}}</td>
+            <td>{{transAmount}}</td>
+            <td>{{transPoint}}</td>
+            <td>{{transStatus}}</td>
+            <td>{{transDate}}</td>
+          </tr>
+          {{/transDetailList}}
+        </tbody>
+      </table>
+    </div>
+  </script>
+  <script id="biz-template" type="text/x-tmpl-mustache">
+    <div class="edit-section">
+      <div class="col-xs-12 col-sm-6"><label>商品订单号：</label>{{productOrderNo}}</div>
+      <div class="col-xs-12 col-sm-6"><label>第三方订单号：</label>{{tpOrderNo}}</div>
+      <div class="col-xs-12 col-sm-6"><label>商品订单状态：</label>{{productOrderStatus}}</div>
+      {{#canRefund}}
+      <div class="col-xs-12"><button class="btn btn-default pull-right" id="btn-refund">仅退款</button></div>
+      {{/canRefund}}
+    </div>
+    <div class="edit-section">
+      <div class="col-xs-12 col-sm-6"><label>合作方：</label>{{thirdPartyName}}</div>
+      <div class="col-xs-12 col-sm-6"><label>渠道：</label>{{channelId}}</div>
+      <div class="col-xs-12 col-sm-6"><label>城市：</label>{{cityName}}</div>
+      <div class="col-xs-12 col-sm-6"><label>影院：</label>{{cinemaName}}</div>
+      <div class="col-xs-12 col-sm-6"><label>影院地址：</label>{{cinemaAddress}}</div>
+      <div class="col-xs-12 col-sm-6"><label>影片：</label>{{filmName}}</div>
+      <div class="col-xs-12 col-sm-6"><label>影片制式：</label>{{dimen}}</div>
+      <div class="col-xs-12 col-sm-6"><label>影厅：</label>{{hall}}</div>
+      <div class="col-xs-12 col-sm-6"><label>座位：</label>{{seat}}</div>
+      <div class="col-xs-12 col-sm-6"><label>开场时间：</label>{{playTime}}</div>
+      {{#canReturnTicket}}
+      <div class="col-xs-12" style="text-align: right;">
+        <span class="btn-link" data-toggle="tooltip" data-placement="bottom" title="该影票开映前1小时支持退票；影片开映前24小时（含）退票，不收取服务费；影片开映前：2小时（含）至24小时按2元/张收取服务费；影片开映前：1小时（含）至2小时按5元/张收取服务费。">退票手续费规则</span>&nbsp;<button class="btn btn-default" id="btn-returnTicket">退票并退款</button>
+      </div>
+      {{/canReturnTicket}}
+    </div>
+    <div class="edit-section">
+      <div class="col-xs-12 col-sm-6"><label>原价(单价)：</label>{{unitPrice}}</div>
+      <div class="col-xs-12 col-sm-6"><label>张数：</label>{{ticketNum}}</div>
+      <div class="col-xs-12 col-sm-6"><label>结算总价：</label>{{finalTotalSettleAmount}}</div>
+      <div class="col-xs-12 col-sm-6"><label>总补贴金额：</label>xxxxxx</div>
+      <div class="col-xs-12 col-sm-6"><label>补贴金额(预付)：</label>xxxxxx</div>
+      <div class="col-xs-12 col-sm-6"><label>活动ID：</label>{{activityId}}</div>
+      <div class="col-xs-12 col-sm-6"><label>活动名称：</label>{{activityName}}</div>
+      <div class="col-xs-12 col-sm-6"><label>票类ID：</label>{{wandaTicketId}}</div>
+      <div class="col-xs-12 col-sm-6"><label>优惠券规则ID：</label>{{couponId}}</div>
+      <div class="col-xs-12 col-sm-6"><label>优惠券名称：</label>{{couponName}}</div>
+      <div class="col-xs-12 col-sm-6"><label>优惠券码：</label>{{couponCode}}</div>
+      <div class="col-xs-12 col-sm-6"><label>实际拨款金额：</label>xxxxxx</div>
+      <div class="col-xs-12 col-sm-6"><label>商户号：</label>{{merchantNo}}</div>
+      {{#canReturnCoupon}}
+      <div class="col-xs-12" style="text-align: right;"><button class="btn btn-default" id="btn-returnCoupon">退优惠券</button></div>
+      {{/canReturnCoupon}}
+    </div>
+    <div class="edit-section">
+      <h4 class="col-xs-12">影院前台</h4>
+      {{#frontTicket}}
+      <div class="col-xs-12 col-sm-6"><label>{{text}}：</label>{{value}}</div>
+      {{/frontTicket}}
+      <h4 class="col-xs-12">影院自助取票机</h4>
+      {{#machineTicket}}
+      <div class="col-xs-12 col-sm-6"><label>{{text}}：</label>{{value}}</div>
+      {{/machineTicket}}
+    </div>
+    <div class="edit-section">
+      <div class="col-xs-12"><label>短信发送内容：</label>{{smsContent}}</div>
+      <div class="col-xs-12"><button class="btn btn-default pull-right" id="btn-sendsms">重发短信</button></div>
+    </div>
+  </script>
+
+  @@include('component/popup-undertaker.tpl')
+  @@include('component/popup-refund.tpl')
 </body>
 </html>

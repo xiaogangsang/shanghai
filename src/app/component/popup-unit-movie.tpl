@@ -13,17 +13,7 @@
               <tbody>
                 <tr>
                   <td>
-                    <select name="from[]" id="movieSelect" class="form-control" size="20" multiple="multiple">
-                      <option value="1">Item 1</option>
-                      <option value="3">Item 3</option>
-                      <option value="2">Item 2</option>
-                      <option value="1">Item 1</option>
-                      <option value="3">Item 3</option>
-                      <option value="2">Item 2</option>
-                      <option value="1">Item 1</option>
-                      <option value="3">Item 3</option>
-                      <option value="2">Item 2</option>
-                    </select>
+                    <select name="from[]" id="movieSelect" class="form-control" size="20" multiple="multiple"></select>
                   </td>
                   <td width="60">
                     <button type="button" id="movieSelect_all" class="btn btn-block btn-default">全选</button>
@@ -32,12 +22,11 @@
                     <button type="button" id="movieSelect_none" class="btn btn-block btn-default">反选</button>
                   </td>
                   <td>
-                    <select name="to[]" id="movieSelect_to" class="form-control" size="20" multiple="multiple" required data-parsley-errors-container="#error-movie"></select>
+                    <select name="to[]" id="movieSelect_to" class="form-control" size="20" multiple="multiple"></select>
                   </td>
                 </tr>
               </tbody>
             </table>
-            <div id="error-movie"></div>
           </div>
 
         </div>

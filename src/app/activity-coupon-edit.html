@@ -11,6 +11,9 @@
 </head>
 <body>
 
+  @@include('component/header.tpl')
+
+
   <div class="container-fluid">
 
     <div class="row">
@@ -25,105 +28,102 @@
           <li class="active">编辑</li>
         </ol>
 
-        <section class="activity-unit-edit" style="max-width: 640px;">
-          <h3>编辑优惠券</h3>
-          <form id="formUnit">
-
+        <section class="activity-unit-edit">
+          <h3>新增优惠券</h3>
+          <form id="formEdit">
             <div class="edit-section">
-
               <h4>基本信息</h4>
-
               <div class="form-group col-sm-6">
                 <div class="input-group">
                   <div class="input-group-addon">优惠券名称</div>
-                  <input type="text" class="form-control" maxlength="20" value="">
+                  <input type="text" class="form-control" maxlength="20" id="name" required>
                 </div>
               </div>
-
-              <div class="form-group col-sm-6">
-                <div class="input-group">
-                  <div class="input-group-addon">成本中心</div>
-                  <select class="form-control" name="">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="form-group col-xs-12">
-                <div class="input-group">
-                  <div class="input-group-addon">有效期</div>
-                  <input type="date" class="form-control" value="">
-                </div>
-              </div>
-
               <div class="form-group col-sm-6">
                 <div class="input-group">
                   <div class="input-group-addon">签报号</div>
-                  <input type="text" class="form-control" value="">
+                  <input type="text" class="form-control" id="signNo" required>
                 </div>
               </div>
-
               <div class="form-group col-sm-6">
                 <div class="input-group">
-                  <div class="input-group-addon">万达活动票类</div>
-                  <select class="form-control" name="">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
+                  <div class="input-group-addon">成本中心类别</div>
+                  <select class="form-control" id="level">
+                    <option value="">选择一个</option>
+                    <option value="0">总行</option>
+                    <option value="1">支行</option>
+                    <option value="2">卡中心</option>
+                    <option value="3">卡部</option>
+                    <option value="4">O2O项目组</option>
                   </select>
                 </div>
               </div>
-
+              <div class="form-group col-sm-6">
+                <div class="input-group">
+                  <div class="input-group-addon">成本中心</div>
+                  <select class="form-control" id="budgetSource" required data-parsley-errors-container="#error-budgetSource">
+                    <option value="">请选择类别</option>
+                  </select>
+                  <div id="error-budgetSource"></div>
+                </div>
+              </div>
+              <div class="form-group col-sm-6">
+                <div class="input-group">
+                  <div class="input-group-addon">生效日期</div>
+                  <input type="text" class="form-control" id="beginDate" required>
+                </div>
+              </div>
+              <div class="form-group col-sm-6">
+                <div class="input-group">
+                  <div class="input-group-addon">失效日期</div>
+                  <input type="text" class="form-control" id="endDate" required>
+                </div>
+              </div>
+              <div class="form-group col-sm-6">
+                <div class="input-group">
+                  <div class="input-group-addon">万达活动票类</div>
+                  <select class="form-control" id="wandaTicketId">
+                    <option value="">不选</option>
+                  </select>
+                </div>
+              </div>
               <div class="form-group col-sm-6">
                 <div class="input-group">
                   <div class="input-group-addon">是否使用预付款</div>
-                  <div class="radio-inline"><label><input type="radio"> 是</label></div>
-                  <div class="radio-inline"><label><input type="radio"> 否</label></div>
+                  <div class="checkbox-inline"><label><input type="radio" name="advancePayment" value="1" required data-parsley-errors-container="#error-advancePayment"><span>是</span></label></div>
+                  <div class="checkbox-inline"><label><input type="radio" name="advancePayment" value="0" required data-parsley-errors-container="#error-advancePayment"><span>否</span></label></div>
+                  <div id="error-advancePayment"></div>
                 </div>
               </div>
-
             </div>
 
             <div class="edit-section pane-activity-type">
-
               <h4>优惠券规则</h4>
-
-              <ul class="nav nav-tabs" role="tablist">
-                <li class="active"><a href="#type_1" aria-controls="type_1" data-toggle="tab">订单固定价</a></li>
-                <li><a href="#type_2" aria-controls="type_2" data-toggle="tab">订单立减</a></li>
-                <li><a href="#type_3" aria-controls="type_3" data-toggle="tab">每张固定价</a></li>
-                <li><a href="#type_4" aria-controls="type_4" data-toggle="tab">每张立减</a></li>
-                <li><a href="#type_5" aria-controls="type_5" data-toggle="tab">每张折扣</a></li>
-              </ul>
-
-              <div class="tab-content">
-                <div class="tab-pane active" id="type_1">
-                  <div class="form-inline">
-                    <div class="form-group">享<input type="text" class="form-control" maxlength="4" style="width: 60px;">元购<input type="text" class="form-control" maxlength="3" style="width: 50px;">张电影票，单张票价区间为<input type="text" class="form-control" maxlength="3" style="width: 50px;">—<input type="text" class="form-control" maxlength="3" style="width: 50px;">元</div>
-                  </div>
-                </div>
-                <div class="tab-pane" id="type_2">
-                  <div class="form-inline">
-                    <div class="form-group">订单立减<input type="text" class="form-control" maxlength="4" style="width: 60px;">元，订单价格区间为<input type="text" class="form-control" maxlength="4" style="width: 60px;">—<input type="text" class="form-control" maxlength="4" style="width: 60px;">元</div>
-                  </div>
-                </div>
-                <div class="tab-pane" id="type_3">
-                  <div class="form-inline">
-                    <div class="form-group">每张影票<input type="text" class="form-control" maxlength="4" style="width: 60px;">元，限<input type="text" class="form-control" maxlength="2" style="width: 40px;">张，单张票价区间为<input type="text" class="form-control" maxlength="3" style="width: 50px;">—<input type="text" class="form-control" maxlength="3" style="width: 50px;">元</div>
-                  </div>
-                </div>
-                <div class="tab-pane" id="type_4">
-                  <div class="form-inline">
-                    <div class="form-group">每张影票立减<input type="text" class="form-control" maxlength="2" style="width: 40px;">元，限<input type="text" class="form-control" maxlength="2" style="width: 40px;">张，单张票价区间为<input type="text" class="form-control" maxlength="3" style="width: 50px;">—<input type="text" class="form-control" maxlength="3" style="width: 50px;">元</div>
-                  </div>
-                </div>
-                <div class="tab-pane" id="type_5">
-                  <div class="form-inline">
-                    <div class="form-group">每张影票<input type="text" class="form-control" maxlength="3" style="width: 50px;">折优惠，限<input type="text" class="form-control" maxlength="2" style="width: 40px;">张，单张票价区间为<input type="text" class="form-control" maxlength="3" style="width: 50px;">—<input type="text" class="form-control" maxlength="3" style="width: 50px;">元</div>
-                  </div>
-                </div>
+              <div class="table-responsive">
+                <table class="table" id="typeTable">
+                  <thead>
+                    <th>
+                      <select id="couponPattern">
+                        <option value="1">订单固定价</option>
+                        <option value="2">订单立减</option>
+                        <option value="3">每张固定价</option>
+                        <option value="4">每张立减</option>
+                        <option value="5">每张折扣</option>
+                      </select>
+                    </th>
+                    <th>张数限制</th>
+                    <th>单张票价区间（留空即不限）</th>
+                    <th>操作</th>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><input type="number" class="amount" required></td>
+                      <td><input type="number" class="limitNum" required></td>
+                      <td><input type="number" class="lowerBound"> - <input type="number" class="upperBound"></td>
+                      <td><button type="button" class="btn btn-xs btn-default btn-type-delete">删除</button></td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
 
@@ -135,30 +135,26 @@
                     <tr>
                       <th width="100">渠道</th>
                       <td>
-                        <div class="checkbox-inline"><label><input type="checkbox"> 账上生活</label></div>
-                        <div class="checkbox-inline"><label><input type="checkbox"> 手机银行</label></div>
+                        <div id="error-channels"></div>
                       </td>
                     </tr>
                     <tr>
-                      <th><button class="btn btn-default" id="btn-popup-movie">影片</button></th>
-                      <td>xxxxxxxxxx</td>
+                      <th><button type="button" class="btn btn-default" id="btn-set-movie">影片</button></th>
+                      <td id="preview-movie">不限</td>
                     </tr>
                     <tr>
                       <th>影片制式</th>
                       <td>
-                        <div class="checkbox-inline"><label><input type="checkbox"> 2D</label></div>
-                        <div class="checkbox-inline"><label><input type="checkbox"> 3D</label></div>
-                        <div class="checkbox-inline"><label><input type="checkbox"> 4D</label></div>
-                        <div class="checkbox-inline"><label><input type="checkbox"> IMAX</label></div>
+                        <div id="error-dimens"></div>
                       </td>
                     </tr>
                     <tr>
-                      <th><button class="btn btn-default" id="btn-popup-cinema">影院</button></th>
-                      <td>xxxxxxxxxx</td>
+                      <th><button type="button" class="btn btn-default" id="btn-set-cinema">影院</button></th>
+                      <td id="preview-cinema">不限</td>
                     </tr>
                     <tr>
-                      <th><button class="btn btn-default" id="btn-popup-showtime">场次</button></th>
-                      <td>xxxxxxxxxx</td>
+                      <th><button class="btn btn-default" id="btn-set-showtime">场次</button></th>
+                      <td id="preview-showtime">不限</td>
                     </tr>
                   </tbody>
                 </table>
@@ -182,7 +178,12 @@
   </div>
 
   <script src="../js/vendor.js"></script>
-  <script src="../js/activity.js"></script>
+  <script src="../lib/jquery.quicksearch.min.js"></script>
+  <script src="../js/activity-coupon-edit.js"></script>
+
+  @@include('component/popup-unit-movie.tpl')
+  @@include('component/popup-unit-cinema.tpl')
+  @@include('component/popup-unit-showtime.tpl')
 
 </body>
 </html>

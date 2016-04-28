@@ -1,19 +1,17 @@
 var common = require('common');
 var _budgetSource = [];
-var _plans = [];
 var _wandaTicket = [];
 var _movies = [];
 var _dimens = [];
 var _channels = [];
 
 $(function() {
-  common.setMenu('activity-unit');
+  common.setMenu('activity-coupon');
   common.setLoginName();
   var urlParam = common.getUrlParam();
-  if (urlParam.unitId != undefined && urlParam.unitId != '') {
-    setEdit(urlParam.unitId);
+  if (urlParam.couponId != undefined && urlParam.couponId != '') {
+    setEdit(urlParam.couponId);
   } else {
-    setPlan(false);
     setBrand();
     setWandaTicket(false);
     setBudgetSource(false);
@@ -46,7 +44,7 @@ $(function() {
     leftAll: '#movieSelect_none'
   });
 
-  $('#formUnit').parsley();
+  $('#formEdit').parsley();
 
 });
 
@@ -79,105 +77,6 @@ $(document).on('change', '#level', function(event) {
   }
 });
 
-//活动形式
-$(document).on('click', '#btn-type-add', function(event) {
-  event.preventDefault();
-  $('#typeTable tbody').append('<tr><td><input type="number" class="amount"></td><td><input type="number" class="upperBound"> - <input type="number" class="lowerBound"></td><td><button class="btn btn-xs btn-default btn-type-delete">删除</button></td></tr>');
-});
-$(document).on('click', '.btn-type-delete', function(event) {
-  event.preventDefault();
-  if ( $('#typeTable tbody tr').length < 2 ) {
-    alert('作为一个负责任的系统，最后一条就不给你删了！');
-    return false;
-  }
-  if (window.confirm('确定要删除此条规则吗？')) {
-    $(this).closest('tr').remove();
-  }
-  return false;
-});
-
-// 活动预算
-$(document).on('click', '#btn-set-daily', function(event) {
-  event.preventDefault();
-  $('#popup-unit-budget').modal('show');
-  $('#popup-unit-budget form').parsley();
-});
-$(document).on('submit', '#popup-unit-budget form', function(event) {
-  event.preventDefault();
-  var totalAmount = $('#totalAmount').val();
-  var totalTicket = $('#totalTicket').val();
-  var preview_html = '';
-  if (totalAmount != '') {
-    preview_html += '总金额预算：' + totalAmount + '；';
-  }
-  if (totalTicket != '') {
-    preview_html += '总出票预算：' + totalTicket + '；';
-  }
-  if ( $('#dailyBudgetTable tbody tr').length > 0 ) {
-    $('#dailyBudgetTable tbody tr').each(function(index, el) {
-      var startDate = $(el).find('.startDate ').val();
-      var endDate = $(el).find('.endDate ').val();
-      var dailyAmount = $(el).find('.dailyAmount').val();
-      var dailyTicket = $(el).find('.dailyTicket').val();
-      preview_html += '<p>'+startDate+' ~ '+endDate+'，日金额预算：'+dailyAmount+'，日出票预算：'+dailyTicket+'；</p>';
-    });
-  }
-  if(preview_html != '') {
-    $('#preview-budget').html(preview_html);
-  } else {
-    $('#preview-budget').html('不限');
-  }
-  $('#popup-unit-budget').modal('hide');
-  return false;
-});
-$(document).on('click', '#btn-daily', function(event) {
-  event.preventDefault();
-  var template = $('#daily-template').html();
-  Mustache.parse(template);
-  var html = Mustache.render(template);
-  $('#dailyBudgetTable tbody').append(html);
-  $('#popup-unit-budget').scrollTop($('#popup-unit-budget').height());
-  $('.startDate, .endDate').datetimepicker({format: 'yyyy-mm-dd', language: 'zh-CN', minView: 2, todayHighlight: true, autoclose: true});
-});
-$(document).on('click', '#dailyBudgetTable .btn-delete', function(event) {
-  event.preventDefault();
-  if (window.confirm('确定要删除该条日预算吗？')) {
-    $(this).closest('tr').remove();
-  }
-});
-//单户限购
-$(document).on('click', '#btn-set-restriction', function(event) {
-  event.preventDefault();
-  $('#popup-unit-restriction').modal('show');
-  $('#popup-unit-restriction form').parsley();
-});
-$(document).on('submit', '#popup-unit-restriction form', function(event) {
-  event.preventDefault();
-  var dailyTicket = $('#saleLimit_dailyTicket').val();
-  var dailyOrder = $('#saleLimit_dailyOrder').val();
-  var totalTicket = $('#saleLimit_totalTicket').val();
-  var totalOrder = $('#saleLimit_totalOrder').val();
-  var preview_html = '';
-  if (dailyTicket != '') {
-    preview_html += '每日限购'+dailyTicket+'张；';
-  }
-  if (totalTicket != '') {
-    preview_html += '总共限购'+totalTicket+'张；';
-  }
-  if (dailyOrder != '') {
-    preview_html += '每日限购'+dailyOrder+'笔；';
-  }
-  if (totalOrder != '') {
-    preview_html += '总共限购'+totalOrder+'笔；';
-  }
-  if(preview_html != '') {
-    $('#preview-restriction').html(preview_html);
-  } else {
-    $('#preview-restriction').html('不限');
-  }
-  $('#popup-unit-restriction').modal('hide');
-  return false;
-});
 //影片
 $(document).on('click', '#btn-set-movie', function(event) {
   event.preventDefault();
@@ -354,45 +253,23 @@ $(document).on('submit', '#popup-unit-showtime form', function(event) {
 
 
 //form
-$(document).on('submit', '#formUnit', function(event) {
+$(document).on('submit', '#formEdit', function(event) {
   event.preventDefault();
   var sendData = {
     name: $.trim( $('#name').val() ),
-    planId: $('#planId').val(),
     beginDate: $('#beginDate').val(),
     endDate: $('#endDate').val(),
-    dailyEffectiveBeginTime: $('#beginHH').val()+':'+$('#beginMM').val()+':'+$('#beginSS').val(),
-    dailyEffectiveEndTime: $('#endHH').val()+':'+$('#endMM').val()+':'+$('#endSS').val(),
     budgetSource: $('#budgetSource').val(),
     wandaTicketId: $('#wandaTicketId').val(),
-    priority: $('#priority').val(),
     advancePayment: $('input[name=advancePayment]:checked').val(),
-    cinemaPageDesc: $.trim( $('#cinemaPageDesc').val() ),
-    activityIcon: $.trim( $('#activityIcon').val() ),
-    timetablePageDesc: $.trim( $('#timetablePageDesc').val() ),
-    activityDesc: $.trim( $('#activityDesc').val() ),
-    activityLink: $.trim( $('#activityLink').val() ),
-    repeatedDay: [],
-    customerType: [],
     channels: [],
     dimens: [],
-    activityPattern: $('#activityPattern').val(),
-    activityPatternList: [],
-    totalAmount: $('#totalAmount').val(),
-    totalTicket: $('#totalTicket').val(),
-    dailyBudgetList: [],
-    saleLimit: {dailyTicket: $('#dailyTicket').val(), dailyOrder: $('#dailyOrder').val(), totalTicket: $('#totalTicket').val(), totalOrder: $('#totalOrder').val()},
+    couponPattern: $('#couponPattern').val(),
+    patternList: [],
     films: [],
     cinemas: [],
     timetables: []
-  }
-  $('input[name=repeatedDay]:checked').each(function(index, el) {
-    sendData.repeatedDay.push($(el).val());
-  });
-  sendData.repeatedDay = sendData.repeatedDay.join(',');
-  $('input[name=customerType]:checked').each(function(index, el) {
-    sendData.customerType.push($(el).val());
-  });
+  };
   $('input[name=channels]:checked').each(function(index, el) {
     sendData.channels.push($(el).val());
   });
@@ -401,16 +278,10 @@ $(document).on('submit', '#formUnit', function(event) {
   });
   $('#typeTable tbody tr').each(function(index, el) {
     var amount = $(el).find('.amount').val();
+    var limitNum = $(el).find('.limitNum').val();
     var lowerBound = $(el).find('.lowerBound').val();
     var upperBound = $(el).find('.upperBound').val();
-    sendData.activityPatternList.push( {amount:amount, lowerBound:lowerBound, upperBound:upperBound} );
-  });
-  $('#dailyBudgetTable tbody tr').each(function(index, el) {
-    var startDate = $(el).find('.startDate').val();
-    var endDate = $(el).find('.endDate').val();
-    var dailyAmount = $(el).find('.dailyAmount').val();
-    var dailyTicket = $(el).find('.dailyTicket').val();
-    sendData.dailyBudgetList.push( {startDate:startDate, endDate:endDate, dailyAmount:dailyAmount, dailyTicket:dailyTicket} );
+    sendData.patternList.push( {amount:amount, limitNum:limitNum, lowerBound:lowerBound, upperBound:upperBound} );
   });
   $('#movieSelect_to option').each(function(index, el) {
     sendData.films.push( $(el).val() );
@@ -426,9 +297,9 @@ $(document).on('submit', '#formUnit', function(event) {
     sendData.timetables.push( {beginDate:beginDate,endDate:endDate,beginTime:beginTime,endTime:endTime} );
   });
 
-  var ajaxUrl = 'activity/saveActivity';
+  var ajaxUrl = 'coupon/couponSave';
   if ( $('#id').length > 0 ) {
-    ajaxUrl = 'activity/updateActivity';
+    ajaxUrl = 'coupon/couponUpdate';
     sendData.id = $('#id').val();
   }
   $.ajax({
@@ -441,18 +312,17 @@ $(document).on('submit', '#formUnit', function(event) {
   .done(function(res) {
     // console.log(res);
     if (true == res.meta.result) {
-     if ( ajaxUrl = 'activity/updateActivity' ) {
-      alert('更新成功！');
-      document.location.reload(true);
-     } else {
-      alert('保存成功！');
-      document.location = 'activity-unit.html';
-     }
-   } else {
-    alert('接口错误：'+res.meta.msg);
-  }
-});
-
+      if ( ajaxUrl = 'coupon/couponUpdate' ) {
+        alert('更新成功！');
+        document.location.reload(true);
+      } else {
+        alert('保存成功！');
+        document.location = 'activity-coupon.html';
+      }
+    } else {
+      alert('接口错误：'+res.meta.msg);
+    }
+  });
   return false;
 });
 
@@ -506,36 +376,6 @@ function setBrand() {
       _(res.data).forEach(function(brand){
         $('#search-cinema-brandId').append($('<option></option>').attr('value', brand.id).text(brand.name));
       });
-    } else {
-      alert('接口错误：'+res.meta.msg);
-    }
-  });
-}
-function setPlan(planId) {
-  $.ajax({
-    url: common.API_HOST + 'plan/planList',
-    type: 'POST',
-    dataType: 'json',
-    data: {status: 1, pageIndex: 1, pageSize: 9999}
-  })
-  .done(function(res) {
-    // console.log(res);
-    if (true == res.meta.result) {
-      if (res.data == null || res.data.rows.length < 1) {
-        alert('没有已上线的计划，这不正常哦！');
-        return false;
-      } else {
-        _plans = res.data.rows;
-        var html = '';
-        _(_plans).forEach(function(plan) {
-          if (planId == plan.id) {
-            html += '<option value="'+plan.id+'" selected>'+plan.name+'</option>';
-          } else {
-            html += '<option value="'+plan.id+'">'+plan.name+'</option>';
-          }
-        });
-        $('#planId').append(html);
-      }
     } else {
       alert('接口错误：'+res.meta.msg);
     }
@@ -671,143 +511,72 @@ function setChannel( channels ) {
 }
 
 
-function setEdit(unitId) {
-  $('h3').text('编辑活动单元:'+unitId);
+function setEdit(couponId) {
+  $('h3').text('编辑优惠券:'+couponId);
   $.ajax({
-    url: common.API_HOST + 'activity/activityDetail',
+    url: common.API_HOST + 'coupon/couponDetail',
     type: 'POST',
     dataType: 'json',
-    data: {id:unitId}
+    data: {id:couponId}
   })
   .done(function(res) {
     console.log(res);
     if (true == res.meta.result) {
-      var unit = res.data;
-      if (unit == null || unit == undefined) {
+      var coupon = res.data;
+      if (coupon == null || coupon == undefined) {
         alert('无法获取要编辑的活动单元信息，这个不太正常，让[猴子们]来查一查！');
         return false;
       }
 
-      $('#formUnit').prepend('<input type="hidden" id="id" value="'+unit.id+'">');
+      $('#formEdit').prepend('<input type="hidden" id="id" value="'+coupon.id+'">');
 
-      $('#name').val(unit.name);
-      $('#beginDate').val(unit.beginDate.split(' ')[0]);
-      $('#endDate').val(unit.endDate.split(' ')[0]);
-      var dailyEffectBeginTime = unit.dailyEffectBeginTime.split(':');
-      $('#beginHH').val(dailyEffectBeginTime[0]);
-      $('#beginMM').val(dailyEffectBeginTime[1]);
-      $('#beginSS').val(dailyEffectBeginTime[2]);
-      var dailyEffectEndTime = unit.dailyEffectEndTime.split(':');
-      $('#endHH').val(dailyEffectEndTime[0]);
-      $('#endMM').val(dailyEffectEndTime[1]);
-      $('#endSS').val(dailyEffectEndTime[2]);
-      var repeatedDay = unit.repeatedDay.split(',');
-      _(repeatedDay).forEach(function(day){
-        $('input[name=repeatedDay]').eq(day-1).prop('checked', true);
-      });
-      $('#priority').val(unit.priority);
-      var advancePayment = unit.advancePayment == 1 ? 0 : 1;
+      $('#name').val(coupon.name);
+      $('#beginDate').val(coupon.beginDate.split(' ')[0]);
+      $('#endDate').val(coupon.endDate.split(' ')[0]);
+      var advancePayment = coupon.advancePayment == 1 ? 0 : 1;
       $('input[name=advancePayment]').eq(advancePayment).prop('checked', true);
-      $('#cinemaPageDesc').val(unit.cinemaPageDesc);
-      $('#activityIcon').val(unit.activityIcon);
-      $('#timetablePageDesc').val(unit.timetablePageDesc);
-      $('#activityDesc').val(unit.activityDesc);
-      $('#activityLink').val(unit.activityLink);
-      $('input[name=customerType]').prop('checked', false);
-      _(unit.cusTypes).forEach(function(cus){
-        $('input[name=customerType]').eq(cus-1).prop('checked', true);
-      });
-      //计划
-      if (unit.planId != '' && unit.planId != null && unit.planId != undefined) {
-        setPlan(unit.planId);
-      } else {
-        setPlan(false);
-      }
       //成本中心
-      if (unit.budgetSourceId != '' && unit.budgetSourceId != null && unit.budgetSourceId != undefined) {
-        setBudgetSource(unit.budgetSourceId);
+      if (coupon.budgetSourceId != '' && coupon.budgetSourceId != null && coupon.budgetSourceId != undefined) {
+        setBudgetSource(coupon.budgetSourceId);
       } else {
         setBudgetSource(false);
       }
       //万达票类
-      if (unit.wandaTicketId != '' && unit.wandaTicketId != null && unit.wandaTicketId != undefined) {
-        setWandaTicket(unit.wandaTicketId);
+      if (coupon.wandaTicketId != '' && coupon.wandaTicketId != null && coupon.wandaTicketId != undefined) {
+        setWandaTicket(coupon.wandaTicketId);
       } else {
         setWandaTicket(false);
       }
       //活动形式
-      $('#activityPattern option').eq(unit.activityPattern-1).prop('selected', true);
-      var html = '';
-      _(unit.activityPatternList).forEach(function(pattern){
-        html += '<tr><td><input type="number" class="amount" value="'+pattern.amount+'" required></td><td><input type="number" class="lowerBound" value="'+pattern.lowerBound+'"> - <input type="number" class="upperBound" value="'+pattern.upperBound+'"></td><td><button type="button" class="btn btn-xs btn-default btn-type-delete">删除</button></td></tr>';
-      });
-      $('#typeTable tbody').html(html);
-      //活动预算
-      $('#totalAmount').val(unit.totalAmount);
-      $('#totalTicket').val(unit.totalTicket);
-      var preview_html = '';
-      if (unit.totalAmount != '') {
-        preview_html += '总金额预算：' + unit.totalAmount + '；';
-      }
-      if (unit.totalTicket != '') {
-        preview_html += '总出票预算：' + unit.totalTicket + '；';
-      }
-      var html = '';
-      _(unit.dailyBudgetList).forEach(function(daily){
-        html += '<tr><td><input type="text" class="form-control startDate" required value="'+daily.startDate+'"></td><td><input type="text" class="form-control endDate" required value="'+daily.endDate+'"></td><td><input type="number" class="form-control dailyAmount" required value="'+daily.dailyAmount+'"></td><td><input type="number" class="form-control dailyTicket" required value="'+daily.dailyTicket+'"></td><td><button type="button" class="btn btn-xs btn-primary btn-delete">删除</button></td></tr>';
-        preview_html += '<p>'+daily.startDate+' ~ '+daily.endDate+'，日金额预算：'+daily.dailyAmount+'，日出票预算：'+daily.dailyTicket+'；</p>';
-      });
-      $('#dailyBudgetTable tbody').html(html);
-      if(preview_html != '') {
-        $('#preview-budget').html(preview_html);
-        $('.startDate, .endDate').datetimepicker({format: 'yyyy-mm-dd', language: 'zh-CN', minView: 2, todayHighlight: true, autoclose: true});
-      }
-      //单户限购
-      $('#saleLimit_dailyOrder').val(unit.saleLimit.dailyOrder);
-      $('#saleLimit_dailyTicket').val(unit.saleLimit.dailyTicket);
-      $('#saleLimit_totalOrder').val(unit.saleLimit.totalOrder);
-      $('#saleLimit_totalTicket').val(unit.saleLimit.totalTicket);
-      var preview_html = '';
-      if (unit.saleLimit.dailyTicket != '') {
-        preview_html += '每日限购'+unit.saleLimit.dailyTicket+'张；';
-      }
-      if (unit.saleLimit.totalTicket != '') {
-        preview_html += '总共限购'+unit.saleLimit.totalTicket+'张；';
-      }
-      if (unit.saleLimit.dailyOrder != '') {
-        preview_html += '每日限购'+unit.saleLimit.dailyOrder+'笔；';
-      }
-      if (unit.saleLimit.totalOrder != '') {
-        preview_html += '总共限购'+unit.saleLimit.totalOrder+'笔；';
-      }
-      if(preview_html != '') {
-        $('#preview-restriction').html(preview_html);
+      $('#couponPattern option').eq(coupon.couponPattern-1).prop('selected', true);
+      if(coupon.couponPattern != null) {
+        $('#typeTable tbody').html('<tr><td><input type="text" class="amount" required value="'+coupon.patternList.amount+'"></td><td><input type="number" class="limitNum" required value="'+coupon.patternList.limitNum+'"></td><td><input type="number" class="lowerBound" value="'+coupon.patternList.lowerBound+'"> - <input type="number" class="upperBound" value="'+coupon.patternList.upperBound+'"></td><td><button type="button" class="btn btn-xs btn-default btn-type-delete">删除</button></td></tr>');
       }
       //渠道
-      if (unit.channels.length > 0 && unit.channels != null) {
-        setChannel(unit.channels);
+      if (coupon.channels.length > 0 && coupon.channels != null) {
+        setChannel(coupon.channels);
       } else {
         setChannel(false);
       }
       //影片
-      if (unit.films.length > 0 && unit.films != null) {
-        setMovie(unit.films);
+      if (coupon.films.length > 0 && coupon.films != null) {
+        setMovie(coupon.films);
       } else {
         setMovie(false);
       }
       //制式
-      if (unit.dimens.length > 0 && unit.dimens != null) {
-        setDimen(unit.dimens);
+      if (coupon.dimens.length > 0 && coupon.dimens != null) {
+        setDimen(coupon.dimens);
       } else {
         setDimen(false);
       }
       //影院
       //TODO 缺少接口，不能一个个去读取
       //场次
-      if (unit.timetables.length > 0 && unit.timetables != null) {
+      if (coupon.timetables.length > 0 && coupon.timetables != null) {
         var html = '';
         var preview_html = '';
-        _(unit.timetables).forEach(function(time){
+        _(coupon.timetables).forEach(function(time){
           html += '<tr><td><input type="text" class="form-control beginDate" required value="'+time.beginDate+'"></td><td><input type="text" class="form-control endDate" required value="'+time.endDate+'"></td><td><input type="text" class="form-control beginTime" required value="'+time.beginTime+'"></td><td><input type="text" class="form-control endTime" required value="'+time.endTime+'"></td><td><button type="button" class="btn btn-xs btn-primary btn-delete">删除</button></td></tr>';
           preview_html += '<p>'+time.beginDate+' ~ '+time.endDate+' 每天 '+time.beginTime+' ~ '+time.endTime+'</p>';
         });

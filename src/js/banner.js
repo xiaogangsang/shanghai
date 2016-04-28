@@ -154,6 +154,7 @@ $('#dataTable').on('click', '.btn-status', function(event) {
   var tr = $(this).closest('tr');
   var sendData = {
     id: tr.data('id'),
+    bannerType: tr.data('bannertype'),
     status: $(this).data('status') == 1 ? 0 : 1
   };
   // console.log(sendData);

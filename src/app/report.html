@@ -11,6 +11,8 @@
 </head>
 <body>
 
+  @@include('component/header.tpl')
+
   <div class="container-fluid">
 
     <div class="row">
@@ -24,92 +26,73 @@
           <li class="active">运营报表</li>
         </ol>
 
-        <form id="formClass" class="search-area">
-
-          <div class="form-group col-sm-6">
+        <form id="formSearch" class="search-area clearfix">
+          <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
-              <div class="input-group-addon">日期范围</div>
-              <input type="text" class="form-control" id="partner" placeholder="">
+              <div class="input-group-addon">开始日期</div>
+              <input type="text" class="form-control" id="search_beginDate">
             </div>
           </div>
-
-          <div class="form-group col-sm-6 col-md-3">
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">结束日期</div>
+              <input type="text" class="form-control" id="search_endDate">
+            </div>
+          </div>
+          <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">渠道</div>
-              <select class="form-control" name="">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
+              <select class="form-control" id="search_channelId">
+                <option value="">全部</option>
               </select>
             </div>
           </div>
-
-          <div class="form-group col-sm-6 col-md-3">
+          <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">合作方</div>
-              <select class="form-control" name="">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
+              <select class="form-control" id="search_partnerId">
+                <option value="">全部</option>
               </select>
             </div>
           </div>
-
-          <div class="form-group col-sm-6 col-md-3">
+          <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">城市</div>
-              <select class="form-control" name="">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
+              <select class="form-control" id="search_cityId">
+                <option value="">全部</option>
               </select>
             </div>
           </div>
 
-          <div class="form-group col-sm-6 col-md-3">
+          <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">院线</div>
-              <select class="form-control" name="">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
+              <select class="form-control" id="search_brandId">
+                <option value="">全部</option>
               </select>
             </div>
           </div>
 
-          <div class="form-group col-sm-6 col-md-3">
+          <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">影院</div>
-              <select class="form-control" name="">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
+              <select class="form-control" id="search_storeId">
+                <option value="">全部</option>
               </select>
             </div>
           </div>
 
-          <div class="form-group col-sm-6 col-md-3">
+          <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">影片</div>
-              <input type="text" class="form-control" name="" placeholder="">
+              <input type="text" class="form-control" id="search_productName">
             </div>
           </div>
 
-          <div class="form-group col-sm-6 col-md-3">
+          <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">活动ID</div>
-              <input type="text" class="form-control" name="" placeholder="">
-            </div>
-          </div>
-
-          <div class="form-group col-sm-6 col-md-3">
-            <div class="input-group">
-              <div class="input-group-addon">支付方式</div>
-              <select class="form-control" name="">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-              </select>
+              <input type="text" class="form-control" id="search_activityId">
             </div>
           </div>
 
@@ -121,36 +104,10 @@
 
         <div class="content-area">
 
-          <div class="row">
-
-            <div class="col-xs-12 extra-btns">
-              <button type="button" class="btn btn-default">导出列表</button>
-            </div>
-
-            <div class="col xs-12 col-sm-6 rowStatics">共 <span id="rowTotal">xxx</span> 条数据，当前显示 <span id="perPage">xxx</span> 条</div>
-            <div class="col xs-12 col-sm-6">
-              <nav>
-                <ul class="pagination pagination-sm">
-                  <li>
-                    <a href="#"><span aria-hidden="true">&lt;</span></a>
-                  </li>
-                  <li><span id="pageNow">2</span>/<span id="pageTotal">5</span></li>
-                  <li>
-                    <a href="#"><span aria-hidden="true">&gt;</span></a>
-                  </li>
-                  <li>
-                    <input type="text" id="pageNo" pattern="[0-9]+">
-                  </li>
-                  <li>
-                    <button type="button" class="btn">跳转</button>
-                  </li>
-                </ul>
-              </nav>
-            </div>
-          </div>
+          <div class="row" id="pager"></div>
 
           <div class="table-responsive">
-            <table class="table table-striped">
+            <table class="table table-hover" id="dataTable">
               <thead>
                 <tr>
                   <th></th>
@@ -165,66 +122,14 @@
                   <th>活动ID</th>
                   <th>签报号</th>
                   <th>订单数</th>
-                  <th>客户数</th>
                   <th>出票数</th>
                   <th>票房</th>
                   <th>补贴金额</th>
                 </tr>
               </thead>
               <tbody>
-                <tr class="info">
-                  <td>汇总</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td>200</td>
-                  <td>200</td>
-                  <td>200</td>
-                  <td>200</td>
-                  <td>200</td>
-                </tr>
                 <tr>
-                  <td></td>
-                  <td>2015-01-01</td>
-                  <td>掌上生活</td>
-                  <td>万达</td>
-                  <td>上海</td>
-                  <td>万达</td>
-                  <td>上海五角场万达</td>
-                  <td>万万没想到</td>
-                  <td>现金</td>
-                  <td>500</td>
-                  <td>123456</td>
-                  <td>100</td>
-                  <td>100</td>
-                  <td>100</td>
-                  <td>100</td>
-                  <td>100</td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td>2015-01-01</td>
-                  <td>掌上生活</td>
-                  <td>万达</td>
-                  <td>上海</td>
-                  <td>万达</td>
-                  <td>上海五角场万达</td>
-                  <td>万万没想到</td>
-                  <td>现金</td>
-                  <td>500</td>
-                  <td>123456</td>
-                  <td>100</td>
-                  <td>100</td>
-                  <td>100</td>
-                  <td>100</td>
-                  <td>100</td>
+                  <td colspan="15" align="center">请点击“查询”按钮！</td>
                 </tr>
               </tbody>
             </table>
@@ -240,5 +145,62 @@
 
   <script src="../js/vendor.js"></script>
   <script src="../js/report.js"></script>
+
+  <script id="pager-template" type="text/x-tmpl-mustache">
+    <div class="col xs-12 col-sm-6 rowStatics">共 <span id="total">{{total}}</span> 条数据，当前显示 <span id="rowsSize">{{rowsSize}}</span> 条</div>
+    {{#pageTotal}}
+    <div class="col xs-12 col-sm-6">
+      <nav>
+        <ul class="pagination pagination-sm">
+          <li><a href="#" class="prev"><span>&lt;</span></a></li>
+          <li><span id="pageIndex">{{pageIndex}}</span> / <span id="pageTotal">{{pageTotal}}</span></li>
+          <li><a href="#" class="next"><span>&gt;</span></a></li>
+          <li><input type="number" name="pageNo" id="pageNo" pattern="[0-9]+"></li>
+          <li><button type="button" class="btn" id="btn-pager">跳转</button></li>
+        </ul>
+      </nav>
+    </div>
+    {{/pageTotal}}
+  </script>
+  <script id="table-template" type="text/x-tmpl-mustache">
+    {{#totalAmountAll}}
+    <tr class="info">
+      <td>汇总</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{{totalOrderCount}}</td>
+      <td>{{totalTicketCount}}</td>
+      <td>{{totalMoneyCount}}</td>
+      <td>{{totalBudgetUsedCount}}</td>
+    </tr>
+    {{/totalAmountAll}}
+    {{#rows}}
+    <tr>
+      <td></td>
+      <td>xxxx-xx-xx</td>
+      <td>{{channelId}}</td>
+      <td>xxxxxx</td>
+      <td>{{cityName}}</td>
+      <td>xxxxxx</td>
+      <td>{{storeName}}</td>
+      <td>xxxxxx</td>
+      <td>xxxxxx</td>
+      <td>xxxxxx</td>
+      <td>xxxxxx</td>
+      <td>{{orderCount}}</td>
+      <td>{{ticketCount}}</td>
+      <td>{{moneyCount}}</td>
+      <td>{{budgetUsedCount}}</td>
+    </tr>
+    {{/rows}}
+  </script>
 </body>
 </html>

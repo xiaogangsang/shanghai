@@ -44,7 +44,7 @@
                       <td width="45%">
                         <select name="from[]" id="cinemaSelect" class="form-control" size="8" multiple="multiple">
                           {{#cinemas}}
-                          {{^selected}}<option value="{{cinemaId}}">{{cinemaName}}</option>{{/selected}}
+                          {{^selected}}<option value="{{id}}">{{name}}</option>{{/selected}}
                           {{/cinemas}}
                         </select>
                       </td>
@@ -57,7 +57,7 @@
                       <td>
                         <select name="to[]" id="cinemaSelect_to" class="form-control" size="8" multiple="multiple" required data-parsley-errors-container="#error-cinema">
                           {{#cinemas}}
-                          {{#selected}}<option value="{{cinemaId}}">{{cinemaName}}</option>{{/selected}}
+                          {{#selected}}<option value="{{id}}">{{name}}</option>{{/selected}}
                           {{/cinemas}}
                         </select>
                       </td>
@@ -135,7 +135,7 @@
                       <td width="45%">
                         <select name="from[]" id="cinemaSelect" class="form-control" size="8" multiple="multiple">
                           {{#cinemas}}
-                          <option value="{{cinemaId}}">{{cinemaName}}</option>
+                          <option value="{{tpCinemaId}}">{{tpCinemaName}}</option>
                           {{/cinemas}}
                         </select>
                       </td>

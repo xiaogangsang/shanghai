@@ -22,10 +22,17 @@ $(function() {
     suffix: [],
     meridiem: ["上午", "下午"]
   };
-  $('#search_placeOrderStartTime,#search_placeOrderEndTime').datetimepicker({format: 'yyyy-mm-dd hh:ii:00', language: 'zh-CN', todayHighlight: true, autoclose: true});
+  $('#search_placeOrderStartTime,#search_placeOrderEndTime').datetimepicker({format: 'yyyy-mm-dd', language: 'zh-CN', todayHighlight: true, minView:2, autoclose: true});
 });
 
 //handle search form
+$('#formSearch').on('click', 'button[type=submit]', function(event) {
+  event.preventDefault();
+  $('#dataTable tbody').html('<tr><td colspan="13" align="center">查询中...</td></tr>');
+  _pageIndex = 1;
+  useCache = false;
+  $("#formSearch").trigger('submit');
+});
 $('#formSearch').on('submit', function(e) {
   e.preventDefault();
   var sendData = {
@@ -80,120 +87,6 @@ $('#formSearch').on('submit', function(e) {
   });
   return false;
 });
-$('#dataTable').on('click', '.btn-detail', function(event) {
-  event.preventDefault();
-  $.ajax({
-    url: common.API_HOST + '/order/kf/orderDetail',
-    type: 'POST',
-    dataType: 'json',
-    data: {transOrderNo:$(this).closest('tr').data('id')}
-  })
-  .done(function(res) {
-    console.log(res);
-    if (true == res.meta.result) {
-      setModal(res.data);
-      $('#popup-order-cs-detail').modal('show');
-    } else {
-      alert('接口错误：'+res.meta.msg);
-    }
-  });
-});
-$(document).on('click', '#btn-sendsms', function(event) {
-  event.preventDefault();
-  if (false == window.confirm('确定要发送短信吗？')) {
-    return false;
-  }
-  var transOrderNo = $('#transOrderNo').val();
-  var productOrderNo = $('#productOrderNo').val();
-  if ( transOrderNo=='' || productOrderNo=='' ) {
-    alert('非法操作，无法获取订单号！');
-    return false;
-  }
-  $.ajax({
-    url: common.API_HOST + '/order/kf/sendMessage',
-    type: 'POST',
-    dataType: 'json',
-    data: {
-      transOrderNo: transOrderNo,
-      productOrderNo: productOrderNo
-    }
-  })
-  .done(function(res) {
-    // console.log(res);
-    if (true == res.meta.result) {
-      alert('短信发送成功！');
-    } else {
-      alert('接口错误：'+res.meta.msg);
-    }
-  });
-});
-$(document).on('click', '#btn-returnCoupon', function(event) {
-  event.preventDefault();
-  if (false == window.confirm('确定退优惠券吗？')) {
-    return false;
-  }
-  var productOrderNo = $('#productOrderNo').val();
-  if ( productOrderNo=='' ) {
-    alert('非法操作，无法获取订单号！');
-    return false;
-  }
-  $.ajax({
-    url: common.API_HOST + '/order/kf/refundCoupon',
-    type: 'POST',
-    dataType: 'json',
-    data: {productOrderNo: productOrderNo}
-  })
-  .done(function(res) {
-    // console.log(res);
-    if (true == res.meta.result) {
-      alert('退优惠券成功！');
-      $('#popup-order-return-ticket').modal('hide');
-    } else {
-      alert('接口错误：'+res.meta.msg);
-    }
-  });
-});
-$(document).on('click', '#btn-returnTicket', function(event) {
-  event.preventDefault();
-  $('#popup-order-return-ticket').modal('show');
-});
-$(document).on('submit', '#popup-order-return-ticket form', function(event) {
-  event.preventDefault();
-  if (false == window.confirm('确定退票吗？')) {
-    return false;
-  }
-  var transOrderNo = $('#transOrderNo').val();
-  var productOrderNo = $('#productOrderNo').val();
-  var refundReason = $('#refundReason').val();
-  if (refundReason == '') {
-    alert('退款原因不能为空！');
-    return false;
-  }
-  if ( transOrderNo=='' || productOrderNo=='' ) {
-    alert('非法操作，无法获取订单号！');
-    $('#popup-order-return-ticket').modal('hide');
-    return false;
-  }
-  $.ajax({
-    url: common.API_HOST + '/order/kf/refundTicket',
-    type: 'POST',
-    dataType: 'json',
-    data: {
-      transOrderNo: transOrderNo,
-      productOrderNo: productOrderNo,
-      refundReason: refundReason
-    }
-  })
-  .done(function(res) {
-    // console.log(res);
-    if (true == res.meta.result) {
-      alert('退票成功！');
-      $('#popup-order-return-ticket').modal('hide');
-    } else {
-      alert('接口错误：'+res.meta.msg);
-    }
-  });
-});
 
 $('#pager').on('click', '.prev,.next', function(e) {
   e.preventDefault();
@@ -215,13 +108,6 @@ $('#pager').on('click', '.prev,.next', function(e) {
   $("#formSearch").trigger('submit');
   return false;
 });
-$('#formSearch').on('click', 'button[type=submit]', function(event) {
-  event.preventDefault();
-  $('#dataTable tbody').html('<tr><td colspan="13" align="center">查询中...</td></tr>');
-  _pageIndex = 1;
-  useCache = false;
-  $("#formSearch").trigger('submit');
-});
 $('#pager').on('click', '#btn-pager', function(e) {
   e.preventDefault();
   if ('' ==$('#pageNo').val()) {
@@ -237,18 +123,6 @@ $('#pager').on('click', '#btn-pager', function(e) {
   return false;
 });
 
-function setModal(orderData) {
-  if (orderData) {
-    orderData.canReturnTicket = false; //已出票+支付成功+支持退票的万达票类影院
-    orderData.canReturnCoupon = false; //不是已出票+有优惠券
-    var data = {order:orderData};
-    var template = $('#detail-template').html();
-    Mustache.parse(template);
-    var html = Mustache.render(template, data);
-    $('#popup-order-cs-detail .modal-body').html(html);
-  }
-  return false;
-}
 function setChannel() {
   $.ajax({
     url: common.API_HOST + 'common/channelList',

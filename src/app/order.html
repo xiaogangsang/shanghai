@@ -157,7 +157,7 @@
   <script id="table-template" type="text/x-tmpl-mustache">
     {{#rows}}
     <tr data-id="{{transOrdrNo}}">
-      <td><a href="#" class="btn-link btn-detail">{{transOrdrNo}}</a></td>
+      <td><a href="order-detail.html?orderId={{transOrdrNo}}" class="btn-link" target="_blank">{{transOrdrNo}}</a></td>
       <td>{{mobile}}</td>
       <td>{{placeOrderTime}}</td>
       <td>{{transOrderStatus}}</td>
@@ -171,8 +171,5 @@
     </tr>
     {{/rows}}
   </script>
-
-  @@include('component/popup-order-detail.tpl')
-  @@include('component/popup-order-return-ticket.tpl')
 </body>
 </html>
