@@ -26,6 +26,13 @@ $(function() {
     meridiem: ["上午", "下午"]
   };
   $('#search_beginDate,#search_endDate').datetimepicker({format: 'yyyy-mm-dd', language: 'zh-CN', todayHighlight: true, minView:2, autoclose: true});
+  var beginDate = new Date();
+  var endDate = new Date();
+  endDate.setDate(endDate.getDate()+7);
+  beginDate = common.getDate(beginDate);
+  endDate = common.getDate(endDate);
+  $('#search_beginDate').val(beginDate);
+  $('#search_endDate').val(endDate);
 });
 
 //handle search form
@@ -59,20 +66,20 @@ $('#formSearch').on('submit', function(e) {
   .done(function(res) {
     console.log(res);
     if (true == res.meta.result) {
-      if (res.data == null || res.data.rows.length < 1) {
+      if (res.data == null || res.data.length < 1) {
         $('#dataTable tbody').html('<tr><td colspan="15" align="center">查不到相关数据，请修改查询条件！</td></tr>');
         return false;
       } else {
         useCache = true;
         _pageIndex = res.data.pageIndex;
         _pageTotal = Math.ceil(res.data.total/_pageSize);
-        setPager(res.data.total, _pageIndex, res.data.rows.length, _pageTotal);
+        setPager(res.data.total, _pageIndex, res.data.length, _pageTotal);
         setTableData(res.data);
+      }
+    } else {
+      alert('接口错误：'+res.meta.msg);
     }
-  } else {
-    alert('接口错误：'+res.meta.msg);
-  }
-});
+  });
   return false;
 });
 
@@ -118,7 +125,7 @@ $('#pager').on('click', '#btn-pager', function(e) {
 });
 
 function setTableData(data) {
-  var data = {rows:data.orderInfoList, totalAmountAll:data.totalAmountAll};
+  var data = {rows:data.retList, totalAmountAll:data.totalAmountAll};
   var template = $('#table-template').html();
   Mustache.parse(template);
   var html = Mustache.render(template, data);

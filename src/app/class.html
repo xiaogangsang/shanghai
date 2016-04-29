@@ -44,9 +44,7 @@
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">城市</div>
-              <select class="form-control" id="search_cityId">
-                <option value="">全部</option>
-              </select>
+              <input type="text" class="form-control" id="search_city">
             </div>
           </div>
 
@@ -151,7 +149,7 @@
       <td>{{ticketId}}</td>
       <td title="{{cityNames}}">{{cityShort}}</td>
       <td>{{settleName}}</td>
-      <td>{{channelName}}</td>
+      <td>{{channelNames}}</td>
       <td>{{beginTime}}</td>
       <td>{{endTime}}</td>
       <td>{{statusName}}</td>
@@ -181,7 +179,7 @@
               <div class="input-group">
                 <div class="input-group-addon">检查影院</div>
                 <select class="form-control" id="check_cinemaId" required>
-                  <option value=""></option>
+                  <option value="">选择影院</option>
                 </select>
               </div>
             </div>

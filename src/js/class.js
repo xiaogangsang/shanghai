@@ -5,6 +5,7 @@ var _cinemas = {};
 var _choosed = {};
 var _pageIndex = 1;
 var _pageSize = 10;
+var _pageTotal = 0;
 var _querying = false;
 var searchCache = {};
 var useCache = false;
@@ -47,7 +48,7 @@ $('#formSearch').on('submit', function(e) {
     id: $.trim( $('#search_id').val() ),
     ticketName: $.trim( $('#search_ticketName').val() ),
     channelId: $('#search_channelId').val(),
-    cityId: $('#search_cityId').val(),
+    city: $.trim( $('#search_city').val() ),
     status: $('#search_status').val(),
     pageSize: _pageSize
   };
@@ -69,8 +70,9 @@ $('#formSearch').on('submit', function(e) {
     _querying = false;
     useCache = true;
     if (true == res.meta.result) {
-      _pageIndex = res.data.pageIndex != undefined ? res.data.pageIndex : _pageIndex;
-      setPager(res.data.total, res.data.pageIndex, res.data.rows.length);
+      _pageIndex = res.data.pageIndex;
+      _pageTotal = Math.ceil(res.data.total/_pageSize);
+      setPager(res.data.total, _pageIndex, res.data.rows.length, _pageTotal);
       _(res.data.rows).forEach(function(item){
         item.beginTime = item.beginTime.split(' ')[0];
         item.endTime = item.endTime.split(' ')[0];
@@ -153,7 +155,7 @@ $(document).on('submit', '#popup-class-check form', function(event) {
   };
   // console.log(sendData);
   $.ajax({
-    url: common.API_HOST + 'timeTable/timeTableList',
+    url: common.API_HOST + 'thirdParty/wandaTicket/checkTicket',
     type: 'POST',
     dataType: 'json',
     data: sendData

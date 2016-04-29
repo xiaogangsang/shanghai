@@ -444,11 +444,11 @@ $(document).on('submit', '#formUnit', function(event) {
      if ( ajaxUrl = 'activity/updateActivity' ) {
       alert('更新成功！');
       document.location.reload(true);
-     } else {
+    } else {
       alert('保存成功！');
       document.location = 'activity-unit.html';
-     }
-   } else {
+    }
+  } else {
     alert('接口错误：'+res.meta.msg);
   }
 });
@@ -543,18 +543,17 @@ function setPlan(planId) {
 }
 function setWandaTicket( wandaTicketId ) {
   $.ajax({
-    url: common.API_HOST + 'thirdParty/wandaTicket/ticketList',
-    type: 'POST',
-    dataType: 'json',
-    data: {status: 1, pageIndex: 1, pageSize: 9999}
+    url: common.API_HOST + 'activity/wandaActivityTicketList',
+    type: 'GET',
+    dataType: 'json'
   })
   .done(function(res) {
     // console.log(res);
     if (true == res.meta.result) {
-      if (res.data == null || res.data.rows.length < 1) {
+      if (res.data == null || res.data.wandaTicketList.length < 1) {
         return false;
       } else {
-        _wandaTicket = res.data.rows;
+        _wandaTicket = res.data.wandaTicketList;
         var html = '';
         _(_wandaTicket).forEach(function(ticket) {
           if (wandaTicketId == ticket.id) {

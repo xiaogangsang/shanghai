@@ -114,9 +114,11 @@ $(document).on('click', '.multi-check-all', function() {
 });
 $('#dataTable').on('click', '.btn-status', function(e) {
   e.preventDefault();
+  var tr = $(this).closest('tr');
+  var btn = $(this);
   var sendData = {
-    ids: $(this).closest('tr').data('id'),
-    onlineStatus: $(this).data('onlinestatus') == 1 ? 0 : 1
+    ids: [tr.data('id')],
+    onlineStatus: btn.data('onlinestatus') == 1 ? 0 : 1
   };
   // console.log(sendData);
   var statusName = sendData.onlineStatus ? '上线' : '下线';
@@ -124,13 +126,15 @@ $('#dataTable').on('click', '.btn-status', function(e) {
     url: common.API_HOST + 'cinema/standard/updateStatus',
     type: 'POST',
     dataType: 'json',
-    data: sendData
+    contentType: 'application/json; charset=utf-8',
+    data: JSON.stringify(sendData)
   })
   .done(function(res) {
     // console.log(res);
     if (true == res.meta.result) {
-      $(this).data('onlineStatus',sendData.onlineStatus).html(statusName);
-      $(this).closest('tr').find('td:nth-child(6)').html('已'+statusName);
+      btn.data('onlineStatus',sendData.onlineStatus).html(sendData.onlineStatus ? '下线' : '上线');
+      tr.find('td:nth-child(6)').html('已'+statusName);
+      $('#formSearch').trigger('submit');
       alert(statusName+'操作成功!');
     } else {
       alert("接口错误："+res.meta.msg);
