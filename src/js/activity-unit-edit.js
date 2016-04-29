@@ -668,6 +668,30 @@ function setChannel( channels ) {
     }
   });
 }
+function setCinema( cinemas ) {
+  $.ajax({
+    url: common.API_HOST + 'common/getCinemasByIds',
+    type: 'POST',
+    dataType: 'json',
+    data: {ids:cinemas}
+  })
+  .done(function(res) {
+    console.log(res);
+    if (true == res.meta.result) {
+      if (res.data == null || res.data.length < 1) {
+        return false;
+      } else {
+        var html = '';
+        _(res.data).forEach(function(cinema){
+          html += '<tr data-id="'+cinema.cinemaId+'"><td>'+cinema.cinemaName+'</td><td>'+cinema.cityName+'</td><td>'+cinema.brandName+'</td></tr>';
+        });
+        $('#search-cinema-choosed tbody').html(html);
+      }
+    } else {
+      alert('接口错误：'+res.meta.msg);
+    }
+  });
+}
 
 
 function setEdit(unitId) {
@@ -801,9 +825,11 @@ function setEdit(unitId) {
         setDimen(false);
       }
       //影院
-      //TODO 缺少接口，不能一个个去读取
+      if (unit.cinemas != null && unit.cinemas.length > 0) {
+        setCinema(unit.cinemas.join('|'));
+      }
       //场次
-      if (unit.timetables.length > 0 && unit.timetables != null) {
+      if (unit.timetables != null && unit.timetables.length > 0 ) {
         var html = '';
         var preview_html = '';
         _(unit.timetables).forEach(function(time){

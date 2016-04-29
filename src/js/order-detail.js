@@ -157,7 +157,7 @@ $(document).on('click', '#btn-returnCoupon', function(event) {
     return false;
   }
   $.ajax({
-    url: common.API_HOST + 'order/op/refundCoupon',
+    url: common.API_HOST + 'order/kf/refundCoupon',
     type: 'POST',
     dataType: 'json',
     data: {productOrderNo: $('#productOrderNo').val()}

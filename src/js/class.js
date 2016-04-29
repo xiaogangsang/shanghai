@@ -179,7 +179,7 @@ $('#dataTable').on('click', '.btn-edit', function(event) {
     data: { id: $(this).closest('tr').data('id') }
   })
   .done(function(res) {
-    console.log(res);
+    // console.log(res);
     if (true == res.meta.result) {
       var cinemaList = [];
       _(res.data.ticketStoreRelList).forEach(function(store){

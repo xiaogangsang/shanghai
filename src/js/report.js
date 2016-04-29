@@ -74,6 +74,13 @@ $('#formSearch').on('submit', function(e) {
         _pageIndex = res.data.pageIndex;
         _pageTotal = Math.ceil(res.data.total/_pageSize);
         setPager(res.data.total, _pageIndex, res.data.length, _pageTotal);
+        _(res.data.retList).forEach(function(item){
+          _(_channels).forEach(function(channel){
+            if (item.channelId == channel.channelId) {
+              item.channelName = channel.channelName;
+            }
+          });
+        });
         setTableData(res.data);
       }
     } else {

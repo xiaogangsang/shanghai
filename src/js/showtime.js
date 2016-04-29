@@ -1,6 +1,6 @@
 var common = require('common');
 var _sources = {};
-var _versions = {};
+var _hallTypes = {};
 var _pageIndex = 1;
 var _pageSize = 10;
 var _pageTotal = 0;
@@ -10,7 +10,7 @@ var useCache = false;
 $(function() {
   common.setMenu('showtime');
   //set search form
-  setVersion();
+  setDimen();
   setSource();
   $.fn.datetimepicker.dates['zh-CN'] = {
     days: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"],
@@ -62,7 +62,7 @@ $('#formSearch').on('submit', function(e) {
         _pageTotal = Math.ceil(res.data.total/_pageSize);
         setPager(res.data.total, _pageIndex, res.data.rows.length, _pageTotal);
         _(res.data.rows).forEach(function(item){
-          _(_versions).forEach(function(value, key){
+          _(_hallTypes).forEach(function(value, key){
             if (value.id == item.dimen) {
               item.dimenName = value.name;
             }
@@ -117,17 +117,17 @@ $('#pager').on('click', '#btn-pager', function(e) {
   return false;
 });
 
-function setVersion() {
+function setDimen() {
   $.ajax({
-    url: common.API_HOST + 'common/dimenList',
+    url: common.API_HOST + 'common/hallTypeList',
     type: 'GET',
     dataType: 'json'
   })
   .done(function(res) {
     // console.log(res);
     if (true == res.meta.result) {
-      _versions = res.data;
-      _(_versions).forEach(function(item){
+      _hallTypes = res.data;
+      _(_hallTypes).forEach(function(item){
         $('#search_dimenId').append($('<option></option>').attr('value', item.id).text(item.name));
       });
     } else {

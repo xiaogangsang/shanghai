@@ -115,12 +115,9 @@
                   <th>渠道</th>
                   <th>合作方</th>
                   <th>城市</th>
-                  <th>院线</th>
                   <th>影院</th>
                   <th>影片</th>
-                  <th>支付方式</th>
                   <th>活动ID</th>
-                  <th>签报号</th>
                   <th>订单数</th>
                   <th>出票数</th>
                   <th>票房</th>
@@ -173,9 +170,6 @@
       <td></td>
       <td></td>
       <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
       <td>{{totalOrderCount}}</td>
       <td>{{totalTicketCount}}</td>
       <td>{{totalMoneyCount}}</td>
@@ -185,16 +179,13 @@
     {{#rows}}
     <tr>
       <td></td>
-      <td>xxxx-xx-xx</td>
-      <td>{{channelId}}</td>
-      <td>xxxxxx</td>
+      <td>{{createTime}}</td>
+      <td>{{channelName}}</td>
+      <td>{{partnerName}}</td>
       <td>{{cityName}}</td>
-      <td>xxxxxx</td>
       <td>{{storeName}}</td>
-      <td>xxxxxx</td>
-      <td>xxxxxx</td>
-      <td>xxxxxx</td>
-      <td>xxxxxx</td>
+      <td>{{productName}}</td>
+      <td>{{activityId}}</td>
       <td>{{orderCount}}</td>
       <td>{{ticketCount}}</td>
       <td>{{moneyCount}}</td>

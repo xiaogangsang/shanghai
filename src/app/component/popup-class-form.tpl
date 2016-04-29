@@ -135,7 +135,7 @@
                       <td width="45%">
                         <select name="from[]" id="cinemaSelect" class="form-control" size="8" multiple="multiple">
                           {{#cinemas}}
-                          <option value="{{tpCinemaId}}">{{tpCinemaName}}</option>
+                          <option value="{{id}}">{{name}}</option>
                           {{/cinemas}}
                         </select>
                       </td>
