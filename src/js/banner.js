@@ -94,6 +94,7 @@ $('#formSearch').on('submit', function(e) {
   return false;
 });
 $(document).on('click', '#btn-create', function(e) {
+  _choosed = [];
   setModal(false);
   $('#popup-banner-form').modal('show');
   $('#startTime,#endTime').datetimepicker({format: 'yyyy-mm-dd', language: 'zh-CN', minView: 2, todayHighlight: true, autoclose: true});
@@ -171,6 +172,7 @@ $('#dataTable').on('click', '.btn-status', function(event) {
       tr.find('.btn-status').data('status',sendData.status).html(sendData.status ? '下线' : '上线');
       tr.children('td:nth-child(6)').html(sendData.status?'是':'否');
       alert(statusName+'操作成功!');
+      $('#formSearch').trigger('submit');
     } else {
       alert("接口错误："+res.meta.msg);
     }
@@ -233,18 +235,20 @@ $(document).on('submit', '#popup-banner-form form', function(event) {
 });
 $(document).on('click', '#popup-banner-form #btn-upload', function(event) {
   event.preventDefault();
+  $('#fileupload').next('span').remove();
   $('#popup-banner-upload').modal('show');
   $('#fileupload').data('url', common.API_HOST+'banner/uploadPic').fileupload({
     dataType: 'json',
     add: function (e, data) {
-      $('#popup-banner-upload button[type=submit]').click(function () {
+      $('#fileupload').next('span').remove();
+      $('#fileupload').after(' <span>'+data.files[0].name+'</span>');
+      $('#popup-banner-upload button.btn-primary').off('click').on('click',function () {
         $(this).prop('disable', true).text('上传中...');
         data.submit();
       });
     },
     done: function (e, data) {
-      // console.log(data.result);
-      $('#popup-banner-upload button[type=submit]').prop('disable', false).text('上传');
+      $('#popup-banner-upload button.btn-primary').prop('disable', false).text('上传');
       if (true == data.result.meta.result) {
         $('#imageUrl').val(common.API_HOST+data.result.data.savePath);
         alert('上传成功！');
@@ -266,16 +270,14 @@ $(document).on('click', '#popup-banner-form #btn-city', function(event) {
   var total = _cities.length;
   _(_cities).forEach(function(group){
     // console.log(group);
-    if (tabCount%5 == 1) {
+    if (index%5 == 1) {
       html_tab += '<li><a href="#section-'+index+'" aria-controls="section-'+index+'" role="tab" data-toggle="tab">';
       html_pane += '<div role="tabpanel" class="tab-pane" id="section-'+index+'">';
-      index++;
     }
     html_tab += group.key+' ';
-
     html_group = '<div class="input-group"><div class="input-group-addon">'+group.key+'</div>';
     _(group.group).forEach(function(city, key){
-      if (_choosed.indexOf(city.cityId.toString()) > -1) {
+      if (_choosed.indexOf(city.cityId) > -1) {
         html_group += '<label><input type="checkbox" value="'+city.cityId+'" checked><span>'+city.cityName+'</span></label>';
         html_choosed += '<span class="label label-default" data-id="'+city.cityId+'">'+city.cityName+' <button type="button" class="close"><span>&times;</span></button></span>';
       } else {
@@ -286,13 +288,13 @@ $(document).on('click', '#popup-banner-form #btn-city', function(event) {
 
     html_pane += html_group;
 
-    if (tabCount%5 == 0 || tabCount == total) {
+    if (index%5 == 0 || index == total) {
       html_tab += '</a></li>';
       html_pane += '</div>';
-      tabCount = 0;
-    } else {
       tabCount++;
     }
+
+    index++;
   });
   var data = {choosed: html_choosed, tab: html_tab, pane: html_pane};
   var template = $('#city-template').html();

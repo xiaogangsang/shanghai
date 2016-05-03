@@ -12,7 +12,9 @@ $(function() {
   $('#fileupload').data('url', common.API_HOST+'security/user/importUsers').fileupload({
     dataType: 'json',
     add: function (e, data) {
-      $('#popup-user-import button[type=submit]').click(function () {
+      $('#fileupload').next('span').remove();
+      $('#fileupload').after(' <span>'+data.files[0].name+'</span>');
+      $('#popup-user-import button[type=submit]').off('click').on('click',function () {
         $(this).prop('disable', true).text('上传中...');
         data.submit();
       });
@@ -160,6 +162,7 @@ $('#dataTable').on('click', '.btn-delete', function(e) {
         that.fadeOut(500,function(){
           that.remove();
         });
+        $('#formSearch').trigger('submit');
       } else {
         alert('接口错误：'+res.meta.msg);
       }
@@ -320,7 +323,7 @@ function setModal(userData) {
     });
     delete userData.roles;
     _(_cities).forEach(function(value, key){
-      _cities[key].selected = userData.cityAuthority.indexOf(value.id) > -1 ? true : false;
+      _cities[key].selected = userData.cityAuthority.indexOf(value.cityId) > -1 ? true : false;
     });
     delete userData.cityAuthority
     data = {user:userData, channels:_channels, roles:_roles, cities:_cities};

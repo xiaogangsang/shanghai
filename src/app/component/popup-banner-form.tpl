@@ -145,7 +145,7 @@
         <tr class="type-2" style="display:none;">
           <th>影片</th>
           <td>
-            <select class="form-control" id="filmId" required data-placeholder="选择一个影片" data-parsley-errors-container="#error-film">
+            <select class="form-control" id="filmId" data-placeholder="选择一个影片" data-parsley-errors-container="#error-film">
               <option value=""></option>
               {{#movies}}
               <option value="{{filmId}}">{{filmName}}</option>

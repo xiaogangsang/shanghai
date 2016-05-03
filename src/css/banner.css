@@ -25,3 +25,6 @@
 .edit-section .table>tbody>tr>td {
   border: 0;
 }
+#fileupload {
+  display: inline-block;
+}

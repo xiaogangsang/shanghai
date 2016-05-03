@@ -10,13 +10,14 @@ $(function() {
   $('#fileupload').data('url', common.API_HOST+'comment/importSensitive').fileupload({
     dataType: 'json',
     add: function (e, data) {
-      $('#popup-sensitive-import button[type=submit]').click(function () {
+      $('#fileupload').next('span').remove();
+      $('#fileupload').after(' <span>'+data.files[0].name+'</span>');
+      $('#popup-sensitive-import button[type=submit]').off('click').on('click',function () {
         $(this).prop('disable', true).text('上传中...');
         data.submit();
       });
     },
     done: function (e, data) {
-console.log(data.result);
       if (true == data.result.meta.result) {
         alert('导入成功！');
       } else {

@@ -118,7 +118,7 @@
               <div class="form-group col-sm-6">
                 <div class="input-group">
                   <div class="input-group-addon">活动优先级</div>
-                  <input type="number" class="form-control" id="priority" required>
+                  <input type="text" class="form-control" id="priority" required data-parsley-type="number" min="1">
                 </div>
               </div>
               <div class="form-group col-sm-6">
@@ -150,8 +150,8 @@
                   </thead>
                   <tbody>
                     <tr>
-                      <td><input type="number" class="amount" required></td>
-                      <td><input type="number" class="lowerBound"> - <input type="number" class="upperBound"></td>
+                      <td><input type="text" class="amount" required placeholder="必填" data-parsley-type="number" min="1"></td>
+                      <td><input type="text" class="lowerBound parsley-range" placeholder="不限" data-parsley-type="digits" min="1" data-parsley-ur="0"  data-parsley-errors-container="#error-ur-0"> - <input type="text" class="upperBound parsley-range" placeholder="不限" data-parsley-type="digits" min="1" data-parsley-ur="0" data-parsley-errors-container="#error-ur-0"><div id="error-ur-0"></div></td>
                       <td><button type="button" class="btn btn-xs btn-default btn-type-delete">删除</button></td>
                     </tr>
                   </tbody>

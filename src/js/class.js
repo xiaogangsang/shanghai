@@ -200,6 +200,10 @@ $('#dataTable').on('click', '.btn-edit', function(event) {
       res.data.wandaTicket.beginTimeStr = res.data.wandaTicket.beginTimeStr.split(' ')[0];
       res.data.wandaTicket.endTimeStr = res.data.wandaTicket.endTimeStr.split(' ')[0];
 
+      res.data.wandaTicket.isSupportRefund = res.data.wandaTicket.isSupportRefund==1 ? 1 : 0;
+      res.data.wandaTicket.type = res.data.wandaTicket.type==1 ? 1 : 0;
+      res.data.wandaTicket.settleType = res.data.wandaTicket.settleType==1 ? 1 : 0;
+
       setModal(res.data.wandaTicket);
       $('#popup-class-form').modal('show');
       $('#beginTime,#endTime').datetimepicker({format: 'yyyy-mm-dd', language: 'zh-CN', minView: 2, todayHighlight: true, autoclose: true});

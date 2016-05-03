@@ -21,6 +21,26 @@ $(function() {
     setDimen(false);
     setChannel(false);
   }
+  //upper of range
+  window.Parsley.addValidator('ur', {
+    validateString: function(value, requirement) {
+      var inputs = $('input.parsley-range');
+      var fields = [];
+      inputs.each(function(index, el) {
+        if ( $(this).data('parsley-ur') == requirement ) {
+          var value = parseFloat($(el).val());
+          value = ~~value==0 ? 0 : value;
+          fields.push( value );
+        }
+      });
+      return +fields[0] < +fields[1];
+    },
+    priority: 32,
+    messages: {
+      en: 'This value should be the upper limit of the range.',
+      'zh-cn': '范围的下限与上限设置错误。'
+    }
+  });
 
   $.fn.datetimepicker.dates['zh-CN'] = {
     days: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"],
@@ -82,7 +102,8 @@ $(document).on('change', '#level', function(event) {
 //活动形式
 $(document).on('click', '#btn-type-add', function(event) {
   event.preventDefault();
-  $('#typeTable tbody').append('<tr><td><input type="number" class="amount"></td><td><input type="number" class="upperBound"> - <input type="number" class="lowerBound"></td><td><button class="btn btn-xs btn-default btn-type-delete">删除</button></td></tr>');
+  var index = $('#typeTable tbody tr').size()-1;
+  $('#typeTable tbody').append('<tr><td><input type="text" class="amount" required placeholder="必填" data-parsley-type="digits" min="1"></td><td><input type="text" class="lowerBound parsley-range" placeholder="不限" data-parsley-type="digits" min="1" data-parsley-ur="'+index+'" data-parsley-errors-container="#error-ur-'+index+'"> - <input type="text" class="upperBound parsley-range" placeholder="不限" data-parsley-type="digits" min="1" data-parsley-ur="'+index+'" data-parsley-errors-container="#error-ur-'+index+'"><div id="error-ur-0"></div></td><td><button type="button" class="btn btn-xs btn-default btn-type-delete">删除</button></td></tr>');
 });
 $(document).on('click', '.btn-type-delete', function(event) {
   event.preventDefault();
@@ -100,17 +121,30 @@ $(document).on('click', '.btn-type-delete', function(event) {
 $(document).on('click', '#btn-set-daily', function(event) {
   event.preventDefault();
   $('#popup-unit-budget').modal('show');
+  $('.dailyAmount').prop('required', true).parsley();
+  $('.dailyTicket').prop('required', true).parsley();
   $('#popup-unit-budget form').parsley();
+});
+$(document).on('click', '#popup-unit-budget button[type=submit]', function(event) {
+  if ( $('#dailyBudgetTable tbody tr').length > 0 ) {
+    $('#dailyBudgetTable tbody tr').each(function(index, el) {
+      if ( $(el).find('.dailyAmount').parsley().isValid() || $(el).find('.dailyTicket').parsley().isValid() ) {
+        $(el).find('.dailyAmount').prop('required', false).parsley().destroy();
+        $(el).find('.dailyTicket').prop('required', false).parsley().destroy();
+        return;
+      }
+    });
+  }
 });
 $(document).on('submit', '#popup-unit-budget form', function(event) {
   event.preventDefault();
   var totalAmount = $('#totalAmount').val();
   var totalTicket = $('#totalTicket').val();
   var preview_html = '';
-  if (totalAmount != '') {
+  if (totalAmount != '' && totalAmount != null) {
     preview_html += '总金额预算：' + totalAmount + '；';
   }
-  if (totalTicket != '') {
+  if (totalTicket != '' && totalTicket != null) {
     preview_html += '总出票预算：' + totalTicket + '；';
   }
   if ( $('#dailyBudgetTable tbody tr').length > 0 ) {
@@ -119,7 +153,11 @@ $(document).on('submit', '#popup-unit-budget form', function(event) {
       var endDate = $(el).find('.endDate ').val();
       var dailyAmount = $(el).find('.dailyAmount').val();
       var dailyTicket = $(el).find('.dailyTicket').val();
-      preview_html += '<p>'+startDate+' ~ '+endDate+'，日金额预算：'+dailyAmount+'，日出票预算：'+dailyTicket+'；</p>';
+      if (dailyAmount == '' || dailyTicket == '') {
+        dailyAmount = dailyAmount=='' ? '不限' : dailyAmount;
+        dailyTicket = dailyTicket=='' ? '不限' : dailyTicket;
+        preview_html += '<p>'+startDate+' ~ '+endDate+'，日金额预算：'+dailyAmount+'，日出票预算：'+dailyTicket+'；</p>';
+      }
     });
   }
   if(preview_html != '') {
@@ -381,10 +419,28 @@ $(document).on('submit', '#formUnit', function(event) {
     totalAmount: $('#totalAmount').val(),
     totalTicket: $('#totalTicket').val(),
     dailyBudgetList: [],
-    saleLimit: {dailyTicket: $('#dailyTicket').val(), dailyOrder: $('#dailyOrder').val(), totalTicket: $('#totalTicket').val(), totalOrder: $('#totalOrder').val()},
     films: [],
     cinemas: [],
     timetables: []
+  }
+  var dailyTicket = $('#saleLimit_dailyTicket').val();
+  var dailyOrder = $('#saleLimit_dailyOrder').val();
+  var totalTicket = $('#saleLimit_totalTicket').val();
+  var totalOrder = $('#saleLimit_totalOrder').val();
+  if (dailyTicket != '' || totalTicket != '' || dailyOrder != '' || totalOrder != '') {
+    sendData.saleLimit = {};
+    if (dailyTicket != '') {
+      sendData.saleLimit.dailyTicket = dailyTicket;
+    }
+    if (totalTicket != '') {
+      sendData.saleLimit.totalTicket = totalTicket;
+    }
+    if (dailyOrder != '') {
+      sendData.saleLimit.dailyOrder = dailyOrder;
+    }
+    if (totalOrder != '') {
+      sendData.saleLimit.totalOrder = totalOrder;
+    }
   }
   $('input[name=repeatedDay]:checked').each(function(index, el) {
     sendData.repeatedDay.push($(el).val());
@@ -425,7 +481,7 @@ $(document).on('submit', '#formUnit', function(event) {
     var endTime = $(el).find('.endTime').val();
     sendData.timetables.push( {beginDate:beginDate,endDate:endDate,beginTime:beginTime,endTime:endTime} );
   });
-
+  // console.log(sendData);return false;
   var ajaxUrl = 'activity/saveActivity';
   if ( $('#id').length > 0 ) {
     ajaxUrl = 'activity/updateActivity';
@@ -695,6 +751,7 @@ function setCinema( cinemas ) {
 
 
 function setEdit(unitId) {
+  $('.breadcrumb li:last-child').text('编辑');
   $('h3').text('编辑活动单元:'+unitId);
   $.ajax({
     url: common.API_HOST + 'activity/activityDetail',
@@ -761,23 +818,24 @@ function setEdit(unitId) {
       //活动形式
       $('#activityPattern option').eq(unit.activityPattern-1).prop('selected', true);
       var html = '';
+      var index = 0;
       _(unit.activityPatternList).forEach(function(pattern){
-        html += '<tr><td><input type="number" class="amount" value="'+pattern.amount+'" required></td><td><input type="number" class="lowerBound" value="'+pattern.lowerBound+'"> - <input type="number" class="upperBound" value="'+pattern.upperBound+'"></td><td><button type="button" class="btn btn-xs btn-default btn-type-delete">删除</button></td></tr>';
+        html += '<tr><td><input type="text" class="amount" required placeholder="必填" data-parsley-type="number" min="1" value="'+pattern.amount+'"></td><td><input type="text" class="lowerBound parsley-range" placeholder="不限" data-parsley-type="number" min="1" data-parsley-ur="'+index+'" data-parsley-errors-container="#error-ur-'+index+'" value="'+pattern.lowerBound+'"> - <input type="text" class="upperBound parsley-range" placeholder="不限" data-parsley-type="number" min="1" data-parsley-ur="'+index+'" data-parsley-errors-container="#error-ur-'+index+'" value="'+pattern.upperBound+'"><div id="error-ur-0"></div></td><td><button type="button" class="btn btn-xs btn-default btn-type-delete">删除</button></td></tr>';
       });
       $('#typeTable tbody').html(html);
       //活动预算
       $('#totalAmount').val(unit.totalAmount);
       $('#totalTicket').val(unit.totalTicket);
       var preview_html = '';
-      if (unit.totalAmount != '') {
+      if (unit.totalAmount != '' && unit.totalAmount != null) {
         preview_html += '总金额预算：' + unit.totalAmount + '；';
       }
-      if (unit.totalTicket != '') {
+      if (unit.totalTicket != '' && unit.totalTicket != null) {
         preview_html += '总出票预算：' + unit.totalTicket + '；';
       }
       var html = '';
       _(unit.dailyBudgetList).forEach(function(daily){
-        html += '<tr><td><input type="text" class="form-control startDate" required value="'+daily.startDate+'"></td><td><input type="text" class="form-control endDate" required value="'+daily.endDate+'"></td><td><input type="number" class="form-control dailyAmount" required value="'+daily.dailyAmount+'"></td><td><input type="number" class="form-control dailyTicket" required value="'+daily.dailyTicket+'"></td><td><button type="button" class="btn btn-xs btn-primary btn-delete">删除</button></td></tr>';
+        html += '<tr><td><input type="text" class="form-control startDate" required value="'+daily.startDate+'"></td><td><input type="text" class="form-control endDate" required value="'+daily.endDate+'"></td><td><input type="number" class="form-control dailyAmount" placeholder="不限" required data-parsley-type="number" min="1" value="'+daily.dailyAmount+'"></td><td><input type="number" class="form-control dailyTicket" placeholder="不限" required data-parsley-type="number" min="1" value="'+daily.dailyTicket+'"></td><td><button type="button" class="btn btn-xs btn-primary btn-delete">删除</button></td></tr>';
         preview_html += '<p>'+daily.startDate+' ~ '+daily.endDate+'，日金额预算：'+daily.dailyAmount+'，日出票预算：'+daily.dailyTicket+'；</p>';
       });
       $('#dailyBudgetTable tbody').html(html);
@@ -786,40 +844,42 @@ function setEdit(unitId) {
         $('.startDate, .endDate').datetimepicker({format: 'yyyy-mm-dd', language: 'zh-CN', minView: 2, todayHighlight: true, autoclose: true});
       }
       //单户限购
-      $('#saleLimit_dailyOrder').val(unit.saleLimit.dailyOrder);
-      $('#saleLimit_dailyTicket').val(unit.saleLimit.dailyTicket);
-      $('#saleLimit_totalOrder').val(unit.saleLimit.totalOrder);
-      $('#saleLimit_totalTicket').val(unit.saleLimit.totalTicket);
-      var preview_html = '';
-      if (unit.saleLimit.dailyTicket != '') {
-        preview_html += '每日限购'+unit.saleLimit.dailyTicket+'张；';
+      if (unit.saleLimit != null) {
+        $('#saleLimit_dailyOrder').val(unit.saleLimit.dailyOrder==null ? '' :unit.saleLimit.dailyOrder);
+        $('#saleLimit_dailyTicket').val(unit.saleLimit.dailyTicket==null ? '' :unit.saleLimit.dailyTicket);
+        $('#saleLimit_totalOrder').val(unit.saleLimit.totalOrder==null ? '' :unit.saleLimit.totalOrder);
+        $('#saleLimit_totalTicket').val(unit.saleLimit.totalTicket==null ? '' :unit.saleLimit.totalTicket);
+        preview_html = '';
+        if (unit.saleLimit.dailyTicket != '') {
+          preview_html += '每日限购'+unit.saleLimit.dailyTicket+'张；';
+        }
+        if (unit.saleLimit.totalTicket != '') {
+          preview_html += '总共限购'+unit.saleLimit.totalTicket+'张；';
+        }
+        if (unit.saleLimit.dailyOrder != '') {
+          preview_html += '每日限购'+unit.saleLimit.dailyOrder+'笔；';
+        }
+        if (unit.saleLimit.totalOrder != '') {
+          preview_html += '总共限购'+unit.saleLimit.totalOrder+'笔；';
+        }
+      } else {
+        preview_html += '不限';
       }
-      if (unit.saleLimit.totalTicket != '') {
-        preview_html += '总共限购'+unit.saleLimit.totalTicket+'张；';
-      }
-      if (unit.saleLimit.dailyOrder != '') {
-        preview_html += '每日限购'+unit.saleLimit.dailyOrder+'笔；';
-      }
-      if (unit.saleLimit.totalOrder != '') {
-        preview_html += '总共限购'+unit.saleLimit.totalOrder+'笔；';
-      }
-      if(preview_html != '') {
-        $('#preview-restriction').html(preview_html);
-      }
+      $('#preview-restriction').html(preview_html);
       //渠道
-      if (unit.channels.length > 0 && unit.channels != null) {
+      if (unit.channels != null && unit.channels.length > 0) {
         setChannel(unit.channels);
       } else {
         setChannel(false);
       }
       //影片
-      if (unit.films.length > 0 && unit.films != null) {
+      if (unit.films != null && unit.films.length > 0 ) {
         setMovie(unit.films);
       } else {
         setMovie(false);
       }
       //制式
-      if (unit.dimens.length > 0 && unit.dimens != null) {
+      if (unit.dimens != null && unit.dimens.length > 0 ) {
         setDimen(unit.dimens);
       } else {
         setDimen(false);
@@ -831,7 +891,7 @@ function setEdit(unitId) {
       //场次
       if (unit.timetables != null && unit.timetables.length > 0 ) {
         var html = '';
-        var preview_html = '';
+        preview_html = '';
         _(unit.timetables).forEach(function(time){
           html += '<tr><td><input type="text" class="form-control beginDate" required value="'+time.beginDate+'"></td><td><input type="text" class="form-control endDate" required value="'+time.endDate+'"></td><td><input type="text" class="form-control beginTime" required value="'+time.beginTime+'"></td><td><input type="text" class="form-control endTime" required value="'+time.endTime+'"></td><td><button type="button" class="btn btn-xs btn-primary btn-delete">删除</button></td></tr>';
           preview_html += '<p>'+time.beginDate+' ~ '+time.endDate+' 每天 '+time.beginTime+' ~ '+time.endTime+'</p>';

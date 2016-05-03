@@ -11,13 +11,13 @@
             <div class="form-group col-sm-6">
               <div class="input-group">
                 <div class="input-group-addon">总金额预算</div>
-                <input type="number" class="form-control" id="totalAmount">
+                <input type="text" class="form-control" id="totalAmount" placeholder="不限" data-parsley-type="number" min="1">
               </div>
             </div>
             <div class="form-group col-sm-6">
               <div class="input-group">
                 <div class="input-group-addon">总出票预算</div>
-                <input type="number" class="form-control" id="totalTicket">
+                <input type="text" class="form-control" id="totalTicket" placeholder="不限" data-parsley-type="number" min="1">
               </div>
             </div>
           </div>
@@ -54,8 +54,8 @@
   <tr>
     <td><input type="text" class="form-control startDate" required></td>
     <td><input type="text" class="form-control endDate" required></td>
-    <td><input type="number" class="form-control dailyAmount" required></td>
-    <td><input type="number" class="form-control dailyTicket" required></td>
+    <td><input type="number" class="form-control dailyAmount" placeholder="不限" required data-parsley-type="number" min="1"></td>
+    <td><input type="number" class="form-control dailyTicket" placeholder="不限" required data-parsley-type="number" min="1"></td>
     <td><button type="button" class="btn btn-xs btn-primary btn-delete">删除</button></td>
   </tr>
 </script>

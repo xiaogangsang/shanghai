@@ -44,7 +44,7 @@
               <select name="from[]" id="resourceSelect" class="form-control" size="8" multiple="multiple">
                 {{#resources}}
                 {{^selected}}
-                <option value="{{id}}">{{name}}</option>
+                <option value="{{id}}">{{id}}:{{name}}</option>
                 {{/selected}}
                 {{/resources}}
               </select>
@@ -59,7 +59,7 @@
               <select name="to[]" id="resourceSelect_to" class="form-control" size="8" multiple="multiple" data-parsley-required data-parsley-errors-container="#error-resource">
                 {{#resources}}
                 {{#selected}}
-                <option value="{{id}}">{{name}}</option>
+                <option value="{{id}}">{{id}}:{{name}}</option>
                 {{/selected}}
                 {{/resources}}
               </select>

@@ -223,7 +223,8 @@ $(document).on('click', '#btn-online-multi,#btn-offline-multi', function(e) {
           var buttonText = onlineStatus == 1 ? '下线' : '上线';
           $(this).closest('tr').find('.btn-status').data('onlineStatus',onlineStatus).html();
         });
-        $(this).attr('id')=='btn-online-multi' ? alert('批量上线成功') : alert('批量下线成功');
+        onlineStatus == 1 ? alert('批量上线成功') : alert('批量下线成功');
+        $('#formSearch').trigger('submit');
       } else {
         alert('接口错误：'+res.meta.msg);
       }

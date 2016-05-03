@@ -145,13 +145,14 @@ $(document).on('click', '#btn-upload', function(event) {
   $('#fileupload').data('url', common.API_HOST+'film/standardFilm/uploadPoster').fileupload({
     dataType: 'json',
     add: function (e, data) {
-      $('#popup-movie-upload button[type=submit]').click(function () {
+      $('#fileupload').next('span').remove();
+      $('#fileupload').after(' <span>'+data.files[0].name+'</span>');
+      $('#popup-movie-upload button[type=submit]').off('click').on('click',function () {
         $(this).prop('disable', true).text('上传中...');
         data.submit();
       });
     },
     done: function (e, data) {
-      // console.log(data.result);
       $('#popup-movie-upload button[type=submit]').prop('disable', false).text('上传');
       if (true == data.result.meta.result) {
         $('#poster').val(common.API_HOST+data.result.data.savePath);

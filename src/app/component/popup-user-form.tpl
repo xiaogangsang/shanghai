@@ -39,7 +39,7 @@
           </tr>
           <tr>
             <th>手机号码</th>
-            <td><input type="number" class="form-control" name="mobile" id="mobile" value="{{user.mobile}}" required></td>
+            <td><input type="number" class="form-control" name="mobile" id="mobile" maxlength="11" value="{{user.mobile}}" required data-parsley-type="digits"></td>
           </tr>
           <tr>
             <th>邮箱地址</th>
@@ -171,7 +171,7 @@
           </tr>
           <tr>
             <th>手机号码</th>
-            <td><input type="number" class="form-control" id="mobile" required></td>
+            <td><input type="number" class="form-control" id="mobile" maxlength="11" required data-parsley-type="digits"></td>
           </tr>
           <tr>
             <th>邮箱地址</th>
