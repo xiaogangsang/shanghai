@@ -22,7 +22,7 @@
     <div class="form-group">
       <div class="input-group">
         <div class="input-group-addon">计划名称</div>
-        <input type="text" class="form-control" id="name" value="{{name}}" required>
+        <input type="text" class="form-control" id="name" value="{{name}}" required placeholder="必填">
       </div>
     </div>
   </div>
@@ -30,13 +30,13 @@
     <div class="form-group">
       <div class="input-group">
         <div class="input-group-addon">日金额预算</div>
-        <input type="number" class="form-control" pattern="/[0-9]+/" id="dailyAmount" value="{{dailyAmount}}" required>
+        <input type="number" class="form-control" pattern="/[0-9]+/" id="dailyAmount" value="{{dailyAmount}}" placeholder="不限">
       </div>
     </div>
     <div class="form-group">
       <div class="input-group">
         <div class="input-group-addon">日出票预算</div>
-        <input type="number" class="form-control" pattern="/[0-9]+/" id="dailyTicket" value="{{dailyTicket}}" required>
+        <input type="number" class="form-control" pattern="/[0-9]+/" id="dailyTicket" value="{{dailyTicket}}" placeholder="不限">
       </div>
     </div>
   </div>
@@ -44,13 +44,13 @@
     <div class="form-group">
       <div class="input-group">
         <div class="input-group-addon">总金额预算</div>
-        <input type="number" class="form-control" pattern="/[0-9]+/" id="totalAmount" value="{{totalAmount}}" required>
+        <input type="number" class="form-control" pattern="/[0-9]+/" id="totalAmount" value="{{totalAmount}}" placeholder="不限">
       </div>
     </div>
     <div class="form-group">
       <div class="input-group">
         <div class="input-group-addon">总出票预算</div>
-        <input type="number" class="form-control" pattern="/[0-9]+/" id="totalTicket" value="{{totalTicket}}" required>
+        <input type="number" class="form-control" pattern="/[0-9]+/" id="totalTicket" value="{{totalTicket}}" placeholder="不限">
       </div>
     </div>
   </div>
@@ -62,7 +62,7 @@
     <div class="form-group">
       <div class="input-group">
         <div class="input-group-addon">计划名称</div>
-        <input type="text" class="form-control" id="name" required>
+        <input type="text" class="form-control" id="name" required  placeholder="必填">
       </div>
     </div>
   </div>
@@ -70,13 +70,13 @@
     <div class="form-group">
       <div class="input-group">
         <div class="input-group-addon">日金额预算</div>
-        <input type="number" class="form-control" pattern="/[0-9]+/" id="dailyAmount" required>
+        <input type="number" class="form-control" pattern="/[0-9]+/" id="dailyAmount" placeholder="不限">
       </div>
     </div>
     <div class="form-group">
       <div class="input-group">
         <div class="input-group-addon">日出票预算</div>
-        <input type="number" class="form-control" pattern="/[0-9]+/" id="dailyTicket" required>
+        <input type="number" class="form-control" pattern="/[0-9]+/" id="dailyTicket" placeholder="不限">
       </div>
     </div>
   </div>
@@ -84,13 +84,13 @@
     <div class="form-group">
       <div class="input-group">
         <div class="input-group-addon">总金额预算</div>
-        <input type="number" class="form-control" pattern="/[0-9]+/" id="totalAmount" required>
+        <input type="number" class="form-control" pattern="/[0-9]+/" id="totalAmount" placeholder="不限">
       </div>
     </div>
     <div class="form-group">
       <div class="input-group">
         <div class="input-group-addon">总出票预算</div>
-        <input type="number" class="form-control" pattern="/[0-9]+/" id="totalTicket" required>
+        <input type="number" class="form-control" pattern="/[0-9]+/" id="totalTicket" placeholder="不限">
       </div>
     </div>
   </div>
