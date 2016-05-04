@@ -11,13 +11,13 @@
             <div class="form-group col-sm-6">
               <div class="input-group">
                 <div class="input-group-addon">总金额预算</div>
-                <input type="text" class="form-control" id="totalAmount" placeholder="不限" data-parsley-type="number" min="1">
+                <input type="text" class="form-control" id="totalAmount" placeholder="不限" data-parsley-pattern="^[1-9]{1}\d*$">
               </div>
             </div>
             <div class="form-group col-sm-6">
               <div class="input-group">
                 <div class="input-group-addon">总出票预算</div>
-                <input type="text" class="form-control" id="totalTicket" placeholder="不限" data-parsley-type="number" min="1">
+                <input type="text" class="form-control" id="totalTicket" placeholder="不限" data-parsley-pattern="^[1-9]{1}\d*$">
               </div>
             </div>
           </div>
@@ -52,10 +52,10 @@
 
 <script id="daily-template" type="text/x-tmpl-mustache">
   <tr>
-    <td><input type="text" class="form-control startDate" required></td>
-    <td><input type="text" class="form-control endDate" required></td>
-    <td><input type="number" class="form-control dailyAmount" placeholder="不限" required data-parsley-type="number" min="1"></td>
-    <td><input type="number" class="form-control dailyTicket" placeholder="不限" required data-parsley-type="number" min="1"></td>
+    <td><input type="text" class="form-control startDate" required readonly placeholder="YYYY-MM-DD"></td>
+    <td><input type="text" class="form-control endDate" required readonly placeholder="YYYY-MM-DD"></td>
+    <td><input type="text" class="form-control dailyAmount" placeholder="不限" data-parsley-pattern="^[1-9]{1}\d*$"></td>
+    <td><input type="text" class="form-control dailyTicket" placeholder="不限" data-parsley-pattern="^[1-9]{1}\d*$"></td>
     <td><button type="button" class="btn btn-xs btn-primary btn-delete">删除</button></td>
   </tr>
 </script>

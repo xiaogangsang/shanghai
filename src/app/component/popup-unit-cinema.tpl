@@ -18,12 +18,12 @@
                     </div>
                     <div class="col-xs-4">
                       <select class="form-control" id="search-cinema-provinceId">
-                        <option value="">省</option>
+                        <option value="">选择省</option>
                       </select>
                     </div>
                     <div class="col-xs-4">
                       <select class="form-control" id="search-cinema-cityId">
-                        <option value="">城市</option>
+                        <option value="">选择城市</option>
                       </select>
                     </div>
                   </div>

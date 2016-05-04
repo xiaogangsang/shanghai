@@ -63,13 +63,13 @@
               <div class="form-group col-sm-12">
                 <div class="input-group">
                   <div class="input-group-addon">每日生效时间</div>
-                  <input type="text" class="form-control time-input" maxlength="2" id="beginHH" value="00">时
-                  <input type="text" class="form-control time-input" maxlength="2" id="beginMM" value="00">分
-                  <input type="text" class="form-control time-input" maxlength="2" id="beginSS" value="00">秒
+                  <input type="text" class="form-control time-input" maxlength="2" id="beginHH" value="00" data-parsley-pattern="^\d{1,2}$" min="00" max="23">时
+                  <input type="text" class="form-control time-input" maxlength="2" id="beginMM" value="00" data-parsley-pattern="^\d{1,2}$" min="00" max="59">分
+                  <input type="text" class="form-control time-input" maxlength="2" id="beginSS" value="00" data-parsley-pattern="^\d{1,2}$" min="00" max="59">秒
                   <span> - </span>
-                  <input type="text" class="form-control time-input" maxlength="2" id="endHH" value="23">时
-                  <input type="text" class="form-control time-input" maxlength="2" id="endMM" value="59">分
-                  <input type="text" class="form-control time-input" maxlength="2" id="endSS" value="59">秒
+                  <input type="text" class="form-control time-input" maxlength="2" id="endHH" value="23" data-parsley-pattern="^\d{1,2}$" min="0" max="23">时
+                  <input type="text" class="form-control time-input" maxlength="2" id="endMM" value="59" data-parsley-pattern="^\d{1,2}$" min="0" max="59">分
+                  <input type="text" class="form-control time-input" maxlength="2" id="endSS" value="59" data-parsley-pattern="^\d{1,2}$" min="0" max="59">秒
                 </div>
               </div>
               <div class="form-group col-sm-12">
@@ -150,8 +150,8 @@
                   </thead>
                   <tbody>
                     <tr>
-                      <td><input type="text" class="amount" required placeholder="必填" data-parsley-type="number" min="1"></td>
-                      <td><input type="text" class="lowerBound parsley-range" placeholder="不限" data-parsley-type="digits" min="1" data-parsley-ur="0"  data-parsley-errors-container="#error-ur-0"> - <input type="text" class="upperBound parsley-range" placeholder="不限" data-parsley-type="digits" min="1" data-parsley-ur="0" data-parsley-errors-container="#error-ur-0"><div id="error-ur-0"></div></td>
+                      <td><input type="text" class="amount" required placeholder="0.00" data-parsley-pattern="^[1-9]{1}\d*.{1}\d{1,2}$|^[1-9]{1}\d*$"></td>
+                      <td><input type="text" class="lowerBound parsley-range" placeholder="不限" data-parsley-pattern="^[1-9]{1}\d*.{1}\d{1,2}$|^[1-9]{1}\d*$" data-parsley-ur="0"  data-parsley-errors-container="#error-ur-0"> - <input type="text" class="upperBound parsley-range" placeholder="不限" data-parsley-pattern="^[1-9]{1}\d*.{1}\d{1,2}$|^[1-9]{1}\d*$" data-parsley-ur="0" data-parsley-errors-container="#error-ur-0"><div id="error-ur-0"></div></td>
                       <td><button type="button" class="btn btn-xs btn-default btn-type-delete">删除</button></td>
                     </tr>
                   </tbody>

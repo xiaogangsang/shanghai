@@ -1,11 +1,15 @@
+'use strict;'
+
 var common = require('common');
 var _users = [];
 var _channels = [];
 
-$(function() {
+$(function () {
   common.setMenu('ability-channel');
+
   //set search form
   setChannel();
+
   //data cache
   getUsers();
 
@@ -18,7 +22,7 @@ $(function() {
     rightAll: '#userSelect_all',
     rightSelected: '#userSelect_right',
     leftSelected: '#userSelect_left',
-    leftAll: '#userSelect_none'
+    leftAll: '#userSelect_none',
   });
 
   $('#formChannel').parsley();
@@ -31,17 +35,16 @@ function getUsers() {
     dataType: 'json',
     data: {
       pageIndex: 1,
-      pageSize: 9999
-    }
+      pageSize: 9999,
+    },
   })
-  .done(function(res) {
-    // console.log(res);
-    if (true == res.meta.result) {
-      _(res.data.rows).forEach(function(value, key){
-        _users.push({id:value.id, realName: value.realName, cityAuthority: value.cityAuthority});
+  .done(function (res) {
+    if (res.meta.result == true) {
+      _(res.data.rows).forEach(function (value, key) {
+        _users.push({ id: value.id, realName: value.realName, cityAuthority: value.cityAuthority });
       });
     } else {
-      alert('接口错误：'+res.meta.msg);
+      alert('接口错误：' + res.meta.msg);
     }
   });
 }
@@ -50,16 +53,19 @@ function setChannel() {
   $.ajax({
     url: common.API_HOST + 'common/channelList',
     type: 'GET',
-    dataType: 'json'
+    dataType: 'json',
   })
-  .done(function(res) {
-    // console.log(res);
-    if (true == res.meta.result) {
+  .done(function (res) {
+    if (res.meta.result == true) {
       _channels = res.data;
-      $.each(_channels, function(index, item) {
-        $('#channelSelect').append($('<option></option>').attr('value', item.channelId).text(item.channelName));
+      var htmlChannel = '';
+      $.each(_channels, function (index, item) {
+        htmlChannel += '<option value="' + item.channelId + '">' + item.channelName + '</option>';
       });
-      $("#channelSelect").chosen();
+
+      $('#channelSelect').append(htmlChannel);
+
+      $('#channelSelect').chosen();
     }
   });
 }
@@ -69,58 +75,62 @@ function setUser(channelId) {
     url: common.API_HOST + 'security/authority/userChannel/getUsersByChannelId',
     type: 'POST',
     dataType: 'json',
-    data: {channelId: channelId}
+    data: { channelId: channelId },
   })
-  .done(function(res) {
-    console.log(res);
-    if (true == res.meta.result) {
-      _(_users).forEach(function(value, key){
-        if( res.data.indexOf(value.id.toString()) > -1 ) {
-          $('#userSelect_to').append($('<option></option>').attr('value', value.id).text(value.realName));
+  .done(function (res) {
+    if (res.meta.result == true) {
+      var htmlChoosed = '';
+      var htmlUnchoosed = '';
+      _(_users).forEach(function (value, key) {
+        if (res.data.indexOf(value.id.toString()) > -1) {
+          htmlChoosed += '<option value="' + value.id + '">' +
+          value.id + ':' + value.realName +
+          '</option>';
         } else {
-          $('#userSelect').append($('<option></option>').attr('value', value.id).text(value.realName));
+          htmlUnchoosed += '<option value="' + value.id + '">' +
+          value.id + ':' + value.realName +
+          '</option>';
         }
       });
+
+      $('#userSelect_to').append(htmlChoosed);
+      $('#userSelect').append(htmlUnchoosed);
       $('#formChannel button[type=submit]').prop('disabled', false).text('保存');
     } else {
-      alert('接口错误：'+res.meta.msg);
+      alert('接口错误：' + res.meta.msg);
     }
   });
 }
 
-$("#channelSelect").on('change', function(e) {
+$('#channelSelect').on('change', function (e) {
   e.preventDefault();
   $('#userSelect_to').html('');
   $('#userSelect').html('');
   setUser($(this).val());
   $('#formChannel button[type=submit]').prop('disabled', true).text('加载中...');
 });
-$('#formChannel').on('click', 'button[type=submit]', function(event) {
+
+$('#formChannel').on('click', 'button[type=submit]', function (event) {
   event.preventDefault();
   $('.multi-selection select:eq(1) option').prop('selected', true);
-  $('#formChannel').trigger('submit');
-});
-$('#formChannel').on('submit', function(e) {
-  e.preventDefault()
-  $('#formChannel').parsley().on('form:success', function(){
-    var sendData = {
-      channelId: $('#channelSelect').val(),
-      userIds: $('#userSelect_to').val()
-    };
-    $.ajax({
-      url: common.API_HOST + 'security/authority/userChannel/updateChannelAuthority',
-      type: 'POST',
-      dataType: 'json',
-      contentType: 'application/json; charset=utf-8',
-      data: JSON.stringify(sendData)
-    })
-    .done(function(res) {
-      if (true == res.meta.result) {
-        alert('保存成功！');
-      } else {
-        alert('接口错误：'+res.meta.msg);
-      }
-    });
+  var sendData = {
+    channelId: $('#channelSelect').val(),
+    userIds: $('#userSelect_to').val(),
+  };
+  $.ajax({
+    url: common.API_HOST + 'security/authority/userChannel/updateChannelAuthority',
+    type: 'POST',
+    dataType: 'json',
+    contentType: 'application/json; charset=utf-8',
+    data: JSON.stringify(sendData),
+  })
+  .done(function (res) {
+    if (res.meta.result == true) {
+      alert('保存成功！');
+    } else {
+      alert('接口错误：' + res.meta.msg);
+    }
   });
+
   return false;
 });

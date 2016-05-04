@@ -44,7 +44,7 @@
               <select name="from[]" id="resourceSelect" class="form-control" size="8" multiple="multiple">
                 {{#resources}}
                 {{^selected}}
-                <option value="{{id}}">{{id}}:{{name}}</option>
+                <option value="{{id}}">{{name}}</option>
                 {{/selected}}
                 {{/resources}}
               </select>
@@ -59,7 +59,7 @@
               <select name="to[]" id="resourceSelect_to" class="form-control" size="8" multiple="multiple" data-parsley-required data-parsley-errors-container="#error-resource">
                 {{#resources}}
                 {{#selected}}
-                <option value="{{id}}">{{id}}:{{name}}</option>
+                <option value="{{id}}">{{name}}</option>
                 {{/selected}}
                 {{/resources}}
               </select>
@@ -81,7 +81,7 @@
               <select name="from[]" id="userSelect" class="form-control" size="8" multiple="multiple">
                 {{#users}}
                 {{^selected}}
-                <option value="{{id}}">{{realName}}</option>
+                <option value="{{id}}">{{id}}:{{realName}}</option>
                 {{/selected}}
                 {{/users}}
               </select>
@@ -96,7 +96,7 @@
               <select name="to[]" id="userSelect_to" class="form-control" size="8" multiple="multiple" data-parsley-required data-parsley-errors-container="#error-user">
                 {{#users}}
                 {{#selected}}
-                <option value="{{id}}">{{realName}}</option>
+                <option value="{{id}}">{{id}}:{{realName}}</option>
                 {{/selected}}
                 {{/users}}
               </select>
@@ -165,7 +165,7 @@
             <td>
               <select name="from[]" id="userSelect" class="form-control" size="8" multiple="multiple">
                 {{#users}}
-                <option value="{{id}}">{{realName}}</option>
+                <option value="{{id}}">{{id}}:{{realName}}</option>
                 {{/users}}
               </select>
             </td>

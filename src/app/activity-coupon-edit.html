@@ -117,9 +117,9 @@
                   </thead>
                   <tbody>
                     <tr>
-                      <td><input type="number" class="amount" required></td>
-                      <td><input type="number" class="limitNum" required></td>
-                      <td><input type="number" class="lowerBound"> - <input type="number" class="upperBound"></td>
+                      <td><input type="text" class="amount" required data-parsley-pattern="^[1-9]{1}\d*$" placeholder="必填"></td>
+                      <td><input type="text" class="limitNum" required data-parsley-pattern="^[1-9]{1}\d*$" placeholder="必填"></td>
+                      <td><input type="text" class="lowerBound parsley-range" data-parsley-pattern="^[1-9]{1}\d*.{1}\d{1,2}$|^[1-9]{1}\d*$" data-parsley-ur="0" data-parsley-errors-container="#error-ur-0" placeholder="不限"> - <input type="text" class="upperBound parsley-range" data-parsley-pattern="^[1-9]{1}\d*.{1}\d{1,2}$|^[1-9]{1}\d*$" data-parsley-ur="0" data-parsley-errors-container="#error-ur-0" placeholder="不限"><div id="error-ur-0"></div></td>
                       <td><button type="button" class="btn btn-xs btn-default btn-type-delete">删除</button></td>
                     </tr>
                   </tbody>

@@ -9,7 +9,10 @@ alias cnpm="npm --registry=https://registry.npm.taobao.org \
 ```
 
 安装：
-`npm install`
+`cnpm install bower -g`
+`cnpm install webpack -g`
+`cnpm install gulp -g`
+`cnpm install`
 `bower install`
 
 开发：

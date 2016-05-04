@@ -196,9 +196,8 @@ input {
 .modal-footer .btn {
   padding: 5px 60px;
 }
-.form-control[disabled],
-.form-control[readonly],
-fieldset[disabled] .form-control {
+.readonly[disabled],
+.readonly[readonly] {
   background-color: transparent;
   border: 0;
   box-shadow: none;
