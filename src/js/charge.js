@@ -4,6 +4,7 @@ var common = require('common');
 var _pageIndex = 1;
 var _pageSize = 10;
 var _pageTotal = 0;
+var _channelAuthority = Cookies.get('channelAuthority').split(',');
 
 $(function () {
   common.init('charge');
@@ -28,26 +29,30 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
 
 $(document).on('submit', '#popup-charge-form form', function (e) {
   e.preventDefault();
-  var sendData = {
-    channelId: $('#popup-charge-form #channelId').val(),
-    fee: $.trim($('#popup-charge-form #fee').val()),
-  };
+  if (_channelAuthority.indexOf('' + $('#popup-charge-form #channelId').val()) > -1) {
+    var sendData = {
+      channelId: $('#popup-charge-form #channelId').val(),
+      fee: $.trim($('#popup-charge-form #fee').val()),
+    };
 
-  $.ajax({
-    url: common.API_HOST + 'timeTable/feeRuleUpdate',
-    type: 'POST',
-    dataType: 'json',
-    data: sendData,
-  })
-  .done(function (res) {
-    if (!!~~res.meta.result) {
-      alert('更新成功！');
-      $('#popup-charge-form').modal('hide');
-      setTableData();
-    } else {
-      alert('接口错误：' + res.meta.msg);
-    }
-  });
+    $.ajax({
+      url: common.API_HOST + 'timeTable/feeRuleUpdate',
+      type: 'POST',
+      dataType: 'json',
+      data: sendData,
+    })
+    .done(function (res) {
+      if (!!~~res.meta.result) {
+        alert('更新成功！');
+        $('#popup-charge-form').modal('hide');
+        setTableData();
+      } else {
+        alert('接口错误：' + res.meta.msg);
+      }
+    });
+  } else {
+    alert('没有权限！');
+  }
 
   return false;
 });

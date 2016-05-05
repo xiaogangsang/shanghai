@@ -145,13 +145,15 @@
                         <option value="5">积分</option>
                       </select>
                     </th>
-                    <th>单张票价区间（留空即不限）</th>
+                    <th>单张票价区间（最低）</th>
+                    <th>单张票价区间（最高）</th>
                     <th>操作</th>
                   </thead>
                   <tbody>
                     <tr>
-                      <td><input type="text" class="amount" required placeholder="0.00" data-parsley-pattern="^[1-9]{1}\d*.{1}\d{1,2}$|^[1-9]{1}\d*$"></td>
-                      <td><input type="text" class="lowerBound parsley-range" placeholder="不限" data-parsley-pattern="^[1-9]{1}\d*.{1}\d{1,2}$|^[1-9]{1}\d*$" data-parsley-ur="0"  data-parsley-errors-container="#error-ur-0"> - <input type="text" class="upperBound parsley-range" placeholder="不限" data-parsley-pattern="^[1-9]{1}\d*.{1}\d{1,2}$|^[1-9]{1}\d*$" data-parsley-ur="0" data-parsley-errors-container="#error-ur-0"><div id="error-ur-0"></div></td>
+                      <td><input type="text" class="amount" required placeholder="必填" data-parsley-pattern="^[1-9]{1}\d*.{1}\d{1,2}$|^[1-9]{1}\d*$|^[0].{1}\d{1,2}$"></td>
+                      <td><input type="text" class="lowerBound parsley-range" placeholder="不限" data-parsley-pattern="^[1-9]{1}\d*.{1}\d{1,2}$|^[1-9]{1}\d*$|^[0].{1}\d{1,2}$" data-parsley-ur="0"></td>
+                      <td><input type="text" class="upperBound parsley-range" placeholder="不限" data-parsley-pattern="^[1-9]{1}\d*.{1}\d{1,2}$|^[1-9]{1}\d*$|^[0].{1}\d{1,2}$" data-parsley-ur="0"></td>
                       <td><button type="button" class="btn btn-xs btn-default btn-type-delete">删除</button></td>
                     </tr>
                   </tbody>

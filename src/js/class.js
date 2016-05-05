@@ -11,6 +11,7 @@ var _pageTotal = 0;
 var _querying = false;
 var searchCache = {};
 var useCache = false;
+var _channelAuthority = Cookies.get('channelAuthority').split(',');
 
 $(function () {
   common.init('class');
@@ -83,7 +84,7 @@ $('#formSearch').on('submit', function (e) {
           item.beginTime = item.beginTime.split(' ')[0];
           item.endTime = item.endTime.split(' ')[0];
           item.cityShort = item.cityNames.length > 13 ? item.cityNames.substr(0, 10) + '...'
-                                                      : item.cityNames;
+          : item.cityNames;
           item.statusName = item.status == 1 ? '已上线' : '已下线';
           item.settleName = item.settleType == 1 ? '万达总部' : '万达区域';
           item.typeName = item.type == 1 ? '日常票类' : '活动票类';
@@ -386,6 +387,14 @@ $(document).on('click', '#btn-export', function (e) {
   return false;
 });
 
+$(document).on('click', '.checkbox-inline label', function (event) {
+  var channelId = $(this).children('input').val();
+  if (_channelAuthority.indexOf('' + channelId) < 0) {
+    alert('没有权限！');
+    event.preventDefault();
+  }
+});
+
 $('#pager').on('click', '.prev,.next', function (e) {
   e.preventDefault();
   if ($(this).hasClass('prev')) {
@@ -430,11 +439,19 @@ $('#pager').on('click', '#btn-pager', function (e) {
 function setModal(classData) {
   var data;
   var template;
+
   if (classData) {
     data = { class: classData, channels: _channels, cinemas: _cinemas };
     template = $('#edit-template').html();
   } else {
-    data = { channels: _channels, cinemas: _cinemas };
+    var allowChannels = [];
+    _(_channels).forEach(function (channel) {
+      if (_channelAuthority.indexOf('' + channel.channelId) > -1) {
+        allowChannels.push(channel);
+      }
+    });
+
+    data = { channels: allowChannels, cinemas: _cinemas };
     template = $('#create-template').html();
     $('#popup-class-form .modal-title').html('新增票类');
   }

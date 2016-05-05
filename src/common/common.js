@@ -7,25 +7,51 @@ common.API_HOST = 'http://180.169.45.105/MovieOps/';
 common.init = function (pageName) {
   common.showMenu(pageName);
   common.setLoginName();
+
+  $.ajaxSetup({
+    error: function (jqXHR, textStatus, errorThrown) {
+      switch (jqXHR.status){
+        case (500):
+          alert('服务器挂了！');
+        break;
+        case (401):
+          alert('未登录或登陆超时，请重新登陆！');
+          common.logout();
+          window.location.href = 'login.html';
+        break;
+        case (403):
+          alert('没有权限！');
+        break;
+        case (404):
+          alert('服务器失踪了，请稍后再次！');
+        break;
+        case (408):
+          alert('请求超时，请稍后再次！');
+        break;
+      }
+    },
+  });
 };
 
 common.showMenu = function (pageName) {
-  var allowMenus = Cookies.get('menuAuthority');
-  if ( pageName != '' && $('#menu-' + pageName).size() > 0) {
-    var menuId = $('#menu-' + pageName).data('id');
-    if (allowMenus == undefined || allowMenus.indexOf(menuId) < 0) {
-      common.logout();
-      window.location.href = 'login.html';
-    }
+  // var allowMenus = Cookies.get('menuAuthority').split(',');
+  // if (pageName != undefined && pageName != '' && $('#menu-' + pageName).size() > 0) {
+  //   var menuId = '' + $('#menu-' + pageName).data('id');
+  //   if (allowMenus == undefined || allowMenus.indexOf(menuId) < 0) {
+  //     common.logout();
+  //     window.location.href = 'login.html';
+  //   }
+
     $('#menu-' + pageName).addClass('active').closest('.panel-collapse').collapse('show');
-  }
+  // }
+
   var $menus = $('#menu .list-group-item');
   $menus.each(function (index, el) {
-    var menuId = $(el).data('id');
-    if (allowMenus.indexOf(menuId) > -1) {
+    // menuId = '' + $(el).data('id');
+    // if (allowMenus.indexOf(menuId) > -1) {
       $(el).show();
       $(el).closest('.panel').show();
-    }
+    // }
   });
 };
 
@@ -42,7 +68,7 @@ common.logout = function () {
   Cookies.remove('cityAuthority');
   Cookies.remove('channelAuthority');
   Cookies.remove('menuAuthority');
-}
+};
 
 common.getDate = function (date) {
   if (date == undefined || date == '') {

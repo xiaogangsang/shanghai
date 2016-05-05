@@ -524,7 +524,7 @@ function getProvince() {
 
 function getService() {
   $.ajax({
-    url: common.API_HOST + 'cinema/serviceList',
+    url: common.API_HOST + 'cinema/standard/serviceList',
     type: 'GET',
     dataType: 'json',
   })

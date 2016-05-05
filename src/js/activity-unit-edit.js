@@ -42,11 +42,9 @@ $(function () {
         var ns = $(this).data('parsley-ur');
         if (ns == requirement) {
           var value = parseFloat($(el).val());
-          value = ~~value == 0 ? 0 : value;
           fields.push(value);
         }
       });
-
       if (fields[0] == 0 || fields[1] == 0) {
         return true;
       } else {
@@ -147,13 +145,10 @@ $(document).on('click', '#btn-type-add', function (event) {
   event.preventDefault();
   var index = $('#typeTable tbody tr').size();
   var html = '<tr>';
-  html += '<td><input type="text" class="amount" required placeholder="0.00" data-parsley-pattern="^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$"></td>';
-  html += '<td>';
-  html += '<input type="text" class="lowerBound parsley-range" placeholder="不限" data-parsley-pattern="^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$" data-parsley-ur="' + index + '" data-parsley-errors-container="#error-ur-' + index + '">';
-  html += ' - ';
-  html += '<input type="text" class="upperBound parsley-range" placeholder="不限" data-parsley-pattern="^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$" data-parsley-ur="' + index + '" data-parsley-errors-container="#error-ur-' + index + '">';
-  html += '<div id="error-ur-'+index+'"></div>';
-  html += '</td>';
+  html += '<td><input type="text" class="amount" required placeholder="必填" data-parsley-pattern="^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$"></td>';
+  html += '<td><input type="text" class="lowerBound parsley-range" placeholder="不限" data-parsley-pattern="^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$" data-parsley-ur="' + index + '"></td>';
+
+  html += '<td><input type="text" class="upperBound parsley-range" placeholder="不限" data-parsley-pattern="^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$" data-parsley-ur="' + index + '"></td>';
   html += '<td><button type="button" class="btn btn-xs btn-default btn-type-delete">删除</button></td>';
   html += '</tr>';
   $('#typeTable tbody').append(html);
@@ -337,8 +332,8 @@ $(document).on('click', '#btn-search-cinema', function (event) {
     pageIndex: 1,
     pageSize: 9999,
   };
-  if (sendData.brandId == '') {
-    alert('为了更加方便地查找，请选择院线！');
+  if (sendData.brandId == '' && sendData.cityId == '') {
+    alert('院线或城市，请至少选择一个！');
     $('#search-cinema-brandId').focus();
     return false;
   }
@@ -491,6 +486,22 @@ $(document).on('submit', '#popup-unit-showtime form', function (event) {
   return false;
 });
 
+$(document).on('change', '#activityPattern', function(event) {
+  event.preventDefault();
+  var current = +$(this).val();
+  switch (current) {
+    case 1:
+    case 2:
+    case 4:
+    case 5:
+      $('.amount').attr('data-parsley-pattern', '^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$');
+    break;
+    case 3:
+      $('.amount').attr('data-parsley-pattern', '^[1-9]{1}$');
+    break;
+  }
+});
+
 
 //form
 $(document).on('submit', '#formUnit', function (event) {
@@ -581,7 +592,7 @@ $(document).on('submit', '#formUnit', function (event) {
       }
     });
     rangeList.push({min:lowerBound, max:upperBound});
-    sendData.activityPatternList.push({ amount: amount, lowerBound: lowerBound, upperBound: upperBound });
+    sendData.activityPatternList.push({ amount: amount, lowerBound: lowerBound==0?'':lowerBound, upperBound: upperBound==0?'': upperBound});
     if (!patternCheck) {
       return false;
     }
@@ -644,8 +655,6 @@ $(document).on('submit', '#formUnit', function (event) {
 
   return false;
 });
-
-
 
 //数据缓存
 function setBudgetSource(budgetSourceId) {
@@ -986,13 +995,9 @@ function setEdit(unitId) {
       var index = 0;
       _(unit.activityPatternList).forEach(function (pattern) {
         html += '<tr>';
-        html += '<td><input type="text" class="amount" required placeholder="必填" data-parsley-pattern="^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$" value="' + pattern.amount + '"></td>';
-        html += '<td>';
-        html += '<input type="text" class="lowerBound parsley-range" placeholder="不限" data-parsley-pattern="^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$" data-parsley-ur="' + index + '" data-parsley-errors-container="#error-ur-' + index + '" value="' + pattern.lowerBound + '">';
-        html += ' - ';
-        html += '<input type="text" class="upperBound parsley-range" placeholder="不限" data-parsley-pattern="^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$" data-parsley-ur="' + index + '" data-parsley-errors-container="#error-ur-' + index + '" value="' + pattern.upperBound + '">';
-        html += '<div id="error-ur-'+index+'"></div>';
-        html += '</td>';
+        html += '<td><input type="text" class="amount" required placeholder="必填" data-parsley-pattern="^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$" value="' + pattern.amount + '"></td>';
+        html += '<td><input type="text" class="lowerBound parsley-range" placeholder="不限" data-parsley-pattern="^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$" data-parsley-ur="' + index + '" value="' + pattern.lowerBound + '"></td>';
+        html += '<td><input type="text" class="upperBound parsley-range" placeholder="不限" data-parsley-pattern="^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$" data-parsley-ur="' + index + '" value="' + pattern.upperBound + '"></td>';
         html += '<td><button type="button" class="btn btn-xs btn-default btn-type-delete">删除</button></td></tr>';
       });
 

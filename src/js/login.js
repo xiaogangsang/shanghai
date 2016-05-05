@@ -39,9 +39,9 @@ $('#form-login').on('submit', function (e) {
     if (!!~~res.meta.result) {
       Cookies.set('Xtoken', res.data.Xtoken);
       Cookies.set('name', res.data.name);
-      Cookies.set('cityAuthority', res.data.cities);
-      Cookies.set('channelAuthority', res.data.channels);
-      Cookies.set('menuAuthority', res.data.allowMenus);
+      Cookies.set('cityAuthority', res.data.cities.toString());
+      Cookies.set('channelAuthority', res.data.channels.toString());
+      Cookies.set('menuAuthority', res.data.allowMenus.toString());
 
       // alert('登陆成功！');
       window.location.href = 'index.html';

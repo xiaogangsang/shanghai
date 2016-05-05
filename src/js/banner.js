@@ -12,6 +12,7 @@ var _querying = false;
 var searchCache = {};
 var useCache = false;
 var dataCache;
+var _cityAuthority = Cookies.get('cityAuthority').split(',');
 
 $(function () {
   common.init('banner');
@@ -347,19 +348,26 @@ $(document).on('click', '#popup-banner-form #btn-city', function (event) {
     htmlGroup = '<div class="input-group"><div class="input-group-addon">' + group.key + '</div>';
     _(group.group).forEach(function (city, key) {
       if (_choosed.indexOf(city.cityId) > -1) {
-        htmlGroup += '<label>'
-        + '<input type="checkbox" value="' + city.cityId + '" checked>'
-        + '<span>' + city.cityName + '</span>'
-        + '</label>';
-        htmlChoosed += '<span class="label label-default" data-id="' + city.cityId + '">'
-        + city.cityName
-        + ' <button type="button" class="close"><span>&times;</span></button>'
-        + '</span>';
+
+        if (_cityAuthority.indexOf('' + city.cityId) > -1) {
+          htmlGroup += '<label>';
+          htmlGroup += '<input type="checkbox" value="' + city.cityId + '" checked>';
+          htmlGroup += '<span>' + city.cityName + '</span>';
+          htmlGroup += '</label>';
+        }
+
+        htmlChoosed += '<span class="label label-default" data-id="' + city.cityId + '">';
+        htmlChoosed += city.cityName;
+        htmlChoosed += ' <button type="button" class="close"><span>&times;</span></button>';
+        htmlChoosed += '</span>';
+
       } else {
-        htmlGroup += '<label>'
-        + '<input type="checkbox" value="' + city.cityId + '">'
-        + '<span>' + city.cityName + '</span>'
-        + '</label>';
+        if (_cityAuthority.indexOf('' + city.cityId) > -1) {
+          htmlGroup += '<label>';
+          htmlGroup += '<input type="checkbox" value="' + city.cityId + '">';
+          htmlGroup += '<span>' + city.cityName + '</span>';
+          htmlGroup += '</label>';
+        }
       }
     });
 
@@ -422,12 +430,17 @@ $(document).on('click', '#popup-city .choosed-city>.label>.close', function (eve
   event.preventDefault();
   var $label = $(this).closest('.label');
   var cityId = $label.data('id');
-  $('.choosed-city .label').each(function (el) {
-    if ($(el).data('id') == cityId) {
-      $(el).remove();
-    }
-  });
-  $label.remove();
+  if (_cityAuthority.indexOf('' + cityId) > -1) {
+    $('.candidate-city input:checked').each(function (index, el) {
+      if ($(el).val() == cityId) {
+        $(el).prop('checked', false);
+      }
+    });
+
+    $label.remove();
+  } else {
+    alert('没有权限！');
+  }
 });
 
 function setModal(bannerData) {

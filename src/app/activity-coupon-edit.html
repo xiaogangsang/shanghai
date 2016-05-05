@@ -112,15 +112,15 @@
                       </select>
                     </th>
                     <th>张数限制</th>
-                    <th>单张票价区间（留空即不限）</th>
-                    <th>操作</th>
+                    <th>单张票价区间（最低）</th>
+                    <th>单张票价区间（最高）</th>
                   </thead>
                   <tbody>
                     <tr>
-                      <td><input type="text" class="amount" required data-parsley-pattern="^[1-9]{1}\d*$" placeholder="必填"></td>
-                      <td><input type="text" class="limitNum" required data-parsley-pattern="^[1-9]{1}\d*$" placeholder="必填"></td>
-                      <td><input type="text" class="lowerBound parsley-range" data-parsley-pattern="^[1-9]{1}\d*.{1}\d{1,2}$|^[1-9]{1}\d*$" data-parsley-ur="0" data-parsley-errors-container="#error-ur-0" placeholder="不限"> - <input type="text" class="upperBound parsley-range" data-parsley-pattern="^[1-9]{1}\d*.{1}\d{1,2}$|^[1-9]{1}\d*$" data-parsley-ur="0" data-parsley-errors-container="#error-ur-0" placeholder="不限"><div id="error-ur-0"></div></td>
-                      <td><button type="button" class="btn btn-xs btn-default btn-type-delete">删除</button></td>
+                      <td><input type="text" id="amount" required data-parsley-pattern="^[1-9]{1}\d*.{1}\d{1,2}$|^[1-9]{1}\d*$|^[0].{1}\d{1,2}$" placeholder="必填"></td>
+                      <td><input type="text" id="limitNum" required data-parsley-pattern="^[1-9]{1}\d*$" placeholder="必填"></td>
+                      <td><input type="text" id="lowerBound" class="parsley-range" data-parsley-pattern="^[1-9]{1}\d*.{1}\d{1,2}$|^[1-9]{1}\d*$|^[0].{1}\d{1,2}$" data-parsley-ur="0" placeholder="不限"></td>
+                      <td><input type="text" id="upperBound" class="parsley-range" data-parsley-pattern="^[1-9]{1}\d*.{1}\d{1,2}$|^[1-9]{1}\d*$|^[0].{1}\d{1,2}$" data-parsley-ur="0" placeholder="不限"></td>
                     </tr>
                   </tbody>
                 </table>

@@ -83,11 +83,9 @@ $(function() {
         var ns = $(this).data('parsley-ur');
         if (ns == requirement) {
           var value = parseFloat($(el).val());
-          value = ~~value == 0 ? 0 : value;
           fields.push(value);
         }
       });
-
       if (fields[0] == 0 || fields[1] == 0) {
         return true;
       } else {
@@ -186,8 +184,8 @@ $(document).on('click', '#btn-search-cinema', function(event) {
     pageIndex: 1,
     pageSize: 9999
   };
-  if (sendData.brandId == '') {
-    alert('为了更加方便地查找，请选择院线！');
+  if (sendData.brandId == '' && sendData.cityId == '') {
+    alert('院线或城市，请至少选择一个！');
     $('#search-cinema-brandId').focus();
     return false;
   }
@@ -318,7 +316,32 @@ $(document).on('submit', '#popup-unit-showtime form', function(event) {
   $('#popup-unit-showtime').modal('hide');
   return false;
 });
-
+$(document).on('change', '#couponPattern', function(event) {
+  event.preventDefault();
+  var current = +$(this).val();
+  switch (current) {
+    case 1:
+    case 3:
+    case 4:
+      $('#amount').attr('data-parsley-pattern', '^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$');
+      $('#limitNum').prop({disabled: false, required: true});
+      $('#typeTable th:nth-child(3)').text('单张票价区间（最低）');
+      $('#typeTable th:nth-child(4)').text('单张票价区间（最高）');
+    break;
+    case 2:
+      $('#amount').attr('data-parsley-pattern', '^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$');
+      $('#limitNum').prop({disabled: true, required: false});
+      $('#typeTable th:nth-child(3)').text('订单价格区间（最低）');
+      $('#typeTable th:nth-child(4)').text('订单价格区间（最高）');
+    break;
+    case 5:
+      $('#amount').attr('data-parsley-pattern', '^[1-9]{1}$');
+      $('#limitNum').prop({disabled: false, required: true});
+      $('#typeTable th:nth-child(3)').text('单张票价区间（最低）');
+      $('#typeTable th:nth-child(4)').text('单张票价区间（最高）');
+    break;
+  }
+});
 
 //form
 $(document).on('submit', '#formEdit', function(event) {
@@ -344,13 +367,14 @@ $(document).on('submit', '#formEdit', function(event) {
   $('input[name=dimens]:checked').each(function(index, el) {
     sendData.dimens.push($(el).next('span').text());
   });
-  $('#typeTable tbody tr').each(function(index, el) {
-    var amount = $(el).find('.amount').val();
-    var limitNum = $(el).find('.limitNum').val();
-    var lowerBound = $(el).find('.lowerBound').val();
-    var upperBound = $(el).find('.upperBound').val();
-    sendData.patternList.push( {amount:amount, limitNum:limitNum, lowerBound:lowerBound, upperBound:upperBound} );
-  });
+
+  sendData.patternList.push( {
+    amount: $('#amount').val(),
+    limitNum: $('#limitNum').val(),
+    lowerBound: $('#lowerBound').val(),
+    upperBound: $('#upperBound').val()
+  } );
+
   $('#movieSelect_to option').each(function(index, el) {
     sendData.films.push( $(el).val() );
   });
@@ -654,22 +678,30 @@ function setEdit(couponId) {
       //活动形式
       $('#couponPattern option').eq(coupon.couponPattern-1).prop('selected', true);
       if(coupon.couponPattern != null) {
-        $('#typeTable tbody').html('<tr><td><input type="text" class="amount" required value="'+coupon.patternList.amount+'"></td><td><input type="number" class="limitNum" required value="'+coupon.patternList.limitNum+'"></td><td><input type="number" class="lowerBound" value="'+coupon.patternList.lowerBound+'"> - <input type="number" class="upperBound" value="'+coupon.patternList.upperBound+'"></td><td><button type="button" class="btn btn-xs btn-default btn-type-delete">删除</button></td></tr>');
+        var htmlPattern = '<tr>';
+        htmlPattern += '<td><input type="text" id="amount" required data-parsley-pattern="^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$" placeholder="必填" value="'+coupon.patternList[0].amount+'"></td>';
+        htmlPattern += '<td><input type="text" id="limitNum" required data-parsley-pattern="^[1-9]{1}\\d*$" placeholder="必填" value="'+coupon.patternList[0].limitNum+'"></td>';
+        htmlPattern += '<td><input type="text" id="lowerBound" class="parsley-range" data-parsley-pattern="^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$" data-parsley-ur="0" placeholder="不限" value="'+coupon.patternList[0].lowerBound+'"></td>';
+        htmlPattern += '<td><input type="text" id="upperBound" class="parsley-range" data-parsley-pattern="^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$" data-parsley-ur="0" placeholder="不限" value="'+coupon.patternList[0].upperBound+'"></td>'
+        htmlPattern += '</tr>';
+
+        $('#typeTable tbody').html(htmlPattern);
+        $('#couponPattern').trigger('change');
       }
       //渠道
-      if (coupon.channels.length > 0 && coupon.channels != null) {
+      if (coupon.channels != null && coupon.channels.length > 0) {
         setChannel(coupon.channels);
       } else {
         setChannel(false);
       }
       //影片
-      if (coupon.films.length > 0 && coupon.films != null) {
+      if (coupon.films != null && coupon.films.length > 0) {
         setMovie(coupon.films);
       } else {
         setMovie(false);
       }
       //制式
-      if (coupon.dimens.length > 0 && coupon.dimens != null) {
+      if (coupon.dimens != null && coupon.dimens.length > 0) {
         setDimen(coupon.dimens);
       } else {
         setDimen(false);
@@ -679,7 +711,7 @@ function setEdit(couponId) {
         setCinema(coupon.cinemas.join('|'));
       }
       //场次
-      if (coupon.timetables.length > 0 && coupon.timetables != null) {
+      if (coupon.timetables != null && coupon.timetables.length > 0) {
         var html = '';
         var preview_html = '';
         _(coupon.timetables).forEach(function(time){
