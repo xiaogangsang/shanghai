@@ -12,7 +12,8 @@ var searchCache = {};
 var useCache = false;
 
 $(function () {
-  common.setMenu('user');
+  common.init('user');
+
   $('#btn-export').attr('href', common.API_HOST + 'security/user/exportUsers');
   $('#fileupload').data('url', common.API_HOST + 'security/user/importUsers').fileupload({
     dataType: 'json',
@@ -120,14 +121,14 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
   .done(function (res) {
     if (!!~~res.meta.result) {
       res.data.channelAuthority = res.data.channelAuthority != undefined
-                                  ? res.data.channelAuthority
-                                  : [];
+      ? res.data.channelAuthority
+      : [];
       res.data.roles = res.data.roles != undefined
-                        ? res.data.roles
-                        : [];
+      ? res.data.roles
+      : [];
       res.data.cityAuthority = res.data.cityAuthority != undefined
-                                ? res.data.cityAuthority
-                                : [];
+      ? res.data.cityAuthority
+      : [];
       setModal(res.data);
       $('#popup-user-form').modal('show');
       $('#popup-user-form form').parsley();
@@ -292,12 +293,21 @@ $(document).on('click', '#popup-user-form button[type=submit]', function (event)
     department: $.trim($('#popup-user-form #department').val()),
     mobile: $.trim($('#popup-user-form #mobile').val()),
     email: $.trim($('#popup-user-form #email').val()),
-    roles: $('#roleSelect_to').val(),
-    cities: $('#citySelect_to').val(),
   };
   sendData.cityNames = [];
+  sendData.cities = [];
   $('#citySelect_to option').each(function (index, el) {
-    sendData.cityNames.push($(this).text());
+    if (!$(el).hasClass('hidden')) {
+      sendData.cities.push($(el).val());
+      sendData.cityNames.push($(el).text());
+    }
+  });
+
+  sendData.roles = [];
+  $('#roleSelect_to option').each(function (index, el) {
+    if (!$(el).hasClass('hidden')) {
+      sendData.roles.push($(el).val());
+    }
   });
 
   var checkedChannels = [];
@@ -376,6 +386,10 @@ function setModal(userData) {
   $('#popup-user-form .modal-body').html(html);
 
   $('#roleSelect').multiselect({
+    search: {
+      left: '<input type="text" name="q" class="form-control" placeholder="候选..." />',
+      right: '<input type="text" name="q" class="form-control" placeholder="已选..." />',
+    },
     right: '#roleSelect_to',
     rightAll: '#roleSelect_all',
     rightSelected: '#roleSelect_right',
@@ -383,6 +397,10 @@ function setModal(userData) {
     leftAll: '#roleSelect_none',
   });
   $('#citySelect').multiselect({
+    search: {
+      left: '<input type="text" name="q" class="form-control" placeholder="候选..." />',
+      right: '<input type="text" name="q" class="form-control" placeholder="已选..." />',
+    },
     right: '#citySelect_to',
     rightAll: '#citySelect_all',
     rightSelected: '#citySelect_right',

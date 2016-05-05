@@ -9,7 +9,7 @@ var searchCache = {};
 var useCache = false;
 
 $(function () {
-  common.setMenu('comment-forbidden');
+  common.init('comment-sensitive');
 
   $('#fileupload').data('url', common.API_HOST + 'comment/importSensitive').fileupload({
     dataType: 'json',

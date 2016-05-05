@@ -6,7 +6,7 @@ var _pageSize = 10;
 var _pageTotal = 0;
 
 $(function () {
-  common.setMenu('charge');
+  common.init('charge');
   setTableData();
 });
 

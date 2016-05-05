@@ -18,7 +18,7 @@ var _channels = {};
 var _sources = {};
 
 $(function () {
-  common.setMenu('order');
+  common.init('order');
   getChannel();
   getSource();
 

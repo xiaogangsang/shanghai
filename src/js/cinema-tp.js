@@ -13,7 +13,7 @@ var searchCache = {};
 var useCache = false;
 
 $(function () {
-  common.setMenu('cinema-tp');
+  common.init('cinema-tp');
 
   //set search form
   setSource();

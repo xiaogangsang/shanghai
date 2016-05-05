@@ -10,8 +10,13 @@ var _channels = [];
 var _provinces = [];
 
 $(function () {
-  common.setMenu('activity-unit');
-  common.setLoginName();
+  common.init('activity-unit');
+
+  Number.prototype.between = function(a, b) {
+    var min = Math.min.apply(Math, [a, b]);
+    var max = Math.max.apply(Math, [a, b]);
+    return this >= min && this <= max;
+  };
 
   setProvince();
   setBrand();
@@ -66,12 +71,28 @@ $(function () {
     suffix: [],
     meridiem: ['上午', '下午'],
   };
-  $('#beginDate, #endDate').datetimepicker({
+  $('#beginDate').datetimepicker({
     format: 'yyyy-mm-dd',
     language: 'zh-CN',
     minView: 2,
     todayHighlight: true,
     autoclose: true,
+  }).on('changeDate', function (ev) {
+    var startDate = new Date(ev.date.valueOf());
+    startDate.setDate(startDate.getDate(new Date(ev.date.valueOf())));
+    $('#endDate').datetimepicker('setStartDate', startDate);
+  });
+
+  $('#endDate').datetimepicker({
+    format: 'yyyy-mm-dd',
+    language: 'zh-CN',
+    minView: 2,
+    todayHighlight: true,
+    autoclose: true,
+  }).on('changeDate', function (ev) {
+    var FromEndDate = new Date(ev.date.valueOf());
+    FromEndDate.setDate(FromEndDate.getDate(new Date(ev.date.valueOf())));
+    $('#beginDate').datetimepicker('setEndDate', FromEndDate);
   });
 
   $('#movieSelect').multiselect({
@@ -543,12 +564,32 @@ $(document).on('submit', '#formUnit', function (event) {
     sendData.dimens.push($(el).next('span').text());
   });
 
+  //活动形式
+  var rangeList = [];
+  var patternCheck = true;
   $('#typeTable tbody tr').each(function (index, el) {
     var amount = $(el).find('.amount').val();
-    var lowerBound = $(el).find('.lowerBound').val();
-    var upperBound = $(el).find('.upperBound').val();
+    var lowerBound = Number($(el).find('.lowerBound').val());
+    var upperBound = Number($(el).find('.upperBound').val());
+    _(rangeList).forEach(function(range){
+      if (lowerBound.between(range.min,range.max) || upperBound.between(range.min,range.max)) {
+        $(el).find('#error-cross').remove();
+        $(el).find('td:nth-child(2)').append('<ul class="parsley-errors-list filled" id="error-cross"><li class="parsley-required">活动形式价格区间交叉了</li></ul>');
+        $(el).find('.lowerBound').focus();
+        patternCheck = false;
+        return false;
+      }
+    });
+    rangeList.push({min:lowerBound, max:upperBound});
     sendData.activityPatternList.push({ amount: amount, lowerBound: lowerBound, upperBound: upperBound });
+    if (!patternCheck) {
+      return false;
+    }
   });
+
+  if (!patternCheck) {
+    return false;
+  }
 
   $('#dailyBudgetTable tbody tr').each(function (index, el) {
     var startDate = $(el).find('.startDate').val();
@@ -1008,7 +1049,7 @@ function setEdit(unitId) {
           preview_html += '总共限购' + unit.saleLimit.totalOrder + '笔；';
         }
       } else {
-        preview_html += '不限';
+        preview_html = '不限';
       }
 
       $('#preview-restriction').html(preview_html);

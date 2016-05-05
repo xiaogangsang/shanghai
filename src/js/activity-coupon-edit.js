@@ -9,8 +9,7 @@ var _channels = [];
 var _provinces = [];
 
 $(function() {
-  common.setMenu('activity-coupon');
-  common.setLoginName();
+  common.init('activity-coupon');
 
   setProvince();
   setBrand();
@@ -36,12 +35,29 @@ $(function() {
     suffix: [],
     meridiem: ["上午", "下午"]
   };
-  $('#beginDate, #endDate').datetimepicker({
+
+  $('#beginDate').datetimepicker({
     format: 'yyyy-mm-dd',
     language: 'zh-CN',
     minView: 2,
     todayHighlight: true,
     autoclose: true,
+  }).on('changeDate', function (ev) {
+    var startDate = new Date(ev.date.valueOf());
+    startDate.setDate(startDate.getDate(new Date(ev.date.valueOf())));
+    $('#endDate').datetimepicker('setStartDate', startDate);
+  });
+
+  $('#endDate').datetimepicker({
+    format: 'yyyy-mm-dd',
+    language: 'zh-CN',
+    minView: 2,
+    todayHighlight: true,
+    autoclose: true,
+  }).on('changeDate', function (ev) {
+    var FromEndDate = new Date(ev.date.valueOf());
+    FromEndDate.setDate(FromEndDate.getDate(new Date(ev.date.valueOf())));
+    $('#beginDate').datetimepicker('setEndDate', FromEndDate);
   });
 
   $('#movieSelect').multiselect({

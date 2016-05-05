@@ -9,7 +9,7 @@ var searchCache = {};
 var useCache = false;
 
 $(function () {
-  common.setMenu('activity-plan');
+  common.init('activity-plan');
 });
 
 $('#formSearch').on('click', 'button[type=submit]', function (event) {
@@ -260,7 +260,7 @@ $(document).on('submit', '#popup-plan-form form', function (e) {
 
   var ajaxUrl = common.API_HOST + 'plan/savePlan';
 
-  var isUpdate = ($('#popup-plan-form #id').length > 0);
+  var isUpdate = ($('#popup-plan-form #id').size() > 0);
 
   if (isUpdate) {
     sendData.id = $('#popup-plan-form #id').val();

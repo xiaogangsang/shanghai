@@ -4,7 +4,7 @@ var common = require('common');
 var _roles = [];
 
 $(function () {
-  common.setMenu('ability-resource');
+  common.init('ability-resource');
 
   //set search form
   setResource();

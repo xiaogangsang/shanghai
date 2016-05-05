@@ -13,8 +13,7 @@ var searchCache = {};
 var useCache = false;
 
 $(function () {
-  common.setMenu('class');
-  common.setLoginName();
+  common.init('class');
 
   //set search form
   setChannel();
@@ -80,11 +79,11 @@ $('#formSearch').on('submit', function (e) {
         _pageTotal = Math.ceil(res.data.total / _pageSize);
         setPager(res.data.total, _pageIndex, res.data.rows.length, _pageTotal);
         _(res.data.rows).forEach(function (item) {
+          item.channelNames = item.channelNames.split(',').length == 2 ? '全部' : item.channelNames;
           item.beginTime = item.beginTime.split(' ')[0];
           item.endTime = item.endTime.split(' ')[0];
-          item.cityShort = item.cityNames.length > 13
-          ? item.cityNames.substr(0, 10) + '...'
-          : item.cityNames;
+          item.cityShort = item.cityNames.length > 13 ? item.cityNames.substr(0, 10) + '...'
+                                                      : item.cityNames;
           item.statusName = item.status == 1 ? '已上线' : '已下线';
           item.settleName = item.settleType == 1 ? '万达总部' : '万达区域';
           item.typeName = item.type == 1 ? '日常票类' : '活动票类';
@@ -227,13 +226,30 @@ $('#dataTable').on('click', '.btn-edit', function (event) {
 
       setModal(res.data.wandaTicket);
       $('#popup-class-form').modal('show');
-      $('#beginTime,#endTime').datetimepicker({
+      $('#beginTime').datetimepicker({
         format: 'yyyy-mm-dd',
         language: 'zh-CN',
         minView: 2,
         todayHighlight: true,
         autoclose: true,
+      }).on('changeDate', function (ev) {
+        var startDate = new Date(ev.date.valueOf());
+        startDate.setDate(startDate.getDate(new Date(ev.date.valueOf())));
+        $('#endTime').datetimepicker('setStartDate', startDate);
       });
+
+      $('#endTime').datetimepicker({
+        format: 'yyyy-mm-dd',
+        language: 'zh-CN',
+        minView: 2,
+        todayHighlight: true,
+        autoclose: true,
+      }).on('changeDate', function (ev) {
+        var FromEndDate = new Date(ev.date.valueOf());
+        FromEndDate.setDate(FromEndDate.getDate(new Date(ev.date.valueOf())));
+        $('#beginTime').datetimepicker('setEndDate', FromEndDate);
+      });
+
       $('#popup-class-form form').parsley();
       $('#cinemaSelect').multiselect({
         search: {
@@ -277,7 +293,7 @@ $(document).on('submit', '#popup-class-form form', function (event) {
   sendData.channelId = sendData.channelId.join('|');
   sendData.cinema = [];
   $('#cinemaSelect_to option').each(function (index, el) {
-    if ( !$(el).hasClass('hidden') ) {
+    if (!$(el).hasClass('hidden')) {
       sendData.cinema.push($(el).val());
     }
 
@@ -319,13 +335,30 @@ $(document).on('click', '#btn-create', function (e) {
   setModal(false);
   $('#popup-class-form').modal('show');
   $('#popup-class-form form').parsley();
-  $('#beginTime,#endTime').datetimepicker({
+  $('#beginTime').datetimepicker({
     format: 'yyyy-mm-dd',
     language: 'zh-CN',
     minView: 2,
     todayHighlight: true,
     autoclose: true,
+  }).on('changeDate', function (ev) {
+    var startDate = new Date(ev.date.valueOf());
+    startDate.setDate(startDate.getDate(new Date(ev.date.valueOf())));
+    $('#endTime').datetimepicker('setStartDate', startDate);
   });
+
+  $('#endTime').datetimepicker({
+    format: 'yyyy-mm-dd',
+    language: 'zh-CN',
+    minView: 2,
+    todayHighlight: true,
+    autoclose: true,
+  }).on('changeDate', function (ev) {
+    var FromEndDate = new Date(ev.date.valueOf());
+    FromEndDate.setDate(FromEndDate.getDate(new Date(ev.date.valueOf())));
+    $('#beginTime').datetimepicker('setEndDate', FromEndDate);
+  });
+
   $('#cinemaSelect').multiselect({
     search: {
       left: '<input type="text" name="q" class="form-control" placeholder="候选..." />',

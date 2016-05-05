@@ -15,7 +15,7 @@ var _payStatus = [
 var _channels = {};
 
 $(function () {
-  common.setMenu('order-cs');
+  common.init('order-cs');
   getChannel();
 
   var urlParam = common.getUrlParam();

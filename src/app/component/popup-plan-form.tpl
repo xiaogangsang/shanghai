@@ -30,13 +30,13 @@
     <div class="form-group">
       <div class="input-group">
         <div class="input-group-addon">日金额预算</div>
-        <input type="number" class="form-control" pattern="/[0-9]+/" id="dailyAmount" value="{{dailyAmount}}" placeholder="不限">
+        <input type="text" class="form-control" id="dailyAmount" value="{{dailyAmount}}" placeholder="不限" data-parsley-pattern="^[1-9]{1}\d*$">
       </div>
     </div>
     <div class="form-group">
       <div class="input-group">
         <div class="input-group-addon">日出票预算</div>
-        <input type="number" class="form-control" pattern="/[0-9]+/" id="dailyTicket" value="{{dailyTicket}}" placeholder="不限">
+        <input type="text" class="form-control" id="dailyTicket" value="{{dailyTicket}}" placeholder="不限" data-parsley-pattern="^[1-9]{1}\d*$">
       </div>
     </div>
   </div>
@@ -44,13 +44,13 @@
     <div class="form-group">
       <div class="input-group">
         <div class="input-group-addon">总金额预算</div>
-        <input type="number" class="form-control" pattern="/[0-9]+/" id="totalAmount" value="{{totalAmount}}" placeholder="不限">
+        <input type="text" class="form-control" id="totalAmount" value="{{totalAmount}}" placeholder="不限" data-parsley-pattern="^[1-9]{1}\d*$">
       </div>
     </div>
     <div class="form-group">
       <div class="input-group">
         <div class="input-group-addon">总出票预算</div>
-        <input type="number" class="form-control" pattern="/[0-9]+/" id="totalTicket" value="{{totalTicket}}" placeholder="不限">
+        <input type="text" class="form-control" id="totalTicket" value="{{totalTicket}}" placeholder="不限" data-parsley-pattern="^[1-9]{1}\d*$">
       </div>
     </div>
   </div>
@@ -70,13 +70,13 @@
     <div class="form-group">
       <div class="input-group">
         <div class="input-group-addon">日金额预算</div>
-        <input type="number" class="form-control" pattern="/[0-9]+/" id="dailyAmount" placeholder="不限">
+        <input type="text" class="form-control" id="dailyAmount" placeholder="不限" data-parsley-pattern="^[1-9]{1}\d*$">
       </div>
     </div>
     <div class="form-group">
       <div class="input-group">
         <div class="input-group-addon">日出票预算</div>
-        <input type="number" class="form-control" pattern="/[0-9]+/" id="dailyTicket" placeholder="不限">
+        <input type="text" class="form-control" id="dailyTicket" placeholder="不限" data-parsley-pattern="^[1-9]{1}\d*$">
       </div>
     </div>
   </div>
@@ -84,13 +84,13 @@
     <div class="form-group">
       <div class="input-group">
         <div class="input-group-addon">总金额预算</div>
-        <input type="number" class="form-control" pattern="/[0-9]+/" id="totalAmount" placeholder="不限">
+        <input type="text" class="form-control" id="totalAmount" placeholder="不限" data-parsley-pattern="^[1-9]{1}\d*$">
       </div>
     </div>
     <div class="form-group">
       <div class="input-group">
         <div class="input-group-addon">总出票预算</div>
-        <input type="number" class="form-control" pattern="/[0-9]+/" id="totalTicket" placeholder="不限">
+        <input type="text" class="form-control" id="totalTicket" placeholder="不限" data-parsley-pattern="^[1-9]{1}\d*$">
       </div>
     </div>
   </div>

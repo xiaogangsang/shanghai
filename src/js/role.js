@@ -12,7 +12,7 @@ var searchCache = {};
 var useCache = false;
 
 $(function () {
-  common.setMenu('role');
+  common.init('role');
   $('#btn-export').attr('href', common.API_HOST + 'security/role/exportRoles');
   //set search form
   setRole();

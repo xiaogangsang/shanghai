@@ -26,7 +26,7 @@ var searchCache = {};
 var useCache = false;
 
 $(function () {
-  common.setMenu('record-operation');
+  common.init('record-operation');
   setType();
 
   $.fn.datetimepicker.dates['zh-CN'] = {
@@ -39,12 +39,29 @@ $(function () {
     suffix: [],
     meridiem: ['上午', '下午'],
   };
-  $('#search_beginDate, #search_endDate').datetimepicker({
+
+  $('#search_beginDate').datetimepicker({
     format: 'yyyy-mm-dd hh:00',
     language: 'zh-CN',
+    minView: 1,
     todayHighlight: true,
     autoclose: true,
+  }).on('changeDate', function (ev) {
+    var startDate = new Date(ev.date.valueOf());
+    startDate.setDate(startDate.getDate(new Date(ev.date.valueOf())));
+    $('#search_endDate').datetimepicker('setStartDate', startDate);
+  });
+
+  $('#search_endDate').datetimepicker({
+    format: 'yyyy-mm-dd hh:00',
+    language: 'zh-CN',
     minView: 1,
+    todayHighlight: true,
+    autoclose: true,
+  }).on('changeDate', function (ev) {
+    var FromEndDate = new Date(ev.date.valueOf());
+    FromEndDate.setDate(FromEndDate.getDate(new Date(ev.date.valueOf())));
+    $('#search_beginDate').datetimepicker('setEndDate', FromEndDate);
   });
 });
 

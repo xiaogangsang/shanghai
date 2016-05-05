@@ -16,7 +16,7 @@ var searchCache = {};
 var useCache = false;
 
 $(function () {
-  common.setMenu('order-cs');
+  common.init('order-cs');
 
   //set search form
   setChannel();
@@ -32,12 +32,28 @@ $(function () {
     suffix: [],
     meridiem: ['上午', '下午'],
   };
-  $('#search_placeOrderStartTime,#search_placeOrderEndTime').datetimepicker({
+  $('#search_placeOrderStartTime').datetimepicker({
     format: 'yyyy-mm-dd',
     language: 'zh-CN',
-    todayHighlight: true,
     minView: 2,
+    todayHighlight: true,
     autoclose: true,
+  }).on('changeDate', function (ev) {
+    var startDate = new Date(ev.date.valueOf());
+    startDate.setDate(startDate.getDate(new Date(ev.date.valueOf())));
+    $('#search_placeOrderEndTime').datetimepicker('setStartDate', startDate);
+  });
+
+  $('#search_placeOrderEndTime').datetimepicker({
+    format: 'yyyy-mm-dd',
+    language: 'zh-CN',
+    minView: 2,
+    todayHighlight: true,
+    autoclose: true,
+  }).on('changeDate', function (ev) {
+    var FromEndDate = new Date(ev.date.valueOf());
+    FromEndDate.setDate(FromEndDate.getDate(new Date(ev.date.valueOf())));
+    $('#search_placeOrderStartTime').datetimepicker('setEndDate', FromEndDate);
   });
 });
 

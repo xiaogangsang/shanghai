@@ -10,8 +10,7 @@ var searchCache = {};
 var useCache = false;
 
 $(function () {
-  common.setMenu('activity-coupon');
-  common.setLoginName();
+  common.init('activity-coupon');
 
   //set search form
   getBudgetSource();

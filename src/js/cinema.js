@@ -14,7 +14,7 @@ var searchCache = {};
 var useCache = false;
 
 $(function () {
-  common.setMenu('cinema');
+  common.init('cinema');
 
   //set search form
   setBrand();

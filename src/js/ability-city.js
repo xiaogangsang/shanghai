@@ -5,7 +5,7 @@ var _users = [];
 var _cities = [];
 
 $(function () {
-  common.setMenu('ability-city');
+  common.init('ability-city');
 
   //set search form
   setCity();

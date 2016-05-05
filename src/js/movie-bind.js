@@ -6,8 +6,7 @@ var _bindMovieName = '';
 var _querying = false;
 
 $(function () {
-  common.setMenu('movie');
-  common.setLoginName();
+  common.init('movie');
 
   var urlParam = common.getUrlParam();
   if (urlParam.movieId == undefined || urlParam.movieId == '') {

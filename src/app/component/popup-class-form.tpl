@@ -70,11 +70,11 @@
           </tr>
           <tr>
             <th>开始日期</th>
-            <td><input type="text" class="form-control" id="beginTime" value="{{class.beginTimeStr}}" required></td>
+            <td><input type="text" class="form-control" id="beginTime" value="{{class.beginTimeStr}}" required readonly></td>
           </tr>
           <tr>
             <th>结束日期</th>
-            <td><input type="text" class="form-control" id="endTime" value="{{class.endTimeStr}}" required></td>
+            <td><input type="text" class="form-control" id="endTime" value="{{class.endTimeStr}}" required readonly></td>
           </tr>
           <tr>
             <th>价格规则</th>
@@ -157,11 +157,11 @@
           </tr>
           <tr>
             <th>开始日期</th>
-            <td><input type="text" class="form-control" id="beginTime" required></td>
+            <td><input type="text" class="form-control" id="beginTime" required readonly></td>
           </tr>
           <tr>
             <th>结束日期</th>
-            <td><input type="text" class="form-control" id="endTime" required></td>
+            <td><input type="text" class="form-control" id="endTime" required readonly></td>
           </tr>
           <tr>
             <th>价格规则</th>

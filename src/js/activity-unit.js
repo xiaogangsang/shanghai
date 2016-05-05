@@ -10,8 +10,7 @@ var searchCache = {};
 var useCache = false;
 
 $(function () {
-  common.setMenu('activity-unit');
-  common.setLoginName();
+  common.init('activity-unit');
   var urlParam = common.getUrlParam();
   if (urlParam.planId != undefined && urlParam.planId != '') {
     $('#search_planId').val(urlParam.planId);

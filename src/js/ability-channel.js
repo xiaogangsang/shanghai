@@ -5,7 +5,7 @@ var _users = [];
 var _channels = [];
 
 $(function () {
-  common.setMenu('ability-channel');
+  common.init('ability-channel');
 
   //set search form
   setChannel();

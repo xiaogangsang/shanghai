@@ -15,8 +15,7 @@ var searchCache = {};
 var useCache = false;
 
 $(function () {
-  common.setMenu('movie');
-  common.setLoginName();
+  common.init('movie');
 
   //set search form
   setVersion();
@@ -30,13 +29,31 @@ $(function () {
     suffix: [],
     meridiem: ['上午', '下午'],
   };
-  $('#search_beginShowDate,#search_endShowDate').datetimepicker({
+
+  $('#search_beginShowDate').datetimepicker({
     format: 'yyyy-mm-dd',
     language: 'zh-CN',
     minView: 2,
     todayHighlight: true,
     autoclose: true,
+  }).on('changeDate', function (ev) {
+    var startDate = new Date(ev.date.valueOf());
+    startDate.setDate(startDate.getDate(new Date(ev.date.valueOf())));
+    $('#search_endShowDate').datetimepicker('setStartDate', startDate);
   });
+
+  $('#search_endShowDate').datetimepicker({
+    format: 'yyyy-mm-dd',
+    language: 'zh-CN',
+    minView: 2,
+    todayHighlight: true,
+    autoclose: true,
+  }).on('changeDate', function (ev) {
+    var FromEndDate = new Date(ev.date.valueOf());
+    FromEndDate.setDate(FromEndDate.getDate(new Date(ev.date.valueOf())));
+    $('#search_beginShowDate').datetimepicker('setEndDate', FromEndDate);
+  });
+
   var beginDate = new Date();
   var endDate = new Date();
   endDate.setDate(endDate.getDate() + 7);
@@ -89,7 +106,7 @@ $('#formSearch').on('submit', function (e) {
     _querying = false;
     if (!!~~res.meta.result) {
       if (res.data.rows.length < 1) {
-        $('#dataTable tbody').html('<tr><td colspan="8" align="center">请点击“查询”按钮！</td></tr>');
+        $('#dataTable tbody').html('<tr><td colspan="8" align="center">查不到相关数据，请修改查询条件！</td></tr>');
         $('#pager').html('');
       } else {
         useCache = true;
