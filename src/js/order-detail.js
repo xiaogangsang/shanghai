@@ -61,6 +61,11 @@ $(function () {
           }
         });
 
+        res.data.bizOrder.canRefund = false;
+        if (res.data.payOrder.transOrderStatus == '支付成功') {
+          res.data.bizOrder.canRefund = true;
+        }
+
         res.data.bizOrder.canReturnTicket = false;
         if (res.data.bizOrder.productOrderStatus == '已出票'
           && res.data.payOrder.transOrderStatus == '支付成功'
@@ -153,8 +158,9 @@ $(document).on('submit', '#popup-refund form', function (event) {
     productOrderNo: $('#productOrderNo').val(),
     chargeUndertaker: $('#chargeUndertaker').val(),
     channelId: $('#channelId').val(),
-    refundReason: $.trim($('#refundReason').val()),
+    refundReason: $.trim($('#reason').val()),
   };
+  console.log($('#reason').val());
   if (sendData.transOrderNo == '' || sendData.productOrderNo == '') {
     alert('非法操作，无法获取订单号！');
     $('#popup-refund').modal('hide');
@@ -216,7 +222,7 @@ $(document).on('submit', '#popup-undertaker form', function (event) {
     transOrderNo: $('#transOrderNo').val(),
     productOrderNo: $('#productOrderNo').val(),
     chargeUndertaker: $('#chargeUndertaker').val(),
-    refundReason: $.trim($('#refundReason').val()),
+    refundReason: $.trim($('#reason').val()),
   };
   if (sendData.transOrderNo == '' || sendData.productOrderNo == '') {
     alert('非法操作，无法获取订单号！');

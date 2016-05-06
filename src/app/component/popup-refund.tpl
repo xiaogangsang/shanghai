@@ -18,7 +18,7 @@
           <div class="form-group">
             <div class="input-group">
               <div class="input-group-addon">退款原因</div>
-              <textarea class="form-control" id="refundReason" required></textarea>
+              <textarea class="form-control" id="reason" required></textarea>
             </div>
           </div>
         </div>
