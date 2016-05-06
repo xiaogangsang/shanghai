@@ -95,7 +95,7 @@ $('#formSearch').on('submit', function (e) {
   sendData.pageIndex = _pageIndex;
 
   $.ajax({
-    url: common.API_HOST + 'order/reportList',
+    url: common.API_HOST + 'report/reportList',
     type: 'POST',
     dataType: 'json',
     data: sendData,

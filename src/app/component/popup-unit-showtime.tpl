@@ -38,8 +38,8 @@
 
 <script id="showtime-template" type="text/x-tmpl-mustache">
   <tr>
-    <td><input type="text" class="form-control beginDate" required></td>
-    <td><input type="text" class="form-control endDate" required></td>
+    <td><input type="text" class="form-control beginDate" required readonly></td>
+    <td><input type="text" class="form-control endDate" required readonly></td>
     <td><input type="text" class="form-control beginTime" required value="00:00"></td>
     <td><input type="text" class="form-control endTime" required value="23:59"></td>
     <td><button type="button" class="btn btn-xs btn-primary btn-delete">删除</button></td>

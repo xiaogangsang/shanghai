@@ -12,11 +12,20 @@ var _provinces = [];
 $(function () {
   common.init('activity-unit');
 
-  Number.prototype.between = function(a, b) {
+  Number.prototype.between = function (a, b, flag) {
     var min = Math.min.apply(Math, [a, b]);
     var max = Math.max.apply(Math, [a, b]);
-    console.log(min+' | '+this+' | '+max);
-    return this >= min && this <= max;
+    var self = this;
+    if (this == 0 && flag == true) {
+      self = -Infinity;
+    }
+
+    if (this == 0 && flag == false) {
+      self = Infinity;
+    }
+
+    console.log(min + ' | ' + self + ' | ' + max + ' | ' + (self >= min && self <= max));
+    return self >= min && self <= max;
   };
 
   setProvince();
@@ -46,6 +55,7 @@ $(function () {
           fields.push(value);
         }
       });
+
       if (~~fields[0] == 0 || ~~fields[1] == 0) {
         return true;
       } else {
@@ -228,7 +238,7 @@ $(document).on('click', '#btn-daily', function (event) {
   }).on('changeDate', function (ev) {
     var startDate = new Date(ev.date.valueOf());
     startDate.setDate(startDate.getDate(new Date(ev.date.valueOf())));
-    $(this).closest('tr').children('.endDate').datetimepicker('setStartDate', startDate);
+    $(this).closest('tr').find('.endDate').datetimepicker('setStartDate', startDate);
   });
 
   $('.endDate').datetimepicker({
@@ -240,7 +250,7 @@ $(document).on('click', '#btn-daily', function (event) {
   }).on('changeDate', function (ev) {
     var FromEndDate = new Date(ev.date.valueOf());
     FromEndDate.setDate(FromEndDate.getDate(new Date(ev.date.valueOf())));
-    $(this).closest('tr').children('.startDate').datetimepicker('setEndDate', FromEndDate);
+    $(this).closest('tr').find('.startDate').datetimepicker('setEndDate', FromEndDate);
   });
 
 });
@@ -482,7 +492,7 @@ $(document).on('click', '#btn-showtime', function (event) {
   }).on('changeDate', function (ev) {
     var startDate = new Date(ev.date.valueOf());
     startDate.setDate(startDate.getDate(new Date(ev.date.valueOf())));
-    $(this).closest('tr').children('.endDate').datetimepicker('setStartDate', startDate);
+    $(this).closest('tr').find('.endDate').datetimepicker('setStartDate', startDate);
   });
 
   $('.endDate').datetimepicker({
@@ -494,29 +504,29 @@ $(document).on('click', '#btn-showtime', function (event) {
   }).on('changeDate', function (ev) {
     var FromEndDate = new Date(ev.date.valueOf());
     FromEndDate.setDate(FromEndDate.getDate(new Date(ev.date.valueOf())));
-    $(this).closest('tr').children('.beginDate').datetimepicker('setEndDate', FromEndDate);
+    $(this).closest('tr').find('.beginDate').datetimepicker('setEndDate', FromEndDate);
   });
 
   $('.beginTime').datetimepicker({
     format: 'hh:ii',
     language: 'zh-CN',
-    minView: 1,
+    startView: 1,
     autoclose: true,
   }).on('changeDate', function (ev) {
     var startDate = new Date(ev.date.valueOf());
     startDate.setDate(startDate.getDate(new Date(ev.date.valueOf())));
-    $(this).closest('tr').children('.endTime').datetimepicker('setStartDate', startDate);
+    $(this).closest('tr').find('.endTime').datetimepicker('setStartDate', startDate);
   });
 
   $('.endTime').datetimepicker({
     format: 'hh:ii',
     language: 'zh-CN',
-    minView: 1,
+    startView: 1,
     autoclose: true,
   }).on('changeDate', function (ev) {
     var FromEndDate = new Date(ev.date.valueOf());
     FromEndDate.setDate(FromEndDate.getDate(new Date(ev.date.valueOf())));
-    $(this).closest('tr').children('.beginTime').datetimepicker('setEndDate', FromEndDate);
+    $(this).closest('tr').find('.beginTime').datetimepicker('setEndDate', FromEndDate);
   });
 
 });
@@ -549,20 +559,20 @@ $(document).on('submit', '#popup-unit-showtime form', function (event) {
   return false;
 });
 
-$(document).on('change', '#activityPattern', function(event) {
+$(document).on('change', '#activityPattern', function (event) {
   event.preventDefault();
   var current = +$(this).val();
   switch (current) {
     case 1:
     case 2:
     case 5:
-    $('.amount').attr('data-parsley-pattern', '^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$');
+      $('.amount').attr('data-parsley-pattern', '^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$');
     break;
     case 3:
-    $('.amount').attr('data-parsley-pattern', '^[1-9]{1}$');
+      $('.amount').attr('data-parsley-pattern', '^[1-9]{1}$');
     break;
     case 4:
-    $('.amount').attr('data-parsley-pattern', '^[234]{1}$');
+      $('.amount').attr('data-parsley-pattern', '^[234]{1}$');
     break;
   }
 });
@@ -648,10 +658,10 @@ $(document).on('submit', '#formUnit', function (event) {
     var lowerBound = Number($(el).find('.lowerBound').val());
     var upperBound = Number($(el).find('.upperBound').val());
 
-    _(rangeList).forEach(function(range){
-      var min = range.min=='' ? Infinity : range.min;
-      var max = range.max=='' ? Infinity : range.max;
-      if (lowerBound.between(min,max) || upperBound.between(min,max)) {
+    _(rangeList).forEach(function (range) {
+      var min = range.min == '' ? 0 : range.min;
+      var max = range.max == '' ? Infinity : range.max;
+      if (lowerBound.between(min, max, true) || upperBound.between(min, max, false)) {
         $(el).find('#error-cross').remove();
         $(el).find('td:nth-child(2)').append('<ul class="parsley-errors-list filled" id="error-cross"><li class="parsley-required">活动形式价格区间交叉了</li></ul>');
         $(el).find('.lowerBound').focus();
@@ -659,11 +669,13 @@ $(document).on('submit', '#formUnit', function (event) {
         return false;
       }
     });
-    rangeList.push({min:lowerBound, max:upperBound});
-    sendData.activityPatternList.push({ amount: amount, lowerBound: lowerBound==0?'':lowerBound, upperBound: upperBound==0?'': upperBound});
+
     if (!patternCheck) {
       return false;
     }
+
+    rangeList.push({ min: lowerBound, max: upperBound });
+    sendData.activityPatternList.push({ amount: amount, lowerBound: lowerBound == 0 ? '' : lowerBound, upperBound: upperBound == 0 ? '' : upperBound });
   });
 
   if (!patternCheck) {
@@ -1067,6 +1079,7 @@ function setEdit(unitId) {
         html += '<td><input type="text" class="lowerBound parsley-range" placeholder="不限" data-parsley-pattern="^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$" data-parsley-ur="' + index + '" value="' + pattern.lowerBound + '"></td>';
         html += '<td><input type="text" class="upperBound parsley-range" placeholder="不限" data-parsley-pattern="^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$" data-parsley-ur="' + index + '" value="' + pattern.upperBound + '"></td>';
         html += '<td><button type="button" class="btn btn-xs btn-default btn-type-delete">删除</button></td></tr>';
+        index++;
       });
 
       $('#typeTable tbody').html(html);
@@ -1087,8 +1100,8 @@ function setEdit(unitId) {
         html += '<tr>';
         html += '<td><input type="text" class="form-control startDate" required readonly placeholder="YYYY-MM-DD" value="' + daily.startDate + '"></td>';
         html += '<td><input type="text" class="form-control endDate" required readonly placeholder="YYYY-MM-DD" value="' + daily.endDate + '"></td>';
-        html += '<td><input type="number" class="form-control dailyAmount" placeholder="不限" data-parsley-pattern="^[1-9]{1}\d*$" value="' + daily.dailyAmount + '"></td>';
-        html += '<td><input type="number" class="form-control dailyTicket" placeholder="不限" data-parsley-pattern="^[1-9]{1}\d*$" value="' + daily.dailyTicket + '"></td>';
+        html += '<td><input type="text" class="form-control dailyAmount" placeholder="不限" data-parsley-pattern="^[1-9]{1}\\d*$" value="' + daily.dailyAmount + '"></td>';
+        html += '<td><input type="text" class="form-control dailyTicket" placeholder="不限" data-parsley-pattern="^[1-9]{1}\\d*$" value="' + daily.dailyTicket + '"></td>';
         html += '<td><button type="button" class="btn btn-xs btn-primary btn-delete">删除</button></td>';
         html += '</tr>';
         preview_html += '<p>' + daily.startDate + ' ~ ' + daily.endDate + '，日金额预算：' + daily.dailyAmount + '，日出票预算：' + daily.dailyTicket + '；</p>';
@@ -1106,7 +1119,7 @@ function setEdit(unitId) {
         }).on('changeDate', function (ev) {
           var startDate = new Date(ev.date.valueOf());
           startDate.setDate(startDate.getDate(new Date(ev.date.valueOf())));
-          $(this).closest('tr').children('.endDate').datetimepicker('setStartDate', startDate);
+          $(this).closest('tr').find('.endDate').datetimepicker('setStartDate', startDate);
         });
 
         $('.endDate').datetimepicker({
@@ -1118,7 +1131,7 @@ function setEdit(unitId) {
         }).on('changeDate', function (ev) {
           var FromEndDate = new Date(ev.date.valueOf());
           FromEndDate.setDate(FromEndDate.getDate(new Date(ev.date.valueOf())));
-          $(this).closest('tr').children('.startDate').datetimepicker('setEndDate', FromEndDate);
+          $(this).closest('tr').find('.startDate').datetimepicker('setEndDate', FromEndDate);
         });
       }
       //单户限购
@@ -1193,7 +1206,7 @@ function setEdit(unitId) {
           }).on('changeDate', function (ev) {
             var startDate = new Date(ev.date.valueOf());
             startDate.setDate(startDate.getDate(new Date(ev.date.valueOf())));
-            $(this).closest('tr').children('.endDate').datetimepicker('setStartDate', startDate);
+            $(this).closest('tr').find('.endDate').datetimepicker('setStartDate', startDate);
           });
 
           $('.endDate').datetimepicker({
@@ -1205,7 +1218,7 @@ function setEdit(unitId) {
           }).on('changeDate', function (ev) {
             var FromEndDate = new Date(ev.date.valueOf());
             FromEndDate.setDate(FromEndDate.getDate(new Date(ev.date.valueOf())));
-            $(this).closest('tr').children('.beginDate').datetimepicker('setEndDate', FromEndDate);
+            $(this).closest('tr').find('.beginDate').datetimepicker('setEndDate', FromEndDate);
           });
         }
       }
