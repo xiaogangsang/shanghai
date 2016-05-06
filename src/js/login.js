@@ -3,7 +3,6 @@
 var common = require('common');
 
 $(function () {
-
   if (window.location.search.substring(1).indexOf('logout') > -1) {
     common.logout();
   }
@@ -14,6 +13,36 @@ $(function () {
   if (wH - eH > 0) {
     $('.login').css('margin-top', (wH - eH) / 2 - 40);
   }
+  $.ajaxSetup({
+    error: function (jqXHR, textStatus, errorThrown) {
+      var message;
+      switch (jqXHR.status){
+        case (500):
+          message = '服务器挂了';
+        break;
+        case (401):
+          message = '登陆ID或密码错误';
+        break;
+        case (403):
+          message = '没有权限';
+        break;
+        case (404):
+          message = '服务器失踪了，请稍后再次';
+        break;
+        case (408):
+          message = '请求超时，请稍后再次';
+        break;
+        default:
+          message = '未知错误';
+        break;
+      }
+      var html = '<div class="alert alert-danger" role="alert">' + message + '</div>';
+      $(html).prependTo($('#form-login'))
+              .fadeTo(5000, 1)
+              .slideUp(500, function () {$('.alert').alert('close');});
+    },
+  });
+
 });
 
 $('#form-login').on('submit', function (e) {
@@ -27,7 +56,7 @@ $('#form-login').on('submit', function (e) {
   var password = $.trim($('#password').val());
   var $that = $(this);
   $.ajax({
-    url: common.API_HOST + '/login',
+    url: common.API_HOST + 'login',
     type: 'POST',
     dataType: 'json',
     data: {
@@ -39,9 +68,9 @@ $('#form-login').on('submit', function (e) {
     if (!!~~res.meta.result) {
       Cookies.set('Xtoken', res.data.Xtoken);
       Cookies.set('name', res.data.name);
-      Cookies.set('cityAuthority', res.data.cities.toString());
-      Cookies.set('channelAuthority', res.data.channels.toString());
-      Cookies.set('menuAuthority', res.data.allowMenus.toString());
+      sessionStorage.setItem('cityAuthority', res.data.cities.toString());
+      sessionStorage.setItem('channelAuthority', res.data.channels.toString());
+      sessionStorage.setItem('menuAuthority', res.data.allowMenus.toString());
 
       // alert('登陆成功！');
       window.location.href = 'index.html';

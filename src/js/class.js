@@ -11,7 +11,7 @@ var _pageTotal = 0;
 var _querying = false;
 var searchCache = {};
 var useCache = false;
-var _channelAuthority = Cookies.get('channelAuthority').split(',');
+var _channelAuthority = sessionStorage.getItem('channelAuthority').split(',');
 
 $(function () {
   common.init('class');

@@ -40,7 +40,7 @@
         <tr>
           <th>生效日期</th>
           <td>
-            <input type="text" class="form-control" style="display:inline-block;width:auto;" id="startTime" value="{{banner.startTime}}" size="10" required data-parsley-errors-container="#error-date"> - <input type="text" class="form-control" style="display:inline-block;width:auto;" id="endTime" value="{{banner.endTime}}" size="10" required data-parsley-errors-container="#error-date">
+            <input type="text" class="form-control" style="display:inline-block;width:auto;" id="startTime" value="{{banner.startTime}}" size="10" required data-parsley-errors-container="#error-date" readonly> - <input type="text" class="form-control" style="display:inline-block;width:auto;" id="endTime" value="{{banner.endTime}}" size="10" required data-parsley-errors-container="#error-date" readonly>
             <div id="error-date"></div>
           </td>
         </tr>
@@ -56,7 +56,7 @@
         </tr>
         <tr>
           <th>展示顺序</th>
-          <td><input type="number" class="form-control" id="position" value="{{banner.position}}" required></td>
+          <td><input type="text" class="form-control" id="position" value="{{banner.position}}" required data-parsley-pattern="^[1-9]{1}\d*$"></td>
         </tr>
         <tr>
           <th>是否显示</th>
@@ -75,6 +75,7 @@
 <script id="movie-template" type="text/x-tmpl-mustache">
   <input type="hidden" id="id" value="{{banner.id}}">
   <input type="hidden" id="bannerType" value="2">
+  <input type="hidden" id="filmId" value="{{banner.filmId}}">
   <div class="table-responsive">
     <table class="table">
       <tbody>
@@ -84,7 +85,7 @@
         </tr>
         <tr>
           <th>影片</th>
-          <td>{{banner.filmId}}</td>
+          <td>{{banner.filmName}}</td>
         </tr>
         <tr>
           <th><button type="button" class="btn btn-default" id="btn-city">选择城市</button></th>
@@ -93,7 +94,7 @@
         <tr>
           <th>生效日期</th>
           <td>
-            <input type="text" class="form-control" style="display:inline-block;width:auto;" id="startTime" value="{{banner.startTime}}" size="10" required data-parsley-errors-container="#error-date"> - <input type="text" class="form-control" style="display:inline-block;width:auto;" id="endTime" value="{{banner.endTime}}" size="10" required data-parsley-errors-container="#error-date">
+            <input type="text" class="form-control" style="display:inline-block;width:auto;" id="startTime" value="{{banner.startTime}}" size="10" required data-parsley-errors-container="#error-date" readonly> - <input type="text" class="form-control" style="display:inline-block;width:auto;" id="endTime" value="{{banner.endTime}}" size="10" required data-parsley-errors-container="#error-date" readonly>
             <div id="error-date"></div>
           </td>
         </tr>
@@ -109,7 +110,7 @@
         </tr>
         <tr>
           <th>展示顺序</th>
-          <td><input type="number" class="form-control" id="position" value="{{banner.position}}" required></td>
+          <td><input type="text" class="form-control" id="position" value="{{banner.position}}" required data-parsley-pattern="^[1-9]{1}\d*$"></td>
         </tr>
         <tr>
           <th>是否显示</th>
@@ -169,7 +170,7 @@
         <tr>
           <th>生效日期</th>
           <td>
-            <input type="text" class="form-control" style="display:inline-block;width:auto;" id="startTime" value="{{banner.startTime}}" size="10" required data-parsley-errors-container="#error-date"> - <input type="text" class="form-control" style="display:inline-block;width:auto;" id="endTime" value="{{banner.endTime}}" size="10" required data-parsley-errors-container="#error-date">
+            <input type="text" class="form-control" style="display:inline-block;width:auto;" id="startTime" value="{{banner.startTime}}" size="10" required data-parsley-errors-container="#error-date" readonly> - <input type="text" class="form-control" style="display:inline-block;width:auto;" id="endTime" value="{{banner.endTime}}" size="10" required data-parsley-errors-container="#error-date" readonly>
             <div id="error-date"></div>
           </td>
         </tr>
@@ -185,7 +186,7 @@
         </tr>
         <tr>
           <th>顺序</th>
-          <td><input type="number" class="form-control" id="position" required></td>
+          <td><input type="text" class="form-control" id="position" required data-parsley-pattern="^[1-9]{1}\d*$"></td>
         </tr>
         <tr>
           <th>是否显示</th>

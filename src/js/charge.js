@@ -4,7 +4,7 @@ var common = require('common');
 var _pageIndex = 1;
 var _pageSize = 10;
 var _pageTotal = 0;
-var _channelAuthority = Cookies.get('channelAuthority').split(',');
+var _channelAuthority = sessionStorage.getItem('channelAuthority').split(',');
 
 $(function () {
   common.init('charge');

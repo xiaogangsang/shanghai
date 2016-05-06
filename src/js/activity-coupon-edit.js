@@ -86,7 +86,7 @@ $(function() {
           fields.push(value);
         }
       });
-      if (fields[0] == 0 || fields[1] == 0) {
+      if (~~fields[0] == 0 || ~~fields[1] == 0) {
         return true;
       } else {
         return fields[0] < fields[1];

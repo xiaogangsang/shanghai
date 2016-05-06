@@ -12,7 +12,7 @@ var _querying = false;
 var searchCache = {};
 var useCache = false;
 var dataCache;
-var _cityAuthority = Cookies.get('cityAuthority').split(',');
+var _cityAuthority = sessionStorage.getItem('cityAuthority').split(',');
 
 $(function () {
   common.init('banner');
@@ -143,13 +143,31 @@ $(document).on('click', '#btn-create', function (e) {
   _choosed = [];
   setModal(false);
   $('#popup-banner-form').modal('show');
-  $('#startTime,#endTime').datetimepicker({
+
+  $('#startTime').datetimepicker({
     format: 'yyyy-mm-dd',
     language: 'zh-CN',
     minView: 2,
     todayHighlight: true,
     autoclose: true,
+  }).on('changeDate', function (ev) {
+    var startDate = new Date(ev.date.valueOf());
+    startDate.setDate(startDate.getDate(new Date(ev.date.valueOf())));
+    $('#endTime').datetimepicker('setStartDate', startDate);
   });
+
+  $('#endTime').datetimepicker({
+    format: 'yyyy-mm-dd',
+    language: 'zh-CN',
+    minView: 2,
+    todayHighlight: true,
+    autoclose: true,
+  }).on('changeDate', function (ev) {
+    var FromEndDate = new Date(ev.date.valueOf());
+    FromEndDate.setDate(FromEndDate.getDate(new Date(ev.date.valueOf())));
+    $('#startTime').datetimepicker('setEndDate', FromEndDate);
+  });
+
   $('#popup-banner-form form').parsley();
   $('#popup-banner-form #filmId').chosen();
 
@@ -189,17 +207,30 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
   _choosed = banner.cityList;
   setModal(banner);
   $('#popup-banner-form').modal('show');
-  $('#startTime,#endTime').datetimepicker({
+  $('#startTime').datetimepicker({
     format: 'yyyy-mm-dd',
     language: 'zh-CN',
     minView: 2,
     todayHighlight: true,
     autoclose: true,
+  }).on('changeDate', function (ev) {
+    var startDate = new Date(ev.date.valueOf());
+    startDate.setDate(startDate.getDate(new Date(ev.date.valueOf())));
+    $('#endTime').datetimepicker('setStartDate', startDate);
+  });
+
+  $('#endTime').datetimepicker({
+    format: 'yyyy-mm-dd',
+    language: 'zh-CN',
+    minView: 2,
+    todayHighlight: true,
+    autoclose: true,
+  }).on('changeDate', function (ev) {
+    var FromEndDate = new Date(ev.date.valueOf());
+    FromEndDate.setDate(FromEndDate.getDate(new Date(ev.date.valueOf())));
+    $('#startTime').datetimepicker('setEndDate', FromEndDate);
   });
   $('#popup-banner-form form').parsley();
-  if (banner.bannerType == 2) {
-    $('#popup-banner-form #filmId').chosen();
-  }
 });
 
 $(document).on('submit', '#popup-city form', function (event) {
@@ -456,7 +487,7 @@ function setModal(bannerData) {
       data.movies = _movies;
       _(_movies).forEach(function (movie) {
         if (movie.filmId == bannerData.filmId) {
-          data.banner.filmId = movie.filmName;
+          data.banner.filmName = movie.filmName;
         }
       });
 

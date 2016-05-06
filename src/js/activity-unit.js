@@ -97,21 +97,21 @@ $('#formSearch').on('submit', function (e) {
               value.statusName = '';
             break;
           }
-          value.budgetStatus = parseInt(value.budgetStatus);
-          switch (value.budgetStatus) {
-            case 1:
-              value.budgetStatusName = '总预算不足';
-            break;
-            case 2:
-              value.budgetStatusName = '日预算不足';
-            break;
-            case 3:
-              value.budgetStatusName = '正常';
-            break;
-            default:
-              value.budgetStatusName = '';
-            break;
-          }
+
+          // switch (+value.budgetStatus) {
+          //   case 1:
+          //     value.budgetStatusName = '总预算不足';
+          //   break;
+          //   case 2:
+          //     value.budgetStatusName = '日预算不足';
+          //   break;
+          //   case 3:
+          //     value.budgetStatusName = '正常';
+          //   break;
+          //   default:
+          //     value.budgetStatusName = '';
+          //   break;
+          // }
         });
 
         setTableData(res.data.rows);

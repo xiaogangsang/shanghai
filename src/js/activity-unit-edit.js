@@ -15,6 +15,7 @@ $(function () {
   Number.prototype.between = function(a, b) {
     var min = Math.min.apply(Math, [a, b]);
     var max = Math.max.apply(Math, [a, b]);
+    console.log(min+' | '+this+' | '+max);
     return this >= min && this <= max;
   };
 
@@ -45,7 +46,7 @@ $(function () {
           fields.push(value);
         }
       });
-      if (fields[0] == 0 || fields[1] == 0) {
+      if (~~fields[0] == 0 || ~~fields[1] == 0) {
         return true;
       } else {
         return fields[0] < fields[1];
@@ -217,13 +218,31 @@ $(document).on('click', '#btn-daily', function (event) {
   var html = Mustache.render(template);
   $('#dailyBudgetTable tbody').append(html);
   $('#popup-unit-budget').scrollTop($('#popup-unit-budget').height());
-  $('.startDate, .endDate').datetimepicker({
+
+  $('.startDate').datetimepicker({
     format: 'yyyy-mm-dd',
     language: 'zh-CN',
     minView: 2,
     todayHighlight: true,
     autoclose: true,
+  }).on('changeDate', function (ev) {
+    var startDate = new Date(ev.date.valueOf());
+    startDate.setDate(startDate.getDate(new Date(ev.date.valueOf())));
+    $(this).closest('tr').children('.endDate').datetimepicker('setStartDate', startDate);
   });
+
+  $('.endDate').datetimepicker({
+    format: 'yyyy-mm-dd',
+    language: 'zh-CN',
+    minView: 2,
+    todayHighlight: true,
+    autoclose: true,
+  }).on('changeDate', function (ev) {
+    var FromEndDate = new Date(ev.date.valueOf());
+    FromEndDate.setDate(FromEndDate.getDate(new Date(ev.date.valueOf())));
+    $(this).closest('tr').children('.startDate').datetimepicker('setEndDate', FromEndDate);
+  });
+
 });
 
 $(document).on('click', '#dailyBudgetTable .btn-delete', function (event) {
@@ -454,8 +473,52 @@ $(document).on('click', '#btn-showtime', function (event) {
   var html = Mustache.render(template);
   $('#showtimeTable tbody').append(html);
   $('#popup-unit-showtime').scrollTop($('#popup-unit-showtime').height());
-  $('.beginDate, .endDate').datetimepicker({ format: 'yyyy-mm-dd', language: 'zh-CN', minView: 2, todayHighlight: true, autoclose: true });
-  $('.beginTime, .endTime').datetimepicker({ format: 'hh:ii', language: 'zh-CN', startView: 1, autoclose: true });
+  $('.beginDate').datetimepicker({
+    format: 'yyyy-mm-dd',
+    language: 'zh-CN',
+    minView: 2,
+    todayHighlight: true,
+    autoclose: true,
+  }).on('changeDate', function (ev) {
+    var startDate = new Date(ev.date.valueOf());
+    startDate.setDate(startDate.getDate(new Date(ev.date.valueOf())));
+    $(this).closest('tr').children('.endDate').datetimepicker('setStartDate', startDate);
+  });
+
+  $('.endDate').datetimepicker({
+    format: 'yyyy-mm-dd',
+    language: 'zh-CN',
+    minView: 2,
+    todayHighlight: true,
+    autoclose: true,
+  }).on('changeDate', function (ev) {
+    var FromEndDate = new Date(ev.date.valueOf());
+    FromEndDate.setDate(FromEndDate.getDate(new Date(ev.date.valueOf())));
+    $(this).closest('tr').children('.beginDate').datetimepicker('setEndDate', FromEndDate);
+  });
+
+  $('.beginTime').datetimepicker({
+    format: 'hh:ii',
+    language: 'zh-CN',
+    minView: 1,
+    autoclose: true,
+  }).on('changeDate', function (ev) {
+    var startDate = new Date(ev.date.valueOf());
+    startDate.setDate(startDate.getDate(new Date(ev.date.valueOf())));
+    $(this).closest('tr').children('.endTime').datetimepicker('setStartDate', startDate);
+  });
+
+  $('.endTime').datetimepicker({
+    format: 'hh:ii',
+    language: 'zh-CN',
+    minView: 1,
+    autoclose: true,
+  }).on('changeDate', function (ev) {
+    var FromEndDate = new Date(ev.date.valueOf());
+    FromEndDate.setDate(FromEndDate.getDate(new Date(ev.date.valueOf())));
+    $(this).closest('tr').children('.beginTime').datetimepicker('setEndDate', FromEndDate);
+  });
+
 });
 
 $(document).on('click', '#showtimeTable .btn-delete', function (event) {
@@ -492,12 +555,14 @@ $(document).on('change', '#activityPattern', function(event) {
   switch (current) {
     case 1:
     case 2:
-    case 4:
     case 5:
-      $('.amount').attr('data-parsley-pattern', '^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$');
+    $('.amount').attr('data-parsley-pattern', '^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$');
     break;
     case 3:
-      $('.amount').attr('data-parsley-pattern', '^[1-9]{1}$');
+    $('.amount').attr('data-parsley-pattern', '^[1-9]{1}$');
+    break;
+    case 4:
+    $('.amount').attr('data-parsley-pattern', '^[234]{1}$');
     break;
   }
 });
@@ -582,8 +647,11 @@ $(document).on('submit', '#formUnit', function (event) {
     var amount = $(el).find('.amount').val();
     var lowerBound = Number($(el).find('.lowerBound').val());
     var upperBound = Number($(el).find('.upperBound').val());
+
     _(rangeList).forEach(function(range){
-      if (lowerBound.between(range.min,range.max) || upperBound.between(range.min,range.max)) {
+      var min = range.min=='' ? Infinity : range.min;
+      var max = range.max=='' ? Infinity : range.max;
+      if (lowerBound.between(min,max) || upperBound.between(min,max)) {
         $(el).find('#error-cross').remove();
         $(el).find('td:nth-child(2)').append('<ul class="parsley-errors-list filled" id="error-cross"><li class="parsley-required">活动形式价格区间交叉了</li></ul>');
         $(el).find('.lowerBound').focus();
@@ -1029,7 +1097,29 @@ function setEdit(unitId) {
       $('#dailyBudgetTable tbody').html(html);
       if (preview_html != '') {
         $('#preview-budget').html(preview_html);
-        $('.startDate, .endDate').datetimepicker({ format: 'yyyy-mm-dd', language: 'zh-CN', minView: 2, todayHighlight: true, autoclose: true });
+        $('.startDate').datetimepicker({
+          format: 'yyyy-mm-dd',
+          language: 'zh-CN',
+          minView: 2,
+          todayHighlight: true,
+          autoclose: true,
+        }).on('changeDate', function (ev) {
+          var startDate = new Date(ev.date.valueOf());
+          startDate.setDate(startDate.getDate(new Date(ev.date.valueOf())));
+          $(this).closest('tr').children('.endDate').datetimepicker('setStartDate', startDate);
+        });
+
+        $('.endDate').datetimepicker({
+          format: 'yyyy-mm-dd',
+          language: 'zh-CN',
+          minView: 2,
+          todayHighlight: true,
+          autoclose: true,
+        }).on('changeDate', function (ev) {
+          var FromEndDate = new Date(ev.date.valueOf());
+          FromEndDate.setDate(FromEndDate.getDate(new Date(ev.date.valueOf())));
+          $(this).closest('tr').children('.startDate').datetimepicker('setEndDate', FromEndDate);
+        });
       }
       //单户限购
       if (unit.saleLimit != null) {
@@ -1094,7 +1184,29 @@ function setEdit(unitId) {
         $('#showtimeTable tbody').html(html);
         if (preview_html != '') {
           $('#preview-showtime').html(preview_html);
-          $('.beginDate, .endDate').datetimepicker({ format: 'yyyy-mm-dd', language: 'zh-CN', minView: 2, todayHighlight: true, autoclose: true });
+          $('.beginDate').datetimepicker({
+            format: 'yyyy-mm-dd',
+            language: 'zh-CN',
+            minView: 2,
+            todayHighlight: true,
+            autoclose: true,
+          }).on('changeDate', function (ev) {
+            var startDate = new Date(ev.date.valueOf());
+            startDate.setDate(startDate.getDate(new Date(ev.date.valueOf())));
+            $(this).closest('tr').children('.endDate').datetimepicker('setStartDate', startDate);
+          });
+
+          $('.endDate').datetimepicker({
+            format: 'yyyy-mm-dd',
+            language: 'zh-CN',
+            minView: 2,
+            todayHighlight: true,
+            autoclose: true,
+          }).on('changeDate', function (ev) {
+            var FromEndDate = new Date(ev.date.valueOf());
+            FromEndDate.setDate(FromEndDate.getDate(new Date(ev.date.valueOf())));
+            $(this).closest('tr').children('.beginDate').datetimepicker('setEndDate', FromEndDate);
+          });
         }
       }
       //填充完毕

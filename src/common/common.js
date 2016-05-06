@@ -34,7 +34,7 @@ common.init = function (pageName) {
 };
 
 common.showMenu = function (pageName) {
-  // var allowMenus = Cookies.get('menuAuthority').split(',');
+  // var allowMenus = sessionStorage.getItem('menuAuthority').split(',');
   // if (pageName != undefined && pageName != '' && $('#menu-' + pageName).size() > 0) {
   //   var menuId = '' + $('#menu-' + pageName).data('id');
   //   if (allowMenus == undefined || allowMenus.indexOf(menuId) < 0) {
@@ -65,9 +65,9 @@ common.setLoginName = function () {
 common.logout = function () {
   Cookies.remove('Xtoken');
   Cookies.remove('name');
-  Cookies.remove('cityAuthority');
-  Cookies.remove('channelAuthority');
-  Cookies.remove('menuAuthority');
+  sessionStorage.setItem('cityAuthority','');
+  sessionStorage.setItem('channelAuthority','');
+  sessionStorage.setItem('menuAuthority','');
 };
 
 common.getDate = function (date) {
