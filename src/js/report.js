@@ -52,7 +52,7 @@ $(function () {
 
   var beginDate = new Date();
   var endDate = new Date();
-  endDate.setDate(endDate.getDate() + 7);
+  beginDate.setDate(beginDate.getDate() - 7);
   beginDate = common.getDate(beginDate);
   endDate = common.getDate(endDate);
   $('#search_beginDate').val(beginDate);
