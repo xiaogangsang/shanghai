@@ -63,13 +63,14 @@
               <div class="form-group col-sm-12">
                 <div class="input-group">
                   <div class="input-group-addon">每日生效时间</div>
-                  <input type="text" class="form-control time-input" maxlength="2" id="beginHH" value="00" data-parsley-pattern="^\d{1,2}$" min="00" max="23">时
-                  <input type="text" class="form-control time-input" maxlength="2" id="beginMM" value="00" data-parsley-pattern="^\d{1,2}$" min="00" max="59">分
-                  <input type="text" class="form-control time-input" maxlength="2" id="beginSS" value="00" data-parsley-pattern="^\d{1,2}$" min="00" max="59">秒
+                  <input type="text" class="form-control time-input" maxlength="2" id="beginHH" value="00" data-parsley-pattern="^\d{1,2}$" min="00" max="23" data-parsley-errors-container="#error-dailytime">时
+                  <input type="text" class="form-control time-input" maxlength="2" id="beginMM" value="00" data-parsley-pattern="^\d{1,2}$" min="00" max="59" data-parsley-errors-container="#error-dailytime">分
+                  <input type="text" class="form-control time-input" maxlength="2" id="beginSS" value="00" data-parsley-pattern="^\d{1,2}$" min="00" max="59" data-parsley-errors-container="#error-dailytime">秒
                   <span> - </span>
-                  <input type="text" class="form-control time-input" maxlength="2" id="endHH" value="23" data-parsley-pattern="^\d{1,2}$" min="0" max="23">时
-                  <input type="text" class="form-control time-input" maxlength="2" id="endMM" value="59" data-parsley-pattern="^\d{1,2}$" min="0" max="59">分
-                  <input type="text" class="form-control time-input" maxlength="2" id="endSS" value="59" data-parsley-pattern="^\d{1,2}$" min="0" max="59">秒
+                  <input type="text" class="form-control time-input" maxlength="2" id="endHH" value="23" data-parsley-pattern="^\d{1,2}$" min="00" max="23" data-parsley-errors-container="#error-dailytime">时
+                  <input type="text" class="form-control time-input" maxlength="2" id="endMM" value="59" data-parsley-pattern="^\d{1,2}$" min="00" max="59" data-parsley-errors-container="#error-dailytime">分
+                  <input type="text" class="form-control time-input" maxlength="2" id="endSS" value="59" data-parsley-pattern="^\d{1,2}$" min="00" max="59" data-parsley-errors-container="#error-dailytime">秒
+                  <div id="error-dailytime"></div>
                 </div>
               </div>
               <div class="form-group col-sm-12">

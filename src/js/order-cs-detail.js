@@ -13,10 +13,12 @@ var _payStatus = [
 { id: 5, name: '退款失败' },
 ];
 var _channels = {};
+var _sources = {};
 
 $(function () {
   common.init('order-cs');
   getChannel();
+  getSource();
 
   var urlParam = common.getUrlParam();
   if (urlParam.orderId != undefined && urlParam.orderId != '') {
@@ -35,6 +37,12 @@ $(function () {
         _(_channels).forEach(function (channel) {
           if (channel.channelId == res.data.bizOrder.channelId) {
             res.data.bizOrder.channelName = channel.channelName;
+          }
+        });
+
+        _(_sources).forEach(function (source) {
+          if (source.sourceId == res.data.bizOrder.thirdParty) {
+            res.data.bizOrder.thirdPartyName = source.sourceName;
           }
         });
 
@@ -205,6 +213,21 @@ function getChannel() {
       _channels = res.data;
     } else {
       alert('获取渠道列表失败：' + res.meta.msg);
+    }
+  });
+}
+
+function getSource() {
+  $.ajax({
+    url: common.API_HOST + 'common/sourceList',
+    type: 'GET',
+    dataType: 'json',
+  })
+  .done(function (res) {
+    if (!!~~res.meta.result) {
+      _sources = res.data;
+    } else {
+      alert('接口错误：' + res.meta.msg);
     }
   });
 }

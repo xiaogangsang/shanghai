@@ -191,11 +191,11 @@ $(document).on('submit', '#popup-unit-budget form', function (event) {
   var totalAmount = $('#totalAmount').val();
   var totalTicket = $('#totalTicket').val();
   var preview_html = '';
-  if (totalAmount != '' && totalAmount != null) {
+  if (totalAmount != '' && totalAmount != totalAmount != null && totalAmount != undefined) {
     preview_html += '总金额预算：' + totalAmount + '；';
   }
 
-  if (totalTicket != '' && totalTicket != null) {
+  if (totalTicket != '' && totalTicket != null && totalTicket != undefined) {
     preview_html += '总出票预算：' + totalTicket + '；';
   }
 
@@ -577,7 +577,18 @@ $(document).on('change', '#activityPattern', function (event) {
   }
 });
 
-
+$(document).on('click', '#formUnit button[type=submit]', function (event) {
+  var dailyEffectiveBeginTime = $('#beginHH').val() + ':' + $('#beginMM').val() + ':' + $('#beginSS').val();
+  var dailyEffectiveEndTime = $('#endHH').val() + ':' + $('#endMM').val() + ':' + $('#endSS').val();
+  if (dailyEffectiveBeginTime > dailyEffectiveEndTime) {
+    $('#error-dailytime').append('<ul class="parsley-errors-list filled"><li>开始时间不能大于结束时间！</li></ul>');
+    $('#beginHH').focus();
+    event.preventDefault();
+    return false;
+  } else {
+    $('#error-dailytime').html('');
+  }
+});
 //form
 $(document).on('submit', '#formUnit', function (event) {
   event.preventDefault();
@@ -1099,8 +1110,10 @@ function setEdit(unitId) {
       $('#totalAmount').val(unit.totalAmount);
       $('#totalTicket').val(unit.totalTicket);
       var preview_html = '';
-      preview_html += '总金额预算：' + (unit.totalAmount==''?'不限':unit.totalAmount) + '；';
-      preview_html += '总出票预算：' + (unit.totalTicket==''?'不限':unit.totalTicket) + '；';
+      var totalAmount = unit.totalAmount == '' || unit.totalAmount == undefined ? '不限' : unit.totalAmount;
+      var totalTicket = unit.totalTicket == '' || unit.totalTicket == undefined ? '不限' : unit.totalTicket;
+      preview_html += '总金额预算：' + totalAmount + '；';
+      preview_html += '总出票预算：' + totalTicket + '；';
 
       var html = '';
       _(unit.dailyBudgetList).forEach(function (daily) {

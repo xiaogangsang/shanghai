@@ -12,7 +12,7 @@ $(function () {
   setChannel();
   setSource();
   setCity();
-  setBrand();
+  // setBrand();
   setCinema();
 
   $.fn.datetimepicker.dates['zh-CN'] = {
@@ -75,7 +75,6 @@ $('#formSearch').on('submit', function (e) {
     channelId: $('#search_channelId').val(),
     partnerId: $('#search_partnerId').val(),
     cityId: $('#search_cityId').val(),
-    brandId: $('#search_brandId').val(),
     storeId: $('#search_storeId').val(),
     productName: $.trim($('#search_productName').val()),
     activityId: $.trim($('#search_activityId').val()),
@@ -262,25 +261,25 @@ function setCity() {
   });
 }
 
-function setBrand() {
-  $.ajax({
-    url: common.API_HOST + 'common/brandList',
-    type: 'GET',
-    dataType: 'json',
-  })
-  .done(function (res) {
-    if (!!~~res.meta.result) {
-      var html = '';
-      _(res.data).forEach(function (brand) {
-        html += '<option value="' + brand.id + '">' + brand.name + '</option>';
-      });
+// function setBrand() {
+//   $.ajax({
+//     url: common.API_HOST + 'common/brandList',
+//     type: 'GET',
+//     dataType: 'json',
+//   })
+//   .done(function (res) {
+//     if (!!~~res.meta.result) {
+//       var html = '';
+//       _(res.data).forEach(function (brand) {
+//         html += '<option value="' + brand.id + '">' + brand.name + '</option>';
+//       });
 
-      $('#search_brandId').append(html);
-    } else {
-      alert('接口错误：' + res.meta.msg);
-    }
-  });
-}
+//       $('#search_brandId').append(html);
+//     } else {
+//       alert('接口错误：' + res.meta.msg);
+//     }
+//   });
+// }
 
 function setCinema() {
   $.ajax({

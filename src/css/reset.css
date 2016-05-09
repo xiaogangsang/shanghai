@@ -200,12 +200,13 @@ input[disabled],
 input[readonly],
 .form-control[disabled],
 .form-control[readonly] {
-  border: 0;
+  /*border: 0;*/
   box-shadow: none;
 }
 input[readonly],
 .form-control[readonly] {
   background-color: #fff;
+  cursor: pointer;
 }
 .table>tbody>tr>th,
 .table>tbody>tr>td {
