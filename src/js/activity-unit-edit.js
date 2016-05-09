@@ -582,6 +582,11 @@ $(document).on('change', '#activityPattern', function (event) {
 $(document).on('submit', '#formUnit', function (event) {
   event.preventDefault();
   var sendData = {
+    name: $.trim($('#name').val()),
+    planId: $('#planId').val(),
+    budgetSource: $('#budgetSource').val(),
+    wandaTicketId: $('#wandaTicketId').val(),
+    advancePayment: $('input[name=advancePayment]:checked').val(),
     beginDate: $('#beginDate').val(),
     endDate: $('#endDate').val(),
     dailyEffectiveBeginTime: $('#beginHH').val() + ':' + $('#beginMM').val() + ':' + $('#beginSS').val(),
@@ -605,13 +610,6 @@ $(document).on('submit', '#formUnit', function (event) {
     cinemas: [],
     timetables: [],
   };
-  if ($('#id').size() < 1) {
-    sendData.name = $.trim($('#name').val());
-    sendData.planId = $('#planId').val();
-    sendData.budgetSource = $('#budgetSource').val();
-    sendData.wandaTicketId = $('#wandaTicketId').val();
-    sendData.advancePayment = $('input[name=advancePayment]:checked').val();
-  }
 
   var dailyTicket = $('#saleLimit_dailyTicket').val();
   var dailyOrder = $('#saleLimit_dailyOrder').val();
@@ -1047,7 +1045,7 @@ function setEdit(unitId) {
 
       // var advancePayment = unit.advancePayment == 1 ? 0 : 1;
       $('input[name=advancePayment]').eq(unit.advancePayment).closest('.checkbox-inline').remove();
-      $('input[name=advancePayment]').prop({'disabled': true, 'required': false});
+      $('input[name=advancePayment]').prop({'disabled': true, 'checked': true});
 
       $('#cinemaPageDesc').val(unit.cinemaPageDesc);
       $('#activityIcon').val(unit.activityIcon);
