@@ -125,8 +125,8 @@ $(document).on('change', '#level', function (event) {
   event.preventDefault();
   var level = $(this).val();
   if (level == undefined || level == '') {
-    $('#budgetSource').html('<option value="">全部</option>');
-    $('#budgetSource').closest('.form-group').hide();
+    $('#budgetSource').html('<option value=""></option>');
+    // $('#budgetSource').closest('.form-group').hide();
   } else {
     var sources = [];
     _(_budgetSource).forEach(function (group, key) {
@@ -136,8 +136,8 @@ $(document).on('change', '#level', function (event) {
     });
 
     if (sources.length < 1) {
-      $('#budgetSource').html('<option value="">全部</option>');
-      $('#budgetSource').closest('.form-group').hide();
+      $('#budgetSource').html('<option value=""></option>');
+      // $('#budgetSource').closest('.form-group').hide();
       alert('所选成本中心类别下无成本中心，这个情况不正常，需要注意哦！');
     } else {
       var html = '';
@@ -566,13 +566,13 @@ $(document).on('change', '#activityPattern', function (event) {
     case 1:
     case 2:
     case 5:
-      $('.amount').attr('data-parsley-pattern', '^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$');
+    $('.amount').attr('data-parsley-pattern', '^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$');
     break;
     case 3:
-      $('.amount').attr('data-parsley-pattern', '^[1-9]{1}$');
+    $('.amount').attr('data-parsley-pattern', '^[1-9]{1}$');
     break;
     case 4:
-      $('.amount').attr('data-parsley-pattern', '^[234]{1}$');
+    $('.amount').attr('data-parsley-pattern', '^[234]{1}$');
     break;
   }
 });
@@ -582,16 +582,11 @@ $(document).on('change', '#activityPattern', function (event) {
 $(document).on('submit', '#formUnit', function (event) {
   event.preventDefault();
   var sendData = {
-    name: $.trim($('#name').val()),
-    planId: $('#planId').val(),
     beginDate: $('#beginDate').val(),
     endDate: $('#endDate').val(),
     dailyEffectiveBeginTime: $('#beginHH').val() + ':' + $('#beginMM').val() + ':' + $('#beginSS').val(),
     dailyEffectiveEndTime: $('#endHH').val() + ':' + $('#endMM').val() + ':' + $('#endSS').val(),
-    budgetSource: $('#budgetSource').val(),
-    wandaTicketId: $('#wandaTicketId').val(),
     priority: $('#priority').val(),
-    advancePayment: $('input[name=advancePayment]:checked').val(),
     cinemaPageDesc: $.trim($('#cinemaPageDesc').val()),
     activityIcon: $.trim($('#activityIcon').val()),
     timetablePageDesc: $.trim($('#timetablePageDesc').val()),
@@ -610,6 +605,14 @@ $(document).on('submit', '#formUnit', function (event) {
     cinemas: [],
     timetables: [],
   };
+  if ($('#id').size() < 1) {
+    sendData.name = $.trim($('#name').val());
+    sendData.planId = $('#planId').val();
+    sendData.budgetSource = $('#budgetSource').val();
+    sendData.wandaTicketId = $('#wandaTicketId').val();
+    sendData.advancePayment = $('input[name=advancePayment]:checked').val();
+  }
+
   var dailyTicket = $('#saleLimit_dailyTicket').val();
   var dailyOrder = $('#saleLimit_dailyOrder').val();
   var totalTicket = $('#saleLimit_totalTicket').val();
@@ -1017,13 +1020,14 @@ function setEdit(unitId) {
     if (!!~~res.meta.result) {
       var unit = res.data;
       if (unit == null || unit == undefined) {
-        alert('无法获取要编辑的活动单元信息，这个不太正常，让[猴子们]来查一查！');
+        alert('无法获取要编辑的活动单元信息，这个不太正常，让[猿们]来查一查！');
         return false;
       }
 
       $('#formUnit').prepend('<input type="hidden" id="id" value="' + unit.id + '">');
 
-      $('#name').val(unit.name);
+      $('#name').val(unit.name).prop('disabled', true);
+
       $('#beginDate').val(unit.beginDate.split(' ')[0]);
       $('#endDate').val(unit.endDate.split(' ')[0]);
       var dailyEffectBeginTime = unit.dailyEffectBeginTime.split(':');
@@ -1040,8 +1044,11 @@ function setEdit(unitId) {
       });
 
       $('#priority').val(unit.priority);
-      var advancePayment = unit.advancePayment == 1 ? 0 : 1;
-      $('input[name=advancePayment]').eq(advancePayment).prop('checked', true);
+
+      // var advancePayment = unit.advancePayment == 1 ? 0 : 1;
+      $('input[name=advancePayment]').eq(unit.advancePayment).closest('.checkbox-inline').remove();
+      $('input[name=advancePayment]').prop({'disabled': true, 'required': false});
+
       $('#cinemaPageDesc').val(unit.cinemaPageDesc);
       $('#activityIcon').val(unit.activityIcon);
       $('#timetablePageDesc').val(unit.timetablePageDesc);
@@ -1057,9 +1064,13 @@ function setEdit(unitId) {
       } else {
         setPlan(false);
       }
+      if (unitId) {
+        $('#planId').prop('disabled', true);
+      }
       //成本中心
       if (unit.budgetSourceId != '' && unit.budgetSourceId != null && unit.budgetSourceId != undefined) {
         setBudgetSource(unit.budgetSourceId);
+        $('#level,#budgetSource').prop('disabled', true);
       } else {
         setBudgetSource(false);
       }
@@ -1068,6 +1079,9 @@ function setEdit(unitId) {
         setWandaTicket(unit.wandaTicketId);
       } else {
         setWandaTicket(false);
+      }
+      if (unitId) {
+        $('#wandaTicketId').prop('disabled', true);
       }
       //活动形式
       $('#activityPattern option').eq(unit.activityPattern - 1).prop('selected', true);
@@ -1087,13 +1101,8 @@ function setEdit(unitId) {
       $('#totalAmount').val(unit.totalAmount);
       $('#totalTicket').val(unit.totalTicket);
       var preview_html = '';
-      if (unit.totalAmount != '' && unit.totalAmount != null) {
-        preview_html += '总金额预算：' + unit.totalAmount + '；';
-      }
-
-      if (unit.totalTicket != '' && unit.totalTicket != null) {
-        preview_html += '总出票预算：' + unit.totalTicket + '；';
-      }
+      preview_html += '总金额预算：' + (unit.totalAmount==''?'不限':unit.totalAmount) + '；';
+      preview_html += '总出票预算：' + (unit.totalTicket==''?'不限':unit.totalTicket) + '；';
 
       var html = '';
       _(unit.dailyBudgetList).forEach(function (daily) {
@@ -1104,7 +1113,7 @@ function setEdit(unitId) {
         html += '<td><input type="text" class="form-control dailyTicket" placeholder="不限" data-parsley-pattern="^[1-9]{1}\\d*$" value="' + daily.dailyTicket + '"></td>';
         html += '<td><button type="button" class="btn btn-xs btn-primary btn-delete">删除</button></td>';
         html += '</tr>';
-        preview_html += '<p>' + daily.startDate + ' ~ ' + daily.endDate + '，日金额预算：' + daily.dailyAmount + '，日出票预算：' + daily.dailyTicket + '；</p>';
+        preview_html += '<p>' + daily.startDate + ' ~ ' + daily.endDate + '，日金额预算：' + (daily.dailyAmount==''?'不限':daily.dailyAmount) + '，日出票预算：' + (daily.dailyTicket==''?'不限':daily.dailyTicket) + '；</p>';
       });
 
       $('#dailyBudgetTable tbody').html(html);

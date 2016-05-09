@@ -12,3 +12,7 @@
   width: 130px;
   padding: 3px 0;
 }
+.tooltip-inner {
+  max-width: none;
+  text-align: left;
+}

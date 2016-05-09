@@ -149,14 +149,14 @@ $(document).on('click', '#btn-refund', function (event) {
 
 $(document).on('submit', '#popup-refund form', function (event) {
   event.preventDefault();
-  if (!window.confirm('确定退票吗？')) {
+  if (!window.confirm('确定退款吗？')) {
     return false;
   }
 
   var sendData = {
     transOrderNo: $('#transOrderNo').val(),
     productOrderNo: $('#productOrderNo').val(),
-    chargeUndertaker: $('#chargeUndertaker').val(),
+    refundAmountUndertaker: $('#chargeUndertaker').val(),
     channelId: $('#channelId').val(),
     refundReason: $.trim($('#reason').val()),
   };

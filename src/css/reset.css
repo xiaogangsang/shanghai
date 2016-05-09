@@ -196,11 +196,16 @@ input {
 .modal-footer .btn {
   padding: 5px 60px;
 }
-.readonly[disabled],
-.readonly[readonly] {
-  background-color: transparent;
+input[disabled],
+input[readonly],
+.form-control[disabled],
+.form-control[readonly] {
   border: 0;
   box-shadow: none;
+}
+input[readonly],
+.form-control[readonly] {
+  background-color: #fff;
 }
 .table>tbody>tr>th,
 .table>tbody>tr>td {
@@ -351,6 +356,10 @@ input {
 .radio-inline>input:checked+span {
   border: 1px solid #ff8903;
   color: #ff8903;
+}
+.checkbox-inline>label>input[disabled]+span,
+.radio-inline>input[disabled]+span {
+  border: none;
 }
 
 

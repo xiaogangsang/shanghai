@@ -18,6 +18,7 @@ common.init = function (pageName) {
           alert('未登录或登陆超时，请重新登陆！');
           common.logout();
           window.location.href = 'login.html';
+          throw new Error("未登录或登陆超时，请重新登陆！!");
         break;
         case (403):
           alert('没有权限！');
