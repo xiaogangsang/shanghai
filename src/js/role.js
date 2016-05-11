@@ -15,6 +15,7 @@ var _submitting = false;
 $(function () {
   common.init('role');
   $('#btn-export').attr('href', common.API_HOST + 'security/role/exportRoles');
+
   //set search form
   setRole();
   getUsers();

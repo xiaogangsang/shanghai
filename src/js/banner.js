@@ -12,7 +12,7 @@ var _querying = false;
 var searchCache = {};
 var useCache = false;
 var dataCache;
-var _cityAuthority = sessionStorage.getItem('cityAuthority').split(',');
+// var _cityAuthority = sessionStorage.getItem('cityAuthority').split(',');
 var _submitting = false;
 
 $(function () {
@@ -376,12 +376,13 @@ $(document).on('click', '#popup-banner-form #btn-city', function (event) {
     _(group.group).forEach(function (city, key) {
       if (_choosed.indexOf(city.cityId) > -1) {
 
-        if (_cityAuthority.indexOf('' + city.cityId) > -1) {
+        // if (_cityAuthority.indexOf('' + city.cityId) > -1) {
           htmlGroup += '<label>';
           htmlGroup += '<input type="checkbox" value="' + city.cityId + '" checked>';
           htmlGroup += '<span>' + city.cityName + '</span>';
           htmlGroup += '</label>';
-        }
+
+        // }
 
         htmlChoosed += '<span class="label label-default" data-id="' + city.cityId + '">';
         htmlChoosed += city.cityName;
@@ -389,12 +390,14 @@ $(document).on('click', '#popup-banner-form #btn-city', function (event) {
         htmlChoosed += '</span>';
 
       } else {
-        if (_cityAuthority.indexOf('' + city.cityId) > -1) {
+
+        // if (_cityAuthority.indexOf('' + city.cityId) > -1) {
           htmlGroup += '<label>';
           htmlGroup += '<input type="checkbox" value="' + city.cityId + '">';
           htmlGroup += '<span>' + city.cityName + '</span>';
           htmlGroup += '</label>';
-        }
+
+        // }
       }
     });
 
@@ -457,7 +460,8 @@ $(document).on('click', '#popup-city .choosed-city>.label>.close', function (eve
   event.preventDefault();
   var $label = $(this).closest('.label');
   var cityId = $label.data('id');
-  if (_cityAuthority.indexOf('' + cityId) > -1) {
+
+  // if (_cityAuthority.indexOf('' + cityId) > -1) {
     $('.candidate-city input:checked').each(function (index, el) {
       if ($(el).val() == cityId) {
         $(el).prop('checked', false);
@@ -465,9 +469,10 @@ $(document).on('click', '#popup-city .choosed-city>.label>.close', function (eve
     });
 
     $label.remove();
-  } else {
-    alert('没有权限！');
-  }
+
+  // } else {
+  //   alert('没有权限！');
+  // }
 });
 
 function setModal(bannerData) {

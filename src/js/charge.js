@@ -4,7 +4,7 @@ var common = require('common');
 var _pageIndex = 1;
 var _pageSize = 10;
 var _pageTotal = 0;
-var _channelAuthority = sessionStorage.getItem('channelAuthority').split(',');
+// var _channelAuthority = sessionStorage.getItem('channelAuthority').split(',');
 var _submitting = false;
 
 $(function () {
@@ -34,7 +34,8 @@ $(document).on('submit', '#popup-charge-form form', function (e) {
     return false;
   }
   _submitting = true;
-  if (_channelAuthority.indexOf('' + $('#popup-charge-form #channelId').val()) > -1) {
+
+  // if (_channelAuthority.indexOf('' + $('#popup-charge-form #channelId').val()) > -1) {
     var sendData = {
       channelId: $('#popup-charge-form #channelId').val(),
       fee: $.trim($('#popup-charge-form #fee').val()),
@@ -56,9 +57,10 @@ $(document).on('submit', '#popup-charge-form form', function (e) {
         alert('接口错误：' + res.meta.msg);
       }
     });
-  } else {
-    alert('没有权限！');
-  }
+
+  // } else {
+  //   alert('没有权限！');
+  // }
 
   return false;
 });

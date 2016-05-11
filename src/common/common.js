@@ -36,24 +36,25 @@ common.init = function (pageName) {
 };
 
 common.showMenu = function (pageName) {
-  // var allowMenus = sessionStorage.getItem('menuAuthority').split(',');
-  // if (pageName != undefined && pageName != '' && $('#menu-' + pageName).size() > 0) {
-  //   var menuId = '' + $('#menu-' + pageName).data('id');
-  //   if (allowMenus == undefined || allowMenus.indexOf(menuId) < 0) {
-  //     common.logout();
-  //     window.location.href = 'login.html';
-  //   }
+  var allowMenus = sessionStorage.getItem('menuAuthority').split(',');
+  if (pageName != undefined && pageName != '' && $('#menu-' + pageName).size() > 0) {
+    var menuId = '' + $('#menu-' + pageName).data('id');
+    if (allowMenus == undefined || allowMenus.indexOf(menuId) < 0) {
+      common.logout();
+      window.location.href = 'login.html';
+    }
 
-  $('#menu-' + pageName).addClass('active').closest('.panel-collapse').collapse('show');
-  // }
+    $('#menu-' + pageName).addClass('active').closest('.panel-collapse').collapse('show');
+
+  }
 
   var $menus = $('#menu .list-group-item');
   $menus.each(function (index, el) {
-    // menuId = '' + $(el).data('id');
-    // if (allowMenus.indexOf(menuId) > -1) {
-    $(el).show();
-    $(el).closest('.panel').show();
-    // }
+    menuId = '' + $(el).data('id');
+    if (allowMenus.indexOf(menuId) > -1) {
+      $(el).show();
+      $(el).closest('.panel').show();
+    }
   });
 };
 

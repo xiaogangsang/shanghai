@@ -11,7 +11,7 @@ var _pageTotal = 0;
 var _querying = false;
 var searchCache = {};
 var useCache = false;
-var _channelAuthority = sessionStorage.getItem('channelAuthority').split(',');
+// var _channelAuthority = sessionStorage.getItem('channelAuthority').split(',');
 var _submitting = false;
 
 $(function () {
@@ -384,13 +384,13 @@ $(document).on('click', '#btn-export', function (e) {
   return false;
 });
 
-$(document).on('click', '.checkbox-inline label', function (event) {
-  var channelId = $(this).children('input').val();
-  if (_channelAuthority.indexOf('' + channelId) < 0) {
-    alert('没有权限！');
-    event.preventDefault();
-  }
-});
+// $(document).on('click', '.checkbox-inline label', function (event) {
+//   var channelId = $(this).children('input').val();
+//   if (_channelAuthority.indexOf('' + channelId) < 0) {
+//     alert('没有权限！');
+//     event.preventDefault();
+//   }
+// });
 
 $('#pager').on('click', '.prev,.next', function (e) {
   e.preventDefault();
@@ -441,14 +441,15 @@ function setModal(classData) {
     data = { class: classData, channels: _channels, cinemas: _cinemas };
     template = $('#edit-template').html();
   } else {
-    var allowChannels = [];
-    _(_channels).forEach(function (channel) {
-      if (_channelAuthority.indexOf('' + channel.channelId) > -1) {
-        allowChannels.push(channel);
-      }
-    });
 
-    data = { channels: allowChannels, cinemas: _cinemas };
+    // var allowChannels = [];
+    // _(_channels).forEach(function (channel) {
+    //   if (_channelAuthority.indexOf('' + channel.channelId) > -1) {
+    //     allowChannels.push(channel);
+    //   }
+    // });
+
+    data = { channels: _channels, cinemas: _cinemas };
     template = $('#create-template').html();
     $('#popup-class-form .modal-title').html('新增票类');
   }
