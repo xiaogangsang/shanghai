@@ -64,8 +64,9 @@ module.exports = {
     'mustache',
     'lodash',
     'parsley',
-    'parsley-lang',
+    'parsley-cn',
     'datetimepicker',
+    'datetimepicker-cn',
     ],
 
     //各种加载器，即让各种文件格式可用require引用
@@ -86,17 +87,18 @@ module.exports = {
       test: path.resolve(bowerComponents, 'js-cookie/src/js.cookie.js'),
       loader: 'expose?Cookies',
     },
-    {
-      test: /\.jsx?$/,
-      loader: 'babel',
-      query: {
-        presets: ['es2015'],
-      },
-    },
-    {
-      test: /\.woff$/,
-      loader: 'url?limit=100000',
-    },
+
+    // {
+    //   test: /\.jsx?$/,
+    //   loader: 'babel',
+    //   query: {
+    //     presets: ['es2015'],
+    //   },
+    // },
+    // {
+    //   test: /\.woff$/,
+    //   loader: 'url?limit=100000',
+    // },
     ],
   },
   plugins: [

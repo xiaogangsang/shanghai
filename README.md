@@ -1,8 +1,7 @@
 #安装环境#
 - nodejs
 - npm
-
-#npm使用淘宝源cnpm#
+- npm使用淘宝源
 ```
 alias cnpm="npm --registry=https://registry.npm.taobao.org \
 --cache=$HOME/.npm/.cache/cnpm \
@@ -22,7 +21,8 @@ alias cnpm="npm --registry=https://registry.npm.taobao.org \
 发布：`gulp release`
 
 #后端接口#
-UAT：`http://180.169.45.105/MovieOps/`
+UAT `http://180.169.45.105/MovieOps/`
+PRD `???`
 
 #文件&目录说明#
 - `.jscsrc` javascript代码规范
@@ -39,3 +39,16 @@ UAT：`http://180.169.45.105/MovieOps/`
     - `dist/images` 项目图片
     - `dist/js` 项目js文件
     - `dist/lib` 无法用webpack打包的第三方js库
+
+#Schedule#
+_v1.1_
+- lodash替换为完整版（压缩后发现vendor.js大小很乐观），可大幅精简js代码
+- 统一加载通用资源，存到localStorage或sessionStorage
+- webpack优化
+- gulp优化
+- 补js代码注释
+
+_v2.0_
+- pjax，无刷新切换页面
+- 缩减bootstrap依赖
+- 缩减第三方js依赖
