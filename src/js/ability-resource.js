@@ -2,6 +2,7 @@
 
 var common = require('common');
 var _roles = [];
+var _submitting = false;
 
 $(function () {
   common.init('ability-resource');
@@ -119,6 +120,10 @@ $('#resourceSelect').on('change', function (e) {
 
 $('#formResource').on('click', 'button[type=submit]', function (event) {
   event.preventDefault();
+  if (condition) {
+    return false;
+  }
+  _submitting = true;
   $('.multi-selection select:eq(1) option').prop('selected', true);
   var sendData = {
     id: $('#resourceSelect').val(),
@@ -132,6 +137,7 @@ $('#formResource').on('click', 'button[type=submit]', function (event) {
     data: JSON.stringify(sendData),
   })
   .done(function (res) {
+    _submitting = false;
     if (res.meta.result == true) {
       alert('保存成功！');
     } else {

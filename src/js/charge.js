@@ -5,6 +5,7 @@ var _pageIndex = 1;
 var _pageSize = 10;
 var _pageTotal = 0;
 var _channelAuthority = sessionStorage.getItem('channelAuthority').split(',');
+var _submitting = false;
 
 $(function () {
   common.init('charge');
@@ -29,6 +30,10 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
 
 $(document).on('submit', '#popup-charge-form form', function (e) {
   e.preventDefault();
+  if (_submitting) {
+    return false;
+  }
+  _submitting = true;
   if (_channelAuthority.indexOf('' + $('#popup-charge-form #channelId').val()) > -1) {
     var sendData = {
       channelId: $('#popup-charge-form #channelId').val(),
@@ -42,6 +47,7 @@ $(document).on('submit', '#popup-charge-form form', function (e) {
       data: sendData,
     })
     .done(function (res) {
+      _submitting = false;
       if (!!~~res.meta.result) {
         alert('更新成功！');
         $('#popup-charge-form').modal('hide');

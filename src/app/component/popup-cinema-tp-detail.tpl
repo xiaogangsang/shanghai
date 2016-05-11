@@ -1,4 +1,4 @@
-<div class="modal fade" id="popup-cinema-tp-detail">
+<div class="modal fade" id="popup-cinema-tp-detail" data-keyboard="false" data-backdrop="static">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">

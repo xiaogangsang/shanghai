@@ -7,6 +7,7 @@ var _pageTotal = 0;
 var _querying = false;
 var searchCache = {};
 var useCache = false;
+var _submitting = false;
 
 $(function () {
   common.init('activity-plan');
@@ -251,6 +252,10 @@ function setModal(planData) {
 
 $(document).on('submit', '#popup-plan-form form', function (e) {
   e.preventDefault();
+  if (_submitting) {
+    return false;
+  }
+  _submitting = true;
   var sendData = {
     name: $.trim($('#popup-plan-form #name').val()),
     dailyAmount: $('#popup-plan-form #dailyAmount').val(),
@@ -275,6 +280,7 @@ $(document).on('submit', '#popup-plan-form form', function (e) {
     data: sendData,
   })
   .done(function (res) {
+    _submitting = false;
     if (!!~~res.meta.result) {
       if (isUpdate) {
         alert('更新成功！');

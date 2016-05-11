@@ -12,6 +12,7 @@ var _pageTotal = 0;
 var _querying = false;
 var searchCache = {};
 var useCache = false;
+var _submitting = false;
 
 $(function () {
   common.init('cinema');
@@ -273,6 +274,10 @@ $(document).on('click', '#btn-online-multi,#btn-offline-multi', function (e) {
 
 $(document).on('submit', '#popup-cinema-form form', function (e) {
   e.preventDefault();
+  if (_submitting) {
+    return false;
+  }
+  _submitting = true;
   var sendData = {
     cinemaName: $.trim($('#popup-cinema-form #cinemaName').val()),
     brandId: $('#popup-cinema-form #brandId').val(),
@@ -311,6 +316,7 @@ $(document).on('submit', '#popup-cinema-form form', function (e) {
     data: sendData,
   })
   .done(function (res) {
+    _submitting = false;
     if (!!res.meta.result) {
       if ($('#cinemaId').length > 0) {
         alert('更新成功！');

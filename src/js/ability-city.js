@@ -3,6 +3,7 @@
 var common = require('common');
 var _users = [];
 var _cities = [];
+var _submitting = false;
 
 $(function () {
   common.init('ability-city');
@@ -112,6 +113,10 @@ $('#citySelect').on('change', function (e) {
 
 $('#formCity').on('click', 'button[type=submit]', function (event) {
   event.preventDefault();
+  if (_submitting) {
+    return false;
+  }
+  _submitting = true;
   $('.multi-selection select:eq(1) option').prop('selected', true);
   var sendData = {
     cityId: $('#citySelect').val(),
@@ -126,6 +131,7 @@ $('#formCity').on('click', 'button[type=submit]', function (event) {
     data: JSON.stringify(sendData),
   })
   .done(function (res) {
+    _submitting = false;
     if (res.meta.result == true) {
       alert('保存成功！');
     } else {

@@ -10,6 +10,7 @@ var _resources = {};
 var _querying = false;
 var searchCache = {};
 var useCache = false;
+var _submitting = false;
 
 $(function () {
   common.init('role');
@@ -118,6 +119,10 @@ $(document).on('click', '#popup-role-form button[type=submit]', function (event)
 
 $(document).on('submit', '#popup-role-form form', function (e) {
   e.preventDefault();
+  if (_submitting) {
+    return false;
+  }
+  _submitting = true;
   var sendData = {
     roleName: $.trim($('#popup-role-form #roleName').val()),
     desc: $.trim($('#popup-role-form #desc').val()),
@@ -139,7 +144,7 @@ $(document).on('submit', '#popup-role-form form', function (e) {
     data: JSON.stringify(sendData),
   })
   .done(function (res) {
-    // console.log(res);
+    _submitting = false;
     if (!!~~res.meta.result) {
       if ($('#roleId').length > 0) {
         alert('角色已更新！');

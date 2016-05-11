@@ -1,8 +1,11 @@
-<div class="modal fade" id="popup-unit-budget">
+<div class="modal fade" id="popup-unit-budget" data-keyboard="false" data-backdrop="static">
   <div class="modal-dialog">
     <div class="modal-content">
 
-      <div class="modal-header"><h4 class="modal-title">活动预算</h4></div>
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">活动预算</h4>
+      </div>
 
       <form>
 

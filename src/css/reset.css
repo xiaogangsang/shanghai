@@ -333,35 +333,6 @@ input[readonly],
   margin: 10px auto;
   width: 40px;
 }
-.checkbox-inline,
-.radio-inline {
-  padding-left: 0;
-}
-.checkbox-inline>label,
-.radio-inline {
-  cursor: pointer;
-  font-weight: normal;
-  font-size: 13px;
-}
-.checkbox-inline>label>input,
-.radio-inline>input {
-  display: none;
-}
-.checkbox-inline>label>input+span,
-.radio-inline>input+span {
-  padding: 8px;
-  border: 1px solid #dedede;
-  color: #635f5b;
-}
-.checkbox-inline>label>input:checked+span,
-.radio-inline>input:checked+span {
-  border: 1px solid #ff8903;
-  color: #ff8903;
-}
-.checkbox-inline>label>input[disabled]+span,
-.radio-inline>input[disabled]+span {
-  border: none;
-}
 
 
 @media (min-width: 768px) {

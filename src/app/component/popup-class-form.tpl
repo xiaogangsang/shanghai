@@ -1,8 +1,9 @@
-<div class="modal fade" id="popup-class-form">
+<div class="modal fade" id="popup-class-form" data-keyboard="false" data-backdrop="static">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <form>
         <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           <h4 class="modal-title">编辑万达票类</h4>
         </div>
         <div class="modal-body"></div>

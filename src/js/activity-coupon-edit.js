@@ -7,6 +7,7 @@ var _movies = [];
 var _dimens = [];
 var _channels = [];
 var _provinces = [];
+var _submitting = false;
 
 $(function() {
   common.init('activity-coupon');
@@ -24,17 +25,6 @@ $(function() {
     setDimen(false);
     setChannel(false);
   }
-
-  $.fn.datetimepicker.dates['zh-CN'] = {
-    days: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"],
-    daysShort: ["周日", "周一", "周二", "周三", "周四", "周五", "周六", "周日"],
-    daysMin:  ["日", "一", "二", "三", "四", "五", "六", "日"],
-    months: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
-    monthsShort: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
-    today: "今天",
-    suffix: [],
-    meridiem: ["上午", "下午"]
-  };
 
   $('#beginDate').datetimepicker({
     format: 'yyyy-mm-dd',
@@ -131,6 +121,29 @@ $(document).on('change', '#level', function(event) {
   }
 });
 
+//渠道
+$(document).on('click', '#btn-set-channel', function (event) {
+  event.preventDefault();
+  $('#popup-unit-channel').modal('show');
+  $('#popup-unit-channel form').parsley();
+});
+
+$(document).on('submit', '#popup-unit-channel form', function (event) {
+  event.preventDefault();
+  var previewHtml = '';
+  if ($('input[name=channels]:checked').size() == $('input[name=channels]').size()) {
+    previewHtml = '不限';
+  } else {
+    $('input[name=channels]:checked').each(function (index, el) {
+      previewHtml += $(el).next('span').text()+'；';
+    });
+  }
+
+  $('#preview-channel').html(previewHtml);
+  $('#popup-unit-channel').modal('hide');
+  return false;
+});
+
 //影片
 $(document).on('click', '#btn-set-movie', function(event) {
   event.preventDefault();
@@ -155,6 +168,30 @@ $(document).on('submit', '#popup-unit-movie form', function(event) {
   $('#popup-unit-movie').modal('hide');
   return false;
 });
+
+//制式
+$(document).on('click', '#btn-set-dimen', function (event) {
+  event.preventDefault();
+  $('#popup-unit-dimen').modal('show');
+  $('#popup-unit-dimen form').parsley();
+});
+
+$(document).on('submit', '#popup-unit-dimen form', function (event) {
+  event.preventDefault();
+  var previewHtml = '';
+  if ($('input[name=dimen]:checked').size() == $('input[name=dimen]').size()) {
+    previewHtml = '不限';
+  } else {
+    $('input[name=dimen]:checked').each(function (index, el) {
+      previewHtml += $(el).next('span').text()+'；';
+    });
+  }
+
+  $('#preview-dimen').html(previewHtml);
+  $('#popup-unit-dimen').modal('hide');
+  return false;
+});
+
 //影院
 $(document).on('click', '#btn-set-cinema', function(event) {
   event.preventDefault();
@@ -276,6 +313,7 @@ $(document).on('submit', '#popup-unit-cinema form', function(event) {
   $('#popup-unit-cinema').modal('hide');
   return false;
 });
+
 //场次
 $(document).on('click', '#btn-set-showtime', function(event) {
   event.preventDefault();
@@ -346,8 +384,14 @@ $(document).on('change', '#couponPattern', function(event) {
 //form
 $(document).on('submit', '#formEdit', function(event) {
   event.preventDefault();
+  if (_submitting) {
+    return false;
+  }
+  _submitting = true;
   var sendData = {
     name: $.trim( $('#name').val() ),
+    signNo: $.trim( $('#signNo').val() ),
+    budgetSource: $('#budgetSource').val(),
     beginDate: $('#beginDate').val(),
     endDate: $('#endDate').val(),
     budgetSource: $('#budgetSource').val(),
@@ -364,7 +408,7 @@ $(document).on('submit', '#formEdit', function(event) {
   $('input[name=channels]:checked').each(function(index, el) {
     sendData.channels.push($(el).val());
   });
-  $('input[name=dimens]:checked').each(function(index, el) {
+  $('input[name=dimen]:checked').each(function(index, el) {
     sendData.dimens.push($(el).next('span').text());
   });
 
@@ -529,65 +573,85 @@ function setMovie( films ) {
     }
   });
 }
-function setDimen( dimens ) {
+function setDimen(dimens) {
   $.ajax({
-    url: common.API_HOST + 'common/dimenList',
+    url: common.API_HOST + 'common/hallTypeList',
     type: 'GET',
-    dataType: 'json'
+    dataType: 'json',
   })
-  .done(function(res) {
+  .done(function (res) {
     if (!!~~res.meta.result) {
       if (res.data == null || res.data.length < 1) {
         return false;
       } else {
         _dimens = res.data;
-        var html = '';
-        _(_dimens).forEach(function(dimen) {
-          if (dimens != false) {
-            if (dimens.indexOf(dimen.name) > -1) {
-              html += '<div class="checkbox-inline"><label><input type="checkbox" name="dimens" value="'+dimen.id+'" required data-parsley-errors-container="#error-dimens" checked><span>'+dimen.name+'</span></label></div>';
-            } else {
-              html += '<div class="checkbox-inline"><label><input type="checkbox" name="dimens" value="'+dimen.id+'" required data-parsley-errors-container="#error-dimens"><span>'+dimen.name+'</span></label></div>';
-            }
+        var previewHtml = '';
+        var allChecked = true;
+        _(_dimens).forEach(function (dimen) {
+          dimen.checked = true;
+          if (dimens != false && dimens.indexOf(dimen.name) < 0) {
+            dimen.checked = false;
+            allChecked = false;
           } else {
-            html += '<div class="checkbox-inline"><label><input type="checkbox" name="dimens" value="'+dimen.id+'" required data-parsley-errors-container="#error-dimens" checked><span>'+dimen.name+'</span></label></div>';
+            previewHtml += dimen.name + '；';
           }
         });
-        $('#error-dimens').before(html);
+
+        if (previewHtml=='' || allChecked==true) {
+          previewHtml = '不限';
+        }
+
+        $('#preview-dimen').html(previewHtml);
+
+        var data = {dimens:_dimens};
+        var template = $('#dimen-template').html();
+        Mustache.parse(template);
+        var html = Mustache.render(template, data);
+        $('#error-dimen').before(html);
       }
     } else {
-      alert('接口错误：'+res.meta.msg);
+      alert('接口错误：' + res.meta.msg);
     }
   });
 }
-function setChannel( channels ) {
+function setChannel(channels) {
   $.ajax({
     url: common.API_HOST + 'common/channelList',
     type: 'GET',
-    dataType: 'json'
+    dataType: 'json',
   })
-  .done(function(res) {
+  .done(function (res) {
     if (!!~~res.meta.result) {
       if (res.data == null || res.data.length < 1) {
         return false;
       } else {
         _channels = res.data;
-        var html = '';
-        _(_channels).forEach(function(channel) {
-          if (channels != false) {
-            if (channels.indexOf(channel.channelId.toString()) > -1) {
-              html += '<div class="checkbox-inline"><label><input type="checkbox" name="channels" value="'+channel.channelId+'" required data-parsley-errors-container="#error-channels" checked><span>'+channel.channelName+'</span></label></div>';
-            } else {
-              html += '<div class="checkbox-inline"><label><input type="checkbox" name="channels" value="'+channel.channelId+'" required data-parsley-errors-container="#error-channels"><span>'+channel.channelName+'</span></label></div>';
-            }
+        var previewHtml = '';
+        var allChecked = true;
+        _(_channels).forEach(function (channel) {
+          channel.checked = true;
+          if (channels != false && channels.indexOf(channel.channelId.toString()) < 0) {
+            channel.checked = false;
+            allChecked = false;
           } else {
-            html += '<div class="checkbox-inline"><label><input type="checkbox" name="channels" value="'+channel.channelId+'" required data-parsley-errors-container="#error-channels" checked><span>'+channel.channelName+'</span></label></div>';
+            previewHtml += channel.channelName + '；';
           }
         });
-        $('#error-channels').before(html);
+
+        if (previewHtml=='' || allChecked==true) {
+          previewHtml = '不限';
+        }
+
+        $('#preview-channel').html(previewHtml);
+
+        var data = {channels:_channels};
+        var template = $('#channel-template').html();
+        Mustache.parse(template);
+        var html = Mustache.render(template, data);
+        $('#error-channel').before(html);
       }
     } else {
-      alert('接口错误：'+res.meta.msg);
+      alert('接口错误：' + res.meta.msg);
     }
   });
 }
@@ -664,8 +728,8 @@ function setEdit(couponId) {
       var advancePayment = coupon.advancePayment == 1 ? 0 : 1;
       $('input[name=advancePayment]').eq(advancePayment).prop('checked', true);
       //成本中心
-      if (coupon.budgetSourceId != '' && coupon.budgetSourceId != null && coupon.budgetSourceId != undefined) {
-        setBudgetSource(coupon.budgetSourceId);
+      if (coupon.budgetSource != '' && coupon.budgetSource != null && coupon.budgetSource != undefined) {
+        setBudgetSource(coupon.budgetSource);
       } else {
         setBudgetSource(false);
       }

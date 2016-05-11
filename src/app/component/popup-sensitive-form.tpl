@@ -1,8 +1,9 @@
-<div class="modal fade" id="popup-sensitive-form">
+<div class="modal fade" id="popup-sensitive-form" data-keyboard="false" data-backdrop="static">
   <div class="modal-dialog">
     <div class="modal-content">
       <form>
         <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           <h4 class="modal-title">新建敏感词</h4>
         </div>
         <div class="modal-body">

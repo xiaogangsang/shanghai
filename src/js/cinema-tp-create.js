@@ -10,6 +10,7 @@ var _sourceId = 0;
 var _querying = false;
 var searchCache = {};
 var useCache = false;
+var _submitting = false;
 
 $(function () {
   common.init('cinema-tp');
@@ -171,6 +172,10 @@ $(document).on('click', '.btn-service-delete', function (e) {
 
 $(document).on('submit', '#formCinema', function (e) {
   e.preventDefault();
+  if (_submitting) {
+    return false;
+  }
+  _submitting = true;
   $.ajax({
     url: common.API_HOST + 'cinema/standard/cinemaSave',
     type: 'POST',
@@ -191,6 +196,7 @@ $(document).on('submit', '#formCinema', function (e) {
     },
   })
   .done(function (res) {
+    _submitting = false;
     if (!!~~res.meta.result) {
       alert('新建标准影院，并关联成功！');
     } else {

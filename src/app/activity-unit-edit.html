@@ -2,6 +2,7 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
+  <link rel="icon" href="../images/favicon.ico" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <title>活动中心</title>
@@ -36,7 +37,7 @@
               <div class="form-group col-sm-6">
                 <div class="input-group">
                   <div class="input-group-addon">活动名称</div>
-                  <input type="text" class="form-control" id="name" required value="">
+                  <input type="text" class="form-control" id="name" required>
                 </div>
               </div>
               <div class="form-group col-sm-6">
@@ -90,7 +91,7 @@
                 <div class="input-group">
                   <div class="input-group-addon">成本中心类别</div>
                   <select class="form-control" id="level">
-                    <option value=""></option>
+                    <option></option>
                     <option value="0">总行</option>
                     <option value="1">支行</option>
                     <option value="2">卡中心</option>
@@ -103,7 +104,7 @@
                 <div class="input-group">
                   <div class="input-group-addon">成本中心</div>
                   <select class="form-control" id="budgetSource" required data-parsley-errors-container="#error-budgetSource">
-                    <option value=""></option>
+                    <option></option>
                   </select>
                   <div id="error-budgetSource"></div>
                 </div>
@@ -112,7 +113,7 @@
                 <div class="input-group">
                   <div class="input-group-addon">万达活动票类</div>
                   <select class="form-control" id="wandaTicketId">
-                    <option value=""></option>
+                    <option></option>
                   </select>
                 </div>
               </div>
@@ -125,9 +126,15 @@
               <div class="form-group col-sm-6">
                 <div class="input-group">
                   <div class="input-group-addon">是否使用预付款</div>
-                  <div class="checkbox-inline"><label><input type="radio" name="advancePayment" value="1" required data-parsley-errors-container="#error-advancePayment"><span>是</span></label></div>
-                  <div class="checkbox-inline"><label><input type="radio" name="advancePayment" value="0" required data-parsley-errors-container="#error-advancePayment"><span>否</span></label></div>
+                  <div class="radio-inline"><label><input type="radio" name="advancePayment" value="1" required data-parsley-errors-container="#error-advancePayment"><span>是</span></label></div>
+                  <div class="radio-inline"><label><input type="radio" name="advancePayment" value="0" required data-parsley-errors-container="#error-advancePayment"><span>否</span></label></div>
                   <div id="error-advancePayment"></div>
+                </div>
+              </div>
+              <div class="form-group col-sm-6">
+                <div class="input-group">
+                  <div class="input-group-addon">签报号</div>
+                  <input type="text" class="form-control" id="signNo">
                 </div>
               </div>
             </div>
@@ -207,32 +214,24 @@
                       <td id="preview-budget">不限</td>
                     </tr>
                     <tr>
-                      <th>客群</th>
-                      <td>
-                        <div class="checkbox-inline"><label><input type="checkbox" name="customerType" value="1" required data-parsley-errors-container="#error-customerType" checked><span>新户</span></label></div>
-                        <div class="checkbox-inline"><label><input type="checkbox" name="customerType" value="2" required data-parsley-errors-container="#error-customerType" checked><span>老户</span></label></div>
-                        <div id="error-customerType"></div>
-                      </td>
+                      <th><button type="button" class="btn btn-default" id="btn-set-custom">客群</button></th>
+                      <td id="preview-custom">不限</td>
                     </tr>
                     <tr>
                       <th><button type="button" class="btn btn-default" id="btn-set-restriction">单户限购</button></th>
                       <td id="preview-restriction">不限</td>
                     </tr>
                     <tr>
-                      <th>渠道</th>
-                      <td>
-                        <div id="error-channels"></div>
-                      </td>
+                      <th><button type="button" class="btn btn-default" id="btn-set-channel">渠道</button></th>
+                      <td id="preview-channel">不限</td>
                     </tr>
                     <tr>
                       <th><button type="button" class="btn btn-default" id="btn-set-movie">影片</button></th>
                       <td id="preview-movie">不限</td>
                     </tr>
                     <tr>
-                      <th>影片制式</th>
-                      <td>
-                        <div id="error-dimens"></div>
-                      </td>
+                      <th><button type="button" class="btn btn-default" id="btn-set-dimen">影片制式</button></th>
+                      <td id="preview-dimen">不限</td>
                     </tr>
                     <tr>
                       <th><button type="button" class="btn btn-default" id="btn-set-cinema">影院</button></th>
@@ -266,12 +265,21 @@
   <script src="../js/vendor.js"></script>
   <script src="../lib/jquery.quicksearch.min.js"></script>
   <script src="../js/activity-unit-edit.js"></script>
-
+  <script id="type-template" type="text/x-tmpl-mustache">
+    <tr>
+      <td><input type="text" class="amount" required placeholder="必填" data-parsley-pattern="^[1-9]{1}\d*.{1}\d{1,2}$|^[1-9]{1}\d*$|^[0].{1}\d{1,2}$"></td>
+      <td><input type="text" class="lowerBound parsley-range" placeholder="不限" data-parsley-pattern="^[1-9]{1}\d*.{1}\d{1,2}$|^[1-9]{1}\d*$|^[0].{1}\d{1,2}$" data-parsley-ur="{{index}}"></td>
+      <td><input type="text" class="upperBound parsley-range" placeholder="不限" data-parsley-pattern="^[1-9]{1}\d*.{1}\d{1,2}$|^[1-9]{1}\d*$|^[0].{1}\d{1,2}$" data-parsley-ur="{{index}}"></td>
+      <td><button type="button" class="btn btn-xs btn-default btn-type-delete">删除</button></td>
+    </tr>
+  </script>
   @@include('component/popup-unit-budget.tpl')
+  @@include('component/popup-unit-custom.tpl')
   @@include('component/popup-unit-restriction.tpl')
+  @@include('component/popup-unit-channel.tpl')
   @@include('component/popup-unit-movie.tpl')
+  @@include('component/popup-unit-dimen.tpl')
   @@include('component/popup-unit-cinema.tpl')
   @@include('component/popup-unit-showtime.tpl')
-
 </body>
 </html>

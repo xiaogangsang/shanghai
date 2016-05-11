@@ -1,5 +1,6 @@
 'use strict;'
 
+require('cookie');
 var common = {};
 
 common.API_HOST = 'http://180.169.45.105/MovieOps/';
@@ -12,13 +13,12 @@ common.init = function (pageName) {
     error: function (jqXHR, textStatus, errorThrown) {
       switch (jqXHR.status){
         case (500):
-          alert('服务器挂了！');
+          alert('服务器挂了，请稍后再次！');
         break;
         case (401):
           alert('未登录或登陆超时，请重新登陆！');
           common.logout();
           window.location.href = 'login.html';
-          throw new Error("未登录或登陆超时，请重新登陆！!");
         break;
         case (403):
           alert('没有权限！');
@@ -30,6 +30,7 @@ common.init = function (pageName) {
           alert('请求超时，请稍后再次！');
         break;
       }
+      throw new Error('Abort, error ' + jqXHR.status);
     },
   });
 };
@@ -43,15 +44,15 @@ common.showMenu = function (pageName) {
   //     window.location.href = 'login.html';
   //   }
 
-    $('#menu-' + pageName).addClass('active').closest('.panel-collapse').collapse('show');
+  $('#menu-' + pageName).addClass('active').closest('.panel-collapse').collapse('show');
   // }
 
   var $menus = $('#menu .list-group-item');
   $menus.each(function (index, el) {
     // menuId = '' + $(el).data('id');
     // if (allowMenus.indexOf(menuId) > -1) {
-      $(el).show();
-      $(el).closest('.panel').show();
+    $(el).show();
+    $(el).closest('.panel').show();
     // }
   });
 };
@@ -66,9 +67,9 @@ common.setLoginName = function () {
 common.logout = function () {
   Cookies.remove('Xtoken');
   Cookies.remove('name');
-  sessionStorage.setItem('cityAuthority','');
-  sessionStorage.setItem('channelAuthority','');
-  sessionStorage.setItem('menuAuthority','');
+  sessionStorage.setItem('cityAuthority', '');
+  sessionStorage.setItem('channelAuthority', '');
+  sessionStorage.setItem('menuAuthority', '');
 };
 
 common.getDate = function (date) {

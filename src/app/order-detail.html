@@ -2,6 +2,7 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
+  <link rel="icon" href="../images/favicon.ico" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <title>订单管理</title>
@@ -66,7 +67,7 @@
     </div>
     <div class="edit-section">
       <div class="col-xs-12"><label>交易订单号：</label>{{transOrderNo}}</div>
-      <div class="col-xs-12"><label>招行订单号：</label>{{cmbOrderNo}}</div>
+      <div class="col-xs-12"><label>支付订单号：</label>{{cmbOrderNo}}</div>
       <div class="col-xs-12"><label>下单时间：</label>{{placeOrderTime}}</div>
       <div class="col-xs-12"><label>订单完成时间：</label>{{finishOrderTime}}</div>
       <div class="col-xs-12"><label>实付金额：</label>{{actualPayAmount}}</div>
@@ -103,6 +104,7 @@
     <div class="edit-section">
       <div class="col-xs-12 col-sm-6"><label>商品订单号：</label>{{productOrderNo}}</div>
       <div class="col-xs-12 col-sm-6"><label>第三方订单号：</label>{{tpOrderNo}}</div>
+      <div class="col-xs-12 col-sm-6"><label>商品支付状态：</label>{{status}}</div>
       <div class="col-xs-12 col-sm-6"><label>商品订单状态：</label>{{productOrderStatus}}</div>
       {{#canRefund}}
       <div class="col-xs-12"><button class="btn btn-default pull-right" id="btn-refund">仅退款</button></div>
@@ -121,7 +123,7 @@
       <div class="col-xs-12 col-sm-6"><label>开场时间：</label>{{playTime}}</div>
       {{#canReturnTicket}}
       <div class="col-xs-12" style="text-align: right;">
-        <span class="btn-link" data-toggle="tooltip" data-html="true" data-placement="top" title="1、该影票开映前1小时支持退票；<br>2、影片开映前24小时（含）退票，不收取服务费；<br>3、影片开映前：2小时（含）至24小时按2元/张收取服务费；<br>4、影片开映前：1小时（含）至2小时按5元/张收取服务费。">退票手续费规则</span>&nbsp;<button class="btn btn-default" id="btn-returnTicket">退票并退款</button>
+        <!--<span class="btn-link" data-toggle="tooltip" data-html="true" data-placement="top" title="1、该影票开映前1小时支持退票；<br>2、影片开映前24小时（含）退票，不收取服务费；<br>3、影片开映前：2小时（含）至24小时按2元/张收取服务费；<br>4、影片开映前：1小时（含）至2小时按5元/张收取服务费。">退票手续费规则</span>&nbsp;--><button class="btn btn-default" id="btn-returnTicket">退票并退款</button>
       </div>
       {{/canReturnTicket}}
     </div>
@@ -144,18 +146,24 @@
       {{/canReturnCoupon}}
     </div>
     <div class="edit-section">
-      <h4 class="col-xs-12">影院前台</h4>
-      {{#frontTicket}}
-      <div class="col-xs-12 col-sm-6"><label>{{text}}：</label>{{value}}</div>
-      {{/frontTicket}}
-      <h4 class="col-xs-12">影院自助取票机</h4>
-      {{#machineTicket}}
-      <div class="col-xs-12 col-sm-6"><label>{{text}}：</label>{{value}}</div>
-      {{/machineTicket}}
+      {{#haveFrontTicket}}
+        <h4 class="col-xs-12">影院前台</h4>
+        {{#frontTicket}}
+        <div class="col-xs-12 col-sm-6"><label>{{text}}：</label>{{value}}</div>
+        {{/frontTicket}}
+      {{/haveFrontTicket}}
+      {{#haveMachineTicket}}
+        <h4 class="col-xs-12">影院自助取票机</h4>
+        {{#machineTicket}}
+        <div class="col-xs-12 col-sm-6"><label>{{text}}：</label>{{value}}</div>
+        {{/machineTicket}}
+      {{/haveMachineTicket}}
     </div>
     <div class="edit-section">
       <div class="col-xs-12"><label>短信发送内容：</label>{{smsContent}}</div>
+      {{#canSendSMS}}
       <div class="col-xs-12"><button class="btn btn-default pull-right" id="btn-sendsms">重发短信</button></div>
+      {{/canSendSMS}}
     </div>
   </script>
 

@@ -10,6 +10,7 @@ var _cities = [];
 var _querying = false;
 var searchCache = {};
 var useCache = false;
+var _submitting = false;
 
 $(function () {
   common.init('user');
@@ -286,6 +287,10 @@ $(document).on('click', '#btn-delete-multi', function (e) {
 
 $(document).on('click', '#popup-user-form button[type=submit]', function (event) {
   event.preventDefault();
+  if (_submitting) {
+    return false;
+  }
+  _submitting = true;
   $('.multi-selection option').prop('selected', true);
   var sendData = {
     realName: $.trim($('#popup-user-form #realName').val()),
@@ -333,6 +338,7 @@ $(document).on('click', '#popup-user-form button[type=submit]', function (event)
     data: JSON.stringify(sendData),
   })
   .done(function (res) {
+    _submitting = false;
     if (!!~~res.meta.result) {
       if ($('#userId').length > 0) {
         alert('用户已更新！');

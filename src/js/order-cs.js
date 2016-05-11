@@ -2,11 +2,26 @@
 
 var common = require('common');
 var _channels = {};
-var _status = [
+var _productOrderStatus = [
+{ id: 0, name: '未出票' },
 { id: 1, name: '出票中' },
 { id: 2, name: '已出票' },
 { id: 3, name: '出票失败' },
 { id: 4, name: '已退票' },
+];
+var _status = [
+{ id: 1, name: '待支付' },
+{ id: 2, name: '支付成功' },
+{ id: 3, name: '支付失败' },
+{ id: 5, name: '退款成功' },
+{ id: 6, name: '退款失败' },
+{ id: 9, name: '已关闭' },
+];
+var _transOrderStatus = [
+{ id: 1, name: '待支付' },
+{ id: 2, name: '支付成功' },
+{ id: 3, name: '支付关闭' },
+{ id: 9, name: '已关闭' },
 ];
 var _pageIndex = 1;
 var _pageSize = 10;
@@ -22,16 +37,6 @@ $(function () {
   setChannel();
 
   // setSource();
-  $.fn.datetimepicker.dates['zh-CN'] = {
-    days: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日'],
-    daysShort: ['周日', '周一', '周二', '周三', '周四', '周五', '周六', '周日'],
-    daysMin:  ['日', '一', '二', '三', '四', '五', '六', '日'],
-    months: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
-    monthsShort: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
-    today: '今天',
-    suffix: [],
-    meridiem: ['上午', '下午'],
-  };
   $('#search_placeOrderStartTime').datetimepicker({
     format: 'yyyy-mm-dd',
     language: 'zh-CN',
@@ -108,7 +113,7 @@ $('#formSearch').on('submit', function (e) {
         _pageTotal = Math.ceil(res.data.total / _pageSize);
         setPager(res.data.total, _pageIndex, res.data.rows.length, _pageTotal);
         _(res.data.rows).forEach(function (item) {
-          _(_status).forEach(function (status) {
+          _(_productOrderStatus).forEach(function (status) {
             if (status.id == item.productOrderStatus) {
               item.productOrderStatus = status.name;
             }

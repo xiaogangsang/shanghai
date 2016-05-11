@@ -7,6 +7,7 @@ var _pageTotal = 0;
 var _querying = false;
 var searchCache = {};
 var useCache = false;
+var _submitting = false;
 
 $(function () {
   common.init('comment-sensitive');
@@ -162,6 +163,10 @@ $(document).on('click', '#btn-add', function (event) {
 
 $(document).on('submit', '#popup-sensitive-form form', function (event) {
   event.preventDefault();
+  if (_submitting) {
+    return false;
+  }
+  _submitting = true;
   var word = [];
   $('#popup-sensitive-form input[type=text]').each(function (index) {
     var text = $.trim($(this).val());
@@ -179,6 +184,7 @@ $(document).on('submit', '#popup-sensitive-form form', function (event) {
       data: JSON.stringify(word),
     })
     .done(function (res) {
+      _submitting = false;
       if (!!~~res.meta.result) {
         alert('添加成功！');
         $('#popup-sensitive-form').modal('hide');

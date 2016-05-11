@@ -3,6 +3,7 @@
 var common = require('common');
 var _users = [];
 var _channels = [];
+var _submitting = false;
 
 $(function () {
   common.init('ability-channel');
@@ -112,6 +113,10 @@ $('#channelSelect').on('change', function (e) {
 
 $('#formChannel').on('click', 'button[type=submit]', function (event) {
   event.preventDefault();
+  if (_submitting) {
+    return false;
+  }
+  _submitting = true;
   $('.multi-selection select:eq(1) option').prop('selected', true);
   var sendData = {
     channelId: $('#channelSelect').val(),
@@ -125,6 +130,7 @@ $('#formChannel').on('click', 'button[type=submit]', function (event) {
     data: JSON.stringify(sendData),
   })
   .done(function (res) {
+    _submitting = false;
     if (res.meta.result == true) {
       alert('保存成功！');
     } else {

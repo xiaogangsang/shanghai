@@ -4,6 +4,7 @@ var common = require('common');
 var _movieId = 0;
 var _bindMovieName = '';
 var _querying = false;
+var _submitting = false;
 
 $(function () {
   common.init('movie');
@@ -73,6 +74,10 @@ $('#tpMovieTable').on('click', '.btn-bind', function (e) {
 
 $(document).on('submit', '#formBindMovie', function (e) {
   e.preventDefault();
+  if (_submitting) {
+    return false;
+  }
+  _submitting = true;
   var sendData = {
     id: $('#cinemaId').val(),
     thirdPartyFilmId: $('#thirdPartyFilmId').val(),
@@ -86,7 +91,7 @@ $(document).on('submit', '#formBindMovie', function (e) {
     data: sendData,
   })
   .done(function (res) {
-    console.log(res);
+    _submitting = false;
     if (!!~~res.meta.result) {
       $.ajax({
         url: common.API_HOST + 'film/standardFilm/associationTpFilms',

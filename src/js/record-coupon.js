@@ -58,6 +58,14 @@ $('#formSearch').on('submit', function (e) {
         _pageIndex = res.data.pageIndex;
         _pageTotal = Math.ceil(res.data.total / _pageSize);
         setPager(res.data.total, _pageIndex, res.data.rows.length, _pageTotal);
+        _(res.data.rows).forEach(function (record) {
+          _(_channels).forEach(function (channel) {
+            if (record.channel == channel.channelId) {
+              record.channel = channel.channelName;
+            }
+          });
+        });
+
         setTableData(res.data.rows);
       }
     } else {
