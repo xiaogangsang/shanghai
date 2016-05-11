@@ -1,17 +1,13 @@
-var gulp = require('gulp'),
-os = require('os'),
-gutil = require('gulp-util'),
-concat = require('gulp-concat'),
-gulpOpen = require('gulp-open'),
-uglify = require('gulp-uglify'),
-cssmin = require('gulp-cssmin'),
-md5 = require('gulp-md5-plus'),
-fileinclude = require('gulp-file-include'),
-clean = require('gulp-clean'),
-base64 = require('gulp-css-base64'),
-webpack = require('webpack'),
-webpackConfig = require('./webpack.config.js'),
-browserSync = require('browser-sync');
+var gulp = require('gulp');
+var gutil = require('gulp-util');
+var uglify = require('gulp-uglify');
+var cssmin = require('gulp-cssmin');
+var md5 = require('gulp-md5-plus');
+var fileinclude = require('gulp-file-include');
+var clean = require('gulp-clean');
+var webpack = require('webpack');
+var webpackConfig = require('./webpack.config.js');
+var browserSync = require('browser-sync');
 
 //将图片拷贝到目标目录
 gulp.task('copy', function (done) {
@@ -93,7 +89,7 @@ gulp.task('build-js', ['fileinclude'], function (callback) {
 });
 
 //发布
-gulp.task('dist', ['clean', 'fileinclude', 'copy', 'md5:css', 'md5:js']);
+gulp.task('release', ['clean', 'fileinclude', 'copy', 'md5:css', 'md5:js']);
 
 //开发
 gulp.task('dev', ['connect', 'clean', 'fileinclude', 'copy', 'build-css', 'build-js', 'watch']);
