@@ -69,6 +69,31 @@
     <div class="col-xs-12"><label>实付积分：</label>{{actualPayPoint}}</div>
     <div class="col-xs-12"><label>交易订单状态：</label>{{transOrderStatus}}</div>
   </div>
+  <div class="edit-section">
+      <h4 style="margin-top: 0;">交易明细</h4>
+      <table class="table table-bordered" style="margin-bottom: 0;">
+        <thead>
+          <tr>
+            <th>交易类型</th>
+            <th>交易金额</th>
+            <th>交易积分</th>
+            <th>交易状态</th>
+            <th>交易时间</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#transDetailList}}
+          <tr>
+            <td>{{transType}}</td>
+            <td>{{transAmount}}</td>
+            <td>{{transPoint}}</td>
+            <td>{{transStatus}}</td>
+            <td>{{transDate}}</td>
+          </tr>
+          {{/transDetailList}}
+        </tbody>
+      </table>
+    </div>
 </script>
 <script id="biz-template" type="text/x-tmpl-mustache">
   <div class="edit-section">

@@ -725,8 +725,14 @@ function setEdit(couponId) {
       $('#name').val(coupon.name);
       $('#beginDate').val(coupon.beginDate.split(' ')[0]);
       $('#endDate').val(coupon.endDate.split(' ')[0]);
-      var advancePayment = coupon.advancePayment == 1 ? 0 : 1;
-      $('input[name=advancePayment]').eq(advancePayment).prop('checked', true);
+
+      $('input[name=advancePayment]').prop({'disabled': true, 'checked': false});
+      $('input[name=advancePayment]').each(function(index, el) {
+        if ($(el).val() == unit.advancePayment) {
+          $(el).prop('checked', true);
+        }
+      });
+
       //成本中心
       if (coupon.budgetSource != '' && coupon.budgetSource != null && coupon.budgetSource != undefined) {
         setBudgetSource(coupon.budgetSource);

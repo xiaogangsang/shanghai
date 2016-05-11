@@ -404,7 +404,7 @@ $(document).on('click', '#btn-set-cinema', function (event) {
 
 $(document).on('change', '#search-cinema-provinceId', function (e) {
   var provinceId = parseInt($(this).val());
-  if (NaN != provinceId || undefined != provinceId  || '' != provinceId) {
+  if (provinceId != NaN || provinceId != undefined || provinceId != '') {
     var province = _.find(_provinces, { provinceId: provinceId.toString() });
     var cityList = province.cityList;
     var options = '<option value="">选择城市</option>';
@@ -1147,8 +1147,12 @@ function setEdit(unitId) {
 
       $('#priority').val(unit.priority);
 
-      $('input[name=advancePayment]').eq(unit.advancePayment).closest('.checkbox-inline').remove();
-      $('input[name=advancePayment]').prop({'disabled': true, 'checked': true});
+      $('input[name=advancePayment]').prop({'disabled': true, 'checked': false});
+      $('input[name=advancePayment]').each(function(index, el) {
+        if ($(el).val() == unit.advancePayment) {
+          $(el).prop('checked', true);
+        }
+      });
 
       $('#cinemaPageDesc').val(unit.cinemaPageDesc);
       $('#activityIcon').val(unit.activityIcon);

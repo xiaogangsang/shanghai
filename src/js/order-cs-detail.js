@@ -107,6 +107,7 @@ $(function () {
           res.data.bizOrder.haveMachineTicket = false;
         }
 
+        res.data.payOrder.transDetailList = res.data.transDetailList;
         setPayOrder(res.data.payOrder);
         setBizOrder(res.data.bizOrder);
       } else {
