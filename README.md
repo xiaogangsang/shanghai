@@ -49,6 +49,8 @@ _v1.1_
 - 补js代码注释
 
 _v2.0_
+- jade模板
+- sass预处理
 - pjax，无刷新切换页面
 - 缩减bootstrap依赖
 - 缩减第三方js依赖

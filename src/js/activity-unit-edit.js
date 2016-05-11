@@ -42,6 +42,7 @@ $(function () {
     setMovie(false);
     setDimen(false);
     setChannel(false);
+    setPattern(1);
   }
 
   //upper of range
@@ -630,19 +631,7 @@ $(document).on('submit', '#popup-unit-showtime form', function (event) {
 $(document).on('change', '#activityPattern', function (event) {
   event.preventDefault();
   var current = +$(this).val();
-  switch (current) {
-    case 1:
-    case 2:
-    case 5:
-    $('.amount').attr('data-parsley-pattern', '^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$');
-    break;
-    case 3:
-    $('.amount').attr('data-parsley-pattern', '^[1-9]{1}$');
-    break;
-    case 4:
-    $('.amount').attr('data-parsley-pattern', '^[234]{1}$');
-    break;
-  }
+  setPattern(current);
 });
 
 $(document).on('click', '#formUnit button[type=submit]', function (event) {
@@ -1087,7 +1076,7 @@ function setCinema(cinemas) {
   });
 }
 
-function setProvince() {
+function setProvince () {
   $.ajax({
     url: common.API_HOST + 'common/provinceList',
     type: 'GET',
@@ -1106,6 +1095,29 @@ function setProvince() {
       alert('接口错误：' + res.meta.msg);
     }
   });
+}
+
+function setPattern (patternId) {
+  switch (~~patternId) {
+    case 0:
+    case 1:
+    case 2:
+      $('.amount').attr('data-parsley-pattern', '^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$');
+      $('.activity-pattern-tip').text('金额需输入大于0的数字，最多两位小数');
+    break;
+    case 3:
+      $('.amount').attr('data-parsley-pattern', '^[1-9]{1}$');
+      $('.activity-pattern-tip').text('折扣需输入大于0且小于10的整数；金额需输入大于0的数字，最多两位小数');
+    break;
+    case 4:
+      $('.amount').attr('data-parsley-pattern', '^[234]{1}$');
+      $('.activity-pattern-tip').text('张数仅限输入2、3、4；金额需输入大于0的数字，最多两位小数');
+    break;
+    case 5:
+      $('.amount').attr('data-parsley-pattern', '^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$');
+      $('.activity-pattern-tip').text('积分需输入大于0的整数；金额需输入大于0的数字，最多两位小数');
+    break;
+  }
 }
 
 function setEdit(unitId) {
@@ -1206,6 +1218,7 @@ function setEdit(unitId) {
       });
 
       $('#typeTable tbody').html(html);
+      setPattern(unit.activityPattern);
 
       //活动预算
       $('#totalAmount').val(unit.totalAmount);
