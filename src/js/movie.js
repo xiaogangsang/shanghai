@@ -50,8 +50,8 @@ $(function () {
   beginDate.setDate(beginDate.getDate() - 7);
   beginDate = common.getDate(beginDate);
   endDate = common.getDate(endDate);
-  $('#search_beginShowDate').val(beginDate);
-  $('#search_endShowDate').val(endDate);
+  $('#search_beginShowDate').val(beginDate).datetimepicker('setEndDate', endDate);
+  $('#search_endShowDate').val(endDate).datetimepicker('setEndDate', endDate);
 });
 
 //handle search form

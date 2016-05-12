@@ -36,7 +36,6 @@ $(function () {
   //set search form
   setChannel();
 
-  // setSource();
   $('#search_placeOrderStartTime').datetimepicker({
     format: 'yyyy-mm-dd',
     language: 'zh-CN',
@@ -45,8 +44,13 @@ $(function () {
     autoclose: true,
   }).on('changeDate', function (ev) {
     var startDate = new Date(ev.date.valueOf());
-    startDate.setDate(startDate.getDate(new Date(ev.date.valueOf())));
+    startDate.setDate(startDate.getDate(startDate));
+    var endDate = new Date($('#search_placeOrderEndTime').val());
+    endDate.setDate(endDate.getDate(endDate));
     $('#search_placeOrderEndTime').datetimepicker('setStartDate', startDate);
+    if (startDate > endDate) {
+      $('#search_placeOrderEndTime').val(common.getDate(startDate));
+    }
   });
 
   $('#search_placeOrderEndTime').datetimepicker({
@@ -56,10 +60,23 @@ $(function () {
     todayHighlight: true,
     autoclose: true,
   }).on('changeDate', function (ev) {
-    var FromEndDate = new Date(ev.date.valueOf());
-    FromEndDate.setDate(FromEndDate.getDate(new Date(ev.date.valueOf())));
-    $('#search_placeOrderStartTime').datetimepicker('setEndDate', FromEndDate);
+    var endDate = new Date(ev.date.valueOf());
+    endDate.setDate(endDate.getDate(endDate));
+    var startDate = new Date($('#search_placeOrderStartTime').val());
+    startDate.setDate(startDate.getDate(startDate));
+    $('#search_placeOrderStartTime').datetimepicker('setEndDate', endDate);
+    if (startDate > endDate) {
+      $('#search_placeOrderStartTime').val(common.getDate(endDate));
+    }
   });
+
+  var beginDate = new Date();
+  var endDate = new Date();
+  beginDate.setDate(beginDate.getDate() - 7);
+  beginDate = common.getDate(beginDate);
+  endDate = common.getDate(endDate);
+  $('#search_placeOrderStartTime').val(beginDate).datetimepicker('setEndDate', endDate);
+  $('#search_placeOrderEndTime').val(endDate).datetimepicker('setEndDate', endDate);
 });
 
 //handle search form
