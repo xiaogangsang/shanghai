@@ -11,32 +11,35 @@ common.init = function (pageName) {
 
   $.ajaxSetup({
     error: function (jqXHR, textStatus, errorThrown) {
+      var errorMsg = '未知错误';
+      var redirectUrl = document.location.href;
       switch (jqXHR.status){
         case (500):
-          alert('服务器挂了，请稍后再次！');
+          errorMsg = jqXHR.status + '：服务器无响应，请稍后再试！';
         break;
         case (401):
-          alert('未登录或登陆超时，请重新登陆！');
-          common.logout();
-          window.location.href = 'login.html';
+          errorMsg = jqXHR.status + '：未登录或登陆超时，请尝试重新登陆！';
+          redirectUrl = 'login.html?logout';
         break;
         case (403):
-          alert('没有权限！');
+          errorMsg = jqXHR.status + '：没有权限，请尝试重新登陆！';
+          redirectUrl = 'login.html?logout';
         break;
         case (404):
-          alert('服务器失踪了，请稍后再次！');
+          errorMsg = jqXHR.status + '：服务器暂时无法访问，请稍后再试！';
         break;
         case (408):
-          alert('请求超时，请稍后再次！');
+          errorMsg = jqXHR.status + '：请求超时，请稍后再试！';
         break;
       }
+      $('<div class="modal fade" data-keyboard="false" data-backdrop="static"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><h4 class="modal-title">错误提示</h4></div><div class="modal-body"><p style="text-align:center;">' + errorMsg + '</p></div><div class="modal-footer"><a href="' + redirectUrl + '" class="btn btn-primary">确定</a></div></div></div></div>').appendTo('body').modal('show');
       throw new Error('Abort, error ' + jqXHR.status);
     },
   });
 };
 
 common.showMenu = function (pageName) {
-  var allowMenus = sessionStorage.getItem('menuAuthority').split(',');
+  var allowMenus = sessionStorage.getItem('menuAuthority') != null ? sessionStorage.getItem('menuAuthority').split(',') : null;
   if (pageName != undefined && pageName != '' && $('#menu-' + pageName).size() > 0) {
     var menuId = '' + $('#menu-' + pageName).data('id');
     if (allowMenus == undefined || allowMenus.indexOf(menuId) < 0) {
