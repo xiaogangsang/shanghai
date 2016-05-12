@@ -181,7 +181,6 @@ $(document).on('click', '#btn-returnCoupon', function (event) {
   }
 
   _submitting = true;
-  alert('处理时间会有点长，请耐心等待！');
 
   $.ajax({
     url: common.API_HOST + 'order/kf/refundCoupon',
@@ -243,7 +242,7 @@ $(document).on('submit', '#popup-undertaker form', function (event) {
   })
   .done(function (res) {
     _submitting = false;
-    $('#popup-undertakerbutton[type=submit]').prop('disabled', false).text('提交');
+    $('#popup-undertaker button[type=submit]').prop('disabled', false).text('提交');
     if (!!~~res.meta.result) {
       alert('退票成功！');
       $('#popup-undertaker').modal('hide');
