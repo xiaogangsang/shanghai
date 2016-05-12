@@ -11,7 +11,7 @@ common.init = function (pageName) {
 
   $.ajaxSetup({
     error: function (jqXHR, textStatus, errorThrown) {
-      var errorMsg = '未知错误';
+      var errorMsg = jqXHR.status + '：未知错误！';
       var redirectUrl = document.location.href;
       switch (jqXHR.status){
         case (500):
