@@ -52,6 +52,13 @@ $(function () {
     FromEndDate.setDate(FromEndDate.getDate(new Date(ev.date.valueOf())));
     $('#search_beginDate').datetimepicker('setEndDate', FromEndDate);
   });
+  var beginDate = new Date();
+  var endDate = new Date();
+  beginDate.setDate(beginDate.getDate() - 7);
+  beginDate = common.getDate(beginDate);
+  endDate = common.getDate(endDate);
+  $('#search_beginDate').datetimepicker('setEndDate', endDate);
+  $('#search_endDate').datetimepicker('setStartDate', beginDate).datetimepicker('setEndDate', endDate);
 });
 
 //handle search form

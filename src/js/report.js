@@ -24,12 +24,7 @@ $(function () {
   }).on('changeDate', function (ev) {
     var startDate = new Date(ev.date.valueOf());
     startDate.setDate(startDate.getDate(startDate));
-    var endDate = new Date($('#search_endDate').val());
-    endDate.setDate(endDate.getDate(endDate));
     $('#search_endDate').datetimepicker('setStartDate', startDate);
-    if (startDate > endDate) {
-      $('#search_endDate').val(common.getDate(startDate));
-    }
   });
 
   $('#search_endDate').datetimepicker({
@@ -41,12 +36,7 @@ $(function () {
   }).on('changeDate', function (ev) {
     var endDate = new Date(ev.date.valueOf());
     endDate.setDate(endDate.getDate(endDate));
-    var startDate = new Date($('#search_beginDate').val());
-    startDate.setDate(startDate.getDate(startDate));
     $('#search_beginDate').datetimepicker('setEndDate', endDate);
-    if (startDate > endDate) {
-      $('#search_beginDate').val(common.getDate(endDate));
-    }
   });
 
   var beginDate = new Date();
@@ -55,7 +45,7 @@ $(function () {
   beginDate = common.getDate(beginDate);
   endDate = common.getDate(endDate);
   $('#search_beginDate').val(beginDate).datetimepicker('setEndDate', endDate);
-  $('#search_endDate').val(endDate).datetimepicker('setEndDate', endDate);
+  $('#search_endDate').val(endDate).datetimepicker('setStartDate', beginDate).datetimepicker('setEndDate', endDate);
 });
 
 //handle search form

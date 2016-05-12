@@ -27,6 +27,13 @@ $(function () {
     todayHighlight: true,
     autoclose: true,
   });
+  var beginDate = new Date();
+  var endDate = new Date();
+  beginDate.setDate(beginDate.getDate() - 7);
+  beginDate = common.getDate(beginDate);
+  endDate = common.getDate(endDate);
+  $('#search_beginDate').datetimepicker('setEndDate', endDate);
+  $('#search_endDate').datetimepicker('setStartDate', beginDate).datetimepicker('setEndDate', endDate);
 });
 
 //handle search form

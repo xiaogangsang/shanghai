@@ -45,12 +45,7 @@ $(function () {
   }).on('changeDate', function (ev) {
     var startDate = new Date(ev.date.valueOf());
     startDate.setDate(startDate.getDate(startDate));
-    var endDate = new Date($('#search_placeOrderEndTime').val());
-    endDate.setDate(endDate.getDate(endDate));
     $('#search_placeOrderEndTime').datetimepicker('setStartDate', startDate);
-    if (startDate > endDate) {
-      $('#search_placeOrderEndTime').val(common.getDate(startDate));
-    }
   });
 
   $('#search_placeOrderEndTime').datetimepicker({
@@ -62,12 +57,7 @@ $(function () {
   }).on('changeDate', function (ev) {
     var endDate = new Date(ev.date.valueOf());
     endDate.setDate(endDate.getDate(endDate));
-    var startDate = new Date($('#search_placeOrderStartTime').val());
-    startDate.setDate(startDate.getDate(startDate));
     $('#search_placeOrderStartTime').datetimepicker('setEndDate', endDate);
-    if (startDate > endDate) {
-      $('#search_placeOrderStartTime').val(common.getDate(endDate));
-    }
   });
 
   var beginDate = new Date();
@@ -76,7 +66,7 @@ $(function () {
   beginDate = common.getDate(beginDate);
   endDate = common.getDate(endDate);
   $('#search_placeOrderStartTime').val(beginDate).datetimepicker('setEndDate', endDate);
-  $('#search_placeOrderEndTime').val(endDate).datetimepicker('setEndDate', endDate);
+  $('#search_placeOrderEndTime').val(endDate).datetimepicker('setStartDate', beginDate).datetimepicker('setEndDate', endDate);
 });
 
 //handle search form

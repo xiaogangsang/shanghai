@@ -13,6 +13,7 @@ $(function () {
   if (wH - eH > 0) {
     $('.login').css('margin-top', (wH - eH) / 2 - 40);
   }
+
   $.ajaxSetup({
     error: function (jqXHR, textStatus, errorThrown) {
       var message;
