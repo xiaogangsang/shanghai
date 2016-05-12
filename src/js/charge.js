@@ -12,58 +12,58 @@ $(function () {
   setTableData();
 });
 
-$('#dataTable').on('click', '.btn-edit', function (e) {
-  e.preventDefault();
-  var tr = $(this).closest('tr');
-  var data = {
-    channelId: tr.data('id'),
-    fee: tr.data('fee'),
-    channelName: tr.children('td:nth-child(2)').text(),
-  };
-  var template = $('#edit-template').html();
-  Mustache.parse(template);
-  var html = Mustache.render(template, data);
-  $('#popup-charge-form .modal-body').html(html);
-  $('#popup-charge-form').modal('show');
-  $('#popup-charge-form form').parsley();
-});
+// $('#dataTable').on('click', '.btn-edit', function (e) {
+//   e.preventDefault();
+//   var tr = $(this).closest('tr');
+//   var data = {
+//     channelId: tr.data('id'),
+//     fee: tr.data('fee'),
+//     channelName: tr.children('td:nth-child(2)').text(),
+//   };
+//   var template = $('#edit-template').html();
+//   Mustache.parse(template);
+//   var html = Mustache.render(template, data);
+//   $('#popup-charge-form .modal-body').html(html);
+//   $('#popup-charge-form').modal('show');
+//   $('#popup-charge-form form').parsley();
+// });
 
-$(document).on('submit', '#popup-charge-form form', function (e) {
-  e.preventDefault();
-  if (_submitting) {
-    return false;
-  }
-  _submitting = true;
+// $(document).on('submit', '#popup-charge-form form', function (e) {
+//   e.preventDefault();
+//   if (_submitting) {
+//     return false;
+//   }
+//   _submitting = true;
 
-  // if (_channelAuthority.indexOf('' + $('#popup-charge-form #channelId').val()) > -1) {
-    var sendData = {
-      channelId: $('#popup-charge-form #channelId').val(),
-      fee: $.trim($('#popup-charge-form #fee').val()),
-    };
+//   // if (_channelAuthority.indexOf('' + $('#popup-charge-form #channelId').val()) > -1) {
+//     var sendData = {
+//       channelId: $('#popup-charge-form #channelId').val(),
+//       fee: $.trim($('#popup-charge-form #fee').val()),
+//     };
 
-    $.ajax({
-      url: common.API_HOST + 'timeTable/feeRuleUpdate',
-      type: 'POST',
-      dataType: 'json',
-      data: sendData,
-    })
-    .done(function (res) {
-      _submitting = false;
-      if (!!~~res.meta.result) {
-        alert('更新成功！');
-        $('#popup-charge-form').modal('hide');
-        setTableData();
-      } else {
-        alert('接口错误：' + res.meta.msg);
-      }
-    });
+//     $.ajax({
+//       url: common.API_HOST + 'timeTable/feeRuleUpdate',
+//       type: 'POST',
+//       dataType: 'json',
+//       data: sendData,
+//     })
+//     .done(function (res) {
+//       _submitting = false;
+//       if (!!~~res.meta.result) {
+//         alert('更新成功！');
+//         $('#popup-charge-form').modal('hide');
+//         setTableData();
+//       } else {
+//         alert('接口错误：' + res.meta.msg);
+//       }
+//     });
 
-  // } else {
-  //   alert('没有权限！');
-  // }
+//   // } else {
+//   //   alert('没有权限！');
+//   // }
 
-  return false;
-});
+//   return false;
+// });
 
 $('#pager').on('click', '.prev,.next', function (e) {
   e.preventDefault();

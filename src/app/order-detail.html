@@ -35,15 +35,16 @@
           <input type="hidden" id="transOrderNo">
           <input type="hidden" id="productOrderNo">
           <input type="hidden" id="channelId">
+          <input type="hidden" id="couponNo">
 
           <section class="order-detail">
 
 
-            <div class="col-md-6 col-lg-4" id="payOrder">
+            <div class="col-md-12 col-lg-4" id="payOrder">
               <h3>交易订单</h3>
             </div>
 
-            <div class="col-md-6 col-lg-8" id="bizOrder">
+            <div class="col-md-12 col-lg-8" id="bizOrder">
               <h3>商品订单</h3>
             </div>
 
@@ -62,17 +63,17 @@
 
   <script id="pay-template" type="text/x-tmpl-mustache">
     <div class="edit-section">
-      <div class="col-xs-12"><label>客户ID：</label>{{customerId}}</div>
-      <div class="col-xs-12"><label>手机号：</label>{{mobile}}</div>
+      <div class="col-md-6 col-lg-12"><label>客户ID：</label>{{customerId}}</div>
+      <div class="col-md-6 col-lg-12"><label>手机号：</label>{{mobile}}</div>
     </div>
     <div class="edit-section">
-      <div class="col-xs-12"><label>交易订单号：</label>{{transOrderNo}}</div>
-      <div class="col-xs-12"><label>支付订单号：</label>{{cmbOrderNo}}</div>
-      <div class="col-xs-12"><label>下单时间：</label>{{placeOrderTime}}</div>
-      <div class="col-xs-12"><label>订单完成时间：</label>{{finishOrderTime}}</div>
-      <div class="col-xs-12"><label>实付金额：</label>{{actualPayAmount}}</div>
-      <div class="col-xs-12"><label>实付积分：</label>{{actualPayPoint}}</div>
-      <div class="col-xs-12"><label>交易订单状态：</label>{{transOrderStatus}}</div>
+      <div class="col-md-6 col-lg-12"><label>交易订单号：</label>{{transOrderNo}}</div>
+      <div class="col-md-6 col-lg-12"><label>支付订单号：</label>{{cmbOrderNo}}</div>
+      <div class="col-md-6 col-lg-12"><label>下单时间：</label>{{placeOrderTime}}</div>
+      <div class="col-md-6 col-lg-12"><label>订单完成时间：</label>{{finishOrderTime}}</div>
+      <div class="col-md-6 col-lg-12"><label>实付金额：</label>{{actualPayAmount}}</div>
+      <div class="col-md-6 col-lg-12"><label>实付积分：</label>{{actualPayPoint}}</div>
+      <div class="col-md-6 col-lg-12"><label>交易订单状态：</label>{{transOrderStatus}}</div>
     </div>
     <div class="edit-section">
       <h4 style="margin-top: 0;">交易明细</h4>
@@ -115,7 +116,7 @@
       <div class="col-xs-12 col-sm-6"><label>渠道：</label>{{channelName}}</div>
       <div class="col-xs-12 col-sm-6"><label>城市：</label>{{cityName}}</div>
       <div class="col-xs-12 col-sm-6"><label>影院：</label>{{cinemaName}}</div>
-      <div class="col-xs-12 col-sm-6"><label>影院地址：</label>{{cinemaAddress}}</div>
+      <div class="col-xs-12"><label>影院地址：</label>{{cinemaAddress}}</div>
       <div class="col-xs-12 col-sm-6"><label>影片：</label>{{filmName}}</div>
       <div class="col-xs-12 col-sm-6"><label>影片制式：</label>{{dimen}}</div>
       <div class="col-xs-12 col-sm-6"><label>影厅：</label>{{hall}}</div>
@@ -146,18 +147,8 @@
       {{/canReturnCoupon}}
     </div>
     <div class="edit-section">
-      {{#haveFrontTicket}}
-        <h4 class="col-xs-12">影院前台</h4>
-        {{#frontTicket}}
-        <div class="col-xs-12 col-sm-6"><label>{{text}}：</label>{{value}}</div>
-        {{/frontTicket}}
-      {{/haveFrontTicket}}
-      {{#haveMachineTicket}}
-        <h4 class="col-xs-12">影院自助取票机</h4>
-        {{#machineTicket}}
-        <div class="col-xs-12 col-sm-6"><label>{{text}}：</label>{{value}}</div>
-        {{/machineTicket}}
-      {{/haveMachineTicket}}
+      <div class="col-xs-12 col-sm-6"><label>影院前台：</label>{{#frontTicket}}{{text}}：{{value}}<br>{{/frontTicket}}</div>
+      <div class="col-xs-12 col-sm-6"><label>自助取票机：</label>{{#machineTicket}}{{text}}：{{value}}{{/machineTicket}}</div>
     </div>
     <div class="edit-section">
       <div class="col-xs-12"><label>短信发送内容：</label>{{smsContent}}</div>

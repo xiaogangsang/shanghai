@@ -44,6 +44,7 @@ $(function () {
         $('h2').append('：' + urlParam.orderId);
         $('#transOrderNo').val(res.data.payOrder.transOrderNo);
         $('#productOrderNo').val(res.data.bizOrder.productOrderNo);
+        $('#couponNo').val(res.data.bizOrder.couponCode);
 
         _(_channels).forEach(function (channel) {
           if (channel.channelId == res.data.bizOrder.channelId) {
@@ -93,19 +94,21 @@ $(function () {
           res.data.bizOrder.canSendSMS = true;
         }
 
-        if (res.data.bizOrder.ticketInfo != null) {
-          res.data.bizOrder.frontTicket = res.data.bizOrder.ticketInfo.frontInfo.codeInfoList;
-          res.data.bizOrder.haveFrontTicket = true;
-        } else {
-          res.data.bizOrder.haveFrontTicket = false;
-        }
+        // if (res.data.bizOrder.ticketInfo != null) {
+        res.data.bizOrder.frontTicket = res.data.bizOrder.ticketInfo==null ? null : res.data.bizOrder.ticketInfo.frontInfo.codeInfoList;
 
-        if (res.data.bizOrder.ticketInfo != null) {
-          res.data.bizOrder.machineTicket = res.data.bizOrder.ticketInfo.machineInfo.codeInfoList;
-          res.data.bizOrder.haveMachineTicket = true;
-        } else {
-          res.data.bizOrder.haveMachineTicket = false;
-        }
+        //   res.data.bizOrder.haveFrontTicket = true;
+        // } else {
+        //   res.data.bizOrder.haveFrontTicket = false;
+        // }
+
+        // if (res.data.bizOrder.ticketInfo != null) {
+        res.data.bizOrder.machineTicket = res.data.bizOrder.ticketInfo==null ? null : res.data.bizOrder.ticketInfo.machineInfo.codeInfoList;
+
+        //   res.data.bizOrder.haveMachineTicket = true;
+        // } else {
+        //   res.data.bizOrder.haveMachineTicket = false;
+        // }
 
         res.data.payOrder.transDetailList = res.data.transDetailList;
         setPayOrder(res.data.payOrder);
@@ -169,23 +172,28 @@ $(document).on('click', '#btn-sendsms', function (event) {
 
 $(document).on('click', '#btn-returnCoupon', function (event) {
   event.preventDefault();
+  if (_submitting) {
+    return false;
+  }
+
   if (!window.confirm('确定退优惠券吗？')) {
     return false;
   }
 
-  var productOrderNo = $('#productOrderNo').val();
-  if (productOrderNo == '') {
-    alert('非法操作，无法获取订单号！');
-    return false;
-  }
+  _submitting = true;
+  alert('处理时间会有点长，请耐心等待！');
 
   $.ajax({
     url: common.API_HOST + 'order/kf/refundCoupon',
     type: 'POST',
     dataType: 'json',
-    data: { productOrderNo: productOrderNo },
+    data: {
+      productOrderNo: $('#productOrderNo').val(),
+      couponNo: $('#couponNo').val(),
+    },
   })
   .done(function (res) {
+    _submitting = false;
     if (!!~~res.meta.result) {
       alert('退优惠券成功！');
       $('#popup-order-return-ticket').modal('hide');
@@ -207,10 +215,13 @@ $(document).on('submit', '#popup-undertaker form', function (event) {
     return false;
   }
 
-  _submitting = true;
   if (!window.confirm('确定退票吗？')) {
     return false;
   }
+
+  _submitting = true;
+  $('#popup-undertaker button[type=submit]').prop('disabled', true).text('处理中...');
+  alert('处理时间会有点长，请耐心等待！');
 
   var sendData = {
     transOrderNo: $('#transOrderNo').val(),
@@ -232,6 +243,7 @@ $(document).on('submit', '#popup-undertaker form', function (event) {
   })
   .done(function (res) {
     _submitting = false;
+    $('#popup-undertakerbutton[type=submit]').prop('disabled', false).text('提交');
     if (!!~~res.meta.result) {
       alert('退票成功！');
       $('#popup-undertaker').modal('hide');

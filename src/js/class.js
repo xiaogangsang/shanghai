@@ -138,7 +138,7 @@ $('#dataTable').on('click', '.btn-check', function (event) {
         html += '<option value="' + cinema.sourceCinemaId + '">' + cinema.cinemaName + '</option>';
       });
 
-      $('#check_cinemaId').append(html);
+      $('#check_cinemaId').html(html);
       $('#check_date').datetimepicker({
         format: 'yyyy-mm-dd',
         language: 'zh-CN',
@@ -157,8 +157,8 @@ $('#dataTable').on('click', '.btn-check', function (event) {
 
 $(document).on('submit', '#popup-class-check form', function (event) {
   event.preventDefault();
-  $(this).find('button[type=submit]').prop('disabled', true).text('检查中...');
-  alert('检查时间会有点长，请耐心等待！');
+  $('#popup-class-check button[type=submit]').prop('disabled', true).text('检查中...');
+  alert('处理时间会有点长，请耐心等待！');
   var sendData = {
     ticketName: $('#check_ticketName').val(),
     tpCinemaId: $('#check_cinemaId').val(),
@@ -171,8 +171,8 @@ $(document).on('submit', '#popup-class-check form', function (event) {
     data: sendData,
   })
   .done(function (res) {
+    $('#popup-class-check button[type=submit]').prop('disabled', false).text('检查');
     if (!!~~res.meta.result) {
-      $(this).find('button[type=submit]').prop('disabled', false).text('检查');
       alert(res.data.status);
     } else {
       alert('接口错误：' + res.meta.msg);
@@ -272,6 +272,7 @@ $(document).on('submit', '#popup-class-form form', function (event) {
   if (_submitting) {
     return false;
   }
+
   _submitting = true;
   var sendData = {
     ticketName: $.trim($('#popup-class-form #ticketName').val()),
@@ -515,6 +516,7 @@ function getCinema() {
     dataType: 'json',
     data: {
       brandId: 1,
+      onlineStatus: 1,
       pageIndex: 1,
       pageSize: 9999,
     },

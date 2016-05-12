@@ -72,16 +72,6 @@ $(function () {
     },
   });
 
-  $.fn.datetimepicker.dates['zh-CN'] = {
-    days: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日'],
-    daysShort: ['周日', '周一', '周二', '周三', '周四', '周五', '周六', '周日'],
-    daysMin:  ['日', '一', '二', '三', '四', '五', '六', '日'],
-    months: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
-    monthsShort: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
-    today: '今天',
-    suffix: [],
-    meridiem: ['上午', '下午'],
-  };
   $('#beginDate').datetimepicker({
     format: 'yyyy-mm-dd',
     language: 'zh-CN',
@@ -119,6 +109,16 @@ $(function () {
   });
 
   $('#formUnit').parsley();
+
+});
+
+//周期选择
+$(document).on('click', '#repeatedDayAll', function (event) {
+  if ($(this).prop('checked') == true) {
+    $('input[name=repeatedDay]').prop('checked', true);
+  } else {
+    $('input[name=repeatedDay]').prop('checked', false);
+  }
 
 });
 
@@ -710,8 +710,8 @@ $(document).on('submit', '#formUnit', function (event) {
   $('input[name=repeatedDay]:checked').each(function (index, el) {
     sendData.repeatedDay.push($(el).val());
   });
-
   sendData.repeatedDay = sendData.repeatedDay.join(',');
+
   $('input[name=customerType]:checked').each(function (index, el) {
     sendData.customerType.push($(el).val());
   });
@@ -1156,6 +1156,10 @@ function setEdit(unitId) {
       _(repeatedDay).forEach(function (day) {
         $('input[name=repeatedDay]').eq(day - 1).prop('checked', true);
       });
+
+      if (repeatedDay.length == 7) {
+        $('#repeatedDayAll').prop('checked', true);
+      }
 
       $('#priority').val(unit.priority);
 
