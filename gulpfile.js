@@ -52,8 +52,8 @@ gulp.task('fileinclude', function (done) {
 });
 
 gulp.task('clean', function (done) {
-  gulp.src(['dist/**/*'])
-  .pipe(clean())
+  gulp.src('dist', { read: false })
+  .pipe(clean({ force: true }))
   .on('end', done);
 });
 
