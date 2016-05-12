@@ -3,5 +3,5 @@
   "excludeFiles": ["src/lib/**","src/common","dist/**","node_modules/**","bower_components"],
   "fileExtensions": [".js", ".jsx"],
   "extract": ["*.htm", "*.html"],
-  "maximumLineLength": 200
+  "maximumLineLength": 500
 }
