@@ -36,38 +36,8 @@
             </td>
           </tr>
           <tr>
-            <th>影院</th>
-            <td>
-              <div class="multi-selection table-responsive">
-                <table class="table" style="max-width: 100%;">
-                  <tbody>
-                    <tr>
-                      <td width="45%">
-                        <select name="from[]" id="cinemaSelect" class="form-control" size="8" multiple="multiple">
-                          {{#cinemas}}
-                          {{^selected}}<option value="{{id}}">{{name}}</option>{{/selected}}
-                          {{/cinemas}}
-                        </select>
-                      </td>
-                      <td width="60">
-                        <button type="button" id="cinemaSelect_all" class="btn btn-block btn-default">全选</button>
-                        <button type="button" id="cinemaSelect_right" class="btn btn-block btn-default">添加</button>
-                        <button type="button" id="cinemaSelect_left" class="btn btn-block btn-default">移除</button>
-                        <button type="button" id="cinemaSelect_none" class="btn btn-block btn-default">反选</button>
-                      </td>
-                      <td>
-                        <select name="to[]" id="cinemaSelect_to" class="form-control" size="8" multiple="multiple" required data-parsley-errors-container="#error-cinema">
-                          {{#cinemas}}
-                          {{#selected}}<option value="{{id}}">{{name}}</option>{{/selected}}
-                          {{/cinemas}}
-                        </select>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-                <div id="error-cinema"></div>
-              </div>
-            </td>
+            <th><button type="button" class="btn btn-default" id="btn-set-cinema">影院</button></th>
+            <td id="preview-cinema"></td>
           </tr>
           <tr>
             <th>开始日期</th>
@@ -127,34 +97,8 @@
             </td>
           </tr>
           <tr>
-            <th>影院</th>
-            <td>
-              <div class="multi-selection table-responsive">
-                <table class="table" style="max-width: 100%;">
-                  <tbody>
-                    <tr>
-                      <td width="45%">
-                        <select name="from[]" id="cinemaSelect" class="form-control" size="8" multiple="multiple">
-                          {{#cinemas}}
-                          <option value="{{id}}">{{name}}</option>
-                          {{/cinemas}}
-                        </select>
-                      </td>
-                      <td width="60">
-                        <button type="button" id="cinemaSelect_all" class="btn btn-block btn-default">全选</button>
-                        <button type="button" id="cinemaSelect_right" class="btn btn-block btn-default">添加</button>
-                        <button type="button" id="cinemaSelect_left" class="btn btn-block btn-default">移除</button>
-                        <button type="button" id="cinemaSelect_none" class="btn btn-block btn-default">反选</button>
-                      </td>
-                      <td>
-                        <select name="to[]" id="cinemaSelect_to" class="form-control" size="8" multiple="multiple" required data-parsley-errors-container="#error-cinema"></select>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-                <div id="error-cinema"></div>
-              </div>
-            </td>
+            <th><button type="button" class="btn btn-default" id="btn-set-cinema">影院</button></th>
+            <td id="preview-cinema"></td>
           </tr>
           <tr>
             <th>开始日期</th>

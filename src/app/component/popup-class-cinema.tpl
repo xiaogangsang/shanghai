@@ -1,102 +1,88 @@
 <div class="modal fade" id="popup-class-cinema" data-keyboard="false" data-backdrop="static">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
+      <form>
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">选择影院</h4>
+        </div>
 
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">影院</h4>
-      </div>
+        <div class="modal-body">
 
-      <div class="modal-body">
-
-        <table class="table table-cinema">
-          <tbody>
-            <tr>
-              <td width="45%" style="vertical-align: top;">
-                <div class="input-group" style="margin-bottom: 5px;">
-                  <div class="input-group-addon">选择城市</div>
-                  <div class="row">
-                    <div class="col-xs-6"><select name="" class="form-control">
-                      <option value="">省</option>
-                      <option value="">直辖市</option>
-                    </select></div>
-                    <div class="col-xs-6"><select name="" class="form-control">
-                      <option value="">城市</option>
-                      <option value="">上海</option>
-                    </select></div>
-                  </div>
-                </div>
-                <div class="input-group" style="margin-bottom: 5px;">
-                  <div class="input-group-addon">影院名称</div>
-                  <form class="form-inline">
-                    <div class="form-group">
-                      <input type="text" class="form-control">
+          <table class="table">
+            <tbody>
+              <tr>
+                <td width="45%" style="vertical-align: top;">
+                  <div class="row" style="margin-bottom: 5px;">
+                    <div class="col-xs-6">
+                      <select class="form-control" id="search-cinema-provinceId">
+                        <option value="">选择省</option>
+                      </select>
                     </div>
-                    <button type="submit" class="btn btn-primary pull-right">搜索影院</button>
-                  </form>
-                </div>
-                <div class="table-responsive" style="max-height: 300px;overflow-y: scroll;">
-                  <table class="table table-bordered">
-                    <thead>
-                      <tr>
-                        <th>影院</th>
-                        <th>城市</th>
-                        <th>院线</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>上海影城SFC新华路店</td>
-                        <td>上海</td>
-                        <td>中影</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </td>
-              <td width="100" style="text-align: center;vertical-align: middle;">
-                <button class="btn btn-primary">添加 &raquo;</button>
-                <br><br>
-                <button type="button" class="btn btn-primary">&laquo; 移除</button>
-              </td>
-              <td style="vertical-align: top;">
-                <h5>已选择影院（X个）</h5>
-                <div class="row" style="margin-bottom: 5px;">
-                  <div class="col-xs-9"><input type="text" class="form-control"></div>
-                  <div class="col-xs-3"><button type="submit" class="btn btn-default">筛选</button></div>
-                </div>
-                <div class="table-responsive" style="max-height: 340px;overflow-y: scroll;">
-                  <table class="table table-bordered multi-check">
-                    <thead>
-                      <tr>
-                        <th><input type="checkbox" class="multi-check-all"></th>
-                        <th>影院</th>
-                        <th>城市</th>
-                        <th>院线</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td><input type="checkbox"></td>
-                        <td>上海影城SFC新华路店</td>
-                        <td>上海</td>
-                        <td>中影</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+                    <div class="col-xs-6">
+                      <select class="form-control" id="search-cinema-cityId">
+                        <option value="">选择城市</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 5px;">
+                    <div class="col-xs-8">
+                      <input type="text" class="form-control" placeholder="输入影院名称" id="search-cinema-cinemaName">
+                    </div>
+                    <div class="col-xs-4">
+                      <button type="button" class="btn btn-block btn-default" id="btn-search-cinema">搜索影院</button>
+                    </div>
+                  </div>
+                  <div class="table-responsive" style="max-height: 300px;">
+                    <table class="table table-bordered table-hover" id="search-cinema-candidate" style="margin-bottom: 0;">
+                      <thead>
+                        <tr>
+                          <th>影院</th>
+                          <th>城市</th>
+                        </tr>
+                      </thead>
+                      <tbody></tbody>
+                    </table>
+                  </div>
+                </td>
+                <td width="100">
+                  <button type="button" class="btn btn-block btn-default" id="search-cinema-add-all">添加全部</button>
+                  <br>
+                  <button type="button" class="btn btn-block btn-default" id="search-cinema-add">添加选中</button>
+                  <br>
+                  <button type="button" class="btn btn-block btn-default" id="search-cinema-remove">移除选中</button>
+                  <br>
+                  <button type="button" class="btn btn-block btn-default" id="search-cinema-remove-all">移除全部</button>
+                </td>
+                <td style="vertical-align: top;">
+                  <h5>已选择影院（<span id="choosedCount">0</span>个）</h5>
+                  <div class="row" style="margin-bottom: 5px;">
+                    <div class="col-xs-8"><input type="text" class="form-control" id="input-cinema-filter" placeholder="输入关键字快速筛选"></div>
+                    <div class="col-xs-4"><button type="button" class="btn btn-block btn-default" id="btn-cinema-filter">清除筛选</button></div>
+                  </div>
+                  <div class="table-responsive" style="max-height: 300px;">
+                    <table class="table table-bordered" id="search-cinema-choosed" style="margin-bottom: 0;">
+                      <thead>
+                        <tr>
+                          <th>影院</th>
+                          <th>城市</th>
+                        </tr>
+                      </thead>
+                      <tbody></tbody>
+                    </table>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
 
-      </div>
+        </div>
 
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary">保存</button>
-        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-      </div>
-
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">保存</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>

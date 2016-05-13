@@ -1,0 +1,5 @@
+#search-cinema-candidate tr.selected td,
+#search-cinema-choosed tr.selected td {
+  background-color: #ff8903;
+  color: #fff;
+}
