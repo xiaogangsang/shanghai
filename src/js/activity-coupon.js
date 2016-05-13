@@ -62,6 +62,17 @@ $('#formSearch').on('submit', function (e) {
         _pageIndex = res.data.pageIndex;
         _pageTotal = Math.ceil(res.data.total / _pageSize);
         setPager(res.data.total, _pageIndex, res.data.rows.length, _pageTotal);
+
+        _(res.data.rows).forEach(function (item, key) {
+          _(_budgetSource).forEach(function (group, key) {
+            _(group).forEach(function (source, key) {
+              if (item.budgetSource == source.id) {
+                item.budgetSource = source.sourceName;
+              }
+            });
+          });
+        });
+
         setTableData(res.data.rows);
         $('#btn-export').prop('disabled', false);
       }
@@ -154,11 +165,11 @@ $(document).on('click', '#btn-online-multi, #btn-offline-multi', function (e) {
 $(document).on('click', '#btn-export', function (event) {
   event.preventDefault();
   var exportUrl = common.API_HOST + 'coupon/exportCoupons?' +
-    'couponId=' + $.trim($('#search_couponId').val()) +
-    '&name=' + $.trim($('#search_name').val()) +
-    '&budgetSource=' + $('#search_budgetSource').val() +
-    '&pageSize=' + _pageSize +
-    '&pageIndex=' + _pageIndex;
+  'couponId=' + $.trim($('#search_couponId').val()) +
+  '&name=' + $.trim($('#search_name').val()) +
+  '&budgetSource=' + $('#search_budgetSource').val() +
+  '&pageSize=' + _pageSize +
+  '&pageIndex=' + _pageIndex;
   window.location.href =  exportUrl;
 });
 
