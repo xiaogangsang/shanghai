@@ -275,7 +275,6 @@ $(document).on('submit', '#popup-undertaker form', function (event) {
 
   _submitting = true;
   $('#popup-undertaker button[type=submit]').prop('disabled', true).text('处理中...');
-  alert('处理时间会有点长，请耐心等待！');
 
   var sendData = {
     transOrderNo: $('#transOrderNo').val(),
