@@ -9,14 +9,14 @@ var webpack = require('webpack');
 var webpackConfig = require('./webpack.config.js');
 var browserSync = require('browser-sync');
 
-//将图片拷贝到目标目录
+//将资源拷贝到目标目录
 gulp.task('copy', function (done) {
   gulp.src(['src/images/**/*']).pipe(gulp.dest('dist/images/'));
   gulp.src(['src/fonts/**/*']).pipe(gulp.dest('dist/fonts/'));
   gulp.src(['src/lib/**/*']).pipe(gulp.dest('dist/lib/')).on('end', done);
 });
 
-//压缩合并css, css中既有自己写的.less, 也有引入第三方库的.css
+//压缩合并css,
 gulp.task('build-css', function (done) {
   gulp.src(['src/css/*.css', 'node_modules/bootstrap/dist/css/bootstrap.min.css'])
   .pipe(cssmin())
@@ -34,7 +34,7 @@ gulp.task('md5:js', ['build-js'], function (done) {
 
 //将css加上10位md5，并修改html中的引用路径，该动作依赖sprite
 gulp.task('md5:css', function (done) {
-  gulp.src(['src/css/*.css', 'node_modules/bootstrap/dist/css/bootstrap.min.css'])
+  gulp.src('src/css/*.css')
   .pipe(md5(10, 'dist/app/*.html'))
   .pipe(gulp.dest('dist/css'))
   .on('end', done);
