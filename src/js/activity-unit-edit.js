@@ -10,6 +10,7 @@ var _channels = [];
 var _provinces = [];
 var _custom = ['新户', '老户'];
 var _submitting = false;
+var _priorities = [];
 
 $(function () {
   common.init('activity-unit');
@@ -31,12 +32,18 @@ $(function () {
 
   setProvince();
   setBrand();
+  setPriority();
 
   var urlParam = common.getUrlParam();
   if (urlParam.unitId != undefined && urlParam.unitId != '') {
     setEdit(urlParam.unitId);
   } else {
-    setPlan(false);
+    if (urlParam.planId != undefined && urlParam.planId != '') {
+      setPlan(urlParam.planId);
+    } else {
+      setPlan(false);
+    }
+
     setWandaTicket(false);
     setBudgetSource(false);
     setMovie(false);
@@ -120,6 +127,27 @@ $(document).on('click', '#repeatedDayAll', function (event) {
     $('input[name=repeatedDay]').prop('checked', false);
   }
 
+});
+
+//优先级
+$(document).on('click', '#priority', function (event) {
+  event.preventDefault();
+  $('#popup-unit-priority').modal('show');
+  $('#popup-unit-priority input[type=text]').quicksearch('#priorityTable tbody tr');
+  $('#popup-unit-priority form').parsley();
+});
+
+$(document).on('submit', '#popup-unit-priority form', function (event) {
+  event.preventDefault();
+  var priority = $('#popup-unit-priority input[type=text]').val();
+
+  if ($.inArray(priority, _priorities) > -1) {
+    alert('优先级重复，请换一个！');
+    return false;
+  }
+  $('#priority').val(priority);
+  $('#popup-unit-priority').modal('hide');
+  return false;
 });
 
 //成本中心
@@ -538,6 +566,7 @@ $(document).on('submit', '#popup-unit-cinema form', function (event) {
   $('#popup-unit-cinema').modal('hide');
   return false;
 });
+
 //场次
 $(document).on('click', '#btn-set-showtime', function (event) {
   event.preventDefault();
@@ -710,6 +739,7 @@ $(document).on('submit', '#formUnit', function (event) {
   $('input[name=repeatedDay]:checked').each(function (index, el) {
     sendData.repeatedDay.push($(el).val());
   });
+
   sendData.repeatedDay = sendData.repeatedDay.join(',');
 
   $('input[name=customerType]:checked').each(function (index, el) {
@@ -860,6 +890,31 @@ function setBrand() {
       _(res.data).forEach(function (brand) {
         $('#search-cinema-brandId').append($('<option></option>').attr('value', brand.id).text(brand.name));
       });
+    } else {
+      alert('接口错误：' + res.meta.msg);
+    }
+  });
+}
+
+function setPriority () {
+  $.ajax({
+    url: common.API_HOST + 'activity/activityList',
+    type: 'POST',
+    dataType: 'json',
+    data: {pageIndex: 1, pageSize: 9999},
+  })
+  .done(function (res) {
+    if (!!~~res.meta.result) {
+      var html = '';
+      _(res.data.rows).forEach(function (value, key) {
+        _priorities.push(value.priority);
+        html += '<tr><td>' + value.priority + '</td><td>' + value.name + '</td></tr>';
+      });
+      $('#priorityTable tbody').html(html);
+
+      $('#popup-unit-priority button[type=submit]').prop('disabled', false);
+      $('#popup-unit-priority input[type=text]').val($('#priority').val());
+      $('#popup-unit-priority input[type=text]').quicksearch('#priorityTable tbody tr');
     } else {
       alert('接口错误：' + res.meta.msg);
     }
@@ -1102,20 +1157,20 @@ function setPattern (patternId) {
     case 0:
     case 1:
     case 2:
-      $('.amount').attr('data-parsley-pattern', '^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$');
-      $('.activity-pattern-tip').text('金额需输入大于0的数字，最多两位小数');
+    $('.amount').attr('data-parsley-pattern', '^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$');
+    $('.activity-pattern-tip').text('金额需输入大于0的数字，最多两位小数');
     break;
     case 3:
-      $('.amount').attr('data-parsley-pattern', '^[1-9]{1}$');
-      $('.activity-pattern-tip').text('折扣需输入大于0且小于10的整数；金额需输入大于0的数字，最多两位小数');
+    $('.amount').attr('data-parsley-pattern', '^[1-9]{1}$');
+    $('.activity-pattern-tip').text('折扣需输入大于0且小于10的整数；金额需输入大于0的数字，最多两位小数');
     break;
     case 4:
-      $('.amount').attr('data-parsley-pattern', '^[234]{1}$');
-      $('.activity-pattern-tip').text('张数仅限输入2、3、4；金额需输入大于0的数字，最多两位小数');
+    $('.amount').attr('data-parsley-pattern', '^[234]{1}$');
+    $('.activity-pattern-tip').text('张数仅限输入2、3、4；金额需输入大于0的数字，最多两位小数');
     break;
     case 5:
-      $('.amount').attr('data-parsley-pattern', '^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$');
-      $('.activity-pattern-tip').text('积分需输入大于0的整数；金额需输入大于0的数字，最多两位小数');
+    $('.amount').attr('data-parsley-pattern', '^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$');
+    $('.activity-pattern-tip').text('积分需输入大于0的整数；金额需输入大于0的数字，最多两位小数');
     break;
   }
 }

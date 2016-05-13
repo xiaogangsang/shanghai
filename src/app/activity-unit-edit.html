@@ -121,7 +121,7 @@
               <div class="form-group col-sm-6">
                 <div class="input-group">
                   <div class="input-group-addon">活动优先级</div>
-                  <input type="text" class="form-control" id="priority" required data-parsley-type="number" min="1">
+                  <input type="text" class="form-control" id="priority" required data-parsley-type="number" readonly>
                 </div>
               </div>
               <div class="form-group col-sm-6">
@@ -284,5 +284,6 @@
   @@include('component/popup-unit-dimen.tpl')
   @@include('component/popup-unit-cinema.tpl')
   @@include('component/popup-unit-showtime.tpl')
+  @@include('component/popup-unit-priority.tpl')
 </body>
 </html>
