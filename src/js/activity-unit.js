@@ -15,6 +15,7 @@ $(function () {
   if (urlParam.planId != undefined && urlParam.planId != '') {
     $('#search_planId').val(urlParam.planId);
     $('#formSearch').trigger('submit');
+    $('#btn-create').attr('href', 'activity-unit-edit.html?planId=' + urlParam.planId);
   }
 
   //set search form
