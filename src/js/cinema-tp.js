@@ -233,7 +233,7 @@ $(document).on('submit', '#formSearchCinema', function (e) {
   e.preventDefault();
   var bindCinemaName = $.trim($('#bindCinemaName').val());
   if (bindCinemaName == '' || bindCinemaName == undefined || _bindCinemaName == bindCinemaName) {
-    if (bindCinemaNam == '') {
+    if (bindCinemaName == '') {
       alert('搜索关键词不能为空！');
     }
 
