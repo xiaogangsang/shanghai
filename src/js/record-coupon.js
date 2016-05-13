@@ -12,6 +12,8 @@ var useCache = false;
 $(function () {
   common.init('record-coupon');
   getChannel();
+
+  $('#formSearch').trigger('submit');
 });
 
 //handle search form

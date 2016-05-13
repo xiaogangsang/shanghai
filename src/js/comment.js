@@ -38,6 +38,7 @@ $(function () {
     FromEndDate.setDate(FromEndDate.getDate(new Date(ev.date.valueOf())));
     $('#search_beginDate').datetimepicker('setEndDate', FromEndDate);
   });
+
   var beginDate = new Date();
   var endDate = new Date();
   beginDate.setDate(beginDate.getDate() - 7);
@@ -258,6 +259,8 @@ function setChannel() {
 
       $('#search_channelId').append(html);
       $('#search_channelId').chosen({ disable_search_threshold: 6, allow_single_deselect: true });
+
+      $('#formSearch').trigger('submit');
     }
   });
 }

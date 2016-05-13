@@ -44,6 +44,8 @@ $(function () {
   //cache data
   getChannels();
   getCities();
+
+  $('#formSearch').trigger('submit');
 });
 
 //handle search form

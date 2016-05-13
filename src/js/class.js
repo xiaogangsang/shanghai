@@ -23,6 +23,8 @@ $(function () {
 
   getCity();
   getCinema();
+
+  $('#formSearch').trigger('submit');
 });
 
 $('#formSearch').on('click', 'button[type=submit]', function (event) {

@@ -40,6 +40,8 @@ $(function () {
     FromEndDate.setDate(FromEndDate.getDate(new Date(ev.date.valueOf())));
     $('#search_beginShowDate').datetimepicker('setEndDate', FromEndDate);
   });
+
+  $('#formSearch').trigger('submit');
 });
 
 //handle search form

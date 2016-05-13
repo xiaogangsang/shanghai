@@ -67,6 +67,8 @@ $(function () {
   endDate = common.getDate(endDate);
   $('#search_placeOrderStartTime').val(beginDate).datetimepicker('setEndDate', endDate);
   $('#search_placeOrderEndTime').val(endDate).datetimepicker('setStartDate', beginDate).datetimepicker('setEndDate', endDate);
+
+  $('#formSearch').trigger('submit');
 });
 
 //handle search form

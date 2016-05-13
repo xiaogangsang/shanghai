@@ -56,6 +56,8 @@ $(function () {
   //data cache
   getCity();
   getMovie();
+
+  $('#formSearch').trigger('submit');
 });
 
 //handle search form

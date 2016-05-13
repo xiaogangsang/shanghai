@@ -24,6 +24,8 @@ $(function () {
   //data cache
   getProvince();
   getService();
+
+  $('#formSearch').trigger('submit');
 });
 
 //handle search form

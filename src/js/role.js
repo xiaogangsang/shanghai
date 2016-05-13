@@ -20,6 +20,8 @@ $(function () {
   setRole();
   getUsers();
   getResources();
+
+  $('#formSearch').trigger('submit');
 });
 
 //handle search form

@@ -20,6 +20,8 @@ $(function () {
 
   //set search form
   getBudgetSource();
+
+  $('#formSearch').trigger('submit');
 });
 
 $('#formSearch').on('click', 'button[type=submit]', function (event) {

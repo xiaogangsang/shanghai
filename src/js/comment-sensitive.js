@@ -33,6 +33,8 @@ $(function () {
       $('#popup-sensitive-import button[type=submit]').prop('disable', false).text('上传');
     },
   });
+
+  $('#formSearch').trigger('submit');
 });
 
 //handle search form

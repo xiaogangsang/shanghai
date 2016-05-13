@@ -34,6 +34,8 @@ $(function () {
   endDate = common.getDate(endDate);
   $('#search_beginDate').datetimepicker('setEndDate', endDate);
   $('#search_endDate').datetimepicker('setStartDate', beginDate).datetimepicker('setEndDate', endDate);
+
+  $('#formSearch').trigger('submit');
 });
 
 //handle search form
