@@ -153,7 +153,7 @@ $(document).on('click', '#btn-online-multi, #btn-offline-multi', function (e) {
 
 $(document).on('click', '#btn-export', function (event) {
   event.preventDefault();
-  var exportUrl = common.API_HOST + 'coupon/exportsCoupons?' +
+  var exportUrl = common.API_HOST + 'coupon/exportCoupons?' +
     'couponId=' + $.trim($('#search_couponId').val()) +
     '&name=' + $.trim($('#search_name').val()) +
     '&budgetSource=' + $('#search_budgetSource').val() +
