@@ -3,7 +3,7 @@
 require('cookie');
 var common = {};
 
-common.API_HOST = 'http://180.169.45.105/MovieOps/';
+common.API_HOST = window.location.origin + '/MovieOps/';
 
 common.init = function (pageName) {
   common.showMenu(pageName);
