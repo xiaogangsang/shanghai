@@ -25,7 +25,7 @@ gulp.task('build-css', function (done) {
 });
 
 //将js加上10位md5,并修改html中的引用路径，该动作依赖build-js
-gulp.task('md5:js', ['build-js', 'md5:css'], function (done) {
+gulp.task('md5:js', ['build-js', 'build-css'], function (done) {
   gulp.src('dist/js/*.js')
   .pipe(md5(10, 'dist/app/*.html'))
   .pipe(uglify())
@@ -33,7 +33,7 @@ gulp.task('md5:js', ['build-js', 'md5:css'], function (done) {
 });
 
 //将css加上10位md5，并修改html中的引用路径，该动作依赖sprite
-gulp.task('md5:css', ['build-css'], function (done) {
+gulp.task('md5:css', ['md5:js'], function (done) {
   gulp.src('src/css/*.css')
   .pipe(md5(10, 'dist/app/*.html'))
   .pipe(gulp.dest('dist/css'))
@@ -89,7 +89,7 @@ gulp.task('build-js', ['fileinclude'], function (callback) {
 });
 
 //发布
-gulp.task('release', ['clean', 'fileinclude', 'copy', 'md5:js']);
+gulp.task('release', ['clean', 'fileinclude', 'copy', 'md5:css']);
 
 //开发
 gulp.task('dev', ['connect', 'clean', 'fileinclude', 'copy', 'build-css', 'build-js', 'watch']);

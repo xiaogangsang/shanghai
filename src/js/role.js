@@ -388,6 +388,7 @@ function getUsers() {
   .done(function (res) {
     if (!!~~res.meta.result) {
       _users = res.data.rows;
+      $('#btn-create').prop('disabled', false).text('新增角色');
     } else {
       alert('接口错误：' + res.meta.msg);
     }

@@ -187,9 +187,7 @@ $('#dataTable').on('click', '.btn-detail', function (e) {
   .done(function (res) {
     if (!!res.meta.result) {
       var data = res.data;
-      data.service = data.service != undefined && data.service != ''
-      ? data.service = JSON.parse(data.service)
-      : [];
+      data.service = data.service != undefined && data.service != '' ? data.service = JSON.parse(data.service) : [];
       var template = $('#detail-template').html();
       Mustache.parse(template);
       var html = Mustache.render(template, data);
@@ -360,6 +358,13 @@ function setModal(cinemaData) {
         cities = _provinces[key].cityList;
       } else {
         _provinces[key].selected = false;
+      }
+    });
+    _(cities).forEach(function (value) {
+      if (cinemaData.cityId == value.cityId) {
+        value.selected = true;
+      } else {
+        value.selected = false;
       }
     });
 

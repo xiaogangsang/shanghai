@@ -19,27 +19,27 @@
   <div class="form-group">
     <div class="input-group">
       <div class="input-group-addon">影片制式</div>
-      {{#dimens.filmType}}
+      {{#filmType}}
       <div class="checkbox-inline"><label><input type="checkbox" name="filmType" value="{{id}}" required data-parsley-errors-container="#error-filmType" {{#checked}} checked{{/checked}}><span>{{name}}</span></label></div>
-      {{/dimens.filmType}}
+      {{/filmType}}
       <div id="error-filmType"></div>
     </div>
   </div>
   <div class="form-group">
     <div class="input-group">
       <div class="input-group-addon">屏幕规格</div>
-      {{#dimens.screenType}}
+      {{#screenType}}
       <div class="checkbox-inline"><label><input type="checkbox" name="screenType" value="{{id}}" required data-parsley-errors-container="#error-screenType" {{#checked}} checked{{/checked}}><span>{{name}}</span></label></div>
-      {{/dimens.screenType}}
+      {{/screenType}}
       <div id="error-screenType"></div>
     </div>
   </div>
   <div class="form-group">
     <div class="input-group">
       <div class="input-group-addon">特殊影厅</div>
-      {{#dimens.hallType}}
+      {{#hallType}}
       <div class="checkbox-inline"><label><input type="checkbox" name="hallType" value="{{id}}" required data-parsley-errors-container="#error-hallType" {{#checked}} checked{{/checked}}><span>{{name}}</span></label></div>
-      {{/dimens.hallType}}
+      {{/hallType}}
       <div id="error-hallType"></div>
     </div>
   </div>

@@ -12,8 +12,6 @@ var useCache = false;
 $(function () {
   common.init('record-coupon');
   getChannel();
-
-  $('#formSearch').trigger('submit');
 });
 
 //handle search form
@@ -142,7 +140,12 @@ function getChannel() {
 }
 
 function setTableData(rows) {
-  var data = { rows: rows };
+  var orderUrl = 'order-cs-detail.html';
+  if ($('#menu-order').css('display') == 'block') {
+    orderUrl = 'order-detail.html';
+  }
+
+  var data = { rows: rows , orderUrl:orderUrl};
   var template = $('#table-template').html();
   Mustache.parse(template);
   var html = Mustache.render(template, data);

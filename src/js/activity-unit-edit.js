@@ -5,12 +5,27 @@ var _budgetSource = [];
 var _plans = [];
 var _wandaTicket = [];
 var _movies = [];
-var _dimens = [];
+var _filmType = [
+{ name: '2D' },
+{ name: '3D' },
+];
+var _screenType = [
+{ name: '普通' },
+{ name: 'IMAX' },
+{ name: 'DMAX' },
+{ name: '巨幕' },
+];
+var _hallType = [
+{ name: '普通' },
+{ name: '4D' },
+{ name: '5D' },
+];
 var _channels = [];
 var _provinces = [];
 var _custom = ['新户', '老户'];
 var _submitting = false;
 var _priorities = [];
+var _dimenChanged = false;
 
 $(function () {
   common.init('activity-unit');
@@ -47,7 +62,7 @@ $(function () {
     setWandaTicket(false);
     setBudgetSource(false);
     setMovie(false);
-    setDimen(false,false,false);
+    setDimen(false, false, false, false);
     setChannel(false);
     setPattern(1);
   }
@@ -145,6 +160,7 @@ $(document).on('submit', '#popup-unit-priority form', function (event) {
     alert('优先级重复，请换一个！');
     return false;
   }
+
   $('#priority').val(priority);
   $('#popup-unit-priority').modal('hide');
   return false;
@@ -409,8 +425,21 @@ $(document).on('click', '#btn-set-dimen', function (event) {
   $('#popup-unit-dimen form').parsley();
 });
 
+$(document).on('change', '#popup-unit-dimen input[type=checkbox]', function (event) {
+  event.preventDefault();
+  _dimenChanged = true;
+});
+
 $(document).on('submit', '#popup-unit-dimen form', function (event) {
   event.preventDefault();
+
+  if (!_dimenChanged) {
+    _dimenChanged = true;
+    if (!window.confirm('已为您默认选择普通厅、普通屏幕、2D3D影片，是否确认保存？')) {
+      return false;
+    }
+  }
+
   var previewHtmlFilmType = '影片制式：';
   if ($('input[name=filmType]:checked').size() == $('input[name=filmType]').size()) {
     previewHtmlFilmType += '不限';
@@ -441,6 +470,7 @@ $(document).on('submit', '#popup-unit-dimen form', function (event) {
 
   $('#preview-dimen').html(previewHtmlFilmType + previewHtmlScreenType + previewHtmlHallType);
   $('#popup-unit-dimen').modal('hide');
+
   return false;
 });
 
@@ -574,7 +604,7 @@ $(document).on('submit', '#popup-unit-cinema form', function (event) {
   var previewHtml = '';
   if ($('#search-cinema-choosed tbody tr').length > 0) {
     $('#search-cinema-choosed tbody tr').each(function (index, el) {
-      previewHtml += $(el).data('id') + '[' + $(el).find('td:nth-child(1)').text() + '] ';
+      previewHtml += '[' + $(el).find('td:nth-child(1)').text() + '] ';
     });
 
     $('#preview-cinema').html(previewHtml);
@@ -700,6 +730,7 @@ $(document).on('submit', '#formUnit', function (event) {
   if (_submitting) {
     return false;
   }
+
   _submitting = true;
 
   $('#formUnit input[type=submit]').prop('disabled', true).text('更新中...');
@@ -932,7 +963,7 @@ function setPriority () {
     url: common.API_HOST + 'activity/activityList',
     type: 'POST',
     dataType: 'json',
-    data: {pageIndex: 1, pageSize: 9999},
+    data: {pageIndex: 1, pageSize: 999999, sord:'priority', sidx:'DESC'},
   })
   .done(function (res) {
     if (!!~~res.meta.result) {
@@ -1048,72 +1079,53 @@ function setMovie(films) {
   });
 }
 
-function setDimen(hallType, filmType, screenType) {
-  $.ajax({
-    url: common.API_HOST + 'common/allDimens',
-    type: 'GET',
-    dataType: 'json',
-  })
-  .done(function (res) {
-    if (!!~~res.meta.result) {
-      if (res.data == null || res.data.length < 1) {
-        return false;
-      } else {
-        _dimens = res.data;
-        var allChecked = true;
+function setDimen(actionEdit, checkedHallType, checkedFilmType, checkedScreenType) {
 
-        var previewHtmlFilmType = '影片制式：';
-        _(_dimens.filmType).forEach(function (dimen) {
-          dimen.checked = true;
-          if (filmType != false && filmType.indexOf(dimen.name) < 0) {
-            dimen.checked = false;
-            allChecked = false;
-          } else {
-            previewHtmlFilmType += '[' + dimen.name +  '] ';
-          }
-        });
+  if (!actionEdit) {
+    checkedHallType = ['普通'];
+    checkedFilmType = ['2D', '3D'];
+    checkedScreenType = ['普通'];
+  }
 
-         var previewHtmlScreenType = '<br>屏幕制式：';
-        _(_dimens.screenType).forEach(function (dimen) {
-          dimen.checked = true;
-          if (screenType != false && screenType.indexOf(dimen.name) < 0) {
-            dimen.checked = false;
-            allChecked = false;
-          } else {
-            previewHtmlScreenType += '[' + dimen.name + '] ';
-          }
-        });
-
-        var previewHtmlHallType = '<br>特殊影厅：';
-        _(_dimens.hallType).forEach(function (dimen) {
-          dimen.checked = true;
-          if (hallType != false && hallType.indexOf(dimen.name) < 0) {
-            dimen.checked = false;
-            allChecked = false;
-          } else {
-            previewHtmlHallType += '[' + dimen.name + '] ';
-          }
-        });
-
-        var previewHtml = '';
-        if (allChecked==true) {
-          previewHtml = '不限';
-        } else {
-          previewHtml = previewHtmlFilmType + previewHtmlScreenType + previewHtmlHallType;
-        }
-
-        $('#preview-dimen').html(previewHtml);
-
-        var data = {dimens:_dimens};
-        var template = $('#dimen-template').html();
-        Mustache.parse(template);
-        var html = Mustache.render(template, data);
-        $('#popup-unit-dimen .modal-body').html(html);
-      }
+  var previewHtmlFilmType = '影片制式：';
+  _(_filmType).forEach(function (dimen) {
+    dimen.checked = true;
+    if (checkedFilmType != false && checkedFilmType.indexOf(dimen.name) < 0) {
+      dimen.checked = false;
     } else {
-      alert('接口错误：' + res.meta.msg);
+      previewHtmlFilmType += '[' + dimen.name +  '] ';
     }
   });
+
+  var previewHtmlScreenType = '<br>屏幕规格：';
+  _(_screenType).forEach(function (dimen) {
+    dimen.checked = true;
+    if (checkedScreenType != false && checkedScreenType.indexOf(dimen.name) < 0) {
+      dimen.checked = false;
+    } else {
+      previewHtmlScreenType += '[' + dimen.name + '] ';
+    }
+  });
+
+  var previewHtmlHallType = '<br>特殊影厅：';
+  _(_hallType).forEach(function (dimen) {
+    dimen.checked = true;
+    if (checkedHallType != false && checkedHallType.indexOf(dimen.name) < 0) {
+      dimen.checked = false;
+    } else {
+      previewHtmlHallType += '[' + dimen.name + '] ';
+    }
+  });
+
+  var previewHtml = previewHtmlFilmType + previewHtmlScreenType + previewHtmlHallType;
+
+  $('#preview-dimen').html(previewHtml);
+
+  var data = {filmType:_filmType, screenType:_screenType, hallType:_hallType};
+  var template = $('#dimen-template').html();
+  Mustache.parse(template);
+  var html = Mustache.render(template, data);
+  $('#popup-unit-dimen .modal-body').html(html);
 }
 
 function setChannel(channels) {
@@ -1174,7 +1186,7 @@ function setCinema(cinemas) {
         var previewHtml = '';
         _(res.data).forEach(function (cinema) {
           html += '<tr data-id="' + cinema.cinemaId + '"><td>' + cinema.cinemaName + '</td><td>' + cinema.cityName + '</td><td>' + cinema.brandName + '</td></tr>';
-          previewHtml += cinema.cinemaId + '[' + cinema.cinemaName + '] ';
+          previewHtml += '[' + cinema.cinemaName + '] ';
         });
 
         $('#search-cinema-choosed tbody').html(html);
@@ -1451,7 +1463,7 @@ function setEdit(unitId) {
       if (unit.screenType != null && unit.screenType.length > 0) {
         screenType = unit.screenType
       }
-      setDimen(hallType, filmType, screenType);
+      setDimen(true, hallType, filmType, screenType);
 
       //影院
       if (unit.cinemas != null && unit.cinemas.length > 0) {

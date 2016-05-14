@@ -4,10 +4,25 @@ var common = require('common');
 var _budgetSource = [];
 var _wandaTicket = [];
 var _movies = [];
-var _dimens = [];
+var _filmType = [
+{ name: '2D' },
+{ name: '3D' },
+];
+var _screenType = [
+{ name: '普通' },
+{ name: 'IMAX' },
+{ name: 'DMAX' },
+{ name: '巨幕' },
+];
+var _hallType = [
+{ name: '普通' },
+{ name: '4D' },
+{ name: '5D' },
+];
 var _channels = [];
 var _provinces = [];
 var _submitting = false;
+var _dimenChanged = false;
 
 $(function() {
   common.init('activity-coupon');
@@ -22,7 +37,7 @@ $(function() {
     setWandaTicket(false);
     setBudgetSource(false);
     setMovie(false);
-    setDimen(false,false,false);
+    setDimen(false, false, false, false);
     setChannel(false);
   }
 
@@ -174,40 +189,45 @@ $(document).on('click', '#btn-set-dimen', function (event) {
   event.preventDefault();
   $('#popup-unit-dimen').modal('show');
   $('#popup-unit-dimen form').parsley();
+  if (_dimenFirstOpen) {
+    alert('已为您默认选择普通厅、普通屏幕、2D3D影片，是否确认保存？');
+    _dimenFirstOpen =false;
+  }
+});
+
+$(document).on('change', '#popup-unit-dimen input[type=checkbox]', function (event) {
+  event.preventDefault();
+  _dimenChanged = true;
 });
 
 $(document).on('submit', '#popup-unit-dimen form', function (event) {
   event.preventDefault();
-  var previewHtmlFilmType = '影片制式：';
-  if ($('input[name=filmType]:checked').size() == $('input[name=filmType]').size()) {
-    previewHtmlFilmType += '不限';
-  } else {
-    $('input[name=filmType]:checked').each(function (index, el) {
-      previewHtmlFilmType += '[' + $(el).next('span').text() + '] ';
-    });
+
+  if (!_dimenChanged) {
+    _dimenChanged = true;
+    if (!window.confirm('已为您默认选择普通厅、普通屏幕、2D3D影片，是否确认保存？')) {
+      return false;
+    }
   }
+
+  var previewHtmlFilmType = '影片制式：';
+  $('input[name=filmType]:checked').each(function (index, el) {
+    previewHtmlFilmType += '[' + $(el).next('span').text() + '] ';
+  });
 
   var previewHtmlScreenType = '<br>屏幕规格：';
-  if ($('input[name=screenType]:checked').size() == $('input[name=screenType]').size()) {
-    previewHtmlScreenType += '不限';
-  } else {
-    $('input[name=screenType]:checked').each(function (index, el) {
-      previewHtmlScreenType += '[' + $(el).next('span').text() + '] ';
-    });
-  }
+  $('input[name=screenType]:checked').each(function (index, el) {
+    previewHtmlScreenType += '[' + $(el).next('span').text() + '] ';
+  });
 
   var previewHtmlHallType = '<br>特殊影厅：';
-  if ($('input[name=hallType]:checked').size() == $('input[name=hallType]').size()) {
-    previewHtmlHallType += '不限';
-  } else {
-    $('input[name=hallType]:checked').each(function (index, el) {
-      previewHtmlHallType += '[' + $(el).next('span').text() + '] ';
-    });
-  }
-
+  $('input[name=hallType]:checked').each(function (index, el) {
+    previewHtmlHallType += '[' + $(el).next('span').text() + '] ';
+  });
 
   $('#preview-dimen').html(previewHtmlFilmType + previewHtmlScreenType + previewHtmlHallType);
   $('#popup-unit-dimen').modal('hide');
+
   return false;
 });
 
@@ -323,7 +343,7 @@ $(document).on('submit', '#popup-unit-cinema form', function(event) {
   var preview_html = '';
   if ( $('#search-cinema-choosed tbody tr').length > 0 ) {
     $('#search-cinema-choosed tbody tr').each(function(index, el) {
-      preview_html += $(el).data('id')+'['+$(el).find('td:nth-child(1)').text()+'] ';
+      preview_html += '['+$(el).find('td:nth-child(1)').text()+'] ';
     });
     $('#preview-cinema').html(preview_html);
   } else {
@@ -380,22 +400,22 @@ $(document).on('change', '#couponPattern', function(event) {
     case 1:
     case 3:
     case 4:
-      $('#amount').attr('data-parsley-pattern', '^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$');
-      $('#limitNum').prop({disabled: false, required: true});
-      $('#typeTable th:nth-child(3)').text('单张票价区间（最低）');
-      $('#typeTable th:nth-child(4)').text('单张票价区间（最高）');
+    $('#amount').attr('data-parsley-pattern', '^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$');
+    $('#limitNum').prop({disabled: false, required: true});
+    $('#typeTable th:nth-child(3)').text('单张票价区间（最低）');
+    $('#typeTable th:nth-child(4)').text('单张票价区间（最高）');
     break;
     case 2:
-      $('#amount').attr('data-parsley-pattern', '^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$');
-      $('#limitNum').prop({disabled: true, required: false});
-      $('#typeTable th:nth-child(3)').text('订单价格区间（最低）');
-      $('#typeTable th:nth-child(4)').text('订单价格区间（最高）');
+    $('#amount').attr('data-parsley-pattern', '^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$');
+    $('#limitNum').prop({disabled: true, required: false});
+    $('#typeTable th:nth-child(3)').text('订单价格区间（最低）');
+    $('#typeTable th:nth-child(4)').text('订单价格区间（最高）');
     break;
     case 5:
-      $('#amount').attr('data-parsley-pattern', '^[1-9]{1}$');
-      $('#limitNum').prop({disabled: false, required: true});
-      $('#typeTable th:nth-child(3)').text('单张票价区间（最低）');
-      $('#typeTable th:nth-child(4)').text('单张票价区间（最高）');
+    $('#amount').attr('data-parsley-pattern', '^[1-9]{1}$');
+    $('#limitNum').prop({disabled: false, required: true});
+    $('#typeTable th:nth-child(3)').text('单张票价区间（最低）');
+    $('#typeTable th:nth-child(4)').text('单张票价区间（最高）');
     break;
   }
 });
@@ -406,6 +426,7 @@ $(document).on('submit', '#formEdit', function(event) {
   if (_submitting) {
     return false;
   }
+
   _submitting = true;
 
   $('#formUnit input[type=submit]').prop('disabled', true).text('更新中...');
@@ -605,72 +626,53 @@ function setMovie( films ) {
     }
   });
 }
-function setDimen(hallType, filmType, screenType) {
-  $.ajax({
-    url: common.API_HOST + 'common/allDimens',
-    type: 'GET',
-    dataType: 'json',
-  })
-  .done(function (res) {
-    if (!!~~res.meta.result) {
-      if (res.data == null || res.data.length < 1) {
-        return false;
-      } else {
-        _dimens = res.data;
-        var allChecked = true;
+function setDimen(actionEdit, checkedHallType, checkedFilmType, checkedScreenType) {
 
-        var previewHtmlFilmType = '影片制式：';
-        _(_dimens.filmType).forEach(function (dimen) {
-          dimen.checked = true;
-          if (filmType != false && filmType.indexOf(dimen.name) < 0) {
-            dimen.checked = false;
-            allChecked = false;
-          } else {
-            previewHtmlFilmType += '[' + dimen.name +  '] ';
-          }
-        });
+  if (!actionEdit) {
+    checkedHallType = ['普通'];
+    checkedFilmType = ['2D', '3D'];
+    checkedScreenType = ['普通'];
+  }
 
-         var previewHtmlScreenType = '<br>屏幕制式：';
-        _(_dimens.screenType).forEach(function (dimen) {
-          dimen.checked = true;
-          if (screenType != false && screenType.indexOf(dimen.name) < 0) {
-            dimen.checked = false;
-            allChecked = false;
-          } else {
-            previewHtmlScreenType += '[' + dimen.name + '] ';
-          }
-        });
-
-        var previewHtmlHallType = '<br>特殊影厅：';
-        _(_dimens.hallType).forEach(function (dimen) {
-          dimen.checked = true;
-          if (hallType != false && hallType.indexOf(dimen.name) < 0) {
-            dimen.checked = false;
-            allChecked = false;
-          } else {
-            previewHtmlHallType += '[' + dimen.name + '] ';
-          }
-        });
-
-        var previewHtml = '';
-        if (allChecked==true) {
-          previewHtml = '不限';
-        } else {
-          previewHtml = previewHtmlFilmType + previewHtmlScreenType + previewHtmlHallType;
-        }
-
-        $('#preview-dimen').html(previewHtml);
-
-        var data = {dimens:_dimens};
-        var template = $('#dimen-template').html();
-        Mustache.parse(template);
-        var html = Mustache.render(template, data);
-        $('#popup-unit-dimen .modal-body').html(html);
-      }
+  var previewHtmlFilmType = '影片制式：';
+  _(_filmType).forEach(function (dimen) {
+    dimen.checked = true;
+    if (checkedFilmType != false && checkedFilmType.indexOf(dimen.name) < 0) {
+      dimen.checked = false;
     } else {
-      alert('接口错误：' + res.meta.msg);
+      previewHtmlFilmType += '[' + dimen.name +  '] ';
     }
   });
+
+  var previewHtmlScreenType = '<br>屏幕规格：';
+  _(_screenType).forEach(function (dimen) {
+    dimen.checked = true;
+    if (checkedScreenType != false && checkedScreenType.indexOf(dimen.name) < 0) {
+      dimen.checked = false;
+    } else {
+      previewHtmlScreenType += '[' + dimen.name + '] ';
+    }
+  });
+
+  var previewHtmlHallType = '<br>特殊影厅：';
+  _(_hallType).forEach(function (dimen) {
+    dimen.checked = true;
+    if (checkedHallType != false && checkedHallType.indexOf(dimen.name) < 0) {
+      dimen.checked = false;
+    } else {
+      previewHtmlHallType += '[' + dimen.name + '] ';
+    }
+  });
+
+  var previewHtml = previewHtmlFilmType + previewHtmlScreenType + previewHtmlHallType;
+
+  $('#preview-dimen').html(previewHtml);
+
+  var data = {filmType:_filmType, screenType:_screenType, hallType:_hallType};
+  var template = $('#dimen-template').html();
+  Mustache.parse(template);
+  var html = Mustache.render(template, data);
+  $('#popup-unit-dimen .modal-body').html(html);
 }
 function setChannel(channels) {
   $.ajax({
@@ -729,7 +731,7 @@ function setCinema( cinemas ) {
         var preview_html = '';
         _(res.data).forEach(function(cinema){
           html += '<tr data-id="'+cinema.cinemaId+'"><td>'+cinema.cinemaName+'</td><td>'+cinema.cityName+'</td><td>'+cinema.brandName+'</td></tr>';
-          preview_html += cinema.cinemaId + '[' + cinema.cinemaName + '] ';
+          preview_html += '[' + cinema.cinemaName + '] ';
         });
         $('#search-cinema-choosed tbody').html(html);
         if (preview_html != '') {
@@ -841,7 +843,7 @@ function setEdit(couponId) {
       if (coupon.screenType != null && coupon.screenType.length > 0) {
         screenType = coupon.screenType
       }
-      setDimen(hallType, filmType, screenType);
+      setDimen(true, hallType, filmType, screenType);
       //影院
       if (coupon.cinemas != null && coupon.cinemas.length > 0) {
         setCinema(coupon.cinemas.join('|'));
