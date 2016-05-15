@@ -1403,7 +1403,7 @@ function setEdit(unitId) {
         if (unit.cusTypes.length == 2) {
           previewHtml = '不限';
         } else {
-          previewHtml = _custom[unit.cusTypes[0]] + '；';
+          previewHtml = _custom[unit.cusTypes[0]-1] + '；';
         }
         $('#preview-custom').html(previewHtml);
       }

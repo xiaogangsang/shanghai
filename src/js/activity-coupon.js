@@ -15,7 +15,6 @@ $(function () {
   //set search form
   getBudgetSource();
 
-  $('#formSearch').trigger('submit');
 });
 
 $('#formSearch').on('click', 'button[type=submit]', function (event) {
@@ -241,6 +240,7 @@ function getBudgetSource() {
   .done(function (res) {
     if (!!~~res.meta.result) {
       _budgetSource = res.data;
+      $('#formSearch').trigger('submit');
     } else {
       alert('接口错误：' + res.meta.msg);
     }

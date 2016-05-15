@@ -161,6 +161,8 @@ $('#dataTable').on('click', '.btn-check', function (event) {
 $(document).on('submit', '#popup-class-check form', function (event) {
   event.preventDefault();
   $('#popup-class-check button[type=submit]').prop('disabled', true).text('检查中...');
+  $('#popup-class-check button.close').hide();
+  $('#popup-class-check .bg-warning').slideDown();
   var sendData = {
     ticketName: $('#check_ticketName').val(),
     tpCinemaId: $('#check_cinemaId').val(),
@@ -174,6 +176,8 @@ $(document).on('submit', '#popup-class-check form', function (event) {
   })
   .done(function (res) {
     $('#popup-class-check button[type=submit]').prop('disabled', false).text('检查');
+    $('#popup-class-check button.close').show();
+    $('#popup-class-check .bg-warning').slideUp();
     if (!!~~res.meta.result) {
       alert(res.data.status);
     } else {
