@@ -269,6 +269,7 @@ $(document).on('submit', '#popup-banner-form form', function (event) {
   if (_submitting) {
     return false;
   }
+
   _submitting = true;
   var sendData = {
     bannerType: $('#popup-banner-form #bannerType').val(),
@@ -346,7 +347,7 @@ $(document).on('click', '#popup-banner-form #btn-upload', function (event) {
     done: function (e, data) {
       $('#popup-banner-upload button.btn-primary').prop('disable', false).text('上传');
       if (!!~~data.result.meta.result) {
-        $('#imageUrl').val(common.API_HOST + data.result.data.savePath);
+        $('#imageUrl').val(data.result.data.savePath);
         alert('上传成功！');
         $('#popup-banner-upload').modal('hide');
       } else {

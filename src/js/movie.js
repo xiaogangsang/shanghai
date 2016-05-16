@@ -217,8 +217,8 @@ $(document).on('click', '#btn-upload', function (event) {
     done: function (e, data) {
       $('#popup-movie-upload button[type=submit]').prop('disable', false).text('上传');
       if (!!~~data.result.meta.result) {
-        $('#poster').val(common.API_HOST + data.result.data.savePath);
-        $('.poster-preview').attr('src', common.API_HOST + data.result.data.savePath);
+        $('#poster').val(data.result.data.savePath);
+        $('.poster-preview').attr('src', data.result.data.savePath);
         alert('上传成功！');
         $('#popup-movie-upload').modal('hide');
       } else {
