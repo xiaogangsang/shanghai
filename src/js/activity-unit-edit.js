@@ -47,7 +47,6 @@ $(function () {
 
   setProvince();
   setBrand();
-  setPriority();
 
   var urlParam = common.getUrlParam();
   if (urlParam.unitId != undefined && urlParam.unitId != '') {
@@ -65,6 +64,7 @@ $(function () {
     setDimen(false, false, false, false);
     setChannel(false);
     setPattern(1);
+    setPriority(false);
   }
 
   //upper of range
@@ -148,14 +148,13 @@ $(document).on('click', '#repeatedDayAll', function (event) {
 $(document).on('click', '#priority', function (event) {
   event.preventDefault();
   $('#popup-unit-priority').modal('show');
-  $('#popup-unit-priority input[type=text]').quicksearch('#priorityTable tbody tr');
+  $('#popup-unit-priority input[type=text]').quicksearch('#priorityTable tbody tr',{selector: 'th'}));
   $('#popup-unit-priority form').parsley();
 });
 
 $(document).on('submit', '#popup-unit-priority form', function (event) {
   event.preventDefault();
-  var priority = $('#popup-unit-priority input[type=text]').val();
-
+  var priority = +$('#popup-unit-priority input[type=text]').val();
   if ($.inArray(priority, _priorities) > -1) {
     alert('优先级重复，请换一个！');
     return false;
@@ -958,7 +957,7 @@ function setBrand() {
   });
 }
 
-function setPriority () {
+function setPriority (exclude) {
   $.ajax({
     url: common.API_HOST + 'activity/activityList',
     type: 'POST',
@@ -969,8 +968,11 @@ function setPriority () {
     if (!!~~res.meta.result) {
       var html = '';
       _(res.data.rows).forEach(function (value, key) {
-        _priorities.push(value.priority);
-        html += '<tr><td>' + value.priority + '</td><td>' + value.name + '</td></tr>';
+        if (value.priority != exclude) {
+          _priorities.push(value.priority);
+          html += '<tr><th>' + value.priority + '</th><td>' + value.name + '</td></tr>';
+        }
+
       });
       $('#priorityTable tbody').html(html);
 
@@ -1260,6 +1262,8 @@ function setEdit(unitId) {
         alert('无法获取要编辑的活动单元信息，这个不太正常，让[猿们]来查一查！');
         return false;
       }
+
+      setPriority(unit.priority);
 
       $('#formUnit').prepend('<input type="hidden" id="id" value="' + unit.id + '">');
 
