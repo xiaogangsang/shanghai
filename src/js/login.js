@@ -4,12 +4,13 @@ var common = require('common');
 
 $(function () {
 
-  if (Cookies.get('Xtoken') != undefined) {
-    window.location.href = 'index.html';
-  }
-
   if (window.location.search.substring(1).indexOf('logout') > -1) {
     common.logout();
+    return false;
+  }
+
+  if (Cookies.get('Xtoken') != undefined) {
+    window.location.href = 'index.html';
   }
 
   $('#form-login').parsley();
