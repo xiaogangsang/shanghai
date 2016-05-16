@@ -148,7 +148,7 @@ $(document).on('click', '#repeatedDayAll', function (event) {
 $(document).on('click', '#priority', function (event) {
   event.preventDefault();
   $('#popup-unit-priority').modal('show');
-  $('#popup-unit-priority input[type=text]').quicksearch('#priorityTable tbody tr',{selector: 'th'}));
+  $('#popup-unit-priority input[type=text]').quicksearch('#priorityTable tbody tr',{selector: 'th'});
   $('#popup-unit-priority form').parsley();
 });
 
@@ -602,14 +602,12 @@ $(document).on('submit', '#popup-unit-cinema form', function (event) {
   event.preventDefault();
   var previewHtml = '';
   if ($('#search-cinema-choosed tbody tr').length > 0) {
-    $('#search-cinema-choosed tbody tr').each(function (index, el) {
-      previewHtml += '[' + $(el).find('td:nth-child(1)').text() + '] ';
-    });
-
-    $('#preview-cinema').html(previewHtml);
+    previewHtml = '选择了 ' + $('#search-cinema-choosed tbody tr').length + ' 个影院';
   } else {
-    $('#preview-cinema').html('不限');
+    previewHtml = '不限';
   }
+
+  $('#preview-cinema').html(previewHtml);
 
   $('#popup-unit-cinema').modal('hide');
   return false;
@@ -1185,16 +1183,19 @@ function setCinema(cinemas) {
         return false;
       } else {
         var html = '';
-        var previewHtml = '';
         _(res.data).forEach(function (cinema) {
           html += '<tr data-id="' + cinema.cinemaId + '"><td>' + cinema.cinemaName + '</td><td>' + cinema.cityName + '</td><td>' + cinema.brandName + '</td></tr>';
-          previewHtml += '[' + cinema.cinemaName + '] ';
         });
 
         $('#search-cinema-choosed tbody').html(html);
-        if (previewHtml != '') {
-          $('#preview-cinema').html(previewHtml);
+
+        var previewHtml = '';
+        if (res.data.length > 0) {
+          previewHtml = '选择了 ' + res.data.length + ' 个影院';
+        } else {
+          previewHtml = '不限';
         }
+        $('#preview-cinema').html(previewHtml);
       }
     } else {
       alert('接口错误：' + res.meta.msg);
