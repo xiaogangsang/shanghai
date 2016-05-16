@@ -6,7 +6,6 @@ $(function () {
 
   if (window.location.search.substring(1).indexOf('logout') > -1) {
     common.logout();
-    return false;
   }
 
   if (Cookies.get('Xtoken') != undefined) {
