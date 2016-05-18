@@ -42,11 +42,10 @@ PRD `???`
 
 #Schedule#
 _v1.1_
-- lodash替换为完整版（压缩后发现vendor.js大小很乐观），可大幅精简js代码
-- 统一加载通用资源，存到localStorage或sessionStorage
-- webpack优化
-- gulp优化
 - 补js代码注释
+- lodash替换为完整版（压缩后发现vendor.js大小很乐观），可大幅精简js代码
+- 异步依赖执行rsvp.js
+- 统一加载通用资源，存到localStorage或sessionStorage
 
 _v2.0_
 - jade模板
@@ -54,3 +53,6 @@ _v2.0_
 - pjax，无刷新切换页面
 - 缩减bootstrap依赖
 - 缩减第三方js依赖
+
+_v2.1_
+- 引入handlebars.js，UI组建化

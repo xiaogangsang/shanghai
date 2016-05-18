@@ -481,17 +481,17 @@ $(document).on('click', '#btn-set-cinema', function (event) {
 
 $(document).on('change', '#search-cinema-provinceId', function (e) {
   var provinceId = parseInt($(this).val());
-  if (provinceId != NaN || provinceId != undefined || provinceId != '') {
+  var options = '';
+  if (!!+provinceId) {
     var province = _.find(_provinces, { provinceId: provinceId.toString() });
     var cityList = province.cityList;
-    var options = '<option value="">选择城市</option>';
     _(cityList).forEach(function (value, key) {
       options += '<option value="' + value.cityId + '">' + value.cityName + '</option>';
     });
-
-    $('#search-cinema-cityId').html(options);
+  } else {
+    options = '<option value="">城市</option>';
   }
-
+  $('#search-cinema-cityId').html(options);
   return false;
 });
 

@@ -475,6 +475,8 @@ $(document).on('submit', '#popup-class-form form', function (event) {
 
 $(document).on('click', '#btn-create', function (e) {
   e.preventDefault();
+  $('#search-cinema-cinemaName').val('');
+  $('#search-cinema-candidate tbody, #search-cinema-choosed tbody').html('');
   setModal(false);
   $('#popup-class-form').modal('show');
   $('#popup-class-form form').parsley();
