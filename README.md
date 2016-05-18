@@ -22,7 +22,7 @@ alias cnpm="npm --registry=https://registry.npm.taobao.org \
 
 #后端接口#
 UAT `http://180.169.45.105/MovieOps/`
-PRD `???`
+PRD `/MovieOps`
 
 #文件&目录说明#
 - `.jscsrc` javascript代码规范
@@ -49,10 +49,9 @@ _v1.1_
 
 _v2.0_
 - jade模板
-- sass预处理
+- sass/less/bootcss
 - pjax，无刷新切换页面
-- 缩减bootstrap依赖
-- 缩减第三方js依赖
+- 缩减bootstrap依赖，取部分css，取单个js
 
 _v2.1_
 - 引入handlebars.js，UI组建化
