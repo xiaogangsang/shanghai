@@ -1188,6 +1188,7 @@ function setCinema(cinemas) {
         });
 
         $('#search-cinema-choosed tbody').html(html);
+        $('#input-cinema-filter').quicksearch('#search-cinema-choosed tbody tr');
 
         var previewHtml = '';
         if (res.data.length > 0) {

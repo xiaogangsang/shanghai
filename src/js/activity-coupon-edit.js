@@ -736,6 +736,8 @@ function setCinema( cinemas ) {
           html += '<tr data-id="'+cinema.cinemaId+'"><td>'+cinema.cinemaName+'</td><td>'+cinema.cityName+'</td><td>'+cinema.brandName+'</td></tr>';
         });
         $('#search-cinema-choosed tbody').html(html);
+        $('#input-cinema-filter').quicksearch('#search-cinema-choosed tbody tr');
+
         if (res.data.length > 0) {
           previewHtml = '选择了 ' + res.data.length + ' 个影院';
         } else {
