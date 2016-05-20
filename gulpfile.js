@@ -92,4 +92,4 @@ gulp.task('build-js', ['fileinclude'], function (callback) {
 gulp.task('release', ['clean', 'fileinclude', 'copy', 'md5:css']);
 
 //开发
-gulp.task('dev', ['connect', 'clean', 'fileinclude', 'copy', 'build-css', 'build-js', 'watch']);
+gulp.task('dev', ['clean', 'fileinclude', 'copy', 'build-css', 'build-js', 'connect', 'watch']);

@@ -258,7 +258,6 @@ function setChannel() {
       });
 
       $('#search_channelId').append(html);
-      $('#search_channelId').chosen({ disable_search_threshold: 6, allow_single_deselect: true });
 
       $('#formSearch').trigger('submit');
     }

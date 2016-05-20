@@ -19,7 +19,7 @@ $(function () {
 
   //set search form
   setChannel();
-  setProvince();
+  setProvince(true);
 
   getCity();
   getCinema();
@@ -188,9 +188,12 @@ $(document).on('submit', '#popup-class-check form', function (event) {
 
 $('#dataTable').on('click', '.btn-edit', function (event) {
   event.preventDefault();
-
   $('#search-cinema-cinemaName').val('');
   $('#search-cinema-candidate tbody, #search-cinema-choosed tbody').html('');
+  $('#choosedCount').html('0');
+  setProvince(false);
+  $('#search-cinema-cityId').html('<option value="">选择城市</option>');
+
   $.ajax({
     url: common.API_HOST + 'thirdParty/wandaTicket/ticketDetail',
     type: 'POST',
@@ -211,7 +214,9 @@ $('#dataTable').on('click', '.btn-edit', function (event) {
           html += '<tr data-id="' + cinema.id + '"><td>' + cinema.name + '</td><td>' + cinema.cityName + '</td></tr>';
         }
       });
+
       $('#search-cinema-choosed tbody').html(html);
+      $('#choosedCount').html($('#search-cinema-choosed tbody tr').size());
 
       var channelList = [];
       _(res.data.ticketChannelRelList).forEach(function (channel) {
@@ -278,7 +283,7 @@ $(document).on('click', '#btn-set-cinema', function (event) {
 
 $(document).on('change', '#search-cinema-provinceId', function (e) {
   var provinceId = parseInt($(this).val());
-  if (provinceId != NaN || provinceId != undefined || provinceId != '') {
+  if (!!+provinceId) {
     var province = _.find(_provinces, { provinceId: provinceId.toString() });
     var cityList = province.cityList;
     var options = '<option value="">选择城市</option>';
@@ -477,6 +482,10 @@ $(document).on('click', '#btn-create', function (e) {
   e.preventDefault();
   $('#search-cinema-cinemaName').val('');
   $('#search-cinema-candidate tbody, #search-cinema-choosed tbody').html('');
+  $('#choosedCount').html('0');
+  setProvince(false);
+  $('#search-cinema-cityId').html('<option value="">选择城市</option>');
+
   setModal(false);
   $('#popup-class-form').modal('show');
   $('#popup-class-form form').parsley();
@@ -658,25 +667,35 @@ function getCinema() {
   });
 }
 
-function setProvince () {
-  $.ajax({
-    url: common.API_HOST + 'common/provinceList',
-    type: 'GET',
-    dataType: 'json',
-  })
-  .done(function (res) {
-    if (!!~~res.meta.result) {
-      _provinces = res.data;
-      var html = '';
-      _(_provinces).forEach(function (province) {
-        html += '<option value="' + province.provinceId + '">' + province.provinceName + '</option>';
-      });
+function setProvince(first) {
+  if (!!first) {
+    $.ajax({
+      url: common.API_HOST + 'common/provinceList',
+      type: 'GET',
+      dataType: 'json',
+    })
+    .done(function (res) {
+      if (!!~~res.meta.result) {
+        _provinces = res.data;
+        var html = '';
+        _(_provinces).forEach(function (province) {
+          html += '<option value="' + province.provinceId + '">' + province.provinceName + '</option>';
+        });
 
-      $('#search-cinema-provinceId').append(html);
-    } else {
-      alert('接口错误：' + res.meta.msg);
-    }
-  });
+        $('#search-cinema-provinceId').append(html);
+      } else {
+        alert('接口错误：' + res.meta.msg);
+      }
+    });
+  } else {
+    var html = '';
+    _(_provinces).forEach(function (province) {
+      html += '<option value="' + province.provinceId + '">' + province.provinceName + '</option>';
+    });
+
+    $('#search-cinema-provinceId').append(html);
+  }
+
 }
 
 function setTableData(rows) {

@@ -3,6 +3,7 @@
 var common = require('common');
 var _sources = {};
 var _hallTypes = {};
+var _channels = {};
 var _pageIndex = 1;
 var _pageSize = 10;
 var _pageTotal = 0;
@@ -16,6 +17,7 @@ $(function () {
   //set search form
   setDimen();
   setSource();
+  setChannel();
 
   $('#search_beginShowDate').datetimepicker({
     format: 'yyyy-mm-dd',
@@ -41,15 +43,21 @@ $(function () {
     $('#search_beginShowDate').datetimepicker('setEndDate', FromEndDate);
   });
 
-  $('#formSearch').trigger('submit');
 });
 
 //handle search form
 $('#formSearch').on('submit', function (e) {
   e.preventDefault();
+
+  if (!+$.trim($('#search_filmId').val()) && !+$.trim($('#search_cinemaId').val())) {
+    alert('[影片ID] 和 [影院ID] 必填且必须为数字！');
+    return false;
+  }
+
   var sendData = {
-    filmName: $.trim($('#search_filmName').val()),
-    cinemaName: $.trim($('#search_cinemaName').val()),
+    filmId: $.trim($('#search_filmId').val()),
+    cinemaId: $.trim($('#search_cinemaId').val()),
+    channelId: $('#search_channelId').val(),
     dimenId: $('#search_dimenId').val(),
     tpId: $('#search_tpId').val(),
     beginShowDate: $('#search_beginShowDate').val(),
@@ -79,7 +87,7 @@ $('#formSearch').on('submit', function (e) {
     _querying = false;
     if (!!~~res.meta.result) {
       if (res.data.rows.length < 1) {
-        $('#dataTable tbody').html('<tr><td colspan="9" align="center">查不到相关数据，请修改查询条件！</td></tr>');
+        $('#dataTable tbody').html('<tr><td colspan="11" align="center">查不到相关数据，请修改查询条件！</td></tr>');
         $('#pager').html('');
       } else {
         useCache = true;
@@ -87,6 +95,7 @@ $('#formSearch').on('submit', function (e) {
         _pageTotal = Math.ceil(res.data.total / _pageSize);
         setPager(res.data.total, _pageIndex, res.data.rows.length, _pageTotal);
         _(res.data.rows).forEach(function (item) {
+          item.salePrice = (+item.settlePrice) + (+item.serviceFee);
           _(_hallTypes).forEach(function (value, key) {
             if (value.id == item.dimen) {
               item.dimenName = value.name;
@@ -163,7 +172,7 @@ function setDimen() {
     if (!!~~res.meta.result) {
       _hallTypes = res.data;
       _(_hallTypes).forEach(function (item) {
-        $('#search_dimenId').append($('<option></option>').attr('value', item.id).text(item.name));
+        $('#search_dimenId').append($('<option></option>').attr('value', item.name).text(item.name));
       });
     } else {
       alert('接口错误：' + res.meta.msg);
@@ -186,6 +195,25 @@ function setSource() {
       });
     } else {
       alert('接口错误：' + res.meta.msg);
+    }
+  });
+}
+
+function setChannel() {
+  $.ajax({
+    url: common.API_HOST + 'common/channelList',
+    type: 'GET',
+    dataType: 'json',
+  })
+  .done(function (res) {
+    if (!!~~res.meta.result) {
+      _channels = res.data;
+      var html = '';
+      $.each(_channels, function (index, item) {
+        html += '<option value="' + item.channelId + '">' + item.channelName + '</option>';
+      });
+
+      $('#search_channelId').append(html);
     }
   });
 }

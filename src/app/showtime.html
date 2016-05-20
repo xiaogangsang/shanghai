@@ -31,31 +31,22 @@
 
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
-              <div class="input-group-addon">影片名</div>
-              <input type="text" class="form-control" id="search_filmName">
+              <div class="input-group-addon">影片ID</div>
+              <input type="text" class="form-control" id="search_filmId">
             </div>
           </div>
 
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
-              <div class="input-group-addon">影院名</div>
-              <input type="text" class="form-control" id="search_cinemaName">
+              <div class="input-group-addon">影院ID</div>
+              <input type="text" class="form-control" id="search_cinemaId">
             </div>
           </div>
 
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
-              <div class="input-group-addon">合作方</div>
-              <select class="form-control" id="search_tpId">
-                <option value="">全部</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-group col-sm-6 col-md-4">
-            <div class="input-group">
-              <div class="input-group-addon">影片制式</div>
-              <select class="form-control" id="search_dimenId">
+              <div class="input-group-addon">渠道</div>
+              <select class="form-control" id="search_channelId">
                 <option value="">全部</option>
               </select>
             </div>
@@ -72,6 +63,25 @@
             <div class="input-group">
               <div class="input-group-addon">至</div>
               <input type="text" class="form-control" id="search_endShowDate" readonly>
+            </div>
+          </div>
+
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">合作方</div>
+              <select class="form-control" id="search_tpId">
+                <option value="">全部</option>
+              </select>
+            </div>
+          </div>
+
+
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">影片制式</div>
+              <select class="form-control" id="search_dimenId">
+                <option value="">全部</option>
+              </select>
             </div>
           </div>
 
@@ -95,9 +105,11 @@
                 <tr>
                   <th>ID</th>
                   <th>合作方</th>
+                  <th>渠道</th>
                   <th>影院名</th>
                   <th>影片名</th>
                   <th>影片制式</th>
+                  <th>放映时间</th>
                   <th>票类</th>
                   <th>结算价</th>
                   <th>服务费</th>
@@ -106,7 +118,7 @@
               </thead>
               <tbody>
                 <tr>
-                  <td colspan="9" align="center">请点击“查询”按钮！</td>
+                  <td colspan="11" align="center">请点击“查询”按钮！</td>
                 </tr>
               </tbody>
             </table>
@@ -144,9 +156,11 @@
     <tr>
       <td>{{id}}</td>
       <td>{{tp}}</td>
+      <td>{{channelName}}</td>
       <td>{{cinemaName}}</td>
       <td>{{filmName}}</td>
       <td>{{dimenName}}</td>
+      <td>{{playDate}} {{playTime}}</td>
       <td>{{ticketId}}</td>
       <td>{{settlePrice}}</td>
       <td>{{serviceFee}}</td>
