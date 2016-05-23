@@ -187,7 +187,10 @@ $(document).on('submit', '#popup-refund form', function (event) {
     return false;
   }
 
+  $('#popup-refund button[type=submit]').text('处理中...').prop('disabled', true);
+  $('#popup-refund .close').hide();
   _submitting = true;
+
   if (!window.confirm('确定退款吗？')) {
     return false;
   }
@@ -197,7 +200,7 @@ $(document).on('submit', '#popup-refund form', function (event) {
     productOrderNo: $('#productOrderNo').val(),
     channelId: $('#channelId').val(),
     refundAmountUndertaker: $('input[name=refundAmountUndertaker]:checked').val(),
-    refundReason: $.trim($('#popup-refund textarea').value),
+    refundReason: $.trim( $('#popup-refund textarea').val() ),
   };
   if (sendData.transOrderNo == '' || sendData.productOrderNo == '') {
     alert('非法操作，无法获取订单号！');
@@ -213,6 +216,8 @@ $(document).on('submit', '#popup-refund form', function (event) {
   })
   .done(function (res) {
     _submitting = false;
+    $('#popup-refund button[type=submit]').text('提交').prop('disabled', false);
+    $('#popup-refund .close').show();
     if (!!~~res.meta.result) {
       alert('退款成功！');
       $('#popup-refund').modal('hide');
@@ -275,12 +280,13 @@ $(document).on('submit', '#popup-undertaker form', function (event) {
 
   _submitting = true;
   $('#popup-undertaker button[type=submit]').prop('disabled', true).text('处理中...');
+  $('#popup-undertaker .close').hide();
 
   var sendData = {
     transOrderNo: $('#transOrderNo').val(),
     productOrderNo: $('#productOrderNo').val(),
     // chargeUndertaker: $('input[name=chargeUndertaker]:checked').val(),
-    refundReason: $.trim($('#popup-undertaker textarea').value),
+    refundReason: $.trim( $('#popup-undertaker textarea').val() ),
   };
   if (sendData.transOrderNo == '' || sendData.productOrderNo == '') {
     alert('非法操作，无法获取订单号！');
@@ -297,6 +303,7 @@ $(document).on('submit', '#popup-undertaker form', function (event) {
   .done(function (res) {
     _submitting = false;
     $('#popup-undertaker button[type=submit]').prop('disabled', false).text('提交');
+    $('#popup-undertaker .close').show();
     if (!!~~res.meta.result) {
       alert('退票成功！');
       $('#popup-order-return-ticket').modal('hide');

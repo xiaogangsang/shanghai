@@ -225,7 +225,7 @@ $(document).on('submit', '#popup-undertaker form', function (event) {
     transOrderNo: $('#transOrderNo').val(),
     productOrderNo: $('#productOrderNo').val(),
     // chargeUndertaker: $('input[name=chargeUndertaker]:checked').val(),
-    refundReason: $.trim($('#popup-undertaker textarea').value),
+    refundReason: $.trim( $('#popup-undertaker textarea').val() ),
   };
   if (sendData.transOrderNo == '' || sendData.productOrderNo == '') {
     alert('非法操作，无法获取订单号！');
