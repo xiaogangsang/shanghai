@@ -95,7 +95,7 @@ $(function () {
         }
 
         // if (res.data.bizOrder.ticketInfo != null) {
-        res.data.bizOrder.frontTicket = res.data.bizOrder.ticketInfo==null ? null : res.data.bizOrder.ticketInfo.frontInfo.codeInfoList;
+        res.data.bizOrder.frontTicket = res.data.bizOrder.ticketInfo==null||res.data.bizOrder.ticketInfo.frontInfo==null ? null : res.data.bizOrder.ticketInfo.frontInfo.codeInfoList;
 
         //   res.data.bizOrder.haveFrontTicket = true;
         // } else {
@@ -103,7 +103,7 @@ $(function () {
         // }
 
         // if (res.data.bizOrder.ticketInfo != null) {
-        res.data.bizOrder.machineTicket = res.data.bizOrder.ticketInfo==null ? null : res.data.bizOrder.ticketInfo.machineInfo.codeInfoList;
+        res.data.bizOrder.machineTicket = res.data.bizOrder.ticketInfo==null||res.data.bizOrder.ticketInfo.machineInfo==null ? null : res.data.bizOrder.ticketInfo.machineInfo.codeInfoList;
 
         //   res.data.bizOrder.haveMachineTicket = true;
         // } else {

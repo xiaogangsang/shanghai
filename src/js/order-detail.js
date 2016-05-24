@@ -101,7 +101,7 @@ $(function () {
     }
 
         // if (res.data.bizOrder.ticketInfo != null) {
-          res.data.bizOrder.frontTicket = res.data.bizOrder.ticketInfo==null ? null : res.data.bizOrder.ticketInfo.frontInfo.codeInfoList;
+          res.data.bizOrder.frontTicket = res.data.bizOrder.ticketInfo==null||res.data.bizOrder.ticketInfo.frontInfo==null ? null : res.data.bizOrder.ticketInfo.frontInfo.codeInfoList;
 
         //   res.data.bizOrder.haveFrontTicket = true;
         // } else {
@@ -109,7 +109,7 @@ $(function () {
         // }
 
         // if (res.data.bizOrder.ticketInfo != null) {
-          res.data.bizOrder.machineTicket = res.data.bizOrder.ticketInfo==null ? null : res.data.bizOrder.ticketInfo.machineInfo.codeInfoList;
+          res.data.bizOrder.machineTicket = res.data.bizOrder.ticketInfo==null||res.data.bizOrder.ticketInfo.machineInfo==null ? null : res.data.bizOrder.ticketInfo.machineInfo.codeInfoList;
 
         //   res.data.bizOrder.haveMachineTicket = true;
         // } else {
@@ -243,7 +243,7 @@ $(document).on('click', '#btn-returnCoupon', function (event) {
   _submitting = true;
 
   $.ajax({
-    url: common.API_HOST + 'order/kf/refundCoupon',
+    url: common.API_HOST + 'order/op/refundCoupon',
     type: 'POST',
     dataType: 'json',
     data: {
@@ -295,7 +295,7 @@ $(document).on('submit', '#popup-undertaker form', function (event) {
   }
 
   $.ajax({
-    url: common.API_HOST + '/order/kf/refundTicket',
+    url: common.API_HOST + '/order/op/refundTicket',
     type: 'POST',
     dataType: 'json',
     data: sendData,
