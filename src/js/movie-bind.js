@@ -58,12 +58,12 @@ $(function () {
 $('#tpMovieTable').on('click', '.btn-bind', function (e) {
   e.preventDefault();
   var tr = $(this).closest('tr');
-  var tpMovieName = tr.find('td:nth-child(2)').text();
+  var tpMovieName = $('h2').text();
   var thirdPartyFilmId = tr.data('id');
   var thirdPartyId = tr.data('tpid');
 
   $('#bindMovieName').val(tpMovieName);
-  $('#bindTpMovie').text(thirdPartyFilmId + ':' + tpMovieName);
+  $('#bindTpMovie').text(thirdPartyFilmId + ':' + tr.find('td:nth-child(2)').text());
 
   $('#thirdPartyFilmId').val(thirdPartyFilmId);
   $('#thirdPartyId').val(thirdPartyId);
