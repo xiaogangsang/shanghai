@@ -133,6 +133,7 @@ $(document).on('submit', '#popup-movie-form form', function (e) {
   if (_submitting) {
     return false;
   }
+
   _submitting = true;
   var sendData = {
     id: $('#popup-movie-form #id').val(),
@@ -194,6 +195,20 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
         autoclose: true,
       });
       $('#popup-movie-form form').parsley();
+
+      $('.poster-preview').on('load', function (event) {
+        var poster = $(this).attr('src');
+        window.previewImg = '<img id="previewImg" src="' + poster + '" width="160"><script>window.onload = function() { parent.document.getElementById("frameImg").height = document.getElementById("previewImg").height+"px"; }</script>';
+        var iframe = document.createElement('iframe');
+        iframe.id = 'frameImg';
+        iframe.src = 'javascript:parent.previewImg;';
+        iframe.frameBorder = '0';
+        iframe.scrolling = 'no';
+        iframe.width = '160px';
+        iframe.style.display = 'block';
+        var el = document.querySelector('.poster-preview');
+        el.parentNode.replaceChild(iframe, el);
+      });
     } else {
       alert('接口错误：' + res.meta.msg);
     }
