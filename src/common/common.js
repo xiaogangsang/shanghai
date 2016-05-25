@@ -6,6 +6,7 @@ var common = {};
 common.API_HOST = window.location.origin + '/MovieOps/';
 
 common.init = function (pageName) {
+  common.checkLogin();
   common.showMenu(pageName);
   common.setLoginName();
 
@@ -42,7 +43,7 @@ common.showMenu = function (pageName) {
   var allowMenus = sessionStorage.getItem('menuAuthority') != null ? sessionStorage.getItem('menuAuthority').split(',') : null;
   if (pageName != undefined && pageName != '' && $('#menu-' + pageName).size() > 0) {
     var menuId = '' + $('#menu-' + pageName).data('id');
-    if (allowMenus == undefined || allowMenus.indexOf(menuId) < 0) {
+    if (allowMenus.indexOf(menuId) < 0) {
       common.logout();
       window.location.href = 'login.html';
     }
@@ -59,6 +60,13 @@ common.showMenu = function (pageName) {
       $(el).closest('.panel').show();
     }
   });
+};
+
+common.checkLogin = function () {
+  if (sessionStorage.getItem('menuAuthority') == null || Cookies.get('Xtoken') == undefined) {
+    common.logout();
+    window.location.href = 'login.html';
+  }
 };
 
 common.setLoginName = function () {
