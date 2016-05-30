@@ -225,7 +225,7 @@ $('#dataTable').on('click', '.btn-status', function (e) {
   var $btn = $(this);
   var queryStatus = $btn.data('status') == 1 ? 0 : 1;
   var queryStatusName = queryStatus == 1 ? '上线' : '下线';
-  if (window.confirm('确定要' + queryStatusName + '此计划吗？')) {
+  if (window.confirm('确定要' + queryStatusName + '此单元吗？')) {
     var ids = [$btn.closest('tr').data('id')];
     var ajaxUrl = queryStatus == 1 ? 'activity/activityOnline' : 'activity/activityOffline';
     $.ajax({
@@ -251,7 +251,7 @@ $('#dataTable').on('click', '.btn-status', function (e) {
 $('#dataTable').on('click', '.btn-delete', function (e) {
   e.preventDefault();
   var $tr = $(this).closest('tr');
-  if (window.confirm('确定要删除此计划吗？')) {
+  if (window.confirm('确定要删除此单元吗？')) {
     $.ajax({
       url: common.API_HOST + 'activity/deleteActivity',
       type: 'POST',
