@@ -3,7 +3,7 @@
 require('cookie');
 var common = {};
 
-common.API_HOST = window.location.origin + '/MovieOps/';
+common.API_HOST = window.location.protocol + '//' + window.location.host + '/MovieOps/';
 
 common.init = function (pageName) {
   common.checkLogin();
