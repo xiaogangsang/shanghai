@@ -41,7 +41,7 @@ $(function () {
     if (!!~~res.meta.result) {
       var html = '';
       _(res.data).forEach(function (value, key) {
-        if (value != '' && valu != undefined && value != null) {
+        if (value != '' && value != undefined && value != null) {
           switch (key) {
             case 'tpCinemaName':
               $('#cinemaName').val(value);
