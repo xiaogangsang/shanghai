@@ -1,4 +1,4 @@
-<div class="modal fade" id="popup-unit-custom" data-keyboard="false" data-backdrop="static">
+<div class="modal fade" id="popup-unit-custypes" data-keyboard="false" data-backdrop="static">
   <div class="modal-dialog">
     <div class="modal-content">
 

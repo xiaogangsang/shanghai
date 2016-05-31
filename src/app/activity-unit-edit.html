@@ -37,7 +37,7 @@
               <div class="form-group col-sm-6">
                 <div class="input-group">
                   <div class="input-group-addon">活动名称</div>
-                  <input type="text" class="form-control" id="name" required>
+                  <input type="text" class="form-control" id="name" required maxlength="20">
                 </div>
               </div>
               <div class="form-group col-sm-6">
@@ -217,8 +217,12 @@
                       <td id="preview-budget">不限</td>
                     </tr>
                     <tr>
-                      <th><button type="button" class="btn btn-default" id="btn-set-custom">客群</button></th>
-                      <td id="preview-custom">不限</td>
+                      <th><button type="button" class="btn btn-default" id="btn-set-custypes">客群</button></th>
+                      <td id="preview-custypes">不限</td>
+                    </tr>
+                    <tr>
+                      <th><button type="button" class="btn btn-default" id="btn-set-special">特殊资格</button></th>
+                      <td id="preview-special">不限</td>
                     </tr>
                     <tr>
                       <th><button type="button" class="btn btn-default" id="btn-set-restriction">单户限购</button></th>
@@ -277,7 +281,8 @@
     </tr>
   </script>
   @@include('component/popup-unit-budget.tpl')
-  @@include('component/popup-unit-custom.tpl')
+  @@include('component/popup-unit-custypes.tpl')
+  @@include('component/popup-unit-special.tpl')
   @@include('component/popup-unit-restriction.tpl')
   @@include('component/popup-unit-channel.tpl')
   @@include('component/popup-unit-movie.tpl')
