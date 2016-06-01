@@ -22,12 +22,24 @@ var _hallType = [
 ];
 var _channels = [];
 var _provinces = [];
-var _cusTypes = [1: '新户', 2: '老户'];
-// var _loginTypes = [CL:'掌上生活登录', UD: '一网通登录', UA: '一卡通登录', UC: '信用卡登录'];
+var _cusTypes = ['新户', '老户'];
 var _submitting = false;
 var _priorities = [];
 var _dimenChanged = false;
-var _popupDataCache = {};
+var _popupDataCache = {
+  dailyBudgetList: [],
+  cusTypes: [1, 2],
+  saleLimit: { dailyOrder: '', dailyTicket: '', totalOrder: '', totalTicket: '' },
+  channels: [],
+  hallType: ['普通'],
+  filmType: ['2D', '3D'],
+  screenType: ['普通'],
+  films: [],
+  cinemas: [],
+  timetables: [],
+};
+
+// var _loginTypes = [CL:'掌上生活登录', UD: '一网通登录', UA: '一卡通登录', UC: '信用卡登录'];
 
 $(function () {
   common.init('activity-unit');
@@ -63,7 +75,7 @@ $(function () {
     setWandaTicket(false);
     setBudgetSource(false);
     setMovie(false);
-    $('#preview-dimen').html('影片制式：[2D] [3D]<br>屏幕规格：[普通]<br>特殊影厅：[普通]');
+    $('#preview-dimen').html('影片制式：不限<br>屏幕规格：[普通]<br>特殊影厅：[普通]');
     setChannel(false);
     setPattern(1);
     setPriority(false);
@@ -150,7 +162,7 @@ $(document).on('click', '#repeatedDayAll', function (event) {
 $(document).on('click', '#priority', function (event) {
   event.preventDefault();
   $('#popup-unit-priority').modal('show');
-  $('#popup-unit-priority input[type=text]').quicksearch('#priorityTable tbody tr',{selector: 'th'});
+  $('#popup-unit-priority input[type=text]').quicksearch('#priorityTable tbody tr', { selector: 'th' });
   $('#popup-unit-priority form').parsley();
 });
 
@@ -200,7 +212,7 @@ $(document).on('change', '#level', function (event) {
 $(document).on('click', '#btn-type-add', function (event) {
   event.preventDefault();
   var index = $('#typeTable tbody tr').size();
-  var data = {index: index};
+  var data = { index: index };
   var template = $('#type-template').html();
   Mustache.parse(template);
   var html = Mustache.render(template, data);
@@ -237,6 +249,7 @@ $(document).on('click', '#btn-set-daily', function (event) {
     html += '<td><button type="button" class="btn btn-xs btn-primary btn-delete">删除</button></td>';
     html += '</tr>';
   });
+
   $('#dailyBudgetTable tbody').html(html);
   if (html != '') {
     $('.startDate').datetimepicker({
@@ -250,6 +263,7 @@ $(document).on('click', '#btn-set-daily', function (event) {
       startDate.setDate(startDate.getDate(new Date(ev.date.valueOf())));
       $(this).closest('tr').find('.endDate').datetimepicker('setStartDate', startDate);
     });
+
     $('.endDate').datetimepicker({
       format: 'yyyy-mm-dd',
       language: 'zh-CN',
@@ -270,17 +284,17 @@ $(document).on('click', '#btn-set-daily', function (event) {
 $(document).on('submit', '#popup-unit-budget form', function (event) {
   event.preventDefault();
   var previewHtml = '';
-  _popupDataCache.totalAmount = ~~$('#totalAmount').val();
+  _popupDataCache.totalAmount = $('#totalAmount').val();
   previewHtml += _popupDataCache.totalAmount > 0 ? '总金额预算：' + _popupDataCache.totalAmount + '；' : '';
-  _popupDataCache.totalTicket = ~~$('#totalTicket').val();
+  _popupDataCache.totalTicket = $('#totalTicket').val();
   previewHtml += _popupDataCache.totalTicket > 0 ? '总出票预算：' + _popupDataCache.totalTicket + '；' : '';
   if ($('#dailyBudgetTable tbody tr').size() > 0) {
     $('#dailyBudgetTable tbody tr').each(function (index, el) {
       var startDate = $(el).find('.startDate').val();
       var endDate = $(el).find('.endDate').val();
-      var dailyAmount = ~~$(el).find('.dailyAmount').val();
-      var dailyTicket = ~~$(el).find('.dailyTicket').val();
-      _popupDataCache.dailyBudgetList.push({startDate: startDate, endDate: endDate, dailyAmount: dailyAmount, dailyTicket: dailyTicket});
+      var dailyAmount = $(el).find('.dailyAmount').val();
+      var dailyTicket = $(el).find('.dailyTicket').val();
+      _popupDataCache.dailyBudgetList.push({ startDate: startDate, endDate: endDate, dailyAmount: dailyAmount, dailyTicket: dailyTicket });
       dailyAmount = dailyAmount == 0 ? '不限' : dailyAmount;
       dailyTicket = dailyTicket == 0 ? '不限' : dailyTicket;
       previewHtml += '<p>' + startDate + ' ~ ' + endDate + '，日金额预算：' + dailyAmount + '，日出票预算：' + dailyTicket + '；</p>';
@@ -340,6 +354,7 @@ $(document).on('click', '#btn-set-custypes', function (event) {
   _(_popupDataCache.cusTypes).forEach(function (cus) {
     $('input[name=customerType]').eq(cus - 1).prop('checked', true);
   });
+
   $('#popup-unit-custypes').modal('show');
   $('#popup-unit-custypes form').parsley();
 });
@@ -347,11 +362,11 @@ $(document).on('click', '#btn-set-custypes', function (event) {
 $(document).on('submit', '#popup-unit-custypes form', function (event) {
   event.preventDefault();
   var previewHtml = '';
-  _popupDataCache.cusTypes = $('input[name=customerType]:checked').map(function(){return $(this).val();}).get();
+  _popupDataCache.cusTypes = $('input[name=customerType]:checked').map(function () {return ~~$(this).val();}).get();
   if (_popupDataCache.cusTypes.length == _cusTypes.length) {
     previewHtml = '不限';
   } else {
-    previewHtml = $('input[name=customerType]:checked').map(function(){return $(this).next('span').text();}).get().join('、');
+    previewHtml = $('input[name=customerType]:checked').map(function () {return $(this).next('span').text();}).get().join('、');
   }
 
   $('#preview-custypes').html(previewHtml);
@@ -398,10 +413,10 @@ $(document).on('submit', '#popup-unit-restriction form', function (event) {
   _popupDataCache.saleLimit.totalTicket = ~~$('#saleLimit_totalTicket').val();
   _popupDataCache.saleLimit.totalOrder = ~~$('#saleLimit_totalOrder').val();
   var previewHtml = '';
-  previewHtml += _popupDataCache.saleLimit.dailyTicket == 0 ? '每日限购' + _popupDataCache.saleLimit.dailyTicket + '张；' : '';
-  previewHtml += _popupDataCache.saleLimit.totalTicket == 0 ? '总共限购' + _popupDataCache.saleLimit.totalTicket + '张；' : '';
-  previewHtml += _popupDataCache.saleLimit.dailyOrder == 0 ? '每日限购' + _popupDataCache.saleLimit.dailyOrder + '笔；' : '';
-  previewHtml += _popupDataCache.saleLimit.totalOrder == 0 ? '总共限购' + _popupDataCache.saleLimit.totalOrder + '笔；' : '';
+  previewHtml += _popupDataCache.saleLimit.dailyTicket == 0 ? '' : '每日限购' + _popupDataCache.saleLimit.dailyTicket + '张；';
+  previewHtml += _popupDataCache.saleLimit.totalTicket == 0 ? '' : '总共限购' + _popupDataCache.saleLimit.totalTicket + '张；';
+  previewHtml += _popupDataCache.saleLimit.dailyOrder == 0 ? '' : '每日限购' + _popupDataCache.saleLimit.dailyOrder + '笔；';
+  previewHtml += _popupDataCache.saleLimit.totalOrder == 0 ? '' : '总共限购' + _popupDataCache.saleLimit.totalOrder + '笔；';
   $('#preview-restriction').html(previewHtml != '' ? previewHtml : '不限');
   $('#popup-unit-restriction').modal('hide');
   return false;
@@ -411,19 +426,19 @@ $(document).on('submit', '#popup-unit-restriction form', function (event) {
 $(document).on('click', '#btn-set-channel', function (event) {
   event.preventDefault();
   setChannel(_popupDataCache.channels);
-  var data = {channels:_channels};
+  var data = { channels: _channels };
   var template = $('#channel-template').html();
   Mustache.parse(template);
   var html = Mustache.render(template, data);
-  $('#error-channel').before(html);
+  $('#popup-unit-channel .modal-body').html(html);
   $('#popup-unit-channel').modal('show');
   $('#popup-unit-channel form').parsley();
 });
 
 $(document).on('submit', '#popup-unit-channel form', function (event) {
   event.preventDefault();
-  _popupDataCache.channels = $('input[name=channels]:checked').map(function(){return $(this).val();}).get();
-  var previewHtml = _popupDataCache.channels.length == _channels.length ? '不限' : $('input[name=channels]:checked').map(function(){return $(this).next('span').text();}).get().join('、');
+  _popupDataCache.channels = $('input[name=channels]:checked').map(function () {return ~~$(this).val();}).get();
+  var previewHtml = _popupDataCache.channels.length == _channels.length ? '不限' : $('input[name=channels]:checked').map(function () {return $(this).next('span').text();}).get().join('、');
   $('#preview-channel').html(previewHtml);
   $('#popup-unit-channel').modal('hide');
   return false;
@@ -440,6 +455,7 @@ $(document).on('click', '#btn-set-movie', function (event) {
       choosedHtml += '<option value="' + movie.filmId + '">' + movie.filmName + '</option>';
     }
   });
+
   $('#movieSelect').html(html);
   $('#movieSelect_to').html(choosedHtml);
   $('#popup-unit-movie').modal('show');
@@ -453,11 +469,11 @@ $(document).on('submit', '#popup-unit-movie form', function (event) {
   event.preventDefault();
   var previewHtml = '';
   if ($('#movieSelect_to option').length > 0) {
-    _popupDataCache.films = $('#movieSelect_to option').map(function(){return $(this).val();}).get();
-    previewHtml = $('#movieSelect_to option').map(function(){return $(this).val()+'['+$(this).text()+']';}).get().join(' ');
+    _popupDataCache.films = $('#movieSelect_to option').map(function () {return ~~$(this).val();}).get();
+    previewHtml = $('#movieSelect_to option').map(function () {return $(this).val() + '[' + $(this).text() + ']';}).get().join(' ');
   } else {
     _popupDataCache.films = [];
-    previewHtml = '不限'
+    previewHtml = '不限';
   }
 
   $('#preview-movie').html(previewHtml);
@@ -468,31 +484,32 @@ $(document).on('submit', '#popup-unit-movie form', function (event) {
 //制式
 $(document).on('click', '#btn-set-dimen', function (event) {
   event.preventDefault();
-
   _(_filmType).forEach(function (dimen) {
     dimen.checked = true;
     if (_popupDataCache.filmType.indexOf(dimen.name) < 0) {
       dimen.checked = false;
     }
   });
+
   _(_screenType).forEach(function (dimen) {
     dimen.checked = true;
     if (_popupDataCache.screenType.indexOf(dimen.name) < 0) {
       dimen.checked = false;
     }
   });
+
   _(_hallType).forEach(function (dimen) {
     dimen.checked = true;
     if (_popupDataCache.hallType.indexOf(dimen.name) < 0) {
       dimen.checked = false;
     }
   });
-  var data = {filmType:_filmType, screenType:_screenType, hallType:_hallType};
+
+  var data = { filmType: _filmType, screenType: _screenType, hallType: _hallType };
   var template = $('#dimen-template').html();
   Mustache.parse(template);
   var html = Mustache.render(template, data);
   $('#popup-unit-dimen .modal-body').html(html);
-
   $('#popup-unit-dimen').modal('show');
   $('#popup-unit-dimen form').parsley();
 });
@@ -513,7 +530,7 @@ $(document).on('submit', '#popup-unit-dimen form', function (event) {
   }
 
   var previewHtmlFilmType = '影片制式：';
-  _popupDataCache.filmType = $('input[name=filmType]:checked').map(function(){return $(this).next('span').text();}).get();
+  _popupDataCache.filmType = $('input[name=filmType]:checked').map(function () {return $(this).next('span').text();}).get();
   if (_popupDataCache.filmType.length == _filmType.length) {
     previewHtmlFilmType += '不限';
   } else {
@@ -521,7 +538,7 @@ $(document).on('submit', '#popup-unit-dimen form', function (event) {
   }
 
   var previewHtmlScreenType = '<br>屏幕规格：';
-  _popupDataCache.screenType = $('input[name=screenType]:checked').map(function(){return $(this).next('span').text();}).get();
+  _popupDataCache.screenType = $('input[name=screenType]:checked').map(function () {return $(this).next('span').text();}).get();
   if (_popupDataCache.screenType.length == _screenType.length) {
     previewHtmlScreenType += '不限';
   } else {
@@ -529,7 +546,7 @@ $(document).on('submit', '#popup-unit-dimen form', function (event) {
   }
 
   var previewHtmlHallType = '<br>特殊影厅：';
-  _popupDataCache.hallType = $('input[name=hallType]:checked').map(function(){return $(this).next('span').text();}).get();
+  _popupDataCache.hallType = $('input[name=hallType]:checked').map(function () {return $(this).next('span').text();}).get();
   if (_popupDataCache.hallType.length == _hallType.length) {
     previewHtmlHallType += '不限';
   } else {
@@ -538,41 +555,27 @@ $(document).on('submit', '#popup-unit-dimen form', function (event) {
 
   $('#preview-dimen').html(previewHtmlFilmType + previewHtmlScreenType + previewHtmlHallType);
   $('#popup-unit-dimen').modal('hide');
-
   return false;
 });
 
 //影院
 $(document).on('click', '#btn-set-cinema', function (event) {
   event.preventDefault();
+  $('#search-cinema-brandId option ,#search-cinema-provinceId option').prop('selected', false);
+  $('#search-cinema-cityId').html('<option value="">城市</option>');
+  $('#search-cinema-candidate tbody, #search-cinema-choosed tbody').html('');
+  $('#input-cinema-filter, #search-cinema-cinemaName').val('');
   if (_popupDataCache.cinemas != null && _popupDataCache.cinemas.length > 0) {
-    $.ajax({
-      url: common.API_HOST + 'common/getCinemasByIds',
-      type: 'POST',
-      dataType: 'json',
-      data: { ids: _popupDataCache.cinemas },
-    })
-    .done(function (res) {
-      if (!!~~res.meta.result) {
-        if (res.data == null || res.data.length < 1) {
-          return false;
-        } else {
-          var html = '';
-          _(res.data).forEach(function (cinema) {
-            html += '<tr data-id="' + cinema.cinemaId + '"><td>' + cinema.cinemaName + '</td><td>' + cinema.cityName + '</td><td>' + cinema.brandName + '</td></tr>';
-          });
-
-          $('#search-cinema-choosed tbody').html(html);
-          $('#input-cinema-filter').quicksearch('#search-cinema-choosed tbody tr');
-          $('#popup-unit-cinema').modal('show');
-        }
-      } else {
-        alert('接口错误：' + res.meta.msg);
-      }
+    var html = '';
+    _(_popupDataCache.cinemas).forEach(function (cinema) {
+      html += '<tr data-id="' + cinema.cinemaId + '"><td>' + cinema.cinemaName + '</td><td>' + cinema.cityName + '</td><td>' + cinema.brandName + '</td></tr>';
     });
-  } else {
-    $('#popup-unit-cinema').modal('show');
+
+    $('#search-cinema-choosed tbody').html(html);
+    $('#input-cinema-filter').quicksearch('#search-cinema-choosed tbody tr');
   }
+
+  $('#popup-unit-cinema').modal('show');
 });
 
 $(document).on('change', '#search-cinema-provinceId', function (e) {
@@ -587,6 +590,7 @@ $(document).on('change', '#search-cinema-provinceId', function (e) {
   } else {
     options = '<option value="">城市</option>';
   }
+
   $('#search-cinema-cityId').html(options);
   return false;
 });
@@ -696,7 +700,15 @@ $(document).on('click', '#btn-cinema-filter', function (event) {
 
 $(document).on('submit', '#popup-unit-cinema form', function (event) {
   event.preventDefault();
-  _popupDataCache.cinemas = $('#search-cinema-choosed tbody tr').map(function(){return $(this).data('id');}).get();
+  _popupDataCache.cinemas = $('#search-cinema-choosed tbody tr').map(function () {
+    var cinema = {
+      cinemaId: $(this).data('id'),
+      cinemaName: $(this).find('td:nth-child(1)').html(),
+      cityName: $(this).find('td:nth-child(2)').html(),
+      brandName: $(this).find('td:nth-child(3)').html(),
+    };
+    return cinema;
+  }).get();
   var previewHtml = _popupDataCache.cinemas.length > 0 ? '选择了 ' + _popupDataCache.cinemas.length + ' 个影院' : '不限';
   $('#preview-cinema').html(previewHtml);
   $('#popup-unit-cinema').modal('hide');
@@ -704,54 +716,60 @@ $(document).on('submit', '#popup-unit-cinema form', function (event) {
 });
 
 //场次
-$(document).on('click', '#btn-set-showtime', function (event) {
+$(document).on('click', '#btn-set-timetable', function (event) {
   event.preventDefault();
   var html = '';
-  _(_popupDataCache.timetables).forEach(function (time){
+  _(_popupDataCache.timetables).forEach(function (time) {
     html += '<tr><td><input type="text" class="form-control beginDate" required value="' + time.beginDate + '"></td><td><input type="text" class="form-control endDate" required value="' + time.endDate + '"></td><td><input type="text" class="form-control beginTime" required value="' + time.beginTime + '"></td><td><input type="text" class="form-control endTime" required value="' + time.endTime + '"></td><td><button type="button" class="btn btn-xs btn-primary btn-delete">删除</button></td></tr>';
   });
-  $('#showtimeTable tbody').html(html);
+
+  $('#timeTable tbody').html(html);
   resetTimeTable();
-  $('#popup-unit-showtime').modal('show');
-  $('#popup-unit-showtime form').parsley();
+  $('#popup-unit-timetable').modal('show');
+  $('#popup-unit-timetable form').parsley();
 });
 
-$(document).on('click', '#btn-showtime', function (event) {
+$(document).on('click', '#btn-timetable', function (event) {
   event.preventDefault();
-  var template = $('#showtime-template').html();
+  var template = $('#timetable-template').html();
   Mustache.parse(template);
   var html = Mustache.render(template);
-  $('#showtimeTable tbody').append(html);
-  $('#popup-unit-showtime').scrollTop($('#popup-unit-showtime').height());
+  $('#timeTable tbody').append(html);
+  $('#popup-unit-timetable').scrollTop($('#popup-unit-timetable').height());
   resetTimeTable();
 });
 
-$(document).on('click', '#showtimeTable .btn-delete', function (event) {
+$(document).on('click', '#timeTable .btn-delete', function (event) {
   event.preventDefault();
   if (window.confirm('确定要删除该条场次限制吗？')) {
     $(this).closest('tr').remove();
   }
 });
 
-$(document).on('submit', '#popup-unit-showtime form', function (event) {
+$(document).on('submit', '#popup-unit-timetable form', function (event) {
   event.preventDefault();
-setTimeTable(_popupDataCache.timetables);
+  _popupDataCache.timetables = $('#timeTable tbody tr').map(function () {
+    var time = {
+      beginDate: $(this).find('.beginDate').val(),
+      endDate: $(this).find('.endDate').val(),
+      beginTime: $(this).find('.beginTime').val(),
+      endTime: $(this).find('.endTime').val(),
+    };
+    return time;
+  }).get();
+  setTimeTable(_popupDataCache.timetables);
   var previewHtml = '';
-  if ($('#showtimeTable tbody tr').length > 0) {
-    $('#showtimeTable tbody tr').each(function (index, el) {
-      var beginDate = $(el).find('.beginDate').val();
-      var endDate = $(el).find('.endDate').val();
-      var beginTime = $(el).find('.beginTime').val();
-      var endTime = $(el).find('.endTime').val();
-      previewHtml += '<p>' + beginDate + ' ~ ' + endDate + ' 每天 ' + beginTime + ' ~ ' + endTime + '</p>';
+  if (_popupDataCache.timetables.length > 0) {
+    _(_popupDataCache.timetables).forEach(function (time) {
+      previewHtml += '<p>' + time.beginDate + ' ~ ' + time.endDate + ' 每天 ' + time.beginTime + ' ~ ' + time.endTime + '</p>';
     });
 
-    $('#preview-showtime').html(previewHtml);
+    $('#preview-timetable').html(previewHtml);
   } else {
-    $('#preview-showtime').html('不限');
+    $('#preview-timetable').html('不限');
   }
 
-  $('#popup-unit-showtime').modal('hide');
+  $('#popup-unit-timetable').modal('hide');
   return false;
 });
 
@@ -773,6 +791,7 @@ $(document).on('click', '#formUnit button[type=submit]', function (event) {
     $('#error-dailytime').html('');
   }
 });
+
 //form
 $(document).on('submit', '#formUnit', function (event) {
   event.preventDefault();
@@ -802,21 +821,21 @@ $(document).on('submit', '#formUnit', function (event) {
     activityDesc: $.trim($('#activityDesc').val()),
     activityLink: $.trim($('#activityLink').val()),
     repeatedDay: [],
-    cusTypes: _popupDataCache.cusTypes,
+    customerType: _popupDataCache.cusTypes,
     qualification: _popupDataCache.qualification,
     saleLimit: _popupDataCache.saleLimit,
     channels: _popupDataCache.channels,
-    hallType: [],
-    filmType: [],
-    screenType: [],
+    hallType: _popupDataCache.hallType,
+    filmType: _popupDataCache.filmType,
+    screenType: _popupDataCache.screenType,
     activityPattern: $('#activityPattern').val(),
     activityPatternList: [],
     totalAmount: _popupDataCache.totalAmount,
     totalTicket: _popupDataCache.totalTicket,
     dailyBudgetList: _popupDataCache.dailyBudgetList,
     films: _popupDataCache.films,
-    cinemas: _popupDataCache.cinemas,
-    timetables: [],
+    cinemas: [],
+    timetables: _popupDataCache.timetables,
   };
 
   $('input[name=repeatedDay]:checked').each(function (index, el) {
@@ -832,9 +851,11 @@ $(document).on('submit', '#formUnit', function (event) {
   $('input[name=hallType]:checked').each(function (index, el) {
     sendData.hallType.push($(el).next('span').text());
   });
+
   $('input[name=filmType]:checked').each(function (index, el) {
     sendData.filmType.push($(el).next('span').text());
   });
+
   $('input[name=screenType]:checked').each(function (index, el) {
     sendData.screenType.push($(el).next('span').text());
   });
@@ -871,12 +892,8 @@ $(document).on('submit', '#formUnit', function (event) {
     return false;
   }
 
-  $('#showtimeTable tbody tr').each(function (index, el) {
-    var beginDate = $(el).find('.beginDate').val();
-    var endDate = $(el).find('.endDate').val();
-    var beginTime = $(el).find('.beginTime').val();
-    var endTime = $(el).find('.endTime').val();
-    sendData.timetables.push({ beginDate: beginDate, endDate: endDate, beginTime: beginTime, endTime: endTime });
+  _(_popupDataCache.cinemas).forEach(function (cinema) {
+    sendData.cinemas.push(cinema.cinemaId);
   });
 
   var ajaxUrl = 'activity/saveActivity';
@@ -921,7 +938,7 @@ function setBudgetSource(budgetSourceId) {
   .done(function (res) {
     if (!!~~res.meta.result) {
       _budgetSource = res.data;
-      if (false != budgetSourceId) {
+      if (!!~~budgetSourceId) {
         var html = '';
         var levelId = 0;
         _(_budgetSource).forEach(function (group, key) {
@@ -966,12 +983,12 @@ function setBrand() {
   });
 }
 
-function setPriority (exclude) {
+function setPriority(exclude) {
   $.ajax({
     url: common.API_HOST + 'activity/activityList',
     type: 'POST',
     dataType: 'json',
-    data: {pageIndex: 1, pageSize: 999999, sord:'priority', sidx:'DESC'},
+    data: { pageIndex: 1, pageSize: 999999, sord: 'priority', sidx: 'DESC' },
   })
   .done(function (res) {
     if (!!~~res.meta.result) {
@@ -983,6 +1000,7 @@ function setPriority (exclude) {
         }
 
       });
+
       $('#priorityTable tbody').html(html);
 
       $('#popup-unit-priority button[type=submit]').prop('disabled', false);
@@ -1099,21 +1117,24 @@ function setMovie(films) {
   }
 }
 
-function setChannel (channels) {
+function setChannel(channels) {
   var previewHtml = '';
   var checkedChannelNames = [];
   if (_channels.length > 0) {
     if (channels == false || _channels.length == channels.length) {
+      _(_channels).forEach(function (channel) {channel.checked = true;});
+
       previewHtml = '不限';
     } else {
       _(_channels).forEach(function (channel) {
-        if (channels.indexOf(channel.channelId.toString()) < 0) {
+        if (channels.indexOf(channel.channelId) < 0) {
           channel.checked = false;
         } else {
           channel.checked = true;
           checkedChannelNames.push(channel.channelName);
         }
       });
+
       previewHtml = checkedChannelNames.join('、');
     }
 
@@ -1131,6 +1152,12 @@ function setChannel (channels) {
         } else {
           _channels = res.data;
           if (channels == false || _channels.length == channels.length) {
+            _popupDataCache.channels = [];
+            _(_channels).forEach(function (channel) {
+              _popupDataCache.channels.push(channel.channelId);
+              channel.checked = true;
+            });
+
             previewHtml = '不限';
           } else {
             _(_channels).forEach(function (channel) {
@@ -1141,6 +1168,7 @@ function setChannel (channels) {
                 checkedChannelNames.push(channel.channelName);
               }
             });
+
             previewHtml = checkedChannelNames.join('、');
           }
 
@@ -1153,7 +1181,7 @@ function setChannel (channels) {
   }
 }
 
-function setProvince () {
+function setProvince() {
   $.ajax({
     url: common.API_HOST + 'common/provinceList',
     type: 'GET',
@@ -1174,30 +1202,30 @@ function setProvince () {
   });
 }
 
-function setPattern (patternId) {
+function setPattern(patternId) {
   switch (~~patternId) {
     case 0:
     case 1:
     case 2:
-    $('.amount').attr('data-parsley-pattern', '^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$');
-    $('.activity-pattern-tip').text('金额需输入大于0的数字，最多两位小数');
+      $('.amount').attr('data-parsley-pattern', '^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$');
+      $('.activity-pattern-tip').text('金额需输入大于0的数字，最多两位小数');
     break;
     case 3:
-    $('.amount').attr('data-parsley-pattern', '^[1-9]{1}$');
-    $('.activity-pattern-tip').text('折扣需输入大于0且小于10的整数；金额需输入大于0的数字，最多两位小数');
+      $('.amount').attr('data-parsley-pattern', '^[1-9]{1}$');
+      $('.activity-pattern-tip').text('折扣需输入大于0且小于10的整数；金额需输入大于0的数字，最多两位小数');
     break;
     case 4:
-    $('.amount').attr('data-parsley-pattern', '^[234]{1}$');
-    $('.activity-pattern-tip').text('张数仅限输入2、3、4；金额需输入大于0的数字，最多两位小数');
+      $('.amount').attr('data-parsley-pattern', '^[234]{1}$');
+      $('.activity-pattern-tip').text('张数仅限输入2、3、4；金额需输入大于0的数字，最多两位小数');
     break;
     case 5:
-    $('.amount').attr('data-parsley-pattern', '^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$');
-    $('.activity-pattern-tip').text('积分需输入大于0的整数；金额需输入大于0的数字，最多两位小数');
+      $('.amount').attr('data-parsley-pattern', '^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$');
+      $('.activity-pattern-tip').text('积分需输入大于0的整数；金额需输入大于0的数字，最多两位小数');
     break;
   }
 }
 
-function setTimeTable (timetables) {
+function setTimeTable(timetables) {
   var previewHtml = '';
   if (timetables == false || timetables == null || timetables.length == 0) {
     previewHtml = '不限';
@@ -1206,10 +1234,11 @@ function setTimeTable (timetables) {
       previewHtml += '<p>' + time.beginDate + ' ~ ' + time.endDate + ' 每天 ' + time.beginTime + ' ~ ' + time.endTime + '</p>';
     });
   }
-  $('#preview-showtime').html(previewHtml);
+
+  $('#preview-timetable').html(previewHtml);
 }
 
-function resetTimeTable () {
+function resetTimeTable() {
   $('.beginDate').datetimepicker({
     format: 'yyyy-mm-dd',
     language: 'zh-CN',
@@ -1274,8 +1303,8 @@ function setEdit(unitId) {
         return false;
       }
 
-      _popupDataCache.totalAmount = ~~unit.totalAmount;
-      _popupDataCache.totalTicket = ~~unit.totalTicket;
+      _popupDataCache.totalAmount = ~~unit.totalAmount < 1 ? '' : ~~unit.totalAmount;
+      _popupDataCache.totalTicket = ~~unit.totalTicket < 1 ? '' : ~~unit.totalTicket;
       _popupDataCache.dailyBudgetList = unit.dailyBudgetList;
       _popupDataCache.cusTypes = unit.cusTypes;
       _popupDataCache.channels = unit.channels;
@@ -1283,10 +1312,29 @@ function setEdit(unitId) {
       _popupDataCache.filmType = unit.filmType;
       _popupDataCache.screenType = unit.screenType;
       _popupDataCache.hallType = unit.hallType;
-      _popupDataCache.cinemas = unit.cinemas;
+
+      $.ajax({
+        url: common.API_HOST + 'common/getCinemasByIds',
+        type: 'POST',
+        dataType: 'json',
+        data: { ids: unit.cinemas },
+      })
+      .done(function (res) {
+        if (!!~~res.meta.result) {
+          if (res.data == null || res.data.length < 1) {
+            return false;
+          } else {
+            _popupDataCache.cinemas = res.data;
+          }
+        } else {
+          alert('接口错误：' + res.meta.msg);
+        }
+      });
+
       _popupDataCache.timetables = unit.timetables;
+
       if (unit.saleLimit == null) {
-        _popupDataCache.saleLimit = {dailyOrder: '',dailyTicket: '',totalOrder: '',totalTicket: ''};
+        _popupDataCache.saleLimit = { dailyOrder: '', dailyTicket: '', totalOrder: '', totalTicket: '' };
       } else {
         _popupDataCache.saleLimit = {
           dailyOrder: ~~unit.saleLimit.dailyOrder,
@@ -1324,8 +1372,8 @@ function setEdit(unitId) {
 
       $('#priority').val(unit.priority);
 
-      $('input[name=advancePayment]').prop({'disabled': true, 'checked': false});
-      $('input[name=advancePayment]').each(function(index, el) {
+      $('input[name=advancePayment]').prop({ disabled: true, checked: false });
+      $('input[name=advancePayment]').each(function (index, el) {
         $(el).prop('checked', $(el).val() == unit.advancePayment ? true : false);
       });
 
@@ -1341,6 +1389,7 @@ function setEdit(unitId) {
       } else {
         setPlan(false);
       }
+
       if (unitId) {
         $('#planId').prop('disabled', true);
       }
@@ -1359,6 +1408,7 @@ function setEdit(unitId) {
       } else {
         setWandaTicket(false);
       }
+
       if (unitId) {
         $('#wandaTicketId').prop('disabled', true);
       }
@@ -1386,7 +1436,7 @@ function setEdit(unitId) {
       previewHtml += '总金额预算：' + totalAmount + '；';
       previewHtml += '总出票预算：' + totalTicket + '；';
       _(unit.dailyBudgetList).forEach(function (daily) {
-        previewHtml += '<p>' + daily.startDate + ' ~ ' + daily.endDate + '，日金额预算：' + (daily.dailyAmount==''?'不限':daily.dailyAmount) + '，日出票预算：' + (daily.dailyTicket==''?'不限':daily.dailyTicket) + '；</p>';
+        previewHtml += '<p>' + daily.startDate + ' ~ ' + daily.endDate + '，日金额预算：' + (daily.dailyAmount == '' ? '不限' : daily.dailyAmount) + '，日出票预算：' + (daily.dailyTicket == '' ? '不限' : daily.dailyTicket) + '；</p>';
       });
 
       $('#preview-budget').html(previewHtml);
@@ -1397,7 +1447,7 @@ function setEdit(unitId) {
         if (unit.cusTypes.length == _cusTypes.length) {
           previewHtml = '不限';
         } else {
-          previewHtml = _cusTypes[unit.cusTypes[0]];
+          previewHtml = _cusTypes[unit.cusTypes[0] - 1];
         }
 
         $('#preview-custypes').html(previewHtml);
@@ -1424,20 +1474,16 @@ function setEdit(unitId) {
       unit.channels != null && unit.channels.length > 0 ? setChannel(unit.channels) : setChannel(false);
 
       //影片
-      if (unit.films != null && unit.films.length > 0) {
-        setMovie(unit.films);
-      } else {
-        setMovie(false);
-      }
+      unit.films != null && unit.films.length > 0 ? setMovie(unit.films) : setMovie(false);
 
       //制式
-      var previewHtmlFilmType = '影片制式：[' + unit.filmType.join('] [') + ']';
+      var previewHtmlFilmType = unit.filmType.length == _filmType.length ? '影片制式：不限' : '影片制式：[' + coupon.filmType.join('] [') + ']';
       var previewHtmlScreenType = '<br>屏幕规格：[' + unit.screenType.join('] [') + ']';
       var previewHtmlHallType = '<br>特殊影厅：[' + unit.hallType.join('] [') + ']';
       $('#preview-dimen').html(previewHtmlFilmType + previewHtmlScreenType + previewHtmlHallType);
 
       //影院
-      $('#preview-cinema').html(unit.cinemas != null && unit.cinemas.length > 0 ? '选择了 ' + unit.cinemas.length + ' 个影院' : '不限';);
+      $('#preview-cinema').html(unit.cinemas != null && unit.cinemas.length > 0 ? '选择了 ' + unit.cinemas.length + ' 个影院' : '不限');
 
       //场次
       setTimeTable(unit.timetables);

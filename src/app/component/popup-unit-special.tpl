@@ -10,7 +10,7 @@
         <div class="modal-body">
 
           <div style="text-align: center;">
-            <div class="checkbox-inline"><label><input type="checkbox" name="specialType" value="1"><span>手机银行一网通登录用户</span></label></div>
+            <div class="checkbox-inline"><label><input type="checkbox" name="specialType" value="UD"><span>手机银行一网通登录用户</span></label></div>
           </div>
 
         </div>
