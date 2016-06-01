@@ -822,7 +822,7 @@ $(document).on('submit', '#formUnit', function (event) {
     activityLink: $.trim($('#activityLink').val()),
     repeatedDay: [],
     customerType: _popupDataCache.cusTypes,
-    qualification: _popupDataCache.qualification,
+    qualification: [_popupDataCache.qualification],
     saleLimit: _popupDataCache.saleLimit,
     channels: _popupDataCache.channels,
     hallType: _popupDataCache.hallType,
@@ -1312,6 +1312,7 @@ function setEdit(unitId) {
       _popupDataCache.filmType = unit.filmType;
       _popupDataCache.screenType = unit.screenType;
       _popupDataCache.hallType = unit.hallType;
+      _popupDataCache.qualification = unit.qualification != undefined ? unit.qualification[0] : '';
 
       $.ajax({
         url: common.API_HOST + 'common/getCinemasByIds',
@@ -1454,7 +1455,7 @@ function setEdit(unitId) {
       }
 
       //特殊资格
-      previewHtml = unit.qualification == 'UD' ? '手机银行一网通登录用户' : '不限';
+      previewHtml = unit.qualification[0] == 'UD' ? '手机银行一网通登录用户' : '不限';
       $('#preview-special').html(previewHtml);
 
       //单户限购
