@@ -891,7 +891,7 @@ $(document).on('submit', '#formUnit', function (event) {
     return false;
   }
 
-  if (_popupDataCache.qualification != null) {
+  if (_popupDataCache.qualification != undefined && _popupDataCache.qualification != null && _popupDataCache.qualification != '') {
     sendData.qualification = [_popupDataCache.qualification];
   }
 
@@ -1315,7 +1315,7 @@ function setEdit(unitId) {
       _popupDataCache.filmType = unit.filmType;
       _popupDataCache.screenType = unit.screenType;
       _popupDataCache.hallType = unit.hallType;
-      _popupDataCache.qualification = ~~unit.qualification[0] != 0 ? unit.qualification[0] : '';
+      _popupDataCache.qualification = ~~unit.qualification != 0 && ~~unit.qualification[0] != 0 ? unit.qualification[0] : '';
 
       $.ajax({
         url: common.API_HOST + 'common/getCinemasByIds',
@@ -1458,7 +1458,7 @@ function setEdit(unitId) {
       }
 
       //特殊资格
-      previewHtml = unit.qualification[0] == 'UD' ? '手机银行一网通登录用户' : '不限';
+      previewHtml = unit.qualification != null && unit.qualification[0] == 'UD' ? '手机银行一网通登录用户' : '不限';
       $('#preview-special').html(previewHtml);
 
       //单户限购
