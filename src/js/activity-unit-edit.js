@@ -822,7 +822,6 @@ $(document).on('submit', '#formUnit', function (event) {
     activityLink: $.trim($('#activityLink').val()),
     repeatedDay: [],
     customerType: _popupDataCache.cusTypes,
-    qualification: [_popupDataCache.qualification],
     saleLimit: _popupDataCache.saleLimit,
     channels: _popupDataCache.channels,
     hallType: _popupDataCache.hallType,
@@ -890,6 +889,10 @@ $(document).on('submit', '#formUnit', function (event) {
 
   if (!patternCheck) {
     return false;
+  }
+
+  if (_popupDataCache.qualification != null) {
+    sendData.qualification = [_popupDataCache.qualification];
   }
 
   _(_popupDataCache.cinemas).forEach(function (cinema) {
@@ -1312,7 +1315,7 @@ function setEdit(unitId) {
       _popupDataCache.filmType = unit.filmType;
       _popupDataCache.screenType = unit.screenType;
       _popupDataCache.hallType = unit.hallType;
-      _popupDataCache.qualification = unit.qualification != undefined ? unit.qualification[0] : '';
+      _popupDataCache.qualification = ~~unit.qualification[0] != 0 ? unit.qualification[0] : '';
 
       $.ajax({
         url: common.API_HOST + 'common/getCinemasByIds',
