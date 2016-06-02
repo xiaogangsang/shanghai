@@ -408,15 +408,15 @@ $(document).on('click', '#btn-set-restriction', function (event) {
 
 $(document).on('submit', '#popup-unit-restriction form', function (event) {
   event.preventDefault();
-  _popupDataCache.saleLimit.dailyTicket = ~~$('#saleLimit_dailyTicket').val();
-  _popupDataCache.saleLimit.dailyOrder = ~~$('#saleLimit_dailyOrder').val();
-  _popupDataCache.saleLimit.totalTicket = ~~$('#saleLimit_totalTicket').val();
-  _popupDataCache.saleLimit.totalOrder = ~~$('#saleLimit_totalOrder').val();
+  _popupDataCache.saleLimit.dailyTicket = ~~$('#saleLimit_dailyTicket').val() == 0 ? '' : $('#saleLimit_dailyTicket').val();
+  _popupDataCache.saleLimit.dailyOrder = ~~$('#saleLimit_dailyOrder').val() == 0 ? '' : $('#saleLimit_dailyOrder').val();
+  _popupDataCache.saleLimit.totalTicket = ~~$('#saleLimit_totalTicket').val() == 0 ? '' : $('#saleLimit_totalTicket').val();
+  _popupDataCache.saleLimit.totalOrder = ~~$('#saleLimit_totalOrder').val() == 0 ? '' : $('#saleLimit_totalOrder').val();
   var previewHtml = '';
-  previewHtml += _popupDataCache.saleLimit.dailyTicket == 0 ? '' : '每日限购' + _popupDataCache.saleLimit.dailyTicket + '张；';
-  previewHtml += _popupDataCache.saleLimit.totalTicket == 0 ? '' : '总共限购' + _popupDataCache.saleLimit.totalTicket + '张；';
-  previewHtml += _popupDataCache.saleLimit.dailyOrder == 0 ? '' : '每日限购' + _popupDataCache.saleLimit.dailyOrder + '笔；';
-  previewHtml += _popupDataCache.saleLimit.totalOrder == 0 ? '' : '总共限购' + _popupDataCache.saleLimit.totalOrder + '笔；';
+  previewHtml += ~~_popupDataCache.saleLimit.dailyTicket == 0 ? '' : '每日限购' + _popupDataCache.saleLimit.dailyTicket + '张；';
+  previewHtml += ~~_popupDataCache.saleLimit.totalTicket == 0 ? '' : '总共限购' + _popupDataCache.saleLimit.totalTicket + '张；';
+  previewHtml += ~~_popupDataCache.saleLimit.dailyOrder == 0 ? '' : '每日限购' + _popupDataCache.saleLimit.dailyOrder + '笔；';
+  previewHtml += ~~_popupDataCache.saleLimit.totalOrder == 0 ? '' : '总共限购' + _popupDataCache.saleLimit.totalOrder + '笔；';
   $('#preview-restriction').html(previewHtml != '' ? previewHtml : '不限');
   $('#popup-unit-restriction').modal('hide');
   return false;
@@ -1341,10 +1341,10 @@ function setEdit(unitId) {
         _popupDataCache.saleLimit = { dailyOrder: '', dailyTicket: '', totalOrder: '', totalTicket: '' };
       } else {
         _popupDataCache.saleLimit = {
-          dailyOrder: ~~unit.saleLimit.dailyOrder,
-          dailyTicket: ~~unit.saleLimit.dailyTicket,
-          totalOrder: ~~unit.saleLimit.dailyOrder,
-          totalTicket: ~~unit.saleLimit.dailyOrder,
+          dailyOrder: ~~unit.saleLimit.dailyOrder == 0 ? '' : unit.saleLimit.dailyOrder,
+          dailyTicket: ~~unit.saleLimit.dailyTicket == 0 ? '' : unit.saleLimit.dailyTicket,
+          totalOrder: ~~unit.saleLimit.totalOrder == 0 ? '' : unit.saleLimit.totalOrder,
+          totalTicket: ~~unit.saleLimit.totalTicket == 0 ? '' : unit.saleLimit.totalTicket,
         };
       }
 
@@ -1464,10 +1464,10 @@ function setEdit(unitId) {
       //单户限购
       previewHtml = '';
       if (unit.saleLimit != null) {
-        previewHtml += ~~unit.saleLimit.dailyTicket == 0 ? '每日限购' + unit.saleLimit.dailyTicket + '张；' : '';
-        previewHtml += ~~unit.saleLimit.totalTicket == 0 ? '总共限购' + unit.saleLimit.totalTicket + '张；' : '';
-        previewHtml += ~~unit.saleLimit.dailyOrder == 0 ? '每日限购' + unit.saleLimit.dailyOrder + '笔；' : '';
-        previewHtml += ~~unit.saleLimit.totalOrder == 0 ? '总共限购' + unit.saleLimit.totalOrder + '笔；' : '';
+        previewHtml += ~~unit.saleLimit.dailyTicket != 0 ? '每日限购' + unit.saleLimit.dailyTicket + '张；' : '';
+        previewHtml += ~~unit.saleLimit.totalTicket != 0 ? '总共限购' + unit.saleLimit.totalTicket + '张；' : '';
+        previewHtml += ~~unit.saleLimit.dailyOrder != 0 ? '每日限购' + unit.saleLimit.dailyOrder + '笔；' : '';
+        previewHtml += ~~unit.saleLimit.totalOrder != 0 ? '总共限购' + unit.saleLimit.totalOrder + '笔；' : '';
       } else {
         previewHtml = '不限';
       }
