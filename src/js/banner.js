@@ -302,6 +302,11 @@ $(document).on('submit', '#popup-banner-form form', function (event) {
     return false;
   }
 
+  if (!!~~$('input[name=areaType]:checked').val() && _choosed.length < 1) {
+    alert('区域类型的banner，必须选择城市！');
+    return false;
+  }
+
   _submitting = true;
   var sendData = {
     bannerType: ~~$('#popup-banner-form #bannerType').val(),
