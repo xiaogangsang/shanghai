@@ -29,7 +29,7 @@ var _dimenChanged = false;
 var _popupDataCache = {
   dailyBudgetList: [],
   cusTypes: [1, 2],
-  saleLimit: { dailyOrder: '', dailyTicket: '', totalOrder: '', totalTicket: '' },
+  saleLimit: {},
   channels: [],
   hallType: ['普通'],
   filmType: ['2D', '3D'],
@@ -822,7 +822,6 @@ $(document).on('submit', '#formUnit', function (event) {
     activityLink: $.trim($('#activityLink').val()),
     repeatedDay: [],
     customerType: _popupDataCache.cusTypes,
-    saleLimit: _popupDataCache.saleLimit,
     channels: _popupDataCache.channels,
     hallType: _popupDataCache.hallType,
     filmType: _popupDataCache.filmType,
@@ -893,6 +892,12 @@ $(document).on('submit', '#formUnit', function (event) {
 
   if (_popupDataCache.qualification != undefined && _popupDataCache.qualification != null && _popupDataCache.qualification != '') {
     sendData.qualification = [_popupDataCache.qualification];
+  }
+
+  if (~~_popupDataCache.saleLimit.dailyTicket == 0 && ~~_popupDataCache.saleLimit.dailyOrder == 0 && ~~_popupDataCache.saleLimit.totalTicket == 0 && ~~_popupDataCache.saleLimit.totalOrder == 0) {
+    delete sendData.saleLimit;
+  } else {
+    sendData.saleLimit = _popupDataCache.saleLimit;
   }
 
   _(_popupDataCache.cinemas).forEach(function (cinema) {
