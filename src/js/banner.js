@@ -258,6 +258,34 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
   $('#popup-banner-form form').parsley();
 });
 
+$('#dataTable').on('click', '.btn-delete', function (e) {
+  e.preventDefault();
+  var that = $(this).parents('tr');
+  if (window.confirm('确定要删除此banner吗？')) {
+    $.ajax({
+      url: common.API_HOST + 'banner/deleteBanner',
+      type: 'POST',
+      dataType: 'json',
+      data: {
+        id: that.data('id'),
+        bannerType: that.data('bannertype'),
+      }
+    })
+    .done(function (res) {
+      if (!!~~res.meta.result) {
+        alert('删除成功！');
+        that.fadeOut(500, function () {
+          that.remove();
+        });
+      } else {
+        alert('接口错误：' + res.meta.msg);
+      }
+    });
+  }
+
+  return false;
+});
+
 $(document).on('submit', '#popup-city form', function (event) {
   event.preventDefault();
   var choosedCity = [];
