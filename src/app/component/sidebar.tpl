@@ -120,6 +120,15 @@
       </div>
     </div>
 
+    <div class="panel">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu13"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 商户信息维护</a>
+      <div id="menu13" class="panel-collapse collapse" role="tabpanel">
+        <div class="list-group">
+          <a href="merchant-list.html" class="list-group-item" id="menu-merchant-list" data-id="22">商户列表</a>
+        </div>
+      </div>
+    </div>
+
   </div>
 
 </div>
