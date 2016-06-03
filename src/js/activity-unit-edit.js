@@ -1320,7 +1320,7 @@ function setEdit(unitId) {
       _popupDataCache.filmType = unit.filmType;
       _popupDataCache.screenType = unit.screenType;
       _popupDataCache.hallType = unit.hallType;
-      _popupDataCache.qualification = ~~unit.qualification != 0 && ~~unit.qualification[0] != 0 ? unit.qualification[0] : '';
+      _popupDataCache.qualification = unit.qualification != undefined ? unit.qualification[0] : '';
 
       $.ajax({
         url: common.API_HOST + 'common/getCinemasByIds',
