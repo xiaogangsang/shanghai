@@ -54,7 +54,7 @@ $(function () {
   beginDate = common.getDate(beginDate);
   endDate = common.getDate(endDate);
   $('#search_startTime').val(beginDate).datetimepicker('setEndDate', endDate);
-  $('#search_endTime').val(endDate).datetimepicker('setStartDate', beginDate).datetimepicker('setEndDate', endDate);
+  $('#search_endTime').val(endDate).datetimepicker('setStartDate', beginDate);
 
   //data cache
   getCity();
