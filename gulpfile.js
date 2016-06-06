@@ -47,7 +47,7 @@ gulp.task('fileinclude', function (done) {
     prefix: '@@',
     basepath: '@file',
   }))
-  .pipe(gulp.dest('dist/app'))
+  .pipe(gulp.dest('dist'))
   .on('end', done);
 });
 
