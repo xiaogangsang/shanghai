@@ -48,9 +48,11 @@ common.liquidationInit = function (pageName) {
   var $menus = $('#menu .list-group-item');
   $menus.each(function (index, el) {
     menuId = '' + $(el).data('id');
-    if (allowMenus.indexOf(menuId) > -1) {
-      $(el).show();
-      $(el).closest('.panel').show();
+    if (typeof allowMenus != 'undefined') {
+      if (allowMenus.indexOf(menuId) > -1) {
+        $(el).show();
+        $(el).closest('.panel').show();
+      }
     }
   });
   common.setLoginName();
