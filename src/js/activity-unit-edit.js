@@ -1488,7 +1488,7 @@ function setEdit(unitId) {
       unit.films != null && unit.films.length > 0 ? setMovie(unit.films) : setMovie(false);
 
       //制式
-      var previewHtmlFilmType = unit.filmType.length == _filmType.length ? '影片制式：不限' : '影片制式：[' + coupon.filmType.join('] [') + ']';
+      var previewHtmlFilmType = unit.filmType.length == _filmType.length ? '影片制式：不限' : '影片制式：[' + unit.filmType.join('] [') + ']';
       var previewHtmlScreenType = '<br>屏幕规格：[' + unit.screenType.join('] [') + ']';
       var previewHtmlHallType = '<br>特殊影厅：[' + unit.hallType.join('] [') + ']';
       $('#preview-dimen').html(previewHtmlFilmType + previewHtmlScreenType + previewHtmlHallType);
