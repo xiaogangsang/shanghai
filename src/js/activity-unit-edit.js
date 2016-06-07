@@ -451,7 +451,7 @@ $(document).on('click', '#btn-set-movie', function (event) {
   var choosedHtml = '';
   _(_movies).forEach(function (movie) {
     html += '<option value="' + movie.filmId + '">' + movie.filmName + '</option>';
-    if (_popupDataCache.films.indexOf(movie.filmId) > -1) {
+    if (_popupDataCache.films != null && _popupDataCache.films.indexOf(movie.filmId) > -1) {
       choosedHtml += '<option value="' + movie.filmId + '">' + movie.filmName + '</option>';
     }
   });
@@ -1327,7 +1327,7 @@ function setEdit(unitId) {
           url: common.API_HOST + 'common/getCinemasByIds',
           type: 'POST',
           dataType: 'json',
-          data: { ids: unit.cinemas },
+          data: { ids: unit.cinemas.join('|') },
         })
         .done(function (res) {
           if (!!~~res.meta.result) {
