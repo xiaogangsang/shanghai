@@ -1322,23 +1322,25 @@ function setEdit(unitId) {
       _popupDataCache.hallType = unit.hallType;
       _popupDataCache.qualification = unit.qualification != undefined ? unit.qualification[0] : '';
 
-      $.ajax({
-        url: common.API_HOST + 'common/getCinemasByIds',
-        type: 'POST',
-        dataType: 'json',
-        data: { ids: unit.cinemas },
-      })
-      .done(function (res) {
-        if (!!~~res.meta.result) {
-          if (res.data == null || res.data.length < 1) {
-            return false;
+      if (unit.cinemas != null) {
+        $.ajax({
+          url: common.API_HOST + 'common/getCinemasByIds',
+          type: 'POST',
+          dataType: 'json',
+          data: { ids: unit.cinemas },
+        })
+        .done(function (res) {
+          if (!!~~res.meta.result) {
+            if (res.data == null || res.data.length < 1) {
+              return false;
+            } else {
+              _popupDataCache.cinemas = res.data;
+            }
           } else {
-            _popupDataCache.cinemas = res.data;
+            alert('接口错误：' + res.meta.msg);
           }
-        } else {
-          alert('接口错误：' + res.meta.msg);
-        }
-      });
+        });
+      }
 
       _popupDataCache.timetables = unit.timetables;
 
