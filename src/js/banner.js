@@ -12,14 +12,17 @@ var _querying = false;
 var searchCache = {};
 var useCache = false;
 var dataCache;
-// var _cityAuthority = sessionStorage.getItem('cityAuthority').split(',');
 var _submitting = false;
+var _provinces = [];
+
+// var _cityAuthority = sessionStorage.getItem('cityAuthority').split(',');
 
 $(function () {
   common.init('banner');
 
   //set search form
   setChannel();
+  setProvince();
 
   $('#search_startTime').datetimepicker({
     format: 'yyyy-mm-dd',
@@ -51,7 +54,7 @@ $(function () {
   beginDate = common.getDate(beginDate);
   endDate = common.getDate(endDate);
   $('#search_startTime').val(beginDate).datetimepicker('setEndDate', endDate);
-  $('#search_endTime').val(endDate).datetimepicker('setStartDate', beginDate).datetimepicker('setEndDate', endDate);
+  $('#search_endTime').val(endDate).datetimepicker('setStartDate', beginDate);
 
   //data cache
   getCity();
@@ -76,6 +79,7 @@ $('#formSearch').on('submit', function (e) {
     channelId: $('#search_channelId').val(),
     startTime: $('#search_startTime').val(),
     endTime: $('#search_endTime').val(),
+    cityId: $('#search_cityId').val(),
     pageSize: _pageSize,
   };
   if (!!_querying) {
@@ -183,6 +187,33 @@ $(document).on('click', '#btn-create', function (e) {
   });
 });
 
+$(document).on('change', '#search_provinceId', function (e) {
+  e.preventDefault();
+  var provinceId = parseInt($(this).val());
+  var options = '';
+  if (!!+provinceId) {
+    var province = _.find(_provinces, { provinceId: provinceId.toString() });
+    var cityList = province.cityList;
+    _(cityList).forEach(function (value, key) {
+      options += '<option value="' + value.cityId + '">' + value.cityName + '</option>';
+    });
+  } else {
+    options = '<option value="">全国</option>';
+  }
+
+  $('#search_cityId').html(options);
+  return false;
+});
+
+$(document).on('change', 'input[name=areaType]', function (e) {
+  e.preventDefault();
+  if (!!~~$('input[name=areaType]:checked').val()) {
+    $('#btn-city').closest('tr').show();
+  } else {
+    $('#btn-city').closest('tr').hide();
+  }
+});
+
 $('#dataTable').on('click', '.btn-edit', function (e) {
   e.preventDefault();
   var id = $(this).closest('tr').data('id');
@@ -197,7 +228,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     channel.selected = banner.channelId == channel.channelId ? true : false;
   });
 
-  _choosed = banner.cityList;
+  _choosed = banner.cityList != null ? banner.cityList : [];
   setModal(banner);
   $('#popup-banner-form').modal('show');
   $('#startTime').datetimepicker({
@@ -223,7 +254,36 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     FromEndDate.setDate(FromEndDate.getDate(new Date(ev.date.valueOf())));
     $('#startTime').datetimepicker('setEndDate', FromEndDate);
   });
+
   $('#popup-banner-form form').parsley();
+});
+
+$('#dataTable').on('click', '.btn-delete', function (e) {
+  e.preventDefault();
+  var that = $(this).parents('tr');
+  if (window.confirm('确定要删除此banner吗？')) {
+    $.ajax({
+      url: common.API_HOST + 'banner/deleteBanner',
+      type: 'POST',
+      dataType: 'json',
+      data: {
+        id: that.data('id'),
+        bannerType: that.data('bannertype'),
+      }
+    })
+    .done(function (res) {
+      if (!!~~res.meta.result) {
+        alert('删除成功！');
+        that.fadeOut(500, function () {
+          that.remove();
+        });
+      } else {
+        alert('接口错误：' + res.meta.msg);
+      }
+    });
+  }
+
+  return false;
 });
 
 $(document).on('submit', '#popup-city form', function (event) {
@@ -270,20 +330,30 @@ $(document).on('submit', '#popup-banner-form form', function (event) {
     return false;
   }
 
+  if (!!~~$('input[name=areaType]:checked').val() && _choosed.length < 1) {
+    alert('区域类型的banner，必须选择城市！');
+    return false;
+  }
+
   _submitting = true;
   var sendData = {
-    bannerType: $('#popup-banner-form #bannerType').val(),
+    bannerType: ~~$('#popup-banner-form #bannerType').val(),
     bannerName: $.trim($('#popup-banner-form #bannerName').val()),
-    channelId: $('#popup-banner-form #channelId').val(),
-    position: $.trim($('#popup-banner-form #position').val()),
-    status: $('#popup-banner-form #status').val(),
+    channelId: ~~$('#popup-banner-form #channelId').val(),
+    position: ~~$.trim($('#popup-banner-form #position').val()),
+    status: ~~$('#popup-banner-form #status').val(),
     startTime: $.trim($('#popup-banner-form #startTime').val()),
     endTime: $.trim($('#popup-banner-form #endTime').val()),
-    cityList: _choosed,
+    areaType: ~~$('input[name=areaType]:checked').val(),
+    cityList: [],
   };
-  if (sendData.cityList.length < 1) {
-    alert('请选择城市！');
-    return false;
+
+  if (sendData.areaType == 1) {
+    sendData.cityList = _choosed;
+    if (sendData.cityList.length < 1) {
+      alert('区域类型的banenr，必须选择城市！');
+      return false;
+    }
   }
 
   if (sendData.bannerType == 1) {
@@ -380,10 +450,10 @@ $(document).on('click', '#popup-banner-form #btn-city', function (event) {
       if (_choosed.indexOf(city.cityId) > -1) {
 
         // if (_cityAuthority.indexOf('' + city.cityId) > -1) {
-          htmlGroup += '<label>';
-          htmlGroup += '<input type="checkbox" value="' + city.cityId + '" checked>';
-          htmlGroup += '<span>' + city.cityName + '</span>';
-          htmlGroup += '</label>';
+        htmlGroup += '<label>';
+        htmlGroup += '<input type="checkbox" value="' + city.cityId + '" checked>';
+        htmlGroup += '<span>' + city.cityName + '</span>';
+        htmlGroup += '</label>';
 
         // }
 
@@ -395,10 +465,10 @@ $(document).on('click', '#popup-banner-form #btn-city', function (event) {
       } else {
 
         // if (_cityAuthority.indexOf('' + city.cityId) > -1) {
-          htmlGroup += '<label>';
-          htmlGroup += '<input type="checkbox" value="' + city.cityId + '">';
-          htmlGroup += '<span>' + city.cityName + '</span>';
-          htmlGroup += '</label>';
+        htmlGroup += '<label>';
+        htmlGroup += '<input type="checkbox" value="' + city.cityId + '">';
+        htmlGroup += '<span>' + city.cityName + '</span>';
+        htmlGroup += '</label>';
 
         // }
       }
@@ -429,7 +499,7 @@ $(document).on('click', '#popup-banner-form #btn-city', function (event) {
     event.preventDefault();
     var cityId = $(this).val();
     var cityName = $(this).next('span').text();
-    if (true == $(this).prop('checked')) {
+    if ($(this).prop('checked')) {
       $('.choosed-city').append('<span class="label label-default" data-id="' + cityId + '">' + cityName + ' <button type="button" class="close"><span>&times;</span></button></span>');
     } else {
       $('.choosed-city .label').each(function () {
@@ -465,13 +535,13 @@ $(document).on('click', '#popup-city .choosed-city>.label>.close', function (eve
   var cityId = $label.data('id');
 
   // if (_cityAuthority.indexOf('' + cityId) > -1) {
-    $('.candidate-city input:checked').each(function (index, el) {
-      if ($(el).val() == cityId) {
-        $(el).prop('checked', false);
-      }
-    });
+  $('.candidate-city input:checked').each(function (index, el) {
+    if ($(el).val() == cityId) {
+      $(el).prop('checked', false);
+    }
+  });
 
-    $label.remove();
+  $label.remove();
 
   // } else {
   //   alert('没有权限！');
@@ -543,7 +613,7 @@ $('#formSearch').on('click', 'button[type=submit]', function (event) {
 
 $('#pager').on('click', '#btn-pager', function (e) {
   e.preventDefault();
-  if ('' == $('#pageNo').val()) {
+  if (!!~~$('#pageNo').val()) {
     return false;
   }
 
@@ -565,7 +635,6 @@ function setChannel() {
     dataType: 'json',
   })
   .done(function (res) {
-    // console.log(res);
     if (!!~~res.meta.result) {
       _channels = res.data;
       $.each(_channels, function (index, item) {
@@ -582,7 +651,6 @@ function getMovie() {
     dataType: 'json',
   })
   .done(function (res) {
-    // console.log(res);
     if (!!~~res.meta.result) {
       _movies = res.data;
     }
@@ -596,12 +664,31 @@ function getCity() {
     dataType: 'json',
   })
   .done(function (res) {
-    // console.log(res);
     if (!!~~res.meta.result) {
       _(res.data).forEach(function (group, key) {
         _cities.push({ key: key, group: group });
       });
-      // console.log(_cities);
+    } else {
+      alert('接口错误：' + res.meta.msg);
+    }
+  });
+}
+
+function setProvince() {
+  $.ajax({
+    url: common.API_HOST + 'common/provinceList',
+    type: 'GET',
+    dataType: 'json',
+  })
+  .done(function (res) {
+    if (!!~~res.meta.result) {
+      _provinces = res.data;
+      var html = '';
+      _(_provinces).forEach(function (province) {
+        html += '<option value="' + province.provinceId + '">' + province.provinceName + '</option>';
+      });
+
+      $('#search_provinceId').append(html);
     } else {
       alert('接口错误：' + res.meta.msg);
     }

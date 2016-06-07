@@ -35,6 +35,13 @@
           <td><input type="text" class="form-control" id="link" value="{{banner.link}}" required></td>
         </tr>
         <tr>
+          <th>区域类型</th>
+          <td>
+            <div class="radio-inline"><label><input type="radio" name="areaType" value="0"{{^banner.areaType}} checked{{/banner.areaType}} disabled><span>全国</span></label></div>
+            <div class="radio-inline"><label><input type="radio" name="areaType" value="1"{{#banner.areaType}} checked{{/banner.areaType}} disabled><span>区域</span></label></div>
+          </td>
+        </tr>
+        <tr{{^banner.areaType}} style="display:none;"{{/banner.areaType}}>
           <th><button type="button" class="btn btn-default" id="btn-city">选择城市</button></th>
           <td>点击左侧按钮查看/选择城市</td>
         </tr>
@@ -89,6 +96,13 @@
           <td>{{banner.filmName}}</td>
         </tr>
         <tr>
+          <th>区域类型</th>
+          <td>
+            <div class="radio-inline"><label><input type="radio" name="areaType" value="0"{{^banner.areaType}} checked{{/banner.areaType}} disabled><span>全国</span></label></div>
+            <div class="radio-inline"><label><input type="radio" name="areaType" value="1"{{#banner.areaType}} checked{{/banner.areaType}} disabled><span>区域</span></label></div>
+          </td>
+        </tr>
+        <tr{{^banner.areaType}} style="display:none;"{{/banner.areaType}}>
           <th><button type="button" class="btn btn-default" id="btn-city">选择城市</button></th>
           <td>点击左侧按钮查看/选择城市</td>
         </tr>
@@ -165,6 +179,13 @@
           <td><input type="text" class="form-control" id="link" required></td>
         </tr>
         <tr>
+          <th>区域类型</th>
+          <td>
+            <div class="radio-inline"><label><input type="radio" name="areaType" value="0" checked><span>全国</span></label></div>
+            <div class="radio-inline"><label><input type="radio" name="areaType" value="1"><span>区域</span></label></div>
+          </td>
+        </tr>
+        <tr style="display:none;">
           <th><button type="button" class="btn btn-default" id="btn-city">选择城市</button></th>
           <td>点击左侧按钮查看/选择城市</td>
         </tr>
