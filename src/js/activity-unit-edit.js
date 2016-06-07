@@ -800,9 +800,7 @@ $(document).on('submit', '#formUnit', function (event) {
   }
 
   _submitting = true;
-
   $('#formUnit input[type=submit]').prop('disabled', true).text('更新中...');
-
   var sendData = {
     name: $.trim($('#name').val()),
     signNo: $('#signNo').val(),
@@ -841,22 +839,6 @@ $(document).on('submit', '#formUnit', function (event) {
   });
 
   sendData.repeatedDay = sendData.repeatedDay.join(',');
-
-  $('input[name=channels]:checked').each(function (index, el) {
-    sendData.channels.push($(el).val());
-  });
-
-  $('input[name=hallType]:checked').each(function (index, el) {
-    sendData.hallType.push($(el).next('span').text());
-  });
-
-  $('input[name=filmType]:checked').each(function (index, el) {
-    sendData.filmType.push($(el).next('span').text());
-  });
-
-  $('input[name=screenType]:checked').each(function (index, el) {
-    sendData.screenType.push($(el).next('span').text());
-  });
 
   //活动形式
   var rangeList = [];
@@ -1162,7 +1144,7 @@ function setChannel(channels) {
           if (channels == false || _channels.length == channels.length) {
             _popupDataCache.channels = [];
             _(_channels).forEach(function (channel) {
-              _popupDataCache.channels.push(channel.channelId);
+              _popupDataCache.channels.push(~~channel.channelId);
               channel.checked = true;
             });
 
@@ -1488,7 +1470,7 @@ function setEdit(unitId) {
       unit.films != null && unit.films.length > 0 ? setMovie(unit.films) : setMovie(false);
 
       //制式
-      var previewHtmlFilmType = unit.filmType.length == _filmType.length ? '影片制式：不限' : '影片制式：[' + coupon.filmType.join('] [') + ']';
+      var previewHtmlFilmType = unit.filmType.length == _filmType.length ? '影片制式：不限' : '影片制式：[' + unit.filmType.join('] [') + ']';
       var previewHtmlScreenType = '<br>屏幕规格：[' + unit.screenType.join('] [') + ']';
       var previewHtmlHallType = '<br>特殊影厅：[' + unit.hallType.join('] [') + ']';
       $('#preview-dimen').html(previewHtmlFilmType + previewHtmlScreenType + previewHtmlHallType);
