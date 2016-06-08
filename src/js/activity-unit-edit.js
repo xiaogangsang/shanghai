@@ -1471,8 +1471,8 @@ function setEdit(unitId) {
 
       //制式
       var previewHtmlFilmType = unit.filmType.length == _filmType.length ? '影片制式：不限' : '影片制式：[' + unit.filmType.join('] [') + ']';
-      var previewHtmlScreenType = '<br>屏幕规格：[' + unit.screenType.join('] [') + ']';
-      var previewHtmlHallType = '<br>特殊影厅：[' + unit.hallType.join('] [') + ']';
+      var previewHtmlScreenType = unit.screenType.length == _screenType.length ? '<br>屏幕规格：不限' : '<br>屏幕规格：[' + unit.screenType.join('] [') + ']';
+      var previewHtmlHallType = unit.hallType.length == _hallType.length ? '<br>特殊影厅：不限' : '<br>特殊影厅：[' + unit.hallType.join('] [') + ']';
       $('#preview-dimen').html(previewHtmlFilmType + previewHtmlScreenType + previewHtmlHallType);
 
       //影院
