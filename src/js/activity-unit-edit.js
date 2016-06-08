@@ -283,11 +283,42 @@ $(document).on('click', '#btn-set-daily', function (event) {
 
 $(document).on('submit', '#popup-unit-budget form', function (event) {
   event.preventDefault();
+
+  //判断时间重叠
+  var dateRangeList = $('#dailyBudgetTable tbody tr').map(function () {
+    return { startDate: $(this).find('.startDate').val(), endDate: $(this).find('.endDate').val() };
+  }).get();
+  var dateRangeFlag = false;
+  for (var i = 0, j = dateRangeList.length; i < j; i++) {
+    for (var k = 0; k < j; k++) {
+      if (k != i) {
+        if (dateRangeList[i].startDate >= dateRangeList[k].startDate && dateRangeList[i].startDate <= dateRangeList[k].endDate) {
+          dateRangeFlag = true;
+          break;
+        }
+
+        if (dateRangeList[i].endDate >= dateRangeList[k].startDate && dateRangeList[i].endDate <= dateRangeList[k].endDate) {
+          dateRangeFlag = true;
+          break;
+        }
+      }
+    }
+
+    if (dateRangeFlag) {
+      break;
+    }
+  }
+
+  if (dateRangeFlag) {
+    alert('日期区间不可以重叠！');
+    return false;
+  }
+
   var previewHtml = '';
   _popupDataCache.totalAmount = $('#totalAmount').val();
-  previewHtml += _popupDataCache.totalAmount > 0 ? '总金额预算：' + _popupDataCache.totalAmount + '；' : '';
+  previewHtml += _popupDataCache.totalAmount > 0 ? '总金额预算：' + _popupDataCache.totalAmount + '；' : '总金额预算：不限；';
   _popupDataCache.totalTicket = $('#totalTicket').val();
-  previewHtml += _popupDataCache.totalTicket > 0 ? '总出票预算：' + _popupDataCache.totalTicket + '；' : '';
+  previewHtml += _popupDataCache.totalTicket > 0 ? '总出票预算：' + _popupDataCache.totalTicket + '；' : '总出票预算：不限；';
   _popupDataCache.dailyBudgetList = [];
   if ($('#dailyBudgetTable tbody tr').size() > 0) {
     $('#dailyBudgetTable tbody tr').each(function (index, el) {
