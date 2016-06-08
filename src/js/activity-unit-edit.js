@@ -288,6 +288,7 @@ $(document).on('submit', '#popup-unit-budget form', function (event) {
   previewHtml += _popupDataCache.totalAmount > 0 ? '总金额预算：' + _popupDataCache.totalAmount + '；' : '';
   _popupDataCache.totalTicket = $('#totalTicket').val();
   previewHtml += _popupDataCache.totalTicket > 0 ? '总出票预算：' + _popupDataCache.totalTicket + '；' : '';
+  _popupDataCache.dailyBudgetList = [];
   if ($('#dailyBudgetTable tbody tr').size() > 0) {
     $('#dailyBudgetTable tbody tr').each(function (index, el) {
       var startDate = $(el).find('.startDate').val();
@@ -450,9 +451,10 @@ $(document).on('click', '#btn-set-movie', function (event) {
   var html = '';
   var choosedHtml = '';
   _(_movies).forEach(function (movie) {
-    html += '<option value="' + movie.filmId + '">' + movie.filmName + '</option>';
     if (_popupDataCache.films != null && _popupDataCache.films.indexOf(movie.filmId) > -1) {
       choosedHtml += '<option value="' + movie.filmId + '">' + movie.filmName + '</option>';
+    } else {
+      html += '<option value="' + movie.filmId + '">' + movie.filmName + '</option>';
     }
   });
 
