@@ -1,85 +1,77 @@
-<div class="modal fade" id="popup-merchant-detail" data-keyboard="false" data-backdrop="static">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <form>
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title">商户详情</h4>
-        </div>
-        <div class="modal-body"></div>
-      </form>
-    </div>
-  </div>
-</div>
 
 <script id="detail-template" type="text/x-tmpl-mustache">
 
-  <div class="container-fluid">
+  <div class="container-fluid detail-area readonly">
 
-    <div class="container-fluid" style="border: solid 1px; padding-top: 15px; margin-top: 15px;">
+    <div class="container-fluid">
 
       <div class="row">
 
         <div class="form-group col-sm-6 col-md-4">
           <div class="input-group">
             <div class="input-group-addon">商户名称</div>
-            <input type="text" class="form-control" id="">
+            <input type="text" class="form-control" id="" value="{{merchantName}}">
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-4">
           <div class="input-group">
             <div class="input-group-addon">商户号</div>
-            <input type="text" class="form-control" id="">
+            <input type="text" class="form-control" id="" value="{{merchantId}}">
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-4">
           <div class="input-group">
             <div class="input-group-addon">商户状态</div>
-            <input type="text" class="form-control" id="">
+            <input type="text" class="form-control" id="" value="{{merchantStatus}}">
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-4">
           <div class="input-group">
             <div class="input-group-addon">商户联系人</div>
-            <input type="text" class="form-control" id="">
+            <input type="text" class="form-control" id="" value="{{merchantContacter}}">
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-4">
           <div class="input-group">
             <div class="input-group-addon">联系电话</div>
-            <input type="text" class="form-control" id="">
+            <input type="text" class="form-control" id="" value="{{merchantPhone}}">
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-4">
           <div class="input-group">
             <div class="input-group-addon">员工姓名</div>
-            <input type="text" class="form-control" id="">
+            <input type="text" class="form-control" id="" value="{{userName}}">
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-4">
           <div class="input-group">
             <div class="input-group-addon">员工编号</div>
-            <input type="text" class="form-control" id="">
+            <input type="text" class="form-control" id="" value="{{userId}}">
           </div>
         </div>
 
       </div>
     </div>
 
-    <div class="container-fluid" style="border: solid 1px; padding-top: 15px; margin-top: 15px;">
+    <div class="container-fluid">
 
       <div class="row">
 
         <div class="form-group col-sm-12">
           <div class="input-group">
             <div class="input-group-addon">商户类别</div>
-            <div class="checkbox-inline"><label><input type="checkbox" name="repeatedDay" value="1" required data-parsley-errors-container="#error-repeatedDay"><span>在线选座</span></label></div>
+            <div class="checkbox-inline">
+              <label>
+                <input type="checkbox" name="repeatedDay" value="1" required data-parsley-errors-container="#error-repeatedDay" checked>
+                <span>在线选座</span>
+              </label>
+            </div>
             <div id="error-repeatedDay"></div>
           </div>
         </div>
@@ -88,68 +80,66 @@
 
     </div>
 
-    <div class="container-fluid" style="border: solid 1px; padding-top: 15px; margin-top: 15px;">
+    <div class="container-fluid">
 
-      <div class="row">
+      <div class="row"> 
         <div class="form-group col-sm-6 col-md-4">
           <div class="input-group">
             <div class="input-group-addon">商户备注信息</div>
-            <textarea class="form-control" style="max-width: 100%;"></textarea>
+            <textarea class="form-control">{{merchantRemark}}</textarea>
           </div>
         </div>
       </div>
-
     </div>
 
-    <div class="container-fluid" style="border: solid 1px; padding-top: 15px; margin-top: 15px;">
+    <div class="container-fluid">
 
       <div class="row">
-        <span style="display: block;">拨款信息:&nbsp;&nbsp;&nbsp;&nbsp;</span>
-
+        <span>拨款信息:</span>
       
         <div class="form-group col-sm-6 col-md-4">
           <div class="input-group">
             <div class="input-group-addon">拨款模式</div>
-            <select class="form-control" id="">
+            <select class="form-control" id="select-allocation-type">
               <option value="">请选择</option>
-              <option value="2">周期拨款模式</option>
-              <option value="3">固定日期拨款</option>
+              <option value="1">周期拨款模式</option>
+              <option value="2">固定日期拨款</option>
             </select>
           </div>
         </div>
 
-        <div class="col-sm-6 col-md-8">
+        <div class="col-sm-6 col-md-8 allocation-type1-input">
           <div class="form-group col-sm-6">
             <div class="input-group">
               <div class="input-group-addon">拨款周期</div>
-              <input type="text" class="form-control" id="">
+              <input type="text" class="form-control" id="" value="{{allocationPeriod}}">
             </div>
           </div>
 
           <div class="form-group col-sm-6">
             <div class="input-group">
               <div class="input-group-addon">拨款延迟天数</div>
-              <input type="text" class="form-control" id="">
+              <input type="text" class="form-control" id="" value="{{allocationDelay}}">
             </div>
           </div>
 
         </div>
 
-        <div class="col-sm-6 col-md-8">
+        <div class="col-sm-6 col-md-8 allocation-type2-input">
           <div class="form-group col-sm-6">
             <div class="input-group">
               <div class="input-group-addon">拨款日期</div>
-              <select class="form-control" id="">
+              <select class="form-control" id="select-fixed-allocation-day">
                 <option value="">请选择</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
+                <option value= "1"> 1</option>
+                <option value= "2"> 2</option>
+                <option value= "3"> 3</option>
+                <option value= "4"> 4</option>
+                <option value= "5"> 5</option>
+                <option value= "6"> 6</option>
+                <option value= "7"> 7</option>
+                <option value= "8"> 8</option>
+                <option value= "9"> 9</option>
                 <option value="10">10</option>
                 <option value="11">11</option>
                 <option value="12">12</option>
@@ -179,7 +169,7 @@
         <div class="form-group col-md-8">
           <div class="input-group">
             <div class="input-group-addon">拨款摘要</div>
-            <input type="text" class="form-control" id="">
+            <input type="text" class="form-control" id="" value="{{allocationRemark}}">
           </div>
         </div>
       </div>
@@ -188,53 +178,55 @@
         <div class="form-group col-sm-6">
           <div class="input-group">
             <div class="input-group-addon">是否发送拨款明细</div>
-            <div class="radio-inline"><label><input type="radio" name="advancePayment" value="NO" required data-parsley-errors-container="#error-advancePayment" checked><span>是</span></label></div>
-            <div class="radio-inline"><label><input type="radio" name="advancePayment" value="ALL" required data-parsley-errors-container="#error-advancePayment"><span>否</span></label></div>
-            <div id="error-advancePayment"></div>
+            <div class="radio-inline"><label><input type="radio" name="allocation-detail-input" value="1" required data-parsley-errors-container="#error-allocation-detail-input" {{#allocationDetail}}checked{{/allocationDetail}}><span>是</span></label></div>
+            <div class="radio-inline"><label><input type="radio" name="allocation-detail-input" value="0" required data-parsley-errors-container="#error-allocation-detail-input" {{^allocationDetail}}checked{{/allocationDetail}}><span>否</span></label></div>
+            <div id="error-allocation-detail-input"></div>
           </div>
         </div>
       </div>
 
-      <div class="row">
-        <div class="form-group col-sm-12">
-          <div class="input-group">
-            <div class="input-group-addon">发送对象</div>
-            <div class="checkbox-inline"><label><input type="checkbox" name="repeatedDay" value="1" required data-parsley-errors-container="#error-repeatedDay"><span>商户</span></label></div>
-            <div class="checkbox-inline"><label><input type="checkbox" name="repeatedDay" value="2" required data-parsley-errors-container="#error-repeatedDay"><span>卡部</span></label></div>
-            <div id="error-repeatedDay"></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="form-group col-sm-6 col-md-4">
-          <div class="input-group">
-            <div class="input-group-addon">商户E-mail</div>
-            <input type="text" class="form-control">
+      <div class="send-allocation-detail-container">
+        <div class="row">
+          <div class="form-group col-sm-12">
+            <div class="input-group">
+              <div class="input-group-addon">发送对象</div>
+              <div class="checkbox-inline"><label><input type="checkbox" name="send-to" value="1" required data-parsley-errors-container="#error-send-to"><span>商户</span></label></div>
+              <div class="checkbox-inline"><label><input type="checkbox" name="send-to" value="2" required data-parsley-errors-container="#error-send-to"><span>卡部</span></label></div>
+              <div id="error-send-to"></div>
+            </div>
           </div>
         </div>
 
-        <div class="form-group col-sm-6 col-md-4">
-          <div class="input-group">
-            <div class="input-group-addon">卡部E-mail</div>
-            <input type="text" class="form-control">
+        <div class="row">
+          <div class="form-group col-sm-6 col-md-4 merchant-email">
+            <div class="input-group">
+              <div class="input-group-addon">商户E-mail</div>
+              <input type="text" class="form-control">
+            </div>
           </div>
-        </div>
 
+          <div class="form-group col-sm-6 col-md-4 branch-email">
+            <div class="input-group">
+              <div class="input-group-addon">卡部E-mail</div>
+              <input type="text" class="form-control">
+            </div>
+          </div>
+
+        </div>
       </div>
 
       <div class="row">
         <div class="form-group col-sm-6 col-md-4">
           <div class="input-group">
             <div class="input-group-addon">账户名</div>
-            <input type="text" class="form-control" disabled="disabled">
+            <input type="text" class="form-control" value="{{bankAccount}}">
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-4">
           <div class="input-group">
             <div class="input-group-addon">账号</div>
-            <input type="text" class="form-control" disabled="disabled">
+            <input type="text" class="form-control" value="{{bankCode}}">
           </div>
         </div>
 
@@ -245,9 +237,9 @@
 
     </div>
 
-    <div class="container-fluid" style="border: solid 1px; padding-top: 15px; margin-top: 15px;">
+    <div class="container-fluid">
       <div class="row">
-        <span style="display: block;">商户附件列表:&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        <span>商户附件列表:</span>
         <div class="col-md-4">
           <button class="btn btn-default">上传附件</button>
         </div>
@@ -270,23 +262,12 @@
                   <td>我想骂产品.avi</td>
                   <td>2013.09.99</td>
                   <td>
-                    <button type="button" class="btn btn-xs btn-default btn-edit">删除</button>
+                    <a href="#" class="btn-edit">查看</a>
                   </td>
                 </tr>
               </tbody>
             </table>
           </div>
-      </div>
-    </div>
-
-    <div class="container-fluid" style="margin-top: 15px;">
-      <div class="row">
-        <div class="col-md-3 col-md-push-2">
-          <button class="btn btn-default form-control">提交审核</button>
-        </div>
-        <div class="col-md-3 col-md-push-4">
-          <button class="btn btn-default form-control">保存草稿</button>
-        </div>
       </div>
     </div>
 
@@ -306,7 +287,7 @@
     <td>{{merchantStatus}}</td>
     <td>{{accountStatus}}</td>
     <td>
-      <button type="button" class="btn btn-xs btn-default btn-edit">删除</button>
+      <a href="#" type="button" class="btn btn-xs btn-default btn-edit">查看</a>
     </td>
   </tr>
   {{/rows}}

@@ -191,7 +191,7 @@ $('#formSearch').on('submit', function (e) {
       handleMerchantData(res);
     });
   } else {
-    var res = $.parseJSON('{ "meta" : { "result" : "1", "msg" : "操作成功" }, "data" :{"merchantInfoQueryListResult":[{"accountStatus":1,"department":"卡中心","createTime":"2016-12-08","id":35,"merchantId":"8","merchantName":"Tomcat","merchantStatus":5,"userId":"","userName":""},{"accountStatus":1,"department":"卡中心","createTime":1464871880000,"id":38,"merchantId":"9","merchantName":"tomcat","merchantStatus":5,"userId":"","userName":""}],"total":"5"} }');
+    var res = $.parseJSON('{ "meta" : { "result" : "1", "msg" : "操作成功" }, "data" : { "total" : 8, "record" : [ { "allocationPeriod" : "12", "merchantContacter" : "zhangsan", "accountName" : "光大银行某某账户", "fixedAllocationDay" : "", "merchantName" : "测试商户", "accountStatus" : "1", "merchantId" : "123456", "allocationDelay" : "2", "allocationDetail" : "1", "startTime" : "2016-05-15", "id" : "5", "department" : "上海客服_高端客户服务一室", "class" : "class com.cmb.o2o.settlement.model.MerchantInfo", "merchantRemark" : "测试", "merchantType" : "1", "auditorName" : "biaoge", "email" : "ceshi@163.com", "bankAccount" : "78978", "bankCode" : "1231212", "merchantStatus" : "2", "allocationRemark" : "测试", "allocationType" : "1", "userName" : "jiangxiao", "userId" : "660587", "auditorId" : "111", "merchantPhone" : "13513513513", "createTime" : "2016-05-23", "allocationDetailReceiver" : "1", "endTime" : "2016-12-31" }, { "allocationPeriod" : "0", "merchantContacter" : "", "accountName" : "", "fixedAllocationDay" : "", "merchantName" : "", "merchantId" : "6", "allocationDelay" : "0", "allocationDetail" : "0", "startTime" : "2016-06-06", "id" : "33", "department" : "上海客服_高端客户服务一室", "class" : "class com.cmb.o2o.settlement.model.MerchantInfo", "merchantRemark" : "", "auditorName" : "", "email" : "", "bankAccount" : "", "bankCode" : "", "merchantStatus" : "1", "allocationRemark" : "", "allocationType" : "0", "userName" : "", "userId" : "660587", "auditorId" : "", "merchantPhone" : "", "createTime" : "2016-06-02", "allocationDetailReceiver" : "0", "endTime" : "2016-11-25" } ] } }');
     handleMerchantData(res);
   }
 
@@ -203,22 +203,25 @@ function handleMerchantData(res) {
   _querying = false;
 
   if (!!~~res.meta.result) {
-    if (res.data.merchantInfoQueryListResult.length < 1) {
+    if (res.data.record.length < 1) {
       $('#dataTable tbody').html('<tr><td colspan="9" align="center">查不到相关数据，请修改查询条件！</td></tr>');
       $('#pager').html('');
     } else {
       useCache = true;
       // _pageIndex = res.data.pageIndex;
-      _pageTotal = Math.ceil(res.data.total / _pageSize);
-      setPager(res.data.total, _pageIndex, res.data.merchantInfoQueryListResult.length, _pageTotal);
+      var totalRecord = res.data.total;
+      var record = res.data.record;
 
-      _(res.data.merchantInfoQueryListResult).forEach(function (item) {
+      _pageTotal = Math.ceil(totalRecord / _pageSize);
+      setPager(totalRecord, _pageIndex, record.length, _pageTotal);
+
+      _(record).forEach(function (item) {
 
         item.merchantStatus = parseMerchantStatus(item.merchantStatus);
-        item.accountStatus = parseMerchantStatus(item.accountStatus);
+        item.accountStatus = parseAccountStatus(item.accountStatus);
       });
 
-      dataCache = res.data.merchantInfoQueryListResult;
+      dataCache = record;
       setTableData(dataCache);
     }
   } else {
@@ -300,55 +303,98 @@ function setPager(total, pageIndex, rowsSize, pageTotal) {
 /****************************************** Merchant Detail **********************************************/
 
 $('#dataTable').on('click', '.btn-edit', function (e) {
-  // e.preventDefault();
-  // $.ajax({
-  //   url: common.API_HOST + 'plan/planDetail',
-  //   type: 'POST',
-  //   dataType: 'json',
-  //   data: { id: $(this).closest('tr').data('id') },
-  // })
-  // .done(function (res) {
-  //   if (!!~~res.meta.result) {
-  //     setModal(res.data);
-  //     $('#popup-plan-form').modal('show');
-  //     $('#popup-plan-form form').parsley();
-  //   } else {
-  //     alert('接口错误：' + res.meta.msg);
-  //   }
-  // });
 
   e.preventDefault();
 
-  setModal(undefined);
+  var rowIndex = $(this).closest('tr').prevAll().length;
+  var detailData = dataCache[rowIndex];
+
+  setModal(detailData);
   $('#popup-merchant-detail').modal('show');
 });
 
-function setModal(planData) {
-  // var template;
-  // var html;
-
-  // if (planData) {
-  //   template = $('#detail-template').html();
-  //   Mustache.parse(template);
-  //   var data = { plan: planData };
-  //   html = Mustache.render(template, data);
-  //   $('#popup-merchant-detail .modal-title').html('编辑活动计划');
-  // } else {
-  //   template = $('#create-template').html();
-  //   $('#popup-merchant-detail .modal-title').html('新增活动计划');
-  //   Mustache.parse(template);
-  //   html = Mustache.render(template);
-  // }
-
-  // $('#popup-merchant-detail .modal-body').html(html);
+function setModal(detailData) {
 
   var template = $('#detail-template').html();
   Mustache.parse(template);
-  var data = {};
-  var html = Mustache.render(template, data);
+  var html = Mustache.render(template, detailData);
 
   $('#popup-merchant-detail .modal-body').html(html);
+
+  formatPopupUI(detailData);
 }
+
+function formatPopupUI(detailData) {
+  // make all the input lable-like
+  $('.detail-area :input').prop('readonly', true);
+  $('.detail-area :input').prop('disabled', true);
+
+  // 拨款模式不同, 相应控件显示隐藏
+  var allocationType = detailData.allocationType;
+  if (typeof(allocationType) != 'undefined') {
+    $('#select-allocation-type').val(allocationType).change();
+  }
+
+  $('#select-fixed-allocation-day').val(detailData.fixedAllocationDay);
+
+  // 是否要发送拨款明细
+  var allocationDetail = detailData.allocationDetail;
+  $(':radio[name="allocation-detail-input"]').each(function(index, el) {
+    if ($(el).val() == allocationDetail) {
+      $(el).prop('checked', true).change();
+    }
+  });
+  
+  // 发送对象
+  var sendTo = '0';
+  $('input[name="send-to"]').each(function(index, el) {
+    if ($(el).val() == sendTo) {
+      $(el).prop('checked', true).change();
+    } else {
+      $(el).prop('checked', false).change();
+    }
+  });
+}
+
+
+/****************************************** event handler **********************************************/
+// 拨款模式
+$('.modal').on('change', '#select-allocation-type', function(e) {
+  e.preventDefault();
+  var value = $(this).val();
+
+  if (value == '1') {
+    $('.allocation-type1-input').show();
+    $('.allocation-type2-input').hide();
+  } else if (value == '2') {
+    $('.allocation-type1-input').hide();
+    $('.allocation-type2-input').show();
+  }
+});
+
+$('.modal').on('change', ':radio[name="allocation-detail-input"]', function(e) {
+  if ($(this).val() == '1') {
+    $('.send-allocation-detail-container').show();
+  } else if ($(this).val() == '2') {
+    $('.send-allocation-detail-container').hide();
+  }
+});
+
+$('.modal').on('change', ':checkbox[name="send-to"]', function(e) {
+  if ($(this).val() == '1') {
+    if ($(this).prop('checked')) {
+      $('.merchant-email').show();
+    } else {
+      $('.merchant-email').hide();
+    }
+  } else if ($(this).val() == '2') {
+    if ($(this).prop('checked')) {
+      $('.branch-email').show();
+    } else {
+      $('.branch-email').hide();
+    }
+  }
+});
 
 /****************************************** Utilities Method **********************************************/
 

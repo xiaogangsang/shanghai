@@ -125,6 +125,7 @@
       <div id="menu13" class="panel-collapse collapse" role="tabpanel">
         <div class="list-group">
           <a href="merchant-list.html" class="list-group-item" id="menu-merchant-list" data-id="22">商户列表</a>
+          <a href="merchant-creation.html" class="list-group-item" id="menu-merchant-creation" data-id="23">商户新增</a>
         </div>
       </div>
     </div>
