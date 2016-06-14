@@ -187,13 +187,13 @@ $(document).on('submit', '#popup-refund form', function (event) {
     return false;
   }
 
-  $('#popup-refund button[type=submit]').text('处理中...').prop('disabled', true);
-  $('#popup-refund .close').hide();
-  _submitting = true;
-
   if (!window.confirm('确定退款吗？')) {
     return false;
   }
+
+  $('#popup-refund button[type=submit]').text('处理中...').prop('disabled', true);
+  $('#popup-refund .close').hide();
+  _submitting = true;
 
   var sendData = {
     transOrderNo: $('#transOrderNo').val(),
