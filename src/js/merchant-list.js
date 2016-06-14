@@ -372,14 +372,16 @@ $('.modal').on('change', '#select-allocation-type', function(e) {
   }
 });
 
+// 是否发送拨款明细
 $('.modal').on('change', ':radio[name="allocation-detail-input"]', function(e) {
   if ($(this).val() == '1') {
     $('.send-allocation-detail-container').show();
-  } else if ($(this).val() == '2') {
+  } else if ($(this).val() == '0') {
     $('.send-allocation-detail-container').hide();
   }
 });
 
+// 发送对象
 $('.modal').on('change', ':checkbox[name="send-to"]', function(e) {
   if ($(this).val() == '1') {
     if ($(this).prop('checked')) {

@@ -10,7 +10,7 @@
         <div class="form-group col-sm-6 col-md-4">
           <div class="input-group">
             <div class="input-group-addon">商户名称</div>
-            <input type="text" class="form-control" id="" value="{{merchantName}}">
+            <input type="text" class="form-control" id="merchantName" value="{{merchantName}}">
           </div>
         </div>
 
@@ -31,18 +31,18 @@
         <div class="form-group col-sm-6 col-md-4">
           <div class="input-group">
             <div class="input-group-addon">商户联系人</div>
-            <input type="text" class="form-control" id="" value="{{merchantContacter}}">
+            <input type="text" class="form-control" id="merchantContacter" value="{{merchantContacter}}">
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-4">
           <div class="input-group">
             <div class="input-group-addon">联系电话</div>
-            <input type="text" class="form-control" id="" value="{{merchantPhone}}">
+            <input type="text" class="form-control" id="merchantPhone" value="{{merchantPhone}}">
           </div>
         </div>
 
-        <div class="form-group col-sm-6 col-md-4">
+<!--         <div class="form-group col-sm-6 col-md-4">
           <div class="input-group">
             <div class="input-group-addon">员工姓名</div>
             <input type="text" class="form-control" id="" value="{{userName}}">
@@ -54,7 +54,7 @@
             <div class="input-group-addon">员工编号</div>
             <input type="text" class="form-control" id="" value="{{userId}}">
           </div>
-        </div>
+        </div> -->
 
       </div>
     </div>
@@ -83,10 +83,10 @@
     <div class="container-fluid">
 
       <div class="row"> 
-        <div class="form-group col-sm-6 col-md-4">
+        <div class="form-group col-md-12">
           <div class="input-group">
             <div class="input-group-addon">商户备注信息</div>
-            <textarea class="form-control">{{merchantRemark}}</textarea>
+            <textarea class="form-control" id="merchantRemark">{{merchantRemark}}</textarea>
           </div>
         </div>
       </div>
@@ -112,14 +112,14 @@
           <div class="form-group col-sm-6">
             <div class="input-group">
               <div class="input-group-addon">拨款周期</div>
-              <input type="text" class="form-control" id="" value="{{allocationPeriod}}">
+              <input type="text" class="form-control" id="allocationPeriod" value="{{allocationPeriod}}">
             </div>
           </div>
 
           <div class="form-group col-sm-6">
             <div class="input-group">
               <div class="input-group-addon">拨款延迟天数</div>
-              <input type="text" class="form-control" id="" value="{{allocationDelay}}">
+              <input type="text" class="form-control" id="allocationDelay" value="{{allocationDelay}}">
             </div>
           </div>
 
@@ -169,7 +169,7 @@
         <div class="form-group col-md-8">
           <div class="input-group">
             <div class="input-group-addon">拨款摘要</div>
-            <input type="text" class="form-control" id="" value="{{allocationRemark}}">
+            <input type="text" class="form-control" id="allocationRemark" value="{{allocationRemark}}">
           </div>
         </div>
       </div>
@@ -219,20 +219,37 @@
         <div class="form-group col-sm-6 col-md-4">
           <div class="input-group">
             <div class="input-group-addon">账户名</div>
-            <input type="text" class="form-control" value="{{bankAccount}}">
+            <input type="text" class="form-control" id="accountName" value="{{bankAccount}}">
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-4">
           <div class="input-group">
             <div class="input-group-addon">账号</div>
-            <input type="text" class="form-control" value="{{bankCode}}">
+            <input type="text" class="form-control" id="bankAccount" value="{{bankCode}}">
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="form-group col-sm-6 col-md-4">
+          <div class="input-group">
+            <div class="input-group-addon">开户行</div>
+            <input type="text" class="form-control" id="accountName" value="{{bankAccount}}" readonly>
+          </div>
+        </div>
+
+        <div class="form-group col-sm-6 col-md-4">
+          <div class="input-group">
+            <div class="input-group-addon">联行行号</div>
+            <input type="text" class="form-control" id="bankAccount" value="{{bankCode}}" readonly>
           </div>
         </div>
 
         <div class="col-md-4">
-          <button class="btn btn-default">选择开户行, 户号</button>
+          <button class="btn btn-default" id="select-bank">选择开户行, 户号</button>
         </div>
+        
       </div>
 
     </div>
@@ -259,7 +276,7 @@
               <tbody>
                 <tr>
                   <td>万达</td>
-                  <td>我想骂产品.avi</td>
+                  <td>.avi</td>
                   <td>2013.09.99</td>
                   <td>
                     <a href="#" class="btn-edit">查看</a>
