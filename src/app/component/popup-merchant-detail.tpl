@@ -235,21 +235,21 @@
         <div class="form-group col-sm-6 col-md-4">
           <div class="input-group">
             <div class="input-group-addon">开户行</div>
-            <input type="text" class="form-control" id="accountName" value="{{bankAccount}}" readonly>
+            <input type="text" class="form-control" id="bankName" value="{{bankAccount}}" readonly>
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-4">
           <div class="input-group">
             <div class="input-group-addon">联行行号</div>
-            <input type="text" class="form-control" id="bankAccount" value="{{bankCode}}" readonly>
+            <input type="text" class="form-control" id="bankCode" value="{{bankCode}}" readonly>
           </div>
         </div>
 
         <div class="col-md-4">
           <button class="btn btn-default" id="select-bank">选择开户行, 户号</button>
         </div>
-        
+
       </div>
 
     </div>

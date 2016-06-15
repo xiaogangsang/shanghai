@@ -31,6 +31,24 @@ $(function() {
 	}
 });
 
+/****************************************** event handler **********************************************/
+$(document).on('click', '.submit', function(e) {
+	e.preventDefault();
+
+	// 搜集type=text的输入项, 必输项
+	var mandatoryKeys = ['merchantName', 
+	'merchantContacter', 
+	'merchantPhone', 
+	'accountName', 
+	'bankAccount', 
+	'bankCode'];
+
+	// 搜集type=text的输入项, 可选项
+	var optionKeys = ['merchantRemark', 'allocationRemark'];
+
+	// 搜集其他类型
+});
+
 
 /****************************************** event handler **********************************************/
 // 拨款模式
