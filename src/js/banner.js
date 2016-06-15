@@ -274,7 +274,7 @@ $('#dataTable').on('click', '.btn-delete', function (e) {
       data: {
         id: that.data('id'),
         bannerType: that.data('bannertype'),
-      }
+      },
     })
     .done(function (res) {
       if (!!~~res.meta.result) {
@@ -345,26 +345,30 @@ $(document).on('submit', '#popup-banner-form form', function (event) {
     bannerType: ~~$('#popup-banner-form #bannerType').val(),
     bannerName: $.trim($('#popup-banner-form #bannerName').val()),
     channelId: ~~$('#popup-banner-form #channelId').val(),
-    position: ~~$.trim($('#popup-banner-form #position').val()),
     status: ~~$('#popup-banner-form #status').val(),
     startTime: $.trim($('#popup-banner-form #startTime').val()),
     endTime: $.trim($('#popup-banner-form #endTime').val()),
-    areaType: ~~$('input[name=areaType]:checked').val(),
-    cityList: [],
   };
 
-  if (sendData.areaType == 1) {
-    sendData.cityList = _choosed;
-    if (sendData.cityList.length < 1) {
-      alert('区域类型的banenr，必须选择城市！');
-      return false;
+  if (sendData.bannerType == 1 || sendData.bannerType == 2) {
+    sendData.position = ~~$.trim($('#popup-banner-form #position').val());
+    sendData.areaType = ~~$('input[name=areaType]:checked').val();
+    sendData.cityList = [];
+    if (sendData.areaType == 1) {
+      sendData.cityList = _choosed;
+      if (sendData.cityList.length < 1) {
+        alert('区域类型的banenr，必须选择城市！');
+        return false;
+      }
     }
   }
 
-  if (sendData.bannerType == 1) {
+  if (sendData.bannerType == 1 || sendData.bannerType == 3) {
     sendData.imageUrl = $('#popup-banner-form #imageUrl').val();
     sendData.link = $('#popup-banner-form #link').val();
-  } else {
+  }
+
+  if (sendData.bannerType == 2) {
     sendData.filmId = $('#popup-banner-form #filmId').val();
   }
 

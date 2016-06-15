@@ -177,10 +177,6 @@
           </td>
         </tr>
         <tr>
-          <th>展示顺序</th>
-          <td><input type="text" class="form-control" id="position" value="{{banner.position}}" required data-parsley-pattern="^[1-9]{1}\d*$"></td>
-        </tr>
-        <tr>
           <th>是否显示</th>
           <td>
             <select class="form-control" id="status">
@@ -260,7 +256,7 @@
             </select>
           </td>
         </tr>
-        <tr>
+        <tr class="type-1 type-2">
           <th>顺序</th>
           <td><input type="text" class="form-control" id="position" required data-parsley-pattern="^[1-9]{1}\d*$"></td>
         </tr>
