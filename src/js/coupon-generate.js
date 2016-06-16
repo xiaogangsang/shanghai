@@ -7,21 +7,13 @@ var _pageSize = 10;
 var _pageTotal = 0;
 var _querying = false;
 var searchCache = {};
-var useCache = false;
 
 $(function () {
-  common.init('activity-coupon');
-
-  //set search form
-  getBudgetSource();
-
+  common.init('coupon-generate');
 });
 
 $('#formSearch').on('click', 'button[type=submit]', function (event) {
   event.preventDefault();
-  _pageIndex = 1;
-  useCache = false;
-  $('#formSearch').trigger('submit');
 });
 
 $('#formSearch').on('submit', function (e) {
@@ -229,20 +221,4 @@ function setPager(total, pageIndex, rowsSize, pageTotal) {
   Mustache.parse(template);
   var html = Mustache.render(template, data);
   $('#pager').html(html);
-}
-
-function getBudgetSource() {
-  $.ajax({
-    url: common.API_HOST + 'activity/budgetSourceList',
-    type: 'POST',
-    dataType: 'json',
-  })
-  .done(function (res) {
-    if (!!~~res.meta.result) {
-      _budgetSource = res.data;
-      $('#formSearch').trigger('submit');
-    } else {
-      alert('接口错误：' + res.meta.msg);
-    }
-  });
 }

@@ -34,7 +34,7 @@ var _popupDataCache = {
 };
 
 $(function () {
-  common.init('activity-coupon');
+  common.init('coupon-rule');
 
   setProvince();
   setBrand();
@@ -146,6 +146,35 @@ $(document).on('change', '#level', function (event) {
   }
 });
 
+//上传图片
+$(document).on('click', '#btn-upload', function (event) {
+  event.preventDefault();
+  $('#fileupload').next('span').remove();
+  $('#popup-coupon-image-upload').modal('show');
+  $('#fileupload').data('url', common.API_HOST + 'coupon/uploadImage').fileupload({
+    dataType: 'json',
+    add: function (e, data) {
+      $('#fileupload').next('span').remove();
+      $('#fileupload').after(' <span>' + data.files[0].name + '</span>');
+      $('#popup-coupon-image-upload button.btn-primary').off('click').on('click', function () {
+        $(this).prop('disable', true).text('上传中...');
+        data.submit();
+      });
+    },
+
+    done: function (e, data) {
+      $('#popup-coupon-image-upload button.btn-primary').prop('disable', false).text('上传');
+      if (!!~~data.result.meta.result) {
+        $('#imageUrl').val(data.result.data.savePath);
+        alert('上传成功！');
+        $('#popup-coupon-image-upload').modal('hide');
+      } else {
+        alert('上传失败：' + data.result.meta.msg);
+      }
+    },
+  });
+});
+
 //渠道
 $(document).on('click', '#btn-set-channel', function (event) {
   event.preventDefault();
@@ -208,9 +237,9 @@ $(document).on('submit', '#popup-unit-movie form', function (event) {
 //制式
 $(document).on('click', '#btn-set-dimen', function (event) {
   event.preventDefault();
-console.log(_popupDataCache.filmType);
-console.log(_popupDataCache.screenType);
-console.log(_popupDataCache.hallType);
+  console.log(_popupDataCache.filmType);
+  console.log(_popupDataCache.screenType);
+  console.log(_popupDataCache.hallType);
   _(_filmType).forEach(function (dimen) {
     dimen.checked = true;
     if (_popupDataCache.filmType.indexOf(dimen.name) < 0) {
@@ -507,22 +536,22 @@ $(document).on('change', '#couponPattern', function (event) {
     case 1:
     case 3:
     case 4:
-    $('#amount').attr('data-parsley-pattern', '^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$');
-    $('#limitNum').prop({ disabled: false, required: true });
-    $('#typeTable th:nth-child(3)').text('单张票价区间（最低）');
-    $('#typeTable th:nth-child(4)').text('单张票价区间（最高）');
+      $('#amount').attr('data-parsley-pattern', '^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$');
+      $('#limitNum').prop({ disabled: false, required: true });
+      $('#typeTable th:nth-child(3)').text('单张票价区间（最低）');
+      $('#typeTable th:nth-child(4)').text('单张票价区间（最高）');
     break;
     case 2:
-    $('#amount').attr('data-parsley-pattern', '^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$');
-    $('#limitNum').prop({ disabled: true, required: false });
-    $('#typeTable th:nth-child(3)').text('订单价格区间（最低）');
-    $('#typeTable th:nth-child(4)').text('订单价格区间（最高）');
+      $('#amount').attr('data-parsley-pattern', '^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$');
+      $('#limitNum').prop({ disabled: true, required: false });
+      $('#typeTable th:nth-child(3)').text('订单价格区间（最低）');
+      $('#typeTable th:nth-child(4)').text('订单价格区间（最高）');
     break;
     case 5:
-    $('#amount').attr('data-parsley-pattern', '^[1-9]{1}$');
-    $('#limitNum').prop({ disabled: false, required: true });
-    $('#typeTable th:nth-child(3)').text('单张票价区间（最低）');
-    $('#typeTable th:nth-child(4)').text('单张票价区间（最高）');
+      $('#amount').attr('data-parsley-pattern', '^[1-9]{1}$');
+      $('#limitNum').prop({ disabled: false, required: true });
+      $('#typeTable th:nth-child(3)').text('单张票价区间（最低）');
+      $('#typeTable th:nth-child(4)').text('单张票价区间（最高）');
     break;
   }
 });
@@ -547,6 +576,9 @@ $(document).on('submit', '#formEdit', function (event) {
     budgetSource: $('#budgetSource').val(),
     wandaTicketId: $('#wandaTicketId').val(),
     advancePayment: $('input[name=advancePayment]:checked').val(),
+    couponDesc: $.trim($('#couponDesc').val()),
+    imageUrl: $.trim($('#imageUrl').val()),
+    maxInventory: $.trim($('#maxInventory').val()),
     channels: _popupDataCache.channels,
     hallType: _popupDataCache.hallType,
     filmType: _popupDataCache.filmType,
@@ -1005,6 +1037,10 @@ function setEdit(couponId) {
           $(el).prop('checked', true);
         }
       });
+
+      $('#couponDesc').val(coupon.couponDesc);
+      $('#imageUrl').val(coupon.imageUrl);
+      $('#maxInventory').val(coupon.maxInventory);
 
       //成本中心
       if (coupon.budgetSource != '' && coupon.budgetSource != null && coupon.budgetSource != undefined) {

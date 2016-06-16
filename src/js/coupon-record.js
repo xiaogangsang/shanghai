@@ -10,7 +10,7 @@ var searchCache = {};
 var useCache = false;
 
 $(function () {
-  common.init('record-coupon');
+  common.init('coupon-record');
   getChannel();
 });
 
