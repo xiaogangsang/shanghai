@@ -52,7 +52,7 @@ gulp.task('fileinclude', function (done) {
 });
 
 gulp.task('clean', function (done) {
-  gulp.src('dist', { read: false })
+  gulp.src('dist/**/*.*', { read: false })
   .pipe(clean({ force: true }))
   .on('end', done);
 });

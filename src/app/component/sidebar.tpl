@@ -134,7 +134,7 @@
       <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu14"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 收单对账</a>
       <div id="menu14" class="panel-collapse collapse" role="tabpanel">
         <div class="list-group">
-          <a href="balance-summary.html" class="list-group-item" id="menu-balance-summary" data-id="24">对账汇总</a>
+          <a href="balance-in-summary.html" class="list-group-item" id="menu-balance-in-summary" data-id="24">对账汇总</a>
         </div>
       </div>
     </div>

@@ -32,10 +32,10 @@
         <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">日期类型</div>
-              <select class="form-control" id="">
+              <select class="form-control" id="search_dateType">
                 <option value="">全部</option>
-                <option value="2">交易日期</option>
-                <option value="3">对账日期</option>
+                <option value="1">交易日期</option>
+                <option value="2">对账日期</option>
               </select>
             </div>
           </div>
@@ -57,10 +57,10 @@
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">收单商户</div>
-              <select class="form-control" id="search_merchantStatus">
+              <select class="form-control" id="search_merchantName">
                 <option value="">全部</option>
+                <option value="1">O2O-卡中心</option>
                 <option value="2">O2O-总行</option>
-                <option value="3">O2O-卡中心</option>
               </select>
             </div>
           </div>
@@ -68,17 +68,21 @@
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">收单商户号</div>
-              <input type="text" class="form-control" id="search_merchantName">
+              <input type="text" class="form-control" id="search_merchantNo">
             </div>
           </div>
 
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">支付流水状态</div>
-              <select class="form-control" id="search_merchantStatus">
+              <select class="form-control" id="search_payStatus">
                 <option value="">全部</option>
+                <option value="1">待支付</option>
                 <option value="2">支付成功</option>
-                <option value="3">退款成功</option>
+                <option value="3">支付失败</option>
+                <option value="4">退款成功</option>
+                <option value="5">退款失败</option>
+                <option value="6">已关闭</option>
               </select>
             </div>
           </div>
@@ -93,13 +97,13 @@
                 <button type="button" class="btn btn-block btn-default btn-reset">重置</button>
               </div>
               <div class="col-xs-2">
-                <button type="button" class="btn btn-block btn-default btn-reset">查看所有明细</button>
+                <button type="button" class="btn btn-block btn-default">查看所有明细</button>
               </div>
               <div class="col-xs-2">
-                <button type="button" class="btn btn-block btn-default btn-reset">查看选中明细</button>
+                <button type="button" class="btn btn-block btn-default">查看选中明细</button>
               </div>
               <div class="col-xs-2">
-                <button type="button" class="btn btn-block btn-default btn-reset">查看异常记录</button>
+                <button type="button" class="btn btn-block btn-default">查看异常记录</button>
               </div>
             </div>
           </div>
@@ -110,7 +114,7 @@
 
         <div class="content-area">
 
-        <div class="table-responsive">
+        <div class="table-responsive" style="margin-bottom: 20px;">
             <table class="table table-hover" id="summaryTable">
               <thead>
                 <tr>
@@ -183,7 +187,7 @@
 </div>
 
   <script src="js/vendor.js"></script>
-  <script src="js/balance-summary.js"></script>
+  <script src="js/balance-in-summary.js"></script>
 
   <script id="pager-template" type="text/x-tmpl-mustache">
     <div class="col xs-12 col-sm-6 rowStatics">共 <span id="total">{{total}}</span> 条数据，当前显示 <span id="rowsSize">{{rowsSize}}</span> 条</div>
@@ -206,35 +210,31 @@
     {{#rows}}
     <tr data-id="{{id}}" data-bannertype="{{bannerType}}">
       <td><input type="checkbox" class="multi-check"></td>
-      <td>{{merchantId}}</td>
-      <td>{{merchantName}}</td>
       <td>{{createTime}}</td>
-      <td>{{userName}}</td>
-      <td>{{department}}</td>
-      <td>{{merchantStatus}}</td>
-      <td>{{accountStatus}}</td>
-      <td>
-        <button type="button" class="btn btn-xs btn-default btn-edit">详情</button>
-      </td>
+      <td>{{chargeMerchant}}</td>
+      <td>{{merchantNo}}</td>
+      <td>{{payStatus}}</td>
+      <td>{{ticketAmount}}</td>
+      <td>{{returnFee}}</td>
+      <td>{{serviceAmount}}</td>
+      <td>{{subsidyAmountO2o}}</td>
+      <td>{{receivableAmount}}</td>
+      <td>{{bankAmount}}</td>
     </tr>
     {{/rows}}
   </script>
 
   <script id="summary-table-template" type="text/x-tmpl-mustache">
-    {{#rows}}
     <tr data-id="{{id}}" data-bannertype="{{bannerType}}">
-      <td>{{merchantId}}</td>
-      <td>{{merchantName}}</td>
-      <td>{{createTime}}</td>
-      <td>{{userName}}</td>
-      <td>{{department}}</td>
-      <td>{{merchantStatus}}</td>
-      <td>{{accountStatus}}</td>
-      <td>
-        <button type="button" class="btn btn-xs btn-default btn-edit">详情</button>
-      </td>
+      <td>{{count}}</td>
+      <td>{{totalTicketCount}}</td>
+      <td>{{totalTiketAmount}}</td>
+      <td>{{totalReturnFee}}</td>
+      <td>{{totalServiceAmount}}</td>
+      <td>{{totalSubsidyAmountO2o}}</td>
+      <td>{{totalO2oReceivableAmount}}</td>
+      <td>{{totalBankAmount}}</td>
     </tr>
-    {{/rows}}
   </script>
 </body>
 </html>
