@@ -30,21 +30,21 @@
 
         <form id="formGenerate" class="search-area clearfix">
 
-          <div class="form-group col-sm-6 col-md-6">
+          <div class="form-group col-sm-4">
             <div class="input-group">
-              <div class="input-group-addon">优惠券规则ID</div>
-              <input type="text" class="form-control" id="couponId" required>
+              <div class="input-group-addon">优惠券ID</div>
+              <input type="text" class="form-control" id="couponId" data-parsley-type="number" min="1" required>
             </div>
           </div>
 
-          <div class="form-group col-sm-6 col-md-4">
+          <div class="form-group col-sm-4">
             <div class="input-group">
               <div class="input-group-addon">产码数量</div>
-              <input type="text" class="form-control" id="quantity" required>
+              <input type="text" class="form-control" id="amount" data-parsley-type="number" min="1" required>
             </div>
           </div>
 
-          <div class="col-sm-4 col-md-2">
+          <div class="col-sm-4">
             <button type="submit" class="btn btn-block btn-primary">产码</button>
           </div>
 
@@ -52,7 +52,7 @@
 
         <div class="content-area">
 
-          <h3>产码历史</h3>
+          <h3>产码历史列表</h3>
 
           <div class="row" id="pager"></div>
 
@@ -60,7 +60,7 @@
             <table class="table table-hover">
               <thead>
                 <tr>
-                  <th>优惠券规则ID</th>
+                  <th>优惠券ID</th>
                   <th>预设产码数量</th>
                   <th>实际产码数量</th>
                   <th>产码状态</th>
@@ -108,12 +108,13 @@
     {{#rows}}
     <tr data-id="{{id}}">
       <td>{{couponId}}</td>
-      <td>{{name}}</td>
-      <td>{{budgetSource}}</td>
-      <td>{{beginDate}}</td>
-      <td>{{endDate}}</td>
+      <td>{{expectAmount}}</td>
+      <td>{{actualAmount}}</td>
+      <td>{{status}}</td>
+      <td>{{createTime}}</td>
+      <td>{{createUser}}</td>
       <td>
-        <a href="coupon-rule-edit.html?couponId={{id}}" class="btn btn-xs btn-default">编辑</a>
+        {{#canExport}}<a href="http://172.16.0.50:8080/movie-ops/couponCode/exportCodes?produceId={{id}}" class="btn btn-xs btn-default">批量导出</a>{{/canExport}}
       </td>
     </tr>
     {{/rows}}
