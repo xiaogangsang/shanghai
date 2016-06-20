@@ -208,9 +208,6 @@ $(document).on('submit', '#popup-unit-movie form', function (event) {
 //制式
 $(document).on('click', '#btn-set-dimen', function (event) {
   event.preventDefault();
-console.log(_popupDataCache.filmType);
-console.log(_popupDataCache.screenType);
-console.log(_popupDataCache.hallType);
   _(_filmType).forEach(function (dimen) {
     dimen.checked = true;
     if (_popupDataCache.filmType.indexOf(dimen.name) < 0) {
@@ -505,24 +502,28 @@ $(document).on('change', '#couponPattern', function (event) {
   var current = +$(this).val();
   switch (current) {
     case 1:
+      $('#amount').attr('data-parsley-pattern', '^0|[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$');
+      $('#limitNum').prop({ disabled: false, required: true });
+      $('#typeTable th:nth-child(3)').text('单张票价区间（最低）');
+      $('#typeTable th:nth-child(4)').text('单张票价区间（最高）');
     case 3:
     case 4:
-    $('#amount').attr('data-parsley-pattern', '^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$');
-    $('#limitNum').prop({ disabled: false, required: true });
-    $('#typeTable th:nth-child(3)').text('单张票价区间（最低）');
-    $('#typeTable th:nth-child(4)').text('单张票价区间（最高）');
+      $('#amount').attr('data-parsley-pattern', '^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$');
+      $('#limitNum').prop({ disabled: false, required: true });
+      $('#typeTable th:nth-child(3)').text('单张票价区间（最低）');
+      $('#typeTable th:nth-child(4)').text('单张票价区间（最高）');
     break;
     case 2:
-    $('#amount').attr('data-parsley-pattern', '^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$');
-    $('#limitNum').prop({ disabled: true, required: false });
-    $('#typeTable th:nth-child(3)').text('订单价格区间（最低）');
-    $('#typeTable th:nth-child(4)').text('订单价格区间（最高）');
+      $('#amount').attr('data-parsley-pattern', '^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$');
+      $('#limitNum').prop({ disabled: true, required: false });
+      $('#typeTable th:nth-child(3)').text('订单价格区间（最低）');
+      $('#typeTable th:nth-child(4)').text('订单价格区间（最高）');
     break;
     case 5:
-    $('#amount').attr('data-parsley-pattern', '^[1-9]{1}$');
-    $('#limitNum').prop({ disabled: false, required: true });
-    $('#typeTable th:nth-child(3)').text('单张票价区间（最低）');
-    $('#typeTable th:nth-child(4)').text('单张票价区间（最高）');
+      $('#amount').attr('data-parsley-pattern', '^[1-9]{1}$');
+      $('#limitNum').prop({ disabled: false, required: true });
+      $('#typeTable th:nth-child(3)').text('单张票价区间（最低）');
+      $('#typeTable th:nth-child(4)').text('单张票价区间（最高）');
     break;
   }
 });
@@ -963,11 +964,11 @@ function setEdit(couponId) {
   .done(function (res) {
     if (!!~~res.meta.result) {
       var coupon = res.data;
-      _popupDataCache.channels = coupon.channels;
+      _popupDataCache.channels = coupon.channels != null ? coupon.channels : [];
       _popupDataCache.films = coupon.films != null ? coupon.films : [];
-      _popupDataCache.filmType = coupon.filmType;
-      _popupDataCache.screenType = coupon.screenType;
-      _popupDataCache.hallType = coupon.hallType;
+      _popupDataCache.filmType = coupon.filmType != null ? coupon.filmType : [];
+      _popupDataCache.screenType = coupon.screenType != null ? coupon.screenType : [];
+      _popupDataCache.hallType = coupon.hallType != null ? coupon.hallType : [];
       _popupDataCache.timetables = coupon.timetables != null ? coupon.timetables : [];
 
       $.ajax({
@@ -1042,10 +1043,14 @@ function setEdit(couponId) {
       coupon.films != null && coupon.films.length > 0 ? setMovie(coupon.films) : setMovie(false);
 
       //制式
-      var previewHtmlFilmType = coupon.filmType.length == _filmType.length ? '影片制式：不限' : '影片制式：[' + coupon.filmType.join('] [') + ']';
-      var previewHtmlScreenType = '<br>屏幕规格：[' + coupon.screenType.join('] [') + ']';
-      var previewHtmlHallType = '<br>特殊影厅：[' + coupon.hallType.join('] [') + ']';
-      $('#preview-dimen').html(previewHtmlFilmType + previewHtmlScreenType + previewHtmlHallType);
+      if (coupon.filmType == null && coupon.screenType == null && coupon.hallType == null) {
+        $('#preview-dimen').html('不限');
+      } else {
+        var previewHtmlFilmType = coupon.filmType.length == _filmType.length ? '影片制式：不限' : '影片制式：[' + coupon.filmType.join('] [') + ']';
+        var previewHtmlScreenType = '<br>屏幕规格：[' + coupon.screenType.join('] [') + ']';
+        var previewHtmlHallType = '<br>特殊影厅：[' + coupon.hallType.join('] [') + ']';
+        $('#preview-dimen').html(previewHtmlFilmType + previewHtmlScreenType + previewHtmlHallType);
+      }
 
       //影院
       $('#preview-cinema').html(coupon.cinemas != null && coupon.cinemas.length > 0 ? '选择了 ' + coupon.cinemas.length + ' 个影院' : '不限');
