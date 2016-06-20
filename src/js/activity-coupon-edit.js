@@ -976,7 +976,7 @@ function setEdit(couponId) {
         url: common.API_HOST + 'common/getCinemasByIds',
         type: 'POST',
         dataType: 'json',
-        data: { ids: coupon.cinemas },
+        data: { ids: coupon.cinemas.join('|') },
       })
       .done(function (res) {
         if (!!~~res.meta.result) {
