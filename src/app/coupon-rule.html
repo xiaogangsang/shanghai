@@ -93,8 +93,9 @@
             <table class="table table-hover">
               <thead>
                 <tr>
-                  <th>优惠券规则ID</th>
-                  <th>优惠券名称</th>
+                  <th>ID</th>
+                  <th>规则ID</th>
+                  <th>名称</th>
                   <th>成本中心</th>
                   <th>开始日期</th>
                   <th>结束日期</th>
@@ -139,6 +140,7 @@
   <script id="table-template" type="text/x-tmpl-mustache">
     {{#rows}}
     <tr data-id="{{id}}">
+      <td>{{id}}</td>
       <td>{{couponId}}</td>
       <td>{{name}}</td>
       <td>{{budgetSource}}</td>
