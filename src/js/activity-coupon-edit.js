@@ -502,11 +502,12 @@ $(document).on('change', '#couponPattern', function (event) {
   var current = +$(this).val();
   switch (current) {
     case 1:
+    case 3:
       $('#amount').attr('data-parsley-pattern', '^0|[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$');
       $('#limitNum').prop({ disabled: false, required: true });
       $('#typeTable th:nth-child(3)').text('单张票价区间（最低）');
       $('#typeTable th:nth-child(4)').text('单张票价区间（最高）');
-    case 3:
+    break;
     case 4:
       $('#amount').attr('data-parsley-pattern', '^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$');
       $('#limitNum').prop({ disabled: false, required: true });
@@ -1027,7 +1028,7 @@ function setEdit(couponId) {
         coupon.patternList[0].lowerBound = ~~coupon.patternList[0].lowerBound < 1 ? '' : coupon.patternList[0].lowerBound;
         coupon.patternList[0].upperBound = ~~coupon.patternList[0].upperBound < 1 ? '' : coupon.patternList[0].upperBound;
         var htmlPattern = '<tr>';
-        htmlPattern += '<td><input type="text" id="amount" required data-parsley-pattern="^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$" placeholder="必填" value="' + coupon.patternList[0].amount + '"></td>';
+        htmlPattern += '<td><input type="text" id="amount" required data-parsley-pattern="^0|[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$" placeholder="必填" value="' + coupon.patternList[0].amount + '"></td>';
         htmlPattern += '<td><input type="text" id="limitNum" required data-parsley-pattern="^[1-9]{1}\\d*$" placeholder="必填" value="' + coupon.patternList[0].limitNum + '"></td>';
         htmlPattern += '<td><input type="text" id="lowerBound" class="parsley-range" data-parsley-pattern="^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$" data-parsley-ur="0" placeholder="不限" value="' + coupon.patternList[0].lowerBound + '"></td>';
         htmlPattern += '<td><input type="text" id="upperBound" class="parsley-range" data-parsley-pattern="^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$" data-parsley-ur="0" placeholder="不限" value="' + coupon.patternList[0].upperBound + '"></td>';
