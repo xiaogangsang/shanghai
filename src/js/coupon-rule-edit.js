@@ -121,7 +121,7 @@ $(function () {
 $(document).on('change', '#level', function (event) {
   event.preventDefault();
   var level = $(this).val();
-  if (!!~~level) {
+  if (level == undefined || level == '') {
     $('#budgetSource').html('<option value=""></option>');
   } else {
     var sources = [];
