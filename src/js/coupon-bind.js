@@ -13,7 +13,7 @@ $(function () {
   loadHistory();
 });
 
-$('#fileupload').data('url', common.API_HOST + 'security/user/importUsers').fileupload({
+$('#fileupload').data('url', 'http://172.16.0.50:8080/movie-ops/couponCode/uploadUserIds').fileupload({
   dataType: 'json',
   add: function (e, data) {
     data.submit();
@@ -21,7 +21,8 @@ $('#fileupload').data('url', common.API_HOST + 'security/user/importUsers').file
 
   done: function (e, data) {
     if (!!~~data.result.meta.result) {
-      $('#file').val(data.result.data.savePath);
+      $('#fileupload').hide();
+      $('#file').val(data.result.data.fileUniqueId).show();
       alert('上传成功！');
       $('#formBind button').prop('disabled', false);
     } else {
@@ -40,21 +41,23 @@ $('#formBind').on('submit', function (event) {
   $('#formBind button').prop('disabled', true).text('提交中');
 
   $.ajax({
-    // url: common.API_HOST + 'couponCode/produceCodes',
-    url: 'http://172.16.0.50:8080/movie-ops/couponCode/produceCodes',
+    // url: common.API_HOST + 'couponCode/bindingUsers',
+    url: 'http://172.16.0.50:8080/movie-ops/couponCode/bindingUsers',
     type: 'POST',
     dataType: 'json',
     data: {
       couponId: $.trim($('#couponId').val()),
-      amount: $.trim($('#amount').val()),
+      fileUniqueId: $('#file').val(),
     },
   })
   .done(function (res) {
     _querying = false;
     $('#formBind button').text('产码');
     if (!!~~res.meta.result) {
-      alert('产码请求已提交，可在下面列表中查看进度');
-      $('#couponId, #amount').text('');
+      alert('灌码任务已提交，下面列表中查看进度');
+      $('#couponId, #file').text('');
+      $('#file').hide();
+      $('#fileupload').show();
       _pageIndex = 1;
       loadHistory();
     } else {
