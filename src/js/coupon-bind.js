@@ -99,10 +99,24 @@ function loadHistory() {
         _(res.data.rows).forEach(function (item, key) {
           var date = new Date(item.createTime);
           item.createTime = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
-          if (item.status == '') {
+          if (item.status == 'FAILURE') {
             item.canExport = true;
           } else {
             item.canExport = false;
+          }
+
+          switch (item.status) {
+            case 'SUCCESS':
+              item.status = '已完成';
+              break;
+            case 'DOING':
+              item.status = '正在进行';
+              break;
+            case 'FAILURE':
+              item.status = '失败';
+              break;
+            default:
+              break;
           }
         });
 
