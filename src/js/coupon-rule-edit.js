@@ -237,9 +237,9 @@ $(document).on('submit', '#popup-unit-movie form', function (event) {
 //制式
 $(document).on('click', '#btn-set-dimen', function (event) {
   event.preventDefault();
-  console.log(_popupDataCache.filmType);
-  console.log(_popupDataCache.screenType);
-  console.log(_popupDataCache.hallType);
+  // console.log(_popupDataCache.filmType);
+  // console.log(_popupDataCache.screenType);
+  // console.log(_popupDataCache.hallType);
   _(_filmType).forEach(function (dimen) {
     dimen.checked = true;
     if (_popupDataCache.filmType.indexOf(dimen.name) < 0) {
@@ -322,6 +322,7 @@ $(document).on('click', '#btn-set-cinema', function (event) {
   $('#search-cinema-candidate tbody, #search-cinema-choosed tbody').html('');
   $('#input-cinema-filter, #search-cinema-cinemaName').val('');
   if (_popupDataCache.cinemas != null && _popupDataCache.cinemas.length > 0) {
+    $('#choosedCount').text(_popupDataCache.cinemas.length);
     var html = '';
     _(_popupDataCache.cinemas).forEach(function (cinema) {
       html += '<tr data-id="' + cinema.cinemaId + '"><td>' + cinema.cinemaName + '</td><td>' + cinema.cityName + '</td><td>' + cinema.brandName + '</td></tr>';
@@ -535,6 +536,11 @@ $(document).on('change', '#couponPattern', function (event) {
   switch (current) {
     case 1:
     case 3:
+      $('#amount').attr('data-parsley-pattern', '^0|[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$');
+      $('#limitNum').prop({ disabled: false, required: true });
+      $('#typeTable th:nth-child(3)').text('单张票价区间（最低）');
+      $('#typeTable th:nth-child(4)').text('单张票价区间（最高）');
+    break;
     case 4:
       $('#amount').attr('data-parsley-pattern', '^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$');
       $('#limitNum').prop({ disabled: false, required: true });
@@ -997,16 +1003,16 @@ function setEdit(couponId) {
       var coupon = res.data;
       _popupDataCache.channels = coupon.channels;
       _popupDataCache.films = coupon.films != null ? coupon.films : [];
-      _popupDataCache.filmType = coupon.filmType;
-      _popupDataCache.screenType = coupon.screenType;
-      _popupDataCache.hallType = coupon.hallType;
+      _popupDataCache.filmType = coupon.filmType != null ? coupon.filmType : _filmType;
+      _popupDataCache.screenType = coupon.screenType != null ? coupon.screenType : _screenType;
+      _popupDataCache.hallType = coupon.hallType != null ? coupon.hallType : _hallType;
       _popupDataCache.timetables = coupon.timetables != null ? coupon.timetables : [];
 
       $.ajax({
         url: common.API_HOST + 'common/getCinemasByIds',
         type: 'POST',
         dataType: 'json',
-        data: { ids: coupon.cinemas },
+        data: { ids: coupon.cinemas != null ? coupon.cinemas : [] },
       })
       .done(function (res) {
         if (!!~~res.meta.result) {
@@ -1062,7 +1068,7 @@ function setEdit(couponId) {
         coupon.patternList[0].lowerBound = ~~coupon.patternList[0].lowerBound < 1 ? '' : coupon.patternList[0].lowerBound;
         coupon.patternList[0].upperBound = ~~coupon.patternList[0].upperBound < 1 ? '' : coupon.patternList[0].upperBound;
         var htmlPattern = '<tr>';
-        htmlPattern += '<td><input type="text" id="amount" required data-parsley-pattern="^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$" placeholder="必填" value="' + coupon.patternList[0].amount + '"></td>';
+        htmlPattern += '<td><input type="text" id="amount" required data-parsley-pattern="^0|[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$" placeholder="必填" value="' + coupon.patternList[0].amount + '"></td>';
         htmlPattern += '<td><input type="text" id="limitNum" required data-parsley-pattern="^[1-9]{1}\\d*$" placeholder="必填" value="' + coupon.patternList[0].limitNum + '"></td>';
         htmlPattern += '<td><input type="text" id="lowerBound" class="parsley-range" data-parsley-pattern="^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$" data-parsley-ur="0" placeholder="不限" value="' + coupon.patternList[0].lowerBound + '"></td>';
         htmlPattern += '<td><input type="text" id="upperBound" class="parsley-range" data-parsley-pattern="^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$" data-parsley-ur="0" placeholder="不限" value="' + coupon.patternList[0].upperBound + '"></td>';
