@@ -22,7 +22,7 @@ var _DEBUG = true;
 
 $(function() {
 
-	common.liquidationInit('balance-in-summary');
+	common.liquidationInit('balance-in-detail');
 
 	$('#search_startTime').datetimepicker({
     format: 'yyyy-mm-dd',
@@ -65,7 +65,16 @@ $('#formSearch').on('submit', function (e) {
     endTime: $('#search_endTime').val(),
     merchantName: $('#search_merchantName').val(),
     merchantNo: $('#search_merchantNo').val(),
+    partner: $('#search_partner').val(),
+    dicountType: $('#search_dicountType').val(),
+    dicountName: $('#search_dicountName').val(),
+    bizType: $('#search_bizType').val(),
     payStatus: $('#search_payStatus').val(),
+    reconciliationStatus: $('#search_reconciliationStatus').val(),
+    reason: $('#search_reson').val(),
+    orderNo: $('#search_orderNo').val(),
+    thdSerialNo: $('#search_thdSerialNo').val(),
+    paySequenceNo: $('#search_paySequenceNo').val(),
     pageSize: _pageSize,
   };
   if (!!_querying) {
@@ -83,7 +92,7 @@ $('#formSearch').on('submit', function (e) {
 
   if (!_DEBUG) {
     $.ajax({
-      url: 'movie-ops/settlement/acquiringInfo/listSummary',
+      url: 'movie-ops/settlement/acquiringInfo/listSummary',// TODO: URL
       type: 'GET',
       dataType: 'json',
       data: sendData,
@@ -92,7 +101,7 @@ $('#formSearch').on('submit', function (e) {
       handleData(res);
     });
   } else {
-    var res = $.parseJSON('{ "meta": { "result": "1", "msg": "操作成功" }, "data": { "summary": { "count": "订单总数", "totalTicketCount": "出票张数", "totalTiketAmount": " 票价 ", "totalReturnFee":"退票手续费", "totalServiceAmount": " 总服务费", "totalSubsidyAmountO2o": "补贴总金额", "totalO2oReceivableAmount": "应收总金额", "totalBankAmount": "实际收到总金额" }, "detail": { "recordCount": "21", "recordDetail": [ { "createTime": "支付日期", "chargeMerchant": "1", "merchantNo": "收单商户号", "payStatus": "1", "ticketAmount": "票价", "returnFee": "退票手续费", "serviceAmount": "服务费", "subsidyAmountO2o": "我方补贴金额", "receivableAmount": "应收金额", "bankAmount": "实收金额" } ] } } }');
+    var res = $.parseJSON('{ "meta": { "result": "1", "msg": "操作成功" }, "data": { "summary": { "count": "订单总数", "totalTicketCount": "出票张数", "totalTiketAmount": " 票价 ", "totalReturnFee":"退票手续费", "totalServiceAmount": "总服务费", "totalSubsidyAmountO2o": "补贴总金额", "totalO2oReceivableAmount": "应收总金额", "totalBankAmount": "实际收到总金额" }, "detail": { "recordCount": "42", "recordDetail": [ { "receivablePoint": "积分", "bizType": "业务类型", "orderNo": "订单号", "countNum": "票数", "reconciliationDate": "对账日期", "thdSerialNo":"收单方订单号", "costCenter": "成本中心", "externalId": "支付流水", "o2oReceivableAmount": "应收金额", "subsidyType": "补贴方式", "chargeMerchant":"1", "subsidyAmountO2o": "补贴金额", "discountName": "活动/优惠方式名称", "bankAmount":"实收金额", "returnFee":"退票手续费", "payAmount": "支付金额", "serviceAmount": "服务费", "ticketAmount":"交易金额", "reconciliationStatus":"对账状态", "createTime": "支付时间(交易)", "discountType": "优惠方式", "id": 1934, "payStatus": "1", "merchantNo": "商户号", "partner":"退款承债方", "reason":"原因" } ] } } }');
     handleData(res);
   }
 
@@ -202,7 +211,20 @@ $('.btn-reset').click(function(e) {
  //  $('#search_merchantName').val('');
  //  $('#search_merchantNo').val('');
  //  $('#search_payStatus').val('');
+
  $('#formSearch :input:not(:button)').val('');
+});
+
+$('.complete-commit').click(function(e) {
+  // TODO: 对账完成提交
+  $.ajax({
+      url: 'movie-ops/settlement/acquiringInfo/listSummary',// TODO: URL
+      type: 'GET',
+      dataType: 'json',
+      data: searchCache,
+    })
+    .done(function (res) {
+    });
 });
 
 /****************************************** Utilities Method **********************************************/

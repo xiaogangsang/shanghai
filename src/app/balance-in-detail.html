@@ -74,6 +74,47 @@
 
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
+              <div class="input-group-addon">退款承债方</div>
+              <select class="form-control" id="search_partner">
+                <option value="">全部</option>
+                <option value="1">商户</option>
+                <option value="2">O2O公司</option>
+                <option value="3">渠道方</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">优惠方式</div>
+              <select class="form-control" id="search_dicountType">
+                <option value="">全部</option>
+                <option value="1">优惠券</option>
+                <option value="2">活动</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">活动/优惠券名称</div>
+              <input type="text" class="form-control" id="search_dicountName">
+            </div>
+          </div>
+
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">业务类别</div>
+              <select class="form-control" id="search_bizType">
+                <option value="">全部</option>
+                <option value="1">在线选座</option>
+                <option value="2">退票手续费</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
               <div class="input-group-addon">支付流水状态</div>
               <select class="form-control" id="search_payStatus">
                 <option value="">全部</option>
@@ -82,8 +123,67 @@
                 <option value="3">支付失败</option>
                 <option value="4">退款成功</option>
                 <option value="5">退款失败</option>
-                <option value="6">已关闭</option>
+                <option value="5">已关闭</option>
               </select>
+            </div>
+          </div>
+
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">收单对账状态</div>
+              <select class="form-control" id="search_reconciliationStatus">
+                <option value="">全部</option>
+                <option value="1">未对账</option>
+                <option value="2">对账不一致</option>
+                <option value="3">收单对账成功</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">对账不一致原因</div>
+              <select class="form-control" id="search_reason">
+                <option value="">全部</option>
+                <option value="1">我方缺失</option>
+                <option value="2">对方缺失</option>
+                <option value="3">金额不符</option>
+                <option value="3">状态错误</option>
+              </select>
+            </div>
+          </div>
+
+<!--           <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">出货对账状态</div>
+              <select class="form-control" id="search_">
+                <option value="">全部</option>
+                <option value="1">未对账</option>
+                <option value="2">对账不一致</option>
+                <option value="3">出货对账成功</option>
+                <option value="4">已确认</option>
+              </select>
+            </div>
+          </div> -->
+
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">交易订单号</div>
+              <input type="text" class="form-control" id="search_orderNo">
+            </div>
+          </div>
+
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">收单方支付订单号</div>
+              <input type="text" class="form-control" id="search_thdSerialNo">
+            </div>
+          </div>
+
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">支付流水号</div>
+              <input type="text" class="form-control" id="search_paySequenceNo">
             </div>
           </div>
 
@@ -103,7 +203,7 @@
                 <button type="button" class="btn btn-block btn-default">查看选中明细</button>
               </div>
               <div class="col-xs-2">
-                <button type="button" class="btn btn-block btn-default">查看异常记录</button>
+                <button type="button" class="btn btn-block btn-default complete-commit">对账完成提交提交</button>
               </div>
             </div>
           </div>
@@ -142,17 +242,29 @@
               <thead>
                 <tr>
                   <!-- 参照activity-unit.html -->
-                  <th><input type="checkbox" class="multi-check-all"></th>
-                  <th>日期</th>
+                  <th>交易时间</th>
+                  <th>支付流水号</th>
                   <th>收单商户</th>
                   <th>收单商户号</th>
+                  <th>业务类别</th>
                   <th>支付流水状态</th>
-                  <th>票价</th>
+                  <th>交易订单号</th>
+                  <th>收单方支付订单号</th>
+                  <th>交易金额</th>
                   <th>退票手续费</th>
                   <th>服务费</th>
                   <th>我方补贴金额</th>
                   <th>应收金额</th>
                   <th>实收金额</th>
+                  <th>承债方</th>
+                  <th>优惠方式</th>
+                  <th>活动/优惠券名称</th>
+                  <th>客户支付金额</th>
+                  <th>客户支付积分</th>
+                  <th>收单对账状态</th>
+                  <th>对账不一致原因</th>
+                  <th>对账时间</th>
+                  <th>操作</th>
                 </tr>
               </thead>
               <tbody>
@@ -187,7 +299,7 @@
 </div>
 
   <script src="js/vendor.js"></script>
-  <script src="js/balance-in-summary.js"></script>
+  <script src="js/balance-in-detail.js"></script>
 
   <script id="pager-template" type="text/x-tmpl-mustache">
     <div class="col xs-12 col-sm-6 rowStatics">共 <span id="total">{{total}}</span> 条数据，当前显示 <span id="rowsSize">{{rowsSize}}</span> 条</div>
@@ -209,17 +321,33 @@
   <script id="table-template" type="text/x-tmpl-mustache">
     {{#rows}}
     <tr data-id="{{id}}" data-bannertype="{{bannerType}}">
-      <td><input type="checkbox" class="multi-check"></td>
       <td>{{createTime}}</td>
+      <td>{{externalId}}</td>
       <td>{{chargeMerchant}}</td>
       <td>{{merchantNo}}</td>
+      <td>{{bizType}}</td>
       <td>{{payStatus}}</td>
+      <td>{{orderNo}}</td>
+      <td>{{thdSerialNo}}</td>
       <td>{{ticketAmount}}</td>
+      <!-- 退票手续费 -->
       <td>{{returnFee}}</td>
       <td>{{serviceAmount}}</td>
       <td>{{subsidyAmountO2o}}</td>
-      <td>{{receivableAmount}}</td>
+      <td>{{o2oReceivableAmount}}</td>
+      <!-- 实收金额 -->
       <td>{{bankAmount}}</td>
+      <td>{{partner}}</td>
+      <td>{{discountType}}</td>
+      <td>{{discountName}}</td>
+      <td>{{payAmount}}</td>
+      <td>{{receivablePoint}}</td>
+      <td>{{reconciliationStatus}}</td>
+      <td>{{reason}}</td>
+      <td>{{reconciliationDate}}</td>
+      <td>
+      <button class="btn btn-xs btn-default btn-edit">详情</button>
+      </td>
     </tr>
     {{/rows}}
   </script>

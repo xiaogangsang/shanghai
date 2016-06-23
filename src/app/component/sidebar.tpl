@@ -135,6 +135,7 @@
       <div id="menu14" class="panel-collapse collapse" role="tabpanel">
         <div class="list-group">
           <a href="balance-in-summary.html" class="list-group-item" id="menu-balance-in-summary" data-id="24">对账汇总</a>
+          <a href="balance-in-detail.html" class="list-group-item" id="menu-balance-in-detail" data-id="25">对账明细</a>
         </div>
       </div>
     </div>
