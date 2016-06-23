@@ -12,6 +12,9 @@
   width: 130px;
   padding: 3px 0;
 }
+.order-detail .edit-section p {
+  font-weight: 700;
+}
 .tooltip-inner {
   max-width: none;
   text-align: left;

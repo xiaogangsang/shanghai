@@ -134,8 +134,21 @@
     <div class="col-xs-12 col-sm-6"><label>自助取票机：</label>{{#machineTicket}}{{text}}：{{value}}{{/machineTicket}}</div>
       <div class="col-xs-12 col-sm-6"><label>影院前台：</label>{{#frontTicket}}{{text}}：{{value}}<br>{{/frontTicket}}</div>
     </div>
-    <div class="edit-section">
-      <div class="col-xs-12"><label>短信发送内容：</label>{{smsContent}}</div>
+    <div class="col-xs-12 col-sm-6" style="padding-left :0px">
+      <div class="edit-section" id="shipInfo">
+        <p>出退货明细：</p>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>时间</th>
+              <th>出退货状态</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+    <div class="edit-section col-xs-12 col-sm-6">
+      <div class="col-xs-12"><p>信发送内容：</p>{{smsContent}}</div>
       {{#canSendSMS}}
       <div class="col-xs-12"><button class="btn btn-default pull-right" id="btn-sendsms">重发短信</button></div>
       {{/canSendSMS}}
