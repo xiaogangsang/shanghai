@@ -22,8 +22,8 @@ $('#formGenerate').on('submit', function (event) {
   $('#formGenerate button').prop('disabled', true).text('提交中');
 
   $.ajax({
-    // url: common.API_HOST + 'couponCode/produceCodes',
-    url: 'http://172.16.0.50:8080/movie-ops/couponCode/produceCodes',
+    url: common.API_HOST + 'couponCode/produceCodes',
+    // url: 'http://172.16.0.50:8080/movie-ops/couponCode/produceCodes',
     type: 'POST',
     dataType: 'json',
     data: {
@@ -55,8 +55,8 @@ function loadHistory() {
   _querying = true;
 
   $.ajax({
-    // url: common.API_HOST + 'couponCode/produceHistory',
-    url: 'http://172.16.0.50:8080/movie-ops/couponCode/produceHistory',
+    url: common.API_HOST + 'couponCode/produceHistory',
+    // url: 'http://172.16.0.50:8080/movie-ops/couponCode/produceHistory',
     type: 'POST',
     dataType: 'json',
     data: {

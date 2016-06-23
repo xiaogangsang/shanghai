@@ -13,7 +13,8 @@ $(function () {
   loadHistory();
 });
 
-$('#fileupload').data('url', 'http://172.16.0.50:8080/movie-ops/couponCode/uploadUserIds').fileupload({
+// $('#fileupload').data('url', 'http://172.16.0.50:8080/movie-ops/couponCode/uploadUserIds').fileupload({
+$('#fileupload').data('url', common.API_HOST + 'couponCode/uploadUserIds').fileupload({
   dataType: 'json',
   add: function (e, data) {
     data.submit();
@@ -41,8 +42,8 @@ $('#formBind').on('submit', function (event) {
   $('#formBind button').prop('disabled', true).text('提交中');
 
   $.ajax({
-    // url: common.API_HOST + 'couponCode/bindingUsers',
-    url: 'http://172.16.0.50:8080/movie-ops/couponCode/bindingUsers',
+    url: common.API_HOST + 'couponCode/bindingUsers',
+    // url: 'http://172.16.0.50:8080/movie-ops/couponCode/bindingUsers',
     type: 'POST',
     dataType: 'json',
     data: {
@@ -76,8 +77,8 @@ function loadHistory() {
   _querying = true;
 
   $.ajax({
-    // url: common.API_HOST + 'couponCode/sendHistory',
-    url: 'http://172.16.0.50:8080/movie-ops/couponCode/sendHistory',
+    url: common.API_HOST + 'couponCode/sendHistory',
+    // url: 'http://172.16.0.50:8080/movie-ops/couponCode/sendHistory',
     type: 'POST',
     dataType: 'json',
     data: {

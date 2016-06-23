@@ -48,8 +48,8 @@ $('#formSearch').on('submit', function (e) {
   sendData.pageIndex = _pageIndex;
 
   $.ajax({
-    // url: common.API_HOST + 'usedCouponLog/list',
-    url: 'http://172.16.0.50:8080/movie-ops/couponCode/list',
+    url: common.API_HOST + 'couponCode/list',
+    // url: 'http://172.16.0.50:8080/movie-ops/couponCode/list',
     type: 'POST',
     dataType: 'json',
     data: sendData,
@@ -112,8 +112,8 @@ $('#formSearch').on('submit', function (e) {
 $('#dataTable').on('click', '.btn-flow', function (event) {
   event.preventDefault();
   $.ajax({
-    // url: common.API_HOST + 'usedCouponLog/list',
-    url: 'http://172.16.0.50:8080/movie-ops/usedCouponLog/list',
+    url: common.API_HOST + 'usedCouponLog/list',
+    // url: 'http://172.16.0.50:8080/movie-ops/usedCouponLog/list',
     type: 'POST',
     dataType: 'json',
     data: { couponCode: $(this).closest('tr').data('code') },
