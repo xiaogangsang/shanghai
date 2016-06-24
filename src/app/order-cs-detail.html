@@ -136,14 +136,22 @@
     </div>
     <div class="col-xs-12 col-sm-6" style="padding-left :0px">
       <div class="edit-section" id="shipInfo">
-        <p>出退货明细：</p>
+        <p>出/退货明细：</p>
         <table class="table table-bordered">
           <thead>
             <tr>
               <th>时间</th>
-              <th>出退货状态</th>
+              <th>出/退货状态</th>
             </tr>
           </thead>
+          <tbody>
+            {{#shipInfo}}
+            <tr>
+              <td>{{updateTime}}</td>
+              <td>{{status}}</td>
+            </tr>
+            {{/shipInfo}}
+          </tbody>
         </table>
       </div>
     </div>
