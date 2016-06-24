@@ -153,19 +153,6 @@
             </div>
           </div>
 
-<!--           <div class="form-group col-sm-6 col-md-4">
-            <div class="input-group">
-              <div class="input-group-addon">出货对账状态</div>
-              <select class="form-control" id="search_">
-                <option value="">全部</option>
-                <option value="1">未对账</option>
-                <option value="2">对账不一致</option>
-                <option value="3">出货对账成功</option>
-                <option value="4">已确认</option>
-              </select>
-            </div>
-          </div> -->
-
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">交易订单号</div>
@@ -186,7 +173,6 @@
               <input type="text" class="form-control" id="search_paySequenceNo">
             </div>
           </div>
-
 
           <div class="col-xs-12 col-sm-12 col-md-12 pull-right">
             <div class="row">
@@ -364,5 +350,22 @@
 
   <script src="js/vendor.js"></script>
   <script src="js/balance-in-detail.js"></script>
+
+  @@include('component/popup-balance-in-detail.tpl')
+
+  <!-- pop up -->
+  <div class="modal fade" id="popup-detail" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <form>
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">收单明细</h4>
+        </div>
+        <div class="modal-body"></div>
+      </form>
+    </div>
+  </div>
+</div>
 </body>
 </html>

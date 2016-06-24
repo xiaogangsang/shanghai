@@ -1,5 +1,6 @@
 /*
-	收单对账汇总
+	收单对账明细
+  Ge Liu
  */
 
 'use strict;'
@@ -299,6 +300,38 @@ $('.complete-commit').click(function(e) {
     })
     .done(function (res) {
     });
+});
+
+$('#dataTable').on('click', '.btn-edit', function (e) {
+
+  e.preventDefault();
+
+  if (!_DEBUG) {
+    $.ajax({
+      url: 'movie-ops/settlement/acquiring/confirmAcquiringInfoBatch',
+      type: 'GET',
+      data: {id: $(this).closest('tr').data('id')},
+    })
+    .done(function(res) {
+      // TODO
+      var data = res.data;
+      var template = $('#detail-template').html();
+      Mustache.parse(template);
+      var html = Mustache.render(template, data);
+      $('#popup-detail .modal-body').html(html);
+
+      $('#popup-detail').modal('show');
+    });
+  } else {
+    var data = $.parseJSON('{ "meta" : { "result" : "1", "msg" : "操作成功" }, "data" : { "operateRecords" : [ { "bizType" : 1, "orderNo" : "738289474424934400", "o2oReceivableAmount" : 12, "operateTime" : "2016-06-23 15:42:18", "operatorName" : "徐慧", "subsidyAmountO2o" : 4750, "discountName" : "买2减1", "ticketAmount" : 4750, "chargeMerchant" : 1, "serviceAmount" : 0, "partner" : "3", "reconciliationStatus" : 4, "returnFee" : 1, "discountType" : 1, "payStatus" : 4 }, { "bizType" : 1, "orderNo" : "738289474424934400", "o2oReceivableAmount" : 12, "operateTime" : "2016-06-23 11:50:51", "operatorName" : "李瑾", "subsidyAmountO2o" : 4750, "discountName" : "买2减1", "ticketAmount" : 4750, "chargeMerchant" : 1, "serviceAmount" : 0, "partner" : "3", "reconciliationStatus" : 4, "returnFee" : 1, "discountType" : 1, "payStatus" : 4 } ], "detail" : { "reason" : 1, "receivablePoint" : 0, "bizType" : 1, "reconciliationDate" : 1466733543000, "subsidyType" : 1, "bankAmount" : 1, "checkStatus" : 1, "discountName" : "买2减1", "ticketAmount" : 1, "payAmount" : 4700, "serviceAmount" : 0, "discountType" : 1, "id" : 2585, "thdSerialNo" : "1223", "orderNo" : "738284476651671552", "countNum" : 1, "costCenter" : "卡中心总部", "o2oReceivableAmount" : 4700, "externalId" : 857, "updateTime" : 1466738155000, "version" : 0, "subsidyAmountO2o" : 0, "chargeMerchant" : 1, "partner" : "1", "reconciliationStatus" : 4, "createTime" : 1464796800000, "returnFee" : 12, "chargeMerchantNo" : "738284476651671552", "payStatus" : 1, "merchantNo" : "308010700103175" } } }');
+    data = data.data;
+    var template = $('#detail-template').html();
+    Mustache.parse(template);
+    var html = Mustache.render(template, data);
+    $('#popup-detail .modal-body').html(html);
+
+    $('#popup-detail').modal('show');
+  }
 });
 
 /****************************************** Utilities Method **********************************************/
