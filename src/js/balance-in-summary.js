@@ -118,9 +118,11 @@ function handleData(res) {
 
       _(record).forEach(function(item) {
       	item.chargeMerchant = parseMerchant(item.chargeMerchant);
+        item.payStatusNo = item.payStatus;
       	item.payStatus = parsePayStatus(item.payStatus);
       });
 
+      // record[1] = record[0];
       dataCache = record;
 
       setTableData(dataCache);
@@ -204,6 +206,50 @@ $('.btn-reset').click(function(e) {
  //  $('#search_payStatus').val('');
  $('#formSearch :input:not(:button)').val('');
 });
+
+$('.all-detail').click(function(e) {
+  var data = {'type': 0, 'param': searchCache};
+  sessionStorage.setItem('param', JSON.stringify(data));
+  window.location.href = 'balance-in-detail.html';
+});
+
+$('.selected-detail').click(function(e) {
+  var parameters = [];
+
+  $('#dataTable tbody :checkbox:checked').each(function(index) {
+    var rowIndex = $(this).closest('td').parent()[0].sectionRowIndex;
+    var obj = dataCache[rowIndex];
+    var param = {'dateType': searchCache.dateType, 'beginTime': obj.createTime, 'merchantNo': obj.merchantNo, 'payStatus':obj.payStatusNo};
+    parameters.push(param);
+  });
+
+  var data = {'type': 1, 'param': parameters};
+  sessionStorage.setItem('param', JSON.stringify(data));
+  window.location.href = 'balance-in-detail.html';
+});
+
+$('.multi-check-all').change(function(e) {
+  e.preventDefault();
+  var isChecked = $(this).is(':checked');
+
+  if (isChecked) {
+    $('#dataTable tbody :checkbox:not(:checked)').prop('checked', true);
+  } else {
+    $('#dataTable tbody :checkbox:checked').prop('checked', false);
+  }
+});
+
+
+$('body').on('change', 'tr > td :checkbox', function(e) {
+  e.preventDefault();
+
+  var isChecked = $(this).is(':checked');
+
+  if (!isChecked) {
+    $('.multi-check-all').prop('checked', false);
+  }
+});
+
 
 /****************************************** Utilities Method **********************************************/
 

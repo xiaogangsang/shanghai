@@ -15,8 +15,12 @@ var _pageTotal = 0;
 var _querying = false;
 var searchCache = {};
 var useCache = false;
-var dataCache;
 var _submitting = false;
+
+// 如果当前查询是从汇总页的选中记录查询
+var _queryingFromSelectedSummary = false;
+
+var _selectedSummary = {};
 
 var _DEBUG = true;
 
@@ -49,11 +53,13 @@ $(function() {
   });
 });
 
-//handle search form
+// handle search form
 $('#formSearch').on('click', 'button[type=submit]', function (event) {
   event.preventDefault();
+
   _pageIndex = 1;
   useCache = false;
+  _queryingFromSelectedSummary = false;
   $('#formSearch').trigger('submit');
 });
 
@@ -108,6 +114,64 @@ $('#formSearch').on('submit', function (e) {
   return false;
 });
 
+function queryFromSelectedSummary() {
+
+  _selectedSummary.pageIndex = _pageIndex;
+
+  if (!_DEBUG) {
+    $.ajax({
+      url: 'movie-ops/settlement/acquiring/queryMultiDetail',
+      type: 'GET',
+      dataType: 'json',
+      data: _selectedSummary,
+    })
+    .done(function (res) {
+      handleData(res);
+    });
+  } else {
+    var res = $.parseJSON('{ "meta": { "result": "1", "msg": "操作成功" }, "data": { "summary": { "count": "订单总数", "totalTicketCount": "出票张数", "totalTiketAmount": " 票价 ", "totalReturnFee":"退票手续费", "totalServiceAmount": "总服务费", "totalSubsidyAmountO2o": "补贴总金额", "totalO2oReceivableAmount": "应收总金额", "totalBankAmount": "实际收到总金额" }, "detail": { "recordCount": "42", "recordDetail": [ { "receivablePoint": "积分", "bizType": "业务类型", "orderNo": "订单号", "countNum": "票数", "reconciliationDate": "对账日期", "thdSerialNo":"收单方订单号", "costCenter": "成本中心", "externalId": "支付流水", "o2oReceivableAmount": "应收金额", "subsidyType": "补贴方式", "chargeMerchant":"1", "subsidyAmountO2o": "补贴金额", "discountName": "活动/优惠方式名称", "bankAmount":"实收金额", "returnFee":"退票手续费", "payAmount": "支付金额", "serviceAmount": "服务费", "ticketAmount":"交易金额", "reconciliationStatus":"对账状态", "createTime": "支付时间(交易)", "discountType": "优惠方式", "id": 1934, "payStatus": "1", "merchantNo": "商户号", "partner":"退款承债方", "reason":"原因" } ] } } }');
+    handleData(res);
+  }
+}
+
+function handlePresetQuery() {
+
+  var sessionParam = sessionStorage.param;
+  if (sessionParam) {
+    var passedParam = JSON.parse(sessionParam);
+
+    if (passedParam) {
+      // 从汇总页  查看选中明细
+      if (passedParam.type == 1) {
+        var parameters = passedParam.param;
+
+        _pageIndex = 1;
+        _selectedSummary = {'acquiringInfoFormCollection': parameters, 'pageSize': _pageSize};
+
+        _queryingFromSelectedSummary = true;
+        queryFromSelectedSummary();
+
+      } else if (passedParam.type == 0) { // 从汇总页  查看所有明细
+        var parameters = passedParam.param;
+
+        $('#search_dateType').val(parameters.dateType);
+        $('#search_startTime').val(parameters.beginTime);
+        $('#search_endTime').val(parameters.endTime);
+        $('#search_merchantName').val(parameters.merchantName);
+        $('#search_merchantNo').val(parameters.merchantNo);
+        $('#search_payStatus').val(parameters.payStatus)
+
+        _pageIndex = 1;
+        useCache = false;
+        $('#formSearch').trigger('submit');
+      }
+      sessionStorage.removeItem('param');
+    }
+  }
+}
+
+handlePresetQuery();
+
 function handleData(res) {
 	_querying = false;
 
@@ -117,8 +181,6 @@ function handleData(res) {
 			$('#summaryTable tbody').html('<tr><td colspan="9" align="center">查不到相关数据，请修改查询条件！</td></tr>');
       $('#pager').html('');
 		} else {
-			useCache = true;
-
 			var totalRecord = res.data.detail.recordCount;
       var record = res.data.detail.recordDetail;
 
@@ -130,9 +192,11 @@ function handleData(res) {
       	item.payStatus = parsePayStatus(item.payStatus);
       });
 
-      dataCache = record;
+      if (!_queryingFromSelectedSummary) {
+        useCache = true;
+      }
 
-      setTableData(dataCache);
+      setTableData(record);
 
       setSummaryTableData(res.data.summary);
 		}
@@ -183,7 +247,11 @@ $('#pager').on('click', '.prev,.next', function (e) {
     _pageIndex++;
   }
 
-  $('#formSearch').trigger('submit');
+  if (_queryingFromSelectedSummary) {
+    queryFromSelectedSummary();
+  } else {
+    $('#formSearch').trigger('submit');
+  }
   return false;
 });
 
@@ -200,7 +268,13 @@ $('#pager').on('click', '#btn-pager', function (e) {
   }
 
   _pageIndex = pageNo;
-  $('#formSearch').trigger('submit');
+
+  if (_queryingFromSelectedSummary) {
+    queryFromSelectedSummary();
+  } else {
+    $('#formSearch').trigger('submit');
+  }
+
   return false;
 });
 
