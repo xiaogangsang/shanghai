@@ -78,7 +78,7 @@ $(function () {
         });
 
         res.data.bizOrder.canRefund = false;
-        if (res.data.bizOrder.status == '支付成功') {
+        if (res.data.bizOrder.status == '支付成功' || res.data.bizOrder.status == '退款失败') {
           res.data.bizOrder.canRefund = true;
         }
 
