@@ -140,6 +140,15 @@
       </div>
     </div>
 
+    <div class="panel">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu15"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 拨款</a>
+      <div id="menu15" class="panel-collapse collapse" role="tabpanel">
+        <div class="list-group">
+          <a href="money-out-summary.html" class="list-group-item" id="menu-money-out-summary" data-id="26">拨款汇总</a>
+        </div>
+      </div>
+    </div>
+
   </div>
 
 </div>
