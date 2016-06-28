@@ -90,7 +90,7 @@ function loadHistory() {
     _querying = false;
     if (!!~~res.meta.result) {
       if (res.data == null || res.data.rows.length < 1) {
-        $('#dataTable tbody').html('<tr><td colspan="7" align="center">载入中...</td></tr>');
+        $('#dataTable tbody').html('<tr><td colspan="7" align="center">暂无数据！</td></tr>');
         $('#pager').html('');
       } else {
         _pageIndex = res.data.pageIndex;
