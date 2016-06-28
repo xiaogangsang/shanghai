@@ -816,7 +816,11 @@ function setChannel(channels) {
   var checkedChannelNames = [];
   if (_channels.length > 0) {
     if (channels == false || _channels.length == channels.length) {
-      _(_channels).forEach(function (channel) {channel.checked = true;});
+      _popupDataCache.channels = [];
+      _(_channels).forEach(function (channel) {
+        _popupDataCache.channels.push(channel.channelId);
+        channel.checked = true;
+      });
 
       previewHtml = '不限';
     } else {
@@ -846,6 +850,7 @@ function setChannel(channels) {
         } else {
           _channels = res.data;
           if (channels == false || _channels.length == channels.length) {
+            _popupDataCache.channels = [];
             _(_channels).forEach(function (channel) {
               _popupDataCache.channels.push(channel.channelId);
               channel.checked = true;
@@ -1079,7 +1084,11 @@ function setEdit(couponId) {
       }
 
       //渠道
-      coupon.channels != null && coupon.channels.length > 0 ? setChannel(coupon.channels) : setChannel(false);
+      if (coupon.channels != null && coupon.channels.length > 0) {
+        setChannel(coupon.channels)
+      } else {
+        setChannel(false);
+      }
 
       //影片
       coupon.films != null && coupon.films.length > 0 ? setMovie(coupon.films) : setMovie(false);
