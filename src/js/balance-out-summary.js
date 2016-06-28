@@ -1,5 +1,5 @@
 /*
-  收单对账汇总
+  出货对账汇总
  */
 
 'use strict;'
@@ -22,7 +22,7 @@ var _DEBUG = true;
 
 $(function() {
 
-  common.liquidationInit('balance-in-summary');
+  common.liquidationInit('balance-out-summary');
 
   $('#search_startTime').datetimepicker({
     format: 'yyyy-mm-dd',
@@ -61,13 +61,20 @@ $('#formSearch').on('submit', function (e) {
   e.preventDefault();
   var sendData = {
     dateType: $('#search_dateType').val(),
-    beginTime: $('#search_startTime').val(),
+    startTime: $('#search_startTime').val(),
     endTime: $('#search_endTime').val(),
     merchantName: $('#search_merchantName').val(),
     merchantNo: $('#search_merchantNo').val(),
-    payStatus: $('#search_payStatus').val(),
+    shipmentStatus: $('#search_shipmentStatus').val(),
+    bizType: $('#search_bizType').val(),
     pageSize: _pageSize,
   };
+
+  if (sendData.startTime == '' || sendData.endTime == '') {
+    alert('请输入开始日期和结束日期!');
+    return false;
+  }
+
   if (!!_querying) {
     return false;
   }
@@ -83,7 +90,7 @@ $('#formSearch').on('submit', function (e) {
 
   if (!_DEBUG) {
     $.ajax({
-      url: 'movie-ops/settlement/acquiringInfo/listSummary',
+      url: 'movie-ops/settlement/shipmentInfo/summaryList',
       type: 'GET',
       dataType: 'json',
       data: sendData,
@@ -92,7 +99,7 @@ $('#formSearch').on('submit', function (e) {
       handleData(res);
     });
   } else {
-    var res = $.parseJSON('{ "meta": { "result": "1", "msg": "操作成功" }, "data": { "summary": { "count": "订单总数", "totalTicketCount": "出票张数", "totalTiketAmount": " 票价 ", "totalReturnFee":"退票手续费", "totalServiceAmount": " 总服务费", "totalSubsidyAmountO2o": "补贴总金额", "totalO2oReceivableAmount": "应收总金额", "totalBankAmount": "实际收到总金额" }, "detail": { "recordCount": "21", "recordDetail": [ { "createTime": "支付日期", "chargeMerchant": "1", "merchantNo": "收单商户号", "payStatus": "1", "ticketAmount": "票价", "returnFee": "退票手续费", "serviceAmount": "服务费", "subsidyAmountO2o": "我方补贴金额", "receivableAmount": "应收金额", "bankAmount": "实收金额" } ] } } }');
+    var res = $.parseJSON('{ "meta": { "result": "1", "msg": "操作成功" }, "data": { "summary": { "count": "订单总数", "totalTicketCount": "出票张数", "totalOrderAmount": "交易金额总金额", "totalSubsidyAmountO2o": "补贴金额", "totalReturnFee": "退货手续费总额", "totalSettlementAmount": "应付金额", "totalFinalSettlementAmount": "实付金额" }, "detail": { "recordCount": "41", "recordDetail": [ { "shipmnetDate": "出/退货日期", "merchantName": "二级商户名称", "merchantNo": "二级商户号", "bizType": "业务类别", "orderCount": "订单数", "ticketCount": "张数", "shipmentStatus": "出货状态", "orderAmount": "交易金额", "subsidyAmountO2o": "我方补贴金额", "returnFee": "退票手续费", "settlementAmount": "应付金额", "finalSettlementAmount": "实付金额" } ] } } }');
     handleData(res);
   }
 
@@ -117,9 +124,10 @@ function handleData(res) {
       setPager(totalRecord, _pageIndex, record.length, _pageTotal);
 
       _(record).forEach(function(item) {
-        item.chargeMerchant = parseMerchant(item.chargeMerchant);
-        item.payStatusNo = item.payStatus;
-        item.payStatus = parsePayStatus(item.payStatus);
+        // item.chargeMerchant = parseMerchant(item.chargeMerchant);
+        // item.payStatusNo = item.payStatus;
+        // item.payStatus = parsePayStatus(item.payStatus);
+        // TODO: 业务类别 & 出货状态解析
       });
 
       // record[1] = record[0];
@@ -205,6 +213,8 @@ $('.btn-reset').click(function(e) {
  //  $('#search_merchantNo').val('');
  //  $('#search_payStatus').val('');
  $('#formSearch :input:not(:button)').val('');
+
+ $('#search_dateType').val('1');
 });
 
 $('.all-detail').click(function(e) {
@@ -253,15 +263,16 @@ $('body').on('change', 'tr > td :checkbox', function(e) {
 
 /****************************************** Utilities Method **********************************************/
 
-function parseMerchant(merchant) {
+function balanceOutStatus(status) {
+  var map = {'1' : '出货中', '2' : '出货失败', '3' : '出货成功', '4' : '退货失败', '5' : '退货成功'};
 
-  var map = {'1' : '卡中心', '2' : '总行'};
-
-  return map[merchant];
+  return map[status];
 }
 
-function parsePayStatus(payStatus) {
-  var map = {'1' : '待支付', '2' : '支付成功', '3' : '支付失败', '4' : '退款中', '5' : '退款成功', '6' : '退款失败'};
-
-  return map[payStatus];
+function bizType(type) {
+  var map = {'1' : '在线选座', '2' : '退货手续费'};
 }
+
+
+
+

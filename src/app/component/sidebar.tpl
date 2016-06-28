@@ -141,10 +141,20 @@
     </div>
 
     <div class="panel">
-      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu15"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 拨款</a>
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu15"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 出货对账</a>
       <div id="menu15" class="panel-collapse collapse" role="tabpanel">
         <div class="list-group">
-          <a href="money-out-summary.html" class="list-group-item" id="menu-money-out-summary" data-id="26">拨款汇总</a>
+          <a href="balance-out-summary.html" class="list-group-item" id="menu-balance-out-summary" data-id="26">对账汇总</a>
+          <a href="balance-out-detail.html" class="list-group-item" id="menu-balance-out-detail" data-id="27">对账明细</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu16"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 拨款</a>
+      <div id="menu16" class="panel-collapse collapse" role="tabpanel">
+        <div class="list-group">
+          <a href="money-out-summary.html" class="list-group-item" id="menu-money-out-summary" data-id="28">拨款汇总</a>
         </div>
       </div>
     </div>
