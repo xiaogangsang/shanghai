@@ -622,7 +622,7 @@ $(document).on('submit', '#formEdit', function (event) {
         document.location.reload(true);
       } else {
         alert('保存成功！');
-        document.location = 'activity-coupon.html';
+        document.location = 'coupon-rule.html';
       }
     } else {
       alert('接口错误：' + res.meta.msg);
