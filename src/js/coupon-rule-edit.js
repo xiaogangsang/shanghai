@@ -1004,9 +1004,9 @@ function setEdit(couponId) {
       var coupon = res.data;
       _popupDataCache.channels = coupon.channels;
       _popupDataCache.films = coupon.films != null ? coupon.films : [];
-      _popupDataCache.filmType = coupon.filmType != null ? coupon.filmType : _filmType;
-      _popupDataCache.screenType = coupon.screenType != null ? coupon.screenType : _screenType;
-      _popupDataCache.hallType = coupon.hallType != null ? coupon.hallType : _hallType;
+      _popupDataCache.filmType = coupon.filmType != null ? coupon.filmType : ['2D', '3D'];
+      _popupDataCache.screenType = coupon.screenType != null ? coupon.screenType : ['普通', 'IMAX', 'DMAX', '巨幕'];
+      _popupDataCache.hallType = coupon.hallType != null ? coupon.hallType : ['普通', '4D', '5D'];
       _popupDataCache.timetables = coupon.timetables != null ? coupon.timetables : [];
 
       $.ajax({
