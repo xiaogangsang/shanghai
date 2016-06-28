@@ -55,8 +55,8 @@
       <div id="menu6" class="panel-collapse collapse" role="tabpanel">
         <div class="list-group">
           <a href="coupon-rule.html" class="list-group-item" id="menu-coupon-rule" data-id="12" style="display:none">优惠券规则管理</a>
-          <a href="coupon-generate.html" class="list-group-item" id="menu-coupon-generate" data-id="12" style="display:none">批量产码</a>
-          <a href="coupon-bind.html" class="list-group-item" id="menu-coupon-bind" data-id="12" style="display:none">指定用户灌码</a>
+          <a href="coupon-generate.html" class="list-group-item" id="menu-coupon-generate" data-id="22" style="display:none">批量产码</a>
+          <a href="coupon-bind.html" class="list-group-item" id="menu-coupon-bind" data-id="23" style="display:none">指定用户灌码</a>
           <a href="coupon-record.html" class="list-group-item" id="menu-coupon-record" data-id="19" style="display:none">优惠券使用记录</a>
         </div>
       </div>
