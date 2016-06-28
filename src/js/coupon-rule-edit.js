@@ -615,6 +615,7 @@ $(document).on('submit', '#formEdit', function (event) {
     data: JSON.stringify(sendData),
   })
   .done(function (res) {
+    _submitting = false;
     $('#formUnit input[type=submit]').prop('disabled', false).text('保存');
     if (!!~~res.meta.result) {
       if (ajaxUrl == 'coupon/couponUpdate') {
