@@ -77,7 +77,7 @@ function loadHistory() {
 
         _(res.data.rows).forEach(function (item, key) {
           var date = new Date(item.createTime);
-          item.createTime = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+          item.createTime = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
           if (item.status == 'SUCCESS') {
             item.canExport = true;
           } else {

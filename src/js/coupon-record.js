@@ -86,10 +86,10 @@ $('#formSearch').on('submit', function (e) {
 
           switch (item.status) {
             case 'DELETED':
-              item.status = '删除';
+              item.status = '已废弃';
             break;
             case 'ACTIVE':
-              item.status = '有效';
+              item.status = '可使用';
             break;
             case 'USED':
               item.status = '已使用';
