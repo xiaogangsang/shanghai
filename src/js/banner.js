@@ -178,7 +178,6 @@ $(document).on('click', '#btn-create', function (e) {
     } else if ($(this).val() == 2) {
       $('.type-1, .type-3').hide();
       $('.type-1, .type-3').find('input,select').prop('required', false);
-      $('.chosen-search input').prop('required', false);
       $('.type-2').show();
       $('.type-2').find('input,select').prop('required', true);
     } else {
@@ -188,6 +187,7 @@ $(document).on('click', '#btn-create', function (e) {
       $('.type-3').find('input,select').prop('required', true);
     }
 
+    $('.chosen-search input').prop('required', false);
     $('#popup-banner-form form').parsley().reset();
   });
 });
