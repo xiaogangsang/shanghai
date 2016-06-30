@@ -141,6 +141,55 @@
   </div>
 </script>
 
+<script id="salling-template" type="text/x-tmpl-mustache">
+  <input type="hidden" id="id" value="{{banner.id}}">
+  <input type="hidden" id="bannerType" value="3">
+  <div class="table-responsive">
+    <table class="table">
+      <tbody>
+        <tr>
+          <th>配置名称</th>
+          <td><input type="text" class="form-control" id="bannerName" value="{{banner.bannerName}}" required></td>
+        </tr>
+        <tr>
+          <th><button type="button" class="btn btn-default" id="btn-upload">上传图片</button></th>
+          <td><input type="text" class="form-control" id="imageUrl" value="{{banner.imageUrl}}" required></td>
+        </tr>
+        <tr>
+          <th>跳转链接</th>
+          <td><input type="text" class="form-control" id="link" value="{{banner.link}}" required></td>
+        </tr>
+        <tr>
+          <th>生效日期</th>
+          <td>
+            <input type="text" class="form-control" style="display:inline-block;width:auto;" id="startTime" value="{{banner.startTime}}" size="10" required data-parsley-errors-container="#error-date" readonly> - <input type="text" class="form-control" style="display:inline-block;width:auto;" id="endTime" value="{{banner.endTime}}" size="10" required data-parsley-errors-container="#error-date" readonly>
+            <div id="error-date"></div>
+          </td>
+        </tr>
+        <tr>
+          <th>渠道</th>
+          <td>
+            <select class="form-control" id="channelId">
+              {{#channels}}
+              <option value="{{channelId}}"{{#selected}} selected{{/selected}}>{{channelName}}</option>
+              {{/channels}}
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <th>是否显示</th>
+          <td>
+            <select class="form-control" id="status">
+              <option value="1"{{#banner.status}} selected{{/banner.status}}>是</option>
+              <option value="0"{{^banner.status}} selected{{/banner.status}}>否</option>
+            </select>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</script>
+
 <script id="create-template" type="text/x-tmpl-mustache">
   <div class="table-responsive">
     <table class="table">
@@ -151,6 +200,7 @@
             <select class="form-control" id="bannerType">
               <option value="1">首页</option>
               <option value="2">热门影片</option>
+              <option value="3">交叉销售位</option>
             </select>
           </td>
         </tr>
@@ -170,15 +220,15 @@
             <div id="error-film"></div>
           </td>
         </tr>
-        <tr class="type-1">
+        <tr class="type-1 type-3">
           <th><button type="button" class="btn btn-default" id="btn-upload">上传图片</button></th>
           <td><input type="text" class="form-control" id="imageUrl" required></td>
         </tr>
-        <tr class="type-1">
+        <tr class="type-1 type-3">
           <th>跳转链接</th>
           <td><input type="text" class="form-control" id="link" required></td>
         </tr>
-        <tr>
+        <tr class="type-1 type-2">
           <th>区域类型</th>
           <td>
             <div class="radio-inline"><label><input type="radio" name="areaType" value="0" checked><span>全国</span></label></div>
@@ -206,7 +256,7 @@
             </select>
           </td>
         </tr>
-        <tr>
+        <tr class="type-1 type-2">
           <th>顺序</th>
           <td><input type="text" class="form-control" id="position" required data-parsley-pattern="^[1-9]{1}\d*$"></td>
         </tr>
