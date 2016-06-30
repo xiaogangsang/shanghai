@@ -851,6 +851,7 @@ $(document).on('submit', '#formUnit', function (event) {
     timetablePageDesc: $.trim($('#timetablePageDesc').val()),
     activityDesc: $.trim($('#activityDesc').val()),
     activityLink: $.trim($('#activityLink').val()),
+    activityRuleDesc: $.trim($('#activityRuleDesc').val()),
     repeatedDay: [],
     customerType: _popupDataCache.cusTypes,
     channels: _popupDataCache.channels,
@@ -1408,6 +1409,7 @@ function setEdit(unitId) {
       $('#timetablePageDesc').val(unit.timetablePageDesc);
       $('#activityDesc').val(unit.activityDesc);
       $('#activityLink').val(unit.activityLink);
+      $('#activityRuleDesc').val(unit.activityRuleDesc);
 
       //计划
       if (unit.planId != '' && unit.planId != null && unit.planId != undefined) {
