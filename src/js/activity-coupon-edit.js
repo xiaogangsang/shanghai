@@ -972,6 +972,7 @@ function setEdit(couponId) {
       _popupDataCache.hallType = coupon.hallType != null ? coupon.hallType : [];
       _popupDataCache.timetables = coupon.timetables != null ? coupon.timetables : [];
 
+      coupon.cinemas = coupon.cinemas != null ? coupon.cinemas : [];
       $.ajax({
         url: common.API_HOST + 'common/getCinemasByIds',
         type: 'POST',
