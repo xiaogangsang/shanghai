@@ -105,7 +105,7 @@ common.getUrlParam = function () {
   var query = window.location.search.substring(1);
   var vars = query.split('&');
   for (var i = 0; i < vars.length; i++) {
-    var pair = vars[i].split('=');
+    var pair = vars[i].split(/=(.+)?/);
     if (typeof paramArr[pair[0]] === 'undefined') {
       paramArr[pair[0]] = decodeURIComponent(pair[1]);
     } else if (typeof paramArr[pair[0]] === 'string') {
