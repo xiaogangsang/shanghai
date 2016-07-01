@@ -18,7 +18,7 @@ var useCache = false;
 var dataCache;
 var _submitting = false;
 
-var _DEBUG = true;
+var _DEBUG = false;
 
 $(function() {
 
@@ -47,24 +47,35 @@ $(function() {
     FromEndDate.setDate(FromEndDate.getDate(new Date(ev.date.valueOf())));
     $('#search_startTime').datetimepicker('setEndDate', FromEndDate);
   });
+
+  $('#formSearch').parsley();
 });
 
 //handle search form
 $('#formSearch').on('click', 'button[type=submit]', function (event) {
+
+    _pageIndex = 1;
+    useCache = false;
+    $('#formSearch').trigger('submit');
+
   event.preventDefault();
-  _pageIndex = 1;
-  useCache = false;
-  $('#formSearch').trigger('submit');
 });
 
 $('#formSearch').on('submit', function (e) {
   e.preventDefault();
+
+  if (!useCache) {
+    if (!$('#formSearch').parsley().isValid()) {
+      return false;
+    }
+  }
+
   var sendData = {
     dateType: $('#search_dateType').val(),
     beginTime: $('#search_startTime').val(),
     endTime: $('#search_endTime').val(),
-    merchantName: $('#search_merchantName').val(),
-    merchantNo: $('#search_merchantNo').val(),
+    chargeMerchant: $('#search_chargeMerchant').val(),
+    chargeMerchantNo: $('#search_chargeMerchantNo').val(),
     payStatus: $('#search_payStatus').val(),
     pageSize: _pageSize,
   };
@@ -83,7 +94,7 @@ $('#formSearch').on('submit', function (e) {
 
   if (!_DEBUG) {
     $.ajax({
-      url: 'movie-ops/settlement/acquiringInfo/listSummary',
+      url: 'MovieOps/settlement/acquiring/listSummary',
       type: 'GET',
       dataType: 'json',
       data: sendData,
@@ -92,7 +103,7 @@ $('#formSearch').on('submit', function (e) {
       handleData(res);
     });
   } else {
-    var res = $.parseJSON('{ "meta": { "result": "1", "msg": "操作成功" }, "data": { "summary": { "count": "订单总数", "totalTicketCount": "出票张数", "totalTiketAmount": " 票价 ", "totalReturnFee":"退票手续费", "totalServiceAmount": " 总服务费", "totalSubsidyAmountO2o": "补贴总金额", "totalO2oReceivableAmount": "应收总金额", "totalBankAmount": "实际收到总金额" }, "detail": { "recordCount": "21", "recordDetail": [ { "createTime": "支付日期", "chargeMerchant": "1", "merchantNo": "收单商户号", "payStatus": "1", "ticketAmount": "票价", "returnFee": "退票手续费", "serviceAmount": "服务费", "subsidyAmountO2o": "我方补贴金额", "receivableAmount": "应收金额", "bankAmount": "实收金额" } ] } } }');
+    var res = $.parseJSON('{ "meta": { "result": "1", "msg": "操作成功" }, "data": { "summary": { "count": "订单总数", "totalTicketCount": "出票张数", "totalTiketAmount": " 票价 ", "totalReturnFee":"退票手续费", "totalServiceAmount": " 总服务费", "totalSubsidyAmountO2o": "补贴总金额", "totalO2oReceivableAmount": "应收总金额", "totalBankAmount": "实际收到总金额" }, "detail": { "recordCount": "21", "recordDetail": [ { "createTime": "支付日期", "chargeMerchant": "1", "chargeMerchantNo": "收单商户号", "payStatus": "1", "ticketAmount": "票价", "returnFee": "退票手续费", "serviceAmount": "服务费", "subsidyAmountO2o": "我方补贴金额", "receivableAmount": "应收金额", "bankAmount": "实收金额" } ] } } }');
     handleData(res);
   }
 
@@ -103,15 +114,16 @@ function handleData(res) {
   _querying = false;
 
   if (~res.meta.result) {
-    if (res.data.detail.recordCount < 1) {
-      $('#dataTable tbody').html('<tr><td colspan="9" align="center">查不到相关数据，请修改查询条件！</td></tr>');
-      $('#summaryTable tbody').html('<tr><td colspan="9" align="center">查不到相关数据，请修改查询条件！</td></tr>');
+    if (res.data == null || res.data.detail.count < 1) {
+      var errorMsg = res.meta.msg;
+      $('#dataTable tbody').html('<tr><td colspan="30" align="center">' + errorMsg + '</td></tr>');
+      $('#summaryTable tbody').html('<tr><td colspan="30" align="center">' + errorMsg + '</td></tr>');
       $('#pager').html('');
     } else {
       useCache = true;
 
-      var totalRecord = res.data.detail.recordCount;
-      var record = res.data.detail.recordDetail;
+      var totalRecord = res.data.detail.count;
+      var record = res.data.detail.records;
 
       _pageTotal = Math.ceil(totalRecord / _pageSize);
       setPager(totalRecord, _pageIndex, record.length, _pageTotal);
@@ -122,7 +134,6 @@ function handleData(res) {
         item.payStatus = parsePayStatus(item.payStatus);
       });
 
-      // record[1] = record[0];
       dataCache = record;
 
       setTableData(dataCache);
@@ -202,7 +213,7 @@ $('.btn-reset').click(function(e) {
  //  $('#search_startTime').val('');
  //  $('#search_endTime').val('');
  //  $('#search_merchantName').val('');
- //  $('#search_merchantNo').val('');
+ //  $('#search_chargeMerchantNo').val('');
  //  $('#search_payStatus').val('');
  $('#formSearch :input:not(:button)').val('');
 });
@@ -219,7 +230,7 @@ $('.selected-detail').click(function(e) {
   $('#dataTable tbody :checkbox:checked').each(function(index) {
     var rowIndex = $(this).closest('td').parent()[0].sectionRowIndex;
     var obj = dataCache[rowIndex];
-    var param = {'dateType': searchCache.dateType, 'beginTime': obj.createTime, 'merchantNo': obj.merchantNo, 'payStatus':obj.payStatusNo};
+    var param = {'dateType': searchCache.dateType, 'beginTime': obj.createTime, 'chargeMerchantNo': obj.chargeMerchantNo, 'payStatus':obj.payStatusNo};
     parameters.push(param);
   });
 
