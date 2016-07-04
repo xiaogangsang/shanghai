@@ -363,7 +363,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
   }
 });
 
-// 提交异常修改
+// 提交异常
 $('body').on('click', '.edit-submit', function(e) {
   e.preventDefault();
   var param = {
