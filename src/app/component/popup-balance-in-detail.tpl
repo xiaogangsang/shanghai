@@ -8,7 +8,7 @@
 
       <div class="row">
         <div class="col-md-4 pull-right">
-          <button class="form-control btn btn-default edit-submit">提交</button>
+          <button class="form-control btn btn-default edit-submit" data-version="{{version}}">提交</button>
         </div>
       </div>
 
@@ -20,35 +20,35 @@
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">订单渠道</div>
-            <input type="text" class="form-control" id="payTool" value="{{payTool}}">
+            <input type="text" class="form-control" id="payTool" value="{{payTool}}" disabled>
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">支付时间</div>
-            <input type="text" class="form-control" id="createTime" value="{{createTime}}">
+            <input type="text" class="form-control" id="createTime" value="{{createTime}}" disabled>
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">用户手机号</div>
-            <input type="text" class="form-control" id="phoneNo" value="{{phoneNo}}">
+            <input type="text" class="form-control" id="phoneNo" value="{{phoneNo}}" disabled>
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">支付流水状态</div>
-            <input type="text" class="form-control" id="payStatus" value="{{payStatus}}">
+            <input type="text" class="form-control" id="payStatus" value="{{payStatus}}" disabled>
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
             <div class="input-group-addon">应收用户金额</div>
-            <input type="text" class="form-control" id="pay_amount" value="{{pay_amount}}">
+            <input type="text" class="form-control" id="payAmount" value="{{payAmount}}">
           </div>
         </div>
 
@@ -62,7 +62,7 @@
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">支付流水号</div>
-            <input type="text" class="form-control" id="paySequenceNo" value="{{paySequenceNo}}">
+            <input type="text" class="form-control" id="paySequenceNo" value="{{paySequenceNo}}" disabled>
           </div>
         </div>
 
@@ -79,7 +79,7 @@
           <div class="form-group col-sm-6 col-md-6">
             <div class="input-group">
               <div class="input-group-addon">业务类别</div>
-              <input type="text" class="form-control" id="bizType" value="{{bizType}}">
+              <input type="text" class="form-control" id="bizType" value="{{bizType}}" disabled>
             </div>
           </div>
         </div>
@@ -89,21 +89,21 @@
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">收单商户</div>
-            <input type="text" class="form-control" id="chargeMerchant" value="{{chargeMerchant}}">
+            <input type="text" class="form-control" id="chargeMerchant" value="{{chargeMerchant}}" disabled>
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">收单商户号</div>
-            <input type="text" class="form-control" id="chargeMerchantNo" value="{{chargeMerchantNo}}">
+            <input type="text" class="form-control" id="chargeMerchantNo" value="{{chargeMerchantNo}}" disabled>
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">交易订单号</div>
-            <input type="text" class="form-control" id="orderNo" value="{{orderNo}}">
+            <input type="text" class="form-control" id="orderNo" value="{{orderNo}}" disabled>
           </div>
         </div>
 
@@ -138,7 +138,7 @@
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">补贴付款方式</div>
-            <select class="form-control" id="reconciliationStatus">
+            <select class="form-control" id="subsidyType" value="{{subsidyType}}">
               <option value="1">预付</option>
               <option value="2">后付</option>
             </select>
@@ -155,7 +155,12 @@
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
             <div class="input-group-addon">退款承债方</div>
-            <input type="text" class="form-control" id="partner" value="{{partner}}">
+              <select class="form-control" id="search_partner">
+                <option value=""></option>
+                <option value="1">O2O</option>
+                <option value="2">TP方</option>
+                <option value="3">渠道方</option>
+              </select>
           </div>
         </div>
 
@@ -169,7 +174,7 @@
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">实收金额</div>
-            <input type="text" class="form-control" id="bankAmount" value="{{bankAmount}}">
+            <input type="text" class="form-control" id="bankAmount" value="{{bankAmount}}" disabled>
           </div>
         </div>
 
@@ -187,28 +192,28 @@
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">优惠方式</div>
-            <input type="text" class="form-control" id="bankAmount" value="{{bankAmount}}">
+            <input type="text" class="form-control" id="discountType" value="{{discountType}}" disabled>
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">活动/优惠券名称</div>
-            <input type="text" class="form-control" id="bankAmount" value="{{bankAmount}}">
+            <input type="text" class="form-control" id="discountName" value="{{discountName}}" disabled>
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">补贴成本中心</div>
-            <input type="text" class="form-control" id="bankAmount" value="{{bankAmount}}">
+            <input type="text" class="form-control" id="costCenter" value="{{costCenter}}" disabled>
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">签报号</div>
-            <input type="text" class="form-control" id="bankAmount" value="{{bankAmount}}">
+            <input type="text" class="form-control" id="signatureNo" value="{{signatureNo}}" disabled>
           </div>
         </div>
 
@@ -223,7 +228,8 @@
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">收单对账状态</div>
-            <select class="form-control" id="reconciliationStatus">
+            <select class="form-control" id="reconciliationStatus" value="reconciliationStatus">
+              <option value=""></option>
               <option value="1">未对账</option>
               <option value="2">对账不一致</option>
               <option value="3">收单对账成功</option>
@@ -234,7 +240,8 @@
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">对账不一致原因</div>
-            <select class="form-control" id="reason">
+            <select class="form-control" id="reason" value="reason">
+              <option value=""></option>
               <option value="1">我方缺失</option>
               <option value="2">对方缺失</option>
               <option value="3">金额不符</option>
@@ -251,7 +258,7 @@
     <div class="container-fluid">
 
       <div class="row">
-        <span style="display: block; margin-top: 10px;">操作记录:</span>
+        <span style="display: block; margin-top: 10px;">历史记录:</span>
         <hr style="margin-top: 3px; margin-bottom: 0px;">
       </div>
 
@@ -277,7 +284,6 @@
                   <th>优惠方式</th>
                   <th>活动/优惠券名称</th>
                   <th>收单对账状态</th>
-                  <th>修改状态</th>
                 </tr>
               </thead>
               <tbody>
@@ -298,7 +304,6 @@
                   <td>{{discountType}}</td>
                   <td>{{discountName}}</td>
                   <td>{{reconciliationStatus}}</td>
-                  <td>{{}}</td>
                 </tr>
                 {{/operateRecords}}
               </tbody>

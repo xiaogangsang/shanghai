@@ -337,6 +337,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
       detail.payTool = parsePayTool(detail.payTool);
       detail.payStatus = parsePayStatus(detail.payStatus);
       detail.bizType = parseBizType(detail.bizType);
+      detail.discountType = parseDiscountType(detail.discountType);
       detail.chargeMerchant = parseMerchant(detail.chargeMerchant);
       var template = $('#detail-template').html();
       Mustache.parse(template);
@@ -365,7 +366,35 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
 // 提交异常修改
 $('body').on('click', '.edit-submit', function(e) {
   e.preventDefault();
-  alert('clicked');
+  var param = {
+    version: $(this).data('version'),
+    payAmount: $('#payAmount').val(),
+    receivablePoint: $('#receivablePoint').val(),
+    thdSerialNo: $('#thdSerialNo').val(),
+    ticketAmount: $('#ticketAmount').val(),
+    serviceAmount: $('#serviceAmount').val(),
+    subsidyAmountO2o: $('#subsidyAmountO2o').val(),
+    subsidyType: $('#subsidyType').val(),
+    returnFee: $('#returnFee').val(),
+    partner: $('#partner').val(),
+    o2oReceivableAmount: $('#o2oReceivableAmount').val(),
+    reconciliationStatus: $('#reconciliationStatus').val(),
+    reason: $('#reason').val()
+  };
+
+  $.ajax({
+    url: 'MovieOps/settlement/acquiring/updateDetail',
+    type: 'POST',
+    data: param
+  })
+  .done(function(res) {
+    if (res.meta.result == 0) {
+      alert('提交失败!');
+      return false;
+    } else {
+      alert('提交成功!');
+    }
+  });
 });
 
 /****************************************** Utilities Method **********************************************/

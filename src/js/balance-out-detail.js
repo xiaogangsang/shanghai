@@ -304,6 +304,7 @@ $('.btn-reset').click(function(e) {
  //  $('#search_payStatus').val('');
 
  $('#formSearch :input:not(:button)').val('');
+ 
 });
 
 $('.complete-commit').click(function(e) {
