@@ -10,7 +10,7 @@ var searchCache = {};
 var useCache = false;
 
 $(function () {
-  common.init('activity-coupon');
+  common.init('coupon-rule');
 
   //set search form
   getBudgetSource();

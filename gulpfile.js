@@ -5,9 +5,11 @@ var cssmin = require('gulp-cssmin');
 var md5 = require('gulp-md5-plus');
 var fileinclude = require('gulp-file-include');
 var clean = require('gulp-clean');
+var browserSync = require('browser-sync');
 var webpack = require('webpack');
 var webpackConfig = require('./webpack.config.js');
-var browserSync = require('browser-sync');
+var myDevConfig = Object.create(webpackConfig);
+var devCompiler = webpack(myDevConfig);
 
 //将资源拷贝到目标目录
 gulp.task('copy', function (done) {
@@ -16,12 +18,34 @@ gulp.task('copy', function (done) {
   gulp.src(['src/lib/**/*']).pipe(gulp.dest('dist/lib/')).on('end', done);
 });
 
+//用于在html文件中直接include文件
+gulp.task('fileinclude', function (done) {
+  gulp.src(['src/app/*.html'])
+  .pipe(fileinclude({
+    prefix: '@@',
+    basepath: '@file',
+  }))
+  .pipe(gulp.dest('dist'))
+  .on('end', done);
+});
+
 //压缩合并css,
-gulp.task('build-css', function (done) {
+gulp.task('build-css', ['copy'], function (done) {
   gulp.src(['src/css/*.css', 'node_modules/bootstrap/dist/css/bootstrap.min.css'])
   .pipe(cssmin())
   .pipe(gulp.dest('dist/css/'))
   .on('end', done);
+});
+
+//引用webpack对js进行操作
+gulp.task('build-js', ['fileinclude'], function (callback) {
+  devCompiler.run(function (err, stats) {
+    if (err) throw new gutil.PluginError('webpack:build-js', err);
+    gutil.log('[webpack:build-js]', stats.toString({
+      colors: true,
+    }));
+    callback();
+  });
 });
 
 //将js加上10位md5,并修改html中的引用路径，该动作依赖build-js
@@ -40,19 +64,8 @@ gulp.task('md5:css', ['md5:js'], function (done) {
   .on('end', done);
 });
 
-//用于在html文件中直接include文件
-gulp.task('fileinclude', function (done) {
-  gulp.src(['src/app/*.html'])
-  .pipe(fileinclude({
-    prefix: '@@',
-    basepath: '@file',
-  }))
-  .pipe(gulp.dest('dist'))
-  .on('end', done);
-});
-
 gulp.task('clean', function (done) {
-  gulp.src('dist', { read: false })
+  gulp.src('dist/**/*.*', { read: false })
   .pipe(clean({ force: true }))
   .on('end', done);
 });
@@ -70,21 +83,6 @@ gulp.task('connect', function () {
       directory: true,
     },
     reloadDelay: 500,
-  });
-});
-
-var myDevConfig = Object.create(webpackConfig);
-
-var devCompiler = webpack(myDevConfig);
-
-//引用webpack对js进行操作
-gulp.task('build-js', ['fileinclude'], function (callback) {
-  devCompiler.run(function (err, stats) {
-    if (err) throw new gutil.PluginError('webpack:build-js', err);
-    gutil.log('[webpack:build-js]', stats.toString({
-      colors: true,
-    }));
-    callback();
   });
 });
 

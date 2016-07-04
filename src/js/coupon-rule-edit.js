@@ -34,7 +34,7 @@ var _popupDataCache = {
 };
 
 $(function () {
-  common.init('activity-coupon');
+  common.init('coupon-rule');
 
   setProvince();
   setBrand();
@@ -121,7 +121,7 @@ $(function () {
 $(document).on('change', '#level', function (event) {
   event.preventDefault();
   var level = $(this).val();
-  if (!!~~level) {
+  if (level == undefined || level == '') {
     $('#budgetSource').html('<option value=""></option>');
   } else {
     var sources = [];
@@ -144,6 +144,35 @@ $(document).on('change', '#level', function (event) {
       $('#budgetSource').closest('.form-group').show();
     }
   }
+});
+
+//上传图片
+$(document).on('click', '#btn-upload', function (event) {
+  event.preventDefault();
+  $('#fileupload').next('span').remove();
+  $('#popup-coupon-image-upload').modal('show');
+  $('#fileupload').data('url', common.API_HOST + 'coupon/uploadImage').fileupload({
+    dataType: 'json',
+    add: function (e, data) {
+      $('#fileupload').next('span').remove();
+      $('#fileupload').after(' <span>' + data.files[0].name + '</span>');
+      $('#popup-coupon-image-upload button.btn-primary').off('click').on('click', function () {
+        $(this).prop('disable', true).text('上传中...');
+        data.submit();
+      });
+    },
+
+    done: function (e, data) {
+      $('#popup-coupon-image-upload button.btn-primary').prop('disable', false).text('上传');
+      if (!!~~data.result.meta.result) {
+        $('#imageUrl').val(data.result.data.savePath);
+        alert('上传成功！');
+        $('#popup-coupon-image-upload').modal('hide');
+      } else {
+        alert('上传失败：' + data.result.meta.msg);
+      }
+    },
+  });
 });
 
 //渠道
@@ -290,6 +319,7 @@ $(document).on('click', '#btn-set-cinema', function (event) {
   $('#search-cinema-candidate tbody, #search-cinema-choosed tbody').html('');
   $('#input-cinema-filter, #search-cinema-cinemaName').val('');
   if (_popupDataCache.cinemas != null && _popupDataCache.cinemas.length > 0) {
+    $('#choosedCount').text(_popupDataCache.cinemas.length);
     var html = '';
     _(_popupDataCache.cinemas).forEach(function (cinema) {
       html += '<tr data-id="' + cinema.cinemaId + '"><td>' + cinema.cinemaName + '</td><td>' + cinema.cityName + '</td><td>' + cinema.brandName + '</td></tr>';
@@ -549,6 +579,9 @@ $(document).on('submit', '#formEdit', function (event) {
     budgetSource: $('#budgetSource').val(),
     wandaTicketId: $('#wandaTicketId').val(),
     advancePayment: $('input[name=advancePayment]:checked').val(),
+    couponDesc: $.trim($('#couponDesc').val()),
+    imageUrl: $.trim($('#imageUrl').val()),
+    maxInventory: $.trim($('#maxInventory').val()),
     channels: _popupDataCache.channels,
     hallType: _popupDataCache.hallType,
     filmType: _popupDataCache.filmType,
@@ -579,6 +612,7 @@ $(document).on('submit', '#formEdit', function (event) {
     data: JSON.stringify(sendData),
   })
   .done(function (res) {
+    _submitting = false;
     $('#formUnit input[type=submit]').prop('disabled', false).text('保存');
     if (!!~~res.meta.result) {
       if (ajaxUrl == 'coupon/couponUpdate') {
@@ -586,7 +620,7 @@ $(document).on('submit', '#formEdit', function (event) {
         document.location.reload(true);
       } else {
         alert('保存成功！');
-        document.location = 'activity-coupon.html';
+        document.location = 'coupon-rule.html';
       }
     } else {
       alert('接口错误：' + res.meta.msg);
@@ -779,7 +813,11 @@ function setChannel(channels) {
   var checkedChannelNames = [];
   if (_channels.length > 0) {
     if (channels == false || _channels.length == channels.length) {
-      _(_channels).forEach(function (channel) {channel.checked = true;});
+      _popupDataCache.channels = [];
+      _(_channels).forEach(function (channel) {
+        _popupDataCache.channels.push(channel.channelId);
+        channel.checked = true;
+      });
 
       previewHtml = '不限';
     } else {
@@ -809,6 +847,7 @@ function setChannel(channels) {
         } else {
           _channels = res.data;
           if (channels == false || _channels.length == channels.length) {
+            _popupDataCache.channels = [];
             _(_channels).forEach(function (channel) {
               _popupDataCache.channels.push(channel.channelId);
               channel.checked = true;
@@ -967,9 +1006,9 @@ function setEdit(couponId) {
       var coupon = res.data;
       _popupDataCache.channels = coupon.channels != null ? coupon.channels : [];
       _popupDataCache.films = coupon.films != null ? coupon.films : [];
-      _popupDataCache.filmType = coupon.filmType != null ? coupon.filmType : [];
-      _popupDataCache.screenType = coupon.screenType != null ? coupon.screenType : [];
-      _popupDataCache.hallType = coupon.hallType != null ? coupon.hallType : [];
+      _popupDataCache.filmType = coupon.filmType != null ? coupon.filmType : ['2D', '3D'];
+      _popupDataCache.screenType = coupon.screenType != null ? coupon.screenType : ['普通', 'IMAX', 'DMAX', '巨幕'];
+      _popupDataCache.hallType = coupon.hallType != null ? coupon.hallType : ['普通', '4D', '5D'];
       _popupDataCache.timetables = coupon.timetables != null ? coupon.timetables : [];
 
       coupon.cinemas = coupon.cinemas != null ? coupon.cinemas : [];
@@ -1009,6 +1048,10 @@ function setEdit(couponId) {
         }
       });
 
+      $('#couponDesc').val(coupon.couponDesc);
+      $('#imageUrl').val(coupon.imageUrl);
+      $('#maxInventory').val(coupon.maxInventory);
+
       //成本中心
       if (coupon.budgetSource != '' && coupon.budgetSource != null && coupon.budgetSource != undefined) {
         setBudgetSource(coupon.budgetSource);
@@ -1039,7 +1082,11 @@ function setEdit(couponId) {
       }
 
       //渠道
-      coupon.channels != null && coupon.channels.length > 0 ? setChannel(coupon.channels) : setChannel(false);
+      if (coupon.channels != null && coupon.channels.length > 0) {
+        setChannel(coupon.channels)
+      } else {
+        setChannel(false);
+      }
 
       //影片
       coupon.films != null && coupon.films.length > 0 ? setMovie(coupon.films) : setMovie(false);
