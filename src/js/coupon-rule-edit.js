@@ -203,9 +203,10 @@ $(document).on('click', '#btn-set-movie', function (event) {
   var html = '';
   var choosedHtml = '';
   _(_movies).forEach(function (movie) {
-    html += '<option value="' + movie.filmId + '">' + movie.filmName + '</option>';
-    if (_popupDataCache.films.indexOf(movie.filmId) > -1) {
+    if (_popupDataCache.films != null && _popupDataCache.films.indexOf(movie.filmId) > -1) {
       choosedHtml += '<option value="' + movie.filmId + '">' + movie.filmName + '</option>';
+    } else {
+      html += '<option value="' + movie.filmId + '">' + movie.filmName + '</option>';
     }
   });
 
@@ -1040,6 +1041,7 @@ function setEdit(couponId) {
       $('#formEdit').prepend('<input type="hidden" id="id" value="' + coupon.id + '">');
 
       $('#name').val(coupon.name);
+      $('#signNo').val(coupon.signNo);
       $('#beginDate').val(coupon.beginDate.split(' ')[0]);
       $('#endDate').val(coupon.endDate.split(' ')[0]);
 

@@ -53,7 +53,7 @@ $('#formBind').on('submit', function (event) {
   })
   .done(function (res) {
     _querying = false;
-    $('#formBind button').text('产码');
+    $('#formBind button').text('灌码');
     if (!!~~res.meta.result) {
       alert('灌码任务已提交，下面列表中查看进度');
       $('#couponId, #file').text('');
