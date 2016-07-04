@@ -18,7 +18,7 @@ var useCache = false;
 var dataCache;
 var _submitting = false;
 
-var _DEBUG = true;
+var _DEBUG = false;
 
 $(function() {
 
@@ -47,6 +47,8 @@ $(function() {
     FromEndDate.setDate(FromEndDate.getDate(new Date(ev.date.valueOf())));
     $('#search_startTime').datetimepicker('setEndDate', FromEndDate);
   });
+
+  $('#formSearch').parsley();
 });
 
 //handle search form
@@ -59,6 +61,14 @@ $('#formSearch').on('click', 'button[type=submit]', function (event) {
 
 $('#formSearch').on('submit', function (e) {
   e.preventDefault();
+
+  // a new search triggered by clicking '查询'
+  if (!useCache) {
+    if (!$('#formSearch').parsley().isValid()) {
+      return false;
+    }
+  }
+
   var sendData = {
     dateType: $('#search_dateType').val(),
     startTime: $('#search_startTime').val(),
@@ -69,11 +79,6 @@ $('#formSearch').on('submit', function (e) {
     bizType: $('#search_bizType').val(),
     pageSize: _pageSize,
   };
-
-  if (sendData.startTime == '' || sendData.endTime == '') {
-    alert('请输入开始日期和结束日期!');
-    return false;
-  }
 
   if (!!_querying) {
     return false;
@@ -90,10 +95,10 @@ $('#formSearch').on('submit', function (e) {
 
   if (!_DEBUG) {
     $.ajax({
-      url: 'movie-ops/settlement/shipmentInfo/summaryList',
+      url: 'MovieOps/settlement/shipmentInfo/summaryList',
       type: 'GET',
       dataType: 'json',
-      data: sendData,
+      // data: sendData,
     })
     .done(function (res) {
       handleData(res);
@@ -110,15 +115,16 @@ function handleData(res) {
   _querying = false;
 
   if (~res.meta.result) {
-    if (res.data.detail.recordCount < 1) {
-      $('#dataTable tbody').html('<tr><td colspan="9" align="center">查不到相关数据，请修改查询条件！</td></tr>');
-      $('#summaryTable tbody').html('<tr><td colspan="9" align="center">查不到相关数据，请修改查询条件！</td></tr>');
+    if (res.data == null || res.data.detail.count < 1) {
+      var errorMsg = res.meta.msg;
+      $('#dataTable tbody').html('<tr><td colspan="30" align="center">' + errorMsg + '</td></tr>');
+      $('#summaryTable tbody').html('<tr><td colspan="30" align="center">' + errorMsg + '</td></tr>');
       $('#pager').html('');
     } else {
       useCache = true;
 
-      var totalRecord = res.data.detail.recordCount;
-      var record = res.data.detail.recordDetail;
+      var totalRecord = res.data.detail.count;
+      var record = res.data.detail.records;
 
       _pageTotal = Math.ceil(totalRecord / _pageSize);
       setPager(totalRecord, _pageIndex, record.length, _pageTotal);

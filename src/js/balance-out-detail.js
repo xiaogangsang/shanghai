@@ -1,5 +1,5 @@
 /*
-	收单对账明细
+	出货对账明细
   Ge Liu
  */
 
@@ -27,7 +27,7 @@ var _DEBUG = false;
 
 $(function() {
 
-	common.liquidationInit('balance-in-detail');
+	common.liquidationInit('balance-out-detail');
 
 	$('#search_startTime').datetimepicker({
     format: 'yyyy-mm-dd',
@@ -79,18 +79,18 @@ $('#formSearch').on('submit', function (e) {
   	dateType: $('#search_dateType').val(),
     beginTime: $('#search_startTime').val(),
     endTime: $('#search_endTime').val(),
-    chargeMerchant: $('#search_chargeMerchant').val(),
-    chargeMerchantNo: $('#search_chargeMerchantNo').val(),
-    partner: $('#search_partner').val(),
-    discountType: $('#search_discountType').val(),
-    discountName: $('#search_discountName').val(),
+    merchantName: $('#search_merchantName').val(),
+    merchantNo: $('#search_merchantNo').val(),
+    shipmentStatus: $('#search_shipmentStatus').val(),
     bizType: $('#search_bizType').val(),
-    payStatus: $('#search_payStatus').val(),
+    partner: $('#search_partner').val(),
+    acquiringReconciliationStatus: $('#search_acquiringReconciliationStatus').val(),
     reconciliationStatus: $('#search_reconciliationStatus').val(),
     reason: $('#search_reson').val(),
-    orderNo: $('#search_orderNo').val(),
-    thdSerialNo: $('#search_thdSerialNo').val(),
-    paySequenceNo: $('#search_paySequenceNo').val(),
+    discountType: $('#search_discountType').val(),
+    discountName: $('#search_discountName').val(),
+    bizOrderNo: $('#search_bizOrderNo').val(),
+    thdOrderNo: $('#search_thdOrderNo').val(),
     pageSize: _pageSize,
   };
   if (!!_querying) {
@@ -108,10 +108,10 @@ $('#formSearch').on('submit', function (e) {
 
   if (!_DEBUG) {
     $.ajax({
-      url: 'MovieOps/settlement/acquiring/queryDetailByMultiMsg',// TODO: URL
+      url: 'MovieOps/settlement/shipmentInfo/infoList',// TODO: URL
       type: 'GET',
       dataType: 'json',
-      data: sendData,
+      // data: sendData,
     })
     .done(function (res) {
       handleData(res);
@@ -199,13 +199,14 @@ function handleData(res) {
       setPager(totalRecord, _pageIndex, record.length, _pageTotal);
 
       _(record).forEach(function(item) {
-      	item.chargeMerchant = parseMerchant(item.chargeMerchant);
-      	item.payStatus = parsePayStatus(item.payStatus);
+        item.bizType = parseBizType(item.bizType);
+        item.payStatus = parsePayStatus(item.payStatus);
+        item.partner = parsePartner(item.partner);
+        item.acquiringReconciliationStatus = parseReconciliationStatus(item.acquiringReconciliationStatus);
+        item.subsidyType = parseSubsidyType(item.subsidyType);
         item.reconciliationStatus = parseReconciliationStatus(item.reconciliationStatus);
         item.reason = parseReason(item.reason);
-        item.bizType = parseBizType(item.bizType);
         item.discountType = parseDiscountType(item.discountType);
-        item.partner = parsePartner(item.partner);
       });
 
       if (!_queryingFromSelectedSummary) {
