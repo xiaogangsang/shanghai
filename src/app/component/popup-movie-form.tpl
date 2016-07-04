@@ -49,11 +49,15 @@
           <th>题材</th>
           <td>{{movie.theme}}</td>
           <th>导演</th>
-          <td>{{movie.director}}</td>
+          <td><input type="text" class="form-control" id="director" value="{{movie.director}}" required></td>
+        </tr>
+        <tr>
+          <th>评分</th>
+          <td colspan="3"><input type="text" class="form-control" id="score" value="{{movie.score}}" required></td>
         </tr>
         <tr>
           <th>主演</th>
-          <td colspan="3">{{movie.actor}}</td>
+          <td colspan="3"><input type="text" class="form-control" id="actor" value="{{movie.actor}}" required></td>
         </tr>
         <tr>
           <th>影片制式</th>

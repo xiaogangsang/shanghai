@@ -113,6 +113,7 @@ $('#formSearch').on('submit', function (e) {
             }
           });
 
+          item.showDate = item.showDate.split(' ')[0];
           item.dimenName = item.dimenNames.join(',');
           item.associationStatus = item.associationStatus == 1 ? '已关联' : '未关联';
         });
@@ -144,6 +145,9 @@ $(document).on('submit', '#popup-movie-form form', function (e) {
     description: $.trim($('#popup-movie-form #description').val()),
     area: $.trim($('#popup-movie-form #area').val()),
     produceCorp: $.trim($('#popup-movie-form #produceCorp').val()),
+    director: $.tirm($('#popup-movie-form #director').val()),
+    actor: $.tirm($('#popup-movie-form #actor').val()),
+    score: $.tirm($('#popup-movie-form #score').val()),
     poster: $.trim($('#popup-movie-form #poster').val()),
     status: $('#popup-movie-form #status').val(),
   };
