@@ -88,7 +88,8 @@ $(function () {
         res.data.bizOrder.canReturnTicket = false;
         if (res.data.bizOrder.productOrderStatus == '已出票'
           && res.data.bizOrder.status == '支付成功'
-          && res.data.bizOrder.wandaTicketId != null) {
+          && res.data.bizOrder.wandaTicketId != null
+          && res.data.bizOrder.supportRefund == true) {
           res.data.bizOrder.canReturnTicket = true;
         }
 
