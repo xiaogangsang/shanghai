@@ -52,13 +52,21 @@ $(function () {
 	// $('#formSearch').trigger('submit');
 });
 
+$('#formSearch').on('click', 'button[type=submit]', function (event) {
+  event.preventDefault();
+  $('#dataTable tbody').html('<tr><td colspan="13" align="center">查询中...</td></tr>');
+  _pageIndex = 1;
+  useCache = false;
+  $('#formSearch').trigger('submit');
+});
+
 $('#formSearch').on('submit', function (e) {
 	e.preventDefault();
 	var sendData = {
 		mobile: $.trim($('#search_mobile').val()),
 		channelId: '1',
-		startTime: $('#search_smsStartTime').val(),
-		endTime: $('#search_smsEndTime').val(),
+		beginDate: $('#search_smsStartTime').val(),
+		endDate: $('#search_smsEndTime').val(),
 		pageSize: _pageSize,
 	};
 
@@ -106,6 +114,47 @@ $('#formSearch').on('submit', function (e) {
 	});
 	
 	return false;
+});
+
+$('#pager').on('click', '.prev,.next', function (e) {
+  e.preventDefault();
+  if ($(this).hasClass('prev')) {
+    if (_pageIndex <= 1) {
+      _pageIndex = 1;
+      alert('已经是第一页！');
+      return false;
+    }
+
+    _pageIndex--;
+  } else {
+    if (_pageIndex >= _pageTotal) {
+      _pageIndex = _pageTotal;
+      alert('已经是最后一页！');
+      return false;
+    }
+
+    _pageIndex++;
+  }
+
+  $('#formSearch').trigger('submit');
+  return false;
+});
+
+$('#pager').on('click', '#btn-pager', function (e) {
+  e.preventDefault();
+  if (~~$('#pageNo').val() == 0) {
+    return false;
+  }
+
+  var pageNo = parseInt($('#pageNo').val());
+  if (NaN == pageNo || pageNo < 1 || pageNo > _pageTotal) {
+    alert('要跳转的页码超过了范围！');
+    return false;
+  }
+
+  _pageIndex = pageNo;
+  $('#formSearch').trigger('submit');
+  return false;
 });
 
 function setTableData(rows) {
