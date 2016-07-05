@@ -18,6 +18,10 @@ var useCache = false;
 var dataCache;
 var _submitting = false;
 
+var detailUseCache = false;
+var detailDataCache;
+var detailPageIndex = 1;
+
 var _DEBUG = true;
 
 $(function() {
@@ -83,7 +87,7 @@ $('#formSearch').on('submit', function (e) {
 
   if (!_DEBUG) {
     $.ajax({
-      url: 'movie-ops/settlement/merchantSummary/getMerchantSummaryList',
+      url: 'MovieOps/settlement/merchantSummary/getMerchantSummaryList',
       type: 'GET',
       dataType: 'json',
       data: sendData,
@@ -92,7 +96,7 @@ $('#formSearch').on('submit', function (e) {
       handleData(res);
     });
   } else {
-    var res = $.parseJSON('{ "meta": { "result": "1", "msg": "操作成功" }, "data": { "detail": { "recordCount": "41", "recordDetail": [ { "merName": "商户名称", "merNo": "商户号", "appDate": "拨款日期", "batchNum": "批次号", "accName": "账户名称", "accNo": "账户号", "appAmount": "拨款金额", "appStatus": "拨款状态" } ] } } }');
+    var res = $.parseJSON('{"meta" : {"result" : "1","msg" : "操作成功"},"data" : {"total" : 2,"record" : [ {"appAmount" : 95,"merNo" : "308010700103175","merchantSummaryId" : 127,"accNo" : "78978","accName" : "光大银行某某账户","merName" : "测试商户","batchNum" : "20160704164343","appDate" : "2016-07-04","appStatus" : 7}, {"appAmount" : 190,"merNo" : "308010700103175","merchantSummaryId" : 128,"accNo" : "78978","accName" : "光大银行某某账户","merName" : "测试商户","batchNum" : "20160704164407","appDate" : "2016-07-04","appStatus" : 7} ]}}');
     handleData(res);
   }
 
@@ -103,15 +107,16 @@ function handleData(res) {
 	_querying = false;
 
 	if (~res.meta.result) {
-		if (res.data.detail.recordCount < 1) {
-			$('#dataTable tbody').html('<tr><td colspan="9" align="center">查不到相关数据，请修改查询条件！</td></tr>');
-			$('#summaryTable tbody').html('<tr><td colspan="9" align="center">查不到相关数据，请修改查询条件！</td></tr>');
+		if (res.data == null || res.data.total < 1) {
+      var errorMsg = res.meta.msg;
+      $('#dataTable tbody').html('<tr><td colspan="30" align="center">' + errorMsg + '</td></tr>');
+      $('#summaryTable tbody').html('<tr><td colspan="30" align="center">' + errorMsg + '</td></tr>');
       $('#pager').html('');
 		} else {
 			useCache = true;
 
-			var totalRecord = res.data.detail.recordCount;
-      var record = res.data.detail.recordDetail;
+			var totalRecord = res.data.total;
+      var record = res.data.record;
 
       _pageTotal = Math.ceil(totalRecord / _pageSize);
       setPager(totalRecord, _pageIndex, record.length, _pageTotal);
@@ -120,6 +125,7 @@ function handleData(res) {
       	item.chargeMerchant = parseMerchant(item.chargeMerchant);
         item.payStatusNo = item.payStatus;
       	item.payStatus = parsePayStatus(item.payStatus);
+        item.appStatus = parseMoneyOutStatus(item.appStatus);
       });
 
       // record[1] = record[0];
@@ -189,13 +195,17 @@ $('#pager').on('click', '#btn-pager', function (e) {
 });
 
 $('.btn-reset').click(function(e) {
-	// $('#search_dateType').val('');
- //  $('#search_startTime').val('');
- //  $('#search_endTime').val('');
- //  $('#search_merchantName').val('');
- //  $('#search_merchantNo').val('');
- //  $('#search_payStatus').val('');
- $('#formSearch :input:not(:button)').val('');
+  // $('#search_dateType').val('');
+  //  $('#search_startTime').val('');
+  //  $('#search_endTime').val('');
+  //  $('#search_merchantName').val('');
+  //  $('#search_merchantNo').val('');
+  //  $('#search_payStatus').val('');
+  $('#formSearch :input:not(:button)').val('');
+});
+
+$('.btn-detail-reset').click(function(e) {
+  $('#detailFormSearch :input:not(:button)').val('');
 });
 
 $('.all-detail').click(function(e) {
@@ -242,6 +252,71 @@ $('body').on('change', 'tr > td :checkbox', function(e) {
 });
 
 
+$('#dataTable').on('click', '.see-detail', function(e) {
+  var rowIndex = $(this).closest('td').parent()[0].sectionRowIndex;
+  var obj = dataCache[rowIndex];
+
+  detailDataCache = {
+    merchantSummaryId: obj.merchantSummaryId
+  };
+
+  var template = $('#detail-template').html();
+  Mustache.parse(template);
+  var html = Mustache.render(template, {});
+  $('#popup-detail .modal-body').html(html);
+
+  $('#popup-detail').modal('show');
+
+  $('#detailFormSearch button[type=submit]').click();
+});
+
+
+/****************************************** detail *******************************************/
+$('body').on('click', '#detailFormSearch button[type=submit]', function(e) {
+  e.preventDefault();
+  detailUseCache = false;
+  detailPageIndex = 1;
+  $('#detailFormSearch').trigger('submit');
+});
+
+$('body').on('submit', '#detailFormSearch', function(e) {
+  var sendData = {
+    merchantSummaryId: detailDataCache.merchantSummaryId,
+    ticketType: $('#search_ticketType').val(),
+    movieOrderNo: $('#search_movieOrderNo').val(),
+    payOrderNo: $('#search_payOrderNo').val(),
+    partnerOrderNo: $('#search_partnerOrderNo').val(),
+    channelType: $('#search_channelType').val(),
+    businessType: $('#search_businessType').val(),
+    pageSize: _pageSize,
+  };
+
+  if (detailUseCache) {
+    sendData = searchCache;
+  } else {
+    searchCache = sendData;
+  }
+
+  sendData.pageIndex = detailPageIndex;
+
+  if (_DEBUG) {
+    $.ajax({
+      url: 'MovieOps/settlement/appropriationInfo/getAppropriationInfoList',
+      type: 'GET',
+      dataType: 'json',
+      data: sendData,
+    })
+    .done(function(res) {
+      handleDetailData(res);
+    });
+  } else {
+    // TODO: debug data
+  }
+});
+
+
+
+
 /****************************************** Utilities Method **********************************************/
 
 function parseMerchant(merchant) {
@@ -257,9 +332,10 @@ function parsePayStatus(payStatus) {
   return map[payStatus];
 }
 
-function moneyOutStatus(outStatus) {
+function parseMoneyOutStatus(outStatus) {
   var map = {'1' : '待拨款', '2' : '首次拨款成功', '3' : '暂停拨款', '4' : '银行退票', '5' : '待重拨', '6' : '生成拨款文件失败', '7' : '重拨成功'};
   return map[outStatus];
 }
+
 
 

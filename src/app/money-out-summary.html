@@ -29,7 +29,7 @@
 
         <form id="formSearch" class="search-area clearfix">
 
-        <div class="form-group col-sm-6 col-md-4">
+          <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">开始日期</div>
               <input type="text" class="form-control" id="search_startTime">
@@ -110,8 +110,6 @@
 
         </form>
 
-        </form>
-
         <div class="content-area">
 
           <div class="row" id="pager"></div>
@@ -150,16 +148,13 @@
   </div>
 
   <!-- pop up -->
-  <div class="modal fade" id="popup-merchant-detail" data-keyboard="false" data-backdrop="static">
+  <div class="modal fade" id="popup-detail" data-keyboard="false" data-backdrop="static">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
-      <form>
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title">商户详情</h4>
         </div>
         <div class="modal-body"></div>
-      </form>
     </div>
   </div>
 </div>
@@ -204,6 +199,31 @@
     </tr>
     {{/rows}}
   </script>
+
+  <script id="detail-table-template" type="text/x-tmpl-mustache">
+    {{#rows}}
+    <tr data-id="{{merchantSummaryId}}" data-bannertype="{{bannerType}}">
+      <td>{{productOrderNo}}</td>
+      <td>{{partnerOrderNo}}</td>
+      <td>{{payOrderNo}}</td>
+      <td>{{shipmentDate}}</td>
+      <td>{{appDate}}</td>
+      <td>{{ticketType}}</td>
+      <td>{{channelType}}</td>
+      <td>{{businessType}}</td>
+      <td>{{orderNo}}</td>
+      <td>{{shipmentStatus}}</td>
+      <td>{{payStatus}}</td>
+      <td>{{refundPartner}}</td>
+      <td>{{discountType}}</td>
+      <td>{{discountName}}</td>
+      <td>{{refundFree}}</td>
+      <td>{{appAmount}}</td>
+    </tr>
+    {{/rows}}
+  </script>
+
+  @@include('component/popup-money-out-detail.tpl')
 
 </body>
 </html>
