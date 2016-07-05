@@ -120,9 +120,10 @@ $('#resourceSelect').on('change', function (e) {
 
 $('#formResource').on('click', 'button[type=submit]', function (event) {
   event.preventDefault();
-  if (condition) {
+  if (!!_submitting) {
     return false;
   }
+
   _submitting = true;
   $('.multi-selection select:eq(1) option').prop('selected', true);
   var sendData = {
