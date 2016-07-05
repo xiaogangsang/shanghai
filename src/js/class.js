@@ -311,7 +311,7 @@ $(document).on('click', '#btn-search-cinema', function (event) {
 
   $('#search-cinema-candidate tbody').html('<tr><td colspan="3" align="center">查询中，请稍等...</td></tr>');
   $.ajax({
-    url: common.API_HOST + 'cinema/standard/cinemaList',
+    url: common.API_HOST + 'common/cinemas',
     type: 'POST',
     dataType: 'json',
     data: sendData,
@@ -647,7 +647,7 @@ function setChannel() {
 
 function getCinema() {
   $.ajax({
-    url: common.API_HOST + 'cinema/standard/cinemaList',
+    url: common.API_HOST + 'common/cinemas',
     type: 'POST',
     dataType: 'json',
     data: {
