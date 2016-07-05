@@ -11,17 +11,6 @@ var useCache = false;
 
 $(function () {
   common.init('activity-cs');
-  var urlParam = common.getUrlParam();
-  if (urlParam.planId != undefined && urlParam.planId != '') {
-    $('#search_planId').val(urlParam.planId);
-    $('#formSearch').trigger('submit');
-    $('#btn-create').attr('href', 'activity-unit-edit.html?planId=' + urlParam.planId);
-  }
-
-  //set search form
-  getBudgetSource();
-
-  $('#formSearch').trigger('submit');
 });
 
 $('#formSearch').on('click', 'button[type=submit]', function (event) {
@@ -33,23 +22,14 @@ $('#formSearch').on('click', 'button[type=submit]', function (event) {
 
 $('#formSearch').on('submit', function (e) {
   e.preventDefault();
-  if ($.trim($('#search_id').val()) != '' && ~~$.trim($('#search_id').val()) == 0) {
-    alert('[单元ID]必须是大于0的数字！');
-    return false;
-  }
-
-  if ($.trim($('#search_planId').val()) != '' && ~~$.trim($('#search_planId').val()) == 0) {
-    alert('[计划ID]必须是大于0的数字！');
+  if ($.trim($('#search_id').val()) == '' && $.trim($('#search_name').val()) == '') {
+    alert('活动ID和活动名称至少填写一个！');
     return false;
   }
 
   var sendData = {
     id: $.trim($('#search_id').val()),
     name: $.trim($('#search_name').val()),
-    planId: $.trim($('#search_planId').val()),
-    status: $('#search_status').val(),
-    budgetStatus: $('#search_budgetStatus').val(),
-    budgetSource: $('#search_budgetSource').val(),
     pageSize: _pageSize,
   };
   if (!!_querying) {
@@ -66,7 +46,7 @@ $('#formSearch').on('submit', function (e) {
   sendData.pageIndex = _pageIndex;
 
   $.ajax({
-    url: common.API_HOST + 'activity/activityList',
+    url: common.API_HOST + 'activity/activityInfoList',
     type: 'POST',
     dataType: 'json',
     data: sendData,
@@ -83,42 +63,13 @@ $('#formSearch').on('submit', function (e) {
         useCache = true;
         _pageIndex = res.data.pageIndex;
         _pageTotal = Math.ceil(res.data.total / _pageSize);
-        setPager(res.data.total, _pageIndex, res.data.rows.length, _pageTotal);
-        _(res.data.rows).forEach(function (value, key) {
-          value.status = parseInt(value.status);
-          switch (value.status) {
-            case 1:
-              value.statusName = '已上线';
-            break;
-            case 0:
-              value.statusName = '已下线';
-            break;
-            case 2:
-              value.statusName = '计划下线';
-            break;
-            default:
-              value.statusName = '';
-            break;
-          }
 
-          // switch (+value.budgetStatus) {
-          //   case 1:
-          //     value.budgetStatusName = '总预算不足';
-          //   break;
-          //   case 2:
-          //     value.budgetStatusName = '日预算不足';
-          //   break;
-          //   case 3:
-          //     value.budgetStatusName = '正常';
-          //   break;
-          //   default:
-          //     value.budgetStatusName = '';
-          //   break;
-          // }
+        _(res.data.rows).forEach(function (value, key) {
+          value.activityRuleDesc = value.activityRuleDesc.replace(/\n/g, '</p><p>');
         });
 
+        setPager(res.data.total, _pageIndex, res.data.rows.length, _pageTotal);
         setTableData(res.data.rows);
-        $('#btn-export').prop('disabled', false);
       }
     } else {
       alert('接口错误：' + res.meta.msg);
@@ -128,147 +79,11 @@ $('#formSearch').on('submit', function (e) {
   return false;
 });
 
-$(document).on('change', '#search_level', function (event) {
+$('#dataTable').on('click', '.btn-rule', function (event) {
   event.preventDefault();
-  var level = $(this).val();
-  if (level == undefined || level == '') {
-    $('#search_budgetSource').html('<option value="">全部</option>');
-    $('#search_budgetSource').closest('.form-group').hide();
-  } else {
-    var sources = [];
-    _(_budgetSource).forEach(function (group, key) {
-      if (level == key) {
-        sources = group;
-      }
-    });
-
-    if (sources.length < 1) {
-      $('#search_budgetSource').html('<option value="">全部</option>');
-      $('#search_budgetSource').closest('.form-group').hide();
-      alert('所选成本中心类别下无成本中心，这个情况不正常，需要注意哦！');
-    } else {
-      var html = '';
-      _(sources).forEach(function (source) {
-        html += '<option value="' + source.id + '">' + source.sourceName + '</option>';
-      });
-
-      $('#search_budgetSource').html(html);
-      $('#search_budgetSource').closest('.form-group').show();
-    }
-  }
-});
-
-$(document).on('click', '.multi-check-all', function () {
-  var items = $(this).closest('table').find('.multi-check');
-  if ($(this).prop('checked')) {
-    items.prop('checked', true);
-  } else {
-    items.prop('checked', false);
-  }
-});
-
-$(document).on('click', '#btn-online-multi, #btn-offline-multi', function (e) {
-  e.preventDefault();
-  if ($('.multi-check:checked').length < 1) {
-    alert('请至少选中一个！');
-    return false;
-  }
-
-  var queryStatusName = $(this).attr('id') == 'btn-online-multi' ? '上线' : '下线';
-  if (window.confirm('确定要' + queryStatusName + '选中的单元吗？')) {
-    var queryStatus = $(this).attr('id') == 'btn-online-multi' ? 1 : 0;
-    var ids = [];
-    var $checkedItems = $('.multi-check:checked');
-
-    $checkedItems.each(function () {
-      ids.push($(this).closest('tr').data('id'));
-    });
-
-    var ajaxUrl = queryStatus == 1 ? 'activity/activityOnline' : 'activity/activityOffline';
-    $.ajax({
-      url: common.API_HOST + ajaxUrl,
-      type: 'POST',
-      dataType: 'json',
-      contentType: 'application/json; charset=utf-8',
-      data: JSON.stringify(ids),
-    })
-    .done(function (res) {
-      if (res.meta.result == true) {
-        $('#formSearch').trigger('submit');
-        queryStatus == 1 ? alert('批量上线成功') : alert('批量下线成功');
-        $('.multi-check-all').prop('checked', false);
-      } else {
-        alert('接口错误：' + res.meta.msg);
-      }
-    });
-  }
-
-  return false;
-});
-
-$(document).on('click', '#btn-export', function (event) {
-  event.preventDefault();
-  var exportUrl = common.API_HOST + 'activity/exportActivities?' +
-    'id=' + $.trim($('#search_id').val()) +
-    '&name=' + $.trim($('#search_name').val()) +
-    '&planId=' + $.trim($('#search_planId').val()) +
-    '&status=' + $('#search_status').val() +
-    '&budgetStatus=' + $('#search_budgetStatus').val() +
-    '&budgetSource=' + $('#search_budgetSource').val() +
-    '&pageSize=' + _pageSize +
-    '&pageIndex=' + _pageIndex;
-  window.location.href =  exportUrl;
-});
-
-$('#dataTable').on('click', '.btn-status', function (e) {
-  e.preventDefault();
-  var $btn = $(this);
-  var queryStatus = $btn.data('status') == 1 ? 0 : 1;
-  var queryStatusName = queryStatus == 1 ? '上线' : '下线';
-  if (window.confirm('确定要' + queryStatusName + '此单元吗？')) {
-    var ids = [$btn.closest('tr').data('id')];
-    var ajaxUrl = queryStatus == 1 ? 'activity/activityOnline' : 'activity/activityOffline';
-    $.ajax({
-      url: common.API_HOST + ajaxUrl,
-      type: 'POST',
-      dataType: 'json',
-      contentType: 'application/json; charset=utf-8',
-      data: JSON.stringify(ids),
-    })
-    .done(function (res) {
-      if (res.meta.result == true) {
-        $('#formSearch').trigger('submit');
-        alert(queryStatusName + '成功!');
-      } else {
-        alert('接口错误：' + res.meta.msg);
-      }
-    });
-  }
-
-  return false;
-});
-
-$('#dataTable').on('click', '.btn-delete', function (e) {
-  e.preventDefault();
-  var $tr = $(this).closest('tr');
-  if (window.confirm('确定要删除此单元吗？')) {
-    $.ajax({
-      url: common.API_HOST + 'activity/deleteActivity',
-      type: 'POST',
-      dataType: 'json',
-      data: { id: $tr.data('id') },
-    })
-    .done(function (res) {
-      if (res.meta.result == true) {
-        alert('删除成功！');
-        $tr.fadeOut(500, function () {$tr.remove();});
-      } else {
-        alert('接口错误：' + res.meta.msg);
-      }
-    });
-  }
-
-  return false;
+  $('#popup-rule .modal-title').html('活动细则：' + $(this).closest('tr').data('id'));
+  $('#popup-rule .modal-body').html($(this).next('div').html());
+  $('#popup-rule').modal('show');
 });
 
 $('#pager').on('click', '.prev,.next', function (e) {
@@ -326,19 +141,4 @@ function setPager(total, pageIndex, rowsSize, pageTotal) {
   Mustache.parse(template);
   var html = Mustache.render(template, data);
   $('#pager').html(html);
-}
-
-function getBudgetSource() {
-  $.ajax({
-    url: common.API_HOST + 'activity/budgetSourceList',
-    type: 'POST',
-    dataType: 'json',
-  })
-  .done(function (res) {
-    if (res.meta.result == true) {
-      _budgetSource = res.data;
-    } else {
-      alert('接口错误：' + res.meta.msg);
-    }
-  });
 }
