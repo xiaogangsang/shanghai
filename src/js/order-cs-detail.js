@@ -22,6 +22,15 @@ var _transOrderStatus = [
 { id: 3, name: '支付关闭' },
 { id: 9, name: '已关闭' },
 ];
+var _shipInfoStatus = {
+  '02': '出票成功',
+  '03': '出票失败',
+  '04': '出票中',
+  '05': '同步出票状态成功',
+  '06': '同步出票状态失败',
+  '12': '退票成功',
+  '13': '退票失败',
+};
 var _channels = {};
 var _sources = {};
 var _submitting = false;
@@ -109,6 +118,14 @@ $(function () {
         // } else {
         //   res.data.bizOrder.haveMachineTicket = false;
         // }
+        _(res.data.bizOrder.shipInfo).forEach(function (element) {
+          // _(_shipInfoStatus).forEach(function (shipStatus) {
+          //   if (shipStatus.id == element.status) {
+          //     element.status = shipStatus.name;
+          //   }
+          // });
+          element.status = _shipInfoStatus[element.status];
+        });
 
         res.data.payOrder.transDetailList = res.data.transDetailList;
         setPayOrder(res.data.payOrder);

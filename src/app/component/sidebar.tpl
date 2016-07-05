@@ -114,8 +114,17 @@
     </div>
 
     <div class="panel" style="display:none">
-      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu12"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> 操作流水记录</a>
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu12"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> 短信发送记录</a>
       <div id="menu12" class="panel-collapse collapse" role="tabpanel">
+        <div class="list-group">
+          <a href="record-sms.html" class="list-group-item" id="menu-record-sms" data-id="25">查询</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="display:none">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu13"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 操作流水记录</a>
+      <div id="menu13" class="panel-collapse collapse" role="tabpanel">
         <div class="list-group">
           <a href="record-operation.html" class="list-group-item" id="menu-record-operation" data-id="18" style="display:none">查询</a>
         </div>
