@@ -63,10 +63,36 @@ $('#formSearch').on('submit', function (e) {
       } else {
         useCache = true;
 
+        var hasFlow = false;
+
+        if (res.data.type == 'new') {
+          hasFlow = true;
+        } else {
+          if (res.data.list == null || res.data.list.rows.length < 1) {
+            alert('暂无流水记录！');
+            return false;
+          }
+
+          var orderUrl = 'order-cs-detail.html';
+          if ($('#menu-order').css('display') == 'block') {
+            orderUrl = 'order-detail.html';
+          }
+
+          var data = { rows: res.data.list.rows, orderUrl: orderUrl };
+          var template = $('#flow-template').html();
+          Mustache.parse(template);
+          var html = Mustache.render(template, data);
+          $('#flowTable tbody').html(html);
+          $('#popup-coupon-flow').modal('show');
+          return false;
+        }
         // _pageIndex = res.data.pageIndex;
         // _pageTotal = Math.ceil(res.data.total / _pageSize);
         // setPager(res.data.total, _pageIndex, res.data.rows.length, _pageTotal);
-        _(res.data).forEach(function (item) {
+        _(res.data.list).forEach(function (item) {
+
+          item.hasFlow = hasFlow;
+
           switch (item.source) {
             case 'PRODUCE':
               item.source = '批量产码';
@@ -99,7 +125,7 @@ $('#formSearch').on('submit', function (e) {
           }
         });
 
-        setTableData(res.data);
+        setTableData(res.data.list);
       }
     } else {
       alert('接口错误：' + res.meta.msg);
@@ -130,7 +156,7 @@ $('#dataTable').on('click', '.btn-flow', function (event) {
         orderUrl = 'order-detail.html';
       }
 
-      var data = { rows: rows, orderUrl: orderUrl };
+      var data = { rows: res.data.rows, orderUrl: orderUrl };
       var template = $('#flow-template').html();
       Mustache.parse(template);
       var html = Mustache.render(template, data);
