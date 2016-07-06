@@ -2,9 +2,9 @@
 
 var common = require('common');
 var _channels = {};
-var _pageIndex = 1;
-var _pageSize = 10;
-var _pageTotal = 0;
+// var _pageIndex = 1;
+// var _pageSize = 10;
+// var _pageTotal = 0;
 var _querying = false;
 var searchCache = {};
 var useCache = false;
@@ -17,7 +17,7 @@ $(function () {
 //handle search form
 $('#formSearch').on('click', 'button[type=submit]', function (event) {
   event.preventDefault();
-  _pageIndex = 1;
+  // _pageIndex = 1;
   useCache = false;
   $('#formSearch').trigger('submit');
 });
@@ -32,7 +32,7 @@ $('#formSearch').on('submit', function (e) {
   var sendData = {
     couponCode: $.trim($('#search_couponCode').val()),
     userId: $.trim($('#search_userId').val()),
-    pageSize: _pageSize,
+    // pageSize: _pageSize,
   };
   if (!!_querying) {
     return false;
@@ -45,11 +45,10 @@ $('#formSearch').on('submit', function (e) {
     searchCache = sendData;
   }
 
-  sendData.pageIndex = _pageIndex;
+  // sendData.pageIndex = _pageIndex;
 
   $.ajax({
     url: common.API_HOST + 'couponCode/list',
-    // url: 'http://172.16.0.50:8080/movie-ops/couponCode/list',
     type: 'POST',
     dataType: 'json',
     data: sendData,
@@ -59,7 +58,7 @@ $('#formSearch').on('submit', function (e) {
     if (!!~~res.meta.result) {
       if (res.data == null || res.data.length < 1) {
         $('#dataTable tbody').html('<tr><td colspan="7" align="center">查不到相关数据，请修改查询条件！</td></tr>');
-        $('#pager').html('');
+        // $('#pager').html('');
       } else {
         useCache = true;
 
