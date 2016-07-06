@@ -65,7 +65,7 @@
 			</form>
 
 			<div class="detail-content-area">
-				<div class="row" id="detail-pager"></div>
+				<div class="row" id="detailPager"></div>
 				<div class="table-responsive">
 					<table class="table table-hover" id="detailDataTable">
 						<thead>

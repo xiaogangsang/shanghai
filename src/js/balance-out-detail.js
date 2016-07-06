@@ -304,7 +304,7 @@ $('.btn-reset').click(function(e) {
  //  $('#search_payStatus').val('');
 
  $('#formSearch :input:not(:button)').val('');
- 
+
 });
 
 $('.complete-commit').click(function(e) {
@@ -416,6 +416,7 @@ function parseDiscountType(type) {
 
 function parsePartner(partner) {
   var map = {'1' : 'O2O', '2' : 'TP方', '3' : '渠道方'};
+  return map[partner];
 }
 
 

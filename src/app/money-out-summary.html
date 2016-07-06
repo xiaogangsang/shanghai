@@ -223,6 +223,23 @@
     {{/rows}}
   </script>
 
+  <script id="detail-pager-template" type="text/x-tmpl-mustache">
+    <div class="col xs-12 col-sm-6 rowStatics">共 <span id="detailTotal">{{total}}</span> 条数据，当前显示 <span id="detailRowsSize">{{rowsSize}}</span> 条</div>
+    {{#pageTotal}}
+    <div class="col xs-12 col-sm-6">
+      <nav>
+        <ul class="pagination pagination-sm">
+          <li><a href="#" class="prev"><span>&lt;</span></a></li>
+          <li><span id="detailPageIndex">{{pageIndex}}</span> / <span id="detailPageTotal">{{pageTotal}}</span></li>
+          <li><a href="#" class="next"><span>&gt;</span></a></li>
+          <li><input type="number" name="pageNo" id="detailPageNo" pattern="[0-9]+"></li>
+          <li><button type="button" class="btn" id="detail-btn-pager">跳转</button></li>
+        </ul>
+      </nav>
+    </div>
+    {{/pageTotal}}
+  </script>
+
   @@include('component/popup-money-out-detail.tpl')
 
 </body>
