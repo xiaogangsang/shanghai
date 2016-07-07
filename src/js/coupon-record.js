@@ -119,6 +119,9 @@ $('#formSearch').on('submit', function (e) {
             case 'USED':
               item.status = '已使用';
             break;
+            case 'EXPIRE':
+              item.status = '已过期';
+            break;
             default:
             break;
           }
