@@ -1038,8 +1038,8 @@ function setEdit(couponId) {
 
       $('#formEdit').prepend('<input type="hidden" id="id" value="' + coupon.id + '">');
 
-      $('#name').val(coupon.name);
-      $('#signNo').val(coupon.signNo);
+      $('#name').val(coupon.name).prop('disabled', true);;
+      $('#signNo').val(coupon.signNo).prop('disabled', true);;
       $('#beginDate').val(coupon.beginDate.split(' ')[0]);
       $('#endDate').val(coupon.endDate.split(' ')[0]);
 
@@ -1061,12 +1061,16 @@ function setEdit(couponId) {
         setBudgetSource(false);
       }
 
+      $('#level,#budgetSource').prop('disabled', true);
+
       //万达票类
       if (coupon.wandaTicketId != '' && coupon.wandaTicketId != null && coupon.wandaTicketId != undefined) {
         setWandaTicket(coupon.wandaTicketId);
       } else {
         setWandaTicket(false);
       }
+
+      $('#wandaTicketId').prop('disabled', true);
 
       //活动形式
       $('#couponPattern option').eq(coupon.couponPattern - 1).prop('selected', true);
