@@ -92,6 +92,7 @@ $(function () {
 
         res.data.bizOrder.canReturnCoupon = false;
         if (res.data.bizOrder.productOrderStatus != '已出票'
+          && res.data.bizOrder.status != '待支付'
           && res.data.bizOrder.couponId != null) {
           res.data.bizOrder.canReturnCoupon = true;
         }
