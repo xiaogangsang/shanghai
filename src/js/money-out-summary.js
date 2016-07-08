@@ -357,6 +357,12 @@ function setDetailTableData(rows) {
   $('#detailDataTable tbody').html(html);
 }
 
+$('body').on('click', '.btn-detail-reset', function(e) {
+  e.preventDefault();
+
+  $('#detailFormSearch :input:not(:button)').val('');
+});
+
 
 function setDetailPager(total, pageIndex, rowsSize, pageTotal) {
   var data = { total: total, pageIndex: pageIndex, rowsSize: rowsSize, pageTotal: pageTotal };

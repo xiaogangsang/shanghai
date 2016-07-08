@@ -34,48 +34,48 @@
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">影片</div>
-            <input type="text" class="form-control" id="filmName" value="{{filmName}}" disabled>
+            <input type="text" class="form-control" id="filmName" value="{{productInfo.filmName}}" disabled>
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
-            <div class="input-group-addon">用户手机号...</div>
-            <input type="text" class="form-control" id="payStatus" value="{{payStatus}}" disabled>
+            <div class="input-group-addon">用户手机号</div>
+            <input type="text" class="form-control" id="phone" value="{{phone}}" disabled>
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
             <div class="input-group-addon">影院</div>
-            <input type="text" class="form-control" id="cinemaName" value="{{cinemaName}}">
+            <input type="text" class="form-control" id="cinemaName" value="{{productInfo.cinemaName}}" disabled>
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
             <div class="input-group-addon">影厅</div>
-            <input type="text" class="form-control" id="hallName" value="{{hallName}}">
+            <input type="text" class="form-control" id="hallName" value="{{productInfo.hallName}}" disabled>
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">开场时间</div>
-            <input type="text" class="form-control" id="startTime" value="{{startTime}}" disabled>
+            <input type="text" class="form-control" id="startTime" value="{{productInfo.startTime}}" disabled>
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">座位</div>
-            <input type="text" class="form-control" id="seatNames" value="{{seatNames}}" disabled>
+            <input type="text" class="form-control" id="seatNames" value="{{productInfo.seatNames}}" disabled>
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
-            <div class="input-group-addon">张数...</div>
+            <div class="input-group-addon">张数</div>
             <input type="text" class="form-control" id="countNum" value="{{countNum}}" disabled>
           </div>
         </div>
@@ -137,15 +137,29 @@
 
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
-            <div class="input-group-addon">票类...</div>
-            <input type="text" class="form-control" id="thdOrderNo" value="{{thdOrderNo}}">
+            <div class="input-group-addon">票类</div>
+            <input type="text" class="form-control" id="wandaTicketId" value="{{productInfo.wandaTicketId}}" disabled>
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
             <div class="input-group-addon">用户支付金额</div>
-            <input type="text" class="form-control" id="serviceAmount" value="{{serviceAmount}}">
+            <input type="text" class="form-control" id="payAmount" value="{{payAmount}}" disabled>
+          </div>
+        </div>
+
+        <div class="form-group col-sm-6 col-md-6 editable">
+          <div class="input-group">
+            <div class="input-group-addon">用户支付积分</div>
+            <input type="text" class="form-control" id="payPoint" value="{{payPoint}}" disabled>
+          </div>
+        </div>
+
+        <div class="form-group col-sm-6 col-md-6 editable">
+          <div class="input-group">
+            <div class="input-group-addon">交易金额</div>
+            <input type="text" class="form-control" id="settleAmount" value="{{settleAmount}}">
           </div>
         </div>
 
@@ -160,9 +174,17 @@
           <div class="input-group">
             <div class="input-group-addon">补贴付款方式</div>
             <select class="form-control" id="subsidyType" value="{{subsidyType}}">
+              <option value=""></option>
               <option value="1">预付</option>
               <option value="2">后付</option>
             </select>
+          </div>
+        </div>
+
+        <div class="form-group col-sm-6 col-md-6 editable">
+          <div class="input-group">
+            <div class="input-group-addon">应拨金额</div>
+            <input type="text" class="form-control" id="acceptanceAppropriation" value="{{acceptanceAppropriation}}">
           </div>
         </div>
 
@@ -176,7 +198,7 @@
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
             <div class="input-group-addon">退款承债方</div>
-              <select class="form-control" id="search_partner">
+              <select class="form-control" id="partner" value="{{partner}}">
                 <option value=""></option>
                 <option value="1">O2O</option>
                 <option value="2">TP方</option>
@@ -187,15 +209,8 @@
 
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
-            <div class="input-group-addon">O2O应收金额</div>
-            <input type="text" class="form-control" id="o2oReceivableAmount" value="{{o2oReceivableAmount}}">
-          </div>
-        </div>
-
-        <div class="form-group col-sm-6 col-md-6">
-          <div class="input-group">
-            <div class="input-group-addon">实收金额</div>
-            <input type="text" class="form-control" id="bankAmount" value="{{bankAmount}}" disabled>
+            <div class="input-group-addon">净拨款金额</div>
+            <input type="text" class="form-control" id="finalSettlementAmount" value="{{finalSettlementAmount}}">
           </div>
         </div>
 
@@ -234,7 +249,7 @@
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">签报号</div>
-            <input type="text" class="form-control" id="signatureNo" value="{{signatureNo}}" disabled>
+            <input type="text" class="form-control" id="signNum" value="{{signNum}}" disabled>
           </div>
         </div>
 
@@ -248,20 +263,72 @@
 
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
+            <div class="input-group-addon">支付流水状态</div>
+            <select class="form-control" id="payStatus" value="{{payStatus}}" disabled>
+              <option value=""></option>
+              <option value="1">待支付</option>
+              <option value="2">支付成功</option>
+              <option value="3">支付失败</option>
+              <option value="4">退款中</option>
+              <option value="5">退款成功</option>
+              <option value="6">退款失败</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">出货状态</div>
+              <select class="form-control" id="shipmentStatus" value="{{shipmentStatus}}" disabled>
+                <option value=""></option>
+                <option value="1">出货中</option>
+                <option value="2">出货失败</option>
+                <option value="3">出货成功</option>
+                <option value="4">退货失败</option>
+                <option value="5">退货成功</option>
+                <option value="6">出货初始化状态</option>
+                <option value="7">退货初始化状态</option>
+              </select>
+            </div>
+          </div>
+
+        <div class="form-group col-sm-6 col-md-6">
+          <div class="input-group">
             <div class="input-group-addon">收单对账状态</div>
-            <select class="form-control" id="reconciliationStatus" value="reconciliationStatus">
+            <select class="form-control" id="acquiringReconciliationStatus" value="{{acquiringReconciliationStatus}}" disabled>
               <option value=""></option>
               <option value="1">未对账</option>
               <option value="2">对账不一致</option>
               <option value="3">收单对账成功</option>
+              <option value="4">确认</option>
             </select>
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
+            <div class="input-group-addon">出货对账状态</div>
+            <select class="form-control" id="reconciliationStatus" value="{{reconciliationStatus}}">
+              <option value=""></option>
+              <option value="1">未对账</option>
+              <option value="2">对账不一致</option>
+              <option value="3">收单对账成功</option>
+              <option value="4">确认</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group col-sm-6 col-md-6">
+          <div class="input-group">
+            <div class="input-group-addon">出货对账时间</div>
+            <input type="text" class="form-control" id="updateTime" value="{{updateTime}}" disabled>
+          </div>
+        </div>
+
+        <div class="form-group col-sm-6 col-md-6">
+          <div class="input-group">
             <div class="input-group-addon">对账不一致原因</div>
-            <select class="form-control" id="reason" value="reason">
+            <select class="form-control" id="reason" value="{{reason}}">
               <option value=""></option>
               <option value="1">我方缺失</option>
               <option value="2">对方缺失</option>
@@ -291,42 +358,40 @@
               <thead>
                 <tr>
                   <th>操作时间</th>
-                  <th>交易订单号</th>
-                  <th>收单商户</th>
-                  <th>收单商户号</th>
-                  <th>业务类别</th>
-                  <th>支付流水状态</th>
-                  <th>票价</th>
-                  <th>退票手续费</th>
-                  <th>服务费</th>
+                  <th>操作人</th>
+                  <th>二级商户</th>
+                  <th>二级商户号</th>
+                  <th>交易金额</th>
                   <th>我方补贴金额</th>
-                  <th>应收金额</th>
-                  <th>承债方</th>
-                  <th>优惠方式</th>
-                  <th>活动/优惠券名称</th>
-                  <th>收单对账状态</th>
+                  <th>补贴付款方式</th>
+                  <th>应拨金额</th>
+                  <th>退票手续费</th>
+                  <th>退款承债方</th>
+                  <th>净拨款金额</th>
+                  <th>出货对账状态</th>
+                  <th>对账不一致原因</th>
+                  <th>修改状态</th>
                 </tr>
               </thead>
               <tbody>
-                {{#operateRecords}}
+                {{#operate}}
                 <tr>
-                  <td>{{operateTime}}</td>
-                  <td>{{orderNo}}</td>
-                  <td>{{chargeMerchant}}</td>
-                  <td>{{chargeMerchantNo}}</td>
-                  <td>{{bizType}}</td>
-                  <td>{{payStatus}}</td>
-                  <td>{{ticketAmount}}</td>
-                  <td>{{returnFee}}</td>
-                  <td>{{serviceAmount}}</td>
+                  <td>{{}}</td>
+                  <td>{{}}</td>
+                  <td>{{merchantName}}</td>
+                  <td>{{merhcantNo}}</td>
+                  <td>{{settleAmount}}</td>
                   <td>{{subsidyAmountO2o}}</td>
-                  <td>{{o2oReceivableAmount}}</td>
+                  <td>{{subsidyType}}</td>
+                  <td>{{acceptanceAppropriation}}</td>
+                  <td>{{returnFee}}</td>
                   <td>{{partner}}</td>
-                  <td>{{discountType}}</td>
-                  <td>{{discountName}}</td>
+                  <td>{{finalSettlementAmount}}</td>
                   <td>{{reconciliationStatus}}</td>
+                  <td>{{reason}}</td>
+                  <td>{{}}</td>
                 </tr>
-                {{/operateRecords}}
+                {{/operate}}
               </tbody>
             </table>
           </div>

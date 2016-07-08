@@ -23,6 +23,8 @@ var _queryingFromSelectedSummary = false;
 
 var _selectedSummary = {};
 
+var detailData = {};
+
 var _DEBUG = false;
 
 $(function() {
@@ -186,14 +188,14 @@ function handleData(res) {
 	_querying = false;
 
 	if (~res.meta.result) {
-		if (res.data == null || res.data.detail.count < 1) {
+		if (res.data == null || res.data.detail.recordCount < 1) {
       var errorMsg = res.meta.msg;
       $('#dataTable tbody').html('<tr><td colspan="30" align="center">' + errorMsg + '</td></tr>');
       $('#summaryTable tbody').html('<tr><td colspan="30" align="center">' + errorMsg + '</td></tr>');
       $('#pager').html('');
 		} else {
-			var totalRecord = res.data.detail.count;
-      var record = res.data.detail.records;
+			var totalRecord = res.data.detail.recordCount;
+      var record = res.data.detail.recordDetail;
 
       _pageTotal = Math.ceil(totalRecord / _pageSize);
       setPager(totalRecord, _pageIndex, record.length, _pageTotal);
@@ -325,7 +327,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
 
   if (!_DEBUG) {
     $.ajax({
-      url: 'MovieOps/settlement/acquiring/queryAcquiringInfo',
+      url: 'MovieOps/settlement/shipmentInfo/onlyShipmentInfo',
       type: 'GET',
       data: {id: $(this).closest('tr').data('id')},
     })
@@ -335,7 +337,9 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
         return false;
       }
       var data = res.data;
+      data.detail = data.onlyShipmentInfo;
       var detail = data.detail;
+      detailData = detail;
       detail.payTool = parsePayTool(detail.payTool);
       detail.payStatus = parsePayStatus(detail.payStatus);
       detail.bizType = parseBizType(detail.bizType);
@@ -364,10 +368,38 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
   }
 });
 
-// 提交异常修改
+// 修改提交
 $('body').on('click', '.edit-submit', function(e) {
   e.preventDefault();
-  alert('clicked');
+
+  var param = {
+    id: detailData.id,
+    oldVersion: detailData.version,
+    merchantName: $('#merchantName').val(),
+    merchantId: $('#merchantNo').val(),
+    settleAmount: $('#settleAmount').val(),
+    subsidyAmountO2o: $('#subsidyAmountO2o').val(),
+    subsidyType: $('#subsidyType').val(),
+    acceptanceAppropriation: $('#acceptanceAppropriation').val(),
+    returnFee: $('#returnFee').val(),
+    partner: $('#returnFee').val(),
+    finalSettlementAmount: $('#finalSettlementAmount').val(),
+    reconciliationStatus: $('#reconciliationStatus').val(),
+    reason: $('#reason').val()
+  };
+
+  if (!_DEBUG) {
+    $.ajax({
+      url: 'MovieOps/settlement/shipmentInfo/updateOnlyShipmentInfo',
+      data: param,
+    }).done(function(res) {
+      if (res.meta.result != 1) {
+        // TODO: submit failed
+      } else {
+        alert('提交成功');
+      }
+    });
+  }
 });
 
 /****************************************** Utilities Method **********************************************/
