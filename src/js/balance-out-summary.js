@@ -104,7 +104,7 @@ $('#formSearch').on('submit', function (e) {
       handleData(res);
     });
   } else {
-    var res = $.parseJSON('{ "meta": { "result": "1", "msg": "操作成功" }, "data": { "summary": { "count": "订单总数", "totalTicketCount": "出票张数", "totalOrderAmount": "交易金额总金额", "totalSubsidyAmountO2o": "补贴金额", "totalReturnFee": "退货手续费总额", "totalSettlementAmount": "应付金额", "totalFinalSettlementAmount": "实付金额" }, "detail": { "recordCount": "41", "recordDetail": [ { "shipmnetDate": "出/退货日期", "merchantName": "二级商户名称", "merchantNo": "二级商户号", "bizType": "业务类别", "orderCount": "订单数", "ticketCount": "张数", "shipmentStatus": "出货状态", "orderAmount": "交易金额", "subsidyAmountO2o": "我方补贴金额", "returnFee": "退票手续费", "settlementAmount": "应付金额", "finalSettlementAmount": "实付金额" } ] } } }');
+    var res = $.parseJSON('{ "meta": { "result": "1", "msg": "操作成功" }, "data": { "summary": { "count": "订单总数", "totalTicketCount": "出票张数", "totalOrderAmount": "交易金额总金额", "totalSubsidyAmountO2o": "补贴金额", "totalReturnFee": "退货手续费总额", "totalSettlementAmount": "应付金额", "totalFinalSettlementAmount": "实付金额" }, "detail": { "recordCount": "41", "recordDetail": [ { "shipmentDate": "出/退货日期", "merchantName": "二级商户名称", "merchantNo": "二级商户号", "bizType": "业务类别", "orderCount": "订单数", "ticketCount": "张数", "shipmentStatus": "出货状态", "orderAmount": "交易金额", "subsidyAmountO2o": "我方补贴金额", "returnFee": "退票手续费", "settlementAmount": "应付金额", "finalSettlementAmount": "实付金额" } ] } } }');
     handleData(res);
   }
 
@@ -134,6 +134,10 @@ function handleData(res) {
         // item.payStatusNo = item.payStatus;
         // item.payStatus = parsePayStatus(item.payStatus);
         // TODO: 业务类别 & 出货状态解析
+        item.bizTypeNo = item.bizType;
+        item.bizType = parseBizType(item.bizType);
+        item.shipmentStatusNo = item.shipmentStatus;
+        item.shipmentStatus = parseShipmentStatus(item.shipmentStatus);
       });
 
       // record[1] = record[0];
@@ -226,7 +230,7 @@ $('.btn-reset').click(function(e) {
 $('.all-detail').click(function(e) {
   var data = {'type': 0, 'param': searchCache};
   sessionStorage.setItem('param', JSON.stringify(data));
-  window.location.href = 'balance-in-detail.html';
+  window.location.href = 'balance-out-detail.html';
 });
 
 $('.selected-detail').click(function(e) {
@@ -235,13 +239,13 @@ $('.selected-detail').click(function(e) {
   $('#dataTable tbody :checkbox:checked').each(function(index) {
     var rowIndex = $(this).closest('td').parent()[0].sectionRowIndex;
     var obj = dataCache[rowIndex];
-    var param = {'dateType': searchCache.dateType, 'beginTime': obj.createTime, 'merchantNo': obj.merchantNo, 'payStatus':obj.payStatusNo};
+    var param = {'shipmentDate': obj.shipmentDate, 'merchantNo': obj.merchantNo, 'bizType': obj.bizTypeNo ,'shipmentStatus':obj.shipmentStatusNo};
     parameters.push(param);
   });
 
   var data = {'type': 1, 'param': parameters};
   sessionStorage.setItem('param', JSON.stringify(data));
-  window.location.href = 'balance-in-detail.html';
+  window.location.href = 'balance-out-detail.html';
 });
 
 $('.multi-check-all').change(function(e) {
@@ -269,13 +273,13 @@ $('body').on('change', 'tr > td :checkbox', function(e) {
 
 /****************************************** Utilities Method **********************************************/
 
-function balanceOutStatus(status) {
+function parseShipmentStatus(status) {
   var map = {'1' : '出货中', '2' : '出货失败', '3' : '出货成功', '4' : '退货失败', '5' : '退货成功'};
 
   return map[status];
 }
 
-function bizType(type) {
+function parseBizType(type) {
   var map = {'1' : '在线选座', '2' : '退货手续费'};
 }
 

@@ -8,7 +8,7 @@
 
       <div class="row">
         <div class="col-md-4 pull-right">
-          <button class="form-control btn btn-default edit-submit" data-version="{{version}}">提交</button>
+          <button class="form-control btn btn-default edit-submit" data-version="{{version}}" data-id="{{id}}">提交</button>
         </div>
       </div>
 
@@ -286,8 +286,6 @@
                 <option value="3">出货成功</option>
                 <option value="4">退货失败</option>
                 <option value="5">退货成功</option>
-                <option value="6">出货初始化状态</option>
-                <option value="7">退货初始化状态</option>
               </select>
             </div>
           </div>

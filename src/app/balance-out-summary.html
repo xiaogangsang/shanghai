@@ -67,18 +67,16 @@
             </div>
           </div>
 
+          <!--  -->
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">出货状态</div>
               <select class="form-control" id="search_shipmentStatus">
-                <option value="">全部</option>
-                <option value="1">出货中</option>
+                <option value="">全部(成功)</option>
                 <option value="2">出货失败</option>
                 <option value="3">出货成功</option>
                 <option value="4">退货失败</option>
                 <option value="5">退货成功</option>
-                <option value="6">出货初始化状态</option>
-                <option value="7">退货初始化状态</option>
               </select>
             </div>
           </div>
@@ -217,7 +215,7 @@
     {{#rows}}
     <tr data-id="{{id}}" data-bannertype="{{bannerType}}">
       <td><input type="checkbox" class="multi-check"></td>
-      <td>{{shipmnetDate}}</td>
+      <td>{{shipmentDate}}</td>
       <td>{{merchantName}}</td>
       <td>{{bizType}}</td>
       <td>{{orderCount}}</td>

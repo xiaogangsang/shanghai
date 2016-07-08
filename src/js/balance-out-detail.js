@@ -23,8 +23,6 @@ var _queryingFromSelectedSummary = false;
 
 var _selectedSummary = {};
 
-var detailData = {};
-
 var _DEBUG = false;
 
 $(function() {
@@ -129,7 +127,7 @@ $('#formSearch').on('submit', function (e) {
 function queryFromSelectedSummary() {
 
   _selectedSummary.pageIndex = _pageIndex;
-  var url = 'MovieOps/settlement/acquiring/listSummaryDetail?' + serializeParam(_selectedSummary);
+  var url = 'MovieOps/settlement/shipmentInfo/listSummaryDetail?' + serializeParam(_selectedSummary);
 
   if (!_DEBUG) {
     $.ajax({
@@ -167,11 +165,12 @@ function handlePresetQuery() {
         var parameters = passedParam.param;
 
         $('#search_dateType').val(parameters.dateType);
-        $('#search_startTime').val(parameters.beginTime);
+        $('#search_startTime').val(parameters.startTime);
         $('#search_endTime').val(parameters.endTime);
-        $('#search_chargeMerchant').val(parameters.chargeMerchant);
-        $('#search_chargeMerchantNo').val(parameters.chargeMerchantNo);
-        $('#search_payStatus').val(parameters.payStatus)
+        $('#search_merchantName').val(parameters.merchantName);
+        $('#search_merchantNo').val(parameters.MerchantNo);
+        $('#search_shipmentStatus').val(parameters.shipmentStatus);
+        $('#search_bizType').val(parameters.bizType);
 
         _pageIndex = 1;
         useCache = false;
@@ -339,7 +338,6 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
       var data = res.data;
       data.detail = data.onlyShipmentInfo;
       var detail = data.detail;
-      detailData = detail;
       detail.payTool = parsePayTool(detail.payTool);
       detail.payStatus = parsePayStatus(detail.payStatus);
       detail.bizType = parseBizType(detail.bizType);
@@ -373,8 +371,8 @@ $('body').on('click', '.edit-submit', function(e) {
   e.preventDefault();
 
   var param = {
-    id: detailData.id,
-    oldVersion: detailData.version,
+    id: $(this).data('id'),
+    oldVersion: $(this).data('version'),
     merchantName: $('#merchantName').val(),
     merchantId: $('#merchantNo').val(),
     settleAmount: $('#settleAmount').val(),

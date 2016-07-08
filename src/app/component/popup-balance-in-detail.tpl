@@ -8,7 +8,7 @@
 
       <div class="row">
         <div class="col-md-4 pull-right">
-          <button class="form-control btn btn-default edit-submit" data-version="{{version}}">提交</button>
+          <button class="form-control btn btn-default edit-submit" data-version="{{version}}" data-id="{{id}}">提交</button>
         </div>
       </div>
 

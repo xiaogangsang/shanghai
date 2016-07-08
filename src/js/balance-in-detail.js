@@ -306,9 +306,8 @@ $('.btn-reset').click(function(e) {
 });
 
 $('.complete-commit').click(function(e) {
-  // TODO: 对账完成提交
   $.ajax({
-      url: 'movie-ops/settlement/acquiringInfo/listSummary',// TODO: URL
+      url: 'MovieOps/settlement/acquiring/confirmAcquiringInfoBatch',
       type: 'GET',
       dataType: 'json',
       data: searchCache,
@@ -363,10 +362,11 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
   }
 });
 
-// 提交异常
+// 修改详情提交
 $('body').on('click', '.edit-submit', function(e) {
   e.preventDefault();
   var param = {
+    id: $(this).data('id'),
     version: $(this).data('version'),
     payAmount: $('#payAmount').val(),
     receivablePoint: $('#receivablePoint').val(),

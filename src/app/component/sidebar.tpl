@@ -155,6 +155,7 @@
       <div id="menu16" class="panel-collapse collapse" role="tabpanel">
         <div class="list-group">
           <a href="money-out-summary.html" class="list-group-item" id="menu-money-out-summary" data-id="28">拨款汇总</a>
+          <a href="money-out-log.html" class="list-group-item" id="menu-money-out-log" data-id="29">拨款日志</a>
         </div>
       </div>
     </div>
