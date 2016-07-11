@@ -3,7 +3,7 @@ var common = require('common');
 
 $(function() {
 
-	common.liquidationInit('merchant-creation');
+	common.init('merchant-creation');
 
 	init();
 

@@ -27,7 +27,7 @@ var _DEBUG = false;
 
 $(function() {
 
-	common.liquidationInit('balance-in-detail');
+	common.init('balance-in-detail');
 
 	$('#search_startTime').datetimepicker({
     format: 'yyyy-mm-dd',
