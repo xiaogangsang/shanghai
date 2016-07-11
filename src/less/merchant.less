@@ -1,0 +1,26 @@
+.readonly {
+  textarea,
+  input, {
+	  border: none;
+	  background: transparent;
+	}
+
+	button {
+		display: none;
+	}
+}
+
+@group-border-color: #c3c3c3;
+
+/* 输入项分组的边框 */
+.detail-area > .container-fluid {
+	border: 1px solid @group-border-color; 
+	padding-top: 15px;
+	margin-top: 15px;
+
+	.row > span {
+		display: block;
+		margin-left: 10px;
+		margin-bottom: 10px;
+	}
+}

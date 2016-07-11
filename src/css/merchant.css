@@ -1,0 +1,19 @@
+.readonly textarea,
+.readonly input {
+  border: none;
+  background: transparent;
+}
+.readonly button {
+  display: none;
+}
+/* 输入项分组的边框 */
+.detail-area > .container-fluid {
+  border: 1px solid #c3c3c3;
+  padding-top: 15px;
+  margin-top: 15px;
+}
+.detail-area > .container-fluid .row > span {
+  display: block;
+  margin-left: 10px;
+  margin-bottom: 10px;
+}
