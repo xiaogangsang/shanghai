@@ -57,7 +57,7 @@
                   <th>活动名称</th>
                   <th>活动时间</th>
                   <th>成本中心</th>
-                  <th>操作</th>
+                  <th>活动细则</th>
                 </tr>
               </thead>
               <tbody>
@@ -99,8 +99,10 @@
       <td>{{beginDate}} ~ {{endDate}}</td>
       <td>{{budgetSource}}</td>
       <td>
+        {{#activityRuleDesc}}
         <button type="button" class="btn btn-xs btn-default btn-rule">查看细则</button>
         <div style="display:none;">{{activityRuleDesc}}</div>
+        {{/activityRuleDesc}}
       </td>
     </tr>
     {{/rows}}
