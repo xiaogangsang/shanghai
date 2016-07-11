@@ -108,7 +108,7 @@ $('#formSearch').on('submit', function (e) {
 
   if (!_DEBUG) {
     $.ajax({
-      url: 'MovieOps/settlement/shipmentInfo/infoList',// TODO: URL
+      url: common.API_HOST + 'settlement/shipmentInfo/infoList',// TODO: URL
       type: 'GET',
       dataType: 'json',
       // data: sendData,
@@ -127,7 +127,7 @@ $('#formSearch').on('submit', function (e) {
 function queryFromSelectedSummary() {
 
   _selectedSummary.pageIndex = _pageIndex;
-  var url = 'MovieOps/settlement/shipmentInfo/listSummaryDetail?' + serializeParam(_selectedSummary);
+  var url = common.API_HOST + 'settlement/shipmentInfo/listSummaryDetail?' + serializeParam(_selectedSummary);
 
   if (!_DEBUG) {
     $.ajax({
@@ -326,7 +326,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
 
   if (!_DEBUG) {
     $.ajax({
-      url: 'MovieOps/settlement/shipmentInfo/onlyShipmentInfo',
+      url: common.API_HOST + 'settlement/shipmentInfo/onlyShipmentInfo',
       type: 'GET',
       data: {id: $(this).closest('tr').data('id')},
     })
@@ -388,7 +388,7 @@ $('body').on('click', '.edit-submit', function(e) {
 
   if (!_DEBUG) {
     $.ajax({
-      url: 'MovieOps/settlement/shipmentInfo/updateOnlyShipmentInfo',
+      url: common.API_HOST + 'settlement/shipmentInfo/updateOnlyShipmentInfo',
       data: param,
     }).done(function(res) {
       if (res.meta.result != 1) {

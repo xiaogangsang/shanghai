@@ -108,7 +108,7 @@ $('#formSearch').on('submit', function (e) {
 
   if (!_DEBUG) {
     $.ajax({
-      url: 'MovieOps/settlement/acquiring/queryDetailByMultiMsg',// TODO: URL
+      url: common.API_HOST + 'settlement/acquiring/queryDetailByMultiMsg',// TODO: URL
       type: 'GET',
       dataType: 'json',
       data: sendData,
@@ -127,7 +127,7 @@ $('#formSearch').on('submit', function (e) {
 function queryFromSelectedSummary() {
 
   _selectedSummary.pageIndex = _pageIndex;
-  var url = 'MovieOps/settlement/acquiring/listSummaryDetail?' + serializeParam(_selectedSummary);
+  var url = common.API_HOST + 'settlement/acquiring/listSummaryDetail?' + serializeParam(_selectedSummary);
 
   if (!_DEBUG) {
     $.ajax({
@@ -307,7 +307,7 @@ $('.btn-reset').click(function(e) {
 
 $('.complete-commit').click(function(e) {
   $.ajax({
-      url: 'MovieOps/settlement/acquiring/confirmAcquiringInfoBatch',
+      url: common.API_HOST + 'settlement/acquiring/confirmAcquiringInfoBatch',
       type: 'GET',
       dataType: 'json',
       data: searchCache,
@@ -322,7 +322,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
 
   if (!_DEBUG) {
     $.ajax({
-      url: 'MovieOps/settlement/acquiring/queryAcquiringInfo',
+      url: common.API_HOST + 'settlement/acquiring/queryAcquiringInfo',
       type: 'GET',
       data: {id: $(this).closest('tr').data('id')},
     })
@@ -383,7 +383,7 @@ $('body').on('click', '.edit-submit', function(e) {
   };
 
   $.ajax({
-    url: 'MovieOps/settlement/acquiring/updateDetail',
+    url: common.API_HOST + 'settlement/acquiring/updateDetail',
     type: 'POST',
     data: param
   })

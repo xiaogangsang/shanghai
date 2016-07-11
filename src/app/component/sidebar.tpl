@@ -133,41 +133,41 @@
     </div>
 
     <div class="panel">
-      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu13"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 商户信息维护</a>
-      <div id="menu13" class="panel-collapse collapse" role="tabpanel">
-        <div class="list-group">
-          <a href="merchant-list.html" class="list-group-item" id="menu-merchant-list" data-id="">商户列表</a>
-          <a href="merchant-creation.html" class="list-group-item" id="menu-merchant-creation" data-id="">商户新增</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="panel">
-      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu14"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 收单对账</a>
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu14"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 商户信息维护</a>
       <div id="menu14" class="panel-collapse collapse" role="tabpanel">
         <div class="list-group">
-          <a href="balance-in-summary.html" class="list-group-item" id="menu-balance-in-summary" data-id="">对账汇总</a>
-          <a href="balance-in-detail.html" class="list-group-item" id="menu-balance-in-detail" data-id="">对账明细</a>
+          <a href="merchant-list.html" class="list-group-item" id="menu-merchant-list" data-id="16">商户列表</a>
+          <a href="merchant-creation.html" class="list-group-item" id="menu-merchant-creation" data-id="16">商户新增</a>
         </div>
       </div>
     </div>
 
     <div class="panel">
-      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu15"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 出货对账</a>
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu15"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 收单对账</a>
       <div id="menu15" class="panel-collapse collapse" role="tabpanel">
         <div class="list-group">
-          <a href="balance-out-summary.html" class="list-group-item" id="menu-balance-out-summary" data-id="">对账汇总</a>
-          <a href="balance-out-detail.html" class="list-group-item" id="menu-balance-out-detail" data-id="">对账明细</a>
+          <a href="balance-in-summary.html" class="list-group-item" id="menu-balance-in-summary" data-id="16">对账汇总</a>
+          <a href="balance-in-detail.html" class="list-group-item" id="menu-balance-in-detail" data-id="16">对账明细</a>
         </div>
       </div>
     </div>
 
     <div class="panel">
-      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu16"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 拨款</a>
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu16"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 出货对账</a>
       <div id="menu16" class="panel-collapse collapse" role="tabpanel">
         <div class="list-group">
-          <a href="money-out-summary.html" class="list-group-item" id="menu-money-out-summary" data-id="">拨款汇总</a>
-          <a href="money-out-log.html" class="list-group-item" id="menu-money-out-log" data-id="">拨款日志</a>
+          <a href="balance-out-summary.html" class="list-group-item" id="menu-balance-out-summary" data-id="16">对账汇总</a>
+          <a href="balance-out-detail.html" class="list-group-item" id="menu-balance-out-detail" data-id="16">对账明细</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu17"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 拨款</a>
+      <div id="menu17" class="panel-collapse collapse" role="tabpanel">
+        <div class="list-group">
+          <a href="money-out-summary.html" class="list-group-item" id="menu-money-out-summary" data-id="16">拨款汇总</a>
+          <a href="money-out-log.html" class="list-group-item" id="menu-money-out-log" data-id="16">拨款日志</a>
         </div>
       </div>
     </div>

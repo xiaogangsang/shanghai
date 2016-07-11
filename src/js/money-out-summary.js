@@ -88,7 +88,7 @@ $('#formSearch').on('submit', function (e) {
 
   if (!_DEBUG) {
     $.ajax({
-      url: 'MovieOps/settlement/merchantSummary/getMerchantSummaryList',
+      url: common.API_HOST + 'settlement/merchantSummary/getMerchantSummaryList',
       type: 'GET',
       dataType: 'json',
       data: sendData,
@@ -339,7 +339,7 @@ $('body').on('submit', '#detailFormSearch', function(e) {
 
   if (!_DEBUG) {
     $.ajax({
-      url: 'MovieOps/settlement/appropriationInfo/getAppropriationInfoList',
+      url: common.API_HOST + 'settlement/appropriationInfo/getAppropriationInfoList',
       type: 'GET',
       dataType: 'json',
       data: sendData,
