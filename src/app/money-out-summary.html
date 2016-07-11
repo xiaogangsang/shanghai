@@ -5,7 +5,7 @@
   <link rel="icon" href="images/favicon.ico" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <title>商户列表</title>
+  <title>拨款汇总</title>
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <link rel="stylesheet" href="css/reset.css">
   <!-- <link rel="stylesheet" href="css/banner.css"> -->
@@ -100,10 +100,10 @@
                 <button type="button" class="btn btn-block btn-default">导出所选明细</button>
               </div>
               <div class="col-xs-3">
-                <button type="button" class="btn btn-block btn-default">批量重拨</button>
+                <button type="button" class="btn btn-block btn-default btn-batch-resend">批量重拨</button>
               </div>
               <div class="col-xs-3">
-                <button type="button" class="btn btn-block btn-default">批量设置银行退票</button>
+                <button type="button" class="btn btn-block btn-default btn-batch-refused">批量设置银行退票</button>
               </div>
             </div>
           </div>
@@ -182,7 +182,7 @@
   <script id="table-template" type="text/x-tmpl-mustache">
     {{#rows}}
     <tr data-id="{{merchantSummaryId}}" data-bannertype="{{bannerType}}">
-      <td><input type="checkbox" class="multi-check"></td>
+      <td><input type="checkbox" class="multi-check"  data-id="{{merchantSummaryId}}"></td>
       <td>{{merName}}</td>
       <td>{{merNo}}</td>
       <td>{{appDate}}</td>
@@ -192,9 +192,13 @@
       <td>{{appAmount}}</td>
       <td>{{appStatus}}</td>
       <td>
-        <a href="#" style="display: block;" class="see-detail">查看明细</a>
-        <a href="#" style="display: block;" class="resend">重拨</a>
-        <a href="#" style="display: block;" class="refused">被银行退票</a>
+        <a href="#" style="display: block;" class="see-detail" data-id="{{merchantSummaryId}}">查看明细</a>
+        {{#resend}}
+        <a href="#" style="display: block;" class="resend" data-id="{{merchantSummaryId}}">重拨</a>
+        {{/resend}}
+        {{#refused}}
+        <a href="#" style="display: block;" class="refused" data-id="{{merchantSummaryId}}">被银行退票</a>
+        {{/refused}}
       </td>
     </tr>
     {{/rows}}

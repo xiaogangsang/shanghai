@@ -126,6 +126,10 @@ function handleData(res) {
       	item.chargeMerchant = parseMerchant(item.chargeMerchant);
         item.payStatusNo = item.payStatus;
       	item.payStatus = parsePayStatus(item.payStatus);
+
+        var moneyOutStatus = item.appStatus;
+        item.resend = (moneyOutStatus == 3 || moneyOutStatus == 4 || moneyOutStatus == 6);
+        item.refused = (moneyOutStatus == 2 || moneyOutStatus == 7);
         item.appStatus = parseMoneyOutStatus(item.appStatus);
       });
 
@@ -196,12 +200,6 @@ $('#pager').on('click', '#btn-pager', function (e) {
 });
 
 $('.btn-reset').click(function(e) {
-  // $('#search_dateType').val('');
-  //  $('#search_startTime').val('');
-  //  $('#search_endTime').val('');
-  //  $('#search_merchantName').val('');
-  //  $('#search_merchantNo').val('');
-  //  $('#search_payStatus').val('');
   $('#formSearch :input:not(:button)').val('');
 });
 
@@ -209,26 +207,30 @@ $('.btn-detail-reset').click(function(e) {
   $('#detailFormSearch :input:not(:button)').val('');
 });
 
-$('.all-detail').click(function(e) {
-  var data = {'type': 0, 'param': searchCache};
-  sessionStorage.setItem('param', JSON.stringify(data));
-  window.location.href = 'balance-in-detail.html';
+$('.btn-batch-resend').click(function(e) {
+  e.preventDefault();
+  batchOperate(2);
 });
 
-$('.selected-detail').click(function(e) {
+$('.btn-batch-refused').click(function(e) {
+  e.preventDefault();
+  batchOperate(1);
+});
+
+function batchOperate(operateCode) {
   var parameters = [];
 
   $('#dataTable tbody :checkbox:checked').each(function(index) {
-    var rowIndex = $(this).closest('td').parent()[0].sectionRowIndex;
-    var obj = dataCache[rowIndex];
-    var param = {'dateType': searchCache.dateType, 'beginTime': obj.createTime, 'merchantNo': obj.merchantNo, 'payStatus':obj.payStatusNo};
-    parameters.push(param);
+    parameters.push($(this).data('id'));
   });
 
-  var data = {'type': 1, 'param': parameters};
-  sessionStorage.setItem('param', JSON.stringify(data));
-  window.location.href = 'balance-in-detail.html';
-});
+  if (parameters.length == 0) {
+    alert('请至少选择一条记录');
+  } else {
+    operate(operateCode, parameters);
+    $('.multi-check-all').prop('checked', false).change();
+  }
+}
 
 $('.multi-check-all').change(function(e) {
   e.preventDefault();
@@ -255,11 +257,9 @@ $('body').on('change', 'tr > td :checkbox', function(e) {
 
 $('#dataTable').on('click', '.see-detail', function(e) {
   e.preventDefault();
-  var rowIndex = $(this).closest('td').parent()[0].sectionRowIndex;
-  var obj = dataCache[rowIndex];
 
   detailDataCache = {
-    merchantSummaryId: obj.merchantSummaryId
+    merchantSummaryId: $(this).data('id')
   };
 
   var template = $('#detail-template').html();
@@ -271,6 +271,40 @@ $('#dataTable').on('click', '.see-detail', function(e) {
 
   $('#detailFormSearch button[type=submit]').click();
 });
+
+$('#dataTable').on('click', '.resend', function(e) {
+  e.preventDefault();
+
+  var idList = [$(this).data('id')];
+
+  operate(2, idList);
+});
+
+$('#dataTable').on('click', '.refused', function(e) {
+  e.preventDefault();
+
+  var idList = [$(this).data('id')];
+
+  operate(1, idList);
+});
+
+/*
+  operateCode: 1: 银行退票; 2:重拨
+*/
+function operate(operateCode, idList) {
+
+  var data = {appStatus: operateCode, merchantSummaryIdList: idList};
+  $.ajax({
+    url: "MovieOps/settlement/merchantSummary/updateMerchantSummaryStatus",
+    type: "GET",
+    dataType: 'json',
+    data: data
+  })
+  .done(function(res) {
+    alert(res.meta.msg);
+    $('#formSearch').trigger('submit');
+  });
+}
 
 
 /****************************************** detail *******************************************/
