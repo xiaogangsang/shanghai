@@ -22,7 +22,7 @@ var _DEBUG = false;
 
 $(function() {
 
-  common.liquidationInit('balance-in-summary');
+  common.init('balance-in-summary');
 
   $('#search_startTime').datetimepicker({
     format: 'yyyy-mm-dd',

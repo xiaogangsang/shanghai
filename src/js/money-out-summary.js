@@ -27,7 +27,7 @@ var _DEBUG = false;
 
 $(function() {
 
-	common.liquidationInit('money-out-summary');
+	common.init('money-out-summary');
 
 	$('#search_startTime').datetimepicker({
     format: 'yyyy-mm-dd',

@@ -33,7 +33,7 @@ $(function () {
   var branches;
   var guys = {};
 
-  common.liquidationInit('merchant-list');
+  common.init('merchant-list');
 
   // var selectBranch = $('#search_merchantBranch').selectize()[0].selectize;
   selectGuy = $('#search_merchantSubscribeGuy').selectize()[0].selectize;
