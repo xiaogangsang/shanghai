@@ -88,7 +88,7 @@ $('#formSearch').on('submit', function (e) {
 
   if (!_DEBUG) {
     $.ajax({
-      url: 'MovieOps/settlement/operateRecord/getAppRecord',
+      url: common.API_HOST + 'settlement/operateRecord/getAppRecord',
       type: 'GET',
       dataType: 'json',
       data: sendData,

@@ -95,7 +95,7 @@ $('#formSearch').on('submit', function (e) {
 
   if (!_DEBUG) {
     $.ajax({
-      url: 'MovieOps/settlement/shipmentInfo/summaryList',
+      url: common.API_HOST + 'settlement/shipmentInfo/summaryList',
       type: 'GET',
       dataType: 'json',
       // data: sendData,
