@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="images/favicon.ico" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>优惠券管理</title>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/coupon.css">
+</head>
+<body>
+
+  @@include('component/header.tpl')
+
+
+  <div class="container-fluid">
+
+    <div class="row">
+
+      @@include('component/sidebar.tpl')
+
+      <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+        <ol class="breadcrumb">
+          <li>优惠券管理</li>
+          <li class="active">优惠券规则管理</li>
+        </ol>
+
+        <form id="formSearch" class="search-area clearfix">
+
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">优惠券规则ID</div>
+              <input type="text" class="form-control" name="" id="search_couponId">
+            </div>
+          </div>
+
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">优惠券名称</div>
+              <input type="text" class="form-control" name="" id="search_name">
+            </div>
+          </div>
+
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">成本中心类别</div>
+              <select class="form-control" id="search_level">
+                <option value="">全部</option>
+                <option value="0">总行</option>
+                <option value="1">支行</option>
+                <option value="2">卡中心</option>
+                <option value="3">卡部</option>
+                <option value="4">O2O项目组</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group col-sm-6 col-md-4" style="display: none;">
+            <div class="input-group">
+              <div class="input-group-addon">成本中心</div>
+              <select class="form-control" id="search_budgetSource">
+                <option value="">全部</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="col-xs-12 col-sm-6 col-lg-4 pull-right">
+            <div class="row">
+              <div class="col-sm-6">
+                <button type="submit" class="btn btn-block btn-primary">查询</button>
+              </div>
+              <div class="col-sm-6">
+                <a href="coupon-rule-edit.html" class="btn btn-block btn-default" target="_blank">新增</a>
+              </div>
+            </div>
+          </div>
+
+        </form>
+
+        <div class="content-area">
+
+          <div class="row extra-btns">
+            <div class="col-xs-12">
+              <button type="button" class="btn btn-default" id="btn-export">导出列表</button>
+            </div>
+          </div>
+
+          <div class="row" id="pager"></div>
+
+          <div class="table-responsive" id="dataTable">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>规则ID</th>
+                  <th>名称</th>
+                  <th>成本中心</th>
+                  <th>开始日期</th>
+                  <th>结束日期</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td colspan="7" align="center">请点击“查询”按钮！</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="js/vendor.js"></script>
+  <script src="js/coupon-rule.js"></script>
+
+  <script id="pager-template" type="text/x-tmpl-mustache">
+    <div class="col xs-12 col-sm-6 rowStatics">共 <span id="total">{{total}}</span> 条数据，当前显示 <span id="rowsSize">{{rowsSize}}</span> 条</div>
+    {{#pageTotal}}
+    <div class="col xs-12 col-sm-6">
+      <nav>
+        <ul class="pagination pagination-sm">
+          <li><a href="#" class="prev"><span>&lt;</span></a></li>
+          <li><span id="pageIndex">{{pageIndex}}</span> / <span id="pageTotal">{{pageTotal}}</span></li>
+          <li><a href="#" class="next"><span>&gt;</span></a></li>
+          <li><input type="number" name="pageNo" id="pageNo" pattern="[0-9]+"></li>
+          <li><button type="button" class="btn" id="btn-pager">跳转</button></li>
+        </ul>
+      </nav>
+    </div>
+    {{/pageTotal}}
+  </script>
+  <script id="table-template" type="text/x-tmpl-mustache">
+    {{#rows}}
+    <tr data-id="{{id}}">
+      <td>{{id}}</td>
+      <td>{{couponId}}</td>
+      <td>{{name}}</td>
+      <td>{{budgetSource}}</td>
+      <td>{{beginDate}}</td>
+      <td>{{endDate}}</td>
+      <td>
+        <a href="coupon-rule-edit.html?couponId={{id}}" class="btn btn-xs btn-default">编辑</a>
+      </td>
+    </tr>
+    {{/rows}}
+  </script>
+
+</body>
+</html>

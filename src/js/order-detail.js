@@ -85,23 +85,25 @@ $(function () {
         res.data.bizOrder.canReturnTicket = false;
         if (res.data.bizOrder.productOrderStatus == '已出票'
           && res.data.bizOrder.status == '支付成功'
-          && res.data.bizOrder.wandaTicketId != null) {
+          && res.data.bizOrder.wandaTicketId != null
+          && res.data.bizOrder.supportRefund == true) {
           res.data.bizOrder.canReturnTicket = true;
-      }
+        }
 
-      res.data.bizOrder.canReturnCoupon = false;
-      if (res.data.bizOrder.productOrderStatus != '已出票'
-        && res.data.bizOrder.couponId != null) {
-        res.data.bizOrder.canReturnCoupon = true;
-    }
+        res.data.bizOrder.canReturnCoupon = false;
+        if (res.data.bizOrder.productOrderStatus != '已出票'
+          && res.data.bizOrder.status != '待支付'
+          && res.data.bizOrder.couponId != null) {
+          res.data.bizOrder.canReturnCoupon = true;
+        }
 
-    res.data.bizOrder.canSendSMS = false;
-    if (res.data.bizOrder.smsContent != null && res.data.bizOrder.smsContent != '') {
-      res.data.bizOrder.canSendSMS = true;
-    }
+        res.data.bizOrder.canSendSMS = false;
+        if (res.data.bizOrder.smsContent != null && res.data.bizOrder.smsContent != '') {
+          res.data.bizOrder.canSendSMS = true;
+        }
 
         // if (res.data.bizOrder.ticketInfo != null) {
-          res.data.bizOrder.frontTicket = res.data.bizOrder.ticketInfo==null||res.data.bizOrder.ticketInfo.frontInfo==null ? null : res.data.bizOrder.ticketInfo.frontInfo.codeInfoList;
+        res.data.bizOrder.frontTicket = res.data.bizOrder.ticketInfo == null || res.data.bizOrder.ticketInfo.frontInfo == null ? null : res.data.bizOrder.ticketInfo.frontInfo.codeInfoList;
 
         //   res.data.bizOrder.haveFrontTicket = true;
         // } else {
@@ -109,7 +111,7 @@ $(function () {
         // }
 
         // if (res.data.bizOrder.ticketInfo != null) {
-          res.data.bizOrder.machineTicket = res.data.bizOrder.ticketInfo==null||res.data.bizOrder.ticketInfo.machineInfo==null ? null : res.data.bizOrder.ticketInfo.machineInfo.codeInfoList;
+        res.data.bizOrder.machineTicket = res.data.bizOrder.ticketInfo == null || res.data.bizOrder.ticketInfo.machineInfo == null ? null : res.data.bizOrder.ticketInfo.machineInfo.codeInfoList;
 
         //   res.data.bizOrder.haveMachineTicket = true;
         // } else {
@@ -187,20 +189,20 @@ $(document).on('submit', '#popup-refund form', function (event) {
     return false;
   }
 
-  $('#popup-refund button[type=submit]').text('处理中...').prop('disabled', true);
-  $('#popup-refund .close').hide();
-  _submitting = true;
-
   if (!window.confirm('确定退款吗？')) {
     return false;
   }
+
+  $('#popup-refund button[type=submit]').text('处理中...').prop('disabled', true);
+  $('#popup-refund .close').hide();
+  _submitting = true;
 
   var sendData = {
     transOrderNo: $('#transOrderNo').val(),
     productOrderNo: $('#productOrderNo').val(),
     channelId: $('#channelId').val(),
     refundAmountUndertaker: $('input[name=refundAmountUndertaker]:checked').val(),
-    refundReason: $.trim( $('#popup-refund textarea').val() ),
+    refundReason: $.trim($('#popup-refund textarea').val()),
   };
   if (sendData.transOrderNo == '' || sendData.productOrderNo == '') {
     alert('非法操作，无法获取订单号！');
@@ -286,7 +288,7 @@ $(document).on('submit', '#popup-undertaker form', function (event) {
     transOrderNo: $('#transOrderNo').val(),
     productOrderNo: $('#productOrderNo').val(),
     // chargeUndertaker: $('input[name=chargeUndertaker]:checked').val(),
-    refundReason: $.trim( $('#popup-undertaker textarea').val() ),
+    refundReason: $.trim($('#popup-undertaker textarea').val()),
   };
   if (sendData.transOrderNo == '' || sendData.productOrderNo == '') {
     alert('非法操作，无法获取订单号！');

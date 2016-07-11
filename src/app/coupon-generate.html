@@ -5,14 +5,15 @@
   <link rel="icon" href="images/favicon.ico" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <title>优惠券使用记录管理</title>
+  <title>优惠券管理</title>
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <link rel="stylesheet" href="css/reset.css">
-  <link rel="stylesheet" href="css/showtime.css">
+  <link rel="stylesheet" href="css/coupon.css">
 </head>
 <body>
 
   @@include('component/header.tpl')
+
 
   <div class="container-fluid">
 
@@ -23,47 +24,54 @@
       <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
         <ol class="breadcrumb">
-          <li>优惠券使用记录管理</li>
-          <li class="active">查询</li>
+          <li>优惠券管理</li>
+          <li class="active">批量产码</li>
         </ol>
 
-        <form id="formSearch" class="search-area clearfix">
+        <form id="formGenerate" class="search-area clearfix">
 
-          <div class="form-group col-sm-6 col-md-4">
+          <div class="form-group col-sm-4">
             <div class="input-group">
-              <div class="input-group-addon">优惠券码</div>
-              <input type="text" class="form-control" id="search_couponCode">
+              <div class="input-group-addon">优惠券规则ID</div>
+              <input type="text" class="form-control" id="couponId" data-parsley-type="number" min="1" required>
             </div>
           </div>
 
-          <div class="col-xs-12 col-sm-3 pull-right">
-            <button type="submit" class="btn btn-block btn-primary">查询</button>
+          <div class="form-group col-sm-4">
+            <div class="input-group">
+              <div class="input-group-addon">产码数量</div>
+              <input type="text" class="form-control" id="amount" data-parsley-type="number" min="1" required>
+            </div>
+          </div>
+
+          <div class="col-sm-4">
+            <button type="submit" class="btn btn-block btn-primary">产码</button>
           </div>
 
         </form>
 
         <div class="content-area">
 
+          <h3>产码历史列表</h3>
+
           <div class="row" id="pager"></div>
 
-          <div class="table-responsive">
-            <table class="table table-hover" id="dataTable">
+          <div class="table-responsive" id="dataTable">
+            <table class="table table-hover">
               <thead>
                 <tr>
-                  <th>优惠券码</th>
-                  <th>更新时间</th>
-                  <th>动作</th>
-                  <th>优惠券名称</th>
-                  <th>优惠券ID</th>
-                  <th>交易订单号</th>
-                  <th>商品订单号</th>
-                  <th>手机号</th>
-                  <th>渠道</th>
+                  <th>优惠券规则ID</th>
+                  <th>预设产码数量</th>
+                  <th>实际产码数量</th>
+                  <th>产码状态</th>
+                  <th>产码时间</th>
+                  <th>产码操作人</th>
+                  <th>操作</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td colspan="9" align="center">请点击“查询”按钮！</td>
+                  <td colspan="7" align="center">加载中...</td>
                 </tr>
               </tbody>
             </table>
@@ -78,7 +86,7 @@
   </div>
 
   <script src="js/vendor.js"></script>
-  <script src="js/record-coupon.js"></script>
+  <script src="js/coupon-generate.js"></script>
 
   <script id="pager-template" type="text/x-tmpl-mustache">
     <div class="col xs-12 col-sm-6 rowStatics">共 <span id="total">{{total}}</span> 条数据，当前显示 <span id="rowsSize">{{rowsSize}}</span> 条</div>
@@ -98,18 +106,19 @@
   </script>
   <script id="table-template" type="text/x-tmpl-mustache">
     {{#rows}}
-    <tr>
-      <td>{{couponCode}}</td>
-      <td>{{updateTime}}</td>
-      <td>{{direction}}</td>
-      <td>{{couponName}}</td>
-      <td>{{couponId}}</td>
-      <td><a class="btn-link" href="{{orderUrl}}?orderId={{orderNo}}">{{orderNo}}</a></td>
-      <td>{{bizOrderNo}}</td>
-      <td>{{mobile}}</td>
-      <td>{{channel}}</td>
+    <tr data-id="{{id}}">
+      <td>{{couponNo}}</td>
+      <td>{{expectAmount}}</td>
+      <td>{{actualAmount}}</td>
+      <td>{{status}}</td>
+      <td>{{createTime}}</td>
+      <td>{{createUser}}</td>
+      <td>
+        {{#canExport}}<a href="/MovieOps/couponCode/exportCodes?produceId={{id}}" class="btn btn-xs btn-default">批量导出</a>{{/canExport}}
+      </td>
     </tr>
     {{/rows}}
   </script>
+
 </body>
 </html>

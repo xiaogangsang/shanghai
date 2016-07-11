@@ -1,7 +1,7 @@
 'use strict;'
 
 var common = require('common');
-var _channels = {};
+var _budgetSource = [];
 var _pageIndex = 1;
 var _pageSize = 10;
 var _pageTotal = 0;
@@ -10,11 +10,9 @@ var searchCache = {};
 var useCache = false;
 
 $(function () {
-  common.init('record-coupon');
-  getChannel();
+  common.init('activity-cs');
 });
 
-//handle search form
 $('#formSearch').on('click', 'button[type=submit]', function (event) {
   event.preventDefault();
   _pageIndex = 1;
@@ -24,8 +22,14 @@ $('#formSearch').on('click', 'button[type=submit]', function (event) {
 
 $('#formSearch').on('submit', function (e) {
   e.preventDefault();
+  if ($.trim($('#search_id').val()) == '' && $.trim($('#search_name').val()) == '') {
+    alert('活动ID和活动名称至少填写一个！');
+    return false;
+  }
+
   var sendData = {
-    couponCode: $.trim($('#search_couponCode').val()),
+    id: $.trim($('#search_id').val()),
+    name: $.trim($('#search_name').val()),
     pageSize: _pageSize,
   };
   if (!!_querying) {
@@ -42,30 +46,29 @@ $('#formSearch').on('submit', function (e) {
   sendData.pageIndex = _pageIndex;
 
   $.ajax({
-    url: common.API_HOST + 'usedCouponLog/list',
+    url: common.API_HOST + 'activity/activityInfoList',
     type: 'POST',
     dataType: 'json',
     data: sendData,
   })
   .done(function (res) {
     _querying = false;
-    if (!!~~res.meta.result) {
-      if (res.data == null || res.data.rows.length < 1) {
-        $('#dataTable tbody').html('<tr><td colspan="9" align="center">查不到相关数据，请修改查询条件！</td></tr>');
+    if (res.meta.result == true) {
+      if (res.data.rows.length < 1) {
+        var html = '<tr><td colspan="20" align="center">查不到相关数据，请修改查询条件！</td></tr>';
+        $('#dataTable tbody').html(html);
         $('#pager').html('');
+        $('#btn-export').prop('disabled', true);
       } else {
         useCache = true;
         _pageIndex = res.data.pageIndex;
         _pageTotal = Math.ceil(res.data.total / _pageSize);
-        setPager(res.data.total, _pageIndex, res.data.rows.length, _pageTotal);
-        _(res.data.rows).forEach(function (record) {
-          _(_channels).forEach(function (channel) {
-            if (record.channel == channel.channelId) {
-              record.channel = channel.channelName;
-            }
-          });
+
+        _(res.data.rows).forEach(function (value, key) {
+          value.activityRuleDesc = value.activityRuleDesc.replace(/\n/g, '</p><p>');
         });
 
+        setPager(res.data.total, _pageIndex, res.data.rows.length, _pageTotal);
         setTableData(res.data.rows);
       }
     } else {
@@ -74,6 +77,13 @@ $('#formSearch').on('submit', function (e) {
   });
 
   return false;
+});
+
+$('#dataTable').on('click', '.btn-rule', function (event) {
+  event.preventDefault();
+  $('#popup-rule .modal-title').html('活动细则：' + $(this).closest('tr').data('id'));
+  $('#popup-rule .modal-body').html($(this).next('div').html());
+  $('#popup-rule').modal('show');
 });
 
 $('#pager').on('click', '.prev,.next', function (e) {
@@ -100,16 +110,9 @@ $('#pager').on('click', '.prev,.next', function (e) {
   return false;
 });
 
-$('#formSearch').on('click', 'button[type=submit]', function (event) {
-  event.preventDefault();
-  _pageIndex = 1;
-  useCache = false;
-  $('#formSearch').trigger('submit');
-});
-
 $('#pager').on('click', '#btn-pager', function (e) {
   e.preventDefault();
-  if (~~$('#pageNo').val() == 0) {
+  if ($('#pageNo').val() == '') {
     return false;
   }
 
@@ -124,28 +127,8 @@ $('#pager').on('click', '#btn-pager', function (e) {
   return false;
 });
 
-function getChannel() {
-  $.ajax({
-    url: common.API_HOST + 'common/channelList',
-    type: 'GET',
-    dataType: 'json',
-  })
-  .done(function (res) {
-    if (!!~~res.meta.result) {
-      _channels = res.data;
-    } else {
-      alert('获取渠道列表失败：' + res.meta.msg);
-    }
-  });
-}
-
 function setTableData(rows) {
-  var orderUrl = 'order-cs-detail.html';
-  if ($('#menu-order').css('display') == 'block') {
-    orderUrl = 'order-detail.html';
-  }
-
-  var data = { rows: rows , orderUrl:orderUrl};
+  var data = { rows: rows };
   var template = $('#table-template').html();
   Mustache.parse(template);
   var html = Mustache.render(template, data);
