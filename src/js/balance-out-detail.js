@@ -187,14 +187,14 @@ function handleData(res) {
 	_querying = false;
 
 	if (~res.meta.result) {
-		if (res.data == null || res.data.detail.recordCount < 1) {
+		if (res.data == null || res.data.detail.count < 1) {
       var errorMsg = res.meta.msg;
       $('#dataTable tbody').html('<tr><td colspan="30" align="center">' + errorMsg + '</td></tr>');
       $('#summaryTable tbody').html('<tr><td colspan="30" align="center">' + errorMsg + '</td></tr>');
       $('#pager').html('');
 		} else {
-			var totalRecord = res.data.detail.recordCount;
-      var record = res.data.detail.recordDetail;
+			var totalRecord = res.data.detail.count;
+      var record = res.data.detail.records;
 
       _pageTotal = Math.ceil(totalRecord / _pageSize);
       setPager(totalRecord, _pageIndex, record.length, _pageTotal);

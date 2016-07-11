@@ -23,7 +23,7 @@ var detailDataCache;
 var detailPageIndex = 1;
 var detailPageTotal = 0;
 
-var _DEBUG = true;
+var _DEBUG = false;
 
 $(function() {
 
@@ -356,14 +356,14 @@ $('body').on('submit', '#detailFormSearch', function(e) {
 
 function handleDetailData(res) {
   if (~res.meta.result) {
-    if (res.data == null || res.data.detail.recordCount < 1) {
+    if (res.data == null || res.data.total < 1) {
       var errorMsg = res.meta.msg;
       $('#detailDataTable tbody').html('<tr><td colspan="30" align="center">' + errorMsg + '</td></tr>');
       $('#detailPager').html('');
     } else {
       detailUseCache = true;
-      var totalRecord = res.data.detail.recordCount;
-      var record = res.data.detail.recordDetail;
+      var totalRecord = res.data.total;
+      var record = res.data.record;
 
       detailPageTotal = Math.ceil(totalRecord / _pageSize);
       setDetailPager(totalRecord, detailPageIndex, record.length, detailPageTotal);

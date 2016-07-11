@@ -108,7 +108,7 @@ function handleData(res) {
 	_querying = false;
 
 	if (~res.meta.result) {
-		if (res.data == null || res.data.detail.recordCount < 1) {
+		if (res.data == null || res.data.total < 1) {
       var errorMsg = res.meta.msg;
       $('#dataTable tbody').html('<tr><td colspan="30" align="center">' + errorMsg + '</td></tr>');
       $('#summaryTable tbody').html('<tr><td colspan="30" align="center">' + errorMsg + '</td></tr>');
@@ -116,8 +116,8 @@ function handleData(res) {
 		} else {
 			useCache = true;
 
-			var totalRecord = res.data.detail.recordCount;
-      var record = res.data.detail.recordDetail;
+			var totalRecord = res.data.total;
+      var record = res.data.record;
 
       _pageTotal = Math.ceil(totalRecord / _pageSize);
       setPager(totalRecord, _pageIndex, record.length, _pageTotal);
