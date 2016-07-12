@@ -206,6 +206,7 @@ function handleData(res) {
         item.bizType = parseBizType(item.bizType);
         item.discountType = parseDiscountType(item.discountType);
         item.partner = parsePartner(item.partner);
+        item.checkStatus = parseCheckStatus(item.checkStatus);
       });
 
       if (!_queryingFromSelectedSummary) {
@@ -213,8 +214,6 @@ function handleData(res) {
       }
 
       setTableData(record);
-
-      setSummaryTableData(res.data.summary);
 		}
 	}
 }
@@ -443,6 +442,14 @@ function parseDiscountType(type) {
 
 function parsePartner(partner) {
   var map = {'1' : 'O2O', '2' : 'TP方', '3' : '渠道方'};
+
+  return map[partner];
+}
+
+function parseCheckStatus(status) {
+  var map = {'1' : '未修改', '2' : '待审核', '3' : '审核完成', '4' : '驳回'};
+
+  return map[status];
 }
 
 
