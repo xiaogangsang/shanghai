@@ -136,6 +136,7 @@
         <div class="list-group">
           <a href="balance-in-summary.html" class="list-group-item" id="menu-balance-in-summary" data-id="16">对账汇总</a>
           <a href="balance-in-detail.html" class="list-group-item" id="menu-balance-in-detail" data-id="16">对账明细</a>
+          <a href="balance-in-edit-submitted.html" class="list-group-item" id="menu-balance-in-edit-submitted" data-id="16">已提交的支付流水修改</a>
         </div>
       </div>
     </div>

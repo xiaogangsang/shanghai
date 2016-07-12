@@ -39,54 +39,6 @@ common.init = function (pageName) {
   });
 };
 
-/**************************************************  抱歉了华哥  ******************************************************/
-// TODO: 暂时绕过后台权限控制
-common.liquidationInit = function (pageName) {
-  common.checkLogin();
-  // 队长, 别开枪, 自己人!!!
-  $('#menu-' + pageName).addClass('active').closest('.panel-collapse').collapse('show');
-  var $menus = $('#menu .list-group-item');
-  $menus.each(function (index, el) {
-    menuId = '' + $(el).data('id');
-    if (typeof allowMenus != 'undefined') {
-      if (allowMenus.indexOf(menuId) > -1) {
-        $(el).show();
-        $(el).closest('.panel').show();
-      }
-    }
-  });
-  common.setLoginName();
-
-  $.ajaxSetup({
-    error: function (jqXHR, textStatus, errorThrown) {
-      var errorMsg = jqXHR.status + '：未知错误！';
-      var redirectUrl = document.location.href;
-      switch (jqXHR.status){
-        case (500):
-          errorMsg = jqXHR.status + '：服务器无响应，请稍后再试！';
-        break;
-        case (401):
-          errorMsg = jqXHR.status + '：未登录或登陆超时，请尝试重新登陆！';
-          redirectUrl = 'login.html?logout';
-        break;
-        case (403):
-          errorMsg = jqXHR.status + '：没有权限，请尝试重新登陆！';
-          redirectUrl = 'login.html?logout';
-        break;
-        case (404):
-          errorMsg = jqXHR.status + '：服务器暂时无法访问，请稍后再试！';
-        break;
-        case (408):
-          errorMsg = jqXHR.status + '：请求超时，请稍后再试！';
-        break;
-      }
-      $('<div class="modal fade" data-keyboard="false" data-backdrop="static"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><h4 class="modal-title">错误提示</h4></div><div class="modal-body"><p style="text-align:center;">' + errorMsg + '</p></div><div class="modal-footer"><a href="' + redirectUrl + '" class="btn btn-primary">确定</a></div></div></div></div>').appendTo('body').modal('show');
-      throw new Error('Abort, error ' + jqXHR.status);
-    },
-  });
-};
-/**********************************************************************************************************************/
-
 common.showMenu = function (pageName) {
   var allowMenus = sessionStorage.getItem('menuAuthority') != null ? sessionStorage.getItem('menuAuthority').split(',') : null;
   if (pageName != undefined && pageName != '' && $('#menu-' + pageName).size() > 0) {
