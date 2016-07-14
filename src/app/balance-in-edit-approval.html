@@ -5,7 +5,7 @@
   <link rel="icon" href="images/favicon.ico" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <title>已提交的支付流水修改</title>
+  <title>支付流水修改审核</title>
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <link rel="stylesheet" href="css/reset.css">
   <link rel="stylesheet" type="text/css" href="css/balance-detail.css">
@@ -25,7 +25,7 @@
 
         <ol class="breadcrumb">
           <li>收单对账</li>
-          <li class="active">已提交的支付流水修改</li>
+          <li class="active">支付流水修改审核</li>
         </ol>
 
         <form id="formSearch" class="search-area clearfix">
@@ -214,7 +214,6 @@
                   <th>优惠方式</th>
                   <th>活动/优惠券名称</th>
                   <th>收单对账状态</th>
-                  <th>修改状态</th>
                   <th>操作</th>
                 </tr>
               </thead>
@@ -270,10 +269,10 @@
       <td>{{discountType}}</td>
       <td>{{discountName}}</td>
       <td>{{reconciliationStatus}}</td>
-      <td>{{checkStatus}}</td>
       <td>
       <button class="btn btn-xs btn-default btn-detail" data-id="{{id}}">查看详情</button>
-      <button class="btn btn-xs btn-default btn-edit" data-id="{{id}}">重新修改</button>
+      <button class="btn btn-xs btn-default btn-approval" data-checkstatus="3" data-id="{{id}}" data-version="{{version}}">审核通过</button>
+      <button class="btn btn-xs btn-default btn-approval" data-checkstatus="4" data-id="{{id}}" data-version="{{version}}">驳回</button>
       </td>
     </tr>
     {{/rows}}

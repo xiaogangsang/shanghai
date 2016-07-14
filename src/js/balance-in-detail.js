@@ -429,7 +429,6 @@ function parseBizType(bizType) {
   return map[bizType];
 }
 
-// not used
 function parseSubsidyType(type) {
   var map = {'1' : '预付', '2' : '后付'};
   return map[type];

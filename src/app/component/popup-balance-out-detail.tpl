@@ -319,7 +319,7 @@
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">出货对账时间</div>
-            <input type="text" class="form-control" id="updateTime" value="{{updateTime}}" disabled>
+            <input type="text" class="form-control" id="diffTime" value="{{diffTime}}" disabled>
           </div>
         </div>
 
