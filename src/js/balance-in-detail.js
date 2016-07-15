@@ -307,7 +307,7 @@ $('.btn-export-all').click(function(e) {
     var param = {'acquiringInfoFormCollection' : _selectedSummary.acquiringInfoFormCollection};
 
     $.ajax({
-      url: common.API_HOST + 'settlement/acquiring/exportSummaryDetail?' + serializeParam(param);,
+      url: common.API_HOST + 'settlement/acquiring/exportSummaryDetail?' + serializeParam(param),
       type: 'GET',
       dataType: 'json',
     })
