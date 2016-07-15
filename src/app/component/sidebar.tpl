@@ -148,6 +148,8 @@
         <div class="list-group">
           <a href="balance-out-summary.html" class="list-group-item" id="menu-balance-out-summary" data-id="16">对账汇总</a>
           <a href="balance-out-detail.html" class="list-group-item" id="menu-balance-out-detail" data-id="16">对账明细</a>
+          <a href="balance-out-edit-submitted.html" class="list-group-item" id="menu-balance-out-edit-submitted" data-id="16">已提交的出货流水修改</a>
+          <a href="balance-out-edit-approval.html" class="list-group-item" id="menu-balance-out-edit-approval" data-id=16>出货流水修改审核</a>
         </div>
       </div>
     </div>

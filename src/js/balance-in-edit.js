@@ -136,64 +136,6 @@ $('#formSearch').on('submit', function (e) {
   return false;
 });
 
-function queryFromSelectedSummary() {
-
-  _selectedSummary.pageIndex = _pageIndex;
-  var url = common.API_HOST + 'settlement/acquiring/listSummaryDetail?' + serializeParam(_selectedSummary);
-
-  if (!_DEBUG) {
-    $.ajax({
-      url: url,
-      type: 'GET',
-      dataType: 'json',
-    })
-    .done(function (res) {
-      handleData(res);
-    });
-  } else {
-    var res = $.parseJSON('{ "meta": { "result": "1", "msg": "操作成功" }, "data": { "summary": { "count": "订单总数", "totalTicketCount": "出票张数", "totalTiketAmount": " 票价 ", "totalReturnFee":"退票手续费", "totalServiceAmount": "总服务费", "totalSubsidyAmountO2o": "补贴总金额", "totalO2oReceivableAmount": "应收总金额", "totalBankAmount": "实际收到总金额" }, "detail": { "recordCount": "42", "recordDetail": [ { "receivablePoint": "积分", "bizType": "业务类型", "orderNo": "订单号", "countNum": "票数", "reconciliationDate": "对账日期", "thdSerialNo":"收单方订单号", "costCenter": "成本中心", "externalId": "支付流水", "o2oReceivableAmount": "应收金额", "subsidyType": "补贴方式", "chargeMerchant":"1", "subsidyAmountO2o": "补贴金额", "discountName": "活动/优惠方式名称", "bankAmount":"实收金额", "returnFee":"退票手续费", "payAmount": "支付金额", "serviceAmount": "服务费", "ticketAmount":"交易金额", "reconciliationStatus":"1", "createTime": "支付时间(交易)", "discountType": "优惠方式", "id": 1934, "payStatus": "1", "chargeMerchantNo": "商户号", "partner":"退款承债方", "reason":"1" } ] } } }');
-    handleData(res);
-  }
-}
-
-function handlePresetQuery() {
-
-  var sessionParam = sessionStorage.param;
-  if (sessionParam) {
-    var passedParam = JSON.parse(sessionParam);
-
-    if (passedParam) {
-      // 从汇总页  查看选中明细
-      if (passedParam.type == 1) {
-        var parameters = passedParam.param;
-
-        _pageIndex = 1;
-        _selectedSummary = {'acquiringInfoFormCollection': parameters, 'pageSize': _pageSize};
-
-        _queryingFromSelectedSummary = true;
-        queryFromSelectedSummary();
-
-      } else if (passedParam.type == 0) { // 从汇总页  查看所有明细
-        var parameters = passedParam.param;
-
-        $('#search_dateType').val(parameters.dateType);
-        $('#search_startTime').val(parameters.beginTime);
-        $('#search_endTime').val(parameters.endTime);
-        $('#search_chargeMerchant').val(parameters.chargeMerchant);
-        $('#search_chargeMerchantNo').val(parameters.chargeMerchantNo);
-        $('#search_payStatus').val(parameters.payStatus)
-
-        _pageIndex = 1;
-        useCache = false;
-        $('#formSearch').trigger('submit');
-      }
-      sessionStorage.removeItem('param');
-    }
-  }
-}
-
-handlePresetQuery();
-
 function handleData(res) {
 	_querying = false;
 
@@ -306,25 +248,7 @@ $('#pager').on('click', '#btn-pager', function (e) {
 });
 
 $('.btn-reset').click(function(e) {
-	// $('#search_dateType').val('');
- //  $('#search_startTime').val('');
- //  $('#search_endTime').val('');
- //  $('#search_merchantName').val('');
- //  $('#search_merchantNo').val('');
- //  $('#search_payStatus').val('');
-
  $('#formSearch :input:not(:button)').val('');
-});
-
-$('.complete-commit').click(function(e) {
-  $.ajax({
-      url: common.API_HOST + 'settlement/acquiring/confirmAcquiringInfoBatch',
-      type: 'GET',
-      dataType: 'json',
-      data: searchCache,
-    })
-    .done(function (res) {
-    });
 });
 
 $('#dataTable').on('click', '.btn-edit', function (e) {
@@ -349,16 +273,17 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
       detail.bizType = parseBizType(detail.bizType);
       detail.discountType = parseDiscountType(detail.discountType);
       detail.chargeMerchant = parseMerchant(detail.chargeMerchant);
-      // detail.reason = parseReason(detail.reason);
-      // detail.reconciliationStatus = parseReconciliationStatus(detail.reconciliationStatus);
-      // detail.partner = parsePartner(detail.partner);
-      // detail.subsidyType = parseSubsidyType(detail.subsidyType);
       var template = $('#detail-template').html();
       Mustache.parse(template);
       var html = Mustache.render(template, data);
       $('#popup-detail .modal-body').html(html);
 
       $('#popup-detail').modal('show');
+
+      $('#subsidyType option[value="' + detail.subsidyType + '"]').prop('selected', true);
+      $('#partner option[value="' + detail.partner + '"]').prop('selected', true);
+      $('#reconciliationStatus option[value="' + detail.reconciliationStatus + '"]').prop('selected', true);
+      $('#reason option[value="' + detail.reason + '"]').prop('selected', true);
     });
   } else {
     var data = $.parseJSON('{ "meta" : { "result" : "1", "msg" : "操作成功" }, "data" : { "operateRecords" : [ { "bizType" : 1, "orderNo" : "738289474424934400", "o2oReceivableAmount" : 12, "operateTime" : "2016-06-23 15:42:18", "operatorName" : "徐慧", "subsidyAmountO2o" : 4750, "discountName" : "买2减1", "ticketAmount" : 4750, "chargeMerchant" : 1, "serviceAmount" : 0, "partner" : "3", "reconciliationStatus" : 4, "returnFee" : 1, "discountType" : 1, "payStatus" : 4 }, { "bizType" : 1, "orderNo" : "738289474424934400", "o2oReceivableAmount" : 12, "operateTime" : "2016-06-23 11:50:51", "operatorName" : "李瑾", "subsidyAmountO2o" : 4750, "discountName" : "买2减1", "ticketAmount" : 4750, "chargeMerchant" : 1, "serviceAmount" : 0, "partner" : "3", "reconciliationStatus" : 4, "returnFee" : 1, "discountType" : 1, "payStatus" : 4 } ], "detail" : { "reason" : 1, "receivablePoint" : 0, "bizType" : 1, "reconciliationDate" : 1466733543000, "subsidyType" : 1, "bankAmount" : 1, "checkStatus" : 1, "discountName" : "买2减1", "ticketAmount" : 1, "payAmount" : 4700, "serviceAmount" : 0, "discountType" : 1, "id" : 2585, "thdSerialNo" : "1223", "orderNo" : "738284476651671552", "countNum" : 1, "costCenter" : "卡中心总部", "o2oReceivableAmount" : 4700, "externalId" : 857, "updateTime" : 1466738155000, "version" : 0, "subsidyAmountO2o" : 0, "chargeMerchant" : 1, "partner" : "1", "reconciliationStatus" : 4, "createTime" : 1464796800000, "returnFee" : 12, "chargeMerchantNo" : "738284476651671552", "payStatus" : 1, "chargeMerchantNo" : "308010700103175" } } }');
@@ -369,10 +294,6 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     detail.bizType = parseBizType(detail.bizType);
     detail.discountType = parseDiscountType(detail.discountType);
     detail.chargeMerchant = parseMerchant(detail.chargeMerchant);
-    // detail.reason = parseReason(detail.reason);
-    // detail.reconciliationStatus = parseReconciliationStatus(detail.reconciliationStatus);
-    // detail.partner = parsePartner(detail.partner);
-    // detail.subsidyType = parseSubsidyType(detail.subsidyType);
 
     var template = $('#detail-template').html();
     Mustache.parse(template);
@@ -380,6 +301,18 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     $('#popup-detail .modal-body').html(html);
 
     $('#popup-detail').modal('show');
+    $('#subsidyType option[value="' + detail.subsidyType + '"]').prop('selected', true);
+    $('#partner option[value="' + detail.partner + '"]').prop('selected', true);
+    $('#shipmentStatus option[value="' + detail.shipmentStatus + '"]').prop('selected', true);
+    $('#reconciliationStatus option[value="' + detail.reconciliationStatus + '"]').prop('selected', true);
+    $('#reason option[value="' + detail.reason + '"]').prop('selected', true);
+
+    detail = detail.currentDetail;
+    $('#subsidyTypeNew option[value="' + detail.subsidyType + '"]').prop('selected', true);
+    $('#partnerNew option[value="' + detail.partner + '"]').prop('selected', true);
+    $('#shipmentStatusNew option[value="' + detail.shipmentStatus + '"]').prop('selected', true);
+    $('#reconciliationStatusNew option[value="' + detail.reconciliationStatus + '"]').prop('selected', true);
+    $('#reasonNew option[value="' + detail.reason + '"]').prop('selected', true);
   }
 });
 
@@ -413,6 +346,9 @@ $('#dataTable').on('click', '.btn-detail', function (e) {
       $('#popup-detail .modal-body').html(html);
 
       $('#popup-detail').modal('show');
+
+      $('.detail-area').addClass('compare');
+      $('.detail-area.compare :input').prop('disabled', true);
     });
   } else {
     var data = $.parseJSON('{ "meta": { "result": "1", "msg": "操作成功" }, "data": { "currentDetail": { "reason": 1, "receivablePoint": 0, "bizType": 1, "reconciliationDate": "2016-06-24 09:59:03", "operatorName": "超级管理员", "subsidyType": 1, "bankAmount": 1, "checkStatus": 3, "discountName": "买2减1", "ticketAmount": 10000, "payAmount": 4700, "serviceAmount": 0, "paySequenceNo": 857, "discountType": 1, "id": 2597, "thdSerialNo": "1223", "orderNo": "738284476651671552", "countNum": 1, "costCenter": "卡中心总部", "o2oReceivableAmount": 4700, "updateTime": 1468239853000, "version": 19, "subsidyAmountO2o": 0, "chargeMerchant": 1, "partner": "1", "reconciliationStatus": 4, "createTime": "2016-06-02 00:00:00", "returnFee": 12, "chargeMerchantNo": "738284476651671552", "payStatus": 2, "merchantNo": "308010700103175" }, "lastDetail": { "reason": 1, "receivablePoint": 0, "bizType": 1, "reconciliationDate": "2016-06-24 09:59:03", "operateTime": "2016-07-11 20:20:06", "operatorName": "超级管理员", "subsidyType": 1, "bankAmount": 1, "checkStatus": 4, "discountName": "买2减1", "ticketAmount": 10000, "payAmount": 4700, "serviceAmount": 0, "paySequenceNo": 857, "discountType": 1, "id": 2597, "thdSerialNo": "1223", "orderNo": "738284476651671552", "countNum": 1, "costCenter": "卡中心总部", "batchCode": "20160711202413", "o2oReceivableAmount": 4700, "updateTime": 1468239606000, "version": 18, "subsidyAmountO2o": 0, "chargeMerchant": 1, "partner": "1", "reconciliationStatus": 4, "createTime": "2016-06-02 00:00:00", "returnFee": 12, "chargeMerchantNo": "738284476651671552", "payStatus": 2, "merchantNo": "308010700103175" } } }');
@@ -547,6 +483,3 @@ function parseCheckStatus(status) {
 
   return map[status];
 }
-
-
-

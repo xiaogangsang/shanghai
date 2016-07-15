@@ -130,10 +130,6 @@ function handleData(res) {
       setPager(totalRecord, _pageIndex, record.length, _pageTotal);
 
       _(record).forEach(function(item) {
-        // item.chargeMerchant = parseMerchant(item.chargeMerchant);
-        // item.payStatusNo = item.payStatus;
-        // item.payStatus = parsePayStatus(item.payStatus);
-        // TODO: 业务类别 & 出货状态解析
         item.bizTypeNo = item.bizType;
         item.bizType = parseBizType(item.bizType);
         item.shipmentStatusNo = item.shipmentStatus;
@@ -216,12 +212,6 @@ $('#pager').on('click', '#btn-pager', function (e) {
 });
 
 $('.btn-reset').click(function(e) {
-  // $('#search_dateType').val('');
- //  $('#search_startTime').val('');
- //  $('#search_endTime').val('');
- //  $('#search_merchantName').val('');
- //  $('#search_merchantNo').val('');
- //  $('#search_payStatus').val('');
  $('#formSearch :input:not(:button)').val('');
 
  $('#search_dateType').val('1');
@@ -281,6 +271,8 @@ function parseShipmentStatus(status) {
 
 function parseBizType(type) {
   var map = {'1' : '在线选座', '2' : '退货手续费'};
+
+  return map[type];
 }
 
 

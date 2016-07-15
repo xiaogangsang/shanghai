@@ -6,11 +6,13 @@
   {{#detail}}
     <div class="container-fluid">
 
+      {{^currentDetail}}
       <div class="row">
         <div class="col-md-4 pull-right">
           <button class="form-control btn btn-default edit-submit" data-version="{{version}}" data-id="{{id}}">提交</button>
         </div>
       </div>
+      {{/currentDetail}}
 
       <div class="row">
 
@@ -103,14 +105,16 @@
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">二级商户</div>
-            <input type="text" class="form-control" id="merchantName" value="{{merchantName}}">
+            <input type="text" class="form-control oldValue" id="merchantName" value="{{merchantName}}">
+            <input type="text" class="form-control newValue" id="merchantNameNew" value="{{currentDetail.merchantName}}">
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">二级商户号</div>
-            <input type="text" class="form-control" id="merhcantNo" value="{{merhcantNo}}">
+            <input type="text" class="form-control oldValue" id="merhcantNo" value="{{merhcantNo}}">
+            <input type="text" class="form-control newValue" id="merhcantNoNew" value="{{currentDetail.merhcantNo}}">
           </div>
         </div>
 
@@ -159,21 +163,28 @@
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
             <div class="input-group-addon">交易金额</div>
-            <input type="text" class="form-control" id="settleAmount" value="{{settleAmount}}">
+            <input type="text" class="form-control oldValue" id="settleAmount" value="{{settleAmount}}">
+            <input type="text" class="form-control newValue" id="settleAmountNew" value="{{currentDetail.settleAmount}}">
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
             <div class="input-group-addon">我方补贴金额</div>
-            <input type="text" class="form-control" id="subsidyAmountO2o" value="{{subsidyAmountO2o}}">
+            <input type="text" class="form-control oldValue" id="subsidyAmountO2o" value="{{subsidyAmountO2o}}">
+            <input type="text" class="form-control newValue" id="subsidyAmountO2oNew" value="{{currentDetail.subsidyAmountO2o}}">
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">补贴付款方式</div>
-            <select class="form-control" id="subsidyType" value="{{subsidyType}}">
+            <select class="form-control oldValue" id="subsidyType" value="{{subsidyType}}">
+              <option value=""></option>
+              <option value="1">预付</option>
+              <option value="2">后付</option>
+            </select>
+            <select class="form-control newValue" id="subsidyTypeNew" value="{{currentDetail.subsidyType}}">
               <option value=""></option>
               <option value="1">预付</option>
               <option value="2">后付</option>
@@ -184,21 +195,29 @@
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
             <div class="input-group-addon">应拨金额</div>
-            <input type="text" class="form-control" id="acceptanceAppropriation" value="{{acceptanceAppropriation}}">
+            <input type="text" class="form-control oldValue" id="acceptanceAppropriation" value="{{acceptanceAppropriation}}">
+            <input type="text" class="form-control newValue" id="acceptanceAppropriationNew" value="{{currentDetail.acceptanceAppropriation}}">
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
             <div class="input-group-addon">退票手续费</div>
-            <input type="text" class="form-control" id="returnFee" value="{{returnFee}}">
+            <input type="text" class="form-control oldValue" id="returnFee" value="{{returnFee}}">
+            <input type="text" class="form-control newValue" id="returnFeeNew" value="{{currentDetail.returnFee}}">
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
             <div class="input-group-addon">退款承债方</div>
-              <select class="form-control" id="partner" value="{{partner}}">
+              <select class="form-control oldValue" id="partner" value="{{partner}}">
+                <option value=""></option>
+                <option value="1">O2O</option>
+                <option value="2">TP方</option>
+                <option value="3">渠道方</option>
+              </select>
+              <select class="form-control newValue" id="partnerNew" value="{{currentDetail.partner}}">
                 <option value=""></option>
                 <option value="1">O2O</option>
                 <option value="2">TP方</option>
@@ -210,7 +229,8 @@
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
             <div class="input-group-addon">净拨款金额</div>
-            <input type="text" class="form-control" id="finalSettlementAmount" value="{{finalSettlementAmount}}">
+            <input type="text" class="form-control oldValue" id="finalSettlementAmount" value="{{finalSettlementAmount}}">
+            <input type="text" class="form-control newValue" id="finalSettlementAmountNew" value="{{currentDetail.finalSettlementAmount}}">
           </div>
         </div>
 
@@ -264,22 +284,22 @@
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">支付流水状态</div>
-            <select class="form-control" id="payStatus" value="{{payStatus}}" disabled>
-              <option value=""></option>
-              <option value="1">待支付</option>
-              <option value="2">支付成功</option>
-              <option value="3">支付失败</option>
-              <option value="4">退款中</option>
-              <option value="5">退款成功</option>
-              <option value="6">退款失败</option>
-            </select>
+            <input type="text" class="form-control" id="payStatus" value="{{payStatus}}" disabled>
           </div>
         </div>
 
-        <div class="form-group col-sm-6 col-md-4">
+        <div class="form-group col-sm-6 col-md-6">
             <div class="input-group">
               <div class="input-group-addon">出货状态</div>
-              <select class="form-control" id="shipmentStatus" value="{{shipmentStatus}}" disabled>
+              <select class="form-control oldValue" id="shipmentStatus" value="{{shipmentStatus}}">
+                <option value=""></option>
+                <option value="1">出货中</option>
+                <option value="2">出货失败</option>
+                <option value="3">出货成功</option>
+                <option value="4">退货失败</option>
+                <option value="5">退货成功</option>
+              </select>
+              <select class="form-control newValue" id="shipmentStatusNew" value="{{currentDetail.shipmentStatus}}">
                 <option value=""></option>
                 <option value="1">出货中</option>
                 <option value="2">出货失败</option>
@@ -293,20 +313,21 @@
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">收单对账状态</div>
-            <select class="form-control" id="acquiringReconciliationStatus" value="{{acquiringReconciliationStatus}}" disabled>
-              <option value=""></option>
-              <option value="1">未对账</option>
-              <option value="2">对账不一致</option>
-              <option value="3">收单对账成功</option>
-              <option value="4">确认</option>
-            </select>
+            <input type="text" class="form-control" id="acquiringReconciliationStatus" value="{{acquiringReconciliationStatus}}" disabled>
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">出货对账状态</div>
-            <select class="form-control" id="reconciliationStatus" value="{{reconciliationStatus}}">
+            <select class="form-control oldValue" id="reconciliationStatus" value="{{reconciliationStatus}}">
+              <option value=""></option>
+              <option value="1">未对账</option>
+              <option value="2">对账不一致</option>
+              <option value="3">收单对账成功</option>
+              <option value="4">确认</option>
+            </select>
+            <select class="form-control newValue" id="reconciliationStatusNew" value="{{currentDetail.reconciliationStatus}}">
               <option value=""></option>
               <option value="1">未对账</option>
               <option value="2">对账不一致</option>
@@ -326,7 +347,14 @@
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">对账不一致原因</div>
-            <select class="form-control" id="reason" value="{{reason}}">
+            <select class="form-control oldValue" id="reason" value="{{reason}}">
+              <option value=""></option>
+              <option value="1">我方缺失</option>
+              <option value="2">对方缺失</option>
+              <option value="3">金额不符</option>
+              <option value="3">状态错误</option>
+            </select>
+            <select class="form-control newValue" id="reasonNew" value="{{currentDetail.reason}}">
               <option value=""></option>
               <option value="1">我方缺失</option>
               <option value="2">对方缺失</option>
@@ -349,7 +377,7 @@
       </div>
 
 
-<!-- 漏了修改状态 状态码->状态名称 -->
+
       <div class="row">
         <div class="table-responsive">
             <table class="table table-hover" id="dataTable">
@@ -368,14 +396,14 @@
                   <th>净拨款金额</th>
                   <th>出货对账状态</th>
                   <th>对账不一致原因</th>
-                  <th>修改状态</th>
+                  <!-- <th>修改状态</th> -->
                 </tr>
               </thead>
               <tbody>
                 {{#operate}}
                 <tr>
-                  <td>{{}}</td>
-                  <td>{{}}</td>
+                  <td>{{operateTime}}</td>
+                  <td>{{operatorId}}</td>
                   <td>{{merchantName}}</td>
                   <td>{{merhcantNo}}</td>
                   <td>{{settleAmount}}</td>
@@ -387,7 +415,7 @@
                   <td>{{finalSettlementAmount}}</td>
                   <td>{{reconciliationStatus}}</td>
                   <td>{{reason}}</td>
-                  <td>{{}}</td>
+                  <!-- <td>{{}}</td> -->
                 </tr>
                 {{/operate}}
               </tbody>
@@ -395,25 +423,5 @@
           </div>
       </div>
     </div>
-
   </div>
-
-</script>
-
-<!-- TODO: 配置table数据 -->
-<script id="table-template" type="text/x-tmpl-mustache">
-  {{#rows}}
-  <tr data-id="{{id}}" data-bannertype="{{bannerType}}">
-    <td>{{merchantId}}</td>
-    <td>{{merchantName}}</td>
-    <td>{{createTime}}</td>
-    <td>{{userName}}</td>
-    <td>{{department}}</td>
-    <td>{{merchantStatus}}</td>
-    <td>{{accountStatus}}</td>
-    <td>
-      <a href="#" type="button" class="btn btn-xs btn-default btn-edit">查看</a>
-    </td>
-  </tr>
-  {{/rows}}
 </script>

@@ -291,21 +291,3 @@
   </div>
 
 </script>
-
-<!-- TODO: 配置table数据 -->
-<script id="table-template" type="text/x-tmpl-mustache">
-  {{#rows}}
-  <tr data-id="{{id}}" data-bannertype="{{bannerType}}">
-    <td>{{merchantId}}</td>
-    <td>{{merchantName}}</td>
-    <td>{{createTime}}</td>
-    <td>{{userName}}</td>
-    <td>{{department}}</td>
-    <td>{{merchantStatus}}</td>
-    <td>{{accountStatus}}</td>
-    <td>
-      <a href="#" type="button" class="btn btn-xs btn-default btn-edit">查看</a>
-    </td>
-  </tr>
-  {{/rows}}
-</script>

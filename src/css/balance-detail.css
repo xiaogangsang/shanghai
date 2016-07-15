@@ -6,6 +6,10 @@
 	background: transparent;
 }
 
+.detail-area.compare select {
+	-webkit-appearance: none;
+}
+
 .detail-area.compare .newValue {
 	color: red;
 	width: 60%;
