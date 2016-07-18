@@ -1,0 +1,26 @@
+.detail-area input:disabled,
+.detail-area select:disabled,
+.detail-area.compare input,
+.detail-area.compare select {
+	border: none;
+	background: transparent;
+}
+
+.detail-area.compare select {
+	-webkit-appearance: none;
+}
+
+.detail-area.compare .newValue {
+	color: red;
+	width: 60%;
+	float: right;
+}
+
+.detail-area.compare .oldValue {
+	width: 40%;
+	float: left;
+}
+
+.detail-area:not(.compare) .newValue {
+	display: none;
+}

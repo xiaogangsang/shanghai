@@ -5,7 +5,7 @@
   <link rel="icon" href="images/favicon.ico" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <title>出货对账明细</title>
+  <title>出货流水修改审核</title>
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <link rel="stylesheet" href="css/reset.css">
   <link rel="stylesheet" type="text/css" href="css/balance-detail.css">
@@ -25,7 +25,7 @@
 
         <ol class="breadcrumb">
           <li>出货对账</li>
-          <li class="active">出货对账汇总</li>
+          <li class="active">出货流水修改审核</li>
         </ol>
 
         <form id="formSearch" class="search-area clearfix">
@@ -176,19 +176,13 @@
             </div>
           </div>
 
-          <div class="col-xs-10 col-sm-10 col-md-10 pull-right">
+          <div class="col-xs-6 col-sm-6 col-md-6 pull-right">
             <div class="row">
-              <div class="col-xs-3">
+              <div class="col-xs-6">
                 <button type="submit" class="btn btn-block btn-primary">查询</button>
               </div>
-              <div class="col-xs-3">
+              <div class="col-xs-6">
                 <button type="button" class="btn btn-block btn-default btn-reset">重置</button>
-              </div>
-              <div class="col-xs-3">
-                <button type="button" class="btn btn-block btn-default btn-export-all">导出全部报表</button>
-              </div>
-              <div class="col-xs-3">
-                <button type="button" class="btn btn-block btn-default complete-commit">对账完成提交</button>
               </div>
             </div>
           </div>
@@ -199,55 +193,29 @@
 
         <div class="content-area">
 
-        <div class="table-responsive" style="margin-bottom: 20px;">
-            <table class="table table-hover" id="summaryTable">
-              <thead>
-                <tr>
-                  <th>订单数</th>
-                  <th>张数</th>
-                  <th>票价</th>
-                  <th>退票手续费</th>
-                  <th>我方补贴金额</th>
-                  <th>应付金额</th>
-                  <th>实付金额</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
           <div class="row" id="pager"></div>
 
           <div class="table-responsive">
             <table class="table table-hover" id="dataTable">
               <thead>
                 <tr>
-                  <!-- 参照activity-unit.html -->
-                  <th>出/退货时间</th>
-                  <th>二级商户</th>
+                  <th>操作时间</th>
+                  <th>出货流水号</th>
                   <th>商品订单号</th>
+                  <th>二级商户</th>
+                  <th>二级商户号</th>
                   <th>业务类别</th>
-                  <th>对应影票订单号</th>
-                  <th>出货状态</th>
-                  <th>对应交易订单号</th>
-                  <th>二级商户订单号</th>
-                  <th>支付状态</th>
-                  <th>退款承债方</th>
-                  <th>收单对账状态</th>
+                  <th>出货流水状态</th>       <!-- 出货状态 -->
                   <th>交易金额</th>
                   <th>我方补贴金额</th>
                   <th>补贴付款方式</th>
                   <th>退票手续费</th>
                   <th>应付金额</th>
                   <th>实付金额</th>
-                  <th>出货对账状态</th>
-                  <th>对账失败原因</th>
-                  <th>出货对账时间</th>
+                  <th>退款承债方</th>
                   <th>优惠方式</th>
-                  <th>优惠名称</th>
+                  <th>活动/优惠券名称</th>
+                  <th>出货对账状态</th>
                   <th>操作</th>
                 </tr>
               </thead>
@@ -302,57 +270,34 @@
   <script id="table-template" type="text/x-tmpl-mustache">
     {{#rows}}
     <tr data-id="{{id}}" data-bannertype="{{bannerType}}">
-      <td>{{shipmentDate}}</td>
-      <td>{{merchantName}}</td>
-      <td>{{bizOrderNo}}</td>
-      <!-- 业务类别 -->
-      <td>{{bizType}}</td>
-      <td>{{oldOrderNo}}</td>
-      <td>{{shipmentStatus}}</td>
-      <td>{{orderNo}}</td>
+      <td>{{diffTime}}</td>
       <td>{{thdOrderNo}}</td>
-      <!-- 支付状态 -->
-      <td>{{payStatus}}</td>
-      <!-- 退货承债方 -->
-      <td>{{partner}}</td>
-      <!-- 收单对账状态 -->
-      <td>{{acquiringReconciliationStatus}}</td>
+      <td>{{bizOrderNo}}</td>
+      <td>{{merchantName}}</td>
+      <td>{{merhcantNo}}</td>
+      <td>{{bizType}}</td>
+      <td>{{shipmentStatus}}</td>
       <td>{{settleAmount}}</td>
       <td>{{subsidyAmountO2O}}</td>
-      <!-- 补贴付款方式 -->
       <td>{{subsidyType}}</td>
       <td>{{returnFee}}</td>
       <td>{{acceptanceAppropriation}}</td>
       <td>{{finalSettleAmount}}</td>
-      <!-- 出货对账状态 -->
-      <td>{{reconciliationStatus}}</td>
-      <!-- 对账失败原因 -->
-      <td>{{reason}}</td>
-      <td>{{diffTime}}</td>
-      <!-- 优惠方式 -->
+      <td>{{partner}}</td>
       <td>{{discountType}}</td>
       <td>{{discountName}}</td>
+      <td>{{reconciliationStatus}}</td>
       <td>
-      <button class="btn btn-xs btn-default btn-edit">详情</button>
+        <button class="btn btn-xs btn-default btn-detail" data-id="{{id}}">查看详情</button>
+        <button class="btn btn-xs btn-default btn-approval" data-checkstatus="3" data-id="{{id}}" data-version="{{version}}">审核通过</button>
+        <button class="btn btn-xs btn-default btn-approval" data-checkstatus="4" data-id="{{id}}" data-version="{{version}}">驳回</button>
       </td>
     </tr>
     {{/rows}}
   </script>
 
-  <script id="summary-table-template" type="text/x-tmpl-mustache">
-    <tr data-id="{{id}}" data-bannertype="{{bannerType}}">
-      <td>{{count}}</td>
-      <td>{{totalTicketCount}}</td>
-      <td>{{totalOrderAmount}}</td>
-      <td>{{totalReturnFee}}</td>
-      <td>{{totalSubsidyAmountO2o}}</td>
-      <td>{{totalSettlementAmount}}</td>
-      <td>{{totalFinalSettlementAmount}}</td>
-    </tr>
-  </script>
-
   <script src="js/vendor.js"></script>
-  <script src="js/balance-out-detail.js"></script>
+  <script src="js/balance-out-edit.js"></script>
 
   @@include('component/popup-balance-out-detail.tpl')
 

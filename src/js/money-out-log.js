@@ -212,7 +212,7 @@ $('.btn-reset').click(function(e) {
 
 function parseOperation(operation) {
   var map = {'1' : '银行退票', '2' : '重拨'};
-  return map[type];
+  return map[operation];
 }
 
 

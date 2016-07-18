@@ -6,11 +6,13 @@
   {{#detail}}
     <div class="container-fluid">
 
+      {{^currentDetail}}
       <div class="row">
         <div class="col-md-4 pull-right">
           <button class="form-control btn btn-default edit-submit" data-version="{{version}}" data-id="{{id}}">提交</button>
         </div>
       </div>
+      {{/currentDetail}}
 
       <div class="row">
 
@@ -48,14 +50,16 @@
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
             <div class="input-group-addon">应收用户金额</div>
-            <input type="text" class="form-control" id="payAmount" value="{{payAmount}}">
+            <input type="text" class="form-control oldValue" id="payAmount" value="{{payAmount}}">
+            <input type="text" class="form-control newValue" id="payAmountNew" value="{{currentDetail.payAmount}}">
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
             <div class="input-group-addon">应收用户积分</div>
-            <input type="text" class="form-control" id="receivablePoint" value="{{receivablePoint}}">
+            <input type="text" class="form-control oldValue" id="receivablePoint" value="{{receivablePoint}}">
+            <input type="text" class="form-control newValue" id="receivablePointNew" value="{{currentDetail.receivablePoint}}">
           </div>
         </div>
 
@@ -65,9 +69,7 @@
             <input type="text" class="form-control" id="paySequenceNo" value="{{paySequenceNo}}" disabled>
           </div>
         </div>
-
       </div>
-
     </div>
 
     <div class="container-fluid">
@@ -110,35 +112,45 @@
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
             <div class="input-group-addon">收单方支付订单号</div>
-            <input type="text" class="form-control" id="thdSerialNo" value="{{thdSerialNo}}">
+            <input type="text" class="form-control oldValue" id="thdSerialNo" value="{{thdSerialNo}}">
+            <input type="text" class="form-control newValue" id="thdSerialNoNew" value="{{currentDetail.thdSerialNo}}">
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
             <div class="input-group-addon">票价</div>
-            <input type="text" class="form-control" id="ticketAmount" value="{{ticketAmount}}">
+            <input type="text" class="form-control oldValue" id="ticketAmount" value="{{ticketAmount}}">
+            <input type="text" class="form-control newValue" id="ticketAmountNew" value="{{currentDetail.ticketAmount}}">
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
             <div class="input-group-addon">服务费</div>
-            <input type="text" class="form-control" id="serviceAmount" value="{{serviceAmount}}">
+            <input type="text" class="form-control oldValue" id="serviceAmount" value="{{serviceAmount}}">
+            <input type="text" class="form-control newValue" id="serviceAmountNew" value="{{currentDetail.serviceAmount}}">
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
             <div class="input-group-addon">我方补贴金额</div>
-            <input type="text" class="form-control" id="subsidyAmountO2o" value="{{subsidyAmountO2o}}">
+            <input type="text" class="form-control oldValue" id="subsidyAmountO2o" value="{{subsidyAmountO2o}}">
+            <input type="text" class="form-control newValue" id="subsidyAmountO2oNew" value="{{currentDetail.subsidyAmountO2o}}">
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">补贴付款方式</div>
-            <select class="form-control" id="subsidyType" value="{{subsidyType}}">
+            <select class="form-control oldValue" id="subsidyType" value="{{subsidyType}}">
+              <option value=""></option>
+              <option value="1">预付</option>
+              <option value="2">后付</option>
+            </select>
+            <select class="form-control newValue" id="subsidyTypeNew" value="{{currentDetail.subsidyType}}">
+              <option value=""></option>
               <option value="1">预付</option>
               <option value="2">后付</option>
             </select>
@@ -148,14 +160,21 @@
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
             <div class="input-group-addon">退票手续费</div>
-            <input type="text" class="form-control" id="returnFee" value="{{returnFee}}">
+            <input type="text" class="form-control oldValue" id="returnFee" value="{{returnFee}}">
+            <input type="text" class="form-control newValue" id="returnFeeNew" value="{{currentDetail.returnFee}}">
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
             <div class="input-group-addon">退款承债方</div>
-              <select class="form-control" id="search_partner">
+              <select class="form-control oldValue" id="partner" value={{partner}}>
+                <option value=""></option>
+                <option value="1">O2O</option>
+                <option value="2">TP方</option>
+                <option value="3">渠道方</option>
+              </select>
+              <select class="form-control newValue" id="partnerNew" value={{currentDetail.partner}}>
                 <option value=""></option>
                 <option value="1">O2O</option>
                 <option value="2">TP方</option>
@@ -167,7 +186,8 @@
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
             <div class="input-group-addon">O2O应收金额</div>
-            <input type="text" class="form-control" id="o2oReceivableAmount" value="{{o2oReceivableAmount}}">
+            <input type="text" class="form-control oldValue" id="o2oReceivableAmount" value="{{o2oReceivableAmount}}">
+            <input type="text" class="form-control newValue" id="o2oReceivableAmountNew" value="{{currentDetail.o2oReceivableAmount}}">
           </div>
         </div>
 
@@ -228,7 +248,14 @@
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">收单对账状态</div>
-            <select class="form-control" id="reconciliationStatus" value="reconciliationStatus">
+            <select class="form-control oldValue" id="reconciliationStatus" value="{{reconciliationStatus}}">
+              <option value=""></option>
+              <option value="1">未对账</option>
+              <option value="2">对账不一致</option>
+              <option value="3">收单对账成功</option>
+              <option value="4">确认</option>
+            </select>
+            <select class="form-control newValue" id="reconciliationStatusNew" value="{{currentDetail.reconciliationStatus}}">
               <option value=""></option>
               <option value="1">未对账</option>
               <option value="2">对账不一致</option>
@@ -241,7 +268,14 @@
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">对账不一致原因</div>
-            <select class="form-control" id="reason" value="reason">
+            <select class="form-control oldValue" id="reason" value="{{reason}}">
+              <option value=""></option>
+              <option value="1">我方缺失</option>
+              <option value="2">对方缺失</option>
+              <option value="3">金额不符</option>
+              <option value="3">状态错误</option>
+            </select>
+            <select class="form-control newValue" id="reasonNew" value="{{currentDetail.reason}}">
               <option value=""></option>
               <option value="1">我方缺失</option>
               <option value="2">对方缺失</option>
@@ -250,7 +284,6 @@
             </select>
           </div>
         </div>
-
       </div>
     </div>
 
@@ -315,22 +348,4 @@
 
   </div>
 
-</script>
-
-<!-- TODO: 配置table数据 -->
-<script id="table-template" type="text/x-tmpl-mustache">
-  {{#rows}}
-  <tr data-id="{{id}}" data-bannertype="{{bannerType}}">
-    <td>{{merchantId}}</td>
-    <td>{{merchantName}}</td>
-    <td>{{createTime}}</td>
-    <td>{{userName}}</td>
-    <td>{{department}}</td>
-    <td>{{merchantStatus}}</td>
-    <td>{{accountStatus}}</td>
-    <td>
-      <a href="#" type="button" class="btn btn-xs btn-default btn-edit">查看</a>
-    </td>
-  </tr>
-  {{/rows}}
 </script>

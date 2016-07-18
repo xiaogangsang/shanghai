@@ -108,10 +108,10 @@ $('#formSearch').on('submit', function (e) {
 
   if (!_DEBUG) {
     $.ajax({
-      url: common.API_HOST + 'settlement/shipmentInfo/infoList',// TODO: URL
+      url: common.API_HOST + 'settlement/shipmentInfo/infoList',
       type: 'GET',
       dataType: 'json',
-      // data: sendData,
+      data: sendData,
     })
     .done(function (res) {
       handleData(res);
@@ -156,7 +156,7 @@ function handlePresetQuery() {
         var parameters = passedParam.param;
 
         _pageIndex = 1;
-        _selectedSummary = {'acquiringInfoFormCollection': parameters, 'pageSize': _pageSize};
+        _selectedSummary = {'shipmentInfoFormCollection': parameters, 'pageSize': _pageSize};
 
         _queryingFromSelectedSummary = true;
         queryFromSelectedSummary();
@@ -208,6 +208,7 @@ function handleData(res) {
         item.reconciliationStatus = parseReconciliationStatus(item.reconciliationStatus);
         item.reason = parseReason(item.reason);
         item.discountType = parseDiscountType(item.discountType);
+        item.shipmentStatus = parseShipmentStatus(item.shipmentStatus);
       });
 
       if (!_queryingFromSelectedSummary) {
@@ -297,27 +298,79 @@ $('#pager').on('click', '#btn-pager', function (e) {
 });
 
 $('.btn-reset').click(function(e) {
-	// $('#search_dateType').val('');
- //  $('#search_startTime').val('');
- //  $('#search_endTime').val('');
- //  $('#search_merchantName').val('');
- //  $('#search_merchantNo').val('');
- //  $('#search_payStatus').val('');
-
  $('#formSearch :input:not(:button)').val('');
-
 });
 
-$('.complete-commit').click(function(e) {
-  // TODO: 对账完成提交
-  $.ajax({
-      url: 'movie-ops/settlement/acquiringInfo/listSummary',// TODO: URL
+$('.btn-export-all').click(function(e) {
+
+  e.preventDefault();
+
+  if (_queryingFromSelectedSummary) {
+    var param = {'shipmentInfoFormCollection' : _selectedSummary.shipmentInfoFormCollection};
+
+    $.ajax({
+      url: common.API_HOST + '?' + serializeParam(param),// liugeTODO: URL
+      type: 'GET',
+      dataType: 'json',
+    })
+    .done(function(res) {
+      if (res.meta.result == 0) {
+        alert(res.meta.msg);
+      } else {
+        window.location.href = res.data.filePath;
+      }
+    });
+  } else {
+    $.ajax({
+      url: common.API_HOST + 'settlement/shipmentInfo/infoListExport', 
       type: 'GET',
       dataType: 'json',
       data: searchCache,
     })
     .done(function (res) {
+      if (res.meta.result == 0) {
+        alert(res.meta.msg);
+      } else {
+        window.location.href = res.data.filePath;// liugeTODO: 统一一下
+      }
     });
+  }
+});
+
+$('.complete-commit').click(function(e) {
+
+  e.preventDefault();
+
+  if (_queryingFromSelectedSummary) {
+    var param = {'shipmentInfoFormCollection' : _selectedSummary.shipmentInfoFormCollection};
+    $.ajax({
+      url: common.API_HOST + 'settlement/shipmentInfo/listSummaryDetailUpdate',
+      type: 'POST',
+      dataType: 'json',
+      data: param
+    })
+    .done(function(res) {
+      if (res.meta.result == 0) {
+        alert(res.meta.msg);
+      } else {
+        alert(res.meta.msg);
+      }
+    });
+  } else {
+    $.ajax({
+      url: common.API_HOST + 'settlement/shipmentInfo/updateInfoList',
+      type: 'POST',
+      dataType: 'json',
+      data: searchCache,
+    })
+    .done(function (res) {
+      if (res.meta.result == 0) {
+        alert(res.meta.msg);
+      } else {
+        alert(res.meta.msg);
+      }
+    });
+  }
 });
 
 $('#dataTable').on('click', '.btn-edit', function (e) {
@@ -342,12 +395,21 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
       detail.payStatus = parsePayStatus(detail.payStatus);
       detail.bizType = parseBizType(detail.bizType);
       detail.chargeMerchant = parseMerchant(detail.chargeMerchant);
+      detail.discountType = parseDiscountType(detail.discountType);
+      detail.acquiringReconciliationStatus = parseReconciliationStatus(detail.acquiringReconciliationStatus);
       var template = $('#detail-template').html();
       Mustache.parse(template);
       var html = Mustache.render(template, data);
       $('#popup-detail .modal-body').html(html);
 
       $('#popup-detail').modal('show');
+
+      $('#subsidyType option[value="' + detail.subsidyType + '"]').prop('selected', true);
+      $('#partner option[value="' + detail.partner + '"]').prop('selected', true);
+      $('#shipmentStatus option[value="' + detail.shipmentStatus + '"]').prop('selected', true);
+      $('#reconciliationStatus option[value="' + detail.reconciliationStatus + '"]').prop('selected', true);
+      $('#reason option[value="' + detail.reason + '"]').prop('selected', true);
+
     });
   } else {
     var data = $.parseJSON('{ "meta" : { "result" : "1", "msg" : "操作成功" }, "data" : { "operateRecords" : [ { "bizType" : 1, "orderNo" : "738289474424934400", "o2oReceivableAmount" : 12, "operateTime" : "2016-06-23 15:42:18", "operatorName" : "徐慧", "subsidyAmountO2o" : 4750, "discountName" : "买2减1", "ticketAmount" : 4750, "chargeMerchant" : 1, "serviceAmount" : 0, "partner" : "3", "reconciliationStatus" : 4, "returnFee" : 1, "discountType" : 1, "payStatus" : 4 }, { "bizType" : 1, "orderNo" : "738289474424934400", "o2oReceivableAmount" : 12, "operateTime" : "2016-06-23 11:50:51", "operatorName" : "李瑾", "subsidyAmountO2o" : 4750, "discountName" : "买2减1", "ticketAmount" : 4750, "chargeMerchant" : 1, "serviceAmount" : 0, "partner" : "3", "reconciliationStatus" : 4, "returnFee" : 1, "discountType" : 1, "payStatus" : 4 } ], "detail" : { "reason" : 1, "receivablePoint" : 0, "bizType" : 1, "reconciliationDate" : 1466733543000, "subsidyType" : 1, "bankAmount" : 1, "checkStatus" : 1, "discountName" : "买2减1", "ticketAmount" : 1, "payAmount" : 4700, "serviceAmount" : 0, "discountType" : 1, "id" : 2585, "thdSerialNo" : "1223", "orderNo" : "738284476651671552", "countNum" : 1, "costCenter" : "卡中心总部", "o2oReceivableAmount" : 4700, "externalId" : 857, "updateTime" : 1466738155000, "version" : 0, "subsidyAmountO2o" : 0, "chargeMerchant" : 1, "partner" : "1", "reconciliationStatus" : 4, "createTime" : 1464796800000, "returnFee" : 12, "chargeMerchantNo" : "738284476651671552", "payStatus" : 1, "chargeMerchantNo" : "308010700103175" } } }');
@@ -447,6 +509,12 @@ function parseDiscountType(type) {
 function parsePartner(partner) {
   var map = {'1' : 'O2O', '2' : 'TP方', '3' : '渠道方'};
   return map[partner];
+}
+
+function parseShipmentStatus(status) {
+  var map = {'1' : '出货中', '2' : '出货失败', '3' : '出货成功', '4' : '退货失败', '5' : '退货成功'};
+
+  return map[status];
 }
 
 
