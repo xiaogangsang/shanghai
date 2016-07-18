@@ -293,19 +293,19 @@
               <div class="input-group-addon">出货状态</div>
               <select class="form-control oldValue" id="shipmentStatus" value="{{shipmentStatus}}">
                 <option value=""></option>
-                <option value="1">出货中</option>
-                <option value="2">出货失败</option>
-                <option value="3">出货成功</option>
-                <option value="4">退货失败</option>
-                <option value="5">退货成功</option>
+                <option value="4">出货中</option>
+                <option value="3">出货失败</option>
+                <option value="2">出货成功</option>
+                <option value="8">退货失败</option>
+                <option value="7">退货成功</option>
               </select>
               <select class="form-control newValue" id="shipmentStatusNew" value="{{currentDetail.shipmentStatus}}">
                 <option value=""></option>
-                <option value="1">出货中</option>
-                <option value="2">出货失败</option>
-                <option value="3">出货成功</option>
-                <option value="4">退货失败</option>
-                <option value="5">退货成功</option>
+                <option value="4">出货中</option>
+                <option value="3">出货失败</option>
+                <option value="2">出货成功</option>
+                <option value="8">退货失败</option>
+                <option value="7">退货成功</option>
               </select>
             </div>
           </div>

@@ -325,9 +325,9 @@ function setModal(movieData) {
   if (movieData) {
     _(_status).forEach(function (value, key) {
       if (value.id == movieData.status) {
-        value.selected = true;
+        // value.selected = true;
       } else {
-        value.selected = false;
+        // value.selected = false;
       }
     });
 

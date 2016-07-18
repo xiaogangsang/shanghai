@@ -475,9 +475,10 @@ function parseBusinessType(businessType) {
   return map[businessType];
 }
 
-function parseShipmentStatus(shipmentStatus) {
-  var map = {'1' : '出货中', '2' : '出货失败', '3' : '出货成功', '4' : '退货失败', '5' : '退货成功'};
-  return map[shipmentStatus];
+function parseShipmentStatus(status) {
+  var map = {'1' : '未出货(初始化状态)', '2' : '出货成功', '3' : '出货失败', '4' : '出货中', '5' : '待定', '6' : '待定', '7' : '退货成功', '8' : '退货失败'};
+
+  return map[status];
 }
 
 function parseRefundPartner(partner) {

@@ -33,7 +33,7 @@ $(function () {
   var branches;
   var guys = {};
 
-  common.init('merchant-list');
+  common.init('merchant-edit-approval');
 
   // var selectBranch = $('#search_merchantBranch').selectize()[0].selectize;
   selectGuy = $('#search_merchantSubscribeGuy').selectize()[0].selectize;

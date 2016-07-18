@@ -126,7 +126,7 @@ $('#formSearch').on('submit', function (e) {
       url: common.API_HOST + 'settlement/shipmentInfo/infoList',
       type: 'GET',
       dataType: 'json',
-      // data: sendData,
+      data: sendData,
     })
     .done(function (res) {
       handleData(res);
@@ -372,6 +372,7 @@ $('body').on('click', '.edit-submit', function(e) {
     partner: $('#returnFee').val(),
     finalSettlementAmount: $('#finalSettlementAmount').val(),
     reconciliationStatus: $('#reconciliationStatus').val(),
+    shipmentStatus: $('#shipmentStatus').val(),
     reason: $('#reason').val()
   };
 
@@ -445,7 +446,7 @@ function parseCheckStatus(status) {
 }
 
 function parseShipmentStatus(status) {
-  var map = {'1' : '出货中', '2' : '出货失败', '3' : '出货成功', '4' : '退货失败', '5' : '退货成功'};
+  var map = {'1' : '未出货(初始化状态)', '2' : '出货成功', '3' : '出货失败', '4' : '出货中', '5' : '待定', '6' : '待定', '7' : '退货成功', '8' : '退货失败'};
 
   return map[status];
 }

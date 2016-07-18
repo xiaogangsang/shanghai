@@ -132,48 +132,49 @@
       </div>
     </div>
 
-    <div class="panel">
+    <div class="panel" style="display:none">
       <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu14"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 商户信息维护</a>
       <div id="menu14" class="panel-collapse collapse" role="tabpanel">
         <div class="list-group">
-          <a href="merchant-list.html" class="list-group-item" id="menu-merchant-list" data-id="16">商户列表</a>
-          <a href="merchant-creation.html" class="list-group-item" id="menu-merchant-creation" data-id="16">商户新增</a>
-          <a href="merchant-creation.html" class="list-group-item" id="menu-merchant-submitted" data-id="16">我提交的商户</a>
-          <a href="merchant-creation.html" class="list-group-item" id="menu-merchant-draft" data-id="16">草稿箱</a>
+          <a href="merchant-list.html" class="list-group-item" id="menu-merchant-list" data-id="141" style="display:none">商户列表</a>
+          <a href="merchant-creation.html" class="list-group-item" id="menu-merchant-creation" data-id="142" style="display:none">商户新增</a>
+          <a href="merchant-edit-submitted.html" class="list-group-item" id="menu-merchant-edit-submitted" data-id="194" style="display:none">我提交的商户</a>
+          <a href="merchant-creation.html" class="list-group-item" id="menu-merchant-draft" data-id="195" style="display:none">草稿箱</a>
+          <a href="merchant-edit-approval.html" class="list-group-item" id="menu-merchant-edit-approval" data-id="195" style="display:none">商户审核</a>
         </div>
       </div>
     </div>
 
-    <div class="panel">
+    <div class="panel" style="display:none">
       <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu15"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 收单对账</a>
       <div id="menu15" class="panel-collapse collapse" role="tabpanel">
         <div class="list-group">
-          <a href="balance-in-summary.html" class="list-group-item" id="menu-balance-in-summary" data-id="16">对账汇总</a>
-          <a href="balance-in-detail.html" class="list-group-item" id="menu-balance-in-detail" data-id="16">对账明细</a>
-          <a href="balance-in-edit-submitted.html" class="list-group-item" id="menu-balance-in-edit-submitted" data-id="16">已提交的支付流水修改</a>
-          <a href="balance-in-edit-approval.html" class="list-group-item" id="menu-balance-in-edit-approval" data-id=16>支付流水修改审核</a>
+          <a href="balance-in-summary.html" class="list-group-item" id="menu-balance-in-summary" data-id="143" style="display:none">对账汇总</a>
+          <a href="balance-in-detail.html" class="list-group-item" id="menu-balance-in-detail" data-id="144" style="display:none">对账明细</a>
+          <a href="balance-in-edit-submitted.html" class="list-group-item" id="menu-balance-in-edit-submitted" data-id="196" style="display:none">已提交的支付流水修改</a>
+          <a href="balance-in-edit-approval.html" class="list-group-item" id="menu-balance-in-edit-approval" data-id="197" style="display:none">支付流水修改审核</a>
         </div>
       </div>
     </div>
 
-    <div class="panel">
+    <div class="panel" style="display:none">
       <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu16"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 出货对账</a>
       <div id="menu16" class="panel-collapse collapse" role="tabpanel">
         <div class="list-group">
-          <a href="balance-out-summary.html" class="list-group-item" id="menu-balance-out-summary" data-id="16">对账汇总</a>
-          <a href="balance-out-detail.html" class="list-group-item" id="menu-balance-out-detail" data-id="16">对账明细</a>
-          <a href="balance-out-edit-submitted.html" class="list-group-item" id="menu-balance-out-edit-submitted" data-id="16">已提交的出货流水修改</a>
-          <a href="balance-out-edit-approval.html" class="list-group-item" id="menu-balance-out-edit-approval" data-id=16>出货流水修改审核</a>
+          <a href="balance-out-summary.html" class="list-group-item" id="menu-balance-out-summary" data-id="145" style="display:none">对账汇总</a>
+          <a href="balance-out-detail.html" class="list-group-item" id="menu-balance-out-detail" data-id="146" style="display:none">对账明细</a>
+          <a href="balance-out-edit-submitted.html" class="list-group-item" id="menu-balance-out-edit-submitted" data-id="188" style="display:none">已提交的出货流水修改</a>
+          <a href="balance-out-edit-approval.html" class="list-group-item" id="menu-balance-out-edit-approval" data-id="198" style="display:none">出货流水修改审核</a>
         </div>
       </div>
     </div>
 
-    <div class="panel">
+    <div class="panel" style="display:none">
       <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu17"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 拨款</a>
       <div id="menu17" class="panel-collapse collapse" role="tabpanel">
         <div class="list-group">
-          <a href="money-out-summary.html" class="list-group-item" id="menu-money-out-summary" data-id="16">拨款汇总</a>
-          <a href="money-out-log.html" class="list-group-item" id="menu-money-out-log" data-id="16">拨款日志</a>
+          <a href="money-out-summary.html" class="list-group-item" id="menu-money-out-summary" data-id="147" style="display:none">拨款汇总</a>
+          <a href="money-out-log.html" class="list-group-item" id="menu-money-out-log" data-id="148" style="display:none">拨款日志</a>
         </div>
       </div>
     </div>
