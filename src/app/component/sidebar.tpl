@@ -126,6 +126,8 @@
         <div class="list-group">
           <a href="merchant-list.html" class="list-group-item" id="menu-merchant-list" data-id="16">商户列表</a>
           <a href="merchant-creation.html" class="list-group-item" id="menu-merchant-creation" data-id="16">商户新增</a>
+          <a href="merchant-creation.html" class="list-group-item" id="menu-merchant-submitted" data-id="16">我提交的商户</a>
+          <a href="merchant-creation.html" class="list-group-item" id="menu-merchant-draft" data-id="16">草稿箱</a>
         </div>
       </div>
     </div>

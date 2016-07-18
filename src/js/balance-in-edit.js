@@ -320,7 +320,7 @@ $('#dataTable').on('click', '.btn-detail', function (e) {
 
   e.preventDefault();
 
-  if (_DEBUG) {
+  if (!_DEBUG) {
     $.ajax({
       url: common.API_HOST + 'settlement/acquiringCheck/queryAcquiringCheckDiff',
       type: 'GET',
