@@ -23,7 +23,7 @@ var useCache = false;
 var dataCache;
 var _submitting = false;
 
-var _DEBUG = true;
+var _DEBUG = false;
 
 $(function () {
 
