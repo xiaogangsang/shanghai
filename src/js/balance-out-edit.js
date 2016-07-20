@@ -128,7 +128,7 @@ $('#formSearch').on('submit', function (e) {
 
   if (!_DEBUG) {
     $.ajax({
-      url: common.API_HOST + 'settlement/shipmentInfo/infoList',
+      url: common.API_HOST + 'settlement/shipmentInfo/listByCheckStatus',
       type: 'GET',
       dataType: 'json',
       data: sendData,
