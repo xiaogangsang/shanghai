@@ -92,7 +92,7 @@ $('#formSearch').on('submit', function (e) {
 
   var sendData = {
   	dateType: $('#search_dateType').val(),
-    beginTime: $('#search_startTime').val(),
+    startTime: $('#search_startTime').val(),
     endTime: $('#search_endTime').val(),
     merchantName: $('#search_merchantName').val(),
     merchantNo: $('#search_merchantNo').val(),
@@ -120,6 +120,11 @@ $('#formSearch').on('submit', function (e) {
   }
 
   sendData.pageIndex = _pageIndex;
+
+  // 审核的时候, 要过滤审核的状态为待审核
+  if (approval) {
+    sendData.checkStatus = 2;
+  }
 
   if (!_DEBUG) {
     $.ajax({

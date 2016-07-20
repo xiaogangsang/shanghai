@@ -151,7 +151,7 @@
         <div class="list-group">
           <a href="balance-in-summary.html" class="list-group-item" id="menu-balance-in-summary" data-id="143" style="display:none">对账汇总</a>
           <a href="balance-in-detail.html" class="list-group-item" id="menu-balance-in-detail" data-id="144" style="display:none">对账明细</a>
-          <a href="balance-in-edit-submitted.html" class="list-group-item" id="menu-balance-in-edit-submitted" data-id="196" style="display:none">已提交的支付流水修改</a>
+          <a href="balance-in-edit-submitted.html" class="list-group-item" id="menu-balance-in-edit-submitted" data-id="196" style="display:none">支付流水修改记录</a>
           <a href="balance-in-edit-approval.html" class="list-group-item" id="menu-balance-in-edit-approval" data-id="197" style="display:none">支付流水修改审核</a>
         </div>
       </div>
@@ -163,7 +163,7 @@
         <div class="list-group">
           <a href="balance-out-summary.html" class="list-group-item" id="menu-balance-out-summary" data-id="145" style="display:none">对账汇总</a>
           <a href="balance-out-detail.html" class="list-group-item" id="menu-balance-out-detail" data-id="146" style="display:none">对账明细</a>
-          <a href="balance-out-edit-submitted.html" class="list-group-item" id="menu-balance-out-edit-submitted" data-id="188" style="display:none">已提交的出货流水修改</a>
+          <a href="balance-out-edit-submitted.html" class="list-group-item" id="menu-balance-out-edit-submitted" data-id="188" style="display:none">出货流水修改记录</a>
           <a href="balance-out-edit-approval.html" class="list-group-item" id="menu-balance-out-edit-approval" data-id="198" style="display:none">出货流水修改审核</a>
         </div>
       </div>

@@ -77,7 +77,7 @@ $('#formSearch').on('submit', function (e) {
 
   var sendData = {
   	dateType: $('#search_dateType').val(),
-    beginTime: $('#search_startTime').val(),
+    startTime: $('#search_startTime').val(),
     endTime: $('#search_endTime').val(),
     merchantName: $('#search_merchantName').val(),
     merchantNo: $('#search_merchantNo').val(),
@@ -317,7 +317,7 @@ $('.btn-export-all').click(function(e) {
       if (res.meta.result == 0) {
         alert(res.meta.msg);
       } else {
-        window.location.href = res.data.filePath;
+        window.location.href = common.API_HOST + 'settlement/merchantAttachment/downLoad?fileUrl=' + res.data.fileUrl;
       }
     });
   } else {
@@ -331,7 +331,7 @@ $('.btn-export-all').click(function(e) {
       if (res.meta.result == 0) {
         alert(res.meta.msg);
       } else {
-        window.location.href = res.data.filePath;// liugeTODO: 统一一下
+        window.location.href = common.API_HOST + 'settlement/merchantAttachment/downLoad?fileUrl=' + res.data.fileUrl;
       }
     });
   }

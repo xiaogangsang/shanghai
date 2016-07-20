@@ -315,7 +315,7 @@ $('.btn-export-all').click(function(e) {
       if (res.meta.result == 0) {
         alert(res.meta.msg);
       } else {
-        window.location.href = res.data.fileUrl;
+        window.location.href = common.API_HOST + 'settlement/merchantAttachment/downLoad?fileUrl=' + res.data.fileUrl;
       }
     });
   } else {
@@ -329,7 +329,7 @@ $('.btn-export-all').click(function(e) {
       if (res.meta.result == 0) {
         alert(res.meta.msg);
       } else {
-        window.location.href = res.data.fileUrl;
+        window.location.href = common.API_HOST + 'settlement/merchantAttachment/downLoad?fileUrl=' + res.data.fileUrl;
       }
     });
   }
@@ -342,8 +342,8 @@ $('.complete-commit').click(function(e) {
   if (_queryingFromSelectedSummary) {
     var param = {'acquiringInfoFormCollection' : _selectedSummary.acquiringInfoFormCollection};
     $.ajax({
-      url: common.API_HOST + 'settlement/acquiring/confirmSummaryDetail',
-      type: 'POST',
+      url: common.API_HOST + 'settlement/acquiring/confirmSummaryDetail?' + serializeParam(param),
+      type: 'GET',
       dataType: 'json',
       data: param
     })
@@ -357,7 +357,7 @@ $('.complete-commit').click(function(e) {
   } else {
     $.ajax({
       url: common.API_HOST + 'settlement/acquiring/confirmAcquiringInfoBatch',
-      type: 'POST',
+      type: 'GET',
       dataType: 'json',
       data: searchCache,
     })

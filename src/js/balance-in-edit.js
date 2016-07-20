@@ -118,6 +118,10 @@ $('#formSearch').on('submit', function (e) {
 
   sendData.pageIndex = _pageIndex;
 
+  if (approval) {
+    sendData.checkStatus = 2;
+  }
+
   if (!_DEBUG) {
     $.ajax({
       url: common.API_HOST + 'settlement/acquiringCheck/list',

@@ -295,7 +295,7 @@ function operate(operateCode, idList) {
 
   var data = {appStatus: operateCode, merchantSummaryIdList: idList};
   $.ajax({
-    url: "MovieOps/settlement/merchantSummary/updateMerchantSummaryStatus",
+    url: common.API_HOST + "settlement/merchantSummary/updateMerchantSummaryStatus",
     type: "GET",
     dataType: 'json',
     data: data
