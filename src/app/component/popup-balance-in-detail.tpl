@@ -135,7 +135,7 @@
 
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
-            <div class="input-group-addon">我方补贴金额</div>
+            <div class="input-group-addon">渠道方补贴金额</div>
             <input type="text" class="form-control oldValue" id="subsidyAmountO2o" value="{{subsidyAmountO2o}}">
             <input type="text" class="form-control newValue" id="subsidyAmountO2oNew" value="{{currentDetail.subsidyAmountO2o}}">
           </div>
@@ -253,14 +253,12 @@
               <option value="1">未对账</option>
               <option value="2">对账不一致</option>
               <option value="3">对账成功</option>
-              <option value="4">确认</option>
             </select>
             <select class="form-control newValue" id="reconciliationStatusNew" value="{{currentDetail.reconciliationStatus}}">
               <option value=""></option>
               <option value="1">未对账</option>
               <option value="2">对账不一致</option>
               <option value="3">对账成功</option>
-              <option value="4">确认</option>
             </select>
           </div>
         </div>
@@ -312,7 +310,7 @@
                   <th>票价</th>
                   <th>退票手续费</th>
                   <th>服务费</th>
-                  <th>我方补贴金额</th>
+                  <th>渠道方补贴金额</th>
                   <th>应收金额</th>
                   <th>承债方</th>
                   <th>优惠方式</th>

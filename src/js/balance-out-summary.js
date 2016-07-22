@@ -270,7 +270,7 @@ function parseShipmentStatus(status) {
 }
 
 function parseBizType(type) {
-  var map = {'1' : '在线选座', '2' : '退货手续费'};
+  var map = {'1' : '影票', '2' : '退货手续费'};
 
   return map[type];
 }

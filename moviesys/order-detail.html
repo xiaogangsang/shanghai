@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="images/favicon.ico" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>订单管理</title>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/order.css">
+</head>
+<body>
+
+  <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="index.html">MovieSys(蛋壳)</a>
+    </div>
+    <ul class="nav navbar-nav navbar-right">
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span> <span id="loginName">陌生人</span> <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li><a href="password.html"><span class="glyphicon glyphicon-lock"></span> 修改密码</a></li>
+          <li><a id="logout" href="login.html?logout"><span class="glyphicon glyphicon-off"></span> 退出登录</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+  <div class="container-fluid">
+
+    <div class="row">
+
+      <div class="col-sm-3 col-md-2 sidebar">
+
+  <div class="panel-group" id="menu">
+
+    <div class="panel" style="display:none">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu1"><span class="glyphicon glyphicon-send" aria-hidden="true"></span> 合作方管理</a>
+      <div id="menu1" class="panel-collapse collapse">
+        <div class="list-group">
+          <a href="class.html" class="list-group-item" id="menu-class" data-id="16" style="display:none">万达票类管理</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="display:none">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu2"><span class="glyphicon glyphicon-facetime-video" aria-hidden="true"></span> 影院管理</a>
+      <div id="menu2" class="panel-collapse collapse" role="tabpanel">
+        <div class="list-group">
+          <a href="cinema.html" class="list-group-item" id="menu-cinema" data-id="7" style="display:none">标准影院库</a>
+          <a href="cinema-tp.html" class="list-group-item" id="menu-cinema-tp" data-id="8" style="display:none">合作方影院库</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="display:none">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu3"><span class="glyphicon glyphicon-film" aria-hidden="true"></span> 影片管理</a>
+      <div id="menu3" class="panel-collapse collapse" role="tabpanel">
+        <div class="list-group">
+          <a href="movie.html" class="list-group-item" id="menu-movie" data-id="9" style="display:none">标准影片库</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="display:none">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu4"><span class="glyphicon glyphicon-credit-card" aria-hidden="true"></span> 场次及价格管理</a>
+      <div id="menu4" class="panel-collapse collapse" role="tabpanel">
+        <div class="list-group">
+          <a href="showtime.html" class="list-group-item" id="menu-showtime" data-id="20" style="display:none">场次查询</a>
+          <a href="charge.html" class="list-group-item" id="menu-charge" data-id="21" style="display:none">服务费设置</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="display:none">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu5"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> 活动中心</a>
+      <div id="menu5" class="panel-collapse collapse" role="tabpanel">
+        <div class="list-group">
+          <a href="activity-plan.html" class="list-group-item" id="menu-activity-plan" data-id="10" style="display:none">活动计划管理</a>
+          <a href="activity-unit.html" class="list-group-item" id="menu-activity-unit" data-id="11" style="display:none">活动单元管理</a>
+          <a href="activity-cs.html" class="list-group-item" id="menu-activity-cs" data-id="24" style="display:none">活动查询</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="display:none">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu6"><span class="glyphicon glyphicon-barcode" aria-hidden="true"></span> 优惠券管理</a>
+      <div id="menu6" class="panel-collapse collapse" role="tabpanel">
+        <div class="list-group">
+          <a href="coupon-rule.html" class="list-group-item" id="menu-coupon-rule" data-id="12" style="display:none">优惠券规则管理</a>
+          <a href="coupon-generate.html" class="list-group-item" id="menu-coupon-generate" data-id="22" style="display:none">批量产码</a>
+          <a href="coupon-bind.html" class="list-group-item" id="menu-coupon-bind" data-id="23" style="display:none">指定用户灌码</a>
+          <a href="coupon-record.html" class="list-group-item" id="menu-coupon-record" data-id="19" style="display:none">优惠券使用记录</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="display:none">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu7"><span class="glyphicon glyphicon-picture" aria-hidden="true"></span> 前端配置平台</a>
+      <div id="menu7" class="panel-collapse collapse" role="tabpanel">
+        <div class="list-group">
+          <a href="banner.html" class="list-group-item" id="menu-banner" data-id="13" style="display:none">前端配置管理</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="display:none">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu8"><span class="glyphicon glyphicon-file" aria-hidden="true"></span> 订单管理</a>
+      <div id="menu8" class="panel-collapse collapse" role="tabpanel">
+        <div class="list-group">
+          <a href="order-cs.html" class="list-group-item" id="menu-order-cs" data-id="14" style="display:none">客服</a>
+          <a href="order.html" class="list-group-item" id="menu-order" data-id="15" style="display:none">运营</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="display:none">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu9"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 报表查询</a>
+      <div id="menu9" class="panel-collapse collapse" role="tabpanel">
+        <div class="list-group">
+          <a href="report.html" class="list-group-item" id="menu-report" data-id="17" style="display:none">运营报表</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="display:none">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu10"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span> 评论管理</a>
+      <div id="menu10" class="panel-collapse collapse" role="tabpanel">
+        <div class="list-group">
+          <a href="comment.html" class="list-group-item" id="menu-comment" data-id="6" style="display:none">评论编辑</a>
+          <a href="comment-sensitive.html" class="list-group-item" id="menu-comment-sensitive" data-id="5" style="display:none">敏感词管理</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="display:none">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu11"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> 用户权限管理</a>
+      <div id="menu11" class="panel-collapse collapse" role="tabpanel">
+        <div class="list-group">
+          <a href="user.html" class="list-group-item" id="menu-user" data-id="1" style="display:none">用户管理</a>
+          <a href="role.html" class="list-group-item" id="menu-role" data-id="2" style="display:none">角色管理</a>
+          <a href="ability-resource.html" class="list-group-item" id="menu-ability-resource" data-id="4" style="display:none">功能权限管理</a>
+          <a href="ability-channel.html" class="list-group-item" id="menu-ability-channel" data-id="3" style="display:none">渠道权限管理</a>
+          <a href="ability-city.html" class="list-group-item" id="menu-ability-city" data-id="3" style="display:none">城市权限管理</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="display:none">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu12"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> 短信发送记录</a>
+      <div id="menu12" class="panel-collapse collapse" role="tabpanel">
+        <div class="list-group">
+          <a href="record-sms.html" class="list-group-item" id="menu-record-sms" data-id="25">查询</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="display:none">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu13"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 操作流水记录</a>
+      <div id="menu13" class="panel-collapse collapse" role="tabpanel">
+        <div class="list-group">
+          <a href="record-operation.html" class="list-group-item" id="menu-record-operation" data-id="18" style="display:none">查询</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="display:none">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu14"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 商户信息维护</a>
+      <div id="menu14" class="panel-collapse collapse" role="tabpanel">
+        <div class="list-group">
+          <a href="merchant-list.html" class="list-group-item" id="menu-merchant-list" data-id="141" style="display:none">商户列表</a>
+          <a href="merchant-creation.html" class="list-group-item" id="menu-merchant-creation" data-id="142" style="display:none">商户新增</a>
+          <a href="merchant-edit-submitted.html" class="list-group-item" id="menu-merchant-edit-submitted" data-id="194" style="display:none">我提交的商户</a>
+          <a href="merchant-creation.html" class="list-group-item" id="menu-merchant-draft" data-id="195" style="display:none">草稿箱</a>
+          <a href="merchant-edit-approval.html" class="list-group-item" id="menu-merchant-edit-approval" data-id="203" style="display:none">商户审核</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="display:none">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu15"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 收单对账</a>
+      <div id="menu15" class="panel-collapse collapse" role="tabpanel">
+        <div class="list-group">
+          <a href="balance-in-summary.html" class="list-group-item" id="menu-balance-in-summary" data-id="143" style="display:none">对账汇总</a>
+          <a href="balance-in-detail.html" class="list-group-item" id="menu-balance-in-detail" data-id="144" style="display:none">对账明细</a>
+          <a href="balance-in-edit-submitted.html" class="list-group-item" id="menu-balance-in-edit-submitted" data-id="196" style="display:none">支付流水修改记录</a>
+          <a href="balance-in-edit-approval.html" class="list-group-item" id="menu-balance-in-edit-approval" data-id="197" style="display:none">支付流水修改审核</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="display:none">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu16"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 出货对账</a>
+      <div id="menu16" class="panel-collapse collapse" role="tabpanel">
+        <div class="list-group">
+          <a href="balance-out-summary.html" class="list-group-item" id="menu-balance-out-summary" data-id="145" style="display:none">对账汇总</a>
+          <a href="balance-out-detail.html" class="list-group-item" id="menu-balance-out-detail" data-id="146" style="display:none">对账明细</a>
+          <a href="balance-out-edit-submitted.html" class="list-group-item" id="menu-balance-out-edit-submitted" data-id="188" style="display:none">出货流水修改记录</a>
+          <a href="balance-out-edit-approval.html" class="list-group-item" id="menu-balance-out-edit-approval" data-id="198" style="display:none">出货流水修改审核</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="display:none">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu17"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 拨款</a>
+      <div id="menu17" class="panel-collapse collapse" role="tabpanel">
+        <div class="list-group">
+          <a href="money-out-summary.html" class="list-group-item" id="menu-money-out-summary" data-id="147" style="display:none">拨款汇总</a>
+          <a href="money-out-log.html" class="list-group-item" id="menu-money-out-log" data-id="148" style="display:none">拨款日志</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+      <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+        <ol class="breadcrumb">
+          <li>订单管理</li>
+          <li>运营</li>
+          <li class="active">订单详情</li>
+        </ol>
+
+        <div class="content-area">
+
+          <h2>订单详情</h2>
+
+          <input type="hidden" id="transOrderNo">
+          <input type="hidden" id="productOrderNo">
+          <input type="hidden" id="channelId">
+          <input type="hidden" id="couponNo">
+
+          <section class="order-detail">
+
+
+            <div class="col-md-12 col-lg-4" id="payOrder">
+              <h3>交易订单</h3>
+            </div>
+
+            <div class="col-md-12 col-lg-8" id="bizOrder">
+              <h3>商品订单</h3>
+            </div>
+
+          </section>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="js/vendor.js"></script>
+  <script src="js/order-detail.js"></script>
+
+  <script id="pay-template" type="text/x-tmpl-mustache">
+    <div class="edit-section">
+      <div class="col-md-6 col-lg-12"><label>客户ID：</label>{{customerId}}</div>
+      <div class="col-md-6 col-lg-12"><label>手机号：</label>{{mobile}}</div>
+    </div>
+    <div class="edit-section">
+      <div class="col-md-6 col-lg-12"><label>交易订单号：</label>{{transOrderNo}}</div>
+      <div class="col-md-6 col-lg-12"><label>支付订单号：</label>{{cmbOrderNo}}</div>
+      <div class="col-md-6 col-lg-12"><label>下单时间：</label>{{placeOrderTime}}</div>
+      <div class="col-md-6 col-lg-12"><label>订单完成时间：</label>{{finishOrderTime}}</div>
+      <div class="col-md-6 col-lg-12"><label>实付金额：</label>{{actualPayAmount}}</div>
+      <div class="col-md-6 col-lg-12"><label>实付积分：</label>{{actualPayPoint}}</div>
+      <div class="col-md-6 col-lg-12"><label>交易订单状态：</label>{{transOrderStatus}}</div>
+    </div>
+    <div class="edit-section">
+      <h4 style="margin-top: 0;">交易明细</h4>
+      <table class="table table-bordered" style="margin-bottom: 0;">
+        <thead>
+          <tr>
+            <th>交易类型</th>
+            <th>交易金额</th>
+            <th>交易积分</th>
+            <th>交易状态</th>
+            <th>交易时间</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#transDetailList}}
+          <tr>
+            <td>{{transType}}</td>
+            <td>{{transAmount}}</td>
+            <td>{{transPoint}}</td>
+            <td>{{transStatus}}</td>
+            <td>{{transDate}}</td>
+          </tr>
+          {{/transDetailList}}
+        </tbody>
+      </table>
+    </div>
+  </script>
+  <script id="biz-template" type="text/x-tmpl-mustache">
+    <div class="edit-section">
+      <div class="col-xs-12 col-sm-6"><label>商品订单号：</label>{{productOrderNo}}</div>
+      <div class="col-xs-12 col-sm-6"><label>第三方订单号：</label>{{tpOrderNo}}</div>
+      <div class="col-xs-12 col-sm-6"><label>商品支付状态：</label>{{status}}</div>
+      <div class="col-xs-12 col-sm-6"><label>商品订单状态：</label>{{productOrderStatus}}</div>
+      {{#canRefund}}
+      <div class="col-xs-12"><button class="btn btn-default pull-right" id="btn-refund">仅退款</button></div>
+      {{/canRefund}}
+    </div>
+    <div class="edit-section">
+      <div class="col-xs-12 col-sm-6"><label>合作方：</label>{{thirdPartyName}}</div>
+      <div class="col-xs-12 col-sm-6"><label>渠道：</label>{{channelName}}</div>
+      <div class="col-xs-12 col-sm-6"><label>城市：</label>{{cityName}}</div>
+      <div class="col-xs-12 col-sm-6"><label>影院：</label>{{cinemaName}}</div>
+      <div class="col-xs-12"><label>影院地址：</label>{{cinemaAddress}}</div>
+      <div class="col-xs-12 col-sm-6"><label>影片：</label>{{filmName}}</div>
+      <div class="col-xs-12 col-sm-6"><label>影片制式：</label>{{dimen}}</div>
+      <div class="col-xs-12 col-sm-6"><label>影厅：</label>{{hall}}</div>
+      <div class="col-xs-12 col-sm-6"><label>座位：</label>{{seat}}</div>
+      <div class="col-xs-12 col-sm-6"><label>开场时间：</label>{{playTime}}</div>
+      {{#canReturnTicket}}
+      <div class="col-xs-12" style="text-align: right;">
+        <!--<span class="btn-link" data-toggle="tooltip" data-html="true" data-placement="top" title="1、该影票开映前1小时支持退票；<br>2、影片开映前24小时（含）退票，不收取服务费；<br>3、影片开映前：2小时（含）至24小时按2元/张收取服务费；<br>4、影片开映前：1小时（含）至2小时按5元/张收取服务费。">退票手续费规则</span>&nbsp;--><button class="btn btn-default" id="btn-returnTicket">退票并退款</button>
+      </div>
+      {{/canReturnTicket}}
+    </div>
+    <div class="edit-section">
+      <div class="col-xs-12 col-sm-6"><label>原价(单价)：</label>{{unitPrice}}</div>
+      <div class="col-xs-12 col-sm-6"><label>张数：</label>{{ticketNum}}</div>
+      <div class="col-xs-12 col-sm-6"><label>结算总价：</label>{{totalSettleAmount}}</div>
+      <div class="col-xs-12 col-sm-6"><label>总补贴金额：</label>{{allowanceAmount}}</div>
+      <div class="col-xs-12 col-sm-6"><label>补贴金额(预付)：</label>{{advancePayAmount}}</div>
+      <div class="col-xs-12 col-sm-6"><label>活动ID：</label>{{activityId}}</div>
+      <div class="col-xs-12 col-sm-6"><label>活动名称：</label>{{activityName}}</div>
+      <div class="col-xs-12 col-sm-6"><label>票类ID：</label>{{wandaTicketId}}</div>
+      <div class="col-xs-12 col-sm-6"><label>优惠券规则ID：</label>{{couponId}}</div>
+      <div class="col-xs-12 col-sm-6"><label>优惠券名称：</label>{{couponName}}</div>
+      <div class="col-xs-12 col-sm-6"><label>优惠券码：</label>{{couponCode}}</div>
+      <div class="col-xs-12 col-sm-6"><label>实际拨款金额：</label>{{finalTotalSettleAmount}}</div>
+      <div class="col-xs-12 col-sm-6"><label>商户号：</label>{{merchantNo}}</div>
+      {{#canReturnCoupon}}
+      <div class="col-xs-12" style="text-align: right;"><button class="btn btn-default" id="btn-returnCoupon">退优惠券</button></div>
+      {{/canReturnCoupon}}
+    </div>
+    <div class="edit-section">
+    <div class="col-xs-12 col-sm-6"><label>自助取票机：</label>{{#machineTicket}}{{text}}：{{value}}{{/machineTicket}}</div>
+      <div class="col-xs-12 col-sm-6"><label>影院前台：</label>{{#frontTicket}}{{text}}：{{value}}<br>{{/frontTicket}}</div>
+    </div>
+    <div class="edit-section">
+      <div class="col-xs-12"><label>短信发送内容：</label>{{smsContent}}</div>
+      {{#canSendSMS}}
+      <div class="col-xs-12"><button class="btn btn-default pull-right" id="btn-sendsms">重发短信</button></div>
+      {{/canSendSMS}}
+    </div>
+  </script>
+
+  <div class="modal fade" id="popup-undertaker" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form>
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">退票</h4>
+        </div>
+        <div class="modal-body">
+          <!-- <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-addon">选择手续费承担方</div>
+              <div class="radio-inline"><label><input type="radio" name="chargeUndertaker" value="1" required data-parsley-errors-container="#error-chargeUndertaker"><span>渠道客户</span></label></div>
+              <div class="radio-inline"><label><input type="radio" name="chargeUndertaker" value="2" required data-parsley-errors-container="#error-chargeUndertaker"><span>渠道方</span></label></div>
+              <div class="radio-inline"><label><input type="radio" name="chargeUndertaker" value="3" required data-parsley-errors-container="#error-chargeUndertaker"><span>电影平台</span></label></div>
+              <div id="error-chargeUndertaker"></div>
+            </div>
+          </div> -->
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-addon">退票原因</div>
+              <textarea class="form-control" id="reason" required></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">提交</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+  <div class="modal fade" id="popup-refund" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form>
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">退款</h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-addon">选择退款承担方</div>
+              <div class="radio-inline"><label><input type="radio" name="refundAmountUndertaker" value="1" required data-parsley-errors-container="#error-refundAmountUndertaker"><span>O2O</span></label></div>
+              <div class="radio-inline"><label><input type="radio" name="refundAmountUndertaker" value="2" required data-parsley-errors-container="#error-refundAmountUndertaker"><span>合作方</span></label></div>
+              <div class="radio-inline"><label><input type="radio" name="refundAmountUndertaker" value="3" required data-parsley-errors-container="#error-refundAmountUndertaker"><span>渠道</span></label></div>
+              <div id="error-refundAmountUndertaker"></div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-addon">退款原因</div>
+              <textarea class="form-control" id="reason" required></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">提交</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+</body>
+</html>

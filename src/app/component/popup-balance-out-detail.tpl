@@ -194,7 +194,7 @@
 
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
-            <div class="input-group-addon">应拨金额</div>
+            <div class="input-group-addon">应付金额</div>
             <input type="text" class="form-control oldValue" id="acceptanceAppropriation" value="{{acceptanceAppropriation}}">
             <input type="text" class="form-control newValue" id="acceptanceAppropriationNew" value="{{currentDetail.acceptanceAppropriation}}">
           </div>
@@ -228,7 +228,7 @@
 
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
-            <div class="input-group-addon">净拨款金额</div>
+            <div class="input-group-addon">实付金额</div>
             <input type="text" class="form-control oldValue" id="finalSettleAmount" value="{{finalSettleAmount}}">
             <input type="text" class="form-control newValue" id="finalSettleAmountNew" value="{{currentDetail.finalSettleAmount}}">
           </div>
@@ -325,14 +325,13 @@
               <option value="1">未对账</option>
               <option value="2">对账不一致</option>
               <option value="3">对账成功</option>
-              <option value="4">确认</option>
             </select>
             <select class="form-control newValue" id="reconciliationStatusNew" value="{{currentDetail.reconciliationStatus}}">
               <option value=""></option>
               <option value="1">未对账</option>
               <option value="2">对账不一致</option>
               <option value="3">对账成功</option>
-              <option value="4">确认</option>
+              <!-- <option value="4">确认</option> -->
             </select>
           </div>
         </div>

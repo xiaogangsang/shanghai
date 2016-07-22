@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="images/favicon.ico" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>活动中心</title>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/activity.css">
+</head>
+<body>
+
+  <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="index.html">MovieSys(蛋壳)</a>
+    </div>
+    <ul class="nav navbar-nav navbar-right">
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span> <span id="loginName">陌生人</span> <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li><a href="password.html"><span class="glyphicon glyphicon-lock"></span> 修改密码</a></li>
+          <li><a id="logout" href="login.html?logout"><span class="glyphicon glyphicon-off"></span> 退出登录</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+  <div class="container-fluid">
+
+    <div class="row">
+
+      <div class="col-sm-3 col-md-2 sidebar">
+
+  <div class="panel-group" id="menu">
+
+    <div class="panel" style="display:none">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu1"><span class="glyphicon glyphicon-send" aria-hidden="true"></span> 合作方管理</a>
+      <div id="menu1" class="panel-collapse collapse">
+        <div class="list-group">
+          <a href="class.html" class="list-group-item" id="menu-class" data-id="16" style="display:none">万达票类管理</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="display:none">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu2"><span class="glyphicon glyphicon-facetime-video" aria-hidden="true"></span> 影院管理</a>
+      <div id="menu2" class="panel-collapse collapse" role="tabpanel">
+        <div class="list-group">
+          <a href="cinema.html" class="list-group-item" id="menu-cinema" data-id="7" style="display:none">标准影院库</a>
+          <a href="cinema-tp.html" class="list-group-item" id="menu-cinema-tp" data-id="8" style="display:none">合作方影院库</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="display:none">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu3"><span class="glyphicon glyphicon-film" aria-hidden="true"></span> 影片管理</a>
+      <div id="menu3" class="panel-collapse collapse" role="tabpanel">
+        <div class="list-group">
+          <a href="movie.html" class="list-group-item" id="menu-movie" data-id="9" style="display:none">标准影片库</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="display:none">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu4"><span class="glyphicon glyphicon-credit-card" aria-hidden="true"></span> 场次及价格管理</a>
+      <div id="menu4" class="panel-collapse collapse" role="tabpanel">
+        <div class="list-group">
+          <a href="showtime.html" class="list-group-item" id="menu-showtime" data-id="20" style="display:none">场次查询</a>
+          <a href="charge.html" class="list-group-item" id="menu-charge" data-id="21" style="display:none">服务费设置</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="display:none">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu5"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> 活动中心</a>
+      <div id="menu5" class="panel-collapse collapse" role="tabpanel">
+        <div class="list-group">
+          <a href="activity-plan.html" class="list-group-item" id="menu-activity-plan" data-id="10" style="display:none">活动计划管理</a>
+          <a href="activity-unit.html" class="list-group-item" id="menu-activity-unit" data-id="11" style="display:none">活动单元管理</a>
+          <a href="activity-cs.html" class="list-group-item" id="menu-activity-cs" data-id="24" style="display:none">活动查询</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="display:none">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu6"><span class="glyphicon glyphicon-barcode" aria-hidden="true"></span> 优惠券管理</a>
+      <div id="menu6" class="panel-collapse collapse" role="tabpanel">
+        <div class="list-group">
+          <a href="coupon-rule.html" class="list-group-item" id="menu-coupon-rule" data-id="12" style="display:none">优惠券规则管理</a>
+          <a href="coupon-generate.html" class="list-group-item" id="menu-coupon-generate" data-id="22" style="display:none">批量产码</a>
+          <a href="coupon-bind.html" class="list-group-item" id="menu-coupon-bind" data-id="23" style="display:none">指定用户灌码</a>
+          <a href="coupon-record.html" class="list-group-item" id="menu-coupon-record" data-id="19" style="display:none">优惠券使用记录</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="display:none">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu7"><span class="glyphicon glyphicon-picture" aria-hidden="true"></span> 前端配置平台</a>
+      <div id="menu7" class="panel-collapse collapse" role="tabpanel">
+        <div class="list-group">
+          <a href="banner.html" class="list-group-item" id="menu-banner" data-id="13" style="display:none">前端配置管理</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="display:none">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu8"><span class="glyphicon glyphicon-file" aria-hidden="true"></span> 订单管理</a>
+      <div id="menu8" class="panel-collapse collapse" role="tabpanel">
+        <div class="list-group">
+          <a href="order-cs.html" class="list-group-item" id="menu-order-cs" data-id="14" style="display:none">客服</a>
+          <a href="order.html" class="list-group-item" id="menu-order" data-id="15" style="display:none">运营</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="display:none">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu9"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 报表查询</a>
+      <div id="menu9" class="panel-collapse collapse" role="tabpanel">
+        <div class="list-group">
+          <a href="report.html" class="list-group-item" id="menu-report" data-id="17" style="display:none">运营报表</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="display:none">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu10"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span> 评论管理</a>
+      <div id="menu10" class="panel-collapse collapse" role="tabpanel">
+        <div class="list-group">
+          <a href="comment.html" class="list-group-item" id="menu-comment" data-id="6" style="display:none">评论编辑</a>
+          <a href="comment-sensitive.html" class="list-group-item" id="menu-comment-sensitive" data-id="5" style="display:none">敏感词管理</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="display:none">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu11"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> 用户权限管理</a>
+      <div id="menu11" class="panel-collapse collapse" role="tabpanel">
+        <div class="list-group">
+          <a href="user.html" class="list-group-item" id="menu-user" data-id="1" style="display:none">用户管理</a>
+          <a href="role.html" class="list-group-item" id="menu-role" data-id="2" style="display:none">角色管理</a>
+          <a href="ability-resource.html" class="list-group-item" id="menu-ability-resource" data-id="4" style="display:none">功能权限管理</a>
+          <a href="ability-channel.html" class="list-group-item" id="menu-ability-channel" data-id="3" style="display:none">渠道权限管理</a>
+          <a href="ability-city.html" class="list-group-item" id="menu-ability-city" data-id="3" style="display:none">城市权限管理</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="display:none">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu12"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> 短信发送记录</a>
+      <div id="menu12" class="panel-collapse collapse" role="tabpanel">
+        <div class="list-group">
+          <a href="record-sms.html" class="list-group-item" id="menu-record-sms" data-id="25">查询</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="display:none">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu13"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 操作流水记录</a>
+      <div id="menu13" class="panel-collapse collapse" role="tabpanel">
+        <div class="list-group">
+          <a href="record-operation.html" class="list-group-item" id="menu-record-operation" data-id="18" style="display:none">查询</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="display:none">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu14"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 商户信息维护</a>
+      <div id="menu14" class="panel-collapse collapse" role="tabpanel">
+        <div class="list-group">
+          <a href="merchant-list.html" class="list-group-item" id="menu-merchant-list" data-id="141" style="display:none">商户列表</a>
+          <a href="merchant-creation.html" class="list-group-item" id="menu-merchant-creation" data-id="142" style="display:none">商户新增</a>
+          <a href="merchant-edit-submitted.html" class="list-group-item" id="menu-merchant-edit-submitted" data-id="194" style="display:none">我提交的商户</a>
+          <a href="merchant-creation.html" class="list-group-item" id="menu-merchant-draft" data-id="195" style="display:none">草稿箱</a>
+          <a href="merchant-edit-approval.html" class="list-group-item" id="menu-merchant-edit-approval" data-id="203" style="display:none">商户审核</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="display:none">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu15"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 收单对账</a>
+      <div id="menu15" class="panel-collapse collapse" role="tabpanel">
+        <div class="list-group">
+          <a href="balance-in-summary.html" class="list-group-item" id="menu-balance-in-summary" data-id="143" style="display:none">对账汇总</a>
+          <a href="balance-in-detail.html" class="list-group-item" id="menu-balance-in-detail" data-id="144" style="display:none">对账明细</a>
+          <a href="balance-in-edit-submitted.html" class="list-group-item" id="menu-balance-in-edit-submitted" data-id="196" style="display:none">支付流水修改记录</a>
+          <a href="balance-in-edit-approval.html" class="list-group-item" id="menu-balance-in-edit-approval" data-id="197" style="display:none">支付流水修改审核</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="display:none">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu16"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 出货对账</a>
+      <div id="menu16" class="panel-collapse collapse" role="tabpanel">
+        <div class="list-group">
+          <a href="balance-out-summary.html" class="list-group-item" id="menu-balance-out-summary" data-id="145" style="display:none">对账汇总</a>
+          <a href="balance-out-detail.html" class="list-group-item" id="menu-balance-out-detail" data-id="146" style="display:none">对账明细</a>
+          <a href="balance-out-edit-submitted.html" class="list-group-item" id="menu-balance-out-edit-submitted" data-id="188" style="display:none">出货流水修改记录</a>
+          <a href="balance-out-edit-approval.html" class="list-group-item" id="menu-balance-out-edit-approval" data-id="198" style="display:none">出货流水修改审核</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="display:none">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu17"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 拨款</a>
+      <div id="menu17" class="panel-collapse collapse" role="tabpanel">
+        <div class="list-group">
+          <a href="money-out-summary.html" class="list-group-item" id="menu-money-out-summary" data-id="147" style="display:none">拨款汇总</a>
+          <a href="money-out-log.html" class="list-group-item" id="menu-money-out-log" data-id="148" style="display:none">拨款日志</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+      <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+        <ol class="breadcrumb">
+          <li>活动中心</li>
+          <li>活动单元管理</li>
+          <li class="active">新建</li>
+        </ol>
+
+        <section class="activity-unit-edit">
+          <h3>新建活动单元</h3>
+          <form id="formUnit">
+
+            <div class="edit-section">
+              <h4>基本信息</h4>
+              <div class="form-group col-sm-6">
+                <div class="input-group">
+                  <div class="input-group-addon">活动名称</div>
+                  <input type="text" class="form-control" id="name" required maxlength="20">
+                </div>
+              </div>
+              <div class="form-group col-sm-6">
+                <div class="input-group">
+                  <div class="input-group-addon">所属活动计划</div>
+                  <select class="form-control" id="planId" required data-parsley-errors-container="#error-planId">
+                    <option value="">选择计划</option>
+                  </select>
+                  <div id="error-planId"></div>
+                </div>
+              </div>
+              <div class="form-group col-sm-6">
+                <div class="input-group">
+                  <div class="input-group-addon">开始日期</div>
+                  <input type="text" class="form-control" id="beginDate" required readonly>
+                </div>
+              </div>
+              <div class="form-group col-sm-6">
+                <div class="input-group">
+                  <div class="input-group-addon">结束日期</div>
+                  <input type="text" class="form-control" id="endDate" required readonly>
+                </div>
+              </div>
+              <div class="form-group col-sm-12">
+                <div class="input-group">
+                  <div class="input-group-addon">每日生效时间</div>
+                  <input type="text" class="form-control time-input" maxlength="2" id="beginHH" value="00" data-parsley-pattern="^\d{1,2}$" min="00" max="23" data-parsley-errors-container="#error-dailytime">时
+                  <input type="text" class="form-control time-input" maxlength="2" id="beginMM" value="00" data-parsley-pattern="^\d{1,2}$" min="00" max="59" data-parsley-errors-container="#error-dailytime">分
+                  <input type="text" class="form-control time-input" maxlength="2" id="beginSS" value="00" data-parsley-pattern="^\d{1,2}$" min="00" max="59" data-parsley-errors-container="#error-dailytime">秒
+                  <span> - </span>
+                  <input type="text" class="form-control time-input" maxlength="2" id="endHH" value="23" data-parsley-pattern="^\d{1,2}$" min="00" max="23" data-parsley-errors-container="#error-dailytime">时
+                  <input type="text" class="form-control time-input" maxlength="2" id="endMM" value="59" data-parsley-pattern="^\d{1,2}$" min="00" max="59" data-parsley-errors-container="#error-dailytime">分
+                  <input type="text" class="form-control time-input" maxlength="2" id="endSS" value="59" data-parsley-pattern="^\d{1,2}$" min="00" max="59" data-parsley-errors-container="#error-dailytime">秒
+                  <div id="error-dailytime"></div>
+                </div>
+              </div>
+              <div class="form-group col-sm-12">
+                <div class="input-group">
+                  <div class="input-group-addon">周期重复选择</div>
+                  <div class="checkbox-inline"><label><input type="checkbox" id="repeatedDayAll"><span>全部</span></label></div>
+                  <div class="checkbox-inline"><label><input type="checkbox" name="repeatedDay" value="1" required data-parsley-errors-container="#error-repeatedDay"><span>周一</span></label></div>
+                  <div class="checkbox-inline"><label><input type="checkbox" name="repeatedDay" value="2" required data-parsley-errors-container="#error-repeatedDay"><span>周二</span></label></div>
+                  <div class="checkbox-inline"><label><input type="checkbox" name="repeatedDay" value="3" required data-parsley-errors-container="#error-repeatedDay"><span>周三</span></label></div>
+                  <div class="checkbox-inline"><label><input type="checkbox" name="repeatedDay" value="4" required data-parsley-errors-container="#error-repeatedDay"><span>周四</span></label></div>
+                  <div class="checkbox-inline"><label><input type="checkbox" name="repeatedDay" value="5" required data-parsley-errors-container="#error-repeatedDay"><span>周五</span></label></div>
+                  <div class="checkbox-inline"><label><input type="checkbox" name="repeatedDay" value="6" required data-parsley-errors-container="#error-repeatedDay"><span>周六</span></label></div>
+                  <div class="checkbox-inline"><label><input type="checkbox" name="repeatedDay" value="7" required data-parsley-errors-container="#error-repeatedDay"><span>周日</span></label></div>
+                  <div id="error-repeatedDay"></div>
+                </div>
+              </div>
+              <div class="form-group col-sm-6">
+                <div class="input-group">
+                  <div class="input-group-addon">成本中心类别</div>
+                  <select class="form-control" id="level">
+                    <option></option>
+                    <option value="0">总行</option>
+                    <option value="1">支行</option>
+                    <option value="2">卡中心</option>
+                    <option value="3">卡部</option>
+                    <option value="4">O2O项目组</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group col-sm-6">
+                <div class="input-group">
+                  <div class="input-group-addon">成本中心</div>
+                  <select class="form-control" id="budgetSource" required data-parsley-errors-container="#error-budgetSource">
+                    <option></option>
+                  </select>
+                  <div id="error-budgetSource"></div>
+                </div>
+              </div>
+              <div class="form-group col-sm-6">
+                <div class="input-group">
+                  <div class="input-group-addon">万达活动票类</div>
+                  <select class="form-control" id="wandaTicketId">
+                    <option></option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group col-sm-6">
+                <div class="input-group">
+                  <div class="input-group-addon">活动优先级</div>
+                  <input type="text" class="form-control" id="priority" required data-parsley-type="number" readonly>
+                </div>
+              </div>
+              <div class="form-group col-sm-6">
+                <div class="input-group">
+                  <div class="input-group-addon">是否使用预付款</div>
+                  <div class="radio-inline"><label><input type="radio" name="advancePayment" value="NO" required data-parsley-errors-container="#error-advancePayment" checked><span>否</span></label></div>
+                  <div class="radio-inline"><label><input type="radio" name="advancePayment" value="ALL" required data-parsley-errors-container="#error-advancePayment"><span>全部</span></label></div>
+                  <div class="radio-inline"><label><input type="radio" name="advancePayment" value="WANDA" required data-parsley-errors-container="#error-advancePayment"><span>万达</span></label></div>
+                  <div class="radio-inline"><label><input type="radio" name="advancePayment" value="BAIDU" required data-parsley-errors-container="#error-advancePayment"><span>百度</span></label></div>
+                  <div id="error-advancePayment"></div>
+                </div>
+              </div>
+              <div class="form-group col-sm-6">
+                <div class="input-group">
+                  <div class="input-group-addon">签报号</div>
+                  <input type="text" class="form-control" id="signNo">
+                </div>
+              </div>
+            </div>
+
+            <div class="edit-section pane-activity-type" style="padding-bottom: 15px;">
+              <h4>活动形式</h4>
+              <div class="table-responsive">
+                <table class="table" id="typeTable">
+                  <thead>
+                    <th>
+                      <select id="activityPattern">
+                        <option value="1">固定价</option>
+                        <option value="2">立减</option>
+                        <option value="3">N折</option>
+                        <option value="4">买N减一</option>
+                        <option value="5">积分</option>
+                      </select>
+                    </th>
+                    <th>单张票价区间（最低）</th>
+                    <th>单张票价区间（最高）</th>
+                    <th>操作</th>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><input type="text" class="amount" required placeholder="必填" data-parsley-pattern="^[1-9]{1}\d*.{1}\d{1,2}$|^[1-9]{1}\d*$|^[0].{1}\d{1,2}$"></td>
+                      <td><input type="text" class="lowerBound parsley-range" placeholder="不限" data-parsley-pattern="^[1-9]{1}\d*.{1}\d{1,2}$|^[1-9]{1}\d*$|^[0].{1}\d{1,2}$" data-parsley-ur="0"></td>
+                      <td><input type="text" class="upperBound parsley-range" placeholder="不限" data-parsley-pattern="^[1-9]{1}\d*.{1}\d{1,2}$|^[1-9]{1}\d*$|^[0].{1}\d{1,2}$" data-parsley-ur="0"></td>
+                      <td><button type="button" class="btn btn-xs btn-default btn-type-delete">删除</button></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <button type="button" class="btn btn-default" id="btn-type-add">添加一条规则</button><span class="activity-pattern-tip"></span>
+            </div>
+
+            <div class="edit-section">
+              <h4>活动标记</h4>
+              <div class="form-group col-sm-6">
+                <div class="input-group">
+                  <div class="input-group-addon">影院页</div>
+                  <input type="text" class="form-control" id="cinemaPageDesc" required maxlength="10">
+                </div>
+              </div>
+              <div class="form-group col-sm-6">
+                <div class="input-group">
+                  <div class="input-group-addon">活动列表icon</div>
+                  <input type="text" class="form-control" id="activityIcon" maxlength="6">
+                </div>
+              </div>
+              <div class="form-group col-sm-6">
+                <div class="input-group">
+                  <div class="input-group-addon">场次页</div>
+                  <input type="text" class="form-control" id="timetablePageDesc" required maxlength="6">
+                </div>
+              </div>
+              <div class="form-group col-sm-6">
+                <div class="input-group">
+                  <div class="input-group-addon">活动列表描述</div>
+                  <input type="text" class="form-control" id="activityDesc" maxlength="15">
+                </div>
+              </div>
+              <div class="form-group col-xs-12">
+                <div class="input-group">
+                  <div class="input-group-addon">跳转链接</div>
+                  <input type="url" class="form-control" id="activityLink">
+                </div>
+              </div>
+              <div class="form-group col-xs-12">
+                <div class="input-group">
+                  <div class="input-group-addon">规则描述</div>
+                  <textarea rows="6" class="form-control" id="activityRuleDesc"></textarea>
+                </div>
+              </div>
+            </div>
+
+            <div class="edit-section unit-limitation">
+              <h4>限制条件</h4>
+              <div class="table-responsive">
+                <table class="table">
+                  <tbody>
+                    <tr>
+                      <th width="100"><button type="button" class="btn btn-default" id="btn-set-daily">活动预算</button></th>
+                      <td id="preview-budget">不限</td>
+                    </tr>
+                    <tr>
+                      <th><button type="button" class="btn btn-default" id="btn-set-custypes">客群</button></th>
+                      <td id="preview-custypes">不限</td>
+                    </tr>
+                    <tr>
+                      <th><button type="button" class="btn btn-default" id="btn-set-special">特殊资格</button></th>
+                      <td id="preview-special">不限</td>
+                    </tr>
+                    <tr>
+                      <th><button type="button" class="btn btn-default" id="btn-set-restriction">单户限购</button></th>
+                      <td id="preview-restriction">不限</td>
+                    </tr>
+                    <tr>
+                      <th><button type="button" class="btn btn-default" id="btn-set-channel">渠道</button></th>
+                      <td id="preview-channel">不限</td>
+                    </tr>
+                    <tr>
+                      <th><button type="button" class="btn btn-default" id="btn-set-movie">影片</button></th>
+                      <td id="preview-movie">不限</td>
+                    </tr>
+                    <tr>
+                      <th><button type="button" class="btn btn-default" id="btn-set-dimen">制式</button></th>
+                      <td id="preview-dimen">不限</td>
+                    </tr>
+                    <tr>
+                      <th><button type="button" class="btn btn-default" id="btn-set-cinema">影院</button></th>
+                      <td id="preview-cinema">不限</td>
+                    </tr>
+                    <tr>
+                      <th><button class="btn btn-default" id="btn-set-timetable">场次</button></th>
+                      <td id="preview-timetable">不限</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-4">
+                <button type="submit" class="btn btn-block btn-primary">保存</button>
+              </div>
+            </div>
+
+          </form>
+
+        </section>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="js/vendor.js"></script>
+  <script src="lib/jquery.quicksearch.min.js"></script>
+  <script src="js/activity-unit-edit.js"></script>
+  <script id="type-template" type="text/x-tmpl-mustache">
+    <tr>
+      <td><input type="text" class="amount" required placeholder="必填" data-parsley-pattern="^[1-9]{1}\d*.{1}\d{1,2}$|^[1-9]{1}\d*$|^[0].{1}\d{1,2}$"></td>
+      <td><input type="text" class="lowerBound parsley-range" placeholder="不限" data-parsley-pattern="^[1-9]{1}\d*.{1}\d{1,2}$|^[1-9]{1}\d*$|^[0].{1}\d{1,2}$" data-parsley-ur="{{index}}"></td>
+      <td><input type="text" class="upperBound parsley-range" placeholder="不限" data-parsley-pattern="^[1-9]{1}\d*.{1}\d{1,2}$|^[1-9]{1}\d*$|^[0].{1}\d{1,2}$" data-parsley-ur="{{index}}"></td>
+      <td><button type="button" class="btn btn-xs btn-default btn-type-delete">删除</button></td>
+    </tr>
+  </script>
+  <div class="modal fade" id="popup-unit-budget" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">活动预算</h4>
+      </div>
+
+      <form>
+
+        <div class="modal-body">
+          <div class="row">
+            <div class="form-group col-sm-6">
+              <div class="input-group">
+                <div class="input-group-addon">总金额预算</div>
+                <input type="text" class="form-control" id="totalAmount" placeholder="不限" data-parsley-pattern="^[1-9]{1}\d*$">
+              </div>
+            </div>
+            <div class="form-group col-sm-6">
+              <div class="input-group">
+                <div class="input-group-addon">总出票预算</div>
+                <input type="text" class="form-control" id="totalTicket" placeholder="不限" data-parsley-pattern="^[1-9]{1}\d*$">
+              </div>
+            </div>
+          </div>
+          <div class="table-responsive" id="dailyBudgetTable">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>开始日期</th>
+                  <th>结束日期</th>
+                  <th>日金额预算</th>
+                  <th>日出票预算</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+          </div>
+          <button type="button" class="btn btn-default" id="btn-daily" style="margin-bottom: 15px;">添加日预算</button>
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">保存</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+</div>
+
+<script id="daily-template" type="text/x-tmpl-mustache">
+  <tr>
+    <td><input type="text" class="form-control startDate" required readonly placeholder="YYYY-MM-DD"></td>
+    <td><input type="text" class="form-control endDate" required readonly placeholder="YYYY-MM-DD"></td>
+    <td><input type="text" class="form-control dailyAmount" placeholder="不限" data-parsley-pattern="^[1-9]{1}\d*$"></td>
+    <td><input type="text" class="form-control dailyTicket" placeholder="不限" data-parsley-pattern="^[1-9]{1}\d*$"></td>
+    <td><button type="button" class="btn btn-xs btn-primary btn-delete">删除</button></td>
+  </tr>
+</script>
+  <div class="modal fade" id="popup-unit-custypes" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">客群</h4>
+      </div>
+      <form>
+        <div class="modal-body">
+
+          <div style="text-align: center;">
+            <div class="checkbox-inline"><label><input type="checkbox" name="customerType" value="1" required data-parsley-errors-container="#error-customerType" checked><span>新户</span></label></div>
+            <div class="checkbox-inline"><label><input type="checkbox" name="customerType" value="2" required data-parsley-errors-container="#error-customerType" checked><span>老户</span></label></div>
+          </div>
+
+          <div id="error-customerType"></div>
+
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">保存</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+  <div class="modal fade" id="popup-unit-special" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">特殊资格</h4>
+      </div>
+      <form>
+        <div class="modal-body">
+
+          <div style="text-align: center;">
+            <div class="checkbox-inline"><label><input type="checkbox" name="specialType" value="UD"><span>手机银行一网通登录用户</span></label></div>
+          </div>
+
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">保存</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+  <div class="modal fade" id="popup-unit-restriction" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">单户限购</h4>
+      </div>
+      <form>
+        <div class="modal-body">
+
+          <div class="row">
+
+            <div class="form-group col-sm-6">
+              <div class="input-group">
+                <div class="input-group-addon">每日限购（张）</div>
+                <input type="text" class="form-control" id="saleLimit_dailyTicket" placeholder="不限" data-parsley-pattern="^[1-9]{1}\d*$">
+              </div>
+            </div>
+
+            <div class="form-group col-sm-6">
+              <div class="input-group">
+                <div class="input-group-addon">总共限购（张）</div>
+                <input type="text" class="form-control" id="saleLimit_totalTicket" placeholder="不限" data-parsley-pattern="^[1-9]{1}\d*$">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-sm-6">
+              <div class="input-group">
+                <div class="input-group-addon">每日限购（笔）</div>
+                <input type="text" class="form-control" id="saleLimit_dailyOrder" placeholder="不限" data-parsley-pattern="^[1-9]{1}\d*$">
+              </div>
+            </div>
+
+            <div class="form-group col-sm-6">
+              <div class="input-group">
+                <div class="input-group-addon">总共限购（笔）</div>
+                <input type="text" class="form-control" id="saleLimit_totalOrder" placeholder="不限" data-parsley-pattern="^[1-9]{1}\d*$">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">保存</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+  <div class="modal fade" id="popup-unit-channel" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form>
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">渠道</h4>
+        </div>
+        <div class="modal-body"></div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">保存</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<script id="channel-template" type="text/x-tmpl-mustache">
+  <div style="text-align: center;">
+    {{#channels}}
+    <div class="checkbox-inline"><label><input type="checkbox" name="channels" value="{{channelId}}" required data-parsley-errors-container="#error-channel"{{#checked}} checked{{/checked}}><span>{{channelName}}</span></label></div>
+    {{/channels}}
+  </div>
+  <div id="error-channel"></div>
+</script>
+  <div class="modal fade" id="popup-unit-movie" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form>
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">影片</h4>
+        </div>
+
+        <div class="modal-body">
+
+          <div class="multi-selection table-responsive">
+            <table class="table">
+              <tbody>
+                <tr>
+                  <td>
+                    <select name="from[]" id="movieSelect" class="form-control" size="20" multiple="multiple"></select>
+                  </td>
+                  <td width="60">
+                    <button type="button" id="movieSelect_all" class="btn btn-block btn-default">全选</button>
+                    <button type="button" id="movieSelect_right" class="btn btn-block btn-default">添加</button>
+                    <button type="button" id="movieSelect_left" class="btn btn-block btn-default">移除</button>
+                    <button type="button" id="movieSelect_none" class="btn btn-block btn-default">反选</button>
+                  </td>
+                  <td>
+                    <select name="to[]" id="movieSelect_to" class="form-control" size="20" multiple="multiple"></select>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">保存</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+  <div class="modal fade" id="popup-unit-dimen" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form>
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">影厅制式</h4>
+        </div>
+        <div class="modal-body"></div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">保存</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<script id="dimen-template" type="text/x-tmpl-mustache">
+  <div class="form-group">
+    <div class="input-group">
+      <div class="input-group-addon">影片制式</div>
+      {{#filmType}}
+      <div class="checkbox-inline"><label><input type="checkbox" name="filmType" value="{{id}}" required data-parsley-errors-container="#error-filmType" {{#checked}} checked{{/checked}}><span>{{name}}</span></label></div>
+      {{/filmType}}
+      <div id="error-filmType"></div>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="input-group">
+      <div class="input-group-addon">屏幕规格</div>
+      {{#screenType}}
+      <div class="checkbox-inline"><label><input type="checkbox" name="screenType" value="{{id}}" required data-parsley-errors-container="#error-screenType" {{#checked}} checked{{/checked}}><span>{{name}}</span></label></div>
+      {{/screenType}}
+      <div id="error-screenType"></div>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="input-group">
+      <div class="input-group-addon">特殊影厅</div>
+      {{#hallType}}
+      <div class="checkbox-inline"><label><input type="checkbox" name="hallType" value="{{id}}" required data-parsley-errors-container="#error-hallType" {{#checked}} checked{{/checked}}><span>{{name}}</span></label></div>
+      {{/hallType}}
+      <div id="error-hallType"></div>
+    </div>
+  </div>
+</script>
+  <div class="modal fade" id="popup-unit-cinema" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <form>
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">影院限制</h4>
+        </div>
+
+        <div class="modal-body">
+
+          <table class="table">
+            <tbody>
+              <tr>
+                <td width="45%" style="vertical-align: top;">
+                  <div class="row" style="margin-bottom: 5px;">
+                    <div class="col-xs-4">
+                      <select class="form-control" id="search-cinema-brandId">
+                        <option value="">选择院线</option>
+                      </select>
+                    </div>
+                    <div class="col-xs-4">
+                      <select class="form-control" id="search-cinema-provinceId">
+                        <option value="">省</option>
+                      </select>
+                    </div>
+                    <div class="col-xs-4">
+                      <select class="form-control" id="search-cinema-cityId">
+                        <option value="">城市</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 5px;">
+                    <div class="col-xs-8">
+                      <input type="text" class="form-control" placeholder="输入影院名称" id="search-cinema-cinemaName">
+                    </div>
+                    <div class="col-xs-4">
+                      <button type="button" class="btn btn-block btn-default" id="btn-search-cinema">搜索影院</button>
+                    </div>
+                  </div>
+                  <div class="table-responsive" style="max-height: 300px;">
+                    <table class="table table-bordered table-hover" id="search-cinema-candidate" style="margin-bottom: 0;">
+                      <thead>
+                        <tr>
+                          <th>影院</th>
+                          <th>城市</th>
+                          <th>院线</th>
+                        </tr>
+                      </thead>
+                      <tbody></tbody>
+                    </table>
+                  </div>
+                </td>
+                <td width="100">
+                  <button type="button" class="btn btn-block btn-default" id="search-cinema-add-all">添加全部</button>
+                  <br>
+                  <button type="button" class="btn btn-block btn-default" id="search-cinema-add">添加选中</button>
+                  <br>
+                  <button type="button" class="btn btn-block btn-default" id="search-cinema-remove">移除选中</button>
+                  <br>
+                  <button type="button" class="btn btn-block btn-default" id="search-cinema-remove-all">移除全部</button>
+                </td>
+                <td style="vertical-align: top;">
+                  <h5>已选择影院（<span id="choosedCount">0</span>个）</h5>
+                  <div class="row" style="margin-bottom: 5px;">
+                    <div class="col-xs-8"><input type="text" class="form-control" id="input-cinema-filter" placeholder="输入关键字快速筛选"></div>
+                    <div class="col-xs-4"><button type="button" class="btn btn-block btn-default" id="btn-cinema-filter">清除筛选</button></div>
+                  </div>
+                  <div class="table-responsive" style="max-height: 300px;">
+                    <table class="table table-bordered" id="search-cinema-choosed" style="margin-bottom: 0;">
+                      <thead>
+                        <tr>
+                          <th>影院</th>
+                          <th>城市</th>
+                          <th>院线</th>
+                        </tr>
+                      </thead>
+                      <tbody></tbody>
+                    </table>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">保存</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+  <div class="modal fade" id="popup-unit-timetable" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form>
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">场次限制</h4>
+        </div>
+
+        <div class="modal-body">
+
+          <div class="table-responsive" id="timeTable">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>开始日期</th>
+                  <th>结束日期</th>
+                  <th>每日开始时间</th>
+                  <th>每日结束时间</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+          </div>
+          <button type="button" class="btn btn-default" id="btn-timetable" style="margin-bottom: 15px;">添加场次</button>
+
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">保存</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script id="timetable-template" type="text/x-tmpl-mustache">
+  <tr>
+    <td><input type="text" class="form-control beginDate" required readonly></td>
+    <td><input type="text" class="form-control endDate" required readonly></td>
+    <td><input type="text" class="form-control beginTime" required value="00:00"></td>
+    <td><input type="text" class="form-control endTime" required value="23:59"></td>
+    <td><button type="button" class="btn btn-xs btn-primary btn-delete">删除</button></td>
+  </tr>
+</script>
+  <div class="modal fade" id="popup-unit-priority" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form>
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">活动优先级</h4>
+        </div>
+        <div class="modal-body">
+          <input type="text" class="form-control" required data-parsley-type="number" min="1" max="9999" maxlength="4" placeholder="填写优先级">
+          <h5>当前已有活动单元:</h5>
+          <div class="table-responsive" style="height: 300px;">
+            <table class="table table-bordered" id="priorityTable">
+              <thead>
+                <tr>
+                  <th>优先级</th>
+                  <th>活动单元</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td colspan="2" align="center">载入中...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary" disabled>设置</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+</body>
+</html>
