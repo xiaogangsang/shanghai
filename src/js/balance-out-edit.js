@@ -106,6 +106,7 @@ $('#formSearch').on('submit', function (e) {
     discountName: $('#search_discountName').val(),
     bizOrderNo: $('#search_bizOrderNo').val(),
     thdOrderNo: $('#search_thdOrderNo').val(),
+    checkStatus: approval ? 2 : $('#search_checkStatus').val(), // 审核的时候, 要过滤审核的状态为待审核
     pageSize: _pageSize,
   };
   if (!!_querying) {
@@ -120,11 +121,6 @@ $('#formSearch').on('submit', function (e) {
   }
 
   sendData.pageIndex = _pageIndex;
-
-  // 审核的时候, 要过滤审核的状态为待审核
-  if (approval) {
-    sendData.checkStatus = 2;
-  }
 
   if (!_DEBUG) {
     $.ajax({
@@ -375,7 +371,7 @@ $('body').on('click', '.edit-submit', function(e) {
     acceptanceAppropriation: $('#acceptanceAppropriation').val(),
     returnFee: $('#returnFee').val(),
     partner: $('#returnFee').val(),
-    finalSettlementAmount: $('#finalSettlementAmount').val(),
+    finalSettleAmount: $('#finalSettleAmount').val(),
     reconciliationStatus: $('#reconciliationStatus').val(),
     shipmentStatus: $('#shipmentStatus').val(),
     reason: $('#reason').val()

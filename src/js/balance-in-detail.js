@@ -393,6 +393,19 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
       detail.bizType = parseBizType(detail.bizType);
       detail.discountType = parseDiscountType(detail.discountType);
       detail.chargeMerchant = parseMerchant(detail.chargeMerchant);
+
+      var operateRecords = data.operateRecords;
+
+      operateRecords.forEach(function(obj) {
+        obj.chargeMerchant = parseMerchant(obj.chargeMerchant);
+        obj.bizType = parseBizType(obj.bizType);
+        obj.payStatus = parsePayStatus(obj.payStatus);
+        obj.partner = parsePartner(obj.partner);
+        obj.discountType = parseDiscountType(obj.discountType);
+        obj.reconciliationStatus = parseReconciliationStatus(obj.reconciliationStatus);
+      });
+
+
       var template = $('#detail-template').html();
       Mustache.parse(template);
       var html = Mustache.render(template, data);

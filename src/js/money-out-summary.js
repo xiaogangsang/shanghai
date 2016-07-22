@@ -293,12 +293,13 @@ $('#dataTable').on('click', '.refused', function(e) {
 */
 function operate(operateCode, idList) {
 
-  var data = {appStatus: operateCode, merchantSummaryIdList: idList};
+  var data = {merchantSummaryIdList: idList, appStatus: operateCode};
   $.ajax({
     url: common.API_HOST + "settlement/merchantSummary/updateMerchantSummaryStatus",
-    type: "GET",
+    type: "POST",
     dataType: 'json',
-    data: data
+    contentType: 'application/json; charset=utf-8',
+    data: JSON.stringify(data)
   })
   .done(function(res) {
     alert(res.meta.msg);

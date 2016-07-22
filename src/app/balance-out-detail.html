@@ -25,7 +25,7 @@
 
         <ol class="breadcrumb">
           <li>出货对账</li>
-          <li class="active">出货对账汇总</li>
+          <li class="active">对账明细</li>
         </ol>
 
         <form id="formSearch" class="search-area clearfix">
@@ -176,6 +176,19 @@
             </div>
           </div>
 
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">修改/审核状态</div>
+              <select class="form-control" id="search_checkStatus">
+                <option value="">全部</option>
+                <option value="1">未修改</option>
+                <option value="2">待审核</option>
+                <option value="3">审核完成</option>
+                <option value="4">驳回</option>
+              </select>
+            </div>
+          </div>
+
           <div class="col-xs-10 col-sm-10 col-md-10 pull-right">
             <div class="row">
               <div class="col-xs-3">
@@ -192,8 +205,6 @@
               </div>
             </div>
           </div>
-
-        </form>
 
         </form>
 
@@ -244,6 +255,7 @@
                   <th>应付金额</th>
                   <th>实付金额</th>
                   <th>出货对账状态</th>
+                  <th>修改状态</th>
                   <th>对账失败原因</th>
                   <th>出货对账时间</th>
                   <th>优惠方式</th>
@@ -326,6 +338,7 @@
       <td>{{finalSettleAmount}}</td>
       <!-- 出货对账状态 -->
       <td>{{reconciliationStatus}}</td>
+      <td>{{checkStatus}}</td>
       <!-- 对账失败原因 -->
       <td>{{reason}}</td>
       <td>{{diffTime}}</td>
@@ -346,8 +359,8 @@
       <td>{{totalOrderAmount}}</td>
       <td>{{totalReturnFee}}</td>
       <td>{{totalSubsidyAmountO2o}}</td>
-      <td>{{totalSettlementAmount}}</td>
-      <td>{{totalFinalSettlementAmount}}</td>
+      <td>{{totalSettleAmount}}</td>
+      <td>{{totalFinalSettleAmount}}</td>
     </tr>
   </script>
 
@@ -363,7 +376,7 @@
       <form>
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title">收单明细</h4>
+          <h4 class="modal-title">出货明细</h4>
         </div>
         <div class="modal-body"></div>
       </form>

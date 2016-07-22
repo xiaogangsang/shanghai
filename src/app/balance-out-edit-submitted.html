@@ -176,6 +176,18 @@
             </div>
           </div>
 
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">审核状态</div>
+              <select class="form-control" id="search_checkStatus">
+                <option value="">全部</option>
+                <option value="2">待审核</option>
+                <option value="3">审核完成</option>
+                <option value="4">驳回</option>
+              </select>
+            </div>
+          </div>
+
           <div class="col-xs-6 col-sm-6 col-md-6 pull-right">
             <div class="row">
               <div class="col-xs-6">
@@ -186,8 +198,6 @@
               </div>
             </div>
           </div>
-
-        </form>
 
         </form>
 
@@ -275,7 +285,7 @@
       <td>{{thdOrderNo}}</td>
       <td>{{bizOrderNo}}</td>
       <td>{{merchantName}}</td>
-      <td>{{merhcantNo}}</td>
+      <td>{{merchantNo}}</td>
       <td>{{bizType}}</td>
       <td>{{shipmentStatus}}</td>
       <td>{{settleAmount}}</td>

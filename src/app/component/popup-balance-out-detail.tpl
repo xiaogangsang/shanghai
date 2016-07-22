@@ -22,7 +22,7 @@
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">订单渠道</div>
-            <input type="text" class="form-control" id="chargeMerchant" value="{{chargeMerchant}}" disabled>
+            <input type="text" class="form-control" id="payTool" value="{{payTool}}" disabled>
           </div>
         </div>
 
@@ -113,8 +113,8 @@
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">二级商户号</div>
-            <input type="text" class="form-control oldValue" id="merhcantNo" value="{{merhcantNo}}">
-            <input type="text" class="form-control newValue" id="merhcantNoNew" value="{{currentDetail.merhcantNo}}">
+            <input type="text" class="form-control oldValue" id="merchantNo" value="{{merchantNo}}">
+            <input type="text" class="form-control newValue" id="merchantNoNew" value="{{currentDetail.merchantNo}}">
           </div>
         </div>
 
@@ -229,8 +229,8 @@
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
             <div class="input-group-addon">净拨款金额</div>
-            <input type="text" class="form-control oldValue" id="finalSettlementAmount" value="{{finalSettlementAmount}}">
-            <input type="text" class="form-control newValue" id="finalSettlementAmountNew" value="{{currentDetail.finalSettlementAmount}}">
+            <input type="text" class="form-control oldValue" id="finalSettleAmount" value="{{finalSettleAmount}}">
+            <input type="text" class="form-control newValue" id="finalSettleAmountNew" value="{{currentDetail.finalSettleAmount}}">
           </div>
         </div>
 
@@ -324,14 +324,14 @@
               <option value=""></option>
               <option value="1">未对账</option>
               <option value="2">对账不一致</option>
-              <option value="3">收单对账成功</option>
+              <option value="3">对账成功</option>
               <option value="4">确认</option>
             </select>
             <select class="form-control newValue" id="reconciliationStatusNew" value="{{currentDetail.reconciliationStatus}}">
               <option value=""></option>
               <option value="1">未对账</option>
               <option value="2">对账不一致</option>
-              <option value="3">收单对账成功</option>
+              <option value="3">对账成功</option>
               <option value="4">确认</option>
             </select>
           </div>
@@ -405,14 +405,14 @@
                   <td>{{operateTime}}</td>
                   <td>{{operatorId}}</td>
                   <td>{{merchantName}}</td>
-                  <td>{{merhcantNo}}</td>
+                  <td>{{merchantNo}}</td>
                   <td>{{settleAmount}}</td>
                   <td>{{subsidyAmountO2o}}</td>
                   <td>{{subsidyType}}</td>
                   <td>{{acceptanceAppropriation}}</td>
                   <td>{{returnFee}}</td>
                   <td>{{partner}}</td>
-                  <td>{{finalSettlementAmount}}</td>
+                  <td>{{finalSettleAmount}}</td>
                   <td>{{reconciliationStatus}}</td>
                   <td>{{reason}}</td>
                   <!-- <td>{{}}</td> -->

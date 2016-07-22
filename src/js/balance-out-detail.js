@@ -91,6 +91,7 @@ $('#formSearch').on('submit', function (e) {
     discountName: $('#search_discountName').val(),
     bizOrderNo: $('#search_bizOrderNo').val(),
     thdOrderNo: $('#search_thdOrderNo').val(),
+    checkStatus: $('#search_checkStatus').val(),
     pageSize: _pageSize,
   };
   if (!!_querying) {
@@ -209,6 +210,7 @@ function handleData(res) {
         item.reason = parseReason(item.reason);
         item.discountType = parseDiscountType(item.discountType);
         item.shipmentStatus = parseShipmentStatus(item.shipmentStatus);
+        item.checkStatus = parseCheckStatus(item.checkStatus);
       });
 
       if (!_queryingFromSelectedSummary) {
@@ -397,6 +399,16 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
       detail.chargeMerchant = parseMerchant(detail.chargeMerchant);
       detail.discountType = parseDiscountType(detail.discountType);
       detail.acquiringReconciliationStatus = parseReconciliationStatus(detail.acquiringReconciliationStatus);
+
+      var operate = data.operate;
+
+      operate.forEach(function(obj) {
+        obj.subsidyType = parseSubsidyType(obj.subsidyType);
+        obj.partner = parsePartner(obj.partner);
+        obj.reconciliationStatus = parseReconciliationStatus(obj.reconciliationStatus);
+        obj.reason = parseReason(obj.reason);
+      });
+
       var template = $('#detail-template').html();
       Mustache.parse(template);
       var html = Mustache.render(template, data);
@@ -443,7 +455,7 @@ $('body').on('click', '.edit-submit', function(e) {
     acceptanceAppropriation: $('#acceptanceAppropriation').val(),
     returnFee: $('#returnFee').val(),
     partner: $('#returnFee').val(),
-    finalSettlementAmount: $('#finalSettlementAmount').val(),
+    finalSettleAmount: $('#finalSettleAmount').val(),
     reconciliationStatus: $('#reconciliationStatus').val(),
     shipmentStatus: $('#shipmentStatus').val(),
     reason: $('#reason').val()
@@ -514,6 +526,12 @@ function parsePartner(partner) {
 
 function parseShipmentStatus(status) {
   var map = {'1' : '未出货(初始化状态)', '2' : '出货成功', '3' : '出货失败', '4' : '出货中', '5' : '待定', '6' : '待定', '7' : '退货成功', '8' : '退货失败'};
+
+  return map[status];
+}
+
+function parseCheckStatus(status) {
+  var map = {'1' : '未修改', '2' : '待审核', '3' : '审核完成', '4' : '驳回'};
 
   return map[status];
 }
