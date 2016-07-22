@@ -175,6 +175,19 @@
             </div>
           </div>
 
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">修改/审核状态</div>
+              <select class="form-control" id="search_checkStatus">
+                <option value="">全部</option>
+                <option value="1">未修改</option>
+                <option value="2">待审核</option>
+                <option value="3">审核完成</option>
+                <option value="4">驳回</option>
+              </select>
+            </div>
+          </div>
+
           <div class="col-xs-12 col-sm-12 col-md-12 pull-right">
             <div class="row">
               <div class="col-xs-3">
@@ -226,6 +239,7 @@
                   <!-- 参照activity-unit.html -->
                   <th>交易时间</th>
                   <th>支付流水号</th>
+                  <th>修改状态</th>
                   <th>收单商户</th>
                   <th>收单商户号</th>
                   <th>业务类别</th>
@@ -302,6 +316,7 @@
     <tr data-id="{{id}}" data-bannertype="{{bannerType}}">
       <td>{{createTime}}</td>
       <td>{{externalId}}</td>
+      <td>{{checkStatus}}</td>
       <td>{{chargeMerchant}}</td>
       <td>{{chargeMerchantNo}}</td>
       <td>{{bizType}}</td>
@@ -325,7 +340,7 @@
       <td>{{reason}}</td>
       <td>{{diffTime}}</td>
       <td>
-      <button class="btn btn-xs btn-default btn-edit">详情</button>
+      <button class="btn btn-xs btn-default btn-edit" data-checkstatus="{{checkStatusNo}}">详情</button>
       </td>
     </tr>
     {{/rows}}

@@ -103,6 +103,7 @@ $('#formSearch').on('submit', function (e) {
     orderNo: $('#search_orderNo').val(),
     thdSerialNo: $('#search_thdSerialNo').val(),
     paySequenceNo: $('#search_paySequenceNo').val(),
+    checkStatus: approval ? 2 : $('#search_checkStatus').val(),
     pageSize: _pageSize,
   };
   if (!!_querying) {

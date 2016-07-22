@@ -1,11 +1,13 @@
 .detail-area input:disabled,
 .detail-area select:disabled,
 .detail-area.compare input,
-.detail-area.compare select {
+.detail-area.compare select,
+.detail-area.read-only input,
+.detail-area.read-only select {
 	border: none;
 	background: transparent;
 }
-
+.detail-area.read-only select,
 .detail-area.compare select {
 	-webkit-appearance: none;
   -moz-appearance: none;

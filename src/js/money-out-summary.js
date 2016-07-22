@@ -293,13 +293,22 @@ $('#dataTable').on('click', '.refused', function(e) {
 */
 function operate(operateCode, idList) {
 
-  var data = {merchantSummaryIdList: idList, appStatus: operateCode};
+  // var data = {merchantSummaryIdList: idList, appStatus: operateCode};
+
+  // POST发送array, 格式后端解析不出来, 使用GET, 发送我们自己拼接的字符串
+  var ids = '';
+
+  idList.forEach(function(ele, index) {
+    ids += ele + (index == idList.length - 1 ? '' : ',');
+  });
+
+  data = {ids: ids, appStatus: operateCode};
+
   $.ajax({
     url: common.API_HOST + "settlement/merchantSummary/updateMerchantSummaryStatus",
-    type: "POST",
+    type: "GET",
     dataType: 'json',
-    contentType: 'application/json; charset=utf-8',
-    data: JSON.stringify(data)
+    data: data
   })
   .done(function(res) {
     alert(res.meta.msg);
