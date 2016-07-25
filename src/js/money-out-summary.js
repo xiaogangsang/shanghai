@@ -255,6 +255,34 @@ $('body').on('change', 'tr > td :checkbox', function(e) {
 });
 
 
+$('.btn-export-all').click(function(e) {
+  e.preventDefault();
+
+  $.ajax({
+    url: common.API_HOST + 'settlement/merchantSummary/getMerchantExcel',
+    dataType: 'json',
+    data: searchCache
+  }).done(function(res) {
+    window.location.href = common.API_HOST + 'settlement/merchantAttachment/downLoad?fileUrl=' + res.data.filePath;
+  });
+});
+
+$('.btn-export-selected').click(function(e) {
+
+  alert('接口要调整, 该功能暂时不能用. --格');
+  return;
+
+  e.preventDefault();
+
+  $.ajax({
+    url: common.API_HOST + 'settlement/merchantSummary/getMerchantExcel',
+    dataType: 'json',
+    data: searchCache
+  }).done(function(res) {
+    window.location.href = common.API_HOST + 'settlement/merchantAttachment/downLoad?fileUrl=' + res.data.filePath;
+  });
+});
+
 $('#dataTable').on('click', '.see-detail', function(e) {
   e.preventDefault();
 
@@ -506,6 +534,4 @@ function parseChannelType(type) {
   var map = {'1' : '掌上生活', '2' : '手机银行'};
   return map[type];
 }
-
-
 
