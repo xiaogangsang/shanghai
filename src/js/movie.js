@@ -145,9 +145,9 @@ $(document).on('submit', '#popup-movie-form form', function (e) {
     description: $.trim($('#popup-movie-form #description').val()),
     area: $.trim($('#popup-movie-form #area').val()),
     produceCorp: $.trim($('#popup-movie-form #produceCorp').val()),
-    director: $.tirm($('#popup-movie-form #director').val()),
-    actor: $.tirm($('#popup-movie-form #actor').val()),
-    score: $.tirm($('#popup-movie-form #score').val()),
+    directors: $.trim($('#popup-movie-form #director').val()),
+    actors: $.trim($('#popup-movie-form #actor').val()),
+    score: $.trim($('#popup-movie-form #score').val()),
     poster: $.trim($('#popup-movie-form #poster').val()),
     status: $('#popup-movie-form #status').val(),
   };
@@ -189,6 +189,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
   .done(function (res) {
     if (!!~~res.meta.result) {
       res.data.showDate = res.data.showDate.split(' ')[0];
+      res.data.score = parseFloat(res.data.score).toFixed(1);
       setModal(res.data);
       $('#popup-movie-form').modal('show');
       $('#showDate').datetimepicker({

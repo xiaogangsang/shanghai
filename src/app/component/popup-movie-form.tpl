@@ -37,7 +37,7 @@
             </select>
           </td>
           <th>制片方</th>
-          <td><input type="text" class="form-control" id="produceCorp" value="{{movie.produceCorp}}" required></td>
+          <td><input type="text" class="form-control" id="produceCorp" value="{{movie.produceCorp}}"></td>
         </tr>
         <tr>
           <th>时长</th>
@@ -53,7 +53,7 @@
         </tr>
         <tr>
           <th>评分</th>
-          <td colspan="3"><input type="text" class="form-control" id="score" value="{{movie.score}}" required></td>
+          <td colspan="3"><input type="text" class="form-control" id="score" value="{{movie.score}}" required data-parsley-pattern="10|^\d{1}$|^\d{1}.{1}\d{1}$"></td>
         </tr>
         <tr>
           <th>主演</th>
