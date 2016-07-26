@@ -107,7 +107,7 @@ $('#formSearch').on('submit', function (e) {
 function handleData(res) {
 	_querying = false;
 
-	if (~res.meta.result) {
+	if (!!~~res.meta.result) {
 		if (res.data == null || res.data.total < 1) {
       var errorMsg = res.meta.msg;
       $('#dataTable tbody').html('<tr><td colspan="30" align="center">' + errorMsg + '</td></tr>');
