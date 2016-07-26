@@ -107,7 +107,7 @@ $('#formSearch').on('submit', function (e) {
 function handleData(res) {
 	_querying = false;
 
-	if (~res.meta.result) {
+	if (!!~~res.meta.result) {
 		if (res.data == null || res.data.total < 1) {
       var errorMsg = res.meta.msg;
       $('#dataTable tbody').html('<tr><td colspan="30" align="center">' + errorMsg + '</td></tr>');
@@ -321,6 +321,11 @@ $('#dataTable').on('click', '.refused', function(e) {
 */
 function operate(operateCode, idList) {
 
+  var map = {1 : '被银行退票', 2 : '重拨'};
+  if (!window.confirm('确定要执行 ' + map[operateCode] + ' 操作吗？')) {
+    return false;
+  }
+
   // var data = {merchantSummaryIdList: idList, appStatus: operateCode};
 
   // POST发送array, 格式后端解析不出来, 使用GET, 发送我们自己拼接的字符串
@@ -393,7 +398,7 @@ $('body').on('submit', '#detailFormSearch', function(e) {
 
 
 function handleDetailData(res) {
-  if (~res.meta.result) {
+  if (!!~~res.meta.result) {
     if (res.data == null || res.data.total < 1) {
       var errorMsg = res.meta.msg;
       $('#detailDataTable tbody').html('<tr><td colspan="30" align="center">' + errorMsg + '</td></tr>');
