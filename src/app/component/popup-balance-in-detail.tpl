@@ -64,7 +64,7 @@
 
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
-            <div class="input-group-addon">应收用户金额</div>
+            <div class="input-group-addon">应收用户金额(元)</div>
             <input type="text" class="form-control oldValue" id="payAmount" value="{{payAmount}}">
             <input type="text" class="form-control newValue" id="payAmountNew" value="{{currentDetail.payAmount}}">
           </div>
@@ -134,7 +134,7 @@
 
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
-            <div class="input-group-addon">票价</div>
+            <div class="input-group-addon">票价(元)</div>
             <input type="text" class="form-control oldValue" id="ticketAmount" value="{{ticketAmount}}">
             <input type="text" class="form-control newValue" id="ticketAmountNew" value="{{currentDetail.ticketAmount}}">
           </div>
@@ -142,7 +142,7 @@
 
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
-            <div class="input-group-addon">服务费</div>
+            <div class="input-group-addon">服务费(元)</div>
             <input type="text" class="form-control oldValue" id="serviceAmount" value="{{serviceAmount}}">
             <input type="text" class="form-control newValue" id="serviceAmountNew" value="{{currentDetail.serviceAmount}}">
           </div>
@@ -150,7 +150,7 @@
 
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
-            <div class="input-group-addon">渠道方补贴金额</div>
+            <div class="input-group-addon">渠道方补贴金额(元)</div>
             <input type="text" class="form-control oldValue" id="subsidyAmountO2o" value="{{subsidyAmountO2o}}">
             <input type="text" class="form-control newValue" id="subsidyAmountO2oNew" value="{{currentDetail.subsidyAmountO2o}}">
           </div>
@@ -174,7 +174,7 @@
 
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
-            <div class="input-group-addon">退票手续费</div>
+            <div class="input-group-addon">退票手续费(元)</div>
             <input type="text" class="form-control oldValue" id="returnFee" value="{{returnFee}}">
             <input type="text" class="form-control newValue" id="returnFeeNew" value="{{currentDetail.returnFee}}">
           </div>
@@ -200,7 +200,7 @@
 
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
-            <div class="input-group-addon">O2O应收金额</div>
+            <div class="input-group-addon">O2O应收金额(元)</div>
             <input type="text" class="form-control oldValue" id="o2oReceivableAmount" value="{{o2oReceivableAmount}}">
             <input type="text" class="form-control newValue" id="o2oReceivableAmountNew" value="{{currentDetail.o2oReceivableAmount}}">
           </div>
@@ -208,7 +208,7 @@
 
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
-            <div class="input-group-addon">实收金额</div>
+            <div class="input-group-addon">实收金额(元)</div>
             <input type="text" class="form-control" id="bankAmount" value="{{bankAmount}}" disabled>
           </div>
         </div>
@@ -322,11 +322,11 @@
                   <th>收单商户号</th>
                   <th>业务类别</th>
                   <th>支付流水状态</th>
-                  <th>票价</th>
-                  <th>退票手续费</th>
-                  <th>服务费</th>
-                  <th>渠道方补贴金额</th>
-                  <th>应收金额</th>
+                  <th>票价(元)</th>
+                  <th>退票手续费(元)</th>
+                  <th>服务费(元)</th>
+                  <th>渠道方补贴金额(元)</th>
+                  <th>应收金额(元)</th>
                   <th>承债方</th>
                   <th>优惠方式</th>
                   <th>活动/优惠券名称</th>
