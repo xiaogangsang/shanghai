@@ -136,7 +136,6 @@ function handleData(res) {
         item.shipmentStatus = parseShipmentStatus(item.shipmentStatus);
       });
 
-      // record[1] = record[0];
       dataCache = record;
 
       setTableData(dataCache);

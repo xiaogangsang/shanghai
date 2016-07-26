@@ -148,7 +148,7 @@
 
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
-            <div class="input-group-addon">用户支付金额</div>
+            <div class="input-group-addon">用户支付金额(元)</div>
             <input type="text" class="form-control" id="payAmount" value="{{payAmount}}" disabled>
           </div>
         </div>
@@ -162,7 +162,7 @@
 
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
-            <div class="input-group-addon">交易金额</div>
+            <div class="input-group-addon">交易金额(元)</div>
             <input type="text" class="form-control oldValue" id="settleAmount" value="{{settleAmount}}">
             <input type="text" class="form-control newValue" id="settleAmountNew" value="{{currentDetail.settleAmount}}">
           </div>
@@ -170,7 +170,7 @@
 
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
-            <div class="input-group-addon">我方补贴金额</div>
+            <div class="input-group-addon">我方补贴金额(元)</div>
             <input type="text" class="form-control oldValue" id="subsidyAmountO2o" value="{{subsidyAmountO2o}}">
             <input type="text" class="form-control newValue" id="subsidyAmountO2oNew" value="{{currentDetail.subsidyAmountO2o}}">
           </div>
@@ -194,7 +194,7 @@
 
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
-            <div class="input-group-addon">应付金额</div>
+            <div class="input-group-addon">应付金额(元)</div>
             <input type="text" class="form-control oldValue" id="acceptanceAppropriation" value="{{acceptanceAppropriation}}">
             <input type="text" class="form-control newValue" id="acceptanceAppropriationNew" value="{{currentDetail.acceptanceAppropriation}}">
           </div>
@@ -202,7 +202,7 @@
 
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
-            <div class="input-group-addon">退票手续费</div>
+            <div class="input-group-addon">退票手续费(元)</div>
             <input type="text" class="form-control oldValue" id="returnFee" value="{{returnFee}}">
             <input type="text" class="form-control newValue" id="returnFeeNew" value="{{currentDetail.returnFee}}">
           </div>
@@ -228,7 +228,7 @@
 
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
-            <div class="input-group-addon">实付金额</div>
+            <div class="input-group-addon">实付金额(元)</div>
             <input type="text" class="form-control oldValue" id="finalSettleAmount" value="{{finalSettleAmount}}">
             <input type="text" class="form-control newValue" id="finalSettleAmountNew" value="{{currentDetail.finalSettleAmount}}">
           </div>
@@ -386,13 +386,13 @@
                   <th>操作人</th>
                   <th>二级商户</th>
                   <th>二级商户号</th>
-                  <th>交易金额</th>
-                  <th>我方补贴金额</th>
+                  <th>交易金额(元)</th>
+                  <th>我方补贴金额(元)</th>
                   <th>补贴付款方式</th>
-                  <th>应拨金额</th>
-                  <th>退票手续费</th>
+                  <th>应拨金额(元)</th>
+                  <th>退票手续费(元)</th>
                   <th>退款承债方</th>
-                  <th>净拨款金额</th>
+                  <th>净拨款金额(元)</th>
                   <th>出货对账状态</th>
                   <th>对账不一致原因</th>
                   <!-- <th>修改状态</th> -->

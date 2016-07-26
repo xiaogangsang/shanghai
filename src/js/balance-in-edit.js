@@ -341,7 +341,6 @@ $('#dataTable').on('click', '.btn-detail', function (e) {
       data.detail.currentDetail = data.currentDetail;
       var detail = data.detail;
       detail.payTool = parsePayTool(detail.payTool);
-      detail.payStatus = parsePayStatus(detail.payStatus);
       detail.bizType = parseBizType(detail.bizType);
       detail.discountType = parseDiscountType(detail.discountType);
       detail.chargeMerchant = parseMerchant(detail.chargeMerchant);
@@ -360,6 +359,7 @@ $('#dataTable').on('click', '.btn-detail', function (e) {
       $('#shipmentStatus option[value="' + detail.shipmentStatus + '"]').prop('selected', true);
       $('#reconciliationStatus option[value="' + detail.reconciliationStatus + '"]').prop('selected', true);
       $('#reason option[value="' + detail.reason + '"]').prop('selected', true);
+      $('#payStatus option[value="' + detail.payStatus + '"]').prop('selected', true);
 
       detail = detail.currentDetail;
       $('#subsidyTypeNew option[value="' + detail.subsidyType + '"]').prop('selected', true);
@@ -367,6 +367,7 @@ $('#dataTable').on('click', '.btn-detail', function (e) {
       $('#shipmentStatusNew option[value="' + detail.shipmentStatus + '"]').prop('selected', true);
       $('#reconciliationStatusNew option[value="' + detail.reconciliationStatus + '"]').prop('selected', true);
       $('#reasonNew option[value="' + detail.reason + '"]').prop('selected', true);
+      $('#payStatusNew option[value="' + detail.payStatus + '"]').prop('selected', true);
     });
   } else {
     var data = $.parseJSON('{ "meta": { "result": "1", "msg": "操作成功" }, "data": { "currentDetail": { "reason": 1, "receivablePoint": 0, "bizType": 1, "reconciliationDate": "2016-06-24 09:59:03", "operatorName": "超级管理员", "subsidyType": 1, "bankAmount": 1, "checkStatus": 3, "discountName": "买2减1", "ticketAmount": 10000, "payAmount": 4700, "serviceAmount": 0, "paySequenceNo": 857, "discountType": 1, "id": 2597, "thdSerialNo": "1223", "orderNo": "738284476651671552", "countNum": 1, "costCenter": "卡中心总部", "o2oReceivableAmount": 4700, "updateTime": 1468239853000, "version": 19, "subsidyAmountO2o": 0, "chargeMerchant": 1, "partner": "1", "reconciliationStatus": 4, "createTime": "2016-06-02 00:00:00", "returnFee": 12, "chargeMerchantNo": "738284476651671552", "payStatus": 2, "merchantNo": "308010700103175" }, "lastDetail": { "reason": 1, "receivablePoint": 0, "bizType": 1, "reconciliationDate": "2016-06-24 09:59:03", "operateTime": "2016-07-11 20:20:06", "operatorName": "超级管理员", "subsidyType": 1, "bankAmount": 1, "checkStatus": 4, "discountName": "买2减1", "ticketAmount": 10000, "payAmount": 4700, "serviceAmount": 0, "paySequenceNo": 857, "discountType": 1, "id": 2597, "thdSerialNo": "1223", "orderNo": "738284476651671552", "countNum": 1, "costCenter": "卡中心总部", "batchCode": "20160711202413", "o2oReceivableAmount": 4700, "updateTime": 1468239606000, "version": 18, "subsidyAmountO2o": 0, "chargeMerchant": 1, "partner": "1", "reconciliationStatus": 4, "createTime": "2016-06-02 00:00:00", "returnFee": 12, "chargeMerchantNo": "738284476651671552", "payStatus": 2, "merchantNo": "308010700103175" } } }');
@@ -428,6 +429,7 @@ $('body').on('click', '.edit-submit', function(e) {
     partner: $('#partner').val(),
     o2oReceivableAmount: $('#o2oReceivableAmount').val(),
     reconciliationStatus: $('#reconciliationStatus').val(),
+    payStatus: $('#payStatus').val(),
     reason: $('#reason').val()
   };
 
