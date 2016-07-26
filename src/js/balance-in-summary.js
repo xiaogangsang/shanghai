@@ -115,7 +115,7 @@ function handleData(res) {
   _querying = false;
 
   if (!!~~res.meta.result) {
-    if (res.data == null || res.data.detail.count < 1) {
+    if (res.data == null || res.data.detail == null || res.data.detail.count < 1) {
       var errorMsg = res.meta.msg;
       $('#dataTable tbody').html('<tr><td colspan="30" align="center">' + errorMsg + '</td></tr>');
       $('#summaryTable tbody').html('<tr><td colspan="30" align="center">' + errorMsg + '</td></tr>');
@@ -141,6 +141,8 @@ function handleData(res) {
 
       setSummaryTableData(res.data.summary);
     }
+  } else {
+    alert(res.meta.msg);
   }
 }
 
@@ -231,7 +233,7 @@ $('.selected-detail').click(function(e) {
   $('#dataTable tbody :checkbox:checked').each(function(index) {
     var rowIndex = $(this).closest('td').parent()[0].sectionRowIndex;
     var obj = dataCache[rowIndex];
-    var param = {'dateType': searchCache.dateType, 'beginTime': obj.createTime, 'chargeMerchantNo': obj.chargeMerchantNo, 'payStatus':obj.payStatusNo};
+    var param = {'dateType': searchCache.dateType, 'beginTime': obj.date, 'chargeMerchantNo': obj.chargeMerchantNo, 'payStatus':obj.payStatusNo};
     parameters.push(param);
   });
 

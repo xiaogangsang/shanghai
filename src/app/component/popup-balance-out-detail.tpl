@@ -325,13 +325,14 @@
               <option value="1">未对账</option>
               <option value="2">对账不一致</option>
               <option value="3">对账成功</option>
+              <option value="4">确认</option>
             </select>
             <select class="form-control newValue" id="reconciliationStatusNew" value="{{currentDetail.reconciliationStatus}}">
               <option value=""></option>
               <option value="1">未对账</option>
               <option value="2">对账不一致</option>
               <option value="3">对账成功</option>
-              <!-- <option value="4">确认</option> -->
+              <option value="4">确认</option>
             </select>
           </div>
         </div>

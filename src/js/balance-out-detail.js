@@ -223,7 +223,9 @@ function handleData(res) {
 
       setSummaryTableData(res.data.summary);
 		}
-	}
+	} else {
+    alert(res.meta.msg);
+  }
 }
 
 function setTableData(rows) {

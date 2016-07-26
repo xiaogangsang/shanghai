@@ -135,7 +135,9 @@ function handleData(res) {
 
       setTableData(dataCache);
 		}
-	}
+	} else {
+    alert(res.meta.msg);
+  }
 }
 
 function setTableData(rows) {
