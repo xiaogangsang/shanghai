@@ -40,10 +40,25 @@
           </div>
         </div>
 
-        <div class="form-group col-sm-6 col-md-6">
+        <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
             <div class="input-group-addon">支付流水状态</div>
-            <input type="text" class="form-control" id="payStatus" value="{{payStatus}}" disabled>
+            <select class="form-control oldValue" id="payStatus" value="{{payStatus}}">
+              <option value="1">待支付</option>
+              <option value="2">支付成功</option>
+              <option value="3">支付失败</option>
+              <option value="4">退款中</option>
+              <option value="5">退款成功</option>
+              <option value="6">退款失败</option>
+            </select>
+            <select class="form-control newValue" id="payStatusNew" value="{{currentDetail.payStatus}}">
+              <option value="1">待支付</option>
+              <option value="2">支付成功</option>
+              <option value="3">支付失败</option>
+              <option value="4">退款中</option>
+              <option value="5">退款成功</option>
+              <option value="6">退款失败</option>
+            </select>
           </div>
         </div>
 

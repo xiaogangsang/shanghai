@@ -393,7 +393,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
       var data = res.data;
       var detail = data.detail;
       detail.payTool = parsePayTool(detail.payTool);
-      detail.payStatus = parsePayStatus(detail.payStatus);
+      // detail.payStatus = parsePayStatus(detail.payStatus);
       detail.bizType = parseBizType(detail.bizType);
       detail.discountType = parseDiscountType(detail.discountType);
       detail.chargeMerchant = parseMerchant(detail.chargeMerchant);
@@ -421,6 +421,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
       $('#partner option[value="' + detail.partner + '"]').prop('selected', true);
       $('#reconciliationStatus option[value="' + detail.reconciliationStatus + '"]').prop('selected', true);
       $('#reason option[value="' + detail.reason + '"]').prop('selected', true);
+      $('#payStatus option[value="' + detail.payStatus + '"]').prop('selected', true);
 
       var checkStatus = $(this).data('checkstatus');
       if (checkStatus == 2) {
@@ -468,6 +469,7 @@ $('body').on('click', '.edit-submit', function(e) {
     partner: $('#partner').val(),
     o2oReceivableAmount: $('#o2oReceivableAmount').val(),
     reconciliationStatus: $('#reconciliationStatus').val(),
+    payStatus: $('#payStatus').val(),
     reason: $('#reason').val()
   };
 

@@ -17,12 +17,12 @@
 
 .detail-area.compare .newValue {
 	color: red;
-	width: 60%;
+	width: 50%;
 	float: right;
 }
 
 .detail-area.compare .oldValue {
-	width: 40%;
+	width: 50%;
 	float: left;
 }
 
