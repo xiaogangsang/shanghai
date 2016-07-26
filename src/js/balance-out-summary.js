@@ -98,7 +98,7 @@ $('#formSearch').on('submit', function (e) {
       url: common.API_HOST + 'settlement/shipmentInfo/summaryList',
       type: 'GET',
       dataType: 'json',
-      // data: sendData,
+      data: sendData,
     })
     .done(function (res) {
       handleData(res);
