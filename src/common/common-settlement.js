@@ -1,5 +1,8 @@
 /**
-	清算部分 状态码的转换全部统一放在这个文件里负责
+	清算
+	1. 状态码的转换全部统一放在这个文件里负责
+	2. 一些工具函数也放在了这里
+	GeLiu created at 2016-07-27 17:51:15
  */
 
 
@@ -120,7 +123,7 @@ settlementCommon.parseOperation = function(status) {
 }
 
 /****************************************** Utilities Method **********************************************/
-// $.ajax 默认的对array的序列化不符合服务端需求, 我们自定义array的序列化
+// $.ajax 默认的对array(对象数组)的序列化不符合服务端需求, 我们自定义array的序列化
 // Caution: only array is concerned in this function
 settlementCommon.serializeParam = function(param) {
 
@@ -147,6 +150,7 @@ settlementCommon.serializeParam = function(param) {
   return queryString;
 }
 
+// 下面是对字符串数组的自定义序列化
 settlementCommon.toString = function(array) {
 	var str = '';
 

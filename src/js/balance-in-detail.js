@@ -481,11 +481,13 @@ $('body').on('click', '.edit-submit', function(e) {
     data: param
   })
   .done(function(res) {
-    if (res.meta.result == 0) {
-      alert('提交失败!');
-      return false;
-    } else {
+    if (!!~~res.meta.result) {
       alert('提交成功!');
+      $('#popup-detail').modal('hide');
+      $('#formSearch').trigger('submit');
+    } else {
+      alert(res.meta.msg);
+      return false;
     }
   });
 });

@@ -404,11 +404,13 @@ $('body').on('click', '.edit-submit', function(e) {
     data: param
   })
   .done(function(res) {
-    if (res.meta.result == 0) {
+    if (!!~~res.meta.result) {
+      alert('提交成功!');
+      $('#popup-detail').modal('hide');
+      $('#formSearch').trigger('submit');
+    } else {
       alert(res.meta.msg);
       return false;
-    } else {
-      alert('提交成功!');
     }
   });
 });

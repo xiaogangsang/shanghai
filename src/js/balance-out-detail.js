@@ -475,17 +475,18 @@ $('body').on('click', '.edit-submit', function(e) {
     shipmentStatus: $('#shipmentStatus').val(),
     reason: $('#reason').val()
   };
-
-  if (!_DEBUG) {
-    $.ajax({
-      url: common.API_HOST + 'settlement/shipmentInfo/updateOnlyShipmentInfo',
-      data: param,
-    }).done(function(res) {
-      if (!!~~res.meta.result) {
-        alert('提交成功');
-      } else {
-        alert(res.meta.msg);
-      }
-    });
-  }
+  
+  $.ajax({
+    url: common.API_HOST + 'settlement/shipmentInfo/updateOnlyShipmentInfo',
+    data: param,
+  }).done(function(res) {
+    if (!!~~res.meta.result) {
+      alert('提交成功');
+      $('#popup-detail').modal('hide');
+      $('#formSearch').trigger('submit');
+    } else {
+      alert(res.meta.msg);
+      return false;
+    }
+  });
 });
