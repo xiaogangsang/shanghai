@@ -394,6 +394,7 @@
                   <th>退票手续费(元)</th>
                   <th>退款承债方</th>
                   <th>净拨款金额(元)</th>
+                  <th>出货状态</th>
                   <th>出货对账状态</th>
                   <th>对账不一致原因</th>
                   <!-- <th>修改状态</th> -->
@@ -413,6 +414,7 @@
                   <td>{{returnFee}}</td>
                   <td>{{partner}}</td>
                   <td>{{finalSettleAmount}}</td>
+                  <td>{{shipmentStatus}}</td>
                   <td>{{reconciliationStatus}}</td>
                   <td>{{reason}}</td>
                   <!-- <td>{{}}</td> -->
