@@ -286,7 +286,7 @@
       <td>{{discountName}}</td>
       <td>{{reconciliationStatus}}</td>
       <td>
-        <button class="btn btn-xs btn-default btn-detail" data-id="{{id}}">查看详情</button>
+        <button class="btn btn-xs btn-default btn-edit" data-compare="1" data-id="{{id}}">查看详情</button>
         <button class="btn btn-xs btn-default btn-approval" data-checkstatus="3" data-id="{{id}}" data-version="{{version}}">审核通过</button>
         <button class="btn btn-xs btn-default btn-approval" data-checkstatus="4" data-id="{{id}}" data-version="{{version}}">驳回</button>
       </td>
@@ -306,7 +306,7 @@
       <form>
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title">收单明细</h4>
+          <h4 class="modal-title">出货明细</h4>
         </div>
         <div class="modal-body"></div>
       </form>

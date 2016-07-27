@@ -410,6 +410,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
         obj.subsidyType = parseSubsidyType(obj.subsidyType);
         obj.partner = parsePartner(obj.partner);
         obj.reconciliationStatus = parseReconciliationStatus(obj.reconciliationStatus);
+        obj.shipmentStatus = parseShipmentStatus(obj.shipmentStatus);
         obj.reason = parseReason(obj.reason);
       });
 
