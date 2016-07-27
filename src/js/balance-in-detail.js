@@ -5,24 +5,21 @@
 
 'use strict;'
 var common = require('common');
+var settlementCommon = require('settlementCommon');
 
-var _channels = {};
-var _cities = [];
-var _choosed = [];
-var _movies = {};
 var _pageIndex = 1;
 var _pageSize = 10;
 var _pageTotal = 0;
 var _querying = false;
 var searchCache = {};
 var useCache = false;
-var _submitting = false;
 
 // 如果当前查询是从汇总页的选中记录查询
 var _queryingFromSelectedSummary = false;
 
 var _selectedSummary = {};
 
+// _DEBUG 本地JSON字符串, 不连服务器本地调试用
 var _DEBUG = false;
 
 $(function() {
@@ -129,7 +126,7 @@ $('#formSearch').on('submit', function (e) {
 function queryFromSelectedSummary() {
 
   _selectedSummary.pageIndex = _pageIndex;
-  var url = common.API_HOST + 'settlement/acquiring/listSummaryDetail?' + serializeParam(_selectedSummary);
+  var url = common.API_HOST + 'settlement/acquiring/listSummaryDetail?' + settlementCommon.serializeParam(_selectedSummary);
 
   if (!_DEBUG) {
     $.ajax({
@@ -182,6 +179,7 @@ function handlePresetQuery() {
   }
 }
 
+// 有可能本页的查询是从汇总页带着查询条件跳过来的
 handlePresetQuery();
 
 function handleData(res) {
@@ -201,15 +199,15 @@ function handleData(res) {
       setPager(totalRecord, _pageIndex, record.length, _pageTotal);
 
       _(record).forEach(function(item) {
-      	item.chargeMerchant = parseMerchant(item.chargeMerchant);
-      	item.payStatus = parsePayStatus(item.payStatus);
-        item.reconciliationStatus = parseReconciliationStatus(item.reconciliationStatus);
-        item.reason = parseReason(item.reason);
-        item.bizType = parseBizType(item.bizType);
-        item.discountType = parseDiscountType(item.discountType);
-        item.partner = parsePartner(item.partner);
+      	item.chargeMerchant = settlementCommon.parseMerchant(item.chargeMerchant);
+      	item.payStatus = settlementCommon.parsePayStatus(item.payStatus);
+        item.reconciliationStatus = settlementCommon.parseReconciliationStatus(item.reconciliationStatus);
+        item.reason = settlementCommon.parseReason(item.reason);
+        item.bizType = settlementCommon.parseBizType(item.bizType);
+        item.discountType = settlementCommon.parseDiscountType(item.discountType);
+        item.partner = settlementCommon.parsePartner(item.partner);
         item.checkStatusNo = item.checkStatus;
-        item.checkStatus = parseCheckStatus(item.checkStatus);
+        item.checkStatus = settlementCommon.parseCheckStatus(item.checkStatus);
       });
 
       if (!_queryingFromSelectedSummary) {
@@ -305,6 +303,7 @@ $('.btn-reset').click(function(e) {
  $('#formSearch :input:not(:button)').val('');
 });
 
+// 导出全部
 $('.btn-export-all').click(function(e) {
 
   e.preventDefault();
@@ -313,7 +312,7 @@ $('.btn-export-all').click(function(e) {
     var param = {'acquiringInfoFormCollection' : _selectedSummary.acquiringInfoFormCollection};
 
     $.ajax({
-      url: common.API_HOST + 'settlement/acquiring/exportSummaryDetail?' + serializeParam(param),
+      url: common.API_HOST + 'settlement/acquiring/exportSummaryDetail?' + settlementCommon.serializeParam(param),
       type: 'GET',
       dataType: 'json',
     })
@@ -341,6 +340,7 @@ $('.btn-export-all').click(function(e) {
   }
 });
 
+// 对账完成提交
 $('.complete-commit').click(function(e) {
 
   e.preventDefault();
@@ -348,7 +348,7 @@ $('.complete-commit').click(function(e) {
   if (_queryingFromSelectedSummary) {
     var param = {'acquiringInfoFormCollection' : _selectedSummary.acquiringInfoFormCollection};
     $.ajax({
-      url: common.API_HOST + 'settlement/acquiring/confirmSummaryDetail?' + serializeParam(param),
+      url: common.API_HOST + 'settlement/acquiring/confirmSummaryDetail?' + settlementCommon.serializeParam(param),
       type: 'GET',
       dataType: 'json',
       data: param
@@ -394,21 +394,20 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
       }
       var data = res.data;
       var detail = data.detail;
-      detail.payTool = parsePayTool(detail.payTool);
-      // detail.payStatus = parsePayStatus(detail.payStatus);
-      detail.bizType = parseBizType(detail.bizType);
-      detail.discountType = parseDiscountType(detail.discountType);
-      detail.chargeMerchant = parseMerchant(detail.chargeMerchant);
+      detail.payTool = settlementCommon.parsePayTool(detail.payTool);
+      detail.bizType = settlementCommon.parseBizType(detail.bizType);
+      detail.discountType = settlementCommon.parseDiscountType(detail.discountType);
+      detail.chargeMerchant = settlementCommon.parseMerchant(detail.chargeMerchant);
 
       var operateRecords = data.operateRecords;
 
       operateRecords.forEach(function(obj) {
-        obj.chargeMerchant = parseMerchant(obj.chargeMerchant);
-        obj.bizType = parseBizType(obj.bizType);
-        obj.payStatus = parsePayStatus(obj.payStatus);
-        obj.partner = parsePartner(obj.partner);
-        obj.discountType = parseDiscountType(obj.discountType);
-        obj.reconciliationStatus = parseReconciliationStatus(obj.reconciliationStatus);
+        obj.chargeMerchant = settlementCommon.parseMerchant(obj.chargeMerchant);
+        obj.bizType = settlementCommon.parseBizType(obj.bizType);
+        obj.payStatus = settlementCommon.parsePayStatus(obj.payStatus);
+        obj.partner = settlementCommon.parsePartner(obj.partner);
+        obj.discountType = settlementCommon.parseDiscountType(obj.discountType);
+        obj.reconciliationStatus = settlementCommon.parseReconciliationStatus(obj.reconciliationStatus);
       });
 
 
@@ -426,7 +425,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
       $('#payStatus option[value="' + detail.payStatus + '"]').prop('selected', true);
 
       var checkStatus = $(this).data('checkstatus');
-      if (checkStatus == 2) {
+      if (checkStatus == 2) { // 待审核不能再修改
         $('.detail-area').addClass('read-only');
         $('.detail-area :input').prop('disabled', true);
       }
@@ -435,10 +434,11 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     var data = $.parseJSON('{ "meta" : { "result" : "1", "msg" : "操作成功" }, "data" : { "operateRecords" : [ { "bizType" : 1, "orderNo" : "738289474424934400", "o2oReceivableAmount" : 12, "operateTime" : "2016-06-23 15:42:18", "operatorName" : "徐慧", "subsidyAmountO2o" : 4750, "discountName" : "买2减1", "ticketAmount" : 4750, "chargeMerchant" : 1, "serviceAmount" : 0, "partner" : "3", "reconciliationStatus" : 4, "returnFee" : 1, "discountType" : 1, "payStatus" : 4 }, { "bizType" : 1, "orderNo" : "738289474424934400", "o2oReceivableAmount" : 12, "operateTime" : "2016-06-23 11:50:51", "operatorName" : "李瑾", "subsidyAmountO2o" : 4750, "discountName" : "买2减1", "ticketAmount" : 4750, "chargeMerchant" : 1, "serviceAmount" : 0, "partner" : "3", "reconciliationStatus" : 4, "returnFee" : 1, "discountType" : 1, "payStatus" : 4 } ], "detail" : { "reason" : 1, "receivablePoint" : 0, "bizType" : 1, "reconciliationDate" : 1466733543000, "subsidyType" : 1, "bankAmount" : 1, "checkStatus" : 1, "discountName" : "买2减1", "ticketAmount" : 1, "payAmount" : 4700, "serviceAmount" : 0, "discountType" : 1, "id" : 2585, "thdSerialNo" : "1223", "orderNo" : "738284476651671552", "countNum" : 1, "costCenter" : "卡中心总部", "o2oReceivableAmount" : 4700, "externalId" : 857, "updateTime" : 1466738155000, "version" : 0, "subsidyAmountO2o" : 0, "chargeMerchant" : 1, "partner" : "1", "reconciliationStatus" : 4, "createTime" : 1464796800000, "returnFee" : 12, "chargeMerchantNo" : "738284476651671552", "payStatus" : 1, "chargeMerchantNo" : "308010700103175" } } }');
     data = data.data;
     var detail = data.detail;
-    detail.payTool = parsePayTool(detail.payTool);
-    detail.payStatus = parsePayStatus(detail.payStatus);
-    detail.bizType = parseBizType(detail.bizType);
-    detail.chargeMerchant = parseMerchant(detail.chargeMerchant);
+    detail.payTool = settlementCommon.parsePayTool(detail.payTool);
+    detail.payStatus = settlementCommon.parsePayStatus(detail.payStatus);
+    detail.bizType = settlementCommon.parseBizType(detail.bizType);
+    detail.chargeMerchant = settlementCommon.parseMerchant(detail.chargeMerchant);
+
     var template = $('#detail-template').html();
     Mustache.parse(template);
     var html = Mustache.render(template, data);
@@ -447,7 +447,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     $('#popup-detail').modal('show');
 
     var checkStatus = $(this).data('checkstatus');
-    if (checkStatus == 2) {
+    if (checkStatus == 2) { // 待审核不能再修改
       $('.detail-area').addClass('read-only');
       $('.detail-area :input').prop('disabled', true);
     }
@@ -481,91 +481,13 @@ $('body').on('click', '.edit-submit', function(e) {
     data: param
   })
   .done(function(res) {
-    if (res.meta.result == 0) {
-      alert('提交失败!');
-      return false;
-    } else {
+    if (!!~~res.meta.result) {
       alert('提交成功!');
+      $('#popup-detail').modal('hide');
+      $('#formSearch').trigger('submit');
+    } else {
+      alert(res.meta.msg);
+      return false;
     }
   });
 });
-
-/****************************************** Utilities Method **********************************************/
-
-function parseMerchant(merchant) {
-  var map = {'1' : '卡中心', '2' : '总行'};
-  return map[merchant];
-}
-
-function parsePayStatus(payStatus) {
-  var map = {'1' : '待支付', '2' : '支付成功', '3' : '支付失败', '4' : '退款中', '5' : '退款成功', '6' : '退款失败'};
-  return map[payStatus];
-}
-
-function parseReconciliationStatus(status) {
-  var map = {'1' : '未对账', '2' : '对账不一致', '3' : '对账成功', '4' : '确认'};
-  return map[status];
-}
-
-function parseReason(reason) {
-  var map = {'1' : '我方缺失', '2' : '对方缺失', '3' : '状态错误', '4' : '金额不符'};
-  return map[reason];
-}
-
-function parsePayTool(payTool) {
-  var map = {'1' : '掌上生活', '2' : '手机银行'};
-  return map[payTool];
-}
-
-function parseBizType(bizType) {
-  var map = {'1' : '影票', '2' : '手续费'};
-  return map[bizType];
-}
-
-function parseSubsidyType(type) {
-  var map = {'1' : '预付', '2' : '后付'};
-  return map[type];
-}
-
-function parseDiscountType(type) {
-  var map = {'1' : '活动', '2' : '优惠券'};
-
-  return map[type];
-}
-
-function parsePartner(partner) {
-  var map = {'1' : 'O2O', '2' : 'TP方', '3' : '渠道方'};
-}
-
-function parseCheckStatus(status) {
-  var map = {'1' : '未修改', '2' : '待审核', '3' : '审核完成', '4' : '驳回'};
-
-  return map[status];
-}
-
-
-// Caution: only array is concerned in this function
-function serializeParam(param) {
-
-  var queryString = '';
-
-  for (var key in param) {
-    var value = param[key];
-
-    if (value instanceof Array) {
-      for (var i = 0; i < value.length; ++i) {
-        var obj = value[i];
-
-        for (var innerKey in obj) {
-          queryString += key + '[' + i + '].' + innerKey + '=' + encodeURIComponent(obj[innerKey]) + '&';
-        }
-      }
-    } else {
-      queryString += key + '=' + encodeURIComponent(value) + '&';
-    }
-  }
-
-  queryString = queryString.slice(0, queryString.length - 1);
-
-  return queryString;
-}

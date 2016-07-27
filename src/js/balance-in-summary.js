@@ -1,14 +1,12 @@
 /*
   收单对账汇总
+  Ge Liu
  */
 
 'use strict;'
 var common = require('common');
+var settlementCommon = require('settlementCommon');
 
-var _channels = {};
-var _cities = [];
-var _choosed = [];
-var _movies = {};
 var _pageIndex = 1;
 var _pageSize = 10;
 var _pageTotal = 0;
@@ -16,8 +14,8 @@ var _querying = false;
 var searchCache = {};
 var useCache = false;
 var dataCache;
-var _submitting = false;
 
+// _DEBUG 本地JSON字符串, 不连服务器本地调试用
 var _DEBUG = false;
 
 $(function() {
@@ -130,9 +128,9 @@ function handleData(res) {
       setPager(totalRecord, _pageIndex, record.length, _pageTotal);
 
       _(record).forEach(function(item) {
-        item.chargeMerchant = parseMerchant(item.chargeMerchant);
+        item.chargeMerchant = settlementCommon.parseMerchant(item.chargeMerchant);
         item.payStatusNo = item.payStatus;
-        item.payStatus = parsePayStatus(item.payStatus);
+        item.payStatus = settlementCommon.parsePayStatus(item.payStatus);
       });
 
       dataCache = record;
@@ -212,12 +210,6 @@ $('#pager').on('click', '#btn-pager', function (e) {
 });
 
 $('.btn-reset').click(function(e) {
-  // $('#search_dateType').val('');
- //  $('#search_startTime').val('');
- //  $('#search_endTime').val('');
- //  $('#search_merchantName').val('');
- //  $('#search_chargeMerchantNo').val('');
- //  $('#search_payStatus').val('');
  $('#formSearch :input:not(:button)').val('');
 });
 
@@ -263,19 +255,3 @@ $('body').on('change', 'tr > td :checkbox', function(e) {
     $('.multi-check-all').prop('checked', false);
   }
 });
-
-
-/****************************************** Utilities Method **********************************************/
-
-function parseMerchant(merchant) {
-
-  var map = {'1' : '卡中心', '2' : '总行'};
-
-  return map[merchant];
-}
-
-function parsePayStatus(payStatus) {
-  var map = {'1' : '待支付', '2' : '支付成功', '3' : '支付失败', '4' : '退款中', '5' : '退款成功', '6' : '退款失败'};
-
-  return map[payStatus];
-}
