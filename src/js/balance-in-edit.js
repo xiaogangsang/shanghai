@@ -174,7 +174,9 @@ function handleData(res) {
 
       setTableData(record);
 		}
-	}
+	} else {
+    alert(res.meta.msg);
+  }
 }
 
 function setTableData(rows) {

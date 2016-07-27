@@ -138,7 +138,9 @@ function handleData(res) {
 
       setTableData(dataCache);
 		}
-	}
+	} else {
+    alert(res.meta.msg);
+  }
 }
 
 function setTableData(rows) {
@@ -269,17 +271,33 @@ $('.btn-export-all').click(function(e) {
 
 $('.btn-export-selected').click(function(e) {
 
-  alert('接口要调整, 该功能暂时不能用. --格');
-  return;
-
   e.preventDefault();
 
+  var parameters = [];
+
+  $('#dataTable tbody :checkbox:checked').each(function(index) {
+    var rowIndex = $(this).closest('td').parent()[0].sectionRowIndex;
+    var obj = dataCache[rowIndex].merchantSummaryId;
+    parameters.push(obj);
+  });
+
+  if (parameters.length == 0) {
+    alert('请至少选择一条记录');
+    return false;
+  }
+
+  var param = {merIds: toString(parameters)};
+
   $.ajax({
-    url: common.API_HOST + 'settlement/merchantSummary/getMerchantExcel',
+    url: common.API_HOST + 'settlement/appropriationInfo/getAppropriationExcel',
     dataType: 'json',
-    data: searchCache
+    data: param
   }).done(function(res) {
-    window.location.href = common.API_HOST + 'settlement/merchantAttachment/downLoad?fileUrl=' + res.data.filePath;
+    if (!!~~res.meta.result) {
+      window.location.href = common.API_HOST + 'settlement/merchantAttachment/downLoad?fileUrl=' + res.data.filePath;
+    } else {
+      alert(res.meta.msg);
+    }
   });
 });
 
@@ -326,16 +344,7 @@ function operate(operateCode, idList) {
     return false;
   }
 
-  // var data = {merchantSummaryIdList: idList, appStatus: operateCode};
-
-  // POST发送array, 格式后端解析不出来, 使用GET, 发送我们自己拼接的字符串
-  var ids = '';
-
-  idList.forEach(function(ele, index) {
-    ids += ele + (index == idList.length - 1 ? '' : ',');
-  });
-
-  data = {ids: ids, appStatus: operateCode};
+  data = {ids: ids, appStatus: toString(idList)};
 
   $.ajax({
     url: common.API_HOST + "settlement/merchantSummary/updateMerchantSummaryStatus",
@@ -362,7 +371,7 @@ $('body').on('submit', '#detailFormSearch', function(e) {
   e.preventDefault();
 
   var sendData = {
-    merchantSummaryId: detailDataCache.merchantSummaryId,
+    merId: detailDataCache.merchantSummaryId,
     ticketType: $('#search_ticketType').val(),
     movieOrderNo: $('#search_movieOrderNo').val(),
     payOrderNo: $('#search_payOrderNo').val(),
@@ -423,6 +432,8 @@ function handleDetailData(res) {
       detailDataCache = record;
       setDetailTableData(detailDataCache);
     }
+  } else {
+    alert(res.meta.msg);
   }
 }
 
@@ -538,5 +549,15 @@ function parseDiscountType(type) {
 function parseChannelType(type) {
   var map = {'1' : '掌上生活', '2' : '手机银行'};
   return map[type];
+}
+
+function toString(array) {
+  var str = '';
+
+  array.forEach(function(ele, index) {
+    str += ele + (index === array.length - 1 ? '' : ',');
+  });
+
+  return str;
 }
 
