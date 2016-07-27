@@ -283,7 +283,9 @@
       <td>{{checkStatus}}</td>
       <td>
       <button class="btn btn-xs btn-default btn-detail" data-id="{{id}}">查看详情</button>
+      {{#canEdit}}
       <button class="btn btn-xs btn-default btn-edit" data-id="{{id}}">重新修改</button>
+      {{/canEdit}}
       </td>
     </tr>
     {{/rows}}

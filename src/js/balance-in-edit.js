@@ -165,6 +165,7 @@ function handleData(res) {
         item.bizType = parseBizType(item.bizType);
         item.discountType = parseDiscountType(item.discountType);
         item.partner = parsePartner(item.partner);
+        item.canEdit = (item.checkStatus != 2);
         item.checkStatus = parseCheckStatus(item.checkStatus);
       });
 
@@ -280,6 +281,11 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
       detail.bizType = parseBizType(detail.bizType);
       detail.discountType = parseDiscountType(detail.discountType);
       detail.chargeMerchant = parseMerchant(detail.chargeMerchant);
+
+      if (data.operateRecords) {
+        formatEditHistory(data.operateRecords);
+      }
+      
       var template = $('#detail-template').html();
       Mustache.parse(template);
       var html = Mustache.render(template, data);
@@ -346,6 +352,11 @@ $('#dataTable').on('click', '.btn-detail', function (e) {
       detail.bizType = parseBizType(detail.bizType);
       detail.discountType = parseDiscountType(detail.discountType);
       detail.chargeMerchant = parseMerchant(detail.chargeMerchant);
+
+      if (data.operateRecords) {
+        formatEditHistory(data.operateRecords);
+      }
+
       var template = $('#detail-template').html();
       Mustache.parse(template);
       var html = Mustache.render(template, data);
@@ -393,6 +404,19 @@ $('#dataTable').on('click', '.btn-detail', function (e) {
     $('.detail-area.compare :input').prop('disabled', true);
   }
 });
+
+
+// 修改记录列表的状态码转换
+function formatEditHistory(operateRecords) {
+  operateRecords.forEach(function(obj) {
+    obj.chargeMerchant = parseMerchant(obj.chargeMerchant);
+    obj.bizType = parseBizType(obj.bizType);
+    obj.payStatus = parsePayStatus(obj.payStatus);
+    obj.partner = parsePartner(obj.partner);
+    obj.discountType = parseDiscountType(obj.discountType);
+    obj.reconciliationStatus = parseReconciliationStatus(obj.reconciliationStatus);
+  });
+}
 
 
 $('#dataTable').on('click', '.btn-approval', function (e) {

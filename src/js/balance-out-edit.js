@@ -164,6 +164,7 @@ function handleData(res) {
         item.reconciliationStatus = parseReconciliationStatus(item.reconciliationStatus);
         item.reason = parseReason(item.reason);
         item.discountType = parseDiscountType(item.discountType);
+        item.canEdit = (item.checkStatus != 2); // 待审核不能修改
         item.checkStatus = parseCheckStatus(item.checkStatus);
         item.shipmentStatus = parseShipmentStatus(item.shipmentStatus);
       });
@@ -288,6 +289,11 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
       detail.chargeMerchant = parseMerchant(detail.chargeMerchant);
       detail.discountType = parseDiscountType(detail.discountType);
       detail.acquiringReconciliationStatus = parseReconciliationStatus(detail.acquiringReconciliationStatus);
+
+      if (data.operate) {
+        formatEditHistory(data.operate);
+      }
+
       var template = $('#detail-template').html();
       Mustache.parse(template);
       var html = Mustache.render(template, data);
@@ -338,6 +344,15 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     }
   }
 });
+
+function formatEditHistory(operate) {
+  operate.forEach(function(obj) {
+    obj.subsidyType = parseSubsidyType(obj.subsidyType);
+    obj.partner = parsePartner(obj.partner);
+    obj.reconciliationStatus = parseReconciliationStatus(obj.reconciliationStatus);
+    obj.reason = parseReason(obj.reason);
+  });
+}
 
 $('#dataTable').on('click', '.btn-approval', function (e) {
 
