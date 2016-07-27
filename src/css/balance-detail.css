@@ -29,3 +29,9 @@
 .detail-area:not(.compare) .newValue {
 	display: none;
 }
+
+@media (min-width: 1024px) {
+	.modal-lg {
+		width: 1024px;
+	}
+}

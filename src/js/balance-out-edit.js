@@ -273,7 +273,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
 
       if (compare) {
         if (data.operate && data.operate.length > 0) {
-          data.detail = data.operate[0];
+          data.detail = $.extend({}, data.operate[0]);
         } else {
           data.detail = {};
         }
