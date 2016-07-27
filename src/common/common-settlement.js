@@ -85,6 +85,7 @@ settlementCommon.parseCheckStatus = function(status) {
   return this.checkStatus[status];
 }
 
+
 // 出货状态
 settlementCommon.shipmentStatus = 
   {'1' : '未出货(初始化状态)', '2' : '出货成功', '3' : '出货失败', '4' : '出货中', '5' : '待定', '6' : '待定', '7' : '退货成功', '8' : '退货失败'};
@@ -92,6 +93,7 @@ settlementCommon.shipmentStatus =
  settlementCommon.parseShipmentStatus = function(status) {
   return this.shipmentStatus[status];
  }
+
 
 // 拨款状态
 settlementCommon.moneyOutStatus = 
@@ -101,13 +103,21 @@ settlementCommon.parseMoneyOutStatus = function(status) {
 	return this.moneyOutStatus[status];
 }
 
-// 
+
+// 支付渠道
 settlementCommon.channel = {'1' : '掌上生活', '2' : '手机银行'};
 
 settlementCommon.parseChannel = function(status) {
 	return this.channel[status];
 }
 
+
+// 拨款操作
+settlementCommon.operation = {'1' : '银行退票', '2' : '重拨'};
+
+settlementCommon.parseOperation = function(status) {
+	return this.operation[status];
+}
 
 /****************************************** Utilities Method **********************************************/
 // $.ajax 默认的对array的序列化不符合服务端需求, 我们自定义array的序列化
