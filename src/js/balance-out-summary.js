@@ -4,11 +4,8 @@
 
 'use strict;'
 var common = require('common');
+var settlementCommon = require('settlementCommon');
 
-var _channels = {};
-var _cities = [];
-var _choosed = [];
-var _movies = {};
 var _pageIndex = 1;
 var _pageSize = 10;
 var _pageTotal = 0;
@@ -16,8 +13,8 @@ var _querying = false;
 var searchCache = {};
 var useCache = false;
 var dataCache;
-var _submitting = false;
 
+// _DEBUG 本地JSON字符串, 不连服务器本地调试用
 var _DEBUG = false;
 
 $(function() {
@@ -131,9 +128,9 @@ function handleData(res) {
 
       _(record).forEach(function(item) {
         item.bizTypeNo = item.bizType;
-        item.bizType = parseBizType(item.bizType);
+        item.bizType = settlementCommon.parseBizType(item.bizType);
         item.shipmentStatusNo = item.shipmentStatus;
-        item.shipmentStatus = parseShipmentStatus(item.shipmentStatus);
+        item.shipmentStatus = settlementCommon.parseShipmentStatus(item.shipmentStatus);
       });
 
       dataCache = record;
@@ -260,22 +257,3 @@ $('body').on('change', 'tr > td :checkbox', function(e) {
     $('.multi-check-all').prop('checked', false);
   }
 });
-
-
-/****************************************** Utilities Method **********************************************/
-
-function parseShipmentStatus(status) {
-  var map = {'1' : '未出货(初始化状态)', '2' : '出货成功', '3' : '出货失败', '4' : '出货中', '5' : '待定', '6' : '待定', '7' : '退货成功', '8' : '退货失败'};
-
-  return map[status];
-}
-
-function parseBizType(type) {
-  var map = {'1' : '影票', '2' : '退货手续费'};
-
-  return map[type];
-}
-
-
-
-

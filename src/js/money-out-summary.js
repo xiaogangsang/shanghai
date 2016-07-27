@@ -4,11 +4,8 @@
 
 'use strict;'
 var common = require('common');
+var settlementCommon = require('settlementCommon');
 
-var _channels = {};
-var _cities = [];
-var _choosed = [];
-var _movies = {};
 var _pageIndex = 1;
 var _pageSize = 10;
 var _pageTotal = 0;
@@ -123,17 +120,16 @@ function handleData(res) {
       setPager(totalRecord, _pageIndex, record.length, _pageTotal);
 
       _(record).forEach(function(item) {
-      	item.chargeMerchant = parseMerchant(item.chargeMerchant);
+      	item.chargeMerchant = settlementCommon.parseMerchant(item.chargeMerchant);
         item.payStatusNo = item.payStatus;
-      	item.payStatus = parsePayStatus(item.payStatus);
+      	item.payStatus = settlementCommon.parsePayStatus(item.payStatus);
 
         var moneyOutStatus = item.appStatus;
         item.resend = (moneyOutStatus == 3 || moneyOutStatus == 4 || moneyOutStatus == 6);
         item.refused = (moneyOutStatus == 2 || moneyOutStatus == 7);
-        item.appStatus = parseMoneyOutStatus(item.appStatus);
+        item.appStatus = settlementCommon.parseMoneyOutStatus(item.appStatus);
       });
 
-      // record[1] = record[0];
       dataCache = record;
 
       setTableData(dataCache);
@@ -286,7 +282,7 @@ $('.btn-export-selected').click(function(e) {
     return false;
   }
 
-  var param = {merIds: toString(parameters)};
+  var param = {merIds: settlementCommon.toString(parameters)};
 
   $.ajax({
     url: common.API_HOST + 'settlement/appropriationInfo/getAppropriationExcel',
@@ -344,7 +340,7 @@ function operate(operateCode, idList) {
     return false;
   }
 
-  data = {ids: ids, appStatus: toString(idList)};
+  data = {ids: settlementCommon.toString(idList), appStatus: operateCode};
 
   $.ajax({
     url: common.API_HOST + "settlement/merchantSummary/updateMerchantSummaryStatus",
@@ -421,12 +417,12 @@ function handleDetailData(res) {
       setDetailPager(totalRecord, detailPageIndex, record.length, detailPageTotal);
 
       _(record).forEach(function(item) {
-        item.channelType = parseChannelType(item.channelType);
-        item.businessType = parseBusinessType(item.businessType);
-        item.shipmentStatus = parseShipmentStatus(item.shipmentStatus);
-        item.payStatus = parsePayStatus(item.payStatus);
-        item.refundPartner = parseRefundPartner(item.refundPartner);
-        item.discountType = parseDiscountType(item.discountType);
+        item.channelType = settlementCommon.parseChannel(item.channelType);
+        item.businessType = settlementCommon.parseBizType(item.businessType);
+        item.shipmentStatus = settlementCommon.parseShipmentStatus(item.shipmentStatus);
+        item.payStatus = settlementCommon.parsePayStatus(item.payStatus);
+        item.refundPartner = settlementCommon.parsePartner(item.refundPartner);
+        item.discountType = settlementCommon.parseDiscountType(item.discountType);
       });
 
       detailDataCache = record;
@@ -500,64 +496,3 @@ $('body').on('click', '#detailPager #detail-btn-pager', function (e) {
   $('#detailFormSearch').trigger('submit');
   return false;
 });
-
-
-
-/****************************************** Utilities Method **********************************************/
-
-function parseMerchant(merchant) {
-
-  var map = {'1' : '卡中心', '2' : '总行'};
-
-  return map[merchant];
-}
-
-function parsePayStatus(payStatus) {
-  var map = {'1' : '待支付', '2' : '支付成功', '3' : '支付失败', '4' : '退款成功', '5' : '退款失败', '6' : '已关闭'};
-
-  return map[payStatus];
-}
-
-function parseMoneyOutStatus(outStatus) {
-  var map = {'1' : '待拨款', '2' : '首次拨款成功', '3' : '暂停拨款', '4' : '银行退票', '5' : '待重拨', '6' : '生成拨款文件失败', '7' : '重拨成功'};
-  return map[outStatus];
-}
-
-function parseBusinessType(businessType) {
-  var map = {'1' : '影票', '2' : '退票手续费'};
-
-  return map[businessType];
-}
-
-function parseShipmentStatus(status) {
-  var map = {'1' : '未出货(初始化状态)', '2' : '出货成功', '3' : '出货失败', '4' : '出货中', '5' : '待定', '6' : '待定', '7' : '退货成功', '8' : '退货失败'};
-
-  return map[status];
-}
-
-function parseRefundPartner(partner) {
-  var map = {'1' : 'O2O', '2' : 'TP方', '3' : '渠道方'};
-  return map[partner];
-}
-
-function parseDiscountType(type) {
-  var map = {'1' : '活动', '2' : '优惠券'};
-
-  return map[type];
-}
-
-function parseChannelType(type) {
-  var map = {'1' : '掌上生活', '2' : '手机银行'};
-  return map[type];
-}
-
-function toString(array) {
-  var str = '';
-
-  array.forEach(function(ele, index) {
-    str += ele + (index === array.length - 1 ? '' : ',');
-  });
-
-  return str;
-}
-

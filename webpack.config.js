@@ -52,6 +52,7 @@ module.exports = {
       datetimepicker: path.resolve(bowerComponents, 'smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker.js'),
       'datetimepicker-cn': path.resolve(bowerComponents, 'smalot-bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js'),
       common: srcDir + '/common/common.js',
+      settlementCommon: srcDir + '/common/common-settlement.js',
     },
   },
   module: {
