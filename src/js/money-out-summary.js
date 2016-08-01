@@ -335,8 +335,7 @@ $('#dataTable').on('click', '.refused', function(e) {
 */
 function operate(operateCode, idList) {
 
-  var map = {1 : '被银行退票', 2 : '重拨'};
-  if (!window.confirm('确定要执行 ' + map[operateCode] + ' 操作吗？')) {
+  if (!window.confirm('将立刻为商户进行此次拨款，操作不可撤回，请仔细核对金额和商户账户信息！')) {
     return false;
   }
 
