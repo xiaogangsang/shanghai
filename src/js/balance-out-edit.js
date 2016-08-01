@@ -133,40 +133,32 @@ $('#formSearch').on('submit', function (e) {
 function handleData(res) {
 	_querying = false;
 
-	if (!!~~res.meta.result) {
-		if (res.data == null || res.data.detail.count < 1) {
-      var errorMsg = res.meta.msg;
-      $('#dataTable tbody').html('<tr><td colspan="30" align="center">' + errorMsg + '</td></tr>');
-      $('#pager').html('');
-		} else {
-			var totalRecord = res.data.detail.count;
-      var record = res.data.detail.records;
+  if (settlementCommon.prehandleData(res)) {
+    var totalRecord = res.data.detail.count;
+    var record = res.data.detail.records;
 
-      _pageTotal = Math.ceil(totalRecord / _pageSize);
-      setPager(totalRecord, _pageIndex, record.length, _pageTotal);
+    _pageTotal = Math.ceil(totalRecord / _pageSize);
+    setPager(totalRecord, _pageIndex, record.length, _pageTotal);
 
-      _(record).forEach(function(item) {
-        item.bizType = settlementCommon.parseBizType(item.bizType);
-        item.payStatus = settlementCommon.parsePayStatus(item.payStatus);
-        item.partner = settlementCommon.parsePartner(item.partner);
-        item.acquiringReconciliationStatus = settlementCommon.parseReconciliationStatus(item.acquiringReconciliationStatus);
-        item.subsidyType = settlementCommon.parseSubsidyType(item.subsidyType);
-        item.reconciliationStatus = settlementCommon.parseReconciliationStatus(item.reconciliationStatus);
-        item.reason = settlementCommon.parseReason(item.reason);
-        item.discountType = settlementCommon.parseDiscountType(item.discountType);
-        item.canEdit = (item.checkStatus != 2); // 待审核不能修改
-        item.checkStatus = settlementCommon.parseCheckStatus(item.checkStatus);
-        item.shipmentStatus = settlementCommon.parseShipmentStatus(item.shipmentStatus);
-      });
+    _(record).forEach(function(item) {
+      item.bizType = settlementCommon.parseBizType(item.bizType);
+      item.payStatus = settlementCommon.parsePayStatus(item.payStatus);
+      item.partner = settlementCommon.parsePartner(item.partner);
+      item.acquiringReconciliationStatus = settlementCommon.parseReconciliationStatus(item.acquiringReconciliationStatus);
+      item.subsidyType = settlementCommon.parseSubsidyType(item.subsidyType);
+      item.reconciliationStatus = settlementCommon.parseReconciliationStatus(item.reconciliationStatus);
+      item.reason = settlementCommon.parseReason(item.reason);
+      item.discountType = settlementCommon.parseDiscountType(item.discountType);
+      item.canEdit = (item.checkStatus != 2); // 待审核不能修改
+      item.checkStatus = settlementCommon.parseCheckStatus(item.checkStatus);
+      item.shipmentStatus = settlementCommon.parseShipmentStatus(item.shipmentStatus);
+    });
 
-      if (!_queryingFromSelectedSummary) {
-        useCache = true;
-      }
+    if (!_queryingFromSelectedSummary) {
+      useCache = true;
+    }
 
-      setTableData(record);
-		}
-	} else {
-    alert(res.meta.msg);
+    setTableData(record);
   }
 }
 

@@ -185,41 +185,32 @@ handlePresetQuery();
 function handleData(res) {
 	_querying = false;
 
-	if (!!~~res.meta.result) {
-		if (res.data == null || res.data.detail.count < 1) {
-      var errorMsg = res.meta.msg;
-      $('#dataTable tbody').html('<tr><td colspan="30" align="center">' + errorMsg + '</td></tr>');
-      $('#summaryTable tbody').html('<tr><td colspan="30" align="center">' + errorMsg + '</td></tr>');
-      $('#pager').html('');
-		} else {
-			var totalRecord = res.data.detail.count;
-      var record = res.data.detail.records;
+  if (settlementCommon.prehandleData(res)) {
+    var totalRecord = res.data.detail.count;
+    var record = res.data.detail.records;
 
-      _pageTotal = Math.ceil(totalRecord / _pageSize);
-      setPager(totalRecord, _pageIndex, record.length, _pageTotal);
+    _pageTotal = Math.ceil(totalRecord / _pageSize);
+    setPager(totalRecord, _pageIndex, record.length, _pageTotal);
 
-      _(record).forEach(function(item) {
-      	item.chargeMerchant = settlementCommon.parseMerchant(item.chargeMerchant);
-      	item.payStatus = settlementCommon.parsePayStatus(item.payStatus);
-        item.reconciliationStatus = settlementCommon.parseReconciliationStatus(item.reconciliationStatus);
-        item.reason = settlementCommon.parseReason(item.reason);
-        item.bizType = settlementCommon.parseBizType(item.bizType);
-        item.discountType = settlementCommon.parseDiscountType(item.discountType);
-        item.partner = settlementCommon.parsePartner(item.partner);
-        item.checkStatusNo = item.checkStatus;
-        item.checkStatus = settlementCommon.parseCheckStatus(item.checkStatus);
-      });
+    _(record).forEach(function(item) {
+      item.chargeMerchant = settlementCommon.parseMerchant(item.chargeMerchant);
+      item.payStatus = settlementCommon.parsePayStatus(item.payStatus);
+      item.reconciliationStatus = settlementCommon.parseReconciliationStatus(item.reconciliationStatus);
+      item.reason = settlementCommon.parseReason(item.reason);
+      item.bizType = settlementCommon.parseBizType(item.bizType);
+      item.discountType = settlementCommon.parseDiscountType(item.discountType);
+      item.partner = settlementCommon.parsePartner(item.partner);
+      item.checkStatusNo = item.checkStatus;
+      item.checkStatus = settlementCommon.parseCheckStatus(item.checkStatus);
+    });
 
-      if (!_queryingFromSelectedSummary) {
-        useCache = true;
-      }
+    if (!_queryingFromSelectedSummary) {
+      useCache = true;
+    }
 
-      setTableData(record);
+    setTableData(record);
 
-      setSummaryTableData(res.data.summary);
-		}
-	} else {
-    alert(res.meta.msg);
+    setSummaryTableData(res.data.summary);
   }
 }
 
