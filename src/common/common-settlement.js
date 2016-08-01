@@ -26,7 +26,7 @@ settlementCommon.parsePayStatus = function(status) {
 
 
 // 对账状态(收单和出货编码一样)
-settlementCommon.reconciliationStatus = {'1' : '未对账', '2' : '对账不一致', '3' : '对账成功', '4' : '确认'}
+settlementCommon.reconciliationStatus = {'1' : '未对账', '2' : '对账不一致', '3' : '对账成功', '4' : '确认'};
 
 settlementCommon.parseReconciliationStatus = function(status) {
   return this.reconciliationStatus[status];

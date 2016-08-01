@@ -325,11 +325,17 @@ $('.btn-export-all').click(function(e) {
       }
     });
   } else {
+
+    // 参数不能带有页码信息...
+    var searchCacheWithoutPagination = $.extend({}, searchCache);
+    delete searchCacheWithoutPagination.pageIndex;
+    delete searchCacheWithoutPagination.pageSize;
+
     $.ajax({
       url: common.API_HOST + 'settlement/shipmentInfo/infoListExport', 
       type: 'GET',
       dataType: 'json',
-      data: searchCache,
+      data: searchCacheWithoutPagination,
     })
     .done(function (res) {
       if (res.meta.result == 0) {
