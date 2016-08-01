@@ -99,31 +99,22 @@ $('#formSearch').on('submit', function (e) {
 function handleData(res) {
 	_querying = false;
 
-	if (!!~~res.meta.result) {
-		if (res.data == null || res.data.total < 1) {
-      var errorMsg = res.meta.msg;
-      $('#dataTable tbody').html('<tr><td colspan="30" align="center">' + errorMsg + '</td></tr>');
-      $('#summaryTable tbody').html('<tr><td colspan="30" align="center">' + errorMsg + '</td></tr>');
-      $('#pager').html('');
-		} else {
-			useCache = true;
+  if (settlementCommon.prehandleData(res)) {
+    useCache = true;
 
-			var totalRecord = res.data.total;
-      var record = res.data.record;
+    var totalRecord = res.data.total;
+    var record = res.data.record;
 
-      _pageTotal = Math.ceil(totalRecord / _pageSize);
-      setPager(totalRecord, _pageIndex, record.length, _pageTotal);
+    _pageTotal = Math.ceil(totalRecord / _pageSize);
+    setPager(totalRecord, _pageIndex, record.length, _pageTotal);
 
-      _(record).forEach(function(item) {
-        item.operation = settlementCommon.parseOperation(item.operation);
-      });
+    _(record).forEach(function(item) {
+      item.operation = settlementCommon.parseOperation(item.operation);
+    });
 
-      dataCache = record;
+    dataCache = record;
 
-      setTableData(dataCache);
-		}
-	} else {
-    alert(res.meta.msg);
+    setTableData(dataCache);
   }
 }
 

@@ -112,36 +112,27 @@ $('#formSearch').on('submit', function (e) {
 function handleData(res) {
   _querying = false;
 
-  if (!!~~res.meta.result) {
-    if (res.data == null || res.data.detail == null || res.data.detail.count < 1) {
-      var errorMsg = res.meta.msg;
-      $('#dataTable tbody').html('<tr><td colspan="30" align="center">' + errorMsg + '</td></tr>');
-      $('#summaryTable tbody').html('<tr><td colspan="30" align="center">' + errorMsg + '</td></tr>');
-      $('#pager').html('');
-    } else {
-      useCache = true;
+  if (settlementCommon.prehandleData(res)) {
+    useCache = true;
 
-      var totalRecord = res.data.detail.count;
-      var record = res.data.detail.records;
+    var totalRecord = res.data.detail.count;
+    var record = res.data.detail.records;
 
-      _pageTotal = Math.ceil(totalRecord / _pageSize);
-      setPager(totalRecord, _pageIndex, record.length, _pageTotal);
+    _pageTotal = Math.ceil(totalRecord / _pageSize);
+    setPager(totalRecord, _pageIndex, record.length, _pageTotal);
 
-      _(record).forEach(function(item) {
-        item.chargeMerchant = settlementCommon.parseMerchant(item.chargeMerchant);
-        item.payStatusNo = item.payStatus;
-        item.payStatus = settlementCommon.parsePayStatus(item.payStatus);
-      });
+    _(record).forEach(function(item) {
+      item.chargeMerchant = settlementCommon.parseMerchant(item.chargeMerchant);
+      item.payStatusNo = item.payStatus;
+      item.payStatus = settlementCommon.parsePayStatus(item.payStatus);
+    });
 
-      dataCache = record;
+    dataCache = record;
 
-      setTableData(dataCache);
+    setTableData(dataCache);
 
-      setSummaryTableData(res.data.summary);
+    setSummaryTableData(res.data.summary);
     }
-  } else {
-    alert(res.meta.msg);
-  }
 }
 
 function setTableData(rows) {

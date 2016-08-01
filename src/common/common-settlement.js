@@ -160,3 +160,27 @@ settlementCommon.toString = function(array) {
 
   return str;
 }
+
+// 对返回数据错误的统一处理
+settlementCommon.prehandleData = function(res) {
+
+  // 接口错误, 弹alert
+  // 内容错误(语义错误), 错误message显示在table里
+  if (!!~~res.meta.result) {
+    if (res.data == null || res.data.detail == null || res.data.detail.count < 1) {
+      // var errorMsg = res.meta.msg;
+      var errorMsg = '无满足条件记录';
+      $('#dataTable tbody').html('<tr><td colspan="30" align="center">' + errorMsg + '</td></tr>');
+      $('#summaryTable tbody').html('<tr><td colspan="30" align="center">' + errorMsg + '</td></tr>');
+      $('#pager').html('');
+    } else {
+      return true;
+    }
+  } else {
+    alert(res.meta.msg);
+  }
+  return false;
+}
+
+
+

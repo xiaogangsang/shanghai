@@ -111,36 +111,27 @@ $('#formSearch').on('submit', function (e) {
 function handleData(res) {
   _querying = false;
 
-  if (!!~~res.meta.result) {
-    if (res.data == null || res.data.detail.count < 1) {
-      var errorMsg = res.meta.msg;
-      $('#dataTable tbody').html('<tr><td colspan="30" align="center">' + errorMsg + '</td></tr>');
-      $('#summaryTable tbody').html('<tr><td colspan="30" align="center">' + errorMsg + '</td></tr>');
-      $('#pager').html('');
-    } else {
-      useCache = true;
+  if (settlementCommon.prehandleData(res)) {
+    useCache = true;
 
-      var totalRecord = res.data.detail.count;
-      var record = res.data.detail.records;
+    var totalRecord = res.data.detail.count;
+    var record = res.data.detail.records;
 
-      _pageTotal = Math.ceil(totalRecord / _pageSize);
-      setPager(totalRecord, _pageIndex, record.length, _pageTotal);
+    _pageTotal = Math.ceil(totalRecord / _pageSize);
+    setPager(totalRecord, _pageIndex, record.length, _pageTotal);
 
-      _(record).forEach(function(item) {
-        item.bizTypeNo = item.bizType;
-        item.bizType = settlementCommon.parseBizType(item.bizType);
-        item.shipmentStatusNo = item.shipmentStatus;
-        item.shipmentStatus = settlementCommon.parseShipmentStatus(item.shipmentStatus);
-      });
+    _(record).forEach(function(item) {
+      item.bizTypeNo = item.bizType;
+      item.bizType = settlementCommon.parseBizType(item.bizType);
+      item.shipmentStatusNo = item.shipmentStatus;
+      item.shipmentStatus = settlementCommon.parseShipmentStatus(item.shipmentStatus);
+    });
 
-      dataCache = record;
+    dataCache = record;
 
-      setTableData(dataCache);
+    setTableData(dataCache);
 
-      setSummaryTableData(res.data.summary);
-    }
-  } else {
-    alert(res.meta.msg);
+    setSummaryTableData(res.data.summary);
   }
 }
 

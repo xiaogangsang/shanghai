@@ -104,39 +104,30 @@ $('#formSearch').on('submit', function (e) {
 function handleData(res) {
 	_querying = false;
 
-	if (!!~~res.meta.result) {
-		if (res.data == null || res.data.total < 1) {
-      var errorMsg = res.meta.msg;
-      $('#dataTable tbody').html('<tr><td colspan="30" align="center">' + errorMsg + '</td></tr>');
-      $('#summaryTable tbody').html('<tr><td colspan="30" align="center">' + errorMsg + '</td></tr>');
-      $('#pager').html('');
-		} else {
-			useCache = true;
+	if (settlementCommon.prehandleData(res)) {
+		useCache = true;
 
-			var totalRecord = res.data.total;
-      var record = res.data.record;
+		var totalRecord = res.data.total;
+    var record = res.data.record;
 
-      _pageTotal = Math.ceil(totalRecord / _pageSize);
-      setPager(totalRecord, _pageIndex, record.length, _pageTotal);
+    _pageTotal = Math.ceil(totalRecord / _pageSize);
+    setPager(totalRecord, _pageIndex, record.length, _pageTotal);
 
-      _(record).forEach(function(item) {
-      	item.chargeMerchant = settlementCommon.parseMerchant(item.chargeMerchant);
-        item.payStatusNo = item.payStatus;
-      	item.payStatus = settlementCommon.parsePayStatus(item.payStatus);
+    _(record).forEach(function(item) {
+    	item.chargeMerchant = settlementCommon.parseMerchant(item.chargeMerchant);
+      item.payStatusNo = item.payStatus;
+    	item.payStatus = settlementCommon.parsePayStatus(item.payStatus);
 
-        var moneyOutStatus = item.appStatus;
-        item.resend = (moneyOutStatus == 3 || moneyOutStatus == 4 || moneyOutStatus == 6);
-        item.refused = (moneyOutStatus == 2 || moneyOutStatus == 7);
-        item.appStatus = settlementCommon.parseMoneyOutStatus(item.appStatus);
-      });
+      var moneyOutStatus = item.appStatus;
+      item.resend = (moneyOutStatus == 3 || moneyOutStatus == 4 || moneyOutStatus == 6);
+      item.refused = (moneyOutStatus == 2 || moneyOutStatus == 7);
+      item.appStatus = settlementCommon.parseMoneyOutStatus(item.appStatus);
+    });
 
-      dataCache = record;
+    dataCache = record;
 
-      setTableData(dataCache);
-		}
-	} else {
-    alert(res.meta.msg);
-  }
+    setTableData(dataCache);
+	}
 }
 
 function setTableData(rows) {
@@ -404,7 +395,8 @@ $('body').on('submit', '#detailFormSearch', function(e) {
 function handleDetailData(res) {
   if (!!~~res.meta.result) {
     if (res.data == null || res.data.total < 1) {
-      var errorMsg = res.meta.msg;
+      // var errorMsg = res.meta.msg;
+      var errorMsg = '无满足条件记录';
       $('#detailDataTable tbody').html('<tr><td colspan="30" align="center">' + errorMsg + '</td></tr>');
       $('#detailPager').html('');
     } else {
