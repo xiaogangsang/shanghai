@@ -200,7 +200,7 @@ function handleData(res) {
       item.acquiringReconciliationStatus = settlementCommon.parseReconciliationStatus(item.acquiringReconciliationStatus);
       item.subsidyType = settlementCommon.parseSubsidyType(item.subsidyType);
       item.reconciliationStatus = settlementCommon.parseReconciliationStatus(item.reconciliationStatus);
-      item.reason = settlementCommon.parseReason(item.reason);
+      item.reason = settlementCommon.parseOutReason(item.reason);
       item.discountType = settlementCommon.parseDiscountType(item.discountType);
       item.shipmentStatus = settlementCommon.parseShipmentStatus(item.shipmentStatus);
       item.checkStatusNo = item.checkStatus;
@@ -407,7 +407,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
       obj.partner = settlementCommon.parsePartner(obj.partner);
       obj.reconciliationStatus = settlementCommon.parseReconciliationStatus(obj.reconciliationStatus);
       obj.shipmentStatus = settlementCommon.parseShipmentStatus(obj.shipmentStatus);
-      obj.reason = settlementCommon.parseReason(obj.reason);
+      obj.reason = settlementCommon.parseOutReason(obj.reason);
     });
 
     var template = $('#detail-template').html();
@@ -428,8 +428,8 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
       $('.detail-area').addClass('read-only');
       $('.detail-area :input').prop('disabled', true);
     }
-
-    $('.modal form').parsley();
+    
+    $('#popup-detail form').parsley().validate();
   });
 });
 
@@ -453,7 +453,7 @@ $(document).on('submit', '#popup-detail form', function(e) {
     oldVersion: $submitButton.data('version'),
     merchantName: $('#merchantName').val(),
     merchantId: $('#merchantNo').val(),
-    // settleAmount: $('#settleAmount').val(),
+    settleAmount: $('#settleAmount').val(),
     // subsidyAmountO2o: $('#subsidyAmountO2o').val(),
     // subsidyType: $('#subsidyType').val(),
     acceptanceAppropriation: $('#acceptanceAppropriation').val(),

@@ -271,7 +271,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     $('#reason option[value="' + detail.reason + '"]').prop('selected', true);
   });
 
-  $('.modal form').parsley();
+  $('.modal form').parsley().validate();
 });
 
 $('#dataTable').on('click', '.btn-detail', function (e) {

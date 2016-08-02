@@ -136,10 +136,12 @@
               <div class="input-group-addon">对账不一致原因</div>
               <select class="form-control" id="search_reason">
                 <option value="">全部</option>
-                <option value="1">我方缺失</option>
-                <option value="2">对方缺失</option>
-                <option value="3">状态错误</option>
-                <option value="4">金额不符</option>
+                <option value="1">出货失败, 支付成功(未退款)</option>
+                <option value="2">退货失败, 退款成功(无承债方)</option>
+                <option value="3">退货成功, 退款失败</option>
+                <option value="4">退货成功, 支付成功(未退款)</option>
+                <option value="5">金额不符</option>
+                <option value="6">票类错误</option>
               </select>
             </div>
           </div>

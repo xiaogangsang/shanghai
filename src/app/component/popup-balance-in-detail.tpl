@@ -65,7 +65,7 @@
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
             <div class="input-group-addon">应收用户金额(元)</div>
-            <input type="text" class="form-control oldValue" id="payAmount" value="{{payAmount}}" data-parsley-pattern="[0-9]{0,6}(\.[0-9]{0,2})?">
+            <input type="text" class="form-control oldValue" id="payAmount" value="{{payAmount}}" data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?">
             <input type="text" class="form-control newValue" id="payAmountNew" value="{{currentDetail.payAmount}}">
           </div>
         </div>
@@ -73,7 +73,7 @@
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
             <div class="input-group-addon">应收用户积分</div>
-            <input type="text" class="form-control oldValue" id="receivablePoint" value="{{receivablePoint}}" data-parsley-pattern="[0-9]{0,6}">
+            <input type="text" class="form-control oldValue" id="receivablePoint" value="{{receivablePoint}}" data-parsley-pattern="(-)?[0-9]{0,6}">
             <input type="text" class="form-control newValue" id="receivablePointNew" value="{{currentDetail.receivablePoint}}">
           </div>
         </div>
@@ -135,7 +135,7 @@
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
             <div class="input-group-addon">票价(元)</div>
-            <input type="text" class="form-control oldValue" id="ticketAmount" value="{{ticketAmount}}" data-parsley-pattern="[0-9]{0,6}(\.[0-9]{0,2})?">
+            <input type="text" class="form-control oldValue" id="ticketAmount" value="{{ticketAmount}}" data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?">
             <input type="text" class="form-control newValue" id="ticketAmountNew" value="{{currentDetail.ticketAmount}}">
           </div>
         </div>
@@ -143,7 +143,7 @@
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
             <div class="input-group-addon">服务费(元)</div>
-            <input type="text" class="form-control oldValue" id="serviceAmount" value="{{serviceAmount}}" data-parsley-pattern="[0-9]{0,6}(\.[0-9]{0,2})?">
+            <input type="text" class="form-control oldValue" id="serviceAmount" value="{{serviceAmount}}" data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?">
             <input type="text" class="form-control newValue" id="serviceAmountNew" value="{{currentDetail.serviceAmount}}">
           </div>
         </div>
@@ -151,7 +151,7 @@
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
             <div class="input-group-addon">渠道方补贴金额(元)</div>
-            <input type="text" class="form-control oldValue" id="subsidyAmountO2o" value="{{subsidyAmountO2o}}" data-parsley-pattern="[0-9]{0,6}(\.[0-9]{0,2})?">
+            <input type="text" class="form-control oldValue" id="subsidyAmountO2o" value="{{subsidyAmountO2o}}" data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?">
             <input type="text" class="form-control newValue" id="subsidyAmountO2oNew" value="{{currentDetail.subsidyAmountO2o}}">
           </div>
         </div>
@@ -175,7 +175,7 @@
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
             <div class="input-group-addon">退票手续费(元)</div>
-            <input type="text" class="form-control oldValue" id="returnFee" value="{{returnFee}}" data-parsley-pattern="[0-9]{0,6}(\.[0-9]{0,2})?">
+            <input type="text" class="form-control oldValue" id="returnFee" value="{{returnFee}}" data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?">
             <input type="text" class="form-control newValue" id="returnFeeNew" value="{{currentDetail.returnFee}}">
           </div>
         </div>
@@ -201,7 +201,7 @@
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
             <div class="input-group-addon">O2O应收金额(元)</div>
-            <input type="text" class="form-control oldValue" id="o2oReceivableAmount" value="{{o2oReceivableAmount}}" data-parsley-pattern="[0-9]{0,6}(\.[0-9]{0,2})?">
+            <input type="text" class="form-control oldValue" id="o2oReceivableAmount" value="{{o2oReceivableAmount}}" data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?">
             <input type="text" class="form-control newValue" id="o2oReceivableAmountNew" value="{{currentDetail.o2oReceivableAmount}}">
           </div>
         </div>

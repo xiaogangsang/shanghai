@@ -421,7 +421,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     }
   });
 
-  $('.modal form').parsley();
+  $('.modal form').parsley().validate();
 });
 
 

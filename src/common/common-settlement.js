@@ -33,11 +33,19 @@ settlementCommon.parseReconciliationStatus = function(status) {
 }
 
 
-// 对账失败原因
+// 收单对账失败原因
 settlementCommon.reason = {'1' : '我方缺失', '2' : '对方缺失', '3' : '状态错误', '4' : '金额不符'};
 
 settlementCommon.parseReason = function(status) {
   return this.reason[status];
+}
+
+// 出货对账失败原因
+settlementCommon.outReason = 
+  {'1' : '出货失败, 支付成功(未退款)', '2' : '退货失败, 退款成功(无承债方)', '3' : '退货成功, 退款失败', '4' : '退货成功, 支付成功(未退款)', '5' : '金额不符', '6': '票类错误'};
+
+settlementCommon.parseOutReason = function(status) {
+  return this.outReason[status];
 }
 
 

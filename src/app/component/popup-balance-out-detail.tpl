@@ -163,9 +163,9 @@
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
             <div class="input-group-addon">交易金额(元)</div>
-            <input type="text" class="form-control" id="settleAmount" value="{{settleAmount}}" disabled>
-            <!-- <input type="text" class="form-control oldValue" id="settleAmount" value="{{settleAmount}}">
-            <input type="text" class="form-control newValue" id="settleAmountNew" value="{{currentDetail.settleAmount}}"> -->
+            <!-- <input type="text" class="form-control" id="settleAmount" value="{{settleAmount}}" disabled> -->
+            <input type="text" class="form-control oldValue" id="settleAmount" value="{{settleAmount}}" data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?">
+            <input type="text" class="form-control newValue" id="settleAmountNew" value="{{currentDetail.settleAmount}}">
           </div>
         </div>
 
@@ -198,7 +198,7 @@
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
             <div class="input-group-addon">应付金额(元)</div>
-            <input type="text" class="form-control oldValue" id="acceptanceAppropriation" value="{{acceptanceAppropriation}}" data-parsley-pattern="[0-9]{0,6}(\.[0-9]{0,2})?">
+            <input type="text" class="form-control oldValue" id="acceptanceAppropriation" value="{{acceptanceAppropriation}}" data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?">
             <input type="text" class="form-control newValue" id="acceptanceAppropriationNew" value="{{currentDetail.acceptanceAppropriation}}">
           </div>
         </div>
@@ -234,7 +234,7 @@
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
             <div class="input-group-addon">实付金额(元)</div>
-            <input type="text" class="form-control oldValue" id="finalSettleAmount" value="{{finalSettleAmount}}" data-parsley-pattern="[0-9]{0,6}(\.[0-9]{0,2})?">
+            <input type="text" class="form-control oldValue" id="finalSettleAmount" value="{{finalSettleAmount}}" data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?">
             <input type="text" class="form-control newValue" id="finalSettleAmountNew" value="{{currentDetail.finalSettleAmount}}">
           </div>
         </div>
@@ -354,17 +354,21 @@
             <div class="input-group-addon">对账不一致原因</div>
             <select class="form-control oldValue" id="reason" value="{{reason}}">
               <option value=""></option>
-              <option value="1">我方缺失</option>
-              <option value="2">对方缺失</option>
-              <option value="3">金额不符</option>
-              <option value="3">状态错误</option>
+              <option value="1">出货失败, 支付成功(未退款)</option>
+              <option value="2">退货失败, 退款成功(无承债方)</option>
+              <option value="3">退货成功, 退款失败</option>
+              <option value="4">退货成功, 支付成功(未退款)</option>
+              <option value="5">金额不符</option>
+              <option value="6">票类错误</option>
             </select>
             <select class="form-control newValue" id="reasonNew" value="{{currentDetail.reason}}">
               <option value=""></option>
-              <option value="1">我方缺失</option>
-              <option value="2">对方缺失</option>
-              <option value="3">金额不符</option>
-              <option value="3">状态错误</option>
+              <option value="1">出货失败, 支付成功(未退款)</option>
+              <option value="2">退货失败, 退款成功(无承债方)</option>
+              <option value="3">退货成功, 退款失败</option>
+              <option value="4">退货成功, 支付成功(未退款)</option>
+              <option value="5">金额不符</option>
+              <option value="6">票类错误</option>
             </select>
           </div>
         </div>
