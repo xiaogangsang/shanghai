@@ -9,7 +9,7 @@
       {{^currentDetail}}
       <div class="row">
         <div class="col-md-4 pull-right">
-          <button class="form-control btn btn-default edit-submit" data-version="{{version}}" data-id="{{id}}">提交</button>
+          <button type="submit" class="form-control btn btn-default edit-submit" data-version="{{version}}" data-id="{{id}}">提交</button>
         </div>
       </div>
       {{/currentDetail}}
@@ -65,7 +65,7 @@
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
             <div class="input-group-addon">应收用户金额(元)</div>
-            <input type="text" class="form-control oldValue" id="payAmount" value="{{payAmount}}">
+            <input type="text" class="form-control oldValue" id="payAmount" value="{{payAmount}}" data-parsley-pattern="[0-9]{0,4}(\.[0-9]{0,2})?">
             <input type="text" class="form-control newValue" id="payAmountNew" value="{{currentDetail.payAmount}}">
           </div>
         </div>

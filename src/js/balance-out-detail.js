@@ -423,7 +423,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
       $('#reason option[value="' + detail.reason + '"]').prop('selected', true);
 
       var checkStatus = $(this).data('checkstatus');
-      if (checkStatus == 2) { // 待审核不能再修改
+      if (checkStatus == 2 || detail.reconciliationStatus == 4) { // 待审核不能再修改, 出货对账状态为确认的也不能再修改
         $('.detail-area').addClass('read-only');
         $('.detail-area :input').prop('disabled', true);
       }
@@ -445,7 +445,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     $('#popup-detail').modal('show');
 
     var checkStatus = $(this).data('checkstatus');
-    if (checkStatus == 2) { // 待审核不能再修改
+    if (checkStatus == 2 || detail.reconciliationStatus == 4) { // 待审核不能再修改, 出货对账状态为确认的也不能再修改
       $('.detail-area').addClass('read-only');
       $('.detail-area :input').prop('disabled', true);
     }

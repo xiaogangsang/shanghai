@@ -178,6 +178,9 @@ settlementCommon.prehandleData = function(res) {
     }
   } else {
     alert(res.meta.msg);
+    $('#dataTable tbody').html('');
+    $('#summaryTable tbody').html('');
+    $('#pager').html('');
   }
   return false;
 }

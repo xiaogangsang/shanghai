@@ -101,7 +101,7 @@ $('#formSearch').on('submit', function (e) {
       handleData(res);
     });
   } else {
-    var res = $.parseJSON('{ "meta": { "result": "1", "msg": "操作成功" }, "data": { "summary": { "count": "订单总数", "totalTicketCount": "出票张数", "totalOrderAmount": "交易金额总金额", "totalSubsidyAmountO2o": "补贴金额", "totalReturnFee": "退货手续费总额", "totalSettleAmount": "应付金额", "totalFinalSettleAmount": "实付金额" }, "detail": { "recordCount": "41", "recordDetail": [ { "shipmentDate": "出/退货日期", "merchantName": "二级商户名称", "merchantNo": "二级商户号", "bizType": "业务类别", "orderCount": "订单数", "ticketCount": "张数", "shipmentStatus": "出货状态", "orderAmount": "交易金额", "subsidyAmountO2o": "我方补贴金额", "returnFee": "退票手续费", "settleAmount": "应付金额", "finalSettleAmount": "实付金额" } ] } } }');
+    var res = $.parseJSON('{ "meta": { "result": "1", "msg": "操作成功" }, "data": { "summary": { "count": "订单总数", "totalTicketCount": "出票张数", "totalOrderAmount": "交易金额总金额", "totalSubsidyAmountO2o": "补贴金额", "totalReturnFee": "退货手续费总额", "totalSettleAmount": "应付金额", "totalFinalSettleAmount": "实付金额" }, "detail": { "recordCount": "41", "recordDetail": [ { "shipmentDate": "出/退货日期", "merchantName": "二级商户名称", "merchantNo": "二级商户号", "bizType": "业务类别", "orderCount": "订单数", "ticketCount": "张数", "shipmentStatus": "出货状态", "orderAmount": "交易金额", "subsidyAmountO2o": "渠道方补贴金额", "returnFee": "退票手续费", "settleAmount": "应付金额", "finalSettleAmount": "实付金额" } ] } } }');
     handleData(res);
   }
 

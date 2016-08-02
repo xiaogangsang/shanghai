@@ -170,7 +170,7 @@
 
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
-            <div class="input-group-addon">我方补贴金额(元)</div>
+            <div class="input-group-addon">渠道方补贴金额(元)</div>
             <input type="text" class="form-control oldValue" id="subsidyAmountO2o" value="{{subsidyAmountO2o}}">
             <input type="text" class="form-control newValue" id="subsidyAmountO2oNew" value="{{currentDetail.subsidyAmountO2o}}">
           </div>
@@ -388,7 +388,7 @@
                   <th>二级商户</th>
                   <th>二级商户号</th>
                   <th>交易金额(元)</th>
-                  <th>我方补贴金额(元)</th>
+                  <th>渠道方补贴金额(元)</th>
                   <th>补贴付款方式</th>
                   <th>应拨金额(元)</th>
                   <th>退票手续费(元)</th>

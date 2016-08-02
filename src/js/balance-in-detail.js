@@ -416,11 +416,13 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
       $('#payStatus option[value="' + detail.payStatus + '"]').prop('selected', true);
 
       var checkStatus = $(this).data('checkstatus');
-      if (checkStatus == 2) { // 待审核不能再修改
+      if (checkStatus == 2 || detail.reconciliationStatus == 4) { // 待审核不能再修改, 出货对账状态为确认的也不能再修改
         $('.detail-area').addClass('read-only');
         $('.detail-area :input').prop('disabled', true);
       }
     });
+
+    $('.modal form').parsley();
   } else {
     var data = $.parseJSON('{ "meta" : { "result" : "1", "msg" : "操作成功" }, "data" : { "operateRecords" : [ { "bizType" : 1, "orderNo" : "738289474424934400", "o2oReceivableAmount" : 12, "operateTime" : "2016-06-23 15:42:18", "operatorName" : "徐慧", "subsidyAmountO2o" : 4750, "discountName" : "买2减1", "ticketAmount" : 4750, "chargeMerchant" : 1, "serviceAmount" : 0, "partner" : "3", "reconciliationStatus" : 4, "returnFee" : 1, "discountType" : 1, "payStatus" : 4 }, { "bizType" : 1, "orderNo" : "738289474424934400", "o2oReceivableAmount" : 12, "operateTime" : "2016-06-23 11:50:51", "operatorName" : "李瑾", "subsidyAmountO2o" : 4750, "discountName" : "买2减1", "ticketAmount" : 4750, "chargeMerchant" : 1, "serviceAmount" : 0, "partner" : "3", "reconciliationStatus" : 4, "returnFee" : 1, "discountType" : 1, "payStatus" : 4 } ], "detail" : { "reason" : 1, "receivablePoint" : 0, "bizType" : 1, "reconciliationDate" : 1466733543000, "subsidyType" : 1, "bankAmount" : 1, "checkStatus" : 1, "discountName" : "买2减1", "ticketAmount" : 1, "payAmount" : 4700, "serviceAmount" : 0, "discountType" : 1, "id" : 2585, "thdSerialNo" : "1223", "orderNo" : "738284476651671552", "countNum" : 1, "costCenter" : "卡中心总部", "o2oReceivableAmount" : 4700, "externalId" : 857, "updateTime" : 1466738155000, "version" : 0, "subsidyAmountO2o" : 0, "chargeMerchant" : 1, "partner" : "1", "reconciliationStatus" : 4, "createTime" : 1464796800000, "returnFee" : 12, "chargeMerchantNo" : "738284476651671552", "payStatus" : 1, "chargeMerchantNo" : "308010700103175" } } }');
     data = data.data;
@@ -438,16 +440,28 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     $('#popup-detail').modal('show');
 
     var checkStatus = $(this).data('checkstatus');
-    if (checkStatus == 2) { // 待审核不能再修改
+    if (checkStatus == 2 || detail.reconciliationStatus == 4) { // 待审核不能再修改, 出货对账状态为确认的也不能再修改
       $('.detail-area').addClass('read-only');
       $('.detail-area :input').prop('disabled', true);
     }
   }
 });
 
-// 修改详情提交
-$('body').on('click', '.edit-submit', function(e) {
+
+$(document).on('click', '.modal button[type=submit]', function(event) {
+  event.preventDefault();
+  $('#popup-detail form').trigger('submit');
+});
+
+// 修改详情 "提交"
+$(document).on('submit', '#popup-detail form', function(e) {
   e.preventDefault();
+    if (!$('.modal form').parsley().isValid()) {
+    return false;
+  }
+
+  return;
+
   var param = {
     id: $(this).data('id'),
     version: $(this).data('version'),
