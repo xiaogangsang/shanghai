@@ -271,6 +271,8 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     detail.chargeMerchant = settlementCommon.parseMerchant(detail.chargeMerchant);
     detail.discountType = settlementCommon.parseDiscountType(detail.discountType);
     detail.acquiringReconciliationStatus = settlementCommon.parseReconciliationStatus(detail.acquiringReconciliationStatus);
+    detail.subsidyType = settlementCommon.parseSubsidyType(detail.subsidyType);
+    detail.partner = settlementCommon.parsePartner(detail.partner);
 
     if (data.operate) {
       formatEditHistory(data.operate);
@@ -288,19 +290,21 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
       $('.detail-area.compare :input').prop('disabled', true);
     }
 
-    $('#subsidyType option[value="' + detail.subsidyType + '"]').prop('selected', true);
-    $('#partner option[value="' + detail.partner + '"]').prop('selected', true);
+    // $('#subsidyType option[value="' + detail.subsidyType + '"]').prop('selected', true);
+    // $('#partner option[value="' + detail.partner + '"]').prop('selected', true);
     $('#shipmentStatus option[value="' + detail.shipmentStatus + '"]').prop('selected', true);
     $('#reconciliationStatus option[value="' + detail.reconciliationStatus + '"]').prop('selected', true);
     $('#reason option[value="' + detail.reason + '"]').prop('selected', true);
 
     if (compare) {
       detail = detail.currentDetail;
-      $('#subsidyTypeNew option[value="' + detail.subsidyType + '"]').prop('selected', true);
-      $('#partnerNew option[value="' + detail.partner + '"]').prop('selected', true);
+      // $('#subsidyTypeNew option[value="' + detail.subsidyType + '"]').prop('selected', true);
+      // $('#partnerNew option[value="' + detail.partner + '"]').prop('selected', true);
       $('#shipmentStatusNew option[value="' + detail.shipmentStatus + '"]').prop('selected', true);
       $('#reconciliationStatusNew option[value="' + detail.reconciliationStatus + '"]').prop('selected', true);
       $('#reasonNew option[value="' + detail.reason + '"]').prop('selected', true);
+    } else {
+      $('.modal form').parsley();
     }
   });
 });
@@ -334,21 +338,32 @@ $('#dataTable').on('click', '.btn-approval', function (e) {
   });
 });
 
+$(document).on('click', '.modal button[type=submit]', function(event) {
+  event.preventDefault();
+  $('#popup-detail form').trigger('submit');
+});
+
 // 修改提交
-$('body').on('click', '.edit-submit', function(e) {
+$(document).on('submit', '#popup-detail form', function(e) {
   e.preventDefault();
+  
+  if (!$('.modal form').parsley().isValid()) {
+    return false;
+  }
+
+  $submitButton = $(this).find('button[type=submit]');
 
   var param = {
-    id: $(this).data('id'),
-    oldVersion: $(this).data('version'),
+    id: $submitButton.data('id'),
+    oldVersion: $submitButton.data('version'),
     merchantName: $('#merchantName').val(),
     merchantId: $('#merchantNo').val(),
-    settleAmount: $('#settleAmount').val(),
-    subsidyAmountO2o: $('#subsidyAmountO2o').val(),
-    subsidyType: $('#subsidyType').val(),
+    // settleAmount: $('#settleAmount').val(),
+    // subsidyAmountO2o: $('#subsidyAmountO2o').val(),
+    // subsidyType: $('#subsidyType').val(),
     acceptanceAppropriation: $('#acceptanceAppropriation').val(),
-    returnFee: $('#returnFee').val(),
-    partner: $('#returnFee').val(),
+    // returnFee: $('#returnFee').val(),
+    // partner: $('#returnFee').val(),
     finalSettleAmount: $('#finalSettleAmount').val(),
     reconciliationStatus: $('#reconciliationStatus').val(),
     shipmentStatus: $('#shipmentStatus').val(),

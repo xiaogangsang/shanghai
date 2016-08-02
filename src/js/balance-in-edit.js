@@ -270,6 +270,8 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     $('#reconciliationStatus option[value="' + detail.reconciliationStatus + '"]').prop('selected', true);
     $('#reason option[value="' + detail.reason + '"]').prop('selected', true);
   });
+
+  $('.modal form').parsley();
 });
 
 $('#dataTable').on('click', '.btn-detail', function (e) {
@@ -340,7 +342,7 @@ function formatEditHistory(operateRecords) {
 }
 
 
-// s
+// 审核通过
 $('#dataTable').on('click', '.btn-approval', function (e) {
 
   e.preventDefault();
@@ -360,12 +362,23 @@ $('#dataTable').on('click', '.btn-approval', function (e) {
   });
 });
 
-// 修改详情提交
-$('body').on('click', '.edit-submit', function(e) {
+$(document).on('click', '.modal button[type=submit]', function(event) {
+  event.preventDefault();
+  $('#popup-detail form').trigger('submit');
+});
+
+// 修改详情 "提交"
+$(document).on('submit', '#popup-detail form', function(e) {
   e.preventDefault();
+    if (!$('.modal form').parsley().isValid()) {
+    return false;
+  }
+
+  $submitButton = $(this).find('button[type=submit]');
+
   var param = {
-    id: $(this).data('id'),
-    version: $(this).data('version'),
+    id: $submitButton.data('id'),
+    version: $submitButton.data('version'),
     payAmount: $('#payAmount').val(),
     receivablePoint: $('#receivablePoint').val(),
     thdSerialNo: $('#thdSerialNo').val(),

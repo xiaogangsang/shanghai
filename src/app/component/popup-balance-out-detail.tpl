@@ -9,7 +9,7 @@
       {{^currentDetail}}
       <div class="row">
         <div class="col-md-4 pull-right">
-          <button class="form-control btn btn-default edit-submit" data-version="{{version}}" data-id="{{id}}">提交</button>
+          <button type="submit" class="form-control btn btn-default edit-submit" data-version="{{version}}" data-id="{{id}}">提交</button>
         </div>
       </div>
       {{/currentDetail}}
@@ -163,23 +163,26 @@
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
             <div class="input-group-addon">交易金额(元)</div>
-            <input type="text" class="form-control oldValue" id="settleAmount" value="{{settleAmount}}">
-            <input type="text" class="form-control newValue" id="settleAmountNew" value="{{currentDetail.settleAmount}}">
+            <input type="text" class="form-control" id="settleAmount" value="{{settleAmount}}" disabled>
+            <!-- <input type="text" class="form-control oldValue" id="settleAmount" value="{{settleAmount}}">
+            <input type="text" class="form-control newValue" id="settleAmountNew" value="{{currentDetail.settleAmount}}"> -->
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
             <div class="input-group-addon">渠道方补贴金额(元)</div>
-            <input type="text" class="form-control oldValue" id="subsidyAmountO2o" value="{{subsidyAmountO2o}}">
-            <input type="text" class="form-control newValue" id="subsidyAmountO2oNew" value="{{currentDetail.subsidyAmountO2o}}">
+            <input type="text" class="form-control" id="subsidyAmountO2o" value="{{subsidyAmountO2o}}" disabled>
+            <!-- <input type="text" class="form-control oldValue" id="subsidyAmountO2o" value="{{subsidyAmountO2o}}">
+            <input type="text" class="form-control newValue" id="subsidyAmountO2oNew" value="{{currentDetail.subsidyAmountO2o}}"> -->
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">补贴付款方式</div>
-            <select class="form-control oldValue" id="subsidyType" value="{{subsidyType}}">
+            <input type="text" class="form-control" id="subsidyType" value="{{subsidyType}}" disabled>
+            <!-- <select class="form-control oldValue" id="subsidyType" value="{{subsidyType}}">
               <option value=""></option>
               <option value="1">预付</option>
               <option value="2">后付</option>
@@ -188,14 +191,14 @@
               <option value=""></option>
               <option value="1">预付</option>
               <option value="2">后付</option>
-            </select>
+            </select> -->
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
             <div class="input-group-addon">应付金额(元)</div>
-            <input type="text" class="form-control oldValue" id="acceptanceAppropriation" value="{{acceptanceAppropriation}}">
+            <input type="text" class="form-control oldValue" id="acceptanceAppropriation" value="{{acceptanceAppropriation}}" data-parsley-pattern="[0-9]{0,6}(\.[0-9]{0,2})?">
             <input type="text" class="form-control newValue" id="acceptanceAppropriationNew" value="{{currentDetail.acceptanceAppropriation}}">
           </div>
         </div>
@@ -203,15 +206,17 @@
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
             <div class="input-group-addon">退票手续费(元)</div>
-            <input type="text" class="form-control oldValue" id="returnFee" value="{{returnFee}}">
-            <input type="text" class="form-control newValue" id="returnFeeNew" value="{{currentDetail.returnFee}}">
+            <input type="text" class="form-control" id="returnFee" value="{{returnFee}}" disabled>
+            <!-- <input type="text" class="form-control oldValue" id="returnFee" value="{{returnFee}}">
+            <input type="text" class="form-control newValue" id="returnFeeNew" value="{{currentDetail.returnFee}}"> -->
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
             <div class="input-group-addon">退款承债方</div>
-              <select class="form-control oldValue" id="partner" value="{{partner}}">
+            <input type="text" class="form-control" id="partner" value="{{partner}}" disabled>
+              <!-- <select class="form-control oldValue" id="partner" value="{{partner}}">
                 <option value=""></option>
                 <option value="1">O2O</option>
                 <option value="2">TP方</option>
@@ -222,14 +227,14 @@
                 <option value="1">O2O</option>
                 <option value="2">TP方</option>
                 <option value="3">渠道方</option>
-              </select>
+              </select> -->
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
             <div class="input-group-addon">实付金额(元)</div>
-            <input type="text" class="form-control oldValue" id="finalSettleAmount" value="{{finalSettleAmount}}">
+            <input type="text" class="form-control oldValue" id="finalSettleAmount" value="{{finalSettleAmount}}" data-parsley-pattern="[0-9]{0,6}(\.[0-9]{0,2})?">
             <input type="text" class="form-control newValue" id="finalSettleAmountNew" value="{{currentDetail.finalSettleAmount}}">
           </div>
         </div>

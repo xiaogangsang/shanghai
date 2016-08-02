@@ -372,65 +372,34 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
 
   e.preventDefault();
 
-  if (!_DEBUG) {
-    $.ajax({
-      url: common.API_HOST + 'settlement/acquiring/queryAcquiringInfo',
-      type: 'GET',
-      data: {id: $(this).closest('tr').data('id')},
-    })
-    .done(function(res) {
-      if (res.meta.result == 0) {
-        alert('查询数据失败!');
-        return false;
-      }
-      var data = res.data;
-      var detail = data.detail;
-      detail.payTool = settlementCommon.parsePayTool(detail.payTool);
-      detail.bizType = settlementCommon.parseBizType(detail.bizType);
-      detail.discountType = settlementCommon.parseDiscountType(detail.discountType);
-      detail.chargeMerchant = settlementCommon.parseMerchant(detail.chargeMerchant);
-
-      var operateRecords = data.operateRecords;
-
-      operateRecords.forEach(function(obj) {
-        obj.chargeMerchant = settlementCommon.parseMerchant(obj.chargeMerchant);
-        obj.bizType = settlementCommon.parseBizType(obj.bizType);
-        obj.payStatus = settlementCommon.parsePayStatus(obj.payStatus);
-        obj.partner = settlementCommon.parsePartner(obj.partner);
-        obj.discountType = settlementCommon.parseDiscountType(obj.discountType);
-        obj.reconciliationStatus = settlementCommon.parseReconciliationStatus(obj.reconciliationStatus);
-      });
-
-
-      var template = $('#detail-template').html();
-      Mustache.parse(template);
-      var html = Mustache.render(template, data);
-      $('#popup-detail .modal-body').html(html);
-
-      $('#popup-detail').modal('show');
-
-      $('#subsidyType option[value="' + detail.subsidyType + '"]').prop('selected', true);
-      $('#partner option[value="' + detail.partner + '"]').prop('selected', true);
-      $('#reconciliationStatus option[value="' + detail.reconciliationStatus + '"]').prop('selected', true);
-      $('#reason option[value="' + detail.reason + '"]').prop('selected', true);
-      $('#payStatus option[value="' + detail.payStatus + '"]').prop('selected', true);
-
-      var checkStatus = $(this).data('checkstatus');
-      if (checkStatus == 2 || detail.reconciliationStatus == 4) { // 待审核不能再修改, 出货对账状态为确认的也不能再修改
-        $('.detail-area').addClass('read-only');
-        $('.detail-area :input').prop('disabled', true);
-      }
-    });
-
-    $('.modal form').parsley();
-  } else {
-    var data = $.parseJSON('{ "meta" : { "result" : "1", "msg" : "操作成功" }, "data" : { "operateRecords" : [ { "bizType" : 1, "orderNo" : "738289474424934400", "o2oReceivableAmount" : 12, "operateTime" : "2016-06-23 15:42:18", "operatorName" : "徐慧", "subsidyAmountO2o" : 4750, "discountName" : "买2减1", "ticketAmount" : 4750, "chargeMerchant" : 1, "serviceAmount" : 0, "partner" : "3", "reconciliationStatus" : 4, "returnFee" : 1, "discountType" : 1, "payStatus" : 4 }, { "bizType" : 1, "orderNo" : "738289474424934400", "o2oReceivableAmount" : 12, "operateTime" : "2016-06-23 11:50:51", "operatorName" : "李瑾", "subsidyAmountO2o" : 4750, "discountName" : "买2减1", "ticketAmount" : 4750, "chargeMerchant" : 1, "serviceAmount" : 0, "partner" : "3", "reconciliationStatus" : 4, "returnFee" : 1, "discountType" : 1, "payStatus" : 4 } ], "detail" : { "reason" : 1, "receivablePoint" : 0, "bizType" : 1, "reconciliationDate" : 1466733543000, "subsidyType" : 1, "bankAmount" : 1, "checkStatus" : 1, "discountName" : "买2减1", "ticketAmount" : 1, "payAmount" : 4700, "serviceAmount" : 0, "discountType" : 1, "id" : 2585, "thdSerialNo" : "1223", "orderNo" : "738284476651671552", "countNum" : 1, "costCenter" : "卡中心总部", "o2oReceivableAmount" : 4700, "externalId" : 857, "updateTime" : 1466738155000, "version" : 0, "subsidyAmountO2o" : 0, "chargeMerchant" : 1, "partner" : "1", "reconciliationStatus" : 4, "createTime" : 1464796800000, "returnFee" : 12, "chargeMerchantNo" : "738284476651671552", "payStatus" : 1, "chargeMerchantNo" : "308010700103175" } } }');
-    data = data.data;
+  $.ajax({
+    url: common.API_HOST + 'settlement/acquiring/queryAcquiringInfo',
+    type: 'GET',
+    data: {id: $(this).closest('tr').data('id')},
+  })
+  .done(function(res) {
+    if (res.meta.result == 0) {
+      alert('查询数据失败!');
+      return false;
+    }
+    var data = res.data;
     var detail = data.detail;
     detail.payTool = settlementCommon.parsePayTool(detail.payTool);
-    detail.payStatus = settlementCommon.parsePayStatus(detail.payStatus);
     detail.bizType = settlementCommon.parseBizType(detail.bizType);
+    detail.discountType = settlementCommon.parseDiscountType(detail.discountType);
     detail.chargeMerchant = settlementCommon.parseMerchant(detail.chargeMerchant);
+
+    var operateRecords = data.operateRecords;
+
+    operateRecords.forEach(function(obj) {
+      obj.chargeMerchant = settlementCommon.parseMerchant(obj.chargeMerchant);
+      obj.bizType = settlementCommon.parseBizType(obj.bizType);
+      obj.payStatus = settlementCommon.parsePayStatus(obj.payStatus);
+      obj.partner = settlementCommon.parsePartner(obj.partner);
+      obj.discountType = settlementCommon.parseDiscountType(obj.discountType);
+      obj.reconciliationStatus = settlementCommon.parseReconciliationStatus(obj.reconciliationStatus);
+    });
+
 
     var template = $('#detail-template').html();
     Mustache.parse(template);
@@ -439,12 +408,20 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
 
     $('#popup-detail').modal('show');
 
+    $('#subsidyType option[value="' + detail.subsidyType + '"]').prop('selected', true);
+    $('#partner option[value="' + detail.partner + '"]').prop('selected', true);
+    $('#reconciliationStatus option[value="' + detail.reconciliationStatus + '"]').prop('selected', true);
+    $('#reason option[value="' + detail.reason + '"]').prop('selected', true);
+    $('#payStatus option[value="' + detail.payStatus + '"]').prop('selected', true);
+
     var checkStatus = $(this).data('checkstatus');
     if (checkStatus == 2 || detail.reconciliationStatus == 4) { // 待审核不能再修改, 出货对账状态为确认的也不能再修改
       $('.detail-area').addClass('read-only');
       $('.detail-area :input').prop('disabled', true);
     }
-  }
+  });
+
+  $('.modal form').parsley();
 });
 
 
@@ -456,15 +433,16 @@ $(document).on('click', '.modal button[type=submit]', function(event) {
 // 修改详情 "提交"
 $(document).on('submit', '#popup-detail form', function(e) {
   e.preventDefault();
-    if (!$('.modal form').parsley().isValid()) {
+  
+  if (!$('.modal form').parsley().isValid()) {
     return false;
   }
 
-  return;
+  $submitButton = $(this).find('button[type=submit]');
 
   var param = {
-    id: $(this).data('id'),
-    version: $(this).data('version'),
+    id: $submitButton.data('id'),
+    version: $submitButton.data('version'),
     payAmount: $('#payAmount').val(),
     receivablePoint: $('#receivablePoint').val(),
     thdSerialNo: $('#thdSerialNo').val(),
