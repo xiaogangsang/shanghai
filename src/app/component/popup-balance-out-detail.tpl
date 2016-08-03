@@ -326,14 +326,14 @@
           <div class="input-group">
             <div class="input-group-addon">出货对账状态</div>
             <select class="form-control oldValue" id="reconciliationStatus" value="{{reconciliationStatus}}">
-              <option value=""></option>
+              <!-- <option value=""></option> -->
               <option value="1">未对账</option>
               <option value="2">对账不一致</option>
               <option value="3">对账成功</option>
               <option value="4">确认</option>
             </select>
             <select class="form-control newValue" id="reconciliationStatusNew" value="{{currentDetail.reconciliationStatus}}">
-              <option value=""></option>
+              <!-- <option value=""></option> -->
               <option value="1">未对账</option>
               <option value="2">对账不一致</option>
               <option value="3">对账成功</option>
@@ -385,8 +385,7 @@
         <hr style="margin-top: 3px; margin-bottom: 0px;">
       </div>
 
-
-
+      <!-- 注释部分是以前可以修改, 现在不行了 -->
       <div class="row">
         <div class="table-responsive">
             <table class="table table-hover" id="dataTable">
@@ -397,11 +396,11 @@
                   <th>二级商户</th>
                   <th>二级商户号</th>
                   <th>交易金额(元)</th>
-                  <th>渠道方补贴金额(元)</th>
-                  <th>补贴付款方式</th>
+                  <!-- <th>渠道方补贴金额(元)</th> -->
+                  <!-- <th>补贴付款方式</th> -->
                   <th>应拨金额(元)</th>
-                  <th>退票手续费(元)</th>
-                  <th>退款承债方</th>
+                  <!-- <th>退票手续费(元)</th> -->
+                  <!-- <th>退款承债方</th> -->
                   <th>净拨款金额(元)</th>
                   <th>出货状态</th>
                   <th>出货对账状态</th>
@@ -417,11 +416,11 @@
                   <td>{{merchantName}}</td>
                   <td>{{merchantNo}}</td>
                   <td>{{settleAmount}}</td>
-                  <td>{{subsidyAmountO2o}}</td>
-                  <td>{{subsidyType}}</td>
+                  <!-- <td>{{subsidyAmountO2o}}</td> -->
+                  <!-- <td>{{subsidyType}}</td> -->
                   <td>{{acceptanceAppropriation}}</td>
-                  <td>{{returnFee}}</td>
-                  <td>{{partner}}</td>
+                  <!-- <td>{{returnFee}}</td> -->
+                  <!-- <td>{{partner}}</td> -->
                   <td>{{finalSettleAmount}}</td>
                   <td>{{shipmentStatus}}</td>
                   <td>{{reconciliationStatus}}</td>

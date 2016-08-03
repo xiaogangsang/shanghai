@@ -141,6 +141,7 @@ function handleData(res) {
     setPager(totalRecord, _pageIndex, record.length, _pageTotal);
 
     _(record).forEach(function(item) {
+      item.canEdit = (item.checkStatus != 2 && item.reconciliationStatus != 4); // 待审核状态不能再修改, 对账状态为确认的也不能修改
       item.bizType = settlementCommon.parseBizType(item.bizType);
       item.payStatus = settlementCommon.parsePayStatus(item.payStatus);
       item.partner = settlementCommon.parsePartner(item.partner);
@@ -149,7 +150,6 @@ function handleData(res) {
       item.reconciliationStatus = settlementCommon.parseReconciliationStatus(item.reconciliationStatus);
       item.reason = settlementCommon.parseOutReason(item.reason);
       item.discountType = settlementCommon.parseDiscountType(item.discountType);
-      item.canEdit = (item.checkStatus != 2); // 待审核不能修改
       item.checkStatus = settlementCommon.parseCheckStatus(item.checkStatus);
       item.shipmentStatus = settlementCommon.parseShipmentStatus(item.shipmentStatus);
     });
@@ -311,8 +311,8 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
 
 function formatEditHistory(operate) {
   operate.forEach(function(obj) {
-    obj.subsidyType = settlementCommon.parseSubsidyType(obj.subsidyType);
-    obj.partner = settlementCommon.parsePartner(obj.partner);
+    // obj.subsidyType = settlementCommon.parseSubsidyType(obj.subsidyType);
+    // obj.partner = settlementCommon.parsePartner(obj.partner);
     obj.reconciliationStatus = settlementCommon.parseReconciliationStatus(obj.reconciliationStatus);
     obj.shipmentStatus = settlementCommon.parseShipmentStatus(obj.shipmentStatus);
     obj.reason = settlementCommon.parseOutReason(obj.reason);
@@ -346,6 +346,11 @@ $(document).on('click', '.modal button[type=submit]', function(event) {
 // 修改提交
 $(document).on('submit', '#popup-detail form', function(e) {
   e.preventDefault();
+
+  if ($('#reconciliationStatus').val() == 1) {
+    alert('出货对账状态不能为 ＂未对账＂！');
+    return false;
+  }
   
   if (!$('.modal form').parsley().isValid()) {
     return false;

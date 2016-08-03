@@ -263,15 +263,15 @@
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">收单对账状态</div>
-            <select class="form-control oldValue" id="reconciliationStatus" value="{{reconciliationStatus}}">
-              <option value=""></option>
+            <select class="form-control oldValue" id="reconciliationStatus" value="{{reconciliationStatus}}" data-value="{{reconciliationStatus}}">
+              <!-- <option value=""></option> -->
               <option value="1">未对账</option>
               <option value="2">对账不一致</option>
               <option value="3">对账成功</option>
               <option value="4">确认</option>
             </select>
             <select class="form-control newValue" id="reconciliationStatusNew" value="{{currentDetail.reconciliationStatus}}">
-              <option value=""></option>
+              <!-- <option value=""></option> -->
               <option value="1">未对账</option>
               <option value="2">对账不一致</option>
               <option value="3">对账成功</option>

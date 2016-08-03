@@ -142,6 +142,7 @@ function handleData(res) {
     setPager(totalRecord, _pageIndex, record.length, _pageTotal);
 
     _(record).forEach(function(item) {
+      item.canEdit = (item.checkStatus != 2 && item.reconciliationStatus != 4); // 待审核状态不能再修改, 对账状态为确认的也不能修改
       item.chargeMerchant = settlementCommon.parseMerchant(item.chargeMerchant);
       item.payStatus = settlementCommon.parsePayStatus(item.payStatus);
       item.reconciliationStatus = settlementCommon.parseReconciliationStatus(item.reconciliationStatus);
@@ -149,7 +150,6 @@ function handleData(res) {
       item.bizType = settlementCommon.parseBizType(item.bizType);
       item.discountType = settlementCommon.parseDiscountType(item.discountType);
       item.partner = settlementCommon.parsePartner(item.partner);
-      item.canEdit = (item.checkStatus != 2); // 待审核状态不能再修改
       item.checkStatus = settlementCommon.parseCheckStatus(item.checkStatus);
     });
 
@@ -370,7 +370,13 @@ $(document).on('click', '.modal button[type=submit]', function(event) {
 // 修改详情 "提交"
 $(document).on('submit', '#popup-detail form', function(e) {
   e.preventDefault();
-    if (!$('.modal form').parsley().isValid()) {
+
+  if ($('#reconciliationStatus').val() == 1) {
+    alert('收单对账状态不能为 ＂未对账＂！');
+    return false;
+  }
+
+  if (!$('.modal form').parsley().isValid()) {
     return false;
   }
 
