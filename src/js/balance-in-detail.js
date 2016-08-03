@@ -119,8 +119,6 @@ $('#formSearch').on('submit', function (e) {
     var res = $.parseJSON('{"meta" : {"result" : "1", "msg" : "操作成功"}, "data" : {"summary" : {}, "detail":{"count" : 2, "records":[{"checkStatus" : "2"}, {"checkStatus" : "2"}]}}}');
     handleData(res);
   }
-
-  return false;
 });
 
 function queryFromSelectedSummary() {
@@ -418,6 +416,8 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     if (checkStatus == 2 || detail.reconciliationStatus == 4) { // 待审核不能再修改, 出货对账状态为确认的也不能再修改
       $('.detail-area').addClass('read-only');
       $('.detail-area :input').prop('disabled', true);
+    } else {
+      $('#reconciliationStatus option[value=4]').remove();      // 不能在明细的修改里将对账状态设为"确认"
     }
   });
 
@@ -433,6 +433,11 @@ $(document).on('click', '.modal button[type=submit]', function(event) {
 // 修改详情 "提交"
 $(document).on('submit', '#popup-detail form', function(e) {
   e.preventDefault();
+
+  if ($('#reconciliationStatus').val() == 1) {
+    alert('收单对账状态不能为 ＂未对账＂！');
+    return false;
+  }
   
   if (!$('.modal form').parsley().isValid()) {
     return false;
