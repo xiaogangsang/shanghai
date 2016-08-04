@@ -102,17 +102,17 @@ function handleData(res) {
   if (settlementCommon.prehandleData(res)) {
     useCache = true;
 
-    var totalRecord = res.data.total;
-    var record = res.data.record;
+    var totalRecord = res.data.detail.count;
+    var records = res.data.detail.records;
 
     _pageTotal = Math.ceil(totalRecord / _pageSize);
-    setPager(totalRecord, _pageIndex, record.length, _pageTotal);
+    setPager(totalRecord, _pageIndex, records.length, _pageTotal);
 
-    _(record).forEach(function(item) {
+    _(records).forEach(function(item) {
       item.operation = settlementCommon.parseOperation(item.operation);
     });
 
-    dataCache = record;
+    dataCache = records;
 
     setTableData(dataCache);
   }
