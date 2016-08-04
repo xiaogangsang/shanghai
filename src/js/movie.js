@@ -113,6 +113,7 @@ $('#formSearch').on('submit', function (e) {
             }
           });
 
+          item.showDate = item.showDate.split(' ')[0];
           item.dimenName = item.dimenNames.join(',');
           item.associationStatus = item.associationStatus == 1 ? '已关联' : '未关联';
         });
@@ -144,6 +145,9 @@ $(document).on('submit', '#popup-movie-form form', function (e) {
     description: $.trim($('#popup-movie-form #description').val()),
     area: $.trim($('#popup-movie-form #area').val()),
     produceCorp: $.trim($('#popup-movie-form #produceCorp').val()),
+    directors: $.trim($('#popup-movie-form #director').val()),
+    actors: $.trim($('#popup-movie-form #actor').val()),
+    score: $.trim($('#popup-movie-form #score').val()),
     poster: $.trim($('#popup-movie-form #poster').val()),
     status: $('#popup-movie-form #status').val(),
   };
@@ -185,6 +189,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
   .done(function (res) {
     if (!!~~res.meta.result) {
       res.data.showDate = res.data.showDate.split(' ')[0];
+      res.data.score = parseFloat(res.data.score).toFixed(1);
       setModal(res.data);
       $('#popup-movie-form').modal('show');
       $('#showDate').datetimepicker({
@@ -325,9 +330,9 @@ function setModal(movieData) {
   if (movieData) {
     _(_status).forEach(function (value, key) {
       if (value.id == movieData.status) {
-        value.selected = true;
+        // value.selected = true;
       } else {
-        value.selected = false;
+        // value.selected = false;
       }
     });
 

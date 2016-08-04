@@ -1,0 +1,37 @@
+.detail-area input:disabled,
+.detail-area select:disabled,
+.detail-area.compare input,
+.detail-area.compare select,
+.detail-area.read-only input,
+.detail-area.read-only select {
+	border: none;
+	background: transparent;
+}
+.detail-area.read-only select,
+.detail-area.compare select {
+	-webkit-appearance: none;
+  -moz-appearance: none;
+  text-indent: 1px;
+  text-overflow: '';
+}
+
+.detail-area.compare .newValue {
+	color: red;
+	width: 50%;
+	float: right;
+}
+
+.detail-area.compare .oldValue {
+	width: 50%;
+	float: left;
+}
+
+.detail-area:not(.compare) .newValue {
+	display: none;
+}
+
+@media (min-width: 1024px) {
+	.modal-lg {
+		width: 1024px;
+	}
+}

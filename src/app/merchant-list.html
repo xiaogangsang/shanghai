@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="images/favicon.ico" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>商户列表</title>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="css/selectize.default.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" type="text/css" href="css/merchant.css">
+  <!-- <link rel="stylesheet" href="css/banner.css"> -->
+</head>
+<body>
+
+  @@include('component/header.tpl')
+
+  <div class="container-fluid">
+
+    <div class="row">
+
+      @@include('component/sidebar.tpl')
+
+      <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+        <ol class="breadcrumb">
+          <li>商户信息维护</li>
+          <li class="active">商户列表</li>
+        </ol>
+
+        <form id="formSearch" class="search-area clearfix">
+
+        <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">开始时间</div>
+              <input type="text" class="form-control" id="search_startTime">
+            </div>
+          </div>
+
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">结束时间</div>
+              <input type="text" class="form-control" id="search_endTime">
+            </div>
+          </div>
+
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">商户状态</div>
+              <select class="form-control" id="search_merchantStatus">
+                <option value="">全部</option>
+                <option value="2">上线</option>
+                <option value="3">下线</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">商户名称</div>
+              <input type="text" class="form-control" id="search_merchantName">
+            </div>
+          </div>
+
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">商户号</div>
+              <input type="text" class="form-control" id="search_merchantNo">
+            </div>
+          </div>
+
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <span class="input-group-addon input-group-addon-left" id="basic-addon3">提报卡部</span>
+              <select id="search_merchantBranch" class="selectize-default" placeholder="选择提报卡部...">
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <span class="input-group-addon input-group-addon-left" id="basic-addon3">提报人</span>
+              <select id="search_merchantSubscribeGuy" class="selectize-default" placeholder="选择提报人...">
+              </select>
+            </div>
+          </div>
+
+          <div class="col-xs-12 col-sm-12 col-md-8 pull-right">
+            <div class="row">
+              <div class="col-xs-4">
+                <button type="submit" class="btn btn-block btn-primary">查询</button>
+              </div>
+              <div class="col-xs-4">
+                <button type="button" class="btn btn-block btn-default btn-reset">重置</button>
+              </div>
+              <div class="col-xs-4">
+                <button type="button" class="btn btn-block btn-default btn-export">导出</button>
+              </div>
+            </div>
+          </div>
+
+        </form>
+
+        <div class="content-area">
+
+          <div class="row" id="pager"></div>
+
+          <div class="table-responsive">
+            <table class="table table-hover" id="dataTable">
+              <thead>
+                <tr>
+                  <th>商户号</th>
+                  <th>商户名称</th>
+                  <th>提报时间</th>
+                  <th>提报人</th>
+                  <th>提报卡部</th>
+                  <th>商户状态</th>
+                  <th>账户状态</th>
+                  <th width="100">操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td colspan="9" align="center">请点击“查询”按钮！</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- pop up -->
+  <div class="modal fade" id="popup-merchant-detail" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <form>
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">商户详情</h4>
+        </div>
+        <div class="modal-body"></div>
+      </form>
+    </div>
+  </div>
+</div>
+
+  <script src="js/vendor.js"></script>
+  <script type="text/javascript" src="lib/selectize.js"></script>
+  <script src="js/merchant-list.js"></script>
+
+  <script id="pager-template" type="text/x-tmpl-mustache">
+    <div class="col xs-12 col-sm-6 rowStatics">共 <span id="total">{{total}}</span> 条数据，当前显示 <span id="rowsSize">{{rowsSize}}</span> 条</div>
+    {{#pageTotal}}
+    <div class="col xs-12 col-sm-6">
+      <nav>
+        <ul class="pagination pagination-sm">
+          <li><a href="#" class="prev"><span>&lt;</span></a></li>
+          <li><span id="pageIndex">{{pageIndex}}</span> / <span id="pageTotal">{{pageTotal}}</span></li>
+          <li><a href="#" class="next"><span>&gt;</span></a></li>
+          <li><input type="number" name="pageNo" id="pageNo" pattern="[0-9]+"></li>
+          <li><button type="button" class="btn" id="btn-pager">跳转</button></li>
+        </ul>
+      </nav>
+    </div>
+    {{/pageTotal}}
+  </script>
+
+  <script id="table-template" type="text/x-tmpl-mustache">
+    {{#rows}}
+    <tr data-id="{{id}}" data-bannertype="{{bannerType}}">
+      <td>{{merchantId}}</td>
+      <td>{{merchantName}}</td>
+      <td>{{createTime}}</td>
+      <td>{{userName}}</td>
+      <td>{{department}}</td>
+      <td>{{merchantStatus}}</td>
+      <td>{{accountStatus}}</td>
+      <td>
+        <button type="button" class="btn btn-xs btn-default btn-edit">详情</button>
+      </td>
+    </tr>
+    {{/rows}}
+  </script>
+
+  @@include('component/popup-merchant-detail.tpl')
+</body>
+</html>

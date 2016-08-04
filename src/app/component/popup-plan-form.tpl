@@ -1,5 +1,5 @@
 <div class="modal fade" id="popup-plan-form" data-keyboard="false" data-backdrop="static">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <form>
         <div class="modal-header">

@@ -8,6 +8,7 @@ var clean = require('gulp-clean');
 var browserSync = require('browser-sync');
 var webpack = require('webpack');
 var webpackConfig = require('./webpack.config.js');
+var runSequence = require('run-sequence');
 var myDevConfig = Object.create(webpackConfig);
 var devCompiler = webpack(myDevConfig);
 
@@ -65,9 +66,8 @@ gulp.task('md5:css', ['md5:js'], function (done) {
 });
 
 gulp.task('clean', function (done) {
-  gulp.src('dist/**/*.*', { read: false })
-  .pipe(clean({ force: true }))
-  .on('end', done);
+  return gulp.src('dist/**/*.*', { read: false })
+  .pipe(clean({ force: true }));
 });
 
 gulp.task('watch', function (done) {
@@ -90,4 +90,8 @@ gulp.task('connect', function () {
 gulp.task('release', ['clean', 'fileinclude', 'copy', 'md5:css']);
 
 //开发
-gulp.task('dev', ['clean', 'fileinclude', 'copy', 'build-css', 'build-js', 'connect', 'watch']);
+// gulp.task('dev', ['clean', 'fileinclude', 'copy', 'build-css', 'build-js', 'connect', 'watch']);
+
+gulp.task('dev', function(callback) {
+  runSequence('clean', ['fileinclude', 'copy', 'build-css', 'build-js', 'connect', 'watch'], callback);
+});
