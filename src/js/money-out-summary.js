@@ -107,13 +107,13 @@ function handleData(res) {
 	if (settlementCommon.prehandleData(res)) {
 		useCache = true;
 
-		var totalRecord = res.data.total;
-    var record = res.data.record;
+		var totalRecord = res.data.detail.count;
+    var records = res.data.detail.records;
 
     _pageTotal = Math.ceil(totalRecord / _pageSize);
-    setPager(totalRecord, _pageIndex, record.length, _pageTotal);
+    setPager(totalRecord, _pageIndex, records.length, _pageTotal);
 
-    _(record).forEach(function(item) {
+    _(records).forEach(function(item) {
     	item.chargeMerchant = settlementCommon.parseMerchant(item.chargeMerchant);
       item.payStatusNo = item.payStatus;
     	item.payStatus = settlementCommon.parsePayStatus(item.payStatus);
@@ -124,7 +124,7 @@ function handleData(res) {
       item.appStatus = settlementCommon.parseMoneyOutStatus(item.appStatus);
     });
 
-    dataCache = record;
+    dataCache = records;
 
     setTableData(dataCache);
 	}
@@ -393,16 +393,16 @@ $('body').on('submit', '#detailFormSearch', function(e) {
 
 
 function handleDetailData(res) {
+
   if (!!~~res.meta.result) {
-    if (res.data == null || res.data.total < 1) {
-      // var errorMsg = res.meta.msg;
+    if (res.data == null || res.data.detail == null || res.data.detail.count < 1) {
       var errorMsg = '无满足条件记录';
       $('#detailDataTable tbody').html('<tr><td colspan="30" align="center">' + errorMsg + '</td></tr>');
       $('#detailPager').html('');
     } else {
       detailUseCache = true;
-      var totalRecord = res.data.total;
-      var record = res.data.record;
+      var totalRecord = res.data.detail.count;
+      var record = res.data.detail.records;
 
       detailPageTotal = Math.ceil(totalRecord / _pageSize);
       setDetailPager(totalRecord, detailPageIndex, record.length, detailPageTotal);
@@ -421,6 +421,8 @@ function handleDetailData(res) {
     }
   } else {
     alert(res.meta.msg);
+    $('#detailDataTable tbody').html('');
+    $('#detailPager').html('');
   }
 }
 
