@@ -416,8 +416,7 @@ function handleDetailData(res) {
         item.discountType = settlementCommon.parseDiscountType(item.discountType);
       });
 
-      detailDataCache = record;
-      setDetailTableData(detailDataCache);
+      setDetailTableData(record);
     }
   } else {
     alert(res.meta.msg);

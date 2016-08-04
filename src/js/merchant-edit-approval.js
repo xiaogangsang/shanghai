@@ -70,7 +70,7 @@ $(function () {
       this.load(function(callback) {
         if (!_DEBUG) {
           $.ajax({
-            url: '/movie-ops/security/user/departmentUserAll',
+            url: common.API_HOST + 'security/user/departmentUserAll',
             success: function(dataWeGot) {
                 handleDepartmentData(dataWeGot, callback);
             },
@@ -181,7 +181,7 @@ $('#formSearch').on('submit', function (e) {
 
   if (!_DEBUG) {
     $.ajax({
-      url: 'movie-ops/settlement/merchantinfo/merchantinfoList.json',
+      url: common.API_HOST + 'settlement/merchantinfo/merchantinfoList.json',
       type: 'GET',
       dataType: 'json',
       data: sendData,
