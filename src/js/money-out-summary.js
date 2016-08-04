@@ -62,12 +62,12 @@ $('#formSearch').on('click', 'button[type=submit]', function (event) {
 $('#formSearch').on('submit', function (e) {
   e.preventDefault();
   var sendData = {
-  	dateType: $('#search_dateType').val(),
-    beginTime: $('#search_startTime').val(),
-    endTime: $('#search_endTime').val(),
-    merchantName: $('#search_merchantName').val(),
-    merchantNo: $('#search_merchantNo').val(),
-    payStatus: $('#search_payStatus').val(),
+    startDate: $('#search_startTime').val(),
+    endDate: $('#search_endTime').val(),
+    batch: $('#search_batch').val(),
+    merName: $('#search_merName').val(),
+    merNo: $('#search_merNo').val(),
+    appStatus: $('#search_appStatus').val(),
     pageSize: _pageSize,
   };
   if (!!_querying) {
@@ -119,8 +119,8 @@ function handleData(res) {
     	item.payStatus = settlementCommon.parsePayStatus(item.payStatus);
 
       var moneyOutStatus = item.appStatus;
-      item.resend = (moneyOutStatus == 3 || moneyOutStatus == 4 || moneyOutStatus == 6);
-      item.refused = (moneyOutStatus == 2 || moneyOutStatus == 7);
+      item.resend = (moneyOutStatus == 4 || moneyOutStatus == 6 || moneyOutStatus == 2);
+      item.refused = (moneyOutStatus == 3 || moneyOutStatus == 7);
       item.appStatus = settlementCommon.parseMoneyOutStatus(item.appStatus);
     });
 

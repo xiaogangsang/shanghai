@@ -84,7 +84,7 @@ $('#formSearch').on('submit', function (e) {
     bizType: $('#search_bizType').val(),
     payStatus: $('#search_payStatus').val(),
     reconciliationStatus: $('#search_reconciliationStatus').val(),
-    reason: $('#search_reson').val(),
+    reason: $('#search_reason').val(),
     orderNo: $('#search_orderNo').val(),
     thdSerialNo: $('#search_thdSerialNo').val(),
     paySequenceNo: $('#search_paySequenceNo').val(),

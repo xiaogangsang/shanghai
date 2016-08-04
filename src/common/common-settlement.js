@@ -108,7 +108,8 @@ settlementCommon.shipmentStatus =
 
 // 拨款状态
 settlementCommon.moneyOutStatus = 
-  {'1' : '待拨款', '2' : '首次拨款成功', '3' : '暂停拨款', '4' : '银行退票', '5' : '待重拨', '6' : '生成拨款文件失败', '7' : '重拨成功'};
+  // {'1' : '待拨款', '2' : '首次拨款成功', '3' : '暂停拨款', '4' : '银行退票', '5' : '待重拨', '6' : '生成拨款文件失败', '7' : '重拨成功'};
+  {'1' : '待拨款', '3' : '正常拨款成功', '4' : '暂停拨款', '6' : '银行退票', '5' : '待重拨', '2' : '拨款失败', '7' : '重拨成功'};
 
 settlementCommon.parseMoneyOutStatus = function(status) {
 	return this.moneyOutStatus[status];
