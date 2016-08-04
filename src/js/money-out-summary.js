@@ -252,7 +252,7 @@ $('.btn-export-all').click(function(e) {
     dataType: 'json',
     data: searchCache
   }).done(function(res) {
-    if (!!~~res.meta.result) {}
+    if (!!~~res.meta.result) {
       window.location.href = common.API_HOST + 'settlement/merchantAttachment/downLoad?fileUrl=' + res.data.filePath;
     } else {
       alert(res.meta.msg);
