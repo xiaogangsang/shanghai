@@ -252,7 +252,11 @@ $('.btn-export-all').click(function(e) {
     dataType: 'json',
     data: searchCache
   }).done(function(res) {
-    window.location.href = common.API_HOST + 'settlement/merchantAttachment/downLoad?fileUrl=' + res.data.filePath;
+    if (!!~~res.meta.result) {}
+      window.location.href = common.API_HOST + 'settlement/merchantAttachment/downLoad?fileUrl=' + res.data.filePath;
+    } else {
+      alert(res.meta.msg);
+    }
   });
 });
 
@@ -326,7 +330,7 @@ $('#dataTable').on('click', '.refused', function(e) {
 */
 function operate(operateCode, idList) {
 
-  if (!window.confirm('将立刻为商户进行此次拨款，操作不可撤回，请仔细核对金额和商户账户信息！')) {
+  if (operateCode == 2 && !window.confirm('将立刻为商户进行此次拨款，操作不可撤回，请仔细核对金额和商户账户信息！')) {
     return false;
   }
 

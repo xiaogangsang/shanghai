@@ -164,7 +164,7 @@ $('#formSearch').on('submit', function (e) {
     merchantStatus: $('#search_merchantStatus').val(),
     merchantName: $('#search_merchantName').val(),
     merchantId: $('#search_merchantNo').val(),
-    userName: $('#search_merchantSubscribeGuy').val(),
+    userId: $('#search_merchantSubscribeGuy').val(),
     pageSize: _pageSize,
   };
   if (!!_querying) {
