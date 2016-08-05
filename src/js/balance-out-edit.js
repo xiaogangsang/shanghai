@@ -96,7 +96,7 @@ $('#formSearch').on('submit', function (e) {
     partner: $('#search_partner').val(),
     acquiringReconciliationStatus: $('#search_acquiringReconciliationStatus').val(),
     reconciliationStatus: $('#search_reconciliationStatus').val(),
-    reason: $('#search_reson').val(),
+    reason: $('#search_reason').val(),
     discountType: $('#search_discountType').val(),
     discountName: $('#search_discountName').val(),
     bizOrderNo: $('#search_bizOrderNo').val(),

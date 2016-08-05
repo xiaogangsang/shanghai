@@ -108,9 +108,9 @@ function handleData(res) {
     _pageTotal = Math.ceil(totalRecord / _pageSize);
     setPager(totalRecord, _pageIndex, records.length, _pageTotal);
 
-    _(records).forEach(function(item) {
-      item.operation = settlementCommon.parseOperation(item.operation);
-    });
+    // _(records).forEach(function(item) {
+    //   item.operation = settlementCommon.parseOperation(item.operation);
+    // });
 
     dataCache = records;
 
