@@ -33,12 +33,13 @@
           </div>
         </div>
 
-        <div class="form-group col-sm-6 col-md-6">
+        <!-- 手机号不能显示, 审计通不过 -->
+        <!-- <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">用户手机号</div>
             <input type="text" class="form-control" id="phoneNo" value="{{phoneNo}}" disabled>
           </div>
-        </div>
+        </div> -->
 
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
