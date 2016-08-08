@@ -35,7 +35,7 @@
               <div class="input-group-addon">日期类型</div>
               <select class="form-control" id="search_dateType" required>
                 <option value="1">交易日期</option>
-                <option value="2">对账日期</option>
+                <option value="2">操作日期</option>
               </select>
             </div>
           </div>
@@ -138,10 +138,11 @@
                 <option value="">全部</option>
                 <option value="1">出货失败, 支付成功(未退款)</option>
                 <option value="2">退货失败, 退款成功(无承债方)</option>
-                <option value="3">退货成功, 退款失败</option>
+                <option value="3">退货成功, 退款失败(未退款)</option>
                 <option value="4">退货成功, 支付成功(未退款)</option>
                 <option value="5">金额不符</option>
                 <option value="6">票类错误</option>
+                <option value="7">出货成功, 支付失败(未扣款)</option>
               </select>
             </div>
           </div>
@@ -268,7 +269,7 @@
   <script id="table-template" type="text/x-tmpl-mustache">
     {{#rows}}
     <tr data-id="{{id}}" data-bannertype="{{bannerType}}">
-      <td>{{diffTime}}</td>
+      <td>{{updateTime}}</td>
       <td>{{thdOrderNo}}</td>
       <td>{{bizOrderNo}}</td>
       <td>{{merchantName}}</td>

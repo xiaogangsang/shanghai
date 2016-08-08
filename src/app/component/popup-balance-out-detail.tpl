@@ -40,12 +40,13 @@
           </div>
         </div>
 
-        <div class="form-group col-sm-6 col-md-6">
+        <!-- 手机号不能显示, 审计通不过 -->
+        <!-- <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">用户手机号</div>
             <input type="text" class="form-control" id="phone" value="{{phone}}" disabled>
           </div>
-        </div>
+        </div> -->
 
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
@@ -344,8 +345,8 @@
 
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
-            <div class="input-group-addon">出货对账时间</div>
-            <input type="text" class="form-control" id="diffTime" value="{{diffTime}}" disabled>
+            <div class="input-group-addon">出货操作时间</div>
+            <input type="text" class="form-control" id="diffTime" value="{{updateTime}}" disabled>
           </div>
         </div>
 
@@ -356,19 +357,21 @@
               <option value=""></option>
               <option value="1">出货失败, 支付成功(未退款)</option>
               <option value="2">退货失败, 退款成功(无承债方)</option>
-              <option value="3">退货成功, 退款失败</option>
+              <option value="3">退货成功, 退款失败(未退款)</option>
               <option value="4">退货成功, 支付成功(未退款)</option>
               <option value="5">金额不符</option>
               <option value="6">票类错误</option>
+              <option value="7">出货成功, 支付失败(未扣款)</option>
             </select>
             <select class="form-control newValue" id="reasonNew" value="{{currentDetail.reason}}">
               <option value=""></option>
               <option value="1">出货失败, 支付成功(未退款)</option>
               <option value="2">退货失败, 退款成功(无承债方)</option>
-              <option value="3">退货成功, 退款失败</option>
+              <option value="3">退货成功, 退款失败(未退款)</option>
               <option value="4">退货成功, 支付成功(未退款)</option>
               <option value="5">金额不符</option>
               <option value="6">票类错误</option>
+              <option value="7">出货成功, 支付失败(未扣款)</option>
             </select>
           </div>
         </div>
