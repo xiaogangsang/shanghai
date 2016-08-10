@@ -378,10 +378,13 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
 
   e.preventDefault();
 
+  var id = $(this).closest('tr').data('id');
+  var checkStatus = $(this).data('checkstatus');
+
   $.ajax({
     url: common.API_HOST + 'settlement/shipmentInfo/onlyShipmentInfo',
     type: 'GET',
-    data: {id: $(this).closest('tr').data('id')},
+    data: {id: id},
   })
   .done(function(res) {
     if (res.meta.result == 0) {
@@ -423,7 +426,6 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     $('#reconciliationStatus option[value="' + detail.reconciliationStatus + '"]').prop('selected', true);
     $('#reason option[value="' + detail.reason + '"]').prop('selected', true);
 
-    var checkStatus = $(this).data('checkstatus');
     if (checkStatus == 2 || detail.reconciliationStatus == 4) { // 待审核不能再修改, 出货对账状态为确认的也不能再修改
       $('.detail-area').addClass('read-only');
       $('.detail-area :input').prop('disabled', true);

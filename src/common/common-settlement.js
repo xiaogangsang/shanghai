@@ -195,10 +195,10 @@ settlementCommon.prehandleData = function(res) {
 }
 
 
-// 计划在此新增 点击隐藏/显示左侧菜单栏 的按钮
+// 新增 点击隐藏/显示左侧菜单栏 的按钮
 $(function() {
 
-  $('<button class="glyphicon glyphicon-menu-left" style="position: absolute; top: -1px; left: 0px; width: 15px; height: 30px; padding: 0px; border-width: 0px; border-radius: 0px 6px 6px 0px; background-color: #E0E0E0;" id="sidebar-switcher"></button>').prependTo('.main');
+  $('<button class="glyphicon glyphicon-menu-left" style="position: absolute; top: -1px; left: 0px; width: 15px; height: 30px; padding: 0px; border-width: 0px; border-radius: 0px 6px 6px 0px; background-color: #E0E0E0; opacity: 0.6;" id="sidebar-switcher"></button>').prependTo('.main');
 
   $('#sidebar-switcher').click(function(e) {
     e.preventDefault();
@@ -208,16 +208,12 @@ $(function() {
 
     if ($sidebar.is(':visible')) {
       $sidebar.hide();
-      $content.removeClass('col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2');
-      $content.addClass('col-xs-12');
-      $(this).removeClass('glyphicon-menu-left');
-      $(this).addClass('glyphicon-menu-right');
+      $content.addClass('col-xs-12').removeClass('col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2');
+      $(this).removeClass('glyphicon-menu-left').addClass('glyphicon-menu-right');
     } else {
-      $sidebar.show('');
-      $content.removeClass('col-xs-12');
-      $content.addClass('col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2');
-      $(this).removeClass('glyphicon-menu-right');
-      $(this).addClass('glyphicon-menu-left');
+      $sidebar.show();
+      $content.removeClass('col-xs-12').addClass('col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2');
+      $(this).removeClass('glyphicon-menu-right').addClass('glyphicon-menu-left');
     }
   });
 });
