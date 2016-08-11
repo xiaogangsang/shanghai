@@ -40,6 +40,7 @@ settlementCommon.parseReason = function(status) {
   return this.reason[status];
 }
 
+
 // 出货对账失败原因
 settlementCommon.outReason = 
   {'1' : '出货失败, 支付成功(未退款)', '2' : '退货失败, 退款成功(无承债方)', '3' : '退货成功, 退款失败(未退款)', '4' : '退货成功, 支付成功(未退款)', '5' : '金额不符', '6': '票类错误', '7': '出货成功, 支付失败(未扣款)'};
@@ -131,6 +132,7 @@ settlementCommon.parseOperation = function(status) {
 	return this.operation[status];
 }
 
+
 /****************************************** Utilities Method **********************************************/
 // $.ajax 默认的对array(对象数组)的序列化不符合服务端需求, 我们自定义array的序列化
 // Caution: only array is concerned in this function
@@ -215,6 +217,59 @@ $(function() {
       $content.removeClass('col-xs-12').addClass('col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2');
       $(this).removeClass('glyphicon-menu-right').addClass('glyphicon-menu-left');
     }
+  });
+});
+
+// 查询日期的跨度小于等于7天
+$(function() {
+  $('#search_startTime').datetimepicker({
+    format: 'yyyy-mm-dd',
+    language: 'zh-CN',
+    minView: 2,
+    todayHighlight: true,
+    autoclose: true,
+  }).on('changeDate', function (ev) {
+    var $endTime = $('#search_endTime');
+
+    var startDate = new Date(ev.date.valueOf());
+    var endDate = new Date(startDate);
+    endDate.setDate(startDate.getDate() + 6);
+
+    var currentEndDate = $endTime.datetimepicker('getDate');
+    var correctEndDate = currentEndDate;
+
+    if (currentEndDate < startDate) {
+      correctEndDate = startDate;
+    } else if (currentEndDate > endDate) {
+      correctEndDate = endDate;
+    }
+
+    $endTime.datetimepicker('setDate', correctEndDate);
+  });
+
+  $('#search_endTime').datetimepicker({
+    format: 'yyyy-mm-dd',
+    language: 'zh-CN',
+    minView: 2,
+    todayHighlight: true,
+    autoclose: true,
+  }).on('changeDate', function (ev) {
+    var $startTime = $('#search_startTime');
+
+    var endDate = new Date(ev.date.valueOf());
+    var startDate = new Date(endDate);
+    startDate.setDate(endDate.getDate() - 6);
+
+    var currentStartDate = $startTime.datetimepicker('getDate');
+    var correctStartDate = currentStartDate;
+
+    if (currentStartDate < startDate) {
+      correctStartDate = startDate;
+    } else if (currentStartDate > endDate) {
+      correctStartDate = endDate;
+    }
+
+    $startTime.datetimepicker('setDate', correctStartDate);
   });
 });
 

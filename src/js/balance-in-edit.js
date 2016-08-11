@@ -29,39 +29,15 @@ $(function() {
   var htmlName = parts[parts.length - 1];
   approval = htmlName.indexOf('approval') > -1;
 
-
   if (approval) {
     common.init('balance-in-edit-approval');
   } else {
     common.init('balance-in-edit-submitted');
   }
-
-	$('#search_periodStart').datetimepicker({
-    format: 'yyyy-mm-dd',
-    language: 'zh-CN',
-    minView: 2,
-    todayHighlight: true,
-    autoclose: true,
-  }).on('changeDate', function (ev) {
-    var startDate = new Date(ev.date.valueOf());
-    startDate.setDate(startDate.getDate(new Date(ev.date.valueOf())));
-    $('#search_periodEnd').datetimepicker('setStartDate', startDate);
-  });
-
-  $('#search_periodEnd').datetimepicker({
-    format: 'yyyy-mm-dd',
-    language: 'zh-CN',
-    minView: 2,
-    todayHighlight: true,
-    autoclose: true,
-  }).on('changeDate', function (ev) {
-    var FromEndDate = new Date(ev.date.valueOf());
-    FromEndDate.setDate(FromEndDate.getDate(new Date(ev.date.valueOf())));
-    $('#search_periodStart').datetimepicker('setEndDate', FromEndDate);
-  });
+  
+  $('#formSearch').parsley();
 });
 
-$('#formSearch').parsley();
 
 // handle search form
 $('#formSearch').on('click', 'button[type=submit]', function (event) {
@@ -84,8 +60,8 @@ $('#formSearch').on('submit', function (e) {
 
   var sendData = {
   	dateType: $('#search_dateType').val(),
-    periodStart: $('#search_periodStart').val(),
-    periodEnd: $('#search_periodEnd').val(),
+    periodStart: $('#search_startTime').val(),
+    periodEnd: $('#search_endTime').val(),
     chargeMerchant: $('#search_chargeMerchant').val(),
     chargeMerchantNo: $('#search_chargeMerchantNo').val(),
     partner: $('#search_partner').val(),

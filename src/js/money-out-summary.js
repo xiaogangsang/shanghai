@@ -25,30 +25,6 @@ var _DEBUG = false;
 $(function() {
 
 	common.init('money-out-summary');
-
-	$('#search_startTime').datetimepicker({
-    format: 'yyyy-mm-dd',
-    language: 'zh-CN',
-    minView: 2,
-    todayHighlight: true,
-    autoclose: true,
-  }).on('changeDate', function (ev) {
-    var startDate = new Date(ev.date.valueOf());
-    startDate.setDate(startDate.getDate(new Date(ev.date.valueOf())));
-    $('#search_endTime').datetimepicker('setStartDate', startDate);
-  });
-
-  $('#search_endTime').datetimepicker({
-    format: 'yyyy-mm-dd',
-    language: 'zh-CN',
-    minView: 2,
-    todayHighlight: true,
-    autoclose: true,
-  }).on('changeDate', function (ev) {
-    var FromEndDate = new Date(ev.date.valueOf());
-    FromEndDate.setDate(FromEndDate.getDate(new Date(ev.date.valueOf())));
-    $('#search_startTime').datetimepicker('setEndDate', FromEndDate);
-  });
 });
 
 //handle search form
