@@ -2,7 +2,14 @@
 	清算
 	1. 状态码的转换全部统一放在这个文件里负责
 	2. 一些工具函数也放在了这里
-	GeLiu created at 2016-07-27 17:51:15
+  3. 一些通用配置, 包括
+      为每个页面增加 隐藏/显示 菜单栏 按钮
+      查询的时间跨度限制
+	Ge Liu created at 2016-07-27 17:51:15
+
+  Modified history:
+  2016-08-11 12:25:44 Ge Liu
+    新增了查询日期的7天(结束日期 - 开始日期 <= 7)限制
  */
 
 
@@ -197,7 +204,7 @@ settlementCommon.prehandleData = function(res) {
 }
 
 
-// 新增 点击隐藏/显示左侧菜单栏 的按钮
+// 点击隐藏/显示左侧菜单栏 的按钮
 $(function() {
 
   $('<button class="glyphicon glyphicon-menu-left" style="position: absolute; top: -1px; left: 0px; width: 15px; height: 30px; padding: 0px; border-width: 0px; border-radius: 0px 6px 6px 0px; background-color: #E0E0E0; opacity: 0.6;" id="sidebar-switcher"></button>').prependTo('.main');
@@ -219,6 +226,7 @@ $(function() {
     }
   });
 });
+
 
 // 查询日期的跨度小于等于7天
 $(function() {

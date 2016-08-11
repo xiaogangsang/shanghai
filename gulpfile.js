@@ -87,7 +87,11 @@ gulp.task('connect', function () {
 });
 
 //发布
-gulp.task('release', ['clean', 'fileinclude', 'copy', 'md5:css']);
+// gulp.task('release', ['clean', 'fileinclude', 'copy', 'md5:css']);
+
+gulp.task('release', function(callback) {
+  runSequence('clean', ['fileinclude', 'copy', 'md5:css'], callback);
+});
 
 //开发
 // gulp.task('dev', ['clean', 'fileinclude', 'copy', 'build-css', 'build-js', 'connect', 'watch']);

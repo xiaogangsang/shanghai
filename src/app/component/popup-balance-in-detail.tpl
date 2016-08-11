@@ -29,7 +29,8 @@
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">支付时间</div>
-            <input type="text" class="form-control" id="createTime" value="{{createTime}}" disabled>
+            <input type="text" class="form-control oldValue" id="createTime" value="{{createTime}}" data-parsley-pattern="[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}">
+            <input type="text" class="form-control newValue" id="createTimeNew" value="{{currentDetail.createTime}}">
           </div>
         </div>
 
