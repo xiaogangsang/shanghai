@@ -35,9 +35,9 @@
       </div>
       <form id="formBindCinema">
         <div class="modal-footer">
-          <input type="hidden" id="hallId">
-          <input type="hidden" id="tpHallId">
-          <input type="hidden" id="tpStoreId">
+          <input type="hidden" id="cinemaId">
+          <input type="hidden" id="thirdPartyCinemaId">
+          <input type="hidden" id="sourceId">
           <button type="submit" class="btn btn-primary">设置</button>
           <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
         </div>

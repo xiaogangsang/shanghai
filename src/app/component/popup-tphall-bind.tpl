@@ -15,7 +15,7 @@
           </div>
         </form>
         <div class="table-responsive" style="max-height: 300px;">
-          <table class="table table-bordered table-condensed table-hover" id="cinemaTable">
+          <table class="table table-bordered table-condensed table-hover" id="hallTable">
             <thead>
               <tr>
                 <th width="60">ID</th>
@@ -38,9 +38,9 @@
       </div>
       <form id="formBindHall">
         <div class="modal-footer">
-          <input type="hidden" id="cinemaId">
-          <input type="hidden" id="thirdPartyCinemaId">
-          <input type="hidden" id="sourceId">
+        <input type="hidden" id="hallId">
+          <input type="hidden" id="tpHallId">
+          <input type="hidden" id="tpStoreId">
           <button type="submit" class="btn btn-primary">设置</button>
           <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
         </div>
