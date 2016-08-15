@@ -27,7 +27,7 @@
         </tr>
         <tr>
           <th>所属影院</th>
-          <td><input type="text" class="form-control" id="storeId" value="{{hall.storeId}}" readonly required></td>
+          <td><input type="text" class="form-control" id="storeId" data-id="{{hall.storeId}}" value="【{{hall.storeId}}】{{hall.storeName}}" readonly required></td>
         </tr>
         <tr>
           <th>座位数</th>

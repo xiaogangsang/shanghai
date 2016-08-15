@@ -7,20 +7,21 @@ var _cities = [];
 var _pageIndex = 1;
 var _pageSize = 10;
 var _pageTotal = 0;
-var _bindCinemaName = '';
+var _bindHallName = '';
 var _querying = false;
 var searchCache = {};
 var useCache = false;
 
 $(function () {
-  common.init('cinema-tp');
+  common.init('hall-tp');
 
   //set search form
   setSource();
-  setBrand();
+
+  // setBrand();
   setCity();
 
-  $('#search_beginDate,#search_endDate').datetimepicker({
+  $('#search_startTime,#search_endTime').datetimepicker({
     format: 'yyyy-mm-dd',
     language: 'zh-CN',
     minView: 2,
@@ -32,14 +33,14 @@ $(function () {
   beginDate.setDate(beginDate.getDate() - 7);
   beginDate = common.getDate(beginDate);
   endDate = common.getDate(endDate);
-  $('#search_beginDate').datetimepicker('setEndDate', endDate);
-  $('#search_endDate').datetimepicker('setStartDate', beginDate).datetimepicker('setEndDate', endDate);
+  $('#search_startTime').datetimepicker('setEndDate', endDate);
+  $('#search_endTime').datetimepicker('setStartDate', beginDate).datetimepicker('setEndDate', endDate);
 
   $('#formSearch').trigger('submit');
 });
 
 //handle search form
-$('#formSearch').on('change', '#search_associationStatus', function (e) {
+$('#formSearch').on('change', '#search_relation', function (e) {
   e.preventDefault();
   if ($(this).val() == 1) {
     $('#association').show();
@@ -58,17 +59,17 @@ $('#formSearch').on('click', 'button[type=submit]', function (event) {
 $('#formSearch').on('submit', function (e) {
   e.preventDefault();
   var sendData = {
-    associationStatus: $('#search_associationStatus').val(),
+    relation: $('#search_relation').val(),
     sourceId: $('#search_sourceId').val(),
-    thirdPartyCinemaName: $.trim($('#search_thirdPartyCinemaName').val()),
+    thirdPartyCinemaName: $.trim($('#search_tpHallName').val()),
     pageSize: _pageSize,
   };
-  if ($('#search_associationStatus').val() == 1) {
-    sendData.cinemaName = $.trim($('#search_cinemaName').val());
+  if ($('#search_relation').val() == 1) {
+    sendData.cinemaName = $.trim($('#search_hallName').val());
     sendData.brandId = $('#search_brandId').val();
     sendData.cityId = $('#search_cityId').val();
-    sendData.beginDate = $.trim($('#search_beginDate').val());
-    sendData.endDate = $.trim($('#search_endDate').val());
+    sendData.beginDate = $.trim($('#search_startTime').val());
+    sendData.endDate = $.trim($('#search_endTime').val());
   }
 
   if (!!_querying) {
@@ -85,7 +86,7 @@ $('#formSearch').on('submit', function (e) {
   sendData.pageIndex = _pageIndex;
 
   $.ajax({
-    url: common.API_HOST + 'cinema/thirdParty/cinemaList',
+    url: common.API_HOST + 'hall/tp/list',
     type: 'POST',
     dataType: 'json',
     data: sendData,
@@ -93,23 +94,16 @@ $('#formSearch').on('submit', function (e) {
   .done(function (res) {
     _querying = false;
     if (!!~~res.meta.result) {
-      if (res.data.rows.length <= 0) {
-        var html = '<tr><td colspan="10" align="center">查不到相关数据，请修改查询条件！</td></tr>';
+      if (res.data.data.length <= 0) {
+        var html = '<tr><td colspan="13" align="center">查不到相关数据，请修改查询条件！</td></tr>';
         $('#dataTable tbody').html(html);
         $('#pager').html('');
       } else {
         useCache = true;
         _pageIndex = res.data.pageIndex;
         _pageTotal = Math.ceil(res.data.total / _pageSize);
-        setPager(res.data.total, _pageIndex, res.data.rows.length, _pageTotal);
-        _(res.data.rows).forEach(function (value, key) {
-          var source = _.find(_sources, { sourceId: parseInt(value.thirdParty) });
-          if (source) {
-            res.data.rows[key].thirdPartyName = source.sourceName;
-          }
-        });
-
-        setTableData(res.data.rows);
+        setPager(res.data.total, _pageIndex, res.data.data.length, _pageTotal);
+        setTableData(res.data.data);
       }
     } else {
       alert('接口错误：' + res.meta.msg);
@@ -160,48 +154,18 @@ $('#pager').on('click', '#btn-pager', function (e) {
   return false;
 });
 
-$('#dataTable').on('click', '.btn-detail', function (e) {
-  e.preventDefault();
-  $.ajax({
-    url: common.API_HOST + 'cinema/thirdParty/cinemaDetail',
-    type: 'POST',
-    dataType: 'json',
-    data: {
-      thirdPartyCinemaId: $(this).closest('tr').data('id'),
-      sourceId: $(this).closest('tr').data('sourceid'),
-    },
-  })
-  .done(function (res) {
-    if (!!~~res.meta.result) {
-      var html = '<div class="cinema-detail clearfix">';
-      _(res.data).forEach(function (value, key) {
-        if (value != '' && value != undefined && value != null) {
-          html += '<div class="detail-item"><span>' + key + '：</span>' + value + '</div>';
-        }
-      });
-
-      html += '</div>';
-      $('#popup-cinema-tp-detail .modal-body').html(html);
-      $('#popup-cinema-tp-detail').modal('show');
-    } else {
-      alert('接口错误：' + res.meta.msg);
-    }
-  });
-});
-
 $('#dataTable').on('click', '.btn-bind', function (e) {
   e.preventDefault();
-  var tpCinemaName = $(this).closest('tr').find('td:nth-child(2)').text();
-  var tpCinemaId = $(this).closest('tr').data('id');
-  var sourceId = $(this).closest('tr').data('sourceid');
+  var tpHallName = $(this).closest('tr').find('td:nth-child(2)').text();
+  var tpHallId = $(this).closest('tr').data('id');
+  var tpStoreId = $(this).closest('tr').data('tpStoreId');
 
-  $('#bindCinemaName').val(tpCinemaName);
-  $('#bindTpCinema').text(tpCinemaName);
-  $('#cinemaId').val();
-  $('#thirdPartyCinemaId').val(tpCinemaId);
-  $('#sourceId').val(sourceId);
-  $('#formSearchCinema').trigger('submit');
-  $('#popup-cinema-bind').modal('show');
+  $('#bindHallName').val(tpHallName);
+  $('#hallId').val();
+  $('#tpHallName').val(tpHallName);
+  $('#tpStoreId').val(tpStoreId);
+  $('#formSearchHall').trigger('submit');
+  $('#popup-tphall-bind').modal('show');
 });
 
 $('#dataTable').on('click', '.btn-bind-create', function (e) {
@@ -225,34 +189,38 @@ $('#dataTable').on('click', '.btn-bind-create', function (e) {
   });
 });
 
-$(document).on('submit', '#formSearchCinema', function (e) {
+$(document).on('submit', '#formSearchHall', function (e) {
   e.preventDefault();
-  var bindCinemaName = $.trim($('#bindCinemaName').val());
-  if (bindCinemaName == '' || bindCinemaName == undefined || _bindCinemaName == bindCinemaName) {
-    if (bindCinemaName == '') {
+  var bindHallName = $.trim($('#bindHallName').val());
+  if (bindHallName == '' || bindHallName == undefined || _bindHallName == bindHallName) {
+    if (bindHallName == '') {
       alert('搜索关键词不能为空！');
     }
 
     return false;
   }
 
-  _bindCinemaName = bindCinemaName;
+  _bindHallName = bindHallName;
   if (!!_querying) {
     return false;
   }
 
   _querying = true;
   $.ajax({
-    url: common.API_HOST + 'common/cinemaList',
+    url: common.API_HOST + 'hall/standard/list',
     type: 'POST',
     dataType: 'json',
-    data: { cinemaName: bindCinemaName },
+    data: {
+      hallName: bindHallName,
+      pageIndex: 1,
+      pageSize: 9999,
+    },
   })
   .done(function (res) {
     _querying = false;
     if (!!~~res.meta.result) {
       if (res.data.length <= 0) {
-        var html = '<tr><td colspan="5" align="center">暂无匹配，请尝试搜索其他影院名</td></tr>';
+        var html = '<tr><td colspan="8" align="center">暂无匹配，请尝试搜索其他影院名</td></tr>';
         $('#popup-cinema-bind tbody').html(html);
         return false;
       }
@@ -309,18 +277,18 @@ function setTableData(rows) {
   $('#dataTable tbody').html(html);
 }
 
-function setModal(cinemaData) {
+function setModal(hallData) {
   var data;
   var template;
   var cities;
   var districts;
-  if (cinemaData) {
+  if (hallData) {
     _(_brands).forEach(function (value, key) {
-      _brands[key].selected = cinemaData.brandId == value.id ? true : false;
+      _brands[key].selected = hallData.brandId == value.id ? true : false;
     });
 
     _(_provinces).forEach(function (value, key) {
-      if (cinemaData.provinceId == value.provinceId) {
+      if (hallData.provinceId == value.provinceId) {
         _provinces[key].selected = true;
         cities = _provinces[key].cityList;
       } else {
@@ -328,7 +296,7 @@ function setModal(cinemaData) {
       }
     });
 
-    var availableServices = JSON.parse(cinemaData.service);
+    var availableServices = JSON.parse(hallData.service);
     _(_services).forEach(function (value, key) {
       var availableService = _.find(availableServices, { serviceTypeId: value.id });
       if (availableService && availableService.serviceContent != undefined) {
@@ -340,7 +308,7 @@ function setModal(cinemaData) {
     });
 
     data = {
-      cinema: cinemaData,
+      cinema: hallData,
       brands: _brands,
       provinces: _provinces,
       cities: cities,
@@ -349,7 +317,7 @@ function setModal(cinemaData) {
     template = $('#edit-template').html();
     Mustache.parse(template);
     var html = Mustache.render(template, data);
-    setArea(cinemaData.cityId, cinemaData.areaId, cinemaData.districtId);
+    setArea(hallData.cityId, hallData.areaId, hallData.districtId);
     $('#popup-cinema-form .modal-title').html('编辑标准影院');
   } else {
     data = { brands: _brands, provinces: _provinces, services: _services };
@@ -384,27 +352,27 @@ function setSource() {
   });
 }
 
-function setBrand() {
-  $.ajax({
-    url: common.API_HOST + 'common/brandList',
-    type: 'GET',
-    dataType: 'json',
-  })
-  .done(function (res) {
-    if (!!~~res.meta.result) {
-      _brands = res.data;
-      var html = '';
-      _(_brands).forEach(function (brand) {
-        html += '<option value="' + brand.id + '">' + brand.name + '</option>';
-      });
+// function setBrand() {
+//   $.ajax({
+//     url: common.API_HOST + 'common/brandList',
+//     type: 'GET',
+//     dataType: 'json',
+//   })
+//   .done(function (res) {
+//     if (!!~~res.meta.result) {
+//       _brands = res.data;
+//       var html = '';
+//       _(_brands).forEach(function (brand) {
+//         html += '<option value="' + brand.id + '">' + brand.name + '</option>';
+//       });
 
-      $('#search_brandId').append(html);
-      $('#search_brandId').chosen({ disable_search_threshold: 10, allow_single_deselect: true });
-    } else {
-      alert('接口错误：' + res.meta.msg);
-    }
-  });
-}
+//       $('#search_brandId').append(html);
+//       $('#search_brandId').chosen({ disable_search_threshold: 10, allow_single_deselect: true });
+//     } else {
+//       alert('接口错误：' + res.meta.msg);
+//     }
+//   });
+// }
 
 function setCity() {
   $.ajax({

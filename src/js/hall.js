@@ -310,7 +310,7 @@ $(document).on('click', '#bindSelect', function (event) {
   event.preventDefault();
   var id = $('#cinemaTable tbody tr.selected').data('id');
   var cinemaName = $('#cinemaTable tbody tr.selected td:nth-child(2)').text();
-  $('#storeId').val(id + '|' + cinemaName);
+  $('#storeId').data('id', id).val('【' + id + '】' + cinemaName);
   $('#popup-hall-bind').modal('hide');
 });
 
@@ -324,7 +324,7 @@ $(document).on('submit', '#popup-hall-form form', function (e) {
 
   var sendData = {
     hallName: $.trim($('#popup-hall-form #hallName').val()),
-    storeId: $('#popup-hall-form #storeId').val(),
+    storeId: $('#popup-hall-form #storeId').data('id'),
     seatNum: $('#popup-hall-form #seatNum').val(),
     screenType: $.trim($('#popup-hall-form #screenType').val()),
     effect: $.trim($('#popup-hall-form #effect').val()),

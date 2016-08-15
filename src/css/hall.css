@@ -2,7 +2,7 @@
 * @Author: kyle
 * @Date:   2016-08-12 14:22:30
 * @Last Modified by:   kyle
-* @Last Modified time: 2016-08-12 18:01:29
+* @Last Modified time: 2016-08-15 14:27:19
 */
 #cinemaTable tbody td {
   vertical-align: middle;
@@ -11,4 +11,7 @@
 #cinemaTable tbody .selected td {
   background-color: #ff8903;
   color: #fff;
+}
+#association {
+  display: none;
 }
