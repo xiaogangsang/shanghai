@@ -96,7 +96,7 @@ function handleData(res) {
 
       var moneyOutStatus = item.appStatus;
       item.resend = (moneyOutStatus == 4 || moneyOutStatus == 6 || moneyOutStatus == 2);
-      item.refused = (moneyOutStatus == 3 || moneyOutStatus == 7);
+      item.refused = (moneyOutStatus == 3); // 编码参考 common-settlement.js, '重拨成功' 状态 不再能 '被银行退票'
       item.appStatus = settlementCommon.parseMoneyOutStatus(item.appStatus);
     });
 
