@@ -3,14 +3,31 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">选择要关联的标准影厅</h4>
+        <h4 class="modal-title">关联到标准影厅</h4>
       </div>
       <div class="modal-body">
         <form id="formSearchHall">
-          <div class="form-group">
-            <div class="input-group">
-              <div class="input-group-addon">搜索标准影厅</div>
-              <input type="text" class="form-control" id="bindHallName">
+          <div class="row">
+            <div class="form-group col-xs-6 col-sm-4">
+              <div class="input-group">
+                <div class="input-group-addon">标准影厅名</div>
+                <input type="text" class="form-control" id="bindHallName">
+              </div>
+            </div>
+            <div class="form-group col-xs-6 col-sm-4">
+              <div class="input-group">
+                <div class="input-group-addon">标准影院名</div>
+                <input type="text" class="form-control" id="bindHallCinema">
+              </div>
+            </div>
+            <div class="form-group col-xs-6 col-sm-4">
+              <div class="input-group">
+                <div class="input-group-addon">城市</div>
+                <input type="text" class="form-control" id="bindHallCity">
+              </div>
+            </div>
+            <div class="form-group col-xs-6 col-sm-4 pull-right">
+              <input type="submit" class="btn btn-primary btn-block" value="搜索">
             </div>
           </div>
         </form>
@@ -30,7 +47,7 @@
             </thead>
             <tbody>
               <tr>
-                <td colspan="8" align="center">输入要绑定的标准影厅名称，并按回车</td>
+                <td colspan="8" align="center">请搜索要绑定的标准影厅</td>
               </tr>
             </tbody>
           </table>
@@ -38,7 +55,7 @@
       </div>
       <form id="formBindHall">
         <div class="modal-footer">
-        <input type="hidden" id="hallId">
+          <input type="hidden" id="hallId">
           <input type="hidden" id="tpHallId">
           <input type="hidden" id="tpStoreId">
           <button type="submit" class="btn btn-primary">设置</button>
