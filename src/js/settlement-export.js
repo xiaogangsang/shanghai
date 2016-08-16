@@ -68,6 +68,9 @@ function handleData(res) {
 }
 
 $('#dataTable').on('click', '.download', function(e) {
+
+  e.preventDefault();
+
   var url = $(this).data('url');
   window.location.href = common.API_HOST + 'settlement/merchantAttachment/downLoad?fileUrl=' + url;
 });

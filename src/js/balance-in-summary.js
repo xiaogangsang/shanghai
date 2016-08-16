@@ -222,3 +222,23 @@ $('body').on('change', 'tr > td :checkbox', function(e) {
     $('.multi-check-all').prop('checked', false);
   }
 });
+
+
+// 导出银行流水
+$('.export-bank-flow').click(function(e) {
+  e.preventDefault();
+
+  var beginTime = $('#search_startTime').val();
+  var endTime = $('#search_endTime').val();
+
+  if (beginTime == '' || endTime == '') {
+    alert('请输入开始日期和结束日期');
+  }
+
+  beginTime += ' 00:00';
+  endTime += ' 23:59';
+
+  window.location.href = common.API_HOST + '/settlement/bankData/download?beginTime=' + beginTime + '&endTime=' + endTime;
+});
+
+
