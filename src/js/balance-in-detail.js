@@ -286,7 +286,8 @@ $('.btn-export-all').click(function(e) {
       if (res.meta.result == 0) {
         alert(res.meta.msg);
       } else {
-        window.location.href = common.API_HOST + 'settlement/merchantAttachment/downLoad?fileUrl=' + res.data.fileUrl;
+        // window.location.href = common.API_HOST + 'settlement/merchantAttachment/downLoad?fileUrl=' + res.data.fileUrl;
+        alert('您的申请已提交，系统正在为您导出数据，需要约15分钟，\n请至下载列表查看并下载导出结果。\n导出的数据仅保留3天，请及时查看并下载。');
       }
     });
   } else {
@@ -300,7 +301,8 @@ $('.btn-export-all').click(function(e) {
       if (res.meta.result == 0) {
         alert(res.meta.msg);
       } else {
-        window.location.href = common.API_HOST + 'settlement/merchantAttachment/downLoad?fileUrl=' + res.data.fileUrl;
+        // window.location.href = common.API_HOST + 'settlement/merchantAttachment/downLoad?fileUrl=' + res.data.fileUrl;
+        alert('您的申请已提交，系统正在为您导出数据，需要约15分钟，\n请至下载列表查看并下载导出结果。\n导出的数据仅保留3天，请及时查看并下载。');
       }
     });
   }
@@ -376,6 +378,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
       obj.partner = settlementCommon.parsePartner(obj.partner);
       obj.discountType = settlementCommon.parseDiscountType(obj.discountType);
       obj.reconciliationStatus = settlementCommon.parseReconciliationStatus(obj.reconciliationStatus);
+      obj.reason = settlementCommon.parseReason(obj.reason);
     });
 
 

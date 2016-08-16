@@ -335,6 +335,7 @@
                   <th>优惠方式</th>
                   <th>活动/优惠券名称</th>
                   <th>收单对账状态</th>
+                  <th>对账不一致原因</th>
                 </tr>
               </thead>
               <tbody>
@@ -355,6 +356,7 @@
                   <td>{{discountType}}</td>
                   <td>{{discountName}}</td>
                   <td>{{reconciliationStatus}}</td>
+                  <td>{{reason}}</td>
                 </tr>
                 {{/operateRecords}}
               </tbody>

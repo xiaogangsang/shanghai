@@ -314,6 +314,7 @@ function formatEditHistory(operateRecords) {
     obj.partner = settlementCommon.parsePartner(obj.partner);
     obj.discountType = settlementCommon.parseDiscountType(obj.discountType);
     obj.reconciliationStatus = settlementCommon.parseReconciliationStatus(obj.reconciliationStatus);
+    obj.reason = settlementCommon.parseReason(obj.reason);
   });
 }
 

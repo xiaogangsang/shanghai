@@ -139,6 +139,18 @@ settlementCommon.parseOperation = function(status) {
 	return this.operation[status];
 }
 
+// 下载 -> 文件类型
+settlementCommon.fileType = {'1' : '收单文件', '2' : '出货文件', '3' : '拨款文件'};
+settlementCommon.parseFileType = function(status) {
+  return this.fileType[status];
+}
+
+// 下载 -> 文件状态
+settlementCommon.fileStatus = {'1' : '生成中', '2' : '可下载', '3' : '生成失败'};
+settlementCommon.parseFileStatus = function(status) {
+  return this.fileStatus[status];
+}
+
 
 /****************************************** Utilities Method **********************************************/
 // $.ajax 默认的对array(对象数组)的序列化不符合服务端需求, 我们自定义array的序列化
