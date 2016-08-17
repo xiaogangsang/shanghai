@@ -286,7 +286,8 @@ $('#dataTable').on('click', '.btn-detail', function (e) {
     $('#popup-detail').modal('show');
 
     $('.detail-area').addClass('compare');
-    $('.detail-area.compare :input').prop('disabled', true);
+    $('.detail-area.compare :input').prop('readonly', true);
+    
 
     $('#subsidyType option[value="' + detail.subsidyType + '"]').prop('selected', true);
     $('#partner option[value="' + detail.partner + '"]').prop('selected', true);
