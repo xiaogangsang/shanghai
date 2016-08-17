@@ -1,5 +1,3 @@
-.detail-area input:disabled,
-.detail-area select:disabled,
 .detail-area.compare input,
 .detail-area.compare select,
 .detail-area.read-only input,
@@ -7,12 +5,26 @@
 	border: none;
 	background: transparent;
 }
+
+.detail-area input:-moz-read-only {
+	border: none;
+	background: transparent;
+	cursor: text;
+}
+
+.detail-area input:read-only {
+	border: none;
+	background: transparent;
+	cursor: text;
+}
+
 .detail-area.read-only select,
 .detail-area.compare select {
 	-webkit-appearance: none;
   -moz-appearance: none;
   text-indent: 1px;
   text-overflow: '';
+  box-shadow: none;
 }
 
 .detail-area.compare .newValue {

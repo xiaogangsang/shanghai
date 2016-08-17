@@ -1,7 +1,7 @@
 
 <script id="detail-template" type="text/x-tmpl-mustache">
 
-  <div class="container-fluid detail-area readonly">
+  <div class="container-fluid detail-area">
 
   {{#detail}}
     <div class="container-fluid">
@@ -22,7 +22,7 @@
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">订单渠道</div>
-            <input type="text" class="form-control" id="payTool" value="{{payTool}}" disabled>
+            <input type="text" class="form-control" id="payTool" value="{{payTool}}" readonly>
           </div>
         </div>
 
@@ -38,7 +38,7 @@
         <!-- <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">用户手机号</div>
-            <input type="text" class="form-control" id="phoneNo" value="{{phoneNo}}" disabled>
+            <input type="text" class="form-control" id="phoneNo" value="{{phoneNo}}" readonly>
           </div>
         </div> -->
 
@@ -83,7 +83,7 @@
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">支付流水号</div>
-            <input type="text" class="form-control" id="paySequenceNo" value="{{paySequenceNo}}" disabled>
+            <input type="text" class="form-control" id="paySequenceNo" value="{{paySequenceNo}}" readonly>
           </div>
         </div>
       </div>
@@ -98,7 +98,7 @@
           <div class="form-group col-sm-6 col-md-6">
             <div class="input-group">
               <div class="input-group-addon">业务类别</div>
-              <input type="text" class="form-control" id="bizType" value="{{bizType}}" disabled>
+              <input type="text" class="form-control" id="bizType" value="{{bizType}}" readonly>
             </div>
           </div>
         </div>
@@ -108,21 +108,21 @@
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">收单商户</div>
-            <input type="text" class="form-control" id="chargeMerchant" value="{{chargeMerchant}}" disabled>
+            <input type="text" class="form-control" id="chargeMerchant" value="{{chargeMerchant}}" readonly>
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">收单商户号</div>
-            <input type="text" class="form-control" id="chargeMerchantNo" value="{{chargeMerchantNo}}" disabled>
+            <input type="text" class="form-control" id="chargeMerchantNo" value="{{chargeMerchantNo}}" readonly>
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">交易订单号</div>
-            <input type="text" class="form-control" id="orderNo" value="{{orderNo}}" disabled>
+            <input type="text" class="form-control" id="orderNo" value="{{orderNo}}" readonly>
           </div>
         </div>
 
@@ -211,7 +211,7 @@
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">实收金额(元)</div>
-            <input type="text" class="form-control" id="bankAmount" value="{{bankAmount}}" disabled>
+            <input type="text" class="form-control" id="bankAmount" value="{{bankAmount}}" readonly>
           </div>
         </div>
 
@@ -229,28 +229,28 @@
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">优惠方式</div>
-            <input type="text" class="form-control" id="discountType" value="{{discountType}}" disabled>
+            <input type="text" class="form-control" id="discountType" value="{{discountType}}" readonly>
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">活动/优惠券名称</div>
-            <input type="text" class="form-control" id="discountName" value="{{discountName}}" disabled>
+            <input type="text" class="form-control" id="discountName" value="{{discountName}}" readonly>
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">补贴成本中心</div>
-            <input type="text" class="form-control" id="costCenter" value="{{costCenter}}" disabled>
+            <input type="text" class="form-control" id="costCenter" value="{{costCenter}}" readonly>
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">签报号</div>
-            <input type="text" class="form-control" id="signatureNo" value="{{signatureNo}}" disabled>
+            <input type="text" class="form-control" id="signatureNo" value="{{signatureNo}}" readonly>
           </div>
         </div>
 

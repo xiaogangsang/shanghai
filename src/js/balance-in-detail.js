@@ -397,7 +397,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
 
     if (checkStatus == 2 || detail.reconciliationStatus == 4) { // 待审核不能再修改, 出货对账状态为确认的也不能再修改
       $('.detail-area').addClass('read-only');
-      $('.detail-area :input').prop('disabled', true);
+      $('.detail-area :input').prop('readonly', true);
     } else {
       $('#reconciliationStatus option[value=4]').remove();      // 不能在明细的修改里将对账状态设为"确认"
     }

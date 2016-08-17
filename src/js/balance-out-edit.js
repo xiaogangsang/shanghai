@@ -264,7 +264,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
 
     if (compare) {
       $('.detail-area').addClass('compare');
-      $('.detail-area.compare :input').prop('disabled', true);
+      $('.detail-area.compare :input').prop('readonly', true);
     }
 
     // $('#subsidyType option[value="' + detail.subsidyType + '"]').prop('selected', true);
