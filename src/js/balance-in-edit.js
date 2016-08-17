@@ -250,6 +250,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
   $('.modal form').parsley().validate();
 });
 
+// 查看详情
 $('#dataTable').on('click', '.btn-detail', function (e) {
 
   e.preventDefault();
@@ -335,6 +336,8 @@ $('#dataTable').on('click', '.btn-approval', function (e) {
       return false;
     } else {
       alert('操作成功!');
+      $('#popup-detail').modal('hide');
+      $('#formSearch').trigger('submit');
     }
   });
 });

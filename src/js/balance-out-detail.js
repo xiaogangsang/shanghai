@@ -281,7 +281,7 @@ $('.btn-export-all').click(function(e) {
     var param = {'shipmentInfoFormCollection' : _selectedSummary.shipmentInfoFormCollection};
 
     $.ajax({
-      url: common.API_HOST + 'settlement/shipmentInfo/exportSummaryDetail' + settlementCommon.serializeParam(param),
+      url: common.API_HOST + 'settlement/shipmentInfo/exportSummaryDetail?' + settlementCommon.serializeParam(param),
       type: 'GET',
       dataType: 'json',
     })

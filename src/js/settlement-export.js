@@ -11,7 +11,7 @@ var settlementCommon = require('settlementCommon');
 var type;
 var map = {'1' : 'balance-in-export', '2' : 'balance-out-export', '3' : 'money-out-export'};
 
-var _DEBUG = true;
+var _DEBUG = false;
 
 $(function() {
 
