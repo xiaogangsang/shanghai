@@ -7,20 +7,24 @@ var _cities = [];
 var _pageIndex = 1;
 var _pageSize = 10;
 var _pageTotal = 0;
-var _bindCinemaName = '';
 var _querying = false;
 var searchCache = {};
 var useCache = false;
+var _submitting = false;
+var _bindCinemaName = '';
+var _tpHallId = 0;
+var _tpStoreId = 0;
 
 $(function () {
-  common.init('cinema-tp');
+  common.init('hall-tp');
 
   //set search form
   setSource();
+
   setBrand();
   setCity();
 
-  $('#search_beginDate,#search_endDate').datetimepicker({
+  $('#search_startTime,#search_endTime').datetimepicker({
     format: 'yyyy-mm-dd',
     language: 'zh-CN',
     minView: 2,
@@ -32,14 +36,14 @@ $(function () {
   beginDate.setDate(beginDate.getDate() - 7);
   beginDate = common.getDate(beginDate);
   endDate = common.getDate(endDate);
-  $('#search_beginDate').datetimepicker('setEndDate', endDate);
-  $('#search_endDate').datetimepicker('setStartDate', beginDate).datetimepicker('setEndDate', endDate);
+  $('#search_startTime').datetimepicker('setEndDate', endDate);
+  $('#search_endTime').datetimepicker('setStartDate', beginDate).datetimepicker('setEndDate', endDate);
 
-  $('#formSearch').trigger('submit');
+  // $('#formSearch').trigger('submit');
 });
 
 //handle search form
-$('#formSearch').on('change', '#search_associationStatus', function (e) {
+$('#formSearch').on('change', '#search_relation', function (e) {
   e.preventDefault();
   if ($(this).val() == 1) {
     $('#association').show();
@@ -58,17 +62,22 @@ $('#formSearch').on('click', 'button[type=submit]', function (event) {
 $('#formSearch').on('submit', function (e) {
   e.preventDefault();
   var sendData = {
-    associationStatus: $('#search_associationStatus').val(),
+    relation: $('#search_relation').val(),
     sourceId: $('#search_sourceId').val(),
-    thirdPartyCinemaName: $.trim($('#search_thirdPartyCinemaName').val()),
+    tpHallName: $.trim($('#search_tpHallName').val()),
     pageSize: _pageSize,
   };
-  if ($('#search_associationStatus').val() == 1) {
-    sendData.cinemaName = $.trim($('#search_cinemaName').val());
+  if ($('#search_relation').val() == 1) {
+    sendData.hallName = $.trim($('#search_hallName').val());
     sendData.brandId = $('#search_brandId').val();
     sendData.cityId = $('#search_cityId').val();
-    sendData.beginDate = $.trim($('#search_beginDate').val());
-    sendData.endDate = $.trim($('#search_endDate').val());
+    if ($.trim($('#search_startTime').val()) != '') {
+      sendData.startTime = $.trim($('#search_startTime').val());
+    }
+
+    if ($.trim($('#search_endTime').val()) != '') {
+      sendData.endTime = $.trim($('#search_endTime').val());
+    }
   }
 
   if (!!_querying) {
@@ -85,7 +94,7 @@ $('#formSearch').on('submit', function (e) {
   sendData.pageIndex = _pageIndex;
 
   $.ajax({
-    url: common.API_HOST + 'cinema/thirdParty/cinemaList',
+    url: common.API_HOST + 'hall/tp/list',
     type: 'POST',
     dataType: 'json',
     data: sendData,
@@ -93,23 +102,20 @@ $('#formSearch').on('submit', function (e) {
   .done(function (res) {
     _querying = false;
     if (!!~~res.meta.result) {
-      if (res.data.rows.length <= 0) {
-        var html = '<tr><td colspan="10" align="center">查不到相关数据，请修改查询条件！</td></tr>';
+      if (res.data.data.length <= 0) {
+        var html = '<tr><td colspan="13" align="center">查不到相关数据，请修改查询条件！</td></tr>';
         $('#dataTable tbody').html(html);
         $('#pager').html('');
       } else {
         useCache = true;
         _pageIndex = res.data.pageIndex;
         _pageTotal = Math.ceil(res.data.total / _pageSize);
-        setPager(res.data.total, _pageIndex, res.data.rows.length, _pageTotal);
-        _(res.data.rows).forEach(function (value, key) {
-          var source = _.find(_sources, { sourceId: parseInt(value.thirdParty) });
-          if (source) {
-            res.data.rows[key].thirdPartyName = source.sourceName;
-          }
+        setPager(res.data.total, _pageIndex, res.data.data.length, _pageTotal);
+        _(res.data.data).forEach(function (tpHall) {
+          tpHall.createTime = tpHall.createTime != undefined ? common.getDate(new Date(tpHall.createTime)) : '';
         });
 
-        setTableData(res.data.rows);
+        setTableData(res.data.data);
       }
     } else {
       alert('接口错误：' + res.meta.msg);
@@ -160,79 +166,109 @@ $('#pager').on('click', '#btn-pager', function (e) {
   return false;
 });
 
-$('#dataTable').on('click', '.btn-detail', function (e) {
+$('#dataTable').on('click', '.btn-bind', function (e) {
   e.preventDefault();
+  var tpHallName = $(this).closest('tr').find('td:nth-child(2)').text();
+  var tpHallId = $(this).closest('tr').data('id');
+  var tpStoreId = $(this).closest('tr').data('tpstoreid');
+  $('#bindHallName').val(tpHallName);
+  $('#bindHallCinema,#bindHallCity').val('');
+  $('#hallId').val();
+  $('#tpHallId').val(tpHallId);
+  $('#tpStoreId').val(tpStoreId);
+  $('#hallTable tbody').html('');
+  $('#popup-tphall-bind').modal('show');
+});
+
+$('#dataTable').on('click', '.btn-create', function (e) {
+  e.preventDefault();
+  _tpHallId = $(this).closest('tr').data('id');
+  _tpStoreId = $(this).closest('tr').data('tpstoreid');
+  var hallName = $(this).closest('tr').children('td:nth-child(2)').text();
+  var tpCinemaName = $(this).closest('tr').children('td:nth-child(6)').text().trim();
+  var seatNum = $(this).closest('tr').data('seatnum');
+  var screenType = $(this).closest('tr').data('screentype');
+  var effect = $(this).closest('tr').data('effect');
+  $('#bindCinemaName').val(tpCinemaName);
+  $('#popup-tphall-create #hallName').val(hallName);
+  $('#popup-tphall-create #seatNum').val(seatNum);
+  $('#popup-tphall-create #screenType').val(screenType);
+  $('#popup-tphall-create #effect').val(effect);
+  $('#popup-tphall-create form').parsley();
+  $('#popup-tphall-create').modal('show');
+});
+
+$(document).on('submit', '#popup-tphall-create form', function (e) {
+  e.preventDefault();
+  if (_submitting) {
+    return false;
+  }
+
+  _submitting = true;
+
+  var sendData = {
+    hallName: $.trim($('#popup-tphall-create #hallName').val()),
+    storeId: $('#popup-tphall-create #storeId').data('id'),
+    seatNum: $('#popup-tphall-create #seatNum').val(),
+    screenType: $.trim($('#popup-tphall-create #screenType').val()),
+    effect: $.trim($('#popup-tphall-create #effect').val()),
+  };
+
   $.ajax({
-    url: common.API_HOST + 'cinema/thirdParty/cinemaDetail',
+    url: common.API_HOST + 'hall/standard/saveOrUpdate',
     type: 'POST',
     dataType: 'json',
-    data: {
-      thirdPartyCinemaId: $(this).closest('tr').data('id'),
-      sourceId: $(this).closest('tr').data('sourceid'),
-    },
+    data: sendData,
   })
   .done(function (res) {
+    _submitting = false;
     if (!!~~res.meta.result) {
-      var html = '<div class="cinema-detail clearfix">';
-      _(res.data).forEach(function (value, key) {
-        if (value != '' && value != undefined && value != null) {
-          html += '<div class="detail-item"><span>' + key + '：</span>' + value + '</div>';
+      var sendData = {
+        hallId: res.data.hallId,
+        tpHallId: _tpHallId,
+        tpStoreId: _tpStoreId,
+      };
+
+      $.ajax({
+        url: common.API_HOST + 'hall/tp/rel/saveOrUpdate',
+        type: 'POST',
+        dataType: 'json',
+        data: sendData,
+      })
+      .done(function (res) {
+        if (!!~~res.meta.result) {
+          alert('新建并关联成功！');
+          $('#formSearch').trigger('submit');
+        } else {
+          alert('新建成功，关联失败，错误：' + res.meta.msg);
         }
       });
 
-      html += '</div>';
-      $('#popup-cinema-tp-detail .modal-body').html(html);
-      $('#popup-cinema-tp-detail').modal('show');
+      $('#popup-tphall-create').modal('hide');
+      $('#formSearch').trigger('submit');
     } else {
-      alert('接口错误：' + res.meta.msg);
+      alert('新建失败，错误：' + res.meta.msg);
     }
   });
+
+  return false;
 });
 
-$('#dataTable').on('click', '.btn-bind', function (e) {
-  e.preventDefault();
-  var tpCinemaName = $(this).closest('tr').find('td:nth-child(2)').text();
-  var tpCinemaId = $(this).closest('tr').data('id');
-  var sourceId = $(this).closest('tr').data('sourceid');
+$(document).on('click', '#storeId', function (event) {
+  event.preventDefault();
+  $('#cinemaTable tbody').html('<tr><td colspan="5" align="center">输入要关联的标准影院名，并按回车</td></tr>');
+  if ($('#bindCinemaName').val().trim() != '') {
+    $('#formSearchCinema').trigger('submit');
+  }
 
-  $('#bindCinemaName').val(tpCinemaName);
-  $('#bindTpCinema').text(tpCinemaName);
-  $('#cinemaId').val();
-  $('#thirdPartyCinemaId').val(tpCinemaId);
-  $('#sourceId').val(sourceId);
-  $('#formSearchCinema').trigger('submit');
-  $('#popup-cinema-bind').modal('show');
-});
-
-$('#dataTable').on('click', '.btn-bind-create', function (e) {
-  e.preventDefault();
-  $.ajax({
-    url: common.API_HOST + 'cinema/thirdParty/createAndBind',
-    type: 'POST',
-    dataType: 'json',
-    data: {
-      tpCinemaId: $(this).closest('tr').data('id'),
-      sourceId: $(this).closest('tr').data('sourceid'),
-      associationStatus: 1,
-    },
-  })
-  .done(function (res) {
-    if (!!~~res.meta.result) {
-      alert('新建标准影院，并关联成功！');
-    } else {
-      alert('接口错误：' + res.meta.msg);
-    }
-  });
+  $('#popup-hall-bind').modal('show');
 });
 
 $(document).on('submit', '#formSearchCinema', function (e) {
   e.preventDefault();
   var bindCinemaName = $.trim($('#bindCinemaName').val());
   if (bindCinemaName == '' || bindCinemaName == undefined || _bindCinemaName == bindCinemaName) {
-    if (bindCinemaName == '') {
-      alert('搜索关键词不能为空！');
-    }
-
+    alert('搜索关键词不能为空且不能与上次搜索相同！');
     return false;
   }
 
@@ -242,6 +278,7 @@ $(document).on('submit', '#formSearchCinema', function (e) {
   }
 
   _querying = true;
+
   $.ajax({
     url: common.API_HOST + 'common/cinemaList',
     type: 'POST',
@@ -253,7 +290,7 @@ $(document).on('submit', '#formSearchCinema', function (e) {
     if (!!~~res.meta.result) {
       if (res.data.length <= 0) {
         var html = '<tr><td colspan="5" align="center">暂无匹配，请尝试搜索其他影院名</td></tr>';
-        $('#popup-cinema-bind tbody').html(html);
+        $('#popup-hall-bind tbody').html(html);
         return false;
       }
 
@@ -261,12 +298,12 @@ $(document).on('submit', '#formSearchCinema', function (e) {
       var template = $('#tr-template').html();
       Mustache.parse(template);
       var html = Mustache.render(template, data);
-      $('#popup-cinema-bind tbody').html(html);
-      $('#popup-cinema-bind').on('click', '#cinemaTable tbody tr', function (e) {
+      $('#popup-hall-bind tbody').html(html);
+      $('#popup-hall-bind').on('click', '#cinemaTable tbody tr', function (e) {
         e.preventDefault();
+        $('#popup-hall-bind #bindSelect').prop('disabled', false);
         $('#cinemaTable tbody tr.selected').removeClass('selected');
         $(this).addClass('selected');
-        $('#cinemaId').val($(this).data('id'));
       });
     } else {
       alert('接口错误：' + res.meta.msg);
@@ -274,26 +311,86 @@ $(document).on('submit', '#formSearchCinema', function (e) {
   });
 });
 
-$(document).on('submit', '#formBindCinema', function (e) {
+$(document).on('click', '#bindSelect', function (event) {
+  event.preventDefault();
+  var id = $('#cinemaTable tbody tr.selected').data('id');
+  var cinemaName = $('#cinemaTable tbody tr.selected td:nth-child(2)').text();
+  $('#storeId').data('id', id).val('【' + id + '】' + cinemaName);
+  $('#popup-hall-bind').modal('hide');
+});
+
+$(document).on('submit', '#formSearchHall', function (e) {
+  e.preventDefault();
+
+  if (!!_querying) {
+    return false;
+  }
+
+  _querying = true;
+  var bindHallName = $.trim($('#bindHallName').val());
+  var bindHallCinema = $.trim($('#bindHallCinema').val());
+  var bindHallCity = $.trim($('#bindHallCity').val());
+  if (bindHallName == '' && bindHallCinema == '') {
+    alert('影厅和影院不能同时为空！');
+    return false;
+  }
+
+  $.ajax({
+    url: common.API_HOST + 'hall/standard/list',
+    type: 'POST',
+    dataType: 'json',
+    data: {
+      hallName: bindHallName,
+      storeName: bindHallCinema,
+      cityName: bindHallCity,
+      pageIndex: 1,
+      pageSize: 9999,
+    },
+  })
+  .done(function (res) {
+    _querying = false;
+    if (!!~~res.meta.result) {
+      if (res.data.data.length <= 0) {
+        var html = '<tr><td colspan="8" align="center">没有搜索到相关标准影厅</td></tr>';
+        $('#popup-tphall-bind tbody').html(html);
+        return false;
+      }
+
+      var data = { rows: res.data.data };
+      var template = $('#tp-tr-template').html();
+      Mustache.parse(template);
+      var html = Mustache.render(template, data);
+      $('#popup-tphall-bind tbody').html(html);
+      $('#popup-tphall-bind').on('click', '#hallTable tbody tr', function (e) {
+        e.preventDefault();
+        $('#hallTable tbody tr.selected').removeClass('selected');
+        $(this).addClass('selected');
+        $('#hallId').val($(this).data('id'));
+      });
+    } else {
+      alert('接口错误：' + res.meta.msg);
+    }
+  });
+});
+
+$(document).on('submit', '#formBindHall', function (e) {
   e.preventDefault();
   var sendData = {
-    cinemaId: $('#cinemaId').val(),
-    sourceId: $('#sourceId').val(),
-    thirdPartyCinemaId: $('#thirdPartyCinemaId').val(),
-    status: 1,
-    associationStatus: 1,
+    hallId: $('#hallId').val(),
+    tpHallId: $('#tpHallId').val(),
+    tpStoreId: $('#tpStoreId ').val(),
   };
 
   $.ajax({
-    url: common.API_HOST + 'cinema/thirdParty/updateAssociationStatus',
+    url: common.API_HOST + 'hall/tp/rel/saveOrUpdate',
     type: 'POST',
     dataType: 'json',
     data: sendData,
   })
   .done(function (res) {
     if (!!~~res.meta.result) {
-      alert('绑定成功！');
-      $('#popup-cinema-bind').modal('hide');
+      alert('关联成功！');
+      $('#popup-tphall-bind').modal('hide');
       $('#formSearch').trigger('submit');
     } else {
       alert('接口错误：' + res.meta.msg);
@@ -307,59 +404,6 @@ function setTableData(rows) {
   Mustache.parse(template);
   var html = Mustache.render(template, data);
   $('#dataTable tbody').html(html);
-}
-
-function setModal(cinemaData) {
-  var data;
-  var template;
-  var cities;
-  var districts;
-  if (cinemaData) {
-    _(_brands).forEach(function (value, key) {
-      _brands[key].selected = cinemaData.brandId == value.id ? true : false;
-    });
-
-    _(_provinces).forEach(function (value, key) {
-      if (cinemaData.provinceId == value.provinceId) {
-        _provinces[key].selected = true;
-        cities = _provinces[key].cityList;
-      } else {
-        _provinces[key].selected = false;
-      }
-    });
-
-    var availableServices = JSON.parse(cinemaData.service);
-    _(_services).forEach(function (value, key) {
-      var availableService = _.find(availableServices, { serviceTypeId: value.id });
-      if (availableService && availableService.serviceContent != undefined) {
-        _services[key].selected = true;
-        _services[key].content = availableService.serviceContent;
-      } else {
-        _services[key].selected = false;
-      }
-    });
-
-    data = {
-      cinema: cinemaData,
-      brands: _brands,
-      provinces: _provinces,
-      cities: cities,
-      services: _services,
-    };
-    template = $('#edit-template').html();
-    Mustache.parse(template);
-    var html = Mustache.render(template, data);
-    setArea(cinemaData.cityId, cinemaData.areaId, cinemaData.districtId);
-    $('#popup-cinema-form .modal-title').html('编辑标准影院');
-  } else {
-    data = { brands: _brands, provinces: _provinces, services: _services };
-    template = $('#create-template').html();
-    $('#popup-cinema-form .modal-title').html('新增标准影院');
-    Mustache.parse(template);
-    var html = Mustache.render(template, data);
-  }
-
-  $('#popup-cinema-form .modal-body').html(html);
 }
 
 function setSource() {

@@ -255,7 +255,7 @@ $(document).on('click', '#btn-online-multi,#btn-offline-multi', function (e) {
     })
     .done(function (res) {
       if (!!res.meta.result) {
-        checkedItems.each(function (index, el) {
+        $checkedItems.each(function (index, el) {
           $(this).closest('tr').find('td:nth-child(6)').html('已' + onlineStatusName);
           var buttonText = onlineStatus == 1 ? '下线' : '上线';
           $(this).closest('tr').find('.btn-status').data('onlineStatus', onlineStatus).html();

@@ -22,6 +22,16 @@
     </div>
 
     <div class="panel" style="display:none">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu18"><span class="glyphicon glyphicon-blackboard" aria-hidden="true"></span> 影厅管理</a>
+      <div id="menu18" class="panel-collapse collapse" role="tabpanel">
+        <div class="list-group">
+          <a href="hall.html" class="list-group-item" id="menu-hall" data-id="225" style="">标准影厅库</a>
+          <a href="hall-tp.html" class="list-group-item" id="menu-hall-tp" data-id="226" style="">合作方影厅库</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="display:none">
       <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu3"><span class="glyphicon glyphicon-film" aria-hidden="true"></span> 影片管理</a>
       <div id="menu3" class="panel-collapse collapse" role="tabpanel">
         <div class="list-group">
