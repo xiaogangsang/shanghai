@@ -10,6 +10,10 @@ var _pageTotal = 0;
 var _querying = false;
 var searchCache = {};
 var useCache = false;
+var _submitting = false;
+var _bindCinemaName = '';
+var _tpHallId = 0;
+var _tpStoreId = 0;
 
 $(function () {
   common.init('hall-tp');
@@ -108,7 +112,7 @@ $('#formSearch').on('submit', function (e) {
         _pageTotal = Math.ceil(res.data.total / _pageSize);
         setPager(res.data.total, _pageIndex, res.data.data.length, _pageTotal);
         _(res.data.data).forEach(function (tpHall) {
-          tpHall.createTime = common.getDate(new Date(tpHall.createTime));
+          tpHall.createTime = tpHall.createTime != undefined ? common.getDate(new Date(tpHall.createTime)) : '';
         });
 
         setTableData(res.data.data);
@@ -176,25 +180,143 @@ $('#dataTable').on('click', '.btn-bind', function (e) {
   $('#popup-tphall-bind').modal('show');
 });
 
-$('#dataTable').on('click', '.btn-bind-create', function (e) {
+$('#dataTable').on('click', '.btn-create', function (e) {
   e.preventDefault();
+  _tpHallId = $(this).closest('tr').data('id');
+  _tpStoreId = $(this).closest('tr').data('tpstoreid');
+  var hallName = $(this).closest('tr').children('td:nth-child(2)').text();
+  var tpCinemaName = $(this).closest('tr').children('td:nth-child(6)').text().trim();
+  var seatNum = $(this).closest('tr').data('seatnum');
+  var screenType = $(this).closest('tr').data('screentype');
+  var effect = $(this).closest('tr').data('effect');
+  $('#bindCinemaName').val(tpCinemaName);
+  $('#popup-tphall-create #hallName').val(hallName);
+  $('#popup-tphall-create #seatNum').val(seatNum);
+  $('#popup-tphall-create #screenType').val(screenType);
+  $('#popup-tphall-create #effect').val(effect);
+  $('#popup-tphall-create form').parsley();
+  $('#popup-tphall-create').modal('show');
+});
+
+$(document).on('submit', '#popup-tphall-create form', function (e) {
+  e.preventDefault();
+  if (_submitting) {
+    return false;
+  }
+
+  _submitting = true;
+
+  var sendData = {
+    hallName: $.trim($('#popup-tphall-create #hallName').val()),
+    storeId: $('#popup-tphall-create #storeId').data('id'),
+    seatNum: $('#popup-tphall-create #seatNum').val(),
+    screenType: $.trim($('#popup-tphall-create #screenType').val()),
+    effect: $.trim($('#popup-tphall-create #effect').val()),
+  };
+
   $.ajax({
-    url: common.API_HOST + 'cinema/thirdParty/createAndBind',
+    url: common.API_HOST + 'hall/standard/saveOrUpdate',
     type: 'POST',
     dataType: 'json',
-    data: {
-      tpCinemaId: $(this).closest('tr').data('id'),
-      sourceId: $(this).closest('tr').data('sourceid'),
-      associationStatus: 1,
-    },
+    data: sendData,
   })
   .done(function (res) {
+    _submitting = false;
     if (!!~~res.meta.result) {
-      alert('新建标准影院，并关联成功！');
+      var sendData = {
+        hallId: res.data.hallId,
+        tpHallId: _tpHallId,
+        tpStoreId: _tpStoreId,
+      };
+
+      $.ajax({
+        url: common.API_HOST + 'hall/tp/rel/saveOrUpdate',
+        type: 'POST',
+        dataType: 'json',
+        data: sendData,
+      })
+      .done(function (res) {
+        if (!!~~res.meta.result) {
+          alert('新建并关联成功！');
+          $('#formSearch').trigger('submit');
+        } else {
+          alert('新建成功，关联失败，错误：' + res.meta.msg);
+        }
+      });
+
+      $('#popup-tphall-create').modal('hide');
+      $('#formSearch').trigger('submit');
+    } else {
+      alert('新建失败，错误：' + res.meta.msg);
+    }
+  });
+
+  return false;
+});
+
+$(document).on('click', '#storeId', function (event) {
+  event.preventDefault();
+  $('#cinemaTable tbody').html('<tr><td colspan="5" align="center">输入要关联的标准影院名，并按回车</td></tr>');
+  if ($('#bindCinemaName').val().trim() != '') {
+    $('#formSearchCinema').trigger('submit');
+  }
+
+  $('#popup-hall-bind').modal('show');
+});
+
+$(document).on('submit', '#formSearchCinema', function (e) {
+  e.preventDefault();
+  var bindCinemaName = $.trim($('#bindCinemaName').val());
+  if (bindCinemaName == '' || bindCinemaName == undefined || _bindCinemaName == bindCinemaName) {
+    alert('搜索关键词不能为空且不能与上次搜索相同！');
+    return false;
+  }
+
+  _bindCinemaName = bindCinemaName;
+  if (!!_querying) {
+    return false;
+  }
+
+  _querying = true;
+
+  $.ajax({
+    url: common.API_HOST + 'common/cinemaList',
+    type: 'POST',
+    dataType: 'json',
+    data: { cinemaName: bindCinemaName },
+  })
+  .done(function (res) {
+    _querying = false;
+    if (!!~~res.meta.result) {
+      if (res.data.length <= 0) {
+        var html = '<tr><td colspan="5" align="center">暂无匹配，请尝试搜索其他影院名</td></tr>';
+        $('#popup-hall-bind tbody').html(html);
+        return false;
+      }
+
+      var data = { rows: res.data };
+      var template = $('#tr-template').html();
+      Mustache.parse(template);
+      var html = Mustache.render(template, data);
+      $('#popup-hall-bind tbody').html(html);
+      $('#popup-hall-bind').on('click', '#cinemaTable tbody tr', function (e) {
+        e.preventDefault();
+        $('#popup-hall-bind #bindSelect').prop('disabled', false);
+        $('#cinemaTable tbody tr.selected').removeClass('selected');
+        $(this).addClass('selected');
+      });
     } else {
       alert('接口错误：' + res.meta.msg);
     }
   });
+});
+
+$(document).on('click', '#bindSelect', function (event) {
+  event.preventDefault();
+  var id = $('#cinemaTable tbody tr.selected').data('id');
+  var cinemaName = $('#cinemaTable tbody tr.selected td:nth-child(2)').text();
+  $('#storeId').data('id', id).val('【' + id + '】' + cinemaName);
+  $('#popup-hall-bind').modal('hide');
 });
 
 $(document).on('submit', '#formSearchHall', function (e) {
@@ -235,7 +357,7 @@ $(document).on('submit', '#formSearchHall', function (e) {
       }
 
       var data = { rows: res.data.data };
-      var template = $('#tr-template').html();
+      var template = $('#tp-tr-template').html();
       Mustache.parse(template);
       var html = Mustache.render(template, data);
       $('#popup-tphall-bind tbody').html(html);
@@ -267,7 +389,7 @@ $(document).on('submit', '#formBindHall', function (e) {
   })
   .done(function (res) {
     if (!!~~res.meta.result) {
-      alert('绑定成功！');
+      alert('关联成功！');
       $('#popup-tphall-bind').modal('hide');
       $('#formSearch').trigger('submit');
     } else {

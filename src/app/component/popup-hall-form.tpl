@@ -55,7 +55,7 @@
               {{/effectTypes}}
             </select>
             <div id="error-effect"></div>
-            </td>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -68,15 +68,15 @@
       <tbody>
         <tr>
           <th width="80">影厅名</th>
-          <td><input type="text" class="form-control" id="hallName" value="" required></td>
+          <td><input type="text" class="form-control" id="hallName" required></td>
         </tr>
         <tr>
           <th>所属影院</th>
-          <td><input type="text" class="form-control" id="storeId" value="" readonly required></td>
+          <td><input type="text" class="form-control" id="storeId" readonly required></td>
         </tr>
         <tr>
           <th>座位数</th>
-          <td><input type="text" class="form-control" id="seatNum" value="" required></td>
+          <td><input type="text" class="form-control" id="seatNum" required></td>
         </tr>
         <tr>
           <th>屏幕类型</th>
@@ -100,7 +100,7 @@
               {{/effectTypes}}
             </select>
             <div id="error-effect"></div>
-            </td>
+          </td>
         </tr>
       </tbody>
     </table>

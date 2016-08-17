@@ -66,7 +66,7 @@
   </div>
 </div>
 
-<script id="tr-template" type="text/x-tmpl-mustache">
+<script id="tp-tr-template" type="text/x-tmpl-mustache">
   {{#rows}}
   <tr data-id="{{hallId}}">
     <td>{{hallId}}</td>
