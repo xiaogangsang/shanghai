@@ -265,6 +265,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     if (compare) {
       $('.detail-area').addClass('compare');
       $('.detail-area.compare :input').prop('readonly', true);
+      $('.detail-history').hide();// 对比时不显示历史修改记录
     }
 
     // $('#subsidyType option[value="' + detail.subsidyType + '"]').prop('selected', true);

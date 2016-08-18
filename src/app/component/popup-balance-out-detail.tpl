@@ -381,7 +381,7 @@
 
     {{/detail}}
 
-    <div class="container-fluid">
+    <div class="container-fluid detail-history">
 
       <div class="row">
         <span style="display: block; margin-top: 10px;">历史记录:</span>

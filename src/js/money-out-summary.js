@@ -219,7 +219,7 @@ $('body').on('change', 'tr > td :checkbox', function(e) {
   }
 });
 
-
+// 导出汇总记录(仍然是同步的)
 $('.btn-export-all').click(function(e) {
   e.preventDefault();
 
@@ -236,24 +236,29 @@ $('.btn-export-all').click(function(e) {
   });
 });
 
+
+// 导出所选明细(异步的)
 $('.btn-export-selected').click(function(e) {
 
   e.preventDefault();
 
-  var parameters = [];
+  var merIds = [];
+  var appropriationDate = []; 
 
   $('#dataTable tbody :checkbox:checked').each(function(index) {
     var rowIndex = $(this).closest('td').parent()[0].sectionRowIndex;
-    var obj = dataCache[rowIndex].merchantSummaryId;
-    parameters.push(obj);
+    var id = dataCache[rowIndex].merchantSummaryId;
+    var appDate = dataCache[rowIndex].appDate;
+    merIds.push(id);
+    appropriationDate.push(appDate);
   });
 
-  if (parameters.length == 0) {
+  if (merIds.length == 0) {
     alert('请至少选择一条记录');
     return false;
   }
 
-  var param = {merIds: settlementCommon.toString(parameters)};
+  var param = {merIds: settlementCommon.toString(merIds), appropriationDate:settlementCommon.toString(appropriationDate)};
 
   $.ajax({
     url: common.API_HOST + 'settlement/appropriationInfo/getAppropriationExcel',
@@ -261,13 +266,15 @@ $('.btn-export-selected').click(function(e) {
     data: param
   }).done(function(res) {
     if (!!~~res.meta.result) {
-      window.location.href = common.API_HOST + 'settlement/merchantAttachment/downLoad?fileUrl=' + res.data.filePath;
+      // window.location.href = common.API_HOST + 'settlement/merchantAttachment/downLoad?fileUrl=' + res.data.filePath;
+      alert('您的申请已提交，系统正在为您导出数据，需要约15分钟，\n请至下载列表查看并下载导出结果。\n导出的数据仅保留3天，请及时查看并下载。');
     } else {
       alert(res.meta.msg);
     }
   });
 });
 
+// 查看明细
 $('#dataTable').on('click', '.see-detail', function(e) {
   e.preventDefault();
 

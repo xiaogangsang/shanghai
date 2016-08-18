@@ -10,6 +10,8 @@
   Modified history:
   2016-08-11 12:25:44 Ge Liu
     新增了查询日期的7天(结束日期 - 开始日期 <= 7)限制
+  2016-08-16 10:59:27
+    新增文件异步下载涉及到的各种状态编码
  */
 
 
@@ -180,7 +182,7 @@ settlementCommon.serializeParam = function(param) {
   return queryString;
 }
 
-// 下面是对字符串数组的自定义序列化
+// 下面是对字符串数组的自定义序列化, 以逗号(%2C)分隔
 settlementCommon.toString = function(array) {
 	var str = '';
 

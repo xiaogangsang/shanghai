@@ -286,11 +286,11 @@ $('.btn-export-all').click(function(e) {
       dataType: 'json',
     })
     .done(function(res) {
-      if (res.meta.result == 0) {
-        alert(res.meta.msg);
-      } else {
+      if (!!~~res.meta.result) {
         // window.location.href = common.API_HOST + 'settlement/merchantAttachment/downLoad?fileUrl=' + res.data.fileUrl;
         alert('您的申请已提交，系统正在为您导出数据，需要约15分钟，\n请至下载列表查看并下载导出结果。\n导出的数据仅保留3天，请及时查看并下载。');
+      } else {
+        alert(res.meta.msg);
       }
     });
   } else {
@@ -306,11 +306,11 @@ $('.btn-export-all').click(function(e) {
       data: searchCacheWithoutPagination,
     })
     .done(function (res) {
-      if (res.meta.result == 0) {
-        alert(res.meta.msg);
-      } else {
+      if (!!~~res.meta.result) {
         // window.location.href = common.API_HOST + 'settlement/merchantAttachment/downLoad?fileUrl=' + res.data.fileUrl;
         alert('您的申请已提交，系统正在为您导出数据，需要约15分钟，\n请至下载列表查看并下载导出结果。\n导出的数据仅保留3天，请及时查看并下载。');
+      } else {
+        alert(res.meta.msg);
       }
     });
   }
