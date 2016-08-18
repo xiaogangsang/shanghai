@@ -186,6 +186,8 @@ $('.all-detail').click(function(e) {
   window.location.href = 'balance-in-detail.html';
 });
 
+
+// 查看选中明细
 $('.selected-detail').click(function(e) {
   var parameters = [];
 
@@ -195,6 +197,11 @@ $('.selected-detail').click(function(e) {
     var param = {'dateType': searchCache.dateType, 'beginTime': obj.date, 'chargeMerchantNo': obj.chargeMerchantNo, 'payStatus':obj.payStatusNo};
     parameters.push(param);
   });
+
+  if (parameters.length === 0) {
+    alert('请先选择一条记录!');
+    return false;
+  }
 
   var data = {'type': 1, 'param': parameters};
   sessionStorage.setItem('param', JSON.stringify(data));
