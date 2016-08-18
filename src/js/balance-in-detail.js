@@ -185,7 +185,10 @@ function handleData(res) {
 
     setTableData(record);
 
-    setSummaryTableData(res.data.summary);
+    // 从汇总页点击查看选中明细, 是没有summary返回的
+    if (res.data.summary) {
+      setSummaryTableData(res.data.summary);
+    }
   }
 }
 
@@ -269,10 +272,15 @@ $('.btn-reset').click(function(e) {
  $('#formSearch :input:not(:button)').val('');
 });
 
-// 导出全部
+// 导出全部export(申请导出)
 $('.btn-export-all').click(function(e) {
 
   e.preventDefault();
+
+  if ($('#dataTable tr td').length < 2) {
+    alert('请先查询再导出!');
+    return false;
+  }
 
   if (_queryingFromSelectedSummary) {
     var param = {'acquiringInfoFormCollection' : _selectedSummary.acquiringInfoFormCollection};
@@ -312,6 +320,11 @@ $('.btn-export-all').click(function(e) {
 $('.complete-commit').click(function(e) {
 
   e.preventDefault();
+
+  if ($('#dataTable tr td').length < 2) {
+    alert('请先查询再进行此操作!');
+    return false;
+  }
 
   if (_queryingFromSelectedSummary) {
     var param = {'acquiringInfoFormCollection' : _selectedSummary.acquiringInfoFormCollection};

@@ -223,6 +223,11 @@ $('body').on('change', 'tr > td :checkbox', function(e) {
 $('.btn-export-all').click(function(e) {
   e.preventDefault();
 
+  if ($('#dataTable tr td').length < 2) {
+    alert('请先查询再进行此操作!');
+    return false;
+  }
+
   $.ajax({
     url: common.API_HOST + 'settlement/merchantSummary/getMerchantExcel',
     dataType: 'json',

@@ -190,7 +190,10 @@ function handleData(res) {
 
     setTableData(record);
 
-    setSummaryTableData(res.data.summary);
+    // 从汇总页点击查看选中明细, 是没有summary返回的
+    if (res.data.summary) {
+      setSummaryTableData(res.data.summary);
+    }
   }
 }
 
@@ -277,6 +280,11 @@ $('.btn-export-all').click(function(e) {
 
   e.preventDefault();
 
+  if ($('#dataTable tr td').length < 2) {
+    alert('请先查询再导出!');
+    return false;
+  }
+
   if (_queryingFromSelectedSummary) {
     var param = {'shipmentInfoFormCollection' : _selectedSummary.shipmentInfoFormCollection};
 
@@ -316,9 +324,15 @@ $('.btn-export-all').click(function(e) {
   }
 });
 
+// 对账完成提交
 $('.complete-commit').click(function(e) {
 
   e.preventDefault();
+
+  if ($('#dataTable tr td').length < 2) {
+    alert('请先查询再进行此操作!');
+    return false;
+  }
 
   if (_queryingFromSelectedSummary) {
     var param = {'shipmentInfoFormCollection' : _selectedSummary.shipmentInfoFormCollection};
