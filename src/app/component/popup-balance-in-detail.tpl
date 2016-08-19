@@ -289,15 +289,15 @@
               <option value=""></option>
               <option value="1">我方缺失</option>
               <option value="2">对方缺失</option>
-              <option value="3">金额不符</option>
               <option value="3">状态错误</option>
+              <option value="4">金额不符</option>
             </select>
             <select class="form-control newValue" id="reasonNew" value="{{currentDetail.reason}}">
               <option value=""></option>
               <option value="1">我方缺失</option>
               <option value="2">对方缺失</option>
-              <option value="3">金额不符</option>
               <option value="3">状态错误</option>
+              <option value="4">金额不符</option>
             </select>
           </div>
         </div>
