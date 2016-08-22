@@ -57,9 +57,10 @@ $('#formSearch').on('click', 'button[type=submit]', function (event) {
 
 $('#formSearch').on('submit', function (e) {
   e.preventDefault();
+  var sourceId = !!~~$('#search_sourceId').val() == false ? 1 : $('#search_sourceId').val();
   var sendData = {
     associationStatus: $('#search_associationStatus').val(),
-    sourceId: $('#search_sourceId').val(),
+    sourceId: sourceId,
     thirdPartyCinemaName: $.trim($('#search_thirdPartyCinemaName').val()),
     pageSize: _pageSize,
   };
