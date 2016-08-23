@@ -81,6 +81,7 @@ $('#formSearch').on('submit', function (e) {
         setPager(res.data.total, _pageIndex, res.data.data.length, _pageTotal);
         _(res.data.data).forEach(function (item) {
           item.relation = item.relation == 1 ? '已关联' : '未关联';
+          item.onlineTime = common.getDate(new Date(item.onlineTime));
         });
 
         setTableData(res.data.data);
