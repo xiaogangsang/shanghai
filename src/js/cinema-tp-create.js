@@ -2,7 +2,7 @@
 * @Author: kyle
 * @Date:   2016-08-22 14:57:39
 * @Last Modified by:   kyle
-* @Last Modified time: 2016-08-22 14:58:31
+* @Last Modified time: 2016-08-23 18:10:05
 */
 
 'use strict;'
@@ -26,8 +26,7 @@ $(function () {
   getService();
 
   var urlParam = common.getUrlParam();
-  if (urlParam.tpCinemaId == undefined || urlParam.tpCinemaId == ''
-    || urlParam.sourceId == undefined || urlParam.sourceId == '') {
+  if (urlParam.tpCinemaId == undefined || urlParam.tpCinemaId == '' || urlParam.sourceId == undefined || urlParam.sourceId == '') {
     alert('缺少参数！');
     location = 'cinema-tp.html';
   }
@@ -182,25 +181,43 @@ $(document).on('submit', '#formCinema', function (e) {
   if (_submitting) {
     return false;
   }
+
   _submitting = true;
+
+  var sendData = {
+    cinemaName: $.trim($('#cinemaName').val()),
+    brandId: $('#brandId').val(),
+    cityId: $('#cityId').val(),
+    areaId: $('#areaId').val(),
+    districtId: $('#districtId').val(),
+    address: $.trim($('#address').val()),
+    tel: $.trim($('#tel').val()),
+    longitude: $.trim($('#longitude').val()),
+    latitude: $.trim($('#latitude').val()),
+    thirdPartyCinemaId: _tpCinemaId,
+    sourceId: _sourceId,
+    associationStatus: 1,
+  };
+
+  var idArr = [];
+  var desArr = [];
+  $('.service-list .service-item').each(function (index, el) {
+    var id = parseInt($(this).data('id'));
+    var des = $.trim($(this).find('textarea').val());
+    if (~~id != 0 && des != '') {
+      idArr.push(id);
+      desArr.push(des);
+    }
+  });
+
+  sendData.serviceId = idArr.join('|');
+  sendData.serviceDescription = desArr.join('|');
+
   $.ajax({
     url: common.API_HOST + 'cinema/standard/cinemaSave',
     type: 'POST',
     dataType: 'json',
-    data: {
-      cinemaName: $.trim($('#cinemaName').val()),
-      brandId: $('#brandId').val(),
-      cityId: $('#cityId').val(),
-      areaId: $('#areaId').val(),
-      districtId: $('#districtId').val(),
-      address: $.trim($('#address').val()),
-      tel: $.trim($('#tel').val()),
-      longitude: $.trim($('#longitude').val()),
-      latitude: $.trim($('#latitude').val()),
-      thirdPartyCinemaId: _tpCinemaId,
-      sourceId: _sourceId,
-      associationStatus: 1,
-    },
+    data: sendData,
   })
   .done(function (res) {
     _submitting = false;
@@ -241,8 +258,7 @@ function setProvince() {
       _provinces = res.data;
       var html = '';
       _(_provinces).forEach(function (province) {
-        html += '<option value="' + province.provinceId + '">'
-                + province.provinceName + '</option>';
+        html += '<option value="' + province.provinceId + '">' + province.provinceName + '</option>';
       });
 
       $('#provinceId').append(html);
