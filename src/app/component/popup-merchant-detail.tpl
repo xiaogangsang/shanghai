@@ -275,12 +275,12 @@
               </thead>
               <tbody>
                 <tr>
-                  <td>万达</td>
+                  <!-- <td>万达</td>
                   <td>.avi</td>
-                  <td>2013.09.99</td>
-                  <td>
+                  <td>2013.09.99</td> -->
+                  <!-- <td>
                     <a href="#" class="btn-edit">查看</a>
-                  </td>
+                  </td> -->
                 </tr>
               </tbody>
             </table>

@@ -5,10 +5,10 @@
   <link rel="icon" href="images/favicon.ico" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <title>合作方影院库</title>
+  <title>合作方影厅库</title>
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <link rel="stylesheet" href="css/reset.css">
-  <link rel="stylesheet" href="css/cinema.css">
+  <link rel="stylesheet" href="css/hall.css">
 </head>
 <body>
 
@@ -23,8 +23,8 @@
       <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
         <ol class="breadcrumb">
-          <li>影院管理</li>
-          <li class="active">合作方影院库</li>
+          <li>影厅管理</li>
+          <li class="active">合作方影厅库</li>
         </ol>
 
         <form id="formSearch" class="search-area clearfix">
@@ -32,7 +32,7 @@
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">关联关系</div>
-              <select class="form-control" id="search_associationStatus">
+              <select class="form-control" id="search_relation">
                 <option value="0">未关联</option>
                 <option value="1">已关联</option>
               </select>
@@ -41,21 +41,23 @@
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">合作方</div>
-              <select class="form-control" id="search_sourceId"></select>
+              <select class="form-control" id="search_sourceId">
+                <option value="">全部</option>
+              </select>
             </div>
           </div>
           <div class="form-group col-sm-12 col-md-4">
             <div class="input-group">
-              <div class="input-group-addon">合作方影院名</div>
-              <input type="text" class="form-control" id="search_thirdPartyCinemaName">
+              <div class="input-group-addon">合作方影厅名</div>
+              <input type="text" class="form-control" id="search_tpHallName">
             </div>
           </div>
 
           <div id="association">
             <div class="form-group col-sm-6 col-md-4">
               <div class="input-group">
-                <div class="input-group-addon">标准影院名</div>
-                <input type="text" class="form-control" id="search_cinemaName">
+                <div class="input-group-addon">标准影厅名</div>
+                <input type="text" class="form-control" id="search_hallName">
               </div>
             </div>
 
@@ -80,24 +82,20 @@
             <div class="form-group col-sm-6 col-md-4">
               <div class="input-group">
                 <div class="input-group-addon">关联时间</div>
-                <input type="text" class="form-control" id="search_beginDate">
+                <input type="text" class="form-control" id="search_startTime">
               </div>
             </div>
 
             <div class="form-group col-sm-6 col-md-4">
               <div class="input-group">
                 <div class="input-group-addon">至</div>
-                <input type="text" class="form-control" id="search_endDate">
+                <input type="text" class="form-control" id="search_endTime">
               </div>
             </div>
           </div>
 
-          <div class="col-xs-12 col-sm-6 col-md-4 pull-right">
-            <div class="row">
-              <div class="col-sm-6 pull-right">
-                <button type="submit" class="btn btn-block btn-primary">查询</button>
-              </div>
-            </div>
+          <div class="col-xs-12 col-sm-6 col-md-3 pull-right">
+            <button type="submit" class="btn btn-block btn-primary">查询</button>
           </div>
 
         </form>
@@ -111,20 +109,23 @@
               <thead>
                 <tr>
                   <th>ID</th>
-                  <th>影院名</th>
+                  <th>影厅名</th>
                   <th>合作方</th>
                   <th>院线</th>
                   <th>城市</th>
-                  <th>关联</th>
-                  <th>关联时间</th>
-                  <th>关联标准影院ID</th>
-                  <th>关联标准影院名</th>
+                  <th>合作方影院</th>
+                  <th>座位数</th>
+                  <th>屏幕类型</th>
+                  <th>特效</th>
+                  <th class="associated">关联时间</th>
+                  <th class="associated">关联标准影厅ID</th>
+                  <th class="associated">关联标准影厅名</th>
                   <th>操作</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td colspan="10" align="center">请点击“查询”按钮！</td>
+                  <td colspan="13" align="center">请点击“查询”按钮！</td>
                 </tr>
               </tbody>
             </table>
@@ -139,7 +140,7 @@
   </div>
 
   <script src="js/vendor.js"></script>
-  <script src="js/cinema-tp.js"></script>
+  <script src="js/hall-tp.js"></script>
 
   <script id="pager-template" type="text/x-tmpl-mustache">
     <div class="col xs-12 col-sm-6 rowStatics">共 <span id="total">{{total}}</span> 条数据，当前显示 <span id="rowsSize">{{rowsSize}}</span> 条</div>
@@ -159,26 +160,28 @@
   </script>
   <script id="table-template" type="text/x-tmpl-mustache">
     {{#rows}}
-    <tr data-id="{{tpCinemaId}}" data-sourceId="{{thirdParty}}">
-      <td>{{tpCinemaId}}</td>
-      <td><a href="#" class="btn-link btn-detail">{{tpCinemaName}}</a></td>
-      <td>{{thirdPartyName}}</td>
-      <td>{{brandName}}</td>
-      <td>{{cityName}}</td>
-      <td>{{#associationStatus}}已关联{{/associationStatus}}{{^associationStatus}}未关联{{/associationStatus}}</td>
-      <td>{{associationDate}}</td>
-      <td>{{id}}</td>
-      <td>{{name}}</td>
+    <tr data-id="{{tpHallId}}" data-tpStoreId="{{tpStoreId}}">
+      <td>{{tpHallId}}</td>
+      <td>{{tpHallName}}</td>
+      <td>{{source}}</td>
+      <td>{{brand}}</td>
+      <td>{{city}}</td>
+      <td>{{tpStoreName}}</td>
+      <td>{{seatNum}}</td>
+      <td>{{ScreenType}}</td>
+      <td>{{effect}}</td>
+      <td>{{createTime}}</td>
+      <td>{{hallId}}</td>
+      <td>{{hallName}}</td>
       <td>
         <button type="button" class="btn btn-xs btn-default btn-bind">设置关联</button>
-        {{^associationStatus}}<a href="cinema-tp-create.html?tpCinemaId={{tpCinemaId}}&sourceId={{thirdParty}}" class="btn btn-xs btn-default">新建并关联</a>{{/associationStatus}}
+        {{^associationStatus}}<button type="button" class="btn btn-xs btn-default btn-create">新建并关联</button>{{/associationStatus}}
       </td>
     </tr>
     {{/rows}}
   </script>
-
-  @@include('component/popup-cinema-bind.tpl')
-  @@include('component/popup-cinema-tp-detail.tpl')
-
+  @@include('component/popup-tphall-bind.tpl')
+  @@include('component/popup-tphall-create.tpl')
+  @@include('component/popup-hall-bind.tpl')
 </body>
 </html>

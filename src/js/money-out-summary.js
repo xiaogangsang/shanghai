@@ -25,30 +25,6 @@ var _DEBUG = false;
 $(function() {
 
 	common.init('money-out-summary');
-
-	$('#search_startTime').datetimepicker({
-    format: 'yyyy-mm-dd',
-    language: 'zh-CN',
-    minView: 2,
-    todayHighlight: true,
-    autoclose: true,
-  }).on('changeDate', function (ev) {
-    var startDate = new Date(ev.date.valueOf());
-    startDate.setDate(startDate.getDate(new Date(ev.date.valueOf())));
-    $('#search_endTime').datetimepicker('setStartDate', startDate);
-  });
-
-  $('#search_endTime').datetimepicker({
-    format: 'yyyy-mm-dd',
-    language: 'zh-CN',
-    minView: 2,
-    todayHighlight: true,
-    autoclose: true,
-  }).on('changeDate', function (ev) {
-    var FromEndDate = new Date(ev.date.valueOf());
-    FromEndDate.setDate(FromEndDate.getDate(new Date(ev.date.valueOf())));
-    $('#search_startTime').datetimepicker('setEndDate', FromEndDate);
-  });
 });
 
 //handle search form
@@ -62,12 +38,12 @@ $('#formSearch').on('click', 'button[type=submit]', function (event) {
 $('#formSearch').on('submit', function (e) {
   e.preventDefault();
   var sendData = {
-  	dateType: $('#search_dateType').val(),
-    beginTime: $('#search_startTime').val(),
-    endTime: $('#search_endTime').val(),
-    merchantName: $('#search_merchantName').val(),
-    merchantNo: $('#search_merchantNo').val(),
-    payStatus: $('#search_payStatus').val(),
+    startDate: $('#search_startTime').val(),
+    endDate: $('#search_endTime').val(),
+    batch: $('#search_batch').val(),
+    merName: $('#search_merName').val(),
+    merNo: $('#search_merNo').val(),
+    appStatus: $('#search_appStatus').val(),
     pageSize: _pageSize,
   };
   if (!!_querying) {
@@ -107,24 +83,24 @@ function handleData(res) {
 	if (settlementCommon.prehandleData(res)) {
 		useCache = true;
 
-		var totalRecord = res.data.total;
-    var record = res.data.record;
+		var totalRecord = res.data.detail.count;
+    var records = res.data.detail.records;
 
     _pageTotal = Math.ceil(totalRecord / _pageSize);
-    setPager(totalRecord, _pageIndex, record.length, _pageTotal);
+    setPager(totalRecord, _pageIndex, records.length, _pageTotal);
 
-    _(record).forEach(function(item) {
+    _(records).forEach(function(item) {
     	item.chargeMerchant = settlementCommon.parseMerchant(item.chargeMerchant);
       item.payStatusNo = item.payStatus;
     	item.payStatus = settlementCommon.parsePayStatus(item.payStatus);
 
       var moneyOutStatus = item.appStatus;
-      item.resend = (moneyOutStatus == 3 || moneyOutStatus == 4 || moneyOutStatus == 6);
-      item.refused = (moneyOutStatus == 2 || moneyOutStatus == 7);
+      item.resend = (moneyOutStatus == 4 || moneyOutStatus == 6 || moneyOutStatus == 2);
+      item.refused = (moneyOutStatus == 3); // 编码参考 common-settlement.js, '重拨成功' 状态 不再能 '被银行退票'
       item.appStatus = settlementCommon.parseMoneyOutStatus(item.appStatus);
     });
 
-    dataCache = record;
+    dataCache = records;
 
     setTableData(dataCache);
 	}
@@ -243,42 +219,19 @@ $('body').on('change', 'tr > td :checkbox', function(e) {
   }
 });
 
-
+// 导出汇总记录(仍然是同步的)
 $('.btn-export-all').click(function(e) {
   e.preventDefault();
+
+  if ($('#dataTable tr td').length < 2) {
+    alert('请先查询再进行此操作!');
+    return false;
+  }
 
   $.ajax({
     url: common.API_HOST + 'settlement/merchantSummary/getMerchantExcel',
     dataType: 'json',
     data: searchCache
-  }).done(function(res) {
-    window.location.href = common.API_HOST + 'settlement/merchantAttachment/downLoad?fileUrl=' + res.data.filePath;
-  });
-});
-
-$('.btn-export-selected').click(function(e) {
-
-  e.preventDefault();
-
-  var parameters = [];
-
-  $('#dataTable tbody :checkbox:checked').each(function(index) {
-    var rowIndex = $(this).closest('td').parent()[0].sectionRowIndex;
-    var obj = dataCache[rowIndex].merchantSummaryId;
-    parameters.push(obj);
-  });
-
-  if (parameters.length == 0) {
-    alert('请至少选择一条记录');
-    return false;
-  }
-
-  var param = {merIds: settlementCommon.toString(parameters)};
-
-  $.ajax({
-    url: common.API_HOST + 'settlement/appropriationInfo/getAppropriationExcel',
-    dataType: 'json',
-    data: param
   }).done(function(res) {
     if (!!~~res.meta.result) {
       window.location.href = common.API_HOST + 'settlement/merchantAttachment/downLoad?fileUrl=' + res.data.filePath;
@@ -288,6 +241,45 @@ $('.btn-export-selected').click(function(e) {
   });
 });
 
+
+// 导出所选明细(异步的)
+$('.btn-export-selected').click(function(e) {
+
+  e.preventDefault();
+
+  var merIds = [];
+  var appropriationDate = []; 
+
+  $('#dataTable tbody :checkbox:checked').each(function(index) {
+    var rowIndex = $(this).closest('td').parent()[0].sectionRowIndex;
+    var id = dataCache[rowIndex].merchantSummaryId;
+    var appDate = dataCache[rowIndex].appDate;
+    merIds.push(id);
+    appropriationDate.push(appDate);
+  });
+
+  if (merIds.length == 0) {
+    alert('请至少选择一条记录');
+    return false;
+  }
+
+  var param = {merIds: settlementCommon.toString(merIds), appropriationDate:settlementCommon.toString(appropriationDate)};
+
+  $.ajax({
+    url: common.API_HOST + 'settlement/appropriationInfo/getAppropriationExcel',
+    dataType: 'json',
+    data: param
+  }).done(function(res) {
+    if (!!~~res.meta.result) {
+      // window.location.href = common.API_HOST + 'settlement/merchantAttachment/downLoad?fileUrl=' + res.data.filePath;
+      alert('您的申请已提交，系统正在为您导出数据，需要约15分钟，\n请至下载列表查看并下载导出结果。\n导出的数据仅保留3天，请及时查看并下载。');
+    } else {
+      alert(res.meta.msg);
+    }
+  });
+});
+
+// 查看明细
 $('#dataTable').on('click', '.see-detail', function(e) {
   e.preventDefault();
 
@@ -326,7 +318,7 @@ $('#dataTable').on('click', '.refused', function(e) {
 */
 function operate(operateCode, idList) {
 
-  if (!window.confirm('将立刻为商户进行此次拨款，操作不可撤回，请仔细核对金额和商户账户信息！')) {
+  if (operateCode == 2 && !window.confirm('将立刻为商户进行此次拨款，操作不可撤回，请仔细核对金额和商户账户信息！')) {
     return false;
   }
 
@@ -393,16 +385,16 @@ $('body').on('submit', '#detailFormSearch', function(e) {
 
 
 function handleDetailData(res) {
+
   if (!!~~res.meta.result) {
-    if (res.data == null || res.data.total < 1) {
-      // var errorMsg = res.meta.msg;
+    if (res.data == null || res.data.detail == null || res.data.detail.count < 1) {
       var errorMsg = '无满足条件记录';
       $('#detailDataTable tbody').html('<tr><td colspan="30" align="center">' + errorMsg + '</td></tr>');
       $('#detailPager').html('');
     } else {
       detailUseCache = true;
-      var totalRecord = res.data.total;
-      var record = res.data.record;
+      var totalRecord = res.data.detail.count;
+      var record = res.data.detail.records;
 
       detailPageTotal = Math.ceil(totalRecord / _pageSize);
       setDetailPager(totalRecord, detailPageIndex, record.length, detailPageTotal);
@@ -416,11 +408,12 @@ function handleDetailData(res) {
         item.discountType = settlementCommon.parseDiscountType(item.discountType);
       });
 
-      detailDataCache = record;
-      setDetailTableData(detailDataCache);
+      setDetailTableData(record);
     }
   } else {
     alert(res.meta.msg);
+    $('#detailDataTable tbody').html('');
+    $('#detailPager').html('');
   }
 }
 

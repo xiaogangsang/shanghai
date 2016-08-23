@@ -23,32 +23,7 @@ var detailPageTotal = 0;
 var _DEBUG = false;
 
 $(function() {
-
 	common.init('money-out-log');
-
-	$('#search_startDate').datetimepicker({
-    format: 'yyyy-mm-dd',
-    language: 'zh-CN',
-    minView: 2,
-    todayHighlight: true,
-    autoclose: true,
-  }).on('changeDate', function (ev) {
-    var startDate = new Date(ev.date.valueOf());
-    startDate.setDate(startDate.getDate(new Date(ev.date.valueOf())));
-    $('#search_endDate').datetimepicker('setStartDate', startDate);
-  });
-
-  $('#search_endDate').datetimepicker({
-    format: 'yyyy-mm-dd',
-    language: 'zh-CN',
-    minView: 2,
-    todayHighlight: true,
-    autoclose: true,
-  }).on('changeDate', function (ev) {
-    var FromEndDate = new Date(ev.date.valueOf());
-    FromEndDate.setDate(FromEndDate.getDate(new Date(ev.date.valueOf())));
-    $('#search_startDate').datetimepicker('setEndDate', FromEndDate);
-  });
 });
 
 //handle search form
@@ -62,8 +37,8 @@ $('#formSearch').on('click', 'button[type=submit]', function (event) {
 $('#formSearch').on('submit', function (e) {
   e.preventDefault();
   var sendData = {
-    startDate: $('#search_startDate').val(),
-    endDate: $('#search_endDate').val(),
+    startDate: $('#search_startTime').val(),
+    endDate: $('#search_endTime').val(),
     operator: $('#search_operator').val(),
     batchNum: $('#search_batchNum').val(),
     merNo: $('#search_merNo').val(),
@@ -102,17 +77,17 @@ function handleData(res) {
   if (settlementCommon.prehandleData(res)) {
     useCache = true;
 
-    var totalRecord = res.data.total;
-    var record = res.data.record;
+    var totalRecord = res.data.detail.count;
+    var records = res.data.detail.records;
 
     _pageTotal = Math.ceil(totalRecord / _pageSize);
-    setPager(totalRecord, _pageIndex, record.length, _pageTotal);
+    setPager(totalRecord, _pageIndex, records.length, _pageTotal);
 
-    _(record).forEach(function(item) {
-      item.operation = settlementCommon.parseOperation(item.operation);
-    });
+    // _(records).forEach(function(item) {
+    //   item.operation = settlementCommon.parseOperation(item.operation);
+    // });
 
-    dataCache = record;
+    dataCache = records;
 
     setTableData(dataCache);
   }

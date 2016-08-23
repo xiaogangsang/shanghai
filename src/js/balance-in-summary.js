@@ -22,30 +22,6 @@ $(function() {
 
   common.init('balance-in-summary');
 
-  $('#search_startTime').datetimepicker({
-    format: 'yyyy-mm-dd',
-    language: 'zh-CN',
-    minView: 2,
-    todayHighlight: true,
-    autoclose: true,
-  }).on('changeDate', function (ev) {
-    var startDate = new Date(ev.date.valueOf());
-    startDate.setDate(startDate.getDate(new Date(ev.date.valueOf())));
-    $('#search_endTime').datetimepicker('setStartDate', startDate);
-  });
-
-  $('#search_endTime').datetimepicker({
-    format: 'yyyy-mm-dd',
-    language: 'zh-CN',
-    minView: 2,
-    todayHighlight: true,
-    autoclose: true,
-  }).on('changeDate', function (ev) {
-    var FromEndDate = new Date(ev.date.valueOf());
-    FromEndDate.setDate(FromEndDate.getDate(new Date(ev.date.valueOf())));
-    $('#search_startTime').datetimepicker('setEndDate', FromEndDate);
-  });
-
   $('#formSearch').parsley();
 });
 
@@ -210,6 +186,8 @@ $('.all-detail').click(function(e) {
   window.location.href = 'balance-in-detail.html';
 });
 
+
+// 查看选中明细
 $('.selected-detail').click(function(e) {
   var parameters = [];
 
@@ -219,6 +197,11 @@ $('.selected-detail').click(function(e) {
     var param = {'dateType': searchCache.dateType, 'beginTime': obj.date, 'chargeMerchantNo': obj.chargeMerchantNo, 'payStatus':obj.payStatusNo};
     parameters.push(param);
   });
+
+  if (parameters.length === 0) {
+    alert('请先选择一条记录!');
+    return false;
+  }
 
   var data = {'type': 1, 'param': parameters};
   sessionStorage.setItem('param', JSON.stringify(data));
@@ -246,3 +229,23 @@ $('body').on('change', 'tr > td :checkbox', function(e) {
     $('.multi-check-all').prop('checked', false);
   }
 });
+
+
+// 导出银行流水
+$('.export-bank-flow').click(function(e) {
+  e.preventDefault();
+
+  var beginTime = $('#search_startTime').val();
+  var endTime = $('#search_endTime').val();
+
+  if (beginTime == '' || endTime == '') {
+    alert('请输入开始日期和结束日期');
+  }
+
+  beginTime += ' 00:00';
+  endTime += ' 23:59';
+
+  window.location.href = common.API_HOST + '/settlement/bankData/download?beginTime=' + beginTime + '&endTime=' + endTime;
+});
+
+

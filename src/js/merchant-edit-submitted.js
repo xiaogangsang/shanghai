@@ -88,7 +88,7 @@ $('#formSearch').on('submit', function (e) {
 
   if (!_DEBUG) {
     $.ajax({
-      url: 'movie-ops/settlement/merchantinfo/merchantinfoList.json',
+      url: common.API_HOST + 'settlement/merchantinfo/merchantinfoList.json',
       type: 'GET',
       dataType: 'json',
       data: sendData,

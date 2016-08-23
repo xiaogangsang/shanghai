@@ -29,39 +29,15 @@ $(function() {
   var htmlName = parts[parts.length - 1];
   approval = htmlName.indexOf('approval') > -1;
 
-
   if (approval) {
     common.init('balance-in-edit-approval');
   } else {
     common.init('balance-in-edit-submitted');
   }
-
-	$('#search_periodStart').datetimepicker({
-    format: 'yyyy-mm-dd',
-    language: 'zh-CN',
-    minView: 2,
-    todayHighlight: true,
-    autoclose: true,
-  }).on('changeDate', function (ev) {
-    var startDate = new Date(ev.date.valueOf());
-    startDate.setDate(startDate.getDate(new Date(ev.date.valueOf())));
-    $('#search_periodEnd').datetimepicker('setStartDate', startDate);
-  });
-
-  $('#search_periodEnd').datetimepicker({
-    format: 'yyyy-mm-dd',
-    language: 'zh-CN',
-    minView: 2,
-    todayHighlight: true,
-    autoclose: true,
-  }).on('changeDate', function (ev) {
-    var FromEndDate = new Date(ev.date.valueOf());
-    FromEndDate.setDate(FromEndDate.getDate(new Date(ev.date.valueOf())));
-    $('#search_periodStart').datetimepicker('setEndDate', FromEndDate);
-  });
+  
+  $('#formSearch').parsley();
 });
 
-$('#formSearch').parsley();
 
 // handle search form
 $('#formSearch').on('click', 'button[type=submit]', function (event) {
@@ -84,8 +60,8 @@ $('#formSearch').on('submit', function (e) {
 
   var sendData = {
   	dateType: $('#search_dateType').val(),
-    periodStart: $('#search_periodStart').val(),
-    periodEnd: $('#search_periodEnd').val(),
+    periodStart: $('#search_startTime').val(),
+    periodEnd: $('#search_endTime').val(),
     chargeMerchant: $('#search_chargeMerchant').val(),
     chargeMerchantNo: $('#search_chargeMerchantNo').val(),
     partner: $('#search_partner').val(),
@@ -94,7 +70,7 @@ $('#formSearch').on('submit', function (e) {
     bizType: $('#search_bizType').val(),
     payStatus: $('#search_payStatus').val(),
     reconciliationStatus: $('#search_reconciliationStatus').val(),
-    reason: $('#search_reson').val(),
+    reason: $('#search_reason').val(),
     orderNo: $('#search_orderNo').val(),
     thdSerialNo: $('#search_thdSerialNo').val(),
     paySequenceNo: $('#search_paySequenceNo').val(),
@@ -274,6 +250,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
   $('.modal form').parsley().validate();
 });
 
+// 查看详情
 $('#dataTable').on('click', '.btn-detail', function (e) {
 
   e.preventDefault();
@@ -309,7 +286,9 @@ $('#dataTable').on('click', '.btn-detail', function (e) {
     $('#popup-detail').modal('show');
 
     $('.detail-area').addClass('compare');
-    $('.detail-area.compare :input').prop('disabled', true);
+    $('.detail-area.compare :input').prop('readonly', true);
+    $('.detail-history').hide(); // 对比时不显示历史修改记录
+    
 
     $('#subsidyType option[value="' + detail.subsidyType + '"]').prop('selected', true);
     $('#partner option[value="' + detail.partner + '"]').prop('selected', true);
@@ -338,6 +317,7 @@ function formatEditHistory(operateRecords) {
     obj.partner = settlementCommon.parsePartner(obj.partner);
     obj.discountType = settlementCommon.parseDiscountType(obj.discountType);
     obj.reconciliationStatus = settlementCommon.parseReconciliationStatus(obj.reconciliationStatus);
+    obj.reason = settlementCommon.parseReason(obj.reason);
   });
 }
 
@@ -358,6 +338,8 @@ $('#dataTable').on('click', '.btn-approval', function (e) {
       return false;
     } else {
       alert('操作成功!');
+      $('#popup-detail').modal('hide');
+      $('#formSearch').trigger('submit');
     }
   });
 });
@@ -380,11 +362,21 @@ $(document).on('submit', '#popup-detail form', function(e) {
     return false;
   }
 
+  var createTime = $('#createTime').val();
+
+  var date = new Date(createTime);
+
+  if (isNaN(date)) {
+    alert('支付时间内容有错误, 请重新修改');
+    return false;
+  }
+
   $submitButton = $(this).find('button[type=submit]');
 
   var param = {
     id: $submitButton.data('id'),
     version: $submitButton.data('version'),
+    createTime: createTime,
     payAmount: $('#payAmount').val(),
     receivablePoint: $('#receivablePoint').val(),
     thdSerialNo: $('#thdSerialNo').val(),

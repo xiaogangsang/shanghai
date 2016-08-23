@@ -1,3 +1,10 @@
+/*
+* @Author: kyle
+* @Date:   2016-08-22 14:57:39
+* @Last Modified by:   kyle
+* @Last Modified time: 2016-08-22 14:58:31
+*/
+
 'use strict;'
 
 var common = require('common');

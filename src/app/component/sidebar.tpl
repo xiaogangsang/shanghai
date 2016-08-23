@@ -22,6 +22,16 @@
     </div>
 
     <div class="panel" style="display:none">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu18"><span class="glyphicon glyphicon-blackboard" aria-hidden="true"></span> 影厅管理</a>
+      <div id="menu18" class="panel-collapse collapse" role="tabpanel">
+        <div class="list-group">
+          <a href="hall.html" class="list-group-item" id="menu-hall" data-id="225" style="">标准影厅库</a>
+          <a href="hall-tp.html" class="list-group-item" id="menu-hall-tp" data-id="226" style="">合作方影厅库</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="display:none">
       <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu3"><span class="glyphicon glyphicon-film" aria-hidden="true"></span> 影片管理</a>
       <div id="menu3" class="panel-collapse collapse" role="tabpanel">
         <div class="list-group">
@@ -153,6 +163,7 @@
           <a href="balance-in-detail.html" class="list-group-item" id="menu-balance-in-detail" data-id="144" style="display:none">对账明细</a>
           <a href="balance-in-edit-submitted.html" class="list-group-item" id="menu-balance-in-edit-submitted" data-id="196" style="display:none">支付流水修改记录</a>
           <a href="balance-in-edit-approval.html" class="list-group-item" id="menu-balance-in-edit-approval" data-id="197" style="display:none">支付流水修改审核</a>
+          <a href="balance-in-export.html" class="list-group-item" id="menu-balance-in-export" data-id="215" style="display:none">收单导出下载</a>
         </div>
       </div>
     </div>
@@ -165,6 +176,7 @@
           <a href="balance-out-detail.html" class="list-group-item" id="menu-balance-out-detail" data-id="146" style="display:none">对账明细</a>
           <a href="balance-out-edit-submitted.html" class="list-group-item" id="menu-balance-out-edit-submitted" data-id="188" style="display:none">出货流水修改记录</a>
           <a href="balance-out-edit-approval.html" class="list-group-item" id="menu-balance-out-edit-approval" data-id="198" style="display:none">出货流水修改审核</a>
+          <a href="balance-out-export.html" class="list-group-item" id="menu-balance-out-export" data-id="216" style="display:none">出货导出下载</a>
         </div>
       </div>
     </div>
@@ -175,6 +187,7 @@
         <div class="list-group">
           <a href="money-out-summary.html" class="list-group-item" id="menu-money-out-summary" data-id="147" style="display:none">拨款汇总</a>
           <a href="money-out-log.html" class="list-group-item" id="menu-money-out-log" data-id="148" style="display:none">拨款日志</a>
+          <a href="money-out-export.html" class="list-group-item" id="menu-money-out-export" data-id="217" style="display:none">拨款导出下载</a>
         </div>
       </div>
     </div>

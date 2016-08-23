@@ -2,7 +2,16 @@
 	清算
 	1. 状态码的转换全部统一放在这个文件里负责
 	2. 一些工具函数也放在了这里
-	GeLiu created at 2016-07-27 17:51:15
+  3. 一些通用配置, 包括
+      为每个页面增加 隐藏/显示 菜单栏 按钮
+      查询的时间跨度限制
+	Ge Liu created at 2016-07-27 17:51:15
+
+  Modified history:
+  2016-08-11 12:25:44 Ge Liu
+    新增了查询日期的7天(结束日期 - 开始日期 <= 7)限制
+  2016-08-16 10:59:27
+    新增文件异步下载涉及到的各种状态编码
  */
 
 
@@ -40,9 +49,10 @@ settlementCommon.parseReason = function(status) {
   return this.reason[status];
 }
 
+
 // 出货对账失败原因
 settlementCommon.outReason = 
-  {'1' : '出货失败, 支付成功(未退款)', '2' : '退货失败, 退款成功(无承债方)', '3' : '退货成功, 退款失败', '4' : '退货成功, 支付成功(未退款)', '5' : '金额不符', '6': '票类错误'};
+  {'1' : '出货失败, 支付成功(未退款)', '2' : '退货失败, 退款成功(无承债方)', '3' : '退货成功, 退款失败(未退款)', '4' : '退货成功, 支付成功(未退款)', '5' : '金额不符', '6': '票类错误', '7': '出货成功, 支付失败(未扣款)'};
 
 settlementCommon.parseOutReason = function(status) {
   return this.outReason[status];
@@ -108,7 +118,8 @@ settlementCommon.shipmentStatus =
 
 // 拨款状态
 settlementCommon.moneyOutStatus = 
-  {'1' : '待拨款', '2' : '首次拨款成功', '3' : '暂停拨款', '4' : '银行退票', '5' : '待重拨', '6' : '生成拨款文件失败', '7' : '重拨成功'};
+  // {'1' : '待拨款', '2' : '首次拨款成功', '3' : '暂停拨款', '4' : '银行退票', '5' : '待重拨', '6' : '生成拨款文件失败', '7' : '重拨成功'};
+  {'1' : '待拨款', '3' : '正常拨款成功', '4' : '暂停拨款', '6' : '银行退票', '5' : '待重拨', '2' : '拨款失败', '7' : '重拨成功'};
 
 settlementCommon.parseMoneyOutStatus = function(status) {
 	return this.moneyOutStatus[status];
@@ -129,6 +140,19 @@ settlementCommon.operation = {'1' : '银行退票', '2' : '重拨'};
 settlementCommon.parseOperation = function(status) {
 	return this.operation[status];
 }
+
+// 下载 -> 文件类型
+settlementCommon.fileType = {'1' : '收单文件', '2' : '出货文件', '3' : '拨款文件'};
+settlementCommon.parseFileType = function(status) {
+  return this.fileType[status];
+}
+
+// 下载 -> 文件状态
+settlementCommon.fileStatus = {'1' : '生成中', '2' : '可下载', '3' : '生成失败'};
+settlementCommon.parseFileStatus = function(status) {
+  return this.fileStatus[status];
+}
+
 
 /****************************************** Utilities Method **********************************************/
 // $.ajax 默认的对array(对象数组)的序列化不符合服务端需求, 我们自定义array的序列化
@@ -153,12 +177,12 @@ settlementCommon.serializeParam = function(param) {
     }
   }
 
-  queryString = queryString.slice(0, queryString.length - 1);
+  queryString = queryString.slice(0, queryString.length - 1);// remove last '&'
 
   return queryString;
 }
 
-// 下面是对字符串数组的自定义序列化
+// 下面是对字符串数组的自定义序列化, 以逗号(%2C)分隔
 settlementCommon.toString = function(array) {
 	var str = '';
 
@@ -193,5 +217,82 @@ settlementCommon.prehandleData = function(res) {
   return false;
 }
 
+
+// 点击隐藏/显示左侧菜单栏 的按钮
+$(function() {
+
+  $('<button class="glyphicon glyphicon-menu-left" style="position: absolute; top: -1px; left: 0px; width: 15px; height: 30px; padding: 0px; border-width: 0px; border-radius: 0px 6px 6px 0px; background-color: #E0E0E0; opacity: 0.6;" id="sidebar-switcher"></button>').prependTo('.main');
+
+  $('#sidebar-switcher').click(function(e) {
+    e.preventDefault();
+
+    var $sidebar = $('.sidebar');
+    var $content = $('.main');
+
+    if ($sidebar.is(':visible')) {
+      $sidebar.hide();
+      $content.addClass('col-xs-12').removeClass('col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2');
+      $(this).removeClass('glyphicon-menu-left').addClass('glyphicon-menu-right');
+    } else {
+      $sidebar.show();
+      $content.removeClass('col-xs-12').addClass('col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2');
+      $(this).removeClass('glyphicon-menu-right').addClass('glyphicon-menu-left');
+    }
+  });
+});
+
+
+// 查询日期的跨度小于等于7天
+$(function() {
+  $('#search_startTime').datetimepicker({
+    format: 'yyyy-mm-dd',
+    language: 'zh-CN',
+    minView: 2,
+    todayHighlight: true,
+    autoclose: true,
+  }).on('changeDate', function (ev) {
+    var $endTime = $('#search_endTime');
+
+    var startDate = new Date(ev.date.valueOf());
+    var endDate = new Date(startDate);
+    endDate.setDate(startDate.getDate() + 6);
+
+    var currentEndDate = $endTime.datetimepicker('getDate');
+    var correctEndDate = currentEndDate;
+
+    if (currentEndDate < startDate) {
+      correctEndDate = startDate;
+    } else if (currentEndDate > endDate) {
+      correctEndDate = endDate;
+    }
+
+    $endTime.datetimepicker('setDate', correctEndDate);
+  });
+
+  $('#search_endTime').datetimepicker({
+    format: 'yyyy-mm-dd',
+    language: 'zh-CN',
+    minView: 2,
+    todayHighlight: true,
+    autoclose: true,
+  }).on('changeDate', function (ev) {
+    var $startTime = $('#search_startTime');
+
+    var endDate = new Date(ev.date.valueOf());
+    var startDate = new Date(endDate);
+    startDate.setDate(endDate.getDate() - 6);
+
+    var currentStartDate = $startTime.datetimepicker('getDate');
+    var correctStartDate = currentStartDate;
+
+    if (currentStartDate < startDate) {
+      correctStartDate = startDate;
+    } else if (currentStartDate > endDate) {
+      correctStartDate = endDate;
+    }
+
+    $startTime.datetimepicker('setDate', correctStartDate);
+  });
+});
 
 

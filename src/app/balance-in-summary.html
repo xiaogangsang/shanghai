@@ -22,8 +22,6 @@
 
       <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
-      <button class="glyphicon glyphicon-menu-left" style="position: absolute; left: 0px; width: 0px; height: 100%; display: none;"></button>
-
         <ol class="breadcrumb" style="display: inline">
           <li>收单对账</li>
           <li class="active">对账汇总</li>
@@ -35,8 +33,8 @@
             <div class="input-group">
               <div class="input-group-addon">日期类型</div>
               <select class="form-control" id="search_dateType" required>
-                <option value="payDate">交易日期</option>
-                <option value="diffDate">对账日期</option>
+                <option value="1">交易日期</option>
+                <option value="2">操作日期</option>
               </select>
             </div>
           </div>
@@ -104,7 +102,7 @@
                 <button type="button" class="btn btn-block btn-default selected-detail">查看选中明细</button>
               </div>
               <div class="col-xs-2">
-                <button type="button" class="btn btn-block btn-default">查看异常记录</button>
+                <button type="button" class="btn btn-block btn-default export-bank-flow">导出银行流水</button>
               </div>
             </div>
           </div>

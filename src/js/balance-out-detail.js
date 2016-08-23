@@ -26,33 +26,10 @@ var _DEBUG = false;
 $(function() {
 
 	common.init('balance-out-detail');
-
-	$('#search_startTime').datetimepicker({
-    format: 'yyyy-mm-dd',
-    language: 'zh-CN',
-    minView: 2,
-    todayHighlight: true,
-    autoclose: true,
-  }).on('changeDate', function (ev) {
-    var startDate = new Date(ev.date.valueOf());
-    startDate.setDate(startDate.getDate(new Date(ev.date.valueOf())));
-    $('#search_endTime').datetimepicker('setStartDate', startDate);
-  });
-
-  $('#search_endTime').datetimepicker({
-    format: 'yyyy-mm-dd',
-    language: 'zh-CN',
-    minView: 2,
-    todayHighlight: true,
-    autoclose: true,
-  }).on('changeDate', function (ev) {
-    var FromEndDate = new Date(ev.date.valueOf());
-    FromEndDate.setDate(FromEndDate.getDate(new Date(ev.date.valueOf())));
-    $('#search_startTime').datetimepicker('setEndDate', FromEndDate);
-  });
+  
+  $('#formSearch').parsley();
 });
 
-$('#formSearch').parsley();
 
 // handle search form
 $('#formSearch').on('click', 'button[type=submit]', function (event) {
@@ -84,7 +61,7 @@ $('#formSearch').on('submit', function (e) {
     partner: $('#search_partner').val(),
     acquiringReconciliationStatus: $('#search_acquiringReconciliationStatus').val(),
     reconciliationStatus: $('#search_reconciliationStatus').val(),
-    reason: $('#search_reson').val(),
+    reason: $('#search_reason').val(),
     discountType: $('#search_discountType').val(),
     discountName: $('#search_discountName').val(),
     bizOrderNo: $('#search_bizOrderNo').val(),
@@ -213,7 +190,10 @@ function handleData(res) {
 
     setTableData(record);
 
-    setSummaryTableData(res.data.summary);
+    // 从汇总页点击查看选中明细, 是没有summary返回的
+    if (res.data.summary) {
+      setSummaryTableData(res.data.summary);
+    }
   }
 }
 
@@ -300,23 +280,28 @@ $('.btn-export-all').click(function(e) {
 
   e.preventDefault();
 
+  if ($('#dataTable tr td').length < 2) {
+    alert('请先查询再导出!');
+    return false;
+  }
+
   if (_queryingFromSelectedSummary) {
     var param = {'shipmentInfoFormCollection' : _selectedSummary.shipmentInfoFormCollection};
 
     $.ajax({
-      url: common.API_HOST + 'settlement/shipmentInfo/exportSummaryDetail' + settlementCommon.serializeParam(param),
+      url: common.API_HOST + 'settlement/shipmentInfo/exportSummaryDetail?' + settlementCommon.serializeParam(param),
       type: 'GET',
       dataType: 'json',
     })
     .done(function(res) {
-      if (res.meta.result == 0) {
-        alert(res.meta.msg);
+      if (!!~~res.meta.result) {
+        // window.location.href = common.API_HOST + 'settlement/merchantAttachment/downLoad?fileUrl=' + res.data.fileUrl;
+        alert('您的申请已提交，系统正在为您导出数据，需要约15分钟，\n请至下载列表查看并下载导出结果。\n导出的数据仅保留3天，请及时查看并下载。');
       } else {
-        window.location.href = common.API_HOST + 'settlement/merchantAttachment/downLoad?fileUrl=' + res.data.fileUrl;
+        alert(res.meta.msg);
       }
     });
   } else {
-
     // 参数不能带有页码信息...
     var searchCacheWithoutPagination = $.extend({}, searchCache);
     delete searchCacheWithoutPagination.pageIndex;
@@ -329,18 +314,25 @@ $('.btn-export-all').click(function(e) {
       data: searchCacheWithoutPagination,
     })
     .done(function (res) {
-      if (res.meta.result == 0) {
-        alert(res.meta.msg);
+      if (!!~~res.meta.result) {
+        // window.location.href = common.API_HOST + 'settlement/merchantAttachment/downLoad?fileUrl=' + res.data.fileUrl;
+        alert('您的申请已提交，系统正在为您导出数据，需要约15分钟，\n请至下载列表查看并下载导出结果。\n导出的数据仅保留3天，请及时查看并下载。');
       } else {
-        window.location.href = common.API_HOST + 'settlement/merchantAttachment/downLoad?fileUrl=' + res.data.fileUrl;
+        alert(res.meta.msg);
       }
     });
   }
 });
 
+// 对账完成提交
 $('.complete-commit').click(function(e) {
 
   e.preventDefault();
+
+  if ($('#dataTable tr td').length < 2) {
+    alert('请先查询再进行此操作!');
+    return false;
+  }
 
   if (_queryingFromSelectedSummary) {
     var param = {'shipmentInfoFormCollection' : _selectedSummary.shipmentInfoFormCollection};
@@ -378,10 +370,13 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
 
   e.preventDefault();
 
+  var id = $(this).closest('tr').data('id');
+  var checkStatus = $(this).data('checkstatus');
+
   $.ajax({
     url: common.API_HOST + 'settlement/shipmentInfo/onlyShipmentInfo',
     type: 'GET',
-    data: {id: $(this).closest('tr').data('id')},
+    data: {id: id},
   })
   .done(function(res) {
     if (res.meta.result == 0) {
@@ -423,10 +418,9 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     $('#reconciliationStatus option[value="' + detail.reconciliationStatus + '"]').prop('selected', true);
     $('#reason option[value="' + detail.reason + '"]').prop('selected', true);
 
-    var checkStatus = $(this).data('checkstatus');
     if (checkStatus == 2 || detail.reconciliationStatus == 4) { // 待审核不能再修改, 出货对账状态为确认的也不能再修改
       $('.detail-area').addClass('read-only');
-      $('.detail-area :input').prop('disabled', true);
+      $('.detail-area :input').prop('readonly', true);
     } else {
       $('#reconciliationStatus option[value=4]').remove();      // 不能在明细的修改里将对账状态设为"确认"
     }

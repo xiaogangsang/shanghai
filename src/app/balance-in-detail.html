@@ -34,8 +34,8 @@
             <div class="input-group">
               <div class="input-group-addon">日期类型</div>
               <select class="form-control" id="search_dateType" required>
-                <option value="payDate">交易日期</option>
-                <option value="diffDate">对账日期</option>
+                <option value="1">交易日期</option>
+                <option value="2">操作日期</option>
               </select>
             </div>
           </div>
@@ -197,7 +197,7 @@
                 <button type="button" class="btn btn-block btn-default btn-reset">重置</button>
               </div>
               <div class="col-xs-2">
-                <button type="button" class="btn btn-block btn-default btn-export-all">导出全部报表</button>
+                <button type="button" class="btn btn-block btn-default btn-export-all">申请导出</button>
               </div>
               <div class="col-xs-2">
                 <button type="button" class="btn btn-block btn-default complete-commit">对账完成提交</button>
@@ -259,7 +259,7 @@
                   <th>客户支付积分</th>
                   <th>收单对账状态</th>
                   <th>对账不一致原因</th>
-                  <th>对账时间</th>
+                  <th>操作时间</th>
                   <th>操作</th>
                 </tr>
               </thead>
@@ -323,7 +323,7 @@
       <td>{{receivablePoint}}</td>
       <td>{{reconciliationStatus}}</td>
       <td>{{reason}}</td>
-      <td>{{diffDate}}</td>
+      <td>{{operateTime}}</td>
       <td>
       <button class="btn btn-xs btn-default btn-edit" data-checkstatus="{{checkStatusNo}}">详情</button>
       </td>

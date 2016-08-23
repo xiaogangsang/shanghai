@@ -1,0 +1,22 @@
+/*
+* @Author: kyle
+* @Date:   2016-08-12 14:22:30
+* @Last Modified by:   kyle
+* @Last Modified time: 2016-08-17 14:53:12
+*/
+#cinemaTable tbody td,
+#hallTable tbody td {
+  vertical-align: middle;
+  border-top: 1px solid #ddd;
+}
+#cinemaTable tbody .selected td,
+#hallTable tbody .selected td {
+  background-color: #ff8903;
+  color: #fff;
+}
+#association {
+  display: none;
+}
+#formHall>table {
+  border:none;
+}
