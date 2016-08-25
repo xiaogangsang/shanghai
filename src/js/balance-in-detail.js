@@ -440,9 +440,7 @@ $(document).on('submit', '#popup-detail form', function(e) {
 
   var createTime = $('#createTime').val();
 
-  var date = new Date(createTime);
-
-  if (isNaN(date)) {
+  if (!settlementCommon.isValidTime(createTime)) {
     alert('支付时间内容有错误, 请重新修改');
     return false;
   }

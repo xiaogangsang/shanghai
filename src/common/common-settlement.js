@@ -154,6 +154,17 @@ settlementCommon.parseFileStatus = function(status) {
 }
 
 
+/**
+ *  在编辑详情的地方我们会处理 'yyyy-MM-dd HH:mm' 格式的时间, 用这种格式的字符串直接初始化Date
+ *  对于firefox来说会认为格式不合法, 经过测试发现firefox识别 'yyyy/MM/dd' 这种格式, 所以我们要做些处理
+ */
+settlementCommon.isValidTime = function(time) {
+  var validFormat = time.replace(/-/g, '/');
+  var date = new Date(validFormat);
+  return !isNaN(date);
+}
+
+
 /****************************************** Utilities Method **********************************************/
 // $.ajax 默认的对array(对象数组)的序列化不符合服务端需求, 我们自定义array的序列化
 // Caution: only array is concerned in this function
