@@ -2,18 +2,14 @@
   Author: Ge Liu
   Create: 2016-06-02 17:25:26
   Description: 商户列表查询页, 页面比较简单, 用到的接口有:
-      1. 获取所有卡部以及每个卡部的所有提报人
-      2. 根据用户输入条件进行查询
-      3. 查看商户详情
-      4. 导出
+      1. 根据用户输入条件进行查询
+      2. 商户操作(当前状态为已上线, 可进行 下线 和 详情 操作; 当前状态为已下线, 可进行 编辑 和 删除 操作)
+      3. 账户操作(当前状态为正常, 可进行 账户启用 操作; 当前状态为停用, 可进行 账户停用 操作)
  */
 
 'use strict;'
 var common = require('common');
-var _channels = {};
-var _cities = [];
-var _choosed = [];
-var _movies = {};
+var settlementCommon = require('settlementCommon');
 var _pageIndex = 1;
 var _pageSize = 10;
 var _pageTotal = 0;
@@ -21,13 +17,17 @@ var _querying = false;
 var searchCache = {};
 var useCache = false;
 var dataCache;
-var _submitting = false;
 
-var _DEBUG = false;
+var _DEBUG = true;
 
 $(function () {
 
   common.init('merchant-edit-submitted');
+
+  // 初始化涉及的select控件
+  $('#search_TP').html(settlementCommon.optionsHTML(settlementCommon.TP, true));
+  $('#search_merchantLevel').html(settlementCommon.optionsHTML(settlementCommon.merchantLevel, true));
+  $('#search_merchantStatus').html(settlementCommon.optionsHTML(settlementCommon.merchantStatus, true));
 
   $('#search_startTime').datetimepicker({
     format: 'yyyy-mm-dd',
@@ -65,12 +65,14 @@ $('#formSearch').on('click', 'button[type=submit]', function (event) {
 $('#formSearch').on('submit', function (e) {
   e.preventDefault();
   var sendData = {
-    startTime: $('#search_startTime').val(),
-    endTime: $('#search_endTime').val(),
+    periodStart: $('#search_startTime').val(),
+    periodEnd: $('#search_endTime').val(),
     merchantStatus: $('#search_merchantStatus').val(),
     merchantName: $('#search_merchantName').val(),
     merchantId: $('#search_merchantNo').val(),
     userName: $('#search_merchantSubscribeGuy').val(),
+    tpId: $('#search_TP').val(),
+    merchantClass: $('#search_merchantLevel').val(),
     pageSize: _pageSize,
   };
   if (!!_querying) {
@@ -88,7 +90,7 @@ $('#formSearch').on('submit', function (e) {
 
   if (!_DEBUG) {
     $.ajax({
-      url: common.API_HOST + 'settlement/merchantinfo/merchantinfoList.json',
+      url: common.API_HOST + 'settlement/merchantinfo/merchantinfoListByLoginUser.json',
       type: 'GET',
       dataType: 'json',
       data: sendData,
@@ -97,7 +99,7 @@ $('#formSearch').on('submit', function (e) {
       handleMerchantData(res);
     });
   } else {
-    var res = $.parseJSON('{ "meta" : { "result" : "1", "msg" : "操作成功" }, "data" : { "total" : 8, "record" : [ { "allocationPeriod" : "12", "merchantContacter" : "zhangsan", "accountName" : "光大银行某某账户", "fixedAllocationDay" : "", "merchantName" : "测试商户", "accountStatus" : "1", "merchantId" : "123456", "allocationDelay" : "2", "allocationDetail" : "1", "startTime" : "2016-05-15", "id" : "5", "department" : "上海客服_高端客户服务一室", "class" : "class com.cmb.o2o.settlement.model.MerchantInfo", "merchantRemark" : "测试", "merchantType" : "1", "auditorName" : "biaoge", "email" : "ceshi@163.com", "bankAccount" : "78978", "bankCode" : "1231212", "merchantStatus" : "2", "allocationRemark" : "测试", "allocationType" : "1", "userName" : "jiangxiao", "userId" : "660587", "auditorId" : "111", "merchantPhone" : "13513513513", "createTime" : "2016-05-23", "allocationDetailReceiver" : "1", "endTime" : "2016-12-31" }, { "allocationPeriod" : "0", "merchantContacter" : "", "accountName" : "", "fixedAllocationDay" : "", "merchantName" : "", "merchantId" : "6", "allocationDelay" : "0", "allocationDetail" : "0", "startTime" : "2016-06-06", "id" : "33", "department" : "上海客服_高端客户服务一室", "class" : "class com.cmb.o2o.settlement.model.MerchantInfo", "merchantRemark" : "", "auditorName" : "", "email" : "", "bankAccount" : "", "bankCode" : "", "merchantStatus" : "1", "allocationRemark" : "", "allocationType" : "0", "userName" : "", "userId" : "660587", "auditorId" : "", "merchantPhone" : "", "createTime" : "2016-06-02", "allocationDetailReceiver" : "0", "endTime" : "2016-11-25" } ] } }');
+    var res = $.parseJSON('{ "meta" : { "result" : "1", "msg" : "操作成功" }, "data" : { "total" : 8, "record" : [ { "tpId" : "2", "merchantClass" : "2", "allocationPeriod" : "12", "merchantContacter" : "zhangsan", "accountName" : "光大银行某某账户", "fixedAllocationDay" : "", "merchantName" : "测试商户", "accountStatus" : "1", "merchantId" : "123456", "allocationDelay" : "2", "allocationDetail" : "1", "startTime" : "2016-05-15", "id" : "5", "department" : "上海客服_高端客户服务一室", "class" : "class com.cmb.o2o.settlement.model.MerchantInfo", "merchantRemark" : "测试", "merchantType" : "1", "auditorName" : "biaoge", "email" : "ceshi@163.com", "bankAccount" : "78978", "bankCode" : "1231212", "merchantStatus" : "2", "allocationRemark" : "测试", "allocationType" : "1", "userName" : "jiangxiao", "userId" : "660587", "auditorId" : "111", "merchantPhone" : "13513513513", "createTime" : "2016-05-23", "allocationDetailReceiver" : "1", "endTime" : "2016-12-31" }, { "allocationPeriod" : "0", "merchantContacter" : "", "accountName" : "", "fixedAllocationDay" : "", "merchantName" : "", "merchantId" : "6", "allocationDelay" : "0", "allocationDetail" : "0", "startTime" : "2016-06-06", "id" : "33", "department" : "上海客服_高端客户服务一室", "class" : "class com.cmb.o2o.settlement.model.MerchantInfo", "merchantRemark" : "", "auditorName" : "", "email" : "", "bankAccount" : "", "bankCode" : "", "merchantStatus" : "1", "allocationRemark" : "", "allocationType" : "0", "userName" : "", "userId" : "660587", "auditorId" : "", "merchantPhone" : "", "createTime" : "2016-06-02", "allocationDetailReceiver" : "0", "endTime" : "2016-11-25" } ] } }');
     handleMerchantData(res);
   }
 
@@ -123,8 +125,16 @@ function handleMerchantData(res) {
 
       _(record).forEach(function (item) {
 
-        item.merchantStatus = parseMerchantStatus(item.merchantStatus);
-        item.accountStatus = parseAccountStatus(item.accountStatus);
+        item.isOffline = (item.merchantStatus == 3);
+        item.isOnline = (item.merchantStatus == 2);
+
+        item.isDisabled = (item.accountStatus == 2);
+        item.isEnabled = (item.accountStatus == 1);
+
+        item.merchantStatus = settlementCommon.parseMerchantStatus(item.merchantStatus);
+        item.accountStatus = settlementCommon.parseAccountStatus(item.accountStatus);
+        item.tpId = settlementCommon.parseTP(item.tpId);
+        item.merchantClass = settlementCommon.parseMerchantLevel(item.merchantClass);
       });
 
       dataCache = record;
@@ -182,10 +192,6 @@ $('.btn-reset').click(function(e) {
   $('#search_merchantStatus').val('');
   $('#search_merchantName').val('');
   $('#search_merchantNo').val('');
-});
-
-$('.btn-export').click(function(e) {
-  // TODO: export
 });
 
 function setTableData(rows) {
@@ -260,6 +266,56 @@ function formatPopupUI(detailData) {
   });
 }
 
+/****************************************** 账户和商户操作 **********************************************/
+// SETTLEMENT_TODO: 完成下面6中操作
+// 编辑商户
+$('#dataTable').on('click', '.btn-edit', function(e) {
+  e.preventDefault();
+  var merchantId = $(this).data('merchantid');
+
+  alert('瞎JB点啥, 这功能还没做呢, merchant ID 是' + merchantId + ', 你想编辑该商户, 但哥还没做呢! 再点哥就报警了!');
+});
+
+// 删除商户
+$('#dataTable').on('click', '.btn-delete', function(e) {
+  e.preventDefault();
+  var merchantId = $(this).data('merchantid');
+
+  alert('瞎JB点啥, 这功能还没做呢, merchant ID 是' + merchantId + ', 你想删除该商户, 但哥还没做呢! 再点哥就报警了!');
+});
+
+// 下线商户
+$('#dataTable').on('click', '.btn-offline', function(e) {
+  e.preventDefault();
+  var merchantId = $(this).data('merchantid');
+
+  alert('瞎JB点啥, 这功能还没做呢, merchant ID 是' + merchantId + ', 你想下线该商户, 但哥还没做呢! 再点哥就报警了!');
+});
+
+// 查看商户详情
+$('#dataTable').on('click', '.btn-detail', function(e) {
+  e.preventDefault();
+  var merchantId = $(this).data('merchantid');
+
+  alert('瞎JB点啥, 这功能还没做呢, merchant ID 是' + merchantId + ', 你想查看该商户详情, 但哥还没做呢! 再点哥就报警了!');
+});
+
+// 账户停用
+$('#dataTable').on('click', '.btn-disable-account', function(e) {
+  e.preventDefault();
+  var merchantId = $(this).data('merchantid');
+
+  alert('瞎JB点啥, 这功能还没做呢, merchant ID 是' + merchantId + ', 你想停用该商户的账户, 但哥还没做呢! 再点哥就报警了!');
+});
+
+// 启用账户
+$('#dataTable').on('click', '.btn-enable-account', function(e) {
+  e.preventDefault();
+  var merchantId = $(this).data('merchantid');
+
+  alert('瞎JB点啥, 这功能还没做呢, merchant ID 是' + merchantId + ', 你想启用该商户, 但哥还没做呢! 再点哥就报警了!');
+});
+
 
 /****************************************** event handler **********************************************/
 // 拨款模式
@@ -301,19 +357,3 @@ $('.modal').on('change', ':checkbox[name="send-to"]', function(e) {
     }
   }
 });
-
-/****************************************** Utilities Method **********************************************/
-
-function parseMerchantStatus(merchantStatus) {
-
-  var map = {'1' : '草稿', '2' : '已上线', '3' : '已下线', '4' : '审核驳回', '5' : '待审核', '6' : '已删除'};
-
-  return map[merchantStatus];
-}
-
-function parseAccountStatus(accountStatus) {
-  var map = {'1' : '正常', '2' : '停用'};
-
-  return map[accountStatus];
-}
-

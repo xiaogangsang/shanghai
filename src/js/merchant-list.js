@@ -11,10 +11,6 @@
 'use strict;'
 var common = require('common');
 var settlementCommon = require('settlementCommon');
-var _channels = {};
-var _cities = [];
-var _choosed = [];
-var _movies = {};
 var _pageIndex = 1;
 var _pageSize = 10;
 var _pageTotal = 0;
@@ -22,7 +18,6 @@ var _querying = false;
 var searchCache = {};
 var useCache = false;
 var dataCache;
-var _submitting = false;
 
 var selectBranch;
 var selectGuy;
@@ -171,6 +166,8 @@ $('#formSearch').on('submit', function (e) {
     merchantName: $('#search_merchantName').val(),
     merchantId: $('#search_merchantNo').val(),
     userId: $('#search_merchantSubscribeGuy').val(),
+    tpId: $('#search_TP').val(),
+    merchantClass: $('#search_merchantLevel').val(),
     pageSize: _pageSize,
   };
   if (!!_querying) {
@@ -287,7 +284,7 @@ $('.btn-reset').click(function(e) {
 });
 
 $('.btn-export').click(function(e) {
-  // TODO: export
+  // SETTLEMENT_TODO: export
 });
 
 function setTableData(rows) {
