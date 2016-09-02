@@ -53,7 +53,7 @@ module.exports = {
       'datetimepicker-cn': path.resolve(bowerComponents, 'smalot-bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js'),
       common: srcDir + '/common/common.js',
       settlementCommon: srcDir + '/common/common-settlement.js',
-      echarts: path.resolve(bowerComponents, 'echarts/dist/echarts.min.js'),
+      echarts: path.resolve(bowerComponents, 'echarts/dist/echarts.js'),
     },
   },
   module: {
@@ -91,7 +91,7 @@ module.exports = {
       loader: 'expose?Cookies',
     },
     {
-      test: path.resolve(bowerComponents, 'echarts/dist/echarts.min.js'),
+      test: path.resolve(bowerComponents, 'echarts/dist/echarts.js'),
       loader: 'expose?echarts',
     },
 
