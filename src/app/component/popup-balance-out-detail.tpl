@@ -29,7 +29,8 @@
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">出/退货时间</div>
-            <input type="text" class="form-control" id="shipmentDate" value="{{shipmentDate}}" readonly>
+            <input type="text" class="form-control oldValue" id="shipmentDate" value="{{shipmentDate}}" data-parsley-pattern="[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}">
+            <input type="text" class="form-control newValue" id="shipmentDateNew" value="{{currentDetail.shipmentDate}}">
           </div>
         </div>
 
