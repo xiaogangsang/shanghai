@@ -153,6 +153,69 @@ settlementCommon.parseFileStatus = function(status) {
   return this.fileStatus[status];
 }
 
+/***************************************** 商户相关编码 **********************************************/
+
+// 商户状态
+settlementCommon.merchantStatus = 
+  {'1' : '草稿', '2' : '已上线', '3' : '已下线', '4' : '审核驳回', '5' : '待审核', '6' : '已删除'};
+
+settlementCommon.parseMerchantStatus = function(status) {
+  return this.merchantStatus[status];
+}
+
+// 账户状态
+settlementCommon.accountStatus = {'1' : '正常', '2' : '停用'};
+settlementCommon.parseAccountStatus = function(status) {
+  return this.accountStatus[status];
+}
+
+// TP方
+settlementCommon.TP = {'1' : '百度', '2' : '万达', '3' : '微票'};
+settlementCommon.parseTP = function(status) {
+  return this.TP[status];
+}
+
+// 商户级别
+settlementCommon.merchantLevel = {'1' : '总部', '2' : '区域'};
+settlementCommon.parseMerchantLevel = function(status) {
+  return this.merchantLevel[status];
+}
+
+
+/**
+ * 根据选项自动生成<option> html
+ * 动态生成options可以使得状态编码如果修改的话, 只需要改一处即可, 所有select都会改过来
+ * 
+ * @param {Object} options 生成HTML的数据源
+ * @param {Boolean} withAll 选项中是否有"全部"选项
+ * 
+ * @returns {String}
+ */
+settlementCommon.optionsHTML = function(options, withAll) {
+  // 
+  var html = withAll ? '<option value="">全部</option>' : '';
+
+  for (var key in options) {
+    if (options.hasOwnProperty(key)) {
+      var value = options[key];
+      html += '<option value="' + key + '">' + value + '</option>';
+    }
+  }
+
+  return html;
+}
+
+
+/**
+ *  在编辑详情的地方我们会处理 'yyyy-MM-dd HH:mm' 格式的时间, 用这种格式的字符串直接初始化Date
+ *  对于firefox来说会认为格式不合法, 经过测试发现firefox识别 'yyyy/MM/dd' 这种格式, 所以我们要做些处理
+ */
+settlementCommon.isValidTime = function(time) {
+  var validFormat = time.replace(/-/g, '/');
+  var date = new Date(validFormat);
+  return !isNaN(date);
+}
+
 
 /****************************************** Utilities Method **********************************************/
 // $.ajax 默认的对array(对象数组)的序列化不符合服务端需求, 我们自定义array的序列化

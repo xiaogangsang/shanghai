@@ -49,9 +49,6 @@
             <div class="input-group">
               <div class="input-group-addon">商户状态</div>
               <select class="form-control" id="search_merchantStatus">
-                <option value="">全部</option>
-                <option value="2">上线</option>
-                <option value="3">下线</option>
               </select>
             </div>
           </div>
@@ -67,6 +64,22 @@
             <div class="input-group">
               <div class="input-group-addon">商户号</div>
               <input type="text" class="form-control" id="search_merchantNo">
+            </div>
+          </div>
+
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">TP方</div>
+              <select class="form-control" id="search_TP">
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">商户级别</div>
+              <select class="form-control" id="search_merchantLevel">
+              </select>
             </div>
           </div>
 
@@ -112,6 +125,8 @@
                 <tr>
                   <th>商户号</th>
                   <th>商户名称</th>
+                  <th>tp方</th>
+                  <th>商户级别</th>
                   <th>提报时间</th>
                   <th>提报人</th>
                   <th>提报卡部</th>
@@ -122,7 +137,7 @@
               </thead>
               <tbody>
                 <tr>
-                  <td colspan="9" align="center">请点击“查询”按钮！</td>
+                  <td colspan="10" align="center">请点击“查询”按钮！</td>
                 </tr>
               </tbody>
             </table>
@@ -175,13 +190,15 @@
   <script id="table-template" type="text/x-tmpl-mustache">
     {{#rows}}
     <tr data-id="{{id}}" data-bannertype="{{bannerType}}">
-      <td>{{merchantId}}</td>
-      <td>{{merchantName}}</td>
-      <td>{{createTime}}</td>
-      <td>{{userName}}</td>
-      <td>{{department}}</td>
-      <td>{{merchantStatus}}</td>
-      <td>{{accountStatus}}</td>
+      <td>{{merchantId}}</td> <!-- 商户号 -->
+      <td>{{merchantName}}</td> <!-- 商户名称 -->
+      <td>{{tpId}}</td> <!-- tp方 -->
+      <td>{{merchantClass}}</td> <!-- 商户级别 -->
+      <td>{{createTime}}</td> <!-- 提报时间 -->
+      <td>{{userName}}</td> <!-- 提报人 -->
+      <td>{{department}}</td> <!-- 提报卡部 -->
+      <td>{{merchantStatus}}</td> <!-- 商户状态 -->
+      <td>{{accountStatus}}</td> <!-- 账户状态 -->
       <td>
         <button type="button" class="btn btn-xs btn-default btn-edit">详情</button>
       </td>
