@@ -2,7 +2,7 @@
 * @Author: kyle
 * @Date:   2016-08-29 10:37:39
 * @Last Modified by:   kyle
-* @Last Modified time: 2016-09-02 15:31:55
+* @Last Modified time: 2016-09-02 15:43:47
 */
 
 'use strict';
@@ -124,7 +124,7 @@ $('#formSearch').on('submit', function (e) {
           data: res.data.respData.xAxis,
         },
         yAxis: {
-          name: '订单数',
+          name: '失败率',
           nameLocation: 'middle',
           nameGap: 30,
         },
@@ -134,7 +134,7 @@ $('#formSearch').on('submit', function (e) {
           bottom: 0,
         },
         tooltip: {
-          formatter: '日期时间：{b}<br>订单数：{c}',
+          formatter: '日期时间：{b}<br>失败率：{c}',
         },
         series: [{
           type: 'line',
