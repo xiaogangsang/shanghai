@@ -2,7 +2,7 @@
 * @Author: kyle
 * @Date:   2016-08-29 10:37:39
 * @Last Modified by:   kyle
-* @Last Modified time: 2016-09-02 15:26:54
+* @Last Modified time: 2016-09-02 15:31:55
 */
 
 'use strict';
@@ -184,7 +184,7 @@ function queryOrder(type, queryDate) {
       var itemNum = 0;
       _(res.data.rows).forEach(function (item, key) {
         item.no = ++itemNum;
-        // item.createTime = common.getDate(new Date(item.createTime));
+        item.createTime = common.getDate(new Date(item.createTime));
         item.payStatus = _productPayStatus[item.payStatus];
         item.shipStatus = _productOrderStatus[item.shipStatus];
       });
