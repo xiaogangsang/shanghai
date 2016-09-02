@@ -192,6 +192,17 @@
       </div>
     </div>
 
+    <div class="panel" style="display:none">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#monitor"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> 订单监控</a>
+      <div id="monitor" class="panel-collapse collapse" role="tabpanel">
+        <div class="list-group">
+          <a href="monitor-payment.html" class="list-group-item" id="menu-monitor-payment" data-id="237" style="display:none">支付异常</a>
+          <a href="monitor-ticket.html" class="list-group-item" id="menu-monitor-ticket" data-id="237" style="display:none">出票失败率</a>
+          <a href="monitor-order.html" class="list-group-item" id="menu-monitor-order" data-id="237" style="display:none">订单状态异常</a>
+        </div>
+      </div>
+    </div>
+
   </div>
 
 </div>

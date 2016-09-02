@@ -53,6 +53,7 @@ module.exports = {
       'datetimepicker-cn': path.resolve(bowerComponents, 'smalot-bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js'),
       common: srcDir + '/common/common.js',
       settlementCommon: srcDir + '/common/common-settlement.js',
+      echarts: path.resolve(bowerComponents, 'echarts/dist/echarts.min.js'),
     },
   },
   module: {
@@ -68,6 +69,7 @@ module.exports = {
     'parsley-cn',
     'datetimepicker',
     'datetimepicker-cn',
+    'echarts',
     ],
 
     //各种加载器，即让各种文件格式可用require引用
@@ -87,6 +89,10 @@ module.exports = {
     {
       test: path.resolve(bowerComponents, 'js-cookie/src/js.cookie.js'),
       loader: 'expose?Cookies',
+    },
+    {
+      test: path.resolve(bowerComponents, 'echarts/dist/echarts.min.js'),
+      loader: 'expose?echarts',
     },
 
     // {

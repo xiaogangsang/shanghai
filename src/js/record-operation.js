@@ -17,6 +17,7 @@ var _types = [
 { id: 'ORDER', name: '订单管理' },
 { id: 'TICKET', name: '票类管理' },
 { id: 'CHANNELFEE', name: '服务费管理' },
+{ id: 'HALL', name: '影厅管理' },
 ];
 var _pageIndex = 1;
 var _pageSize = 10;

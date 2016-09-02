@@ -28,6 +28,7 @@
     "smalot-bootstrap-datetimepicker": "^2.3.8",
     "mustache.js": "mustache#^2.2.1",
     "blueimp-file-upload": "jquery-file-upload#^9.12.3",
-    "selectize": "0.12.1"
+    "selectize": "0.12.1",
+    "echarts": "^3.2.3"
   }
 }

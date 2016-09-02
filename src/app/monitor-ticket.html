@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="images/favicon.ico" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>出票失败率</title>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/monitor.css">
+</head>
+<body>
+
+  @@include('component/header.tpl')
+
+  <div class="container-fluid">
+
+    <div class="row">
+
+      @@include('component/sidebar.tpl')
+
+      <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+        <ol class="breadcrumb">
+          <li>订单监控</li>
+          <li class="active">出票失败率</li>
+        </ol>
+
+        <form id="formSearch" class="search-area clearfix">
+
+          <input type="hidden" id="search_type" value="4">
+
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">开始时间</div>
+              <input type="text" class="form-control" id="search_beginTime" readonly>
+            </div>
+          </div>
+
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">结束时间</div>
+              <input type="text" class="form-control" id="search_endTime" readonly>
+            </div>
+          </div>
+
+          <div class="col-xs-12 col-sm-6 col-md-3 pull-right">
+            <button type="submit" class="btn btn-block btn-primary">查询</button>
+          </div>
+
+        </form>
+
+        <div class="content-area">
+
+          <div id="chart" style="width:100%;overflow:hidden"></div>
+
+          <hr>
+
+          <div class="row" id="listDate" style="display:none;">
+            <div class="form-group col-xs-12 col-sm-6 col-md-4">
+              <div class="input-group">
+                <div class="input-group-addon">切换日期：</div>
+                <select class="form-control"></select>
+              </div>
+            </div>
+            <div class="col-xs-12">
+              <p class="text-primary"><span class="glyphicon glyphicon-info-sign"></span> 一次显示一天的数据</p>
+            </div>
+          </div>
+
+
+
+          <div class="table-responsive" id="dataTable">
+            <table class="table table-hover table-striped">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>交易订单号</th>
+                  <th>手机号</th>
+                  <th>下单时间</th>
+                  <th>交易订单状态</th>
+                  <th>商品订单状态</th>
+                  <th>合作方</th>
+                  <th>渠道</th>
+                  <th>支付金额</th>
+                  <th>支付积分</th>
+                  <th>活动名称</th>
+                  <th>优惠券码</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td colspan="12" align="center">请点击“查询”按钮！</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="js/vendor.js"></script>
+  <script src="js/monitor-ticket.js"></script>
+
+
+  <script id="table-template" type="text/x-tmpl-mustache">
+    {{#rows}}
+    <tr>
+      <td>{{no}}</td>
+      <td><a target="_blank" href="order-detail.html?orderId={{orderNo}}">{{orderNo}}</a></td>
+      <td>{{phone}}</td>
+      <td>{{createTime}}</td>
+      <td>{{payStatus}}</td>
+      <td>{{shipStatus}}</td>
+      <td>{{tpName}}</td>
+      <td>{{channelName}}</td>
+      <td>{{payAmount}}</td>
+      <td>{{payPoint}}</td>
+      <td>{{activityName}}</td>
+      <td>{{优惠券码}}</td>
+    </tr>
+    {{/rows}}
+  </script>
+
+</body>
+</html>
