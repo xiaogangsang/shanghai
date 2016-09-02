@@ -5,7 +5,7 @@
   <link rel="icon" href="images/favicon.ico" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <title>商户列表</title>
+  <title>我提交的商户</title>
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="css/selectize.default.css">
   <link rel="stylesheet" href="css/reset.css">
@@ -49,9 +49,6 @@
             <div class="input-group">
               <div class="input-group-addon">商户状态</div>
               <select class="form-control" id="search_merchantStatus">
-                <option value="">全部</option>
-                <option value="2">上线</option>
-                <option value="3">下线</option>
               </select>
             </div>
           </div>
@@ -67,6 +64,22 @@
             <div class="input-group">
               <div class="input-group-addon">商户号</div>
               <input type="text" class="form-control" id="search_merchantNo">
+            </div>
+          </div>
+
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">TP方</div>
+              <select class="form-control" id="search_TP">
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">商户级别</div>
+              <select class="form-control" id="search_merchantLevel">
+              </select>
             </div>
           </div>
 
@@ -97,9 +110,12 @@
                   <th>商户号</th>
                   <th>商户名称</th>
                   <th>进件时间</th>
+                  <th>tp方</th>
+                  <th>商户级别</th>
                   <th>商户状态</th>
                   <th>账户状态</th>
-                  <th width="100">操作</th>
+                  <th width="100">账户操作</th>
+                  <th width="100">商户操作</th>
                 </tr>
               </thead>
               <tbody>
@@ -159,10 +175,27 @@
       <td>{{merchantId}}</td>
       <td>{{merchantName}}</td>
       <td>{{createTime}}</td>
+      <td>{{tpId}}</td> <!-- tp方 -->
+      <td>{{merchantClass}}</td> <!-- 商户级别 -->
       <td>{{merchantStatus}}</td>
       <td>{{accountStatus}}</td>
       <td>
-        <button type="button" class="btn btn-xs btn-default btn-edit">详情</button>
+        {{#isDisabled}}
+          <button type="button" class="btn btn-xs btn-default btn-enable-account" data-merchantid="{{merchantId}}">账户启用</button>
+        {{/isDisabled}}
+        {{#isEnabled}}
+          <button type="button" class="btn btn-xs btn-default btn-disable-account" data-merchantid="{{merchantId}}">账户停用</button>
+        {{/isEnabled}}
+      </td>
+      <td>
+        {{#isOffline}}
+          <button type="button" class="btn btn-xs btn-default btn-edit" data-merchantid="{{merchantId}}">编辑</button>
+          <button type="button" class="btn btn-xs btn-default btn-delete" data-merchantid="{{merchantId}}">删除</button>
+        {{/isOffline}}
+        {{#isOnline}}
+          <button type="button" class="btn btn-xs btn-default btn-offline" data-merchantid="{{merchantId}}">下线</button>
+          <button type="button" class="btn btn-xs btn-default btn-detail" data-merchantid="{{merchantId}}">详情</button>
+        {{/isOnline}}
       </td>
     </tr>
     {{/rows}}

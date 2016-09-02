@@ -2,7 +2,7 @@
 * @Author: kyle
 * @Date:   2016-08-29 10:37:39
 * @Last Modified by:   kyle
-* @Last Modified time: 2016-08-29 17:11:05
+* @Last Modified time: 2016-09-02 15:43:47
 */
 
 'use strict';
@@ -65,18 +65,18 @@ $('#formSearch').on('submit', function (e) {
   var type = $('#search_type').val();
 
   $.ajax({
-    url: common.API_HOST + 'monitor/chart',
+    url: common.API_HOST + 'monitor/ticketFailRate',
     type: 'POST',
     dataType: 'json',
     data: {
       beginTime: beginTime,
       endTime: endTime,
-      type: type,
+      // type: type,
     },
   })
   .done(function (res) {
     if (!!~~res.meta.result) {
-      if (res.data.respData.XAxis.length < 1) {
+      if (res.data.respData.xAxis.length < 1) {
         alert('查询成功，但无数据！');
         $('#chart').css('height', '0px');
         return false;
@@ -88,7 +88,7 @@ $('#formSearch').on('submit', function (e) {
       dateSpan = Math.floor(dateSpan);
       if (dateSpan > 0) {
         if (dateSpan > 3) {
-          _queryDates = res.data.respData.XAxis;
+          _queryDates = res.data.respData.xAxis;
         } else {
           var dateSplit = beginTime.split('-');
           for (var i = 0; i <= dateSpan; i++) {
@@ -121,24 +121,24 @@ $('#formSearch').on('submit', function (e) {
         },
         color: ['#ff8903'],
         xAxis: {
-          data: res.data.respData.XAxis,
+          data: res.data.respData.xAxis,
         },
         yAxis: {
-          name: '订单数',
+          name: '失败率',
           nameLocation: 'middle',
           nameGap: 30,
         },
         title: {
-          text: '最小：' + res.data.respData.min + '      平均：' + res.data.respData.average + '      最大：' + res.data.respData.max + '      最新累计：' + res.data.respData.total,
+          text: '最小：' + res.data.respData.min + '      平均：' + res.data.respData.avg + '      最大：' + res.data.respData.max + '      最新累计：' + res.data.respData.sum,
           left: 'center',
           bottom: 0,
         },
         tooltip: {
-          formatter: '日期时间：{b}<br>订单数：{c}',
+          formatter: '日期时间：{b}<br>失败率：{c}',
         },
         series: [{
           type: 'line',
-          data: res.data.respData.YAxis,
+          data: res.data.respData.yAxis,
           // markPoint: {
           //   symbolSize: 30,
           //   data: [
@@ -177,7 +177,7 @@ function queryOrder(type, queryDate) {
   .done(function (res) {
     if (!!~~res.meta.result) {
       if (res.data.rows.length < 1) {
-        $('#dataTable tbody').html('<tr><td colspan="12" align="center">恭喜，' + queryDate + '没有异常数据！</td></tr>');
+        $('#dataTable tbody').html('<tr><td colspan="12" align="center">恭喜，' + queryDate + ' 没有异常数据！</td></tr>');
         return false;
       }
 

@@ -166,20 +166,6 @@ $('#pager').on('click', '#btn-pager', function (e) {
   return false;
 });
 
-$('#dataTable').on('click', '.btn-bind', function (e) {
-  e.preventDefault();
-  var tpHallName = $(this).closest('tr').find('td:nth-child(2)').text();
-  var tpHallId = $(this).closest('tr').data('id');
-  var tpStoreId = $(this).closest('tr').data('tpstoreid');
-  $('#bindHallName').val(tpHallName);
-  $('#bindHallCinema,#bindHallCity').val('');
-  $('#hallId').val();
-  $('#tpHallId').val(tpHallId);
-  $('#tpStoreId').val(tpStoreId);
-  $('#hallTable tbody').html('');
-  $('#popup-tphall-bind').modal('show');
-});
-
 $('#dataTable').on('click', '.btn-create', function (e) {
   e.preventDefault();
   _tpHallId = $(this).closest('tr').data('id');
@@ -319,40 +305,29 @@ $(document).on('click', '#bindSelect', function (event) {
   $('#popup-hall-bind').modal('hide');
 });
 
-$(document).on('submit', '#formSearchHall', function (e) {
+$('#dataTable').on('click', '.btn-bind', function (e) {
   e.preventDefault();
-
-  if (!!_querying) {
-    return false;
-  }
-
-  _querying = true;
-  var bindHallName = $.trim($('#bindHallName').val());
-  var bindHallCinema = $.trim($('#bindHallCinema').val());
-  var bindHallCity = $.trim($('#bindHallCity').val());
-  if (bindHallName == '' && bindHallCinema == '') {
-    alert('影厅和影院不能同时为空！');
-    return false;
-  }
+  var tpHallId = $(this).closest('tr').data('id');
+  var tpStoreId = $(this).closest('tr').data('tpstoreid');
+  $('#hallId').val('');
+  $('#tpHallId').val(tpHallId);
+  $('#tpStoreId').val(tpStoreId);
+  $('#hallTable tbody').html('');
 
   $.ajax({
-    url: common.API_HOST + 'hall/standard/list',
+    url: common.API_HOST + 'hall/tp/rel/getStandardHall',
     type: 'POST',
     dataType: 'json',
     data: {
-      hallName: bindHallName,
-      storeName: bindHallCinema,
-      cityName: bindHallCity,
-      pageIndex: 1,
-      pageSize: 9999,
+      tpHallId: tpHallId,
+      tpStoreId: tpStoreId,
     },
   })
   .done(function (res) {
     _querying = false;
     if (!!~~res.meta.result) {
-      if (res.data.data.length <= 0) {
-        var html = '<tr><td colspan="8" align="center">没有搜索到相关标准影厅</td></tr>';
-        $('#popup-tphall-bind tbody').html(html);
+      if (res.data.data == undefined || res.data.data.length <= 0) {
+        alert('无法关联，对应影院下查不到标准影厅！');
         return false;
       }
 
@@ -367,6 +342,8 @@ $(document).on('submit', '#formSearchHall', function (e) {
         $(this).addClass('selected');
         $('#hallId').val($(this).data('id'));
       });
+
+      $('#popup-tphall-bind').modal('show');
     } else {
       alert('接口错误：' + res.meta.msg);
     }
