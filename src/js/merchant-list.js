@@ -10,6 +10,7 @@
 
 'use strict;'
 var common = require('common');
+var settlementCommon = require('settlementCommon');
 var _channels = {};
 var _cities = [];
 var _choosed = [];
@@ -34,6 +35,11 @@ $(function () {
   var guys = {};
 
   common.init('merchant-list');
+
+  // 初始化涉及的select控件
+  $('#search_TP').html(settlementCommon.optionsHTML(settlementCommon.TP, true));
+  $('#search_merchantLevel').html(settlementCommon.optionsHTML(settlementCommon.merchantLevel, true));
+  $('#search_merchantStatus').html(settlementCommon.optionsHTML(settlementCommon.merchantStatus, true));
 
   // var selectBranch = $('#search_merchantBranch').selectize()[0].selectize;
   selectGuy = $('#search_merchantSubscribeGuy').selectize()[0].selectize;
@@ -217,8 +223,8 @@ function handleMerchantData(res) {
 
       _(record).forEach(function (item) {
 
-        item.merchantStatus = parseMerchantStatus(item.merchantStatus);
-        item.accountStatus = parseAccountStatus(item.accountStatus);
+        item.merchantStatus = settlementCommon.parseMerchantStatus(item.merchantStatus);
+        item.accountStatus = settlementCommon.parseAccountStatus(item.accountStatus);
       });
 
       dataCache = record;
@@ -397,19 +403,4 @@ $('.modal').on('change', ':checkbox[name="send-to"]', function(e) {
     }
   }
 });
-
-/****************************************** Utilities Method **********************************************/
-
-function parseMerchantStatus(merchantStatus) {
-
-  var map = {'1' : '草稿', '2' : '已上线', '3' : '已下线', '4' : '审核驳回', '5' : '待审核', '6' : '已删除'};
-
-  return map[merchantStatus];
-}
-
-function parseAccountStatus(accountStatus) {
-  var map = {'1' : '正常', '2' : '停用'};
-
-  return map[accountStatus];
-}
 
