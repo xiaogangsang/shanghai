@@ -97,6 +97,8 @@
                   <th>规则ID</th>
                   <th>名称</th>
                   <th>成本中心</th>
+                  <th>已验证/已产码</th>
+                  <th>最大产码数量</th>
                   <th>开始日期</th>
                   <th>结束日期</th>
                   <th>操作</th>
@@ -104,7 +106,7 @@
               </thead>
               <tbody>
                 <tr>
-                  <td colspan="7" align="center">请点击“查询”按钮！</td>
+                  <td colspan="9" align="center">请点击“查询”按钮！</td>
                 </tr>
               </tbody>
             </table>
@@ -144,6 +146,8 @@
       <td>{{couponId}}</td>
       <td>{{name}}</td>
       <td>{{budgetSource}}</td>
+      <td>{{consumeNum}}/{{producedNum}}</td>
+      <td>{{maxInventory}}</td>
       <td>{{beginDate}}</td>
       <td>{{endDate}}</td>
       <td>
