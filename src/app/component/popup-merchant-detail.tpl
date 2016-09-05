@@ -1,7 +1,7 @@
 
 <script id="detail-template" type="text/x-tmpl-mustache">
 
-  <div class="container-fluid detail-area readonly">
+  <div class="container-fluid detail-area">
 
     <div class="container-fluid">
 
@@ -42,7 +42,7 @@
           </div>
         </div>
 
-<!--         <div class="form-group col-sm-6 col-md-4">
+        <div class="form-group col-sm-6 col-md-4">
           <div class="input-group">
             <div class="input-group-addon">员工姓名</div>
             <input type="text" class="form-control" id="" value="{{userName}}">
@@ -54,7 +54,7 @@
             <div class="input-group-addon">员工编号</div>
             <input type="text" class="form-control" id="" value="{{userId}}">
           </div>
-        </div> -->
+        </div>
 
       </div>
     </div>

@@ -144,7 +144,7 @@
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
             <div class="input-group-addon">票类</div>
-            <input type="text" class="form-control" id="wandaTicketId" value="{{productInfo.wandaTicketId}}" readonly>
+            <input type="text" class="form-control" id="ticketName" value="{{ticketName}}" readonly>
           </div>
         </div>
 
