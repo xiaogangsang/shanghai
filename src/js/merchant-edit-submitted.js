@@ -1,7 +1,7 @@
 /*
   Author: Ge Liu
   Create: 2016-06-02 17:25:26
-  Description: 商户列表查询页, 页面比较简单, 用到的接口有:
+  Description: 我提交的商户列表查询页, 页面比较简单, 用到的接口有:
       1. 根据用户输入条件进行查询
       2. 商户操作(当前状态为已上线, 可进行 下线 和 详情 操作; 当前状态为已下线, 可进行 编辑 和 删除 操作)
       3. 账户操作(当前状态为正常, 可进行 账户启用 操作; 当前状态为停用, 可进行 账户停用 操作)
@@ -18,7 +18,7 @@ var searchCache = {};
 var useCache = false;
 var dataCache;
 
-var _DEBUG = true;
+var _DEBUG = false;
 
 $(function () {
 

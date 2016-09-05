@@ -334,13 +334,16 @@ if (!_DEBUG) {
       }
     });
   } else {
-    var res = $.parseJSON('{ "meta" : { "result" : "1", "msg" : "操作成功" }, "data" : { "merchantName" : "商户名称", "merchantId" : "商户号", "merchantStatus" : "商户状态", "merchantContacter" : "商户联系人", "merchantPhone" : "商户联系电话", "userName" : "员工姓名", "userId" : "员工编号", "tpId":"tp方", "merchantClass":"商户级别", "merchantType" : "商户类别", "merchantRemark" : "商户备注", "allocationType" : "1", "allocationPeriod" : "拨款周期", "allocationDelay" : "拨款延迟", "fixedAllocationDay" : "28", "allocationDetail" : "是否给拨款明细", "allocationRemark" : "拨款摘要", "allocationDetailReceiver":"拨款明细接收对象", "email":"商户邮箱", "departmentEmail":"卡部邮箱", "accountName" : "账户名", "accountStatus" : "账户状态", "bankAccount" : "银行账号", "bankCode" : "联行行号", "branchName":"开户行", "attachments":[ { "attachmentName":"附件名", "createTime":"上传时间", "fileUrl":"文件路径", "fileId":"文件id" } ] } }');
+    var res = $.parseJSON('{ "meta" : { "result" : "1", "msg" : "操作成功" }, "data" : { "merchantName" : "商户名称", "merchantId" : "商户号", "merchantStatus" : "商户状态", "merchantContacter" : "商户联系人", "merchantPhone" : "商户联系电话", "userName" : "员工姓名", "userId" : "员工编号", "tpId":"1", "merchantClass":"1", "merchantType" : "商户类别", "merchantRemark" : "商户备注", "allocationType" : "1", "allocationPeriod" : "28", "allocationDelay" : "拨款延迟", "fixedAllocationDay" : "28", "allocationDetail" : "是否给拨款明细", "allocationRemark" : "拨款摘要", "allocationDetailReceiver":"1", "email":"商户邮箱", "departmentEmail":"卡部邮箱", "accountName" : "账户名", "accountStatus" : "账户状态", "bankAccount" : "银行账号", "bankCode" : "联行行号", "branchName":"开户行", "attachments":[ { "attachmentName":"附件名", "createTime":"上传时间", "fileUrl":"文件路径", "fileId":"文件id" } ] } }');
     setModal(res.data);
     $('#popup-merchant-detail').modal('show');
   }
 });
 
 function setModal(detailData) {
+
+  detailData.tpId = settlementCommon.parseTP(detailData.tpId);
+  detailData.merchantClass = settlementCommon.parseMerchantLevel(detailData.merchantClass);
 
   var template = $('#detail-template').html();
   Mustache.parse(template);
@@ -376,7 +379,7 @@ function formatPopupUI(detailData) {
   });
   
   // 发送对象
-  var sendTo = '0';
+  var sendTo = detailData.allocationDetailReceiver;
   $('input[name="send-to"]').each(function(index, el) {
     if ($(el).val() == sendTo) {
       $(el).prop('checked', true).change();
@@ -412,6 +415,7 @@ $('.modal').on('change', ':radio[name="allocation-detail-input"]', function(e) {
 });
 
 // 发送对象
+// TODO: 发送对象可以多选
 $('.modal').on('change', ':checkbox[name="send-to"]', function(e) {
   if ($(this).val() == '1') {
     if ($(this).prop('checked')) {
@@ -426,5 +430,11 @@ $('.modal').on('change', ':checkbox[name="send-to"]', function(e) {
       $('.branch-email').hide();
     }
   }
+});
+
+$('.modal').on('click', '.download', function(e) {
+  var fileUrl = $(this).data('fileurl');
+
+  alert('文件路径为 ' + fileUrl + ', 本接口尚未实现.');
 });
 
