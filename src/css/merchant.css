@@ -1,11 +1,23 @@
-.readonly textarea,
-.readonly input {
-  border: none;
-  background: transparent;
-}
+
+/* 为了重用商户详情和商户编辑, 这里需要把一些输入框设为只读, 显示上去掉边框等, 这样看上去就像label */
 .readonly button {
   display: none;
 }
+
+.detail-area input:-moz-read-only,
+.detail-area textarea:-moz-read-only {
+	border: none;
+	background: transparent;
+	cursor: text;
+}
+
+.detail-area input:read-only,
+.detail-area textarea:read-only {
+	border: none;
+	background: transparent;
+	cursor: text;
+}
+
 /* 输入项分组的边框 */
 .detail-area > .container-fluid {
   border: 1px solid #c3c3c3;

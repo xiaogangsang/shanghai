@@ -22,7 +22,7 @@ var dataCache;
 var selectBranch;
 var selectGuy;
 
-var _DEBUG = false;
+var _DEBUG = true;
 
 $(function () {
 
@@ -32,8 +32,11 @@ $(function () {
   common.init('merchant-list');
 
   // 初始化涉及的select控件
+  // TP方
   $('#search_TP').html(settlementCommon.optionsHTML(settlementCommon.TP, true));
+  // 商户级别
   $('#search_merchantLevel').html(settlementCommon.optionsHTML(settlementCommon.merchantLevel, true));
+  // 商户状态
   $('#search_merchantStatus').html(settlementCommon.optionsHTML(settlementCommon.merchantStatus, true));
 
   // var selectBranch = $('#search_merchantBranch').selectize()[0].selectize;
@@ -312,8 +315,29 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
   var rowIndex = $(this).closest('tr').prevAll().length;
   var detailData = dataCache[rowIndex];
 
-  setModal(detailData);
-  $('#popup-merchant-detail').modal('show');
+  var merchantId = detailData.merchantId;
+
+if (!_DEBUG) {
+    $.ajax({
+      url: common.API_HOST + 'settlement/merchantinfo/query.json',
+      type: 'GET',
+      dataType: 'json',
+      data: {merchantId: merchantId},
+    })
+    .done(function (res) {
+
+      if (!!~~res.meta.result) {
+        setModal(res.data);
+        $('#popup-merchant-detail').modal('show');
+      } else {
+        alert(res.meta.msg);
+      }
+    });
+  } else {
+    var res = $.parseJSON('{ "meta" : { "result" : "1", "msg" : "操作成功" }, "data" : { "merchantName" : "商户名称", "merchantId" : "商户号", "merchantStatus" : "商户状态", "merchantContacter" : "商户联系人", "merchantPhone" : "商户联系电话", "userName" : "员工姓名", "userId" : "员工编号", "tpId":"tp方", "merchantClass":"商户级别", "merchantType" : "商户类别", "merchantRemark" : "商户备注", "allocationType" : "1", "allocationPeriod" : "拨款周期", "allocationDelay" : "拨款延迟", "fixedAllocationDay" : "28", "allocationDetail" : "是否给拨款明细", "allocationRemark" : "拨款摘要", "allocationDetailReceiver":"拨款明细接收对象", "email":"商户邮箱", "departmentEmail":"卡部邮箱", "accountName" : "账户名", "accountStatus" : "账户状态", "bankAccount" : "银行账号", "bankCode" : "联行行号", "branchName":"开户行", "attachments":[ { "attachmentName":"附件名", "createTime":"上传时间", "fileUrl":"文件路径", "fileId":"文件id" } ] } }');
+    setModal(res.data);
+    $('#popup-merchant-detail').modal('show');
+  }
 });
 
 function setModal(detailData) {
@@ -330,7 +354,10 @@ function setModal(detailData) {
 function formatPopupUI(detailData) {
   // make all the input lable-like
   $('.detail-area :input').prop('readonly', true);
-  $('.detail-area :input').prop('disabled', true);
+  // 详情时失能所有的select, radio, checkbox
+  $('.detail-area select, .detail-area :radio, .detail-area :checkbox').prop('disabled', true);
+  // 隐藏所有的button
+  $('.detail-area :button').hide();
 
   // 拨款模式不同, 相应控件显示隐藏
   var allocationType = detailData.allocationType;
