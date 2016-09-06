@@ -3,6 +3,8 @@ var common = require('common');
 
 $(function() {
 
+	// $('#hud-overlay').show();
+
 	common.init('merchant-creation');
 
 	init();
