@@ -272,15 +272,15 @@
 
     </div>
 
-    <div class="container-fluid">
+    <div class="container-fluid" id="attachments-container">
       <div class="row">
         <span>商户附件列表:</span>
-        <div class="col-md-4">
+<!--         <div class="col-md-4">
           <button class="btn btn-default">上传附件</button>
-        </div>
+        </div> -->
       </div>
 
-      <div class="row">
+      <div class="row" id="attachment-table">
         <div class="table-responsive">
             <table class="table table-hover" id="dataTable">
               <thead>

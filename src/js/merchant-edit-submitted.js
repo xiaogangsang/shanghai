@@ -18,7 +18,7 @@ var searchCache = {};
 var useCache = false;
 var dataCache;
 
-var _DEBUG = false;
+var _DEBUG = true;
 
 $(function () {
 
