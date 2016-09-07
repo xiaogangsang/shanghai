@@ -59,14 +59,18 @@
         <div class="form-group col-sm-6 col-md-4">
           <div class="input-group">
             <div class="input-group-addon">商户级别</div>
-            <input type="text" class="form-control" id="" value="{{merchantClass}}">
+            <select class="form-control" id="detail-merchantClass">
+            </select>
+            <!-- <input type="text" class="form-control" id="" value="{{merchantClass}}"> -->
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-4">
           <div class="input-group">
             <div class="input-group-addon">TP方</div>
-            <input type="text" class="form-control" id="" value="{{tpId}}">
+            <select class="form-control" id="detail-tpId">
+            </select>
+            <!-- <input type="text" class="form-control" id="" value="{{tpId}}"> -->
           </div>
         </div>
 
