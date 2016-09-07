@@ -1,3 +1,9 @@
+/*
+  Author: Ge Liu
+  Create: 2016-06-02 17:25:26
+  Description: 商户新增页, :
+ */
+
 'use strict;'
 var common = require('common');
 
@@ -19,7 +25,7 @@ $(function() {
 
 	  $('.breadcrumb').parent().after(html);
 
-	  $('.detail-area').removeClass('readonly');
+	  // $('.detail-area').removeClass('readonly');
 
 	  // 设置输入项的默认值
 	  // 1. 周期拨款模式
@@ -30,6 +36,9 @@ $(function() {
 
 	  // 3. 发送对象
 	  $(':checkbox[name="send-to"]').prop('checked', false).change();
+
+	  $('#detail-merchantClass').html(settlementCommon.optionsHTML(settlementCommon.merchantLevel, true));
+	  $('#detail-tpId').html(settlementCommon.optionsHTML(settlementCommon.TP, true));
 	}
 });
 
