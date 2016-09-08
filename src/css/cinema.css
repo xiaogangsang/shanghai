@@ -40,6 +40,13 @@
 .merchant-list .btn {
   padding: 5px 0;
 }
+.merchant-list table {
+  text-align: left;
+}
+.merchant-list td p {
+  margin: 0;
+  text-align: center;
+}
 
 /* cinema-tp */
 #association {

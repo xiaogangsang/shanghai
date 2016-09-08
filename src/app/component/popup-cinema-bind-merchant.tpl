@@ -117,7 +117,7 @@
     <td>{{tpId}}</td>
     <td>{{merchantClass}}</td>
     <td>{{merchantStatus}}</td>
-    <td><button type="button" class="btn btn-primary btn-block btn-addMerchant">关联</button></td>
+    <td>{{#canBind}}<button type="button" class="btn btn-primary btn-block btn-addMerchant">关联</button>{{/canBind}}{{^canBind}}<p class="bg-primary">已关联</p>{{/canBind}}</td>
   </tr>
   {{/rows}}
 </script>

@@ -347,7 +347,7 @@ $(document).on('click', '.btn-merchant', function (event) {
   var cinemaName = $(this).closest('tr').find('td:nth-child(3)').text();
   $('#popup-cinema-bind-merchant h5').text(cinemaName);
   $('#popup-cinema-bind-merchant #bindStoreId').val(cinemaId);
-  $('.merchant-list tbody').html('<tr><td colspan="6">点击查询！</td></tr>');
+  $('.merchant-list tbody').html('<tr><td colspan="6" align="center">点击查询！</td></tr>');
   $('#formSearchMerchat').trigger('reset');
   $('.merchant-list').hide();
   loadBindMerchant(cinemaId);
@@ -422,19 +422,13 @@ $(document).on('submit', '#formSearchMerchant', function (event) {
       if (res.data.row != null && res.data.row.length > 0) {
         var unbindMerchants = [];
         _(res.data.row).forEach(function (merchant, key) {
-          if (_bindMerchantIds.indexOf(merchant.id) < 0) {
-            var tp = _.find(_sources, { sourceId: merchant.tpId });
-            merchant.tpId = tp != undefined ? tp.sourceName : '';
-            merchant.merchantClass = _mechantLevel[merchant.merchantClass];
-            merchant.merchantStatus = _merchantStatus[merchant.merchantStatus];
-            unbindMerchants.push(merchant);
-          }
+          var tp = _.find(_sources, { sourceId: merchant.tpId });
+          merchant.tpId = tp != undefined ? tp.sourceName : '';
+          merchant.merchantClass = _mechantLevel[merchant.merchantClass];
+          merchant.merchantStatus = _merchantStatus[merchant.merchantStatus];
+          merchant.canBind = _bindMerchantIds.indexOf(merchant.id) < 0 ? true : false;
+          unbindMerchants.push(merchant);
         });
-
-        if (unbindMerchants.length <= 0) {
-          $('.merchant-list tbody').html('<tr><td colspan="6">查不到可绑定的商户！</td></tr>');
-          return false;
-        }
 
         var data = { rows: unbindMerchants };
         var template = $('#unbind-template').html();
@@ -442,7 +436,7 @@ $(document).on('submit', '#formSearchMerchant', function (event) {
         var html = Mustache.render(template, data);
         $('.merchant-list tbody').html(html);
       } else {
-        $('.merchant-list tbody').html('<tr><td colspan="6">查不到可绑定的商户！</td></tr>');
+        $('.merchant-list tbody').html('<tr><td colspan="6" align="center">没有符合条件的商户！</td></tr>');
       }
     } else {
       alert('接口错误：' + res.meta.msg);
@@ -468,11 +462,11 @@ $(document).on('click', '.btn-addMerchant', function (event) {
   })
   .done(function (res) {
     if (res.meta.result == 1) {
-      alert('绑定商户成功！');
+      alert('关联商户成功！');
       loadBindMerchant(storeId);
       $tr.remove();
       if ($('#merchantList tbody tr').length < 1) {
-        $('.merchant-list tbody').html('<tr><td colspan="6">查不到可绑定的商户！</td></tr>');
+        $('.merchant-list tbody').html('<tr><td colspan="6" align="center">没有符合条件的商户！</td></tr>');
       }
     } else {
       alert('接口错误：' + res.meta.msg);
@@ -482,6 +476,10 @@ $(document).on('click', '.btn-addMerchant', function (event) {
 
 $(document).on('click', '.btn-delMerchant', function (event) {
   event.preventDefault();
+  if (!window.confirm('确定要解除与该商户的关联吗？')) {
+    return false;
+  }
+
   var $tr = $(this).closest('tr');
   var id = $(this).closest('tr').data('id');
   var storeId = $('#bindStoreId').val();
@@ -496,7 +494,7 @@ $(document).on('click', '.btn-delMerchant', function (event) {
   })
   .done(function (res) {
     if (res.meta.result == 1) {
-      alert('解除绑定商户成功！');
+      alert('解除关联商户成功！');
       $tr.remove();
       delete _bindMerchantIds[_bindMerchantIds.indexOf(id)];
       loadBindMerchant(storeId);
