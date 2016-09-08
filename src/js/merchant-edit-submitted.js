@@ -273,7 +273,7 @@ $('#dataTable').on('click', '.btn-edit', function(e) {
   e.preventDefault();
   var merchantId = $(this).data('merchantid');
 
-  alert('瞎JB点啥, 这功能还没做呢, merchant ID 是' + merchantId + ', 你想编辑该商户, 但哥还没做呢! 再点哥就报警了!');
+  alert('merchant ID 是' + merchantId + ', 你想编辑该商户, 该功能尚未实现');
 });
 
 // 删除商户
@@ -281,7 +281,7 @@ $('#dataTable').on('click', '.btn-delete', function(e) {
   e.preventDefault();
   var merchantId = $(this).data('merchantid');
 
-  alert('瞎JB点啥, 这功能还没做呢, merchant ID 是' + merchantId + ', 你想删除该商户, 但哥还没做呢! 再点哥就报警了!');
+  alert('merchant ID 是' + merchantId + ', 你想删除该商户, 该功能尚未实现');
 });
 
 // 下线商户
@@ -289,7 +289,7 @@ $('#dataTable').on('click', '.btn-offline', function(e) {
   e.preventDefault();
   var merchantId = $(this).data('merchantid');
 
-  alert('瞎JB点啥, 这功能还没做呢, merchant ID 是' + merchantId + ', 你想下线该商户, 但哥还没做呢! 再点哥就报警了!');
+  alert('merchant ID 是' + merchantId + ', 你想下线该商户, 该功能尚未实现');
 });
 
 // 查看商户详情
@@ -297,7 +297,7 @@ $('#dataTable').on('click', '.btn-detail', function(e) {
   e.preventDefault();
   var merchantId = $(this).data('merchantid');
 
-  alert('瞎JB点啥, 这功能还没做呢, merchant ID 是' + merchantId + ', 你想查看该商户详情, 但哥还没做呢! 再点哥就报警了!');
+  alert('merchant ID 是' + merchantId + ', 你想查看该商户详情, 该功能尚未实现');
 });
 
 // 账户停用
@@ -305,7 +305,7 @@ $('#dataTable').on('click', '.btn-disable-account', function(e) {
   e.preventDefault();
   var merchantId = $(this).data('merchantid');
 
-  alert('瞎JB点啥, 这功能还没做呢, merchant ID 是' + merchantId + ', 你想停用该商户的账户, 但哥还没做呢! 再点哥就报警了!');
+  alert('merchant ID 是' + merchantId + ', 你想停用该商户的账户, 该功能尚未实现');
 });
 
 // 启用账户
@@ -313,7 +313,7 @@ $('#dataTable').on('click', '.btn-enable-account', function(e) {
   e.preventDefault();
   var merchantId = $(this).data('merchantid');
 
-  alert('瞎JB点啥, 这功能还没做呢, merchant ID 是' + merchantId + ', 你想启用该商户, 但哥还没做呢! 再点哥就报警了!');
+  alert('merchant ID 是' + merchantId + ', 你想启用该商户的账户, 该功能尚未实现');
 });
 
 
