@@ -144,14 +144,14 @@ $(function() {
 
     if (className.indexOf('file-upload') > -1) {
 
-		  var parent = el.parentElement;
+		  var parent = el.parentNode;
 		  if (parent.className.indexOf('btn-danger') < 0) {
 	    	event.preventDefault();
 	    	fileChangeHandler(event, el);
 	    	return false;
 	    }
     }
-	}, true);
+	});
 
 	function fileChangeHandler(e, el) {
 		e.preventDefault();
