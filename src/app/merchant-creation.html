@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <link rel="stylesheet" href="css/reset.css">
   <link rel="stylesheet" href="css/merchant.css">
+  <link rel="stylesheet" type="text/css" href="css/css-hud.css">
   <!-- <link rel="stylesheet" href="css/banner.css"> -->
 </head>
 <body>
@@ -34,12 +35,12 @@
 
         <div class="container-fluid" style="margin-top: 15px;">
           <div class="row">
-            <div class="col-md-3 col-md-push-2 submit">
-              <button class="btn btn-default form-control">提交审核</button>
+            <div class="col-md-3 col-md-push-2">
+              <button class="btn btn-default submit form-control">提交审核</button>
             </div>
-            <div class="col-md-3 col-md-push-4 save">
+            <!-- <div class="col-md-3 col-md-push-4 save">
               <button class="btn btn-default form-control">保存草稿</button>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -63,7 +64,28 @@
   </div>
 </div>
 
+<div id="hud-overlay" style="display: none">
+  <div class="hud">
+    <img src="images/loader.gif">
+    <p>上传附件中...</p>
+  </div>
+</div>
+
   @@include('component/popup-merchant-bank.tpl')
+
+  <script id="file-upload-template" type="text/x-tmpl-mustache">
+    <div class="row file-upload-container" style="margin: 12px 0px;">
+      <div class="input-group">
+        <input type="text" class="form-control" readonly>
+        <span class="input-group-btn">
+          <span class="btn btn-default btn-file">
+            <span>选择文件</span>
+            <input class="file-upload" type="file" name="file">
+          </span>
+        </span>
+      </div>
+    </div>
+  </script>
 
   <script src="js/vendor.js"></script>
   <script src="js/merchant-creation.js"></script>
