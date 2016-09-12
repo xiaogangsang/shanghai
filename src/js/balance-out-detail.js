@@ -44,40 +44,52 @@ $('#formSearch').on('click', 'button[type=submit]', function (event) {
 $('#formSearch').on('submit', function (e) {
   e.preventDefault();
 
-  if (!useCache) {
-    if (!$('#formSearch').parsley().isValid()) {
-      return false;
-    }
-  }
-
-  var sendData = {
-  	dateType: $('#search_dateType').val(),
-    startTime: $('#search_startTime').val(),
-    endTime: $('#search_endTime').val(),
-    merchantName: $('#search_merchantName').val(),
-    merchantNo: $('#search_merchantNo').val(),
-    shipmentStatus: $('#search_shipmentStatus').val(),
-    bizType: $('#search_bizType').val(),
-    partner: $('#search_partner').val(),
-    acquiringReconciliationStatus: $('#search_acquiringReconciliationStatus').val(),
-    reconciliationStatus: $('#search_reconciliationStatus').val(),
-    reason: $('#search_reason').val(),
-    discountType: $('#search_discountType').val(),
-    discountName: $('#search_discountName').val(),
-    bizOrderNo: $('#search_bizOrderNo').val(),
-    thdOrderNo: $('#search_thdOrderNo').val(),
-    checkStatus: $('#search_checkStatus').val(),
-    pageSize: _pageSize,
-  };
-  if (!!_querying) {
+  if (_querying) {
     return false;
   }
 
   _querying = true;
-  if (useCache) {
-    sendData = searchCache;
-  } else {
+
+  var sendData;
+
+  if (!useCache) {
+
+    // 输入 商品订单号 或者 二级商户订单号 后, 无需输入日期
+    var bizOrderNo = $('#search_bizOrderNo').val();
+    var thdOrderNo = $('#search_thdOrderNo').val();
+    var dateIsRequired = (bizOrderNo === '' && thdOrderNo === '');
+
+    $('#search_dateType').prop('required', dateIsRequired);
+    $('#search_startTime').prop('required', dateIsRequired);
+    $('#search_endTime').prop('required', dateIsRequired);
+
+    if (!$('#formSearch').parsley().isValid()) {
+      return false;
+    }
+
+    sendData = {
+      dateType: dateIsRequired ? $('#search_dateType').val() : '',
+      startTime: dateIsRequired ? $('#search_startTime').val() : '',
+      endTime: dateIsRequired ? $('#search_endTime').val() : '',
+      merchantName: $('#search_merchantName').val(),
+      merchantNo: $('#search_merchantNo').val(),
+      shipmentStatus: $('#search_shipmentStatus').val(),
+      bizType: $('#search_bizType').val(),
+      partner: $('#search_partner').val(),
+      acquiringReconciliationStatus: $('#search_acquiringReconciliationStatus').val(),
+      reconciliationStatus: $('#search_reconciliationStatus').val(),
+      reason: $('#search_reason').val(),
+      discountType: $('#search_discountType').val(),
+      discountName: $('#search_discountName').val(),
+      bizOrderNo: $('#search_bizOrderNo').val(),
+      thdOrderNo: $('#search_thdOrderNo').val(),
+      checkStatus: $('#search_checkStatus').val(),
+      pageSize: _pageSize,
+    };
+
     searchCache = sendData;
+  } else {
+    sendData = searchCache;
   }
 
   sendData.pageIndex = _pageIndex;

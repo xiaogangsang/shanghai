@@ -337,9 +337,8 @@ $('#dataTable').on('click', '.btn-approval', function (e) {
       alert(res.meta.msg);
       return false;
     } else {
-      alert('操作成功!');
-      $('#popup-detail').modal('hide');
       $('#formSearch').trigger('submit');
+      alert('操作成功!');
     }
   });
 });
