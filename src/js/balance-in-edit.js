@@ -52,47 +52,55 @@ $('#formSearch').on('click', 'button[type=submit]', function (event) {
 $('#formSearch').on('submit', function (e) {
   e.preventDefault();
 
-  if (!useCache) {
-    if (!$('#formSearch').parsley().isValid()) {
-      return false;
-    }
-  }
-
-  var sendData = {
-  	dateType: $('#search_dateType').val(),
-    periodStart: $('#search_startTime').val(),
-    periodEnd: $('#search_endTime').val(),
-    chargeMerchant: $('#search_chargeMerchant').val(),
-    chargeMerchantNo: $('#search_chargeMerchantNo').val(),
-    partner: $('#search_partner').val(),
-    discountType: $('#search_discountType').val(),
-    discountName: $('#search_discountName').val(),
-    bizType: $('#search_bizType').val(),
-    payStatus: $('#search_payStatus').val(),
-    reconciliationStatus: $('#search_reconciliationStatus').val(),
-    reason: $('#search_reason').val(),
-    orderNo: $('#search_orderNo').val(),
-    thdSerialNo: $('#search_thdSerialNo').val(),
-    paySequenceNo: $('#search_paySequenceNo').val(),
-    checkStatus: approval ? 2 : $('#search_checkStatus').val(),
-    pageSize: _pageSize,
-  };
-  if (!!_querying) {
+  if (_querying) {
     return false;
   }
 
   _querying = true;
-  if (useCache) {
-    sendData = searchCache;
-  } else {
+
+  var sendData;
+
+  if (!useCache) {
+
+    // 输入 交易订单号 或者 收单方支付订单号 后, 无需输入日期
+    var orderNo = $('#search_orderNo').val();
+    var thdSerialNo = $('#search_thdSerialNo').val();
+    var dateIsRequired = (orderNo === '' && thdSerialNo === '');
+
+    $('#search_dateType').prop('required', dateIsRequired);
+    $('#search_startTime').prop('required', dateIsRequired);
+    $('#search_endTime').prop('required', dateIsRequired);
+
+    if (!$('#formSearch').parsley().isValid()) {
+      return false;
+    }
+
+    sendData = {
+      dateType: dateIsRequired ? $('#search_dateType').val() : '',
+      periodStart: dateIsRequired ? $('#search_startTime').val() : '',
+      periodEnd: dateIsRequired ? $('#search_endTime').val() : '',
+      chargeMerchant: $('#search_chargeMerchant').val(),
+      chargeMerchantNo: $('#search_chargeMerchantNo').val(),
+      partner: $('#search_partner').val(),
+      discountType: $('#search_discountType').val(),
+      discountName: $('#search_discountName').val(),
+      bizType: $('#search_bizType').val(),
+      payStatus: $('#search_payStatus').val(),
+      reconciliationStatus: $('#search_reconciliationStatus').val(),
+      reason: $('#search_reason').val(),
+      orderNo: $('#search_orderNo').val(),
+      thdSerialNo: $('#search_thdSerialNo').val(),
+      paySequenceNo: $('#search_paySequenceNo').val(),
+      checkStatus: approval ? 2 : $('#search_checkStatus').val(),
+      pageSize: _pageSize,
+    };
+
     searchCache = sendData;
+  } else {
+    sendData = searchCache;
   }
 
   sendData.pageIndex = _pageIndex;
-
-  if (approval) {
-    sendData.checkStatus = 2;
-  }
 
   $.ajax({
     url: common.API_HOST + 'settlement/acquiringCheck/list',
@@ -118,7 +126,7 @@ function handleData(res) {
     setPager(totalRecord, _pageIndex, record.length, _pageTotal);
 
     _(record).forEach(function(item) {
-      item.canEdit = (item.checkStatus != 2 && item.reconciliationStatus != 4); // 待审核状态不能再修改, 对账状态为确认的也不能修改
+      item.canEdit = (item.checkStatus != 2 && item.checkStatus != 3 && item.reconciliationStatus != 4); // 待审核/审核完成状态不能再修改, 对账状态为确认的也不能修改
       item.chargeMerchant = settlementCommon.parseMerchant(item.chargeMerchant);
       item.payStatus = settlementCommon.parsePayStatus(item.payStatus);
       item.reconciliationStatus = settlementCommon.parseReconciliationStatus(item.reconciliationStatus);
@@ -266,13 +274,23 @@ $('#dataTable').on('click', '.btn-detail', function (e) {
       return false;
     }
     var data = res.data;
-    data.detail = data.lastDetail;
-    data.detail.currentDetail = data.currentDetail;
+    data.detail = data.currentDetail;
+    data.detail.lastDetail = data.lastDetail;
     var detail = data.detail;
     detail.payTool = settlementCommon.parsePayTool(detail.payTool);
     detail.bizType = settlementCommon.parseBizType(detail.bizType);
     detail.discountType = settlementCommon.parseDiscountType(detail.discountType);
     detail.chargeMerchant = settlementCommon.parseMerchant(detail.chargeMerchant);
+
+    // 如果原值, 未被修改, 不用显示. 这里的实现方式是删掉原值中和现值相同的字段
+    var currentDetail = data.currentDetail;
+    var lastDetail = data.lastDetail;
+
+    for (var prop in lastDetail) {
+      if (lastDetail.hasOwnProperty(prop) && currentDetail.hasOwnProperty(prop) && lastDetail[prop] == currentDetail[prop]) {
+        lastDetail[prop] = '';
+      }
+    }
 
     if (data.operateRecords) {
       formatEditHistory(data.operateRecords);
@@ -297,12 +315,19 @@ $('#dataTable').on('click', '.btn-detail', function (e) {
     $('#reason option[value="' + detail.reason + '"]').prop('selected', true);
     $('#payStatus option[value="' + detail.payStatus + '"]').prop('selected', true);
 
-    detail = detail.currentDetail;
+    detail = detail.lastDetail;
+    // 先清空掉已选的值(select会默认选择第一个)
+    $('#subsidyTypeNew').val([]);
     $('#subsidyTypeNew option[value="' + detail.subsidyType + '"]').prop('selected', true);
+    $('#partnerNew').val([]);
     $('#partnerNew option[value="' + detail.partner + '"]').prop('selected', true);
+    $('#shipmentStatusNew').val([]);
     $('#shipmentStatusNew option[value="' + detail.shipmentStatus + '"]').prop('selected', true);
+    $('#reconciliationStatusNew').val([]);
     $('#reconciliationStatusNew option[value="' + detail.reconciliationStatus + '"]').prop('selected', true);
+    $('#reasonNew').val([]);
     $('#reasonNew option[value="' + detail.reason + '"]').prop('selected', true);
+    $('#payStatusNew').val([]);
     $('#payStatusNew option[value="' + detail.payStatus + '"]').prop('selected', true);
   });
 });
