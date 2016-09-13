@@ -241,16 +241,24 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     }
     var data = res.data;
 
+    data.detail = data.onlyShipmentInfo;
     if (compare) {
       if (data.operate && data.operate.length > 0) {
         // 我们这里copy一下, 因为, 上面显示是用的select(需要状态码), 下面显示用的td(直接显示状态码对应的值), 不能重用
-        data.detail = $.extend({}, data.operate[0]);
+        data.detail.lastDetail = $.extend({}, data.operate[0]);
       } else {
-        data.detail = {};
+        data.detail.lastDetail = {};
       }
-      data.detail.currentDetail = data.onlyShipmentInfo;
-    } else {
-      data.detail = data.onlyShipmentInfo;
+
+      // 如果原值, 未被修改, 不用显示. 这里的实现方式是删掉原值中和现值相同的字段
+      var currentDetail = data.detail;
+      var lastDetail = data.detail.lastDetail;
+
+      for (var prop in lastDetail) {
+        if (lastDetail.hasOwnProperty(prop) && currentDetail.hasOwnProperty(prop) && lastDetail[prop] == currentDetail[prop]) {
+          lastDetail[prop] = '';
+        }
+      }
     }
 
     var detail = data.detail;
@@ -287,11 +295,15 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     $('#reason option[value="' + detail.reason + '"]').prop('selected', true);
 
     if (compare) {
-      detail = detail.currentDetail;
+
+      detail = detail.lastDetail;
       // $('#subsidyTypeNew option[value="' + detail.subsidyType + '"]').prop('selected', true);
       // $('#partnerNew option[value="' + detail.partner + '"]').prop('selected', true);
+      $('#shipmentStatusNew').val([]);
       $('#shipmentStatusNew option[value="' + detail.shipmentStatus + '"]').prop('selected', true);
+      $('#reconciliationStatusNew').val([]);
       $('#reconciliationStatusNew option[value="' + detail.reconciliationStatus + '"]').prop('selected', true);
+      $('#reasonNew').val([]);
       $('#reasonNew option[value="' + detail.reason + '"]').prop('selected', true);
     } else {
       $('.modal form').parsley().validate();

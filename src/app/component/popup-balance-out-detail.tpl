@@ -6,13 +6,17 @@
   {{#detail}}
     <div class="container-fluid">
 
-      {{^currentDetail}}
+      {{^lastDetail}}
       <div class="row">
         <div class="col-md-4 pull-right">
           <button type="submit" class="form-control btn btn-default edit-submit" data-version="{{version}}" data-id="{{id}}">提交</button>
         </div>
       </div>
-      {{/currentDetail}}
+      {{/lastDetail}}
+
+      {{#lastDetail}}
+        <p style="font-size: 13px;">* 注：左侧是现值，黑色显示<b>；</b>右侧是修改前的值(原值)，红色显示，未修改的字段不显示(若未发现红色字段，说明可能有些字段原值为空，现值是新增的)</p>
+      {{/lastDetail}}
 
       <div class="row">
 
@@ -30,7 +34,7 @@
           <div class="input-group">
             <div class="input-group-addon">出/退货时间</div>
             <input type="text" class="form-control oldValue" id="shipmentDate" value="{{shipmentDate}}" data-parsley-pattern="[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}">
-            <input type="text" class="form-control newValue" id="shipmentDateNew" value="{{currentDetail.shipmentDate}}">
+            <input type="text" class="form-control newValue" id="shipmentDateNew" value="{{lastDetail.shipmentDate}}">
           </div>
         </div>
 
@@ -108,7 +112,7 @@
           <div class="input-group">
             <div class="input-group-addon">二级商户</div>
             <input type="text" class="form-control oldValue" id="merchantName" value="{{merchantName}}">
-            <input type="text" class="form-control newValue" id="merchantNameNew" value="{{currentDetail.merchantName}}">
+            <input type="text" class="form-control newValue" id="merchantNameNew" value="{{lastDetail.merchantName}}">
           </div>
         </div>
 
@@ -116,7 +120,7 @@
           <div class="input-group">
             <div class="input-group-addon">二级商户号</div>
             <input type="text" class="form-control oldValue" id="merchantNo" value="{{merchantNo}}">
-            <input type="text" class="form-control newValue" id="merchantNoNew" value="{{currentDetail.merchantNo}}">
+            <input type="text" class="form-control newValue" id="merchantNoNew" value="{{lastDetail.merchantNo}}">
           </div>
         </div>
 
@@ -167,7 +171,7 @@
             <div class="input-group-addon">交易金额(元)</div>
             <!-- <input type="text" class="form-control" id="settleAmount" value="{{settleAmount}}" readonly> -->
             <input type="text" class="form-control oldValue" id="settleAmount" value="{{settleAmount}}" data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?">
-            <input type="text" class="form-control newValue" id="settleAmountNew" value="{{currentDetail.settleAmount}}">
+            <input type="text" class="form-control newValue" id="settleAmountNew" value="{{lastDetail.settleAmount}}">
           </div>
         </div>
 
@@ -176,7 +180,7 @@
             <div class="input-group-addon">渠道方补贴金额(元)</div>
             <input type="text" class="form-control" id="subsidyAmountO2o" value="{{subsidyAmountO2o}}" readonly>
             <!-- <input type="text" class="form-control oldValue" id="subsidyAmountO2o" value="{{subsidyAmountO2o}}">
-            <input type="text" class="form-control newValue" id="subsidyAmountO2oNew" value="{{currentDetail.subsidyAmountO2o}}"> -->
+            <input type="text" class="form-control newValue" id="subsidyAmountO2oNew" value="{{lastDetail.subsidyAmountO2o}}"> -->
           </div>
         </div>
 
@@ -189,7 +193,7 @@
               <option value="1">预付</option>
               <option value="2">后付</option>
             </select>
-            <select class="form-control newValue" id="subsidyTypeNew" value="{{currentDetail.subsidyType}}">
+            <select class="form-control newValue" id="subsidyTypeNew" value="{{lastDetail.subsidyType}}">
               <option value=""></option>
               <option value="1">预付</option>
               <option value="2">后付</option>
@@ -201,7 +205,7 @@
           <div class="input-group">
             <div class="input-group-addon">应付金额(元)</div>
             <input type="text" class="form-control oldValue" id="acceptanceAppropriation" value="{{acceptanceAppropriation}}" data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?">
-            <input type="text" class="form-control newValue" id="acceptanceAppropriationNew" value="{{currentDetail.acceptanceAppropriation}}">
+            <input type="text" class="form-control newValue" id="acceptanceAppropriationNew" value="{{lastDetail.acceptanceAppropriation}}">
           </div>
         </div>
 
@@ -210,7 +214,7 @@
             <div class="input-group-addon">退票手续费(元)</div>
             <input type="text" class="form-control" id="returnFee" value="{{returnFee}}" readonly>
             <!-- <input type="text" class="form-control oldValue" id="returnFee" value="{{returnFee}}">
-            <input type="text" class="form-control newValue" id="returnFeeNew" value="{{currentDetail.returnFee}}"> -->
+            <input type="text" class="form-control newValue" id="returnFeeNew" value="{{lastDetail.returnFee}}"> -->
           </div>
         </div>
 
@@ -224,7 +228,7 @@
                 <option value="2">TP方</option>
                 <option value="3">渠道方</option>
               </select>
-              <select class="form-control newValue" id="partnerNew" value="{{currentDetail.partner}}">
+              <select class="form-control newValue" id="partnerNew" value="{{lastDetail.partner}}">
                 <option value=""></option>
                 <option value="1">O2O</option>
                 <option value="2">TP方</option>
@@ -237,7 +241,7 @@
           <div class="input-group">
             <div class="input-group-addon">实付金额(元)</div>
             <input type="text" class="form-control oldValue" id="finalSettleAmount" value="{{finalSettleAmount}}" data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?">
-            <input type="text" class="form-control newValue" id="finalSettleAmountNew" value="{{currentDetail.finalSettleAmount}}">
+            <input type="text" class="form-control newValue" id="finalSettleAmountNew" value="{{lastDetail.finalSettleAmount}}">
           </div>
         </div>
 
@@ -306,7 +310,7 @@
                 <option value="8">退货失败</option>
                 <option value="7">退货成功</option>
               </select>
-              <select class="form-control newValue" id="shipmentStatusNew" value="{{currentDetail.shipmentStatus}}">
+              <select class="form-control newValue" id="shipmentStatusNew" value="{{lastDetail.shipmentStatus}}">
                 <option value=""></option>
                 <option value="4">出货中</option>
                 <option value="3">出货失败</option>
@@ -334,7 +338,7 @@
               <option value="3">对账成功</option>
               <option value="4">确认</option>
             </select>
-            <select class="form-control newValue" id="reconciliationStatusNew" value="{{currentDetail.reconciliationStatus}}">
+            <select class="form-control newValue" id="reconciliationStatusNew" value="{{lastDetail.reconciliationStatus}}">
               <!-- <option value=""></option> -->
               <option value="1">未对账</option>
               <option value="2">对账不一致</option>
@@ -364,7 +368,7 @@
               <option value="6">票类错误</option>
               <option value="7">出货成功, 支付失败(未扣款)</option>
             </select>
-            <select class="form-control newValue" id="reasonNew" value="{{currentDetail.reason}}">
+            <select class="form-control newValue" id="reasonNew" value="{{lastDetail.reason}}">
               <option value=""></option>
               <option value="1">出货失败, 支付成功(未退款)</option>
               <option value="2">退货失败, 退款成功(无承债方)</option>
