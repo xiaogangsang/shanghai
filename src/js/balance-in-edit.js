@@ -75,6 +75,8 @@ $('#formSearch').on('submit', function (e) {
       return false;
     }
 
+    _pageSize = $('#search_pageSize').val();
+
     sendData = {
       dateType: dateIsRequired ? $('#search_dateType').val() : '',
       periodStart: dateIsRequired ? $('#search_startTime').val() : '',

@@ -66,6 +66,8 @@ $('#formSearch').on('submit', function (e) {
       return false;
     }
 
+    _pageSize = $('#search_pageSize').val();
+
     sendData = {
       dateType: dateIsRequired ? $('#search_dateType').val() : '',
       beginTime: dateIsRequired ? $('#search_startTime').val() : '',
