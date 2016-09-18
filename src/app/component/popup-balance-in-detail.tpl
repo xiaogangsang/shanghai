@@ -219,6 +219,27 @@
           </div>
         </div>
 
+        <div class="form-group col-sm-6 col-md-6">
+          <div class="input-group">
+            <div class="input-group-addon">退款原因</div>
+            <input type="text" class="form-control" id="refundReason" value="{{refundReason}}" readonly>
+          </div>
+        </div>
+
+        <div class="form-group col-sm-6 col-md-6">
+          <div class="input-group">
+            <div class="input-group-addon">二级商户</div>
+            <input type="text" class="form-control" id="merchant2" value="{{merchant2}}" >
+          </div>
+        </div>
+
+        <div class="form-group col-sm-6 col-md-6">
+          <div class="input-group">
+            <div class="input-group-addon">二级商户号</div>
+            <input type="text" class="form-control" id="merchant2No" value="{{merchant2No}}" >
+          </div>
+        </div>
+
       </div>
 
     </div>
@@ -303,6 +324,22 @@
               <option value="3">状态错误</option>
               <option value="4">金额不符</option>
             </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+
+      <div class="row"> 
+        <span style="display: block; margin-top: 10px;">备注信息:</span>
+        <hr style="margin-top: 3px;">
+        
+
+        <div class="form-group col-sm-6 col-md-6">
+          <div class="input-group">
+            <div class="input-group-addon">备注</div>
+            <textarea class="form-control" id="remake" value="{{remake}}" ></textarea>
           </div>
         </div>
       </div>
