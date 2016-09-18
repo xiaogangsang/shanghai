@@ -42,6 +42,8 @@ $('#formSearch').on('submit', function (e) {
     }
   }
 
+  _pageSize = $('#search_pageSize').val();
+
   var sendData = {
     dateType: $('#search_dateType').val(),
     startTime: $('#search_startTime').val(),
