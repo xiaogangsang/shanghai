@@ -91,6 +91,7 @@
                 <option value="">全部</option>
                 <option value="1">活动</option>
                 <option value="2">优惠券</option>
+                <option value="3">无优惠</option>
               </select>
             </div>
           </div>
@@ -197,7 +198,6 @@
               <thead>
                 <tr>
                   <th>操作时间</th>
-                  <th>支付流水号</th>
                   <th>交易订单号</th>
                   <th>收单商户</th>
                   <th>收单商户号</th>
@@ -207,7 +207,7 @@
                   <th>退票手续费(元)</th>
                   <th>服务费(元)</th>
                   <th>渠道方补贴金额(元)</th>
-                  <th>应收金额(元)</th>
+                  <th>O2O应收金额(元)</th>
                   <th>承债方</th>
                   <th>优惠方式</th>
                   <th>活动/优惠券名称</th>
@@ -253,7 +253,6 @@
     {{#rows}}
     <tr data-id="{{id}}" data-bannertype="{{bannerType}}">
       <td>{{operateTime}}</td>
-      <td>{{paySequenceNo}}</td>
       <td>{{orderNo}}</td>
       <td>{{chargeMerchant}}</td>
       <td>{{chargeMerchantNo}}</td>
