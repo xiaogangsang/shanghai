@@ -226,6 +226,20 @@
           </div>
         </div>
 
+        <div class="form-group col-sm-6 col-md-6">
+          <div class="input-group">
+            <div class="input-group-addon">二级商户</div>
+            <input type="text" class="form-control" id="merchant2" value="{{merchant2}}" >
+          </div>
+        </div>
+
+        <div class="form-group col-sm-6 col-md-6">
+          <div class="input-group">
+            <div class="input-group-addon">二级商户号</div>
+            <input type="text" class="form-control" id="merchant2No" value="{{merchant2No}}" >
+          </div>
+        </div>
+
       </div>
 
     </div>
