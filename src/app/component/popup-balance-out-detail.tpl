@@ -93,18 +93,18 @@
     </div>
 
     <div class="container-fluid">
-        <div class="row">
+      <div class="row">
 
-        <span style="display: block; margin-top: 10px;">结算信息:</span>
-        <hr style="margin-top: 3px;">
+      <span style="display: block; margin-top: 10px;">结算信息:</span>
+      <hr style="margin-top: 3px;">
 
-          <div class="form-group col-sm-6 col-md-6">
-            <div class="input-group">
-              <div class="input-group-addon">业务类别</div>
-              <input type="text" class="form-control" id="bizType" value="{{bizType}}" readonly>
-            </div>
+        <div class="form-group col-sm-6 col-md-6">
+          <div class="input-group">
+            <div class="input-group-addon">业务类别</div>
+            <input type="text" class="form-control" id="bizType" value="{{bizType}}" readonly>
           </div>
         </div>
+      </div>
 
       <div class="row">
 
@@ -242,6 +242,13 @@
             <div class="input-group-addon">实付金额(元)</div>
             <input type="text" class="form-control oldValue" id="finalSettleAmount" value="{{finalSettleAmount}}" data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?">
             <input type="text" class="form-control newValue" id="finalSettleAmountNew" value="{{lastDetail.finalSettleAmount}}">
+          </div>
+        </div>
+
+        <div class="form-group col-sm-6 col-md-6">
+          <div class="input-group">
+            <div class="input-group-addon">O2O应收金额</div>
+            <input type="text" class="form-control" id="o2oReceivableAmount" value="{{o2oReceivableAmount}}" readonly>
           </div>
         </div>
 
