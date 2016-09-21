@@ -148,7 +148,7 @@
 #popup-unit-dimen .checkbox-inline {
   margin-top: 0;
   margin-left: 10px;
-  width: 20%;
+  min-width: 10%;
 }
 
 #priorityTable>tbody>tr>th {
