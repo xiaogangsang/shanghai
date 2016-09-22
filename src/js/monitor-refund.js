@@ -102,6 +102,8 @@ $('#formSearch').on('submit', function (e) {
         _(res.data.rows).forEach(function (item) {
           item.shipStatus = _shipStatus[+item.shipStatus];
           item.status = _status[+item.status];
+          item.createTime = common.getDate(new Date(+item.createTime));
+          item.autoRefundTime = common.getDate(new Date(+item.autoRefundTime));
         });
 
         setTableData(res.data.rows);
