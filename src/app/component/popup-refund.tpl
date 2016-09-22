@@ -10,6 +10,7 @@
           <div class="form-group">
             <div class="input-group">
               <div class="input-group-addon">选择退款承担方</div>
+              <div class="radio-inline"><label><input type="radio" name="refundAmountUndertaker" value="0" required data-parsley-errors-container="#error-refundAmountUndertaker"><span>无</span></label></div>
               <div class="radio-inline"><label><input type="radio" name="refundAmountUndertaker" value="1" required data-parsley-errors-container="#error-refundAmountUndertaker"><span>O2O</span></label></div>
               <div class="radio-inline"><label><input type="radio" name="refundAmountUndertaker" value="2" required data-parsley-errors-container="#error-refundAmountUndertaker"><span>合作方</span></label></div>
               <div class="radio-inline"><label><input type="radio" name="refundAmountUndertaker" value="3" required data-parsley-errors-container="#error-refundAmountUndertaker"><span>渠道</span></label></div>
