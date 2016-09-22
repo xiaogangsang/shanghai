@@ -1005,7 +1005,7 @@ function setEdit(couponId) {
 
       //渠道
       if (coupon.channels != null && coupon.channels.length > 0) {
-        setChannel(coupon.channels)
+        setChannel(coupon.channels);
       } else {
         setChannel(false);
       }
@@ -1014,7 +1014,7 @@ function setEdit(couponId) {
       coupon.films != null && coupon.films.length > 0 ? setMovie(coupon.films) : setMovie(false);
 
       //制式
-      var previewHtmlConfigType = coupon.configType.length == _configType.length ? '' : '[' + coupon.configType.join('] [') + ']';
+      var previewHtmlConfigType = coupon.configType.length == 0 ? '不限' : '[' + coupon.configType.join('] [') + ']';
       $('#preview-dimen').html(previewHtmlConfigType);
 
       //影院
