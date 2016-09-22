@@ -1273,6 +1273,7 @@ function setEdit(unitId) {
       _popupDataCache.films = unit.films != null ? unit.filmsfilms : [];
       _popupDataCache.configType = unit.configType != null ? unit.configType : [];
       _popupDataCache.qualification = unit.qualification != undefined ? unit.qualification[0] : '';
+      _popupDataCache.advancePayment = coupon.advancePayment.split(',');
 
       if (unit.cinemas != null) {
         $.ajax({
@@ -1337,7 +1338,7 @@ function setEdit(unitId) {
 
       $('input[name=advancePayment]').prop({ disabled: true, checked: false });
       $('input[name=advancePayment]').each(function (index, el) {
-        $(el).prop('checked', $(el).val() == unit.advancePayment ? true : false);
+        $(el).prop('checked', $(el).val() == _popupDataCache.advancePayment ? true : false);
       });
 
       $('#cinemaPageDesc').val(unit.cinemaPageDesc);

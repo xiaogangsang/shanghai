@@ -927,6 +927,7 @@ function setEdit(couponId) {
       _popupDataCache.films = coupon.films != null ? coupon.films : [];
       _popupDataCache.configType = coupon.configType != null ? coupon.configType : [];
       _popupDataCache.timetables = coupon.timetables != null ? coupon.timetables : [];
+      _popupDataCache.advancePayment = coupon.advancePayment.split(',');
 
       coupon.cinemas = coupon.cinemas != null ? coupon.cinemas : [];
       $.ajax({
@@ -961,7 +962,7 @@ function setEdit(couponId) {
 
       $('input[name=advancePayment]').prop({ disabled: true, checked: false });
       $('input[name=advancePayment]').each(function (index, el) {
-        if ($(el).val() == coupon.advancePayment) {
+        if ($(el).val() == _popupDataCache.advancePayment) {
           $(el).prop('checked', true);
         }
       });
