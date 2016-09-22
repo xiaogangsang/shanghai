@@ -1011,6 +1011,7 @@ function setEdit(couponId) {
       _popupDataCache.screenType = coupon.screenType != null ? coupon.screenType : ['普通', 'IMAX', 'DMAX', '巨幕'];
       _popupDataCache.hallType = coupon.hallType != null ? coupon.hallType : ['普通', '4D', '5D'];
       _popupDataCache.timetables = coupon.timetables != null ? coupon.timetables : [];
+      _popupDataCache.advancePayment = coupon.advancePayment.split(',');
 
       coupon.cinemas = coupon.cinemas != null ? coupon.cinemas : [];
       $.ajax({
@@ -1045,7 +1046,7 @@ function setEdit(couponId) {
 
       $('input[name=advancePayment]').prop({ disabled: true, checked: false });
       $('input[name=advancePayment]').each(function (index, el) {
-        if ($(el).val() == coupon.advancePayment) {
+        if ($(el).val() == _popupDataCache.advancePayment) {
           $(el).prop('checked', true);
         }
       });
