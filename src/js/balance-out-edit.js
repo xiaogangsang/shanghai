@@ -79,7 +79,7 @@ $('#formSearch').on('submit', function (e) {
       return false;
     }
 
-    _pageSize = $('#search_pageSize').val();
+    _pageSize = $('#search_pageSize').val() || 10;
 
     sendData = {
       dateType: $('#search_dateType').val(),
@@ -404,3 +404,54 @@ $(document).on('submit', '#popup-detail form', function(e) {
     }
   });
 });
+
+
+
+/************************************************* 批量操作 ***************************************************/
+$('.multi-check-all').change(function(e) {
+  e.preventDefault();
+  var isChecked = $(this).is(':checked');
+
+  if (isChecked) {
+    $('#dataTable tbody :checkbox:not(:checked)').prop('checked', true);
+  } else {
+    $('#dataTable tbody :checkbox:checked').prop('checked', false);
+  }
+});
+
+
+$('body').on('change', 'tr > td :checkbox', function(e) {
+  e.preventDefault();
+
+  var isChecked = $(this).is(':checked');
+
+  if (!isChecked) {
+    $('.multi-check-all').prop('checked', false);
+  }
+});
+
+// 批量审核通过
+$('.btn-batch-approve').click(function() {
+  batchOperate('1');
+});
+
+// 批量审核驳回
+$('.btn-batch-reject').click(function() {
+  batchOperate('2');
+});
+
+function batchOperate(type) {
+  var parameters = [];
+
+  $('#dataTable tbody :checkbox:checked').each(function(index) {
+    var id = $(this).closest('tr').data('id');
+    parameters.push(id);
+  });
+
+  if (parameters.length === 0) {
+    alert('请至少选择一条记录!');
+    return false;
+  }
+
+  alert('接口尚未联调.  操作: ' + (type == 1 ? '批量审核通过' : '批量审核驳回') + '. 选择的记录的ID: ' + parameters);
+}
