@@ -579,7 +579,7 @@ $(document).on('submit', '#formEdit', function (event) {
     endDate: $('#endDate').val(),
     budgetSource: $('#budgetSource').val(),
     wandaTicketId: $('#wandaTicketId').val(),
-    advancePayment: $('input[name=advancePayment]:checked').map(function () {return $(this).val();}).get(),
+    advancePayment: $('input[name=advancePayment]:checked').map(function () {return $(this).val();}).get().join(','),
     couponDesc: $.trim($('#couponDesc').val()),
     imageUrl: $.trim($('#imageUrl').val()),
     maxInventory: $.trim($('#maxInventory').val()),
