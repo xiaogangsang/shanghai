@@ -1337,7 +1337,7 @@ function setEdit(unitId) {
       _popupDataCache.screenType = unit.screenType;
       _popupDataCache.hallType = unit.hallType;
       _popupDataCache.qualification = unit.qualification != undefined ? unit.qualification[0] : '';
-      _popupDataCache.advancePayment = coupon.advancePayment.split(',');
+      _popupDataCache.advancePayment = unit.advancePayment.split(',');
 
       if (unit.cinemas != null) {
         $.ajax({
