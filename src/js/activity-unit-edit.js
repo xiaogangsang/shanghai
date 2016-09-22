@@ -840,7 +840,7 @@ $(document).on('submit', '#formUnit', function (event) {
     planId: $('#planId').val(),
     budgetSource: $('#budgetSource').val(),
     wandaTicketId: $('#wandaTicketId').val(),
-    advancePayment: $('input[name=advancePayment]:checked').map(function () {return ~~$(this).val();}).get(),
+    advancePayment: $('input[name=advancePayment]:checked').map(function () {return $(this).val();}).get(),
     beginDate: $('#beginDate').val(),
     endDate: $('#endDate').val(),
     dailyEffectiveBeginTime: $('#beginHH').val() + ':' + $('#beginMM').val() + ':' + $('#beginSS').val(),
