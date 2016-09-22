@@ -962,9 +962,7 @@ function setEdit(couponId) {
 
       $('input[name=advancePayment]').prop({ disabled: true, checked: false });
       $('input[name=advancePayment]').each(function (index, el) {
-        if ($(el).val() == _popupDataCache.advancePayment) {
-          $(el).prop('checked', true);
-        }
+        $(el).prop('checked', _popupDataCache.advancePayment.indexOf($(el).val()) > -1 ? true : false);
       });
 
       $('#couponDesc').val(coupon.couponDesc);
