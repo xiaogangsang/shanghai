@@ -480,7 +480,7 @@ $(document).on('submit', '#popup-detail form', function(e) {
     reconciliationStatus: $('#reconciliationStatus').val(),
     payStatus: $('#payStatus').val(),
     reason: $('#reason').val(),
-    remake: $('#remake').val()
+    remark: $('#remark').val()
   };
 
   $.ajax({

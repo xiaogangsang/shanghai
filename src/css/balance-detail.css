@@ -30,11 +30,13 @@
 .detail-area.compare .newValue {
 	color: red;
 	width: 50%;
+	max-width: 50%;
 	float: right;
 }
 
 .detail-area.compare .oldValue {
 	width: 50%;
+	max-width: 50%;
 	float: left;
 }
 

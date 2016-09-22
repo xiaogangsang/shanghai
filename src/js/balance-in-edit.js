@@ -413,7 +413,8 @@ $(document).on('submit', '#popup-detail form', function(e) {
     o2oReceivableAmount: $('#o2oReceivableAmount').val(),
     reconciliationStatus: $('#reconciliationStatus').val(),
     payStatus: $('#payStatus').val(),
-    reason: $('#reason').val()
+    reason: $('#reason').val(),
+    remark: $('#remark').val()
   };
 
   $.ajax({

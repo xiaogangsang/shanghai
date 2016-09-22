@@ -335,11 +335,11 @@
         <span style="display: block; margin-top: 10px;">备注信息:</span>
         <hr style="margin-top: 3px;">
         
-
-        <div class="form-group col-sm-6 col-md-6">
+        <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
             <div class="input-group-addon">备注</div>
-            <textarea class="form-control" id="remake" value="{{remake}}" ></textarea>
+            <textarea class="form-control oldValue" id="remark" value="{{remark}}" ></textarea>
+            <textarea class="form-control newValue" id="remarkNew" value="{{lastDetail.remark}}" ></textarea>
           </div>
         </div>
       </div>

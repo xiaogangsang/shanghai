@@ -386,7 +386,8 @@ $(document).on('submit', '#popup-detail form', function(e) {
     finalSettleAmount: $('#finalSettleAmount').val(),
     reconciliationStatus: $('#reconciliationStatus').val(),
     shipmentStatus: $('#shipmentStatus').val(),
-    reason: $('#reason').val()
+    reason: $('#reason').val(),
+    remark: $('#remark').val()
   };
 
   $.ajax({
