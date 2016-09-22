@@ -1402,7 +1402,7 @@ function setEdit(unitId) {
 
       $('input[name=advancePayment]').prop({ disabled: true, checked: false });
       $('input[name=advancePayment]').each(function (index, el) {
-        $(el).prop('checked', $(el).val() == _popupDataCache.advancePayment ? true : false);
+        $(el).prop('checked', _popupDataCache.advancePayment.indexOf($(el).val()) > -1 ? true : false);
       });
 
       $('#cinemaPageDesc').val(unit.cinemaPageDesc);
