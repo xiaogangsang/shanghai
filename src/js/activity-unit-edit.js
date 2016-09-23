@@ -1442,7 +1442,7 @@ function setEdit(unitId) {
       unit.films != null && unit.films.length > 0 ? setMovie(unit.films) : setMovie(false);
 
       //制式
-      var previewHtmlConfigType = unit.configType.length == 0 ? '不限' : '[' + unit.configType.join('] [') + ']';
+      var previewHtmlConfigType = unit.configType == null || unit.configType.length == 0 ? '不限' : '[' + unit.configType.join('] [') + ']';
       $('#preview-dimen').html(previewHtmlConfigType);
 
       //影院
