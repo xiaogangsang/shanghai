@@ -840,7 +840,6 @@ $(document).on('submit', '#formUnit', function (event) {
     planId: $('#planId').val(),
     budgetSource: $('#budgetSource').val(),
     wandaTicketId: $('#wandaTicketId').val(),
-    advancePayment: $('input[name=advancePayment]:checked').map(function () {return $(this).val();}).get().join(','),
     beginDate: $('#beginDate').val(),
     endDate: $('#endDate').val(),
     dailyEffectiveBeginTime: $('#beginHH').val() + ':' + $('#beginMM').val() + ':' + $('#beginSS').val(),
@@ -867,6 +866,18 @@ $(document).on('submit', '#formUnit', function (event) {
     cinemas: [],
     timetables: _popupDataCache.timetables,
   };
+
+  switch ($('input[name=advancePayment]:checked').length) {
+    case 0:
+      sendData.advancePayment = 'NO';
+    break;
+    case $('input[name=advancePayment]').length:
+      sendData.advancePayment = 'ALL';
+    break;
+    default:
+      $('input[name=advancePayment]:checked').map(function () {return $(this).val();}).get().join(',');
+    break;
+  }
 
   $('input[name=repeatedDay]:checked').each(function (index, el) {
     sendData.repeatedDay.push($(el).val());
@@ -1402,7 +1413,7 @@ function setEdit(unitId) {
 
       $('input[name=advancePayment]').prop({ disabled: true, checked: false });
       $('input[name=advancePayment]').each(function (index, el) {
-        $(el).prop('checked', _popupDataCache.advancePayment.indexOf($(el).val()) > -1 ? true : false);
+        $(el).prop('checked', _popupDataCache.advancePayment == 'ALL' || _popupDataCache.advancePayment.indexOf($(el).val()) > -1 ? true : false);
       });
 
       $('#cinemaPageDesc').val(unit.cinemaPageDesc);
