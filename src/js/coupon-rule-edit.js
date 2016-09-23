@@ -539,7 +539,7 @@ $(document).on('submit', '#formEdit', function (event) {
       sendData.advancePayment = 'ALL';
     break;
     default:
-      $('input[name=advancePayment]:checked').map(function () {return $(this).val();}).get().join(',');
+      sendData.advancePayment = $('input[name=advancePayment]:checked').map(function () {return $(this).val();}).get().join(',');
     break;
   }
 
