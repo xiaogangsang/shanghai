@@ -187,6 +187,7 @@
                 <option value="2">待审核</option>
                 <option value="3">审核完成</option>
                 <option value="4">驳回</option>
+                <option value="5">已反审核</option>
               </select>
             </div>
           </div>
@@ -204,13 +205,27 @@
             </div>
           </div>
 
-          <div class="col-xs-6 col-sm-6 col-md-6 pull-right">
+          <div class="col-xs-12">
             <div class="row">
               <div class="col-xs-6">
                 <button type="submit" class="btn btn-block btn-primary">查询</button>
               </div>
               <div class="col-xs-6">
                 <button type="button" class="btn btn-block btn-default btn-reset">重置</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xs-12">
+            <div class="row">
+              <div class="col-xs-4">
+                <button type="button" class="btn btn-block btn-default btn-export">导出修改记录</button>
+              </div>
+              <div class="col-xs-4">
+                <button type="button" class="btn btn-block btn-default btn-batch-reverse">批量反审核</button>
+              </div>
+              <div class="col-xs-4">
+                <button type="button" class="btn btn-block btn-default btn-all-reverse">全部反审核</button>
               </div>
             </div>
           </div>
@@ -225,6 +240,7 @@
             <table class="table table-hover" id="dataTable">
               <thead>
                 <tr>
+                  <th><input type="checkbox" class="multi-check-all"></th>
                   <th>操作时间</th>
                   <th>二级商户订单号</th>
                   <th>商品订单号</th>
@@ -248,7 +264,7 @@
               </thead>
               <tbody>
                 <tr>
-                  <td colspan="30" align="center">请点击“查询”按钮！</td>
+                  <td colspan="20" align="center">请点击“查询”按钮！</td>
                 </tr>
               </tbody>
             </table>
@@ -283,6 +299,7 @@
   <script id="table-template" type="text/x-tmpl-mustache">
     {{#rows}}
     <tr data-id="{{id}}" data-bannertype="{{bannerType}}">
+      <td><input type="checkbox" class="multi-check"></td>
       <td>{{updateTime}}</td>
       <td>{{thdOrderNo}}</td>
       <td>{{bizOrderNo}}</td>
@@ -311,6 +328,9 @@
         {{#canEdit}}
         <button class="btn btn-xs btn-default btn-edit" data-compare="0" data-id="{{id}}">重新修改</button>
         {{/canEdit}}
+        {{#canReverse}}
+        <button class="btn btn-xs btn-default btn-reverse" data-id="{{id}}">反审核</button>
+        {{/canReverse}}
       </td>
     </tr>
     {{/rows}}

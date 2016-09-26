@@ -133,6 +133,7 @@ function handleData(res) {
 
     _(record).forEach(function(item) {
       item.canEdit = (item.checkStatus != 2 && item.checkStatus != 3 && item.reconciliationStatus != 4); // 待审核/审核完成状态不能再修改, 对账状态为确认的也不能修改
+      item.canReverse = (item.checkStatus == 3);
       item.bizType = settlementCommon.parseBizType(item.bizType);
       item.payStatus = settlementCommon.parsePayStatus(item.payStatus);
       item.partner = settlementCommon.parsePartner(item.partner);
@@ -405,6 +406,27 @@ $(document).on('submit', '#popup-detail form', function(e) {
   });
 });
 
+// 反审核(单条记录)
+$('#dataTable').on('click', '.btn-reverse', function(e) {
+  e.preventDefault();
+
+  var id = $(this).data('id');
+
+  $.ajax({
+    url: common.API_HOST + 'settlement/shipmentInfo/antiExamination',
+    type: 'GET',
+    data: {id: id}
+  })
+  .done(function(res) {
+    if (!!~~res.meta.result) {
+      alert('操作成功!');
+      $('#formSearch').trigger('submit');
+    } else {
+      alert(res.meta.msg);
+      return false;
+    }
+  });
+});
 
 
 /************************************************* 批量操作 ***************************************************/
@@ -430,28 +452,171 @@ $('body').on('change', 'tr > td :checkbox', function(e) {
   }
 });
 
-// 批量审核通过
-$('.btn-batch-approve').click(function() {
-  batchOperate('1');
-});
+// 修改记录导出(from 修改记录)
+$('.btn-export').click(function(e) {
+  e.preventDefault();
 
-// 批量审核驳回
-$('.btn-batch-reject').click(function() {
-  batchOperate('2');
-});
+  if ($('#dataTable tr td').length < 2) {
+    alert('请先查询再进行此操作!');
+    return false;
+  }
 
-function batchOperate(type) {
-  var parameters = [];
-
-  $('#dataTable tbody :checkbox:checked').each(function(index) {
-    var id = $(this).closest('tr').data('id');
-    parameters.push(id);
+  $.ajax({
+    url: common.API_HOST + 'settlement/shipmentInfo/checkListExport',
+    type: 'GET',
+    data: searchCache
+  })
+  .done(function(res) {
+    if (!!~~res.meta.result) {
+        // window.location.href = common.API_HOST + 'settlement/merchantAttachment/downLoad?fileUrl=' + res.data.fileUrl;
+        alert('您的申请已提交，系统正在为您导出数据，需要约15分钟，\n请至下载列表查看并下载导出结果。\n导出的数据仅保留3天，请及时查看并下载。');
+      } else {
+        alert(res.meta.msg);
+      }
   });
 
-  if (parameters.length === 0) {
+  // alert('接口尚未调通. 批量导出, 选中的id: ' + ids);
+});
+
+// 批量反审核(from 修改记录)
+$('.btn-batch-reverse').click(function(e) {
+  var ids = selectedIds();
+
+  if (ids.length === 0) {
     alert('请至少选择一条记录!');
     return false;
   }
 
-  alert('接口尚未联调.  操作: ' + (type == 1 ? '批量审核通过' : '批量审核驳回') + '. 选择的记录的ID: ' + parameters);
+  $.ajax({
+    url: common.API_HOST + 'settlement/shipmentInfo/antiExaminationByIds',
+    type: 'POST',
+    data: {ids: ids}
+  })
+  .done(function(res) {
+    if (!!~~res.meta.result) {
+      alert('操作成功!');
+      $('#formSearch').trigger('submit');
+    } else {
+      alert(res.meta.msg);
+      return false;
+    }
+  });
+});
+
+$('.btn-all-reverse').click(function(e) {
+  e.preventDefault();
+
+  if ($('#dataTable tr td').length < 2) {
+    alert('请先查询再进行此操作!');
+    return false;
+  }
+
+  $.ajax({
+    url: common.API_HOST + 'TODO:',
+    type: 'GET',
+    data: searchTerms
+  })
+  .done(function(res) {
+    if (!!~~res.meta.result) {
+      alert('操作成功!');
+      $('#formSearch').trigger('submit');
+    } else {
+      alert(res.meta.msg);
+      return false;
+    }
+  });
+});
+
+// 批量审核通过
+$('.btn-batch-approve').click(function() {
+  batchOperate('3');
+});
+
+// 批量审核驳回
+$('.btn-batch-reject').click(function() {
+  batchOperate('4');
+});
+
+function batchOperate(type) {
+
+  var ids = selectedIds();
+
+  if (ids.length === 0) {
+    alert('请至少选择一条记录!');
+    return false;
+  }
+
+  var param = {ids: ids, checkStatus: type};
+
+  $.ajax({
+    url: common.API_HOST + 'settlement/shipmentInfo/checkByIds',
+    type: 'GET',
+    data: param
+  })
+  .done(function(res) {
+    if (!!~~res.meta.result) {
+      alert('提交成功!');
+      $('#formSearch').trigger('submit');
+    } else {
+      alert(res.meta.msg);
+      return false;
+    }
+  });
+
+  // alert('接口尚未联调.  操作: ' + (type == 1 ? '批量审核通过' : '批量审核驳回') + '. 选择的记录的ID: ' + parameters);
+}
+
+function selectedIds() {
+  var ids = [];
+
+  $('#dataTable tbody :checkbox:checked').each(function(index) {
+    var id = $(this).closest('tr').data('id');
+    ids.push(id);
+  });
+  return ids;
+}
+
+// 全部审核通过
+$('.btn-all-approve').click(function(e) {
+  e.preventDefault();
+
+  if ($('#dataTable tr td').length < 2) {
+    alert('请先查询再进行此操作!');
+    return false;
+  }
+
+  operateAll('3');
+});
+
+// 全部审核驳回
+$('.btn-all-reject').click(function(e) {
+  e.preventDefault();
+
+  if ($('#dataTable tr td').length < 2) {
+    alert('请先查询再进行此操作!');
+    return false;
+  }
+
+  operateAll('4');
+});
+
+function operateAll(type) {
+
+  var searchTerms = settlementCommon.clone(searchCache);
+  searchTerms.newCheckStatus = type;
+
+  $.ajax({
+    url: common.API_HOST + 'settlement/shipmentInfo/updateCheckByCondition',
+    type: 'GET',
+    data: searchTerms
+  })
+  .done(function(res) {
+    if (!!~~res.meta.result) {
+      alert('操作成功!');
+      $('#formSearch').trigger('submit');
+    } else {
+      alert(res.meta.msg);
+      return false;
+    }
+  });
 }
