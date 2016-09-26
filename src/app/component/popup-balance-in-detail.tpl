@@ -229,14 +229,16 @@
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">二级商户</div>
-            <input type="text" class="form-control" id="merchant2" value="{{merchant2}}" >
+            <input type="text" class="form-control oldValue" id="merchantName" value="{{merchantName}}">
+            <input type="text" class="form-control newValue" id="merchantNameNew" value="{{lastDetail.merchantName}}">
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">二级商户号</div>
-            <input type="text" class="form-control" id="merchant2No" value="{{merchant2No}}" >
+            <input type="text" class="form-control oldValue" id="merchantNo" value="{{merchantNo}}">
+            <input type="text" class="form-control newValue" id="merchantNoNew" value="{{lastDetail.merchantNo}}">
           </div>
         </div>
 
@@ -338,8 +340,8 @@
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
             <div class="input-group-addon">备注</div>
-            <textarea class="form-control oldValue" id="remark" value="{{remark}}" ></textarea>
-            <textarea class="form-control newValue" id="remarkNew" value="{{lastDetail.remark}}" ></textarea>
+            <textarea class="form-control oldValue" id="remarks" value="{{remarks}}" ></textarea>
+            <textarea class="form-control newValue" id="remarksNew" value="{{lastDetail.remarks}}" ></textarea>
           </div>
         </div>
       </div>

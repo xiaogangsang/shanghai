@@ -488,7 +488,7 @@ $(document).on('submit', '#popup-detail form', function(e) {
     reconciliationStatus: $('#reconciliationStatus').val(),
     shipmentStatus: $('#shipmentStatus').val(),
     reason: $('#reason').val(),
-    remark: $('#remark').val()
+    remarks: $('#remarks').val()
   };
   
   $.ajax({

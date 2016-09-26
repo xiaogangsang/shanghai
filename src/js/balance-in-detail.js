@@ -83,7 +83,7 @@ $('#formSearch').on('submit', function (e) {
       reason: $('#search_reason').val(),
       orderNo: $('#search_orderNo').val(),
       thdSerialNo: $('#search_thdSerialNo').val(),
-      paySequenceNo: $('#search_paySequenceNo').val(),
+      // paySequenceNo: $('#search_paySequenceNo').val(),
       checkStatus: $('#search_checkStatus').val(),
       pageSize: _pageSize,
     };
@@ -480,7 +480,8 @@ $(document).on('submit', '#popup-detail form', function(e) {
     reconciliationStatus: $('#reconciliationStatus').val(),
     payStatus: $('#payStatus').val(),
     reason: $('#reason').val(),
-    remark: $('#remark').val()
+    merchantName: $('#merchantName').val(),
+    remarks: $('#remarks').val()
   };
 
   $.ajax({
