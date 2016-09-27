@@ -100,7 +100,7 @@ settlementCommon.parsePartner = function(status) {
 
 
 // 审核状态
-settlementCommon.checkStatus = {'1' : '未修改', '2' : '待审核', '3' : '审核完成', '4' : '驳回'};
+settlementCommon.checkStatus = {'1' : '未修改', '2' : '待审核', '3' : '审核完成', '4' : '驳回', '5' : '已反审核'};
 
 settlementCommon.parseCheckStatus = function(status) {
   return this.checkStatus[status];
@@ -280,6 +280,38 @@ settlementCommon.prehandleData = function(res) {
   return false;
 }
 
+settlementCommon.clone = function(objectToBeCloned) {
+  // Basis.
+  if (!(objectToBeCloned instanceof Object)) {
+    return objectToBeCloned;
+  }
+
+  var objectClone;
+  
+  // Filter out special objects.
+  var Constructor = objectToBeCloned.constructor;
+  switch (Constructor) {
+    // Implement other special objects here.
+    case RegExp:
+      objectClone = new Constructor(objectToBeCloned);
+      break;
+    case Date:
+      objectClone = new Constructor(objectToBeCloned.getTime());
+      break;
+    default:
+      objectClone = new Constructor();
+  }
+  
+  // Clone each property.
+  for (var prop in objectToBeCloned) {
+    objectClone[prop] = this.clone(objectToBeCloned[prop]);
+  }
+  
+  return objectClone;
+}
+
+
+/************************************************* 全局初始化处理 *****************************************************/
 
 // 点击隐藏/显示左侧菜单栏 的按钮
 $(function() {

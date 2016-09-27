@@ -43,40 +43,54 @@ $('#formSearch').on('click', 'button[type=submit]', function (event) {
 $('#formSearch').on('submit', function (e) {
   e.preventDefault();
 
-  if (!useCache) {
-    if (!$('#formSearch').parsley().isValid()) {
-      return false;
-    }
-  }
-
-  var sendData = {
-  	dateType: $('#search_dateType').val(),
-    beginTime: $('#search_startTime').val(),
-    endTime: $('#search_endTime').val(),
-    chargeMerchant: $('#search_chargeMerchant').val(),
-    chargeMerchantNo: $('#search_chargeMerchantNo').val(),
-    partner: $('#search_partner').val(),
-    discountType: $('#search_discountType').val(),
-    discountName: $('#search_discountName').val(),
-    bizType: $('#search_bizType').val(),
-    payStatus: $('#search_payStatus').val(),
-    reconciliationStatus: $('#search_reconciliationStatus').val(),
-    reason: $('#search_reason').val(),
-    orderNo: $('#search_orderNo').val(),
-    thdSerialNo: $('#search_thdSerialNo').val(),
-    paySequenceNo: $('#search_paySequenceNo').val(),
-    checkStatus: $('#search_checkStatus').val(),
-    pageSize: _pageSize,
-  };
-  if (!!_querying) {
+  if (_querying) {
     return false;
   }
 
   _querying = true;
-  if (useCache) {
-    sendData = searchCache;
-  } else {
+
+  var sendData;
+
+  if (!useCache) {
+
+    // 输入 交易订单号 或者 收单方支付订单号 后, 无需输入日期
+    var orderNo = $('#search_orderNo').val();
+    var thdSerialNo = $('#search_thdSerialNo').val();
+    var dateIsRequired = (orderNo === '' && thdSerialNo === '');
+
+    $('#search_dateType').prop('required', dateIsRequired);
+    $('#search_startTime').prop('required', dateIsRequired);
+    $('#search_endTime').prop('required', dateIsRequired);
+
+    if (!$('#formSearch').parsley().isValid()) {
+      return false;
+    }
+
+    _pageSize = $('#search_pageSize').val() || 10;
+
+    sendData = {
+      dateType: dateIsRequired ? $('#search_dateType').val() : '',
+      beginTime: dateIsRequired ? $('#search_startTime').val() : '',
+      endTime: dateIsRequired ? $('#search_endTime').val() : '',
+      chargeMerchant: $('#search_chargeMerchant').val(),
+      chargeMerchantNo: $('#search_chargeMerchantNo').val(),
+      partner: $('#search_partner').val(),
+      discountType: $('#search_discountType').val(),
+      discountName: $('#search_discountName').val(),
+      bizType: $('#search_bizType').val(),
+      payStatus: $('#search_payStatus').val(),
+      reconciliationStatus: $('#search_reconciliationStatus').val(),
+      reason: $('#search_reason').val(),
+      orderNo: $('#search_orderNo').val(),
+      thdSerialNo: $('#search_thdSerialNo').val(),
+      // paySequenceNo: $('#search_paySequenceNo').val(),
+      checkStatus: $('#search_checkStatus').val(),
+      pageSize: _pageSize,
+    };
+
     searchCache = sendData;
+  } else {
+    sendData = searchCache;
   }
 
   sendData.pageIndex = _pageIndex;
@@ -408,7 +422,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     $('#reason option[value="' + detail.reason + '"]').prop('selected', true);
     $('#payStatus option[value="' + detail.payStatus + '"]').prop('selected', true);
 
-    if (checkStatus == 2 || detail.reconciliationStatus == 4) { // 待审核不能再修改, 出货对账状态为确认的也不能再修改
+    if (checkStatus == 2 || checkStatus == 3 || detail.reconciliationStatus == 4) { // 待审核/审核完成不能再修改, 出货对账状态为确认的也不能再修改
       $('.detail-area').addClass('read-only');
       $('.detail-area :input').prop('readonly', true);
       // 隐藏提交按钮
@@ -465,7 +479,9 @@ $(document).on('submit', '#popup-detail form', function(e) {
     o2oReceivableAmount: $('#o2oReceivableAmount').val(),
     reconciliationStatus: $('#reconciliationStatus').val(),
     payStatus: $('#payStatus').val(),
-    reason: $('#reason').val()
+    reason: $('#reason').val(),
+    merchantName: $('#merchantName').val(),
+    remarks: $('#remarks').val()
   };
 
   $.ajax({

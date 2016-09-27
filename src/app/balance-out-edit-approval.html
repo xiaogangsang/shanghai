@@ -179,13 +179,43 @@
             </div>
           </div>
 
-          <div class="col-xs-6 col-sm-6 col-md-6 pull-right">
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">分页条数</div>
+              <select class="form-control" id="search_pageSize">
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+                <option value="200">200</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="col-xs-8">
             <div class="row">
               <div class="col-xs-6">
                 <button type="submit" class="btn btn-block btn-primary">查询</button>
               </div>
               <div class="col-xs-6">
                 <button type="button" class="btn btn-block btn-default btn-reset">重置</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xs-12 col-sm-12 col-md-12">
+            <div class="row">
+              <div class="col-xs-3">
+                <button type="button" class="btn btn-block btn-default btn-batch-approve">批量审核通过</button>
+              </div>
+              <div class="col-xs-3">
+                <button type="button" class="btn btn-block btn-default btn-batch-reject">批量驳回</button>
+              </div>
+              <div class="col-xs-3">
+                <button type="button" class="btn btn-block btn-default btn-all-approve">全部审核通过</button>
+              </div>
+              <div class="col-xs-3">
+                <button type="button" class="btn btn-block btn-default btn-all-reject">全部驳回</button>
               </div>
             </div>
           </div>
@@ -200,6 +230,7 @@
             <table class="table table-hover" id="dataTable">
               <thead>
                 <tr>
+                  <th><input type="checkbox" class="multi-check-all"></th>
                   <th>操作时间</th>
                   <th>二级商户订单号</th>
                   <th>商品订单号</th>
@@ -222,10 +253,11 @@
               </thead>
               <tbody>
                 <tr>
-                  <td colspan="30" align="center">请点击“查询”按钮！</td>
+                  <td colspan="19" align="center">请点击“查询”按钮！</td>
                 </tr>
               </tbody>
             </table>
+            <p style="font-size: 13px;">* 注: 当输入&nbsp;<em>商品订单号</em>&nbsp;或者&nbsp;<em>二级商户订单号</em>&nbsp;查询时, 已经输入的日期信息会被忽略</p>
           </div>
 
         </div>
@@ -256,6 +288,7 @@
   <script id="table-template" type="text/x-tmpl-mustache">
     {{#rows}}
     <tr data-id="{{id}}" data-bannertype="{{bannerType}}">
+      <td><input type="checkbox" class="multi-check"></td>
       <td>{{updateTime}}</td>
       <td>{{thdOrderNo}}</td>
       <td>{{bizOrderNo}}</td>

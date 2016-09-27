@@ -6,13 +6,17 @@
   {{#detail}}
     <div class="container-fluid">
 
-      {{^currentDetail}}
+      {{^lastDetail}}
       <div class="row">
         <div class="col-md-4 pull-right">
           <button type="submit" class="form-control btn btn-default edit-submit" data-version="{{version}}" data-id="{{id}}">提交</button>
         </div>
       </div>
-      {{/currentDetail}}
+      {{/lastDetail}}
+
+      {{#lastDetail}}
+        <p style="font-size: 13px;">* 注：左侧是现值，黑色显示<b>；</b>右侧是修改前的值(原值)，红色显示，未修改的字段不显示(若未发现红色字段，说明可能有些字段原值为空，现值是新增的)</p>
+      {{/lastDetail}}
 
       <div class="row">
 
@@ -30,7 +34,7 @@
           <div class="input-group">
             <div class="input-group-addon">支付时间</div>
             <input type="text" class="form-control oldValue" id="createTime" value="{{createTime}}" data-parsley-pattern="[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}">
-            <input type="text" class="form-control newValue" id="createTimeNew" value="{{currentDetail.createTime}}">
+            <input type="text" class="form-control newValue" id="createTimeNew" value="{{lastDetail.createTime}}">
           </div>
         </div>
 
@@ -53,7 +57,7 @@
               <option value="5">退款成功</option>
               <option value="6">退款失败</option>
             </select>
-            <select class="form-control newValue" id="payStatusNew" value="{{currentDetail.payStatus}}">
+            <select class="form-control newValue" id="payStatusNew" value="{{lastDetail.payStatus}}">
               <option value="1">待支付</option>
               <option value="2">支付成功</option>
               <option value="3">支付失败</option>
@@ -68,7 +72,7 @@
           <div class="input-group">
             <div class="input-group-addon">应收用户金额(元)</div>
             <input type="text" class="form-control oldValue" id="payAmount" value="{{payAmount}}" data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?">
-            <input type="text" class="form-control newValue" id="payAmountNew" value="{{currentDetail.payAmount}}">
+            <input type="text" class="form-control newValue" id="payAmountNew" value="{{lastDetail.payAmount}}">
           </div>
         </div>
 
@@ -76,7 +80,7 @@
           <div class="input-group">
             <div class="input-group-addon">应收用户积分</div>
             <input type="text" class="form-control oldValue" id="receivablePoint" value="{{receivablePoint}}" data-parsley-pattern="(-)?[0-9]{0,6}">
-            <input type="text" class="form-control newValue" id="receivablePointNew" value="{{currentDetail.receivablePoint}}">
+            <input type="text" class="form-control newValue" id="receivablePointNew" value="{{lastDetail.receivablePoint}}">
           </div>
         </div>
 
@@ -130,7 +134,7 @@
           <div class="input-group">
             <div class="input-group-addon">收单方支付订单号</div>
             <input type="text" class="form-control oldValue" id="thdSerialNo" value="{{thdSerialNo}}">
-            <input type="text" class="form-control newValue" id="thdSerialNoNew" value="{{currentDetail.thdSerialNo}}">
+            <input type="text" class="form-control newValue" id="thdSerialNoNew" value="{{lastDetail.thdSerialNo}}">
           </div>
         </div>
 
@@ -138,7 +142,7 @@
           <div class="input-group">
             <div class="input-group-addon">票价(元)</div>
             <input type="text" class="form-control oldValue" id="ticketAmount" value="{{ticketAmount}}" data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?">
-            <input type="text" class="form-control newValue" id="ticketAmountNew" value="{{currentDetail.ticketAmount}}">
+            <input type="text" class="form-control newValue" id="ticketAmountNew" value="{{lastDetail.ticketAmount}}">
           </div>
         </div>
 
@@ -146,7 +150,7 @@
           <div class="input-group">
             <div class="input-group-addon">服务费(元)</div>
             <input type="text" class="form-control oldValue" id="serviceAmount" value="{{serviceAmount}}" data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?">
-            <input type="text" class="form-control newValue" id="serviceAmountNew" value="{{currentDetail.serviceAmount}}">
+            <input type="text" class="form-control newValue" id="serviceAmountNew" value="{{lastDetail.serviceAmount}}">
           </div>
         </div>
 
@@ -154,7 +158,7 @@
           <div class="input-group">
             <div class="input-group-addon">渠道方补贴金额(元)</div>
             <input type="text" class="form-control oldValue" id="subsidyAmountO2o" value="{{subsidyAmountO2o}}" data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?">
-            <input type="text" class="form-control newValue" id="subsidyAmountO2oNew" value="{{currentDetail.subsidyAmountO2o}}">
+            <input type="text" class="form-control newValue" id="subsidyAmountO2oNew" value="{{lastDetail.subsidyAmountO2o}}">
           </div>
         </div>
 
@@ -166,7 +170,7 @@
               <option value="1">预付</option>
               <option value="2">后付</option>
             </select>
-            <select class="form-control newValue" id="subsidyTypeNew" value="{{currentDetail.subsidyType}}">
+            <select class="form-control newValue" id="subsidyTypeNew" value="{{lastDetail.subsidyType}}">
               <option value=""></option>
               <option value="1">预付</option>
               <option value="2">后付</option>
@@ -178,7 +182,7 @@
           <div class="input-group">
             <div class="input-group-addon">退票手续费(元)</div>
             <input type="text" class="form-control oldValue" id="returnFee" value="{{returnFee}}" data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?">
-            <input type="text" class="form-control newValue" id="returnFeeNew" value="{{currentDetail.returnFee}}">
+            <input type="text" class="form-control newValue" id="returnFeeNew" value="{{lastDetail.returnFee}}">
           </div>
         </div>
 
@@ -191,7 +195,7 @@
                 <option value="2">TP方</option>
                 <option value="3">渠道方</option>
               </select>
-              <select class="form-control newValue" id="partnerNew" value={{currentDetail.partner}}>
+              <select class="form-control newValue" id="partnerNew" value={{lastDetail.partner}}>
                 <option value=""></option>
                 <option value="1">O2O</option>
                 <option value="2">TP方</option>
@@ -204,7 +208,7 @@
           <div class="input-group">
             <div class="input-group-addon">O2O应收金额(元)</div>
             <input type="text" class="form-control oldValue" id="o2oReceivableAmount" value="{{o2oReceivableAmount}}" data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?">
-            <input type="text" class="form-control newValue" id="o2oReceivableAmountNew" value="{{currentDetail.o2oReceivableAmount}}">
+            <input type="text" class="form-control newValue" id="o2oReceivableAmountNew" value="{{lastDetail.o2oReceivableAmount}}">
           </div>
         </div>
 
@@ -212,6 +216,29 @@
           <div class="input-group">
             <div class="input-group-addon">实收金额(元)</div>
             <input type="text" class="form-control" id="bankAmount" value="{{bankAmount}}" readonly>
+          </div>
+        </div>
+
+        <div class="form-group col-sm-6 col-md-6">
+          <div class="input-group">
+            <div class="input-group-addon">退款原因</div>
+            <input type="text" class="form-control" id="refundReason" value="{{refundReason}}" readonly>
+          </div>
+        </div>
+
+        <div class="form-group col-sm-6 col-md-6">
+          <div class="input-group">
+            <div class="input-group-addon">二级商户</div>
+            <input type="text" class="form-control oldValue" id="merchantName" value="{{merchantName}}">
+            <input type="text" class="form-control newValue" id="merchantNameNew" value="{{lastDetail.merchantName}}">
+          </div>
+        </div>
+
+        <div class="form-group col-sm-6 col-md-6">
+          <div class="input-group">
+            <div class="input-group-addon">二级商户号</div>
+            <input type="text" class="form-control oldValue" id="merchantNo" value="{{merchantNo}}">
+            <input type="text" class="form-control newValue" id="merchantNoNew" value="{{lastDetail.merchantNo}}">
           </div>
         </div>
 
@@ -272,7 +299,7 @@
               <option value="3">对账成功</option>
               <option value="4">确认</option>
             </select>
-            <select class="form-control newValue" id="reconciliationStatusNew" value="{{currentDetail.reconciliationStatus}}">
+            <select class="form-control newValue" id="reconciliationStatusNew" value="{{lastDetail.reconciliationStatus}}">
               <!-- <option value=""></option> -->
               <option value="1">未对账</option>
               <option value="2">对账不一致</option>
@@ -292,13 +319,29 @@
               <option value="3">状态错误</option>
               <option value="4">金额不符</option>
             </select>
-            <select class="form-control newValue" id="reasonNew" value="{{currentDetail.reason}}">
+            <select class="form-control newValue" id="reasonNew" value="{{lastDetail.reason}}">
               <option value=""></option>
               <option value="1">我方缺失</option>
               <option value="2">对方缺失</option>
               <option value="3">状态错误</option>
               <option value="4">金额不符</option>
             </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+
+      <div class="row"> 
+        <span style="display: block; margin-top: 10px;">备注信息:</span>
+        <hr style="margin-top: 3px;">
+        
+        <div class="form-group col-sm-6 col-md-6 editable">
+          <div class="input-group">
+            <div class="input-group-addon">备注</div>
+            <textarea class="form-control oldValue" id="remarks" value="{{remarks}}" ></textarea>
+            <textarea class="form-control newValue" id="remarksNew" value="{{lastDetail.remarks}}" ></textarea>
           </div>
         </div>
       </div>
