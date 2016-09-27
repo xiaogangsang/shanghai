@@ -512,7 +512,7 @@ $('.btn-all-reverse').click(function(e) {
   }
 
   $.ajax({
-    url: common.API_HOST + 'TODO:',
+    url: common.API_HOST + 'settlement/shipmentInfo/antiExaminationByCondition',
     type: 'GET',
     data: searchTerms
   })
