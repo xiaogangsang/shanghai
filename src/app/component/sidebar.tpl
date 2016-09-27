@@ -166,6 +166,7 @@
           <a href="balance-in-export.html" class="list-group-item" id="menu-balance-in-export" data-id="215" style="display:none">收单导出下载</a>
           <a href="balance-in-state-batch-handler.html" class="list-group-item" id="menu-balance-in-state-batch-handler" data-id="215" style="display:none">对账状态批量处理</a>
           <a href="balance-in-merchant-batch-update.html" class="list-group-item" id="menu-balance-in-merchant-batch-update" data-id="215" style="display:none">商户信息批量更新</a>
+          <a href="balance-in-file-operate-result.html" class="list-group-item" id="menu-balance-in-file-operate-result" data-id="215" style="display:none">对账批处理结果</a>
         </div>
       </div>
     </div>
@@ -179,6 +180,7 @@
           <a href="balance-out-edit-submitted.html" class="list-group-item" id="menu-balance-out-edit-submitted" data-id="188" style="display:none">出货流水修改记录</a>
           <a href="balance-out-edit-approval.html" class="list-group-item" id="menu-balance-out-edit-approval" data-id="198" style="display:none">出货流水修改审核</a>
           <a href="balance-out-export.html" class="list-group-item" id="menu-balance-out-export" data-id="216" style="display:none">出货导出下载</a>
+          <a href="balance-out-file-operate-result.html" class="list-group-item" id="menu-balance-out-file-operate-result" data-id="215" style="display:none">对账批处理结果</a>
         </div>
       </div>
     </div>
@@ -190,6 +192,18 @@
           <a href="money-out-summary.html" class="list-group-item" id="menu-money-out-summary" data-id="147" style="display:none">拨款汇总</a>
           <a href="money-out-log.html" class="list-group-item" id="menu-money-out-log" data-id="148" style="display:none">拨款日志</a>
           <a href="money-out-export.html" class="list-group-item" id="menu-money-out-export" data-id="217" style="display:none">拨款导出下载</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="display:none">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#monitor"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> 订单监控</a>
+      <div id="monitor" class="panel-collapse collapse" role="tabpanel">
+        <div class="list-group">
+          <a href="monitor-payment.html" class="list-group-item" id="menu-monitor-payment" data-id="237" style="display:none">支付异常</a>
+          <a href="monitor-ticket.html" class="list-group-item" id="menu-monitor-ticket" data-id="237" style="display:none">出票失败率</a>
+          <a href="monitor-order.html" class="list-group-item" id="menu-monitor-order" data-id="237" style="display:none">订单状态异常</a>
+          <a href="monitor-refund.html" class="list-group-item" id="menu-monitor-refund" data-id="237" style="display:none">自动退款订单</a>
         </div>
       </div>
     </div>
