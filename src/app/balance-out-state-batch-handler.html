@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="images/favicon.ico" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>对账状态批量处理</title>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/merchant.css">
+  <!-- <link rel="stylesheet" href="css/banner.css"> -->
+</head>
+<body>
+
+  @@include('component/header.tpl')
+
+  <div class="container-fluid">
+
+    <div class="row">
+
+      @@include('component/sidebar.tpl')
+
+      <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+        <ol class="breadcrumb">
+          <li>收单对账</li>
+          <li class="active">对账状态批量处理</li>
+        </ol>
+
+        <div class="content-area col-xs-4 col-xs-offset-4">
+
+          <div class="row">
+            <div class="col-xs-4 col-xs-offset-3">
+              <button type="button" class="btn btn-block btn-default btn-upload">确定上传</button>
+            </div>
+            <!-- <div class="col-xs-6">
+              <button type="button" class="btn btn-block btn-default btn-cancle">取消</button>
+            </div> -->
+          </div>
+
+         </div>
+
+       </div>
+    </div>
+  </div>
+
+  <script id="file-upload-template" type="text/x-tmpl-mustache">
+    <div class="row file-upload-container" style="margin: 12px 0px;">
+      <div class="input-group">
+        <span class="input-group-addon">数据文件</span>
+        <input type="text" class="form-control" readonly>
+        <span class="input-group-btn">
+          <span class="btn btn-default btn-file">
+            <span>选择文件</span>
+            <input class="file-upload" type="file" name="file">
+          </span>
+        </span>
+      </div>
+    </div>
+  </script>
+
+  <script src="js/vendor.js"></script>
+  <script src="js/balance-out-state-batch-handler.js"></script>
+
+</body>
+</html>

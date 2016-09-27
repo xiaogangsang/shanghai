@@ -180,6 +180,8 @@
           <a href="balance-out-edit-submitted.html" class="list-group-item" id="menu-balance-out-edit-submitted" data-id="188" style="display:none">出货流水修改记录</a>
           <a href="balance-out-edit-approval.html" class="list-group-item" id="menu-balance-out-edit-approval" data-id="198" style="display:none">出货流水修改审核</a>
           <a href="balance-out-export.html" class="list-group-item" id="menu-balance-out-export" data-id="216" style="display:none">出货导出下载</a>
+          <a href="balance-out-state-batch-handler.html" class="list-group-item" id="menu-balance-out-state-batch-handler" data-id="216" style="display:none">对账状态批量处理</a>
+          <a href="balance-out-merchant-batch-update.html" class="list-group-item" id="menu-balance-out-merchant-batch-update" data-id="216" style="display:none">商户信息批量更新</a>
           <a href="balance-out-file-operate-result.html" class="list-group-item" id="menu-balance-out-file-operate-result" data-id="215" style="display:none">对账批处理结果</a>
         </div>
       </div>
