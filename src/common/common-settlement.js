@@ -323,6 +323,10 @@ settlementCommon.clone = function(objectToBeCloned) {
   return objectClone;
 }
 
+settlementCommon.resetInput = function(input) {
+  input.replaceWith(input.val('').clone(true));
+}
+
 
 /************************************************* 全局初始化处理 *****************************************************/
 

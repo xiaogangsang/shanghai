@@ -56,28 +56,49 @@ $(function() {
 });
 
 function fileChangeHandler(e, el) {
-		e.preventDefault();
+	e.preventDefault();
 
-		var path = $(el).val();
-	  fileName = path.match(/[^\/\\]*$/)[0];
+	var files = $(el).prop('files');
 
-	  var input = $(el).parents('.input-group').find(':text');
-	  input.val(fileName);
+	if (files) {
+		var file = files[0];
+		var size = file.size;
+		if (size < 1024576) {
+			var fileName = file.name;
+			var fileExt = fileName.substring(fileName.lastIndexOf('.'));
+			var validExts = ['.xls', '.xlsx'];
+			if (validExts.indexOf(fileExt) >= 0) {
+				var input = $(el).parents('.input-group').find(':text');
+			  input.val(fileName);
+			  return true;
+			} else {
+				var input = $(el).parents('.input-group').find(':text');
+			  input.val('');
+				alert('不支持的文件格式!  (仅支持 .xls 和 .xlsx)');
+			}
+		} else {
+			alert('文件大小超过1MB!');
+		}
 	}
+
+	settlementCommon.resetInput($(el));
+	return false;
+}
 
 // 确定上传
 $('body').on('click', '.btn-upload', function(e) {
   
   e.preventDefault();
-
-  if (!confirm('上传后将更新对账数据，请仔细核对，保证数据文件的准确性。')) {
-      return;
-  }
   
   var formData = new FormData();
 
 	var file = $('.file-upload').prop('files')[0];
 	if (file) {
+
+		if (!confirm('上传后将更新对账数据，请仔细核对，保证数据文件的准确性。')) {
+      return;
+	  }
+
 		formData.append('file', file);
 		formData.append('operateType', '3');
 

@@ -17,7 +17,7 @@ var dataCache;
 var balanceIn = false;
 
 // _DEBUG 本地JSON字符串, 不连服务器本地调试用
-var _DEBUG = true;
+var _DEBUG = false;
 
 $(function() {
 
