@@ -84,7 +84,7 @@ settlementCommon.parseSubsidyType = function(status) {
 
 
 // 优惠方式
-settlementCommon.discountType = {'1' : '活动', '2' : '优惠券'};
+settlementCommon.discountType = {'1' : '活动', '2' : '优惠券', '9' : '无优惠'};
 
 settlementCommon.parseDiscountType = function(status) {
   return this.discountType[status];
