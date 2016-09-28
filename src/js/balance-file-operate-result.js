@@ -112,7 +112,7 @@ function handleData(res) {
 
     _(record).forEach(function(item) {
       item.fileType = settlementCommon.parseBalanceFileType(item.fileType);
-      item.fileStatus = settlementCommon.parseBalanceFileType(item.fileStatus);
+      item.fileStatus = settlementCommon.parseBalanceFileStatus(item.fileStatus);
     });
 
     dataCache = record;
