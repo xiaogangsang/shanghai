@@ -79,7 +79,7 @@ $('body').on('click', '.btn-upload', function(e) {
 	var file = $('.file-upload').prop('files')[0];
 	if (file) {
 		formData.append('file', file);
-		formData.append('operateType', '3');
+		formData.append('operateType', '4');
 
 		$.ajax({
 	    url: common.API_HOST + 'settlement/batchUploadFileRecord/batchUploadOperate',

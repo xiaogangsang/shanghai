@@ -1,5 +1,5 @@
 /*
-  收单对账明细
+	收单对账状态批量处理
   Pan Chong
  */
 
@@ -15,15 +15,17 @@ var _DEBUG = false;
 
 $(function() {
 
-  common.init('balance-in-merchant-batch-update');
+  common.init('balance-in-state-batch-handler');
 
   var template = $('#file-upload-template').html();
   Mustache.parse(template);
   var html = Mustache.render(template);
 
   $('.content-area').prepend(html);
-  
-  /***************************************** 选择文件 ******************************************/
+
+
+
+	/***************************************** 选择文件 ******************************************/
 
 	// jQuery way
 	// $(document).on('change', '.file-upload', fileChangeHandler);
@@ -73,13 +75,13 @@ $('body').on('click', '.btn-upload', function(e) {
   if (!confirm('上传后将更新对账数据，请仔细核对，保证数据文件的准确性。')) {
       return;
   }
-  
+
   var formData = new FormData();
 
 	var file = $('.file-upload').prop('files')[0];
 	if (file) {
 		formData.append('file', file);
-		formData.append('operateType', '3');
+		formData.append('operateType', '2');
 
 		$.ajax({
 	    url: common.API_HOST + 'settlement/batchUploadFileRecord/batchUploadOperate',

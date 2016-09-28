@@ -153,6 +153,19 @@ settlementCommon.parseFileStatus = function(status) {
   return this.fileStatus[status];
 }
 
+// 对账批处理类型
+settlementCommon.balanceFileType = {'1' : '收单状态', '2' : '出货状态', '3' : '收单商户信息', '4' : '出货商户信息'};
+settlementCommon.parseBalanceFileType = function(status) {
+  return this.balanceFileType[status];
+}
+
+// 对账批处理状态
+settlementCommon.balanceFileStatus = {'1' : '操作中', '2' : '操作成功', '3' : '操作失败'};
+settlementCommon.parseBalanceFileStatus = function(status) {
+  return this.balanceFileStatus[status];
+}
+
+
 /***************************************** 商户相关编码 **********************************************/
 
 // 商户状态

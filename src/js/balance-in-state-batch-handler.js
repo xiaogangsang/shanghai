@@ -75,22 +75,29 @@ $('body').on('click', '.btn-upload', function(e) {
   if (!confirm('上传后将更新对账数据，请仔细核对，保证数据文件的准确性。')) {
       return;
   }
-  
-  //var id = $(this).attr('id');
-  var sendData;
 
-  if (!_DEBUG) {
-	  $.ajax({
-	    url: common.API_HOST + '',
+  var formData = new FormData();
+
+	var file = $('.file-upload').prop('files')[0];
+	if (file) {
+		formData.append('file', file);
+		formData.append('operateType', '1');
+
+		$.ajax({
+	    url: common.API_HOST + 'settlement/batchUploadFileRecord/batchUploadOperate',
 	    type: 'POST',
-	    dataType: 'json',
-	    data: sendData,
+	    contentType: false,
+	    processData:false,
+	    data: formData
 	  })
 	  .done(function (res) {
-	    //handleData(res);
+	    if (!!~~res.meta.result == true) {
+	      alert('上传成功！');
+	    } else {
+	      alert('接口错误：' + res.meta.msg);
+	    }
 	  });
 	} else {
-  //var res = $.parseJSON('{"meta" : {"result" : "1", "msg" : "操作成功"}, "data" : {"summary" : {}, "detail":{"count" : 2, "records":[{"checkStatus" : "2"}, {"checkStatus" : "2"}]}}}');
-  //handleData(res);
+		alert('请先选择文件');
 	}
 });
