@@ -10,18 +10,51 @@ var settlementCommon = require('settlementCommon');
 
 var _selectedSummary = {};
 
+var operateTypes = {balanceInState: 1,
+									balanceInMerchant: 3, 
+									balanceOutState: 2,
+									balanceOutMercant: 4};
+var operateType;
+var sideBarId;
+
 // _DEBUG 本地JSON字符串, 不连服务器本地调试用
 var _DEBUG = false;
 
 $(function() {
 
-  common.init('balance-in-state-batch-handler');
+	var location = window.location.href;
+
+  var parts = location.split('/');
+
+  var html = parts[parts.length - 1];
+
+  if (html.indexOf('balance-in') > -1) {
+  	if (html.indexOf('state') > -1) {
+  		operateType = operateTypes.balanceInState;
+  		sideBarId = "balance-in-state-batch-handler";
+  	} else {
+  		operateType=  operateTypes.balanceInMerchant;
+  		sideBarId = "balance-in-merchant-batch-update";
+  	}
+  } else {
+  	if (html.indexOf('state') > -1) {
+  		operateType = operateTypes.balanceOutState;
+  		sideBarId = "balance-out-state-batch-handler";
+  	} else {
+  		operateType = operateTypes.balanceOutMercant;
+  		sideBarId = "balance-out-state-batch-handler";
+  	}
+  }
+
+  approval = (html.indexOf('approval') > -1);
+
+  common.init(sideBarId);
 
   var template = $('#file-upload-template').html();
   Mustache.parse(template);
   var html = Mustache.render(template);
 
-  $('.content-area').prepend(html);
+  $('.breadcrumb').after(html);
 
 
 
@@ -58,30 +91,51 @@ $(function() {
 });
 
 function fileChangeHandler(e, el) {
-		e.preventDefault();
+	e.preventDefault();
 
-		var path = $(el).val();
-	  fileName = path.match(/[^\/\\]*$/)[0];
+	var files = $(el).prop('files');
 
-	  var input = $(el).parents('.input-group').find(':text');
-	  input.val(fileName);
+	if (files) {
+		var file = files[0];
+		var size = file.size;
+		if (size < 1024576) {
+			var fileName = file.name;
+			var fileExt = fileName.substring(fileName.lastIndexOf('.'));
+			var validExts = ['.xls', '.xlsx'];
+			if (validExts.indexOf(fileExt) >= 0) {
+				var input = $(el).parents('.input-group').find(':text');
+			  input.val(fileName);
+			  return true;
+			} else {
+				var input = $(el).parents('.input-group').find(':text');
+			  input.val('');
+				alert('不支持的文件格式!  (仅支持 .xls 和 .xlsx)');
+			}
+		} else {
+			alert('文件大小超过1MB!');
+		}
 	}
+
+	settlementCommon.resetInput($(el));
+	return false;
+}
 
 // 确定上传
 $('body').on('click', '.btn-upload', function(e) {
   
   e.preventDefault();
-
-  if (!confirm('上传后将更新对账数据，请仔细核对，保证数据文件的准确性。')) {
-      return;
-  }
-
+  
   var formData = new FormData();
 
 	var file = $('.file-upload').prop('files')[0];
 	if (file) {
+
+		if (!confirm('上传后将更新对账数据，请仔细核对，保证数据文件的准确性。')) {
+      return;
+	  }
+
 		formData.append('file', file);
-		formData.append('operateType', '2');
+		formData.append('operateType', operateType);
 
 		$.ajax({
 	    url: common.API_HOST + 'settlement/batchUploadFileRecord/batchUploadOperate',

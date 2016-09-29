@@ -340,8 +340,8 @@
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
             <div class="input-group-addon">备注</div>
-            <textarea class="form-control oldValue" id="remarks" value="{{remarks}}" ></textarea>
-            <textarea class="form-control newValue" id="remarksNew" value="{{lastDetail.remarks}}" ></textarea>
+            <textarea class="form-control oldValue" id="remarks">{{remarks}}</textarea>
+            <textarea class="form-control newValue" id="remarksNew">{{lastDetail.remarks}}</textarea>
           </div>
         </div>
       </div>
