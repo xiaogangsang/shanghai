@@ -129,6 +129,7 @@ function handleData(res) {
 
     _(record).forEach(function(item) {
       item.canEdit = (item.checkStatus != 2 && item.checkStatus != 3 && item.reconciliationStatus != 4); // 待审核/审核完成状态不能再修改, 对账状态为确认的也不能修改
+      item.canReverse = (item.checkStatus == 3);
       item.chargeMerchant = settlementCommon.parseMerchant(item.chargeMerchant);
       item.payStatus = settlementCommon.parsePayStatus(item.payStatus);
       item.reconciliationStatus = settlementCommon.parseReconciliationStatus(item.reconciliationStatus);
@@ -418,7 +419,7 @@ $(document).on('submit', '#popup-detail form', function(e) {
     o2oReceivableAmount: $('#o2oReceivableAmount').val(),
     reconciliationStatus: $('#reconciliationStatus').val(),
     payStatus: $('#payStatus').val(),
-    reason: $('#reason').val(),
+    reason: $('#reconciliationStatus').val() == 2 ? $('#reason').val() : '',// 对账不一致才有原因
     merchantName: $('#merchantName').val(),
     remarks: $('#remarks').val()
   };
@@ -449,7 +450,7 @@ $('#dataTable').on('click', '.btn-reverse', function(e) {
   $.ajax({
     url: common.API_HOST + 'settlement/acquiringCheck/reverse',
     type: 'POST',
-    data: {id: id}
+    data: {id: id, version: $(this).data('version')}
   })
   .done(function(res) {
     if (!!~~res.meta.result) {

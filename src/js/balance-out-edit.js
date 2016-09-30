@@ -392,7 +392,7 @@ $(document).on('submit', '#popup-detail form', function(e) {
     finalSettleAmount: $('#finalSettleAmount').val(),
     reconciliationStatus: $('#reconciliationStatus').val(),
     shipmentStatus: $('#shipmentStatus').val(),
-    reason: $('#reason').val(),
+    reason: $('#reconciliationStatus').val() == 2 ? $('#reason').val() : '',// 对账不一致才有原因
     remarks: $('#remarks').val()
   };
 
@@ -519,7 +519,7 @@ $('.btn-all-reverse').click(function(e) {
   $.ajax({
     url: common.API_HOST + 'settlement/shipmentInfo/antiExaminationByCondition',
     type: 'GET',
-    data: searchTerms
+    data: searchCache
   })
   .done(function(res) {
     if (!!~~res.meta.result) {

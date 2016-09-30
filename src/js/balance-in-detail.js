@@ -479,7 +479,7 @@ $(document).on('submit', '#popup-detail form', function(e) {
     o2oReceivableAmount: $('#o2oReceivableAmount').val(),
     reconciliationStatus: $('#reconciliationStatus').val(),
     payStatus: $('#payStatus').val(),
-    reason: $('#reason').val(),
+    reason: ($('#reconciliationStatus').val() == 2 ? $('#reason').val() : ''),// 对账不一致才有原因
     merchantName: $('#merchantName').val(),
     remarks: $('#remarks').val()
   };
