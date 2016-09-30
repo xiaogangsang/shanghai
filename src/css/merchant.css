@@ -1,11 +1,23 @@
-.readonly textarea,
-.readonly input {
-  border: none;
-  background: transparent;
-}
+
+/* 为了重用商户详情和商户编辑, 这里需要把一些输入框设为只读, 显示上去掉边框等, 这样看上去就像label */
 .readonly button {
   display: none;
 }
+
+.detail-area input:-moz-read-only:not(.file-upload-container input.form-control),
+.detail-area textarea:-moz-read-only:not(.file-upload-container input.form-control) {
+	border: none;
+	background: transparent;
+	cursor: text;
+}
+
+.detail-area input:read-only:not(.file-upload-container input.form-control),
+.detail-area textarea:read-only:not(.file-upload-container input.form-control) {
+	border: none;
+	background: transparent;
+	cursor: text;
+}
+
 /* 输入项分组的边框 */
 .detail-area > .container-fluid {
   border: 1px solid #c3c3c3;
@@ -17,3 +29,37 @@
   margin-left: 10px;
   margin-bottom: 10px;
 }
+
+/* 文件上传控件style */
+
+.btn.btn-file {
+    padding: 6px 13px;
+}
+
+.btn-file {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-file input[type=file] {
+  position: absolute;
+  top: 0;
+  right: 0;
+  min-width: 100%;
+  height: 100%;
+/*  text-align: right;*/
+  filter: alpha(opacity=0);
+  opacity: 0;
+  background: transparent;
+  cursor: inherit;
+/*  display: block;*/
+}
+
+/*.file-upload-container input.form-control {
+  border: 1px solid;
+}*/
+
+/*input[readonly] {
+  background-color: white !important;
+  cursor: text !important;
+}*/

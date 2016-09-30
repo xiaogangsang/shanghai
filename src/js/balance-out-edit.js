@@ -334,11 +334,19 @@ $(document).on('submit', '#popup-detail form', function(e) {
     return false;
   }
 
+  var shipmentDate = $('#shipmentDate').val();
+
+  if (!settlementCommon.isValidTime(shipmentDate)) {
+    alert('支付时间内容有错误, 请重新修改');
+    return false;
+  }
+
   $submitButton = $(this).find('button[type=submit]');
 
   var param = {
     id: $submitButton.data('id'),
     oldVersion: $submitButton.data('version'),
+    shipmentDate: shipmentDate,
     merchantName: $('#merchantName').val(),
     merchantId: $('#merchantNo').val(),
     settleAmount: $('#settleAmount').val(),

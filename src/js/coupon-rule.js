@@ -55,7 +55,7 @@ $('#formSearch').on('submit', function (e) {
     _querying = false;
     if (!!~~res.meta.result) {
       if (res.data == null || res.data.rows.length < 1) {
-        $('#dataTable tbody').html('<tr><td colspan="7" align="center">查不到相关数据，请修改查询条件！</td></tr>');
+        $('#dataTable tbody').html('<tr><td colspan="9" align="center">查不到相关数据，请修改查询条件！</td></tr>');
         $('#pager').html('');
         $('#btn-export').prop('disabled', true);
       } else {

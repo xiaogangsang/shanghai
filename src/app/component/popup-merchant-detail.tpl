@@ -1,7 +1,7 @@
 
 <script id="detail-template" type="text/x-tmpl-mustache">
 
-  <div class="container-fluid detail-area readonly">
+  <div class="container-fluid detail-area">
 
     <div class="container-fluid">
 
@@ -42,7 +42,7 @@
           </div>
         </div>
 
-<!--         <div class="form-group col-sm-6 col-md-4">
+        <div class="form-group col-sm-6 col-md-4">
           <div class="input-group">
             <div class="input-group-addon">员工姓名</div>
             <input type="text" class="form-control" id="" value="{{userName}}">
@@ -54,7 +54,25 @@
             <div class="input-group-addon">员工编号</div>
             <input type="text" class="form-control" id="" value="{{userId}}">
           </div>
-        </div> -->
+        </div>
+
+        <div class="form-group col-sm-6 col-md-4">
+          <div class="input-group">
+            <div class="input-group-addon">商户级别</div>
+            <select class="form-control" id="detail-merchantClass">
+            </select>
+            <!-- <input type="text" class="form-control" id="" value="{{merchantClass}}"> -->
+          </div>
+        </div>
+
+        <div class="form-group col-sm-6 col-md-4">
+          <div class="input-group">
+            <div class="input-group-addon">TP方</div>
+            <select class="form-control" id="detail-tpId">
+            </select>
+            <!-- <input type="text" class="form-control" id="" value="{{tpId}}"> -->
+          </div>
+        </div>
 
       </div>
     </div>
@@ -201,14 +219,14 @@
           <div class="form-group col-sm-6 col-md-4 merchant-email">
             <div class="input-group">
               <div class="input-group-addon">商户E-mail</div>
-              <input type="text" class="form-control">
+              <input type="text" class="form-control" value="{{email}}">
             </div>
           </div>
 
           <div class="form-group col-sm-6 col-md-4 branch-email">
             <div class="input-group">
               <div class="input-group-addon">卡部E-mail</div>
-              <input type="text" class="form-control">
+              <input type="text" class="form-control" value="{{departmentEmail}}">
             </div>
           </div>
 
@@ -254,34 +272,34 @@
 
     </div>
 
-    <div class="container-fluid">
+    <div class="container-fluid" id="attachments-container">
       <div class="row">
         <span>商户附件列表:</span>
-        <div class="col-md-4">
+<!--         <div class="col-md-4">
           <button class="btn btn-default">上传附件</button>
-        </div>
+        </div> -->
       </div>
 
-      <div class="row">
+      <div class="row" id="attachment-table">
         <div class="table-responsive">
             <table class="table table-hover" id="dataTable">
               <thead>
                 <tr>
-                  <th>商户名称</th>
                   <th>附件名</th>
                   <th>上传时间</th>
                   <th>操作</th>
                 </tr>
               </thead>
               <tbody>
+              {{#attachments}}
                 <tr>
-                  <!-- <td>万达</td>
-                  <td>.avi</td>
-                  <td>2013.09.99</td> -->
-                  <!-- <td>
-                    <a href="#" class="btn-edit">查看</a>
-                  </td> -->
+                  <td>{{attachmentName}}</td>
+                  <td>{{createTime}}</td>
+                  <td>
+                    <a class="download" data-fileurl="{{fileUrl}}">下载</button>
+                  </td>
                 </tr>
+              {{/attachments}}
               </tbody>
             </table>
           </div>

@@ -199,6 +199,7 @@
           <a href="monitor-payment.html" class="list-group-item" id="menu-monitor-payment" data-id="237" style="display:none">支付异常</a>
           <a href="monitor-ticket.html" class="list-group-item" id="menu-monitor-ticket" data-id="237" style="display:none">出票失败率</a>
           <a href="monitor-order.html" class="list-group-item" id="menu-monitor-order" data-id="237" style="display:none">订单状态异常</a>
+          <a href="monitor-refund.html" class="list-group-item" id="menu-monitor-refund" data-id="237" style="display:none">自动退款订单</a>
         </div>
       </div>
     </div>

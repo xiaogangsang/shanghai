@@ -26,7 +26,7 @@ var _submitting = false;
 var selectBranch;
 var selectGuy;
 
-var _DEBUG = false;
+var _DEBUG = true;
 
 $(function () {
 
@@ -71,11 +71,13 @@ $('#formSearch').on('click', 'button[type=submit]', function (event) {
 $('#formSearch').on('submit', function (e) {
   e.preventDefault();
   var sendData = {
-    startTime: $('#search_startTime').val(),
-    endTime: $('#search_endTime').val(),
-    merchantStatus: $('#search_merchantSubscribeGuy').val(),
+    periodStart: $('#search_startTime').val(),
+    periodEnd: $('#search_endTime').val(),
+    userId: $('#search_merchantSubscribeGuy').val(),
     merchantName: $('#search_merchantName').val(),
     merchantId: $('#search_merchantNo').val(),
+    tpId: $('#search_tp').val(),
+    merchantClass: $('#search_merchantClass').val(),
     pageSize: _pageSize,
   };
   if (!!_querying) {
@@ -102,7 +104,7 @@ $('#formSearch').on('submit', function (e) {
       handleMerchantData(res);
     });
   } else {
-    var res = $.parseJSON('{ "meta" : { "result" : "1", "msg" : "操作成功" }, "data" : { "total" : 8, "record" : [ { "allocationPeriod" : "12", "merchantContacter" : "zhangsan", "accountName" : "光大银行某某账户", "fixedAllocationDay" : "", "merchantName" : "测试商户", "accountStatus" : "1", "merchantId" : "123456", "allocationDelay" : "2", "allocationDetail" : "1", "startTime" : "2016-05-15", "id" : "5", "department" : "上海客服_高端客户服务一室", "class" : "class com.cmb.o2o.settlement.model.MerchantInfo", "merchantRemark" : "测试", "merchantType" : "1", "auditorName" : "biaoge", "email" : "ceshi@163.com", "bankAccount" : "78978", "bankCode" : "1231212", "merchantStatus" : "2", "allocationRemark" : "测试", "allocationType" : "1", "userName" : "jiangxiao", "userId" : "660587", "auditorId" : "111", "merchantPhone" : "13513513513", "createTime" : "2016-05-23", "allocationDetailReceiver" : "1", "endTime" : "2016-12-31" }, { "allocationPeriod" : "0", "merchantContacter" : "", "accountName" : "", "fixedAllocationDay" : "", "merchantName" : "", "merchantId" : "6", "allocationDelay" : "0", "allocationDetail" : "0", "startTime" : "2016-06-06", "id" : "33", "department" : "上海客服_高端客户服务一室", "class" : "class com.cmb.o2o.settlement.model.MerchantInfo", "merchantRemark" : "", "auditorName" : "", "email" : "", "bankAccount" : "", "bankCode" : "", "merchantStatus" : "1", "allocationRemark" : "", "allocationType" : "0", "userName" : "", "userId" : "660587", "auditorId" : "", "merchantPhone" : "", "createTime" : "2016-06-02", "allocationDetailReceiver" : "0", "endTime" : "2016-11-25" } ] } }');
+    var res = $.parseJSON('{ "meta" : { "result" : "1", "msg" : "操作成功" }, "data" : { "total" : 8, "record" : [ { "tpId" : "tp方", "merchantName" : "测试商户", "merchantId" : "123456", "id" : "5", "merchantStatus" : "2", "userName" : "jiangxiao", "userId" : "660587", "createTime" : "2016"} ] } }');
     handleMerchantData(res);
   }
 
@@ -125,12 +127,6 @@ function handleMerchantData(res) {
 
       _pageTotal = Math.ceil(totalRecord / _pageSize);
       setPager(totalRecord, _pageIndex, record.length, _pageTotal);
-
-      _(record).forEach(function (item) {
-
-        item.merchantStatus = parseMerchantStatus(item.merchantStatus);
-        item.accountStatus = parseAccountStatus(item.accountStatus);
-      });
 
       dataCache = record;
       setTableData(dataCache);
@@ -187,6 +183,8 @@ $('.btn-reset').click(function(e) {
   $('#search_merchantSubscribeGuy').val('');
   $('#search_merchantName').val('');
   $('#search_merchantNo').val('');
+  $('#search_tp').val('');
+  $('#search_merchantClass').val('');
   selectGuy.clear();
   selectBranch.clear();
 });
@@ -211,7 +209,7 @@ function setPager(total, pageIndex, rowsSize, pageTotal) {
   $('#pager').html(html);
 }
 
-/****************************************** Merchant Detail **********************************************/
+/****************************************** Merchant Approval **********************************************/
 
 $('#dataTable').on('click', '.btn-edit', function (e) {
 
@@ -309,18 +307,4 @@ $('.modal').on('change', ':checkbox[name="send-to"]', function(e) {
   }
 });
 
-/****************************************** Utilities Method **********************************************/
-
-function parseMerchantStatus(merchantStatus) {
-
-  var map = {'1' : '草稿', '2' : '已上线', '3' : '已下线', '4' : '审核驳回', '5' : '待审核', '6' : '已删除'};
-
-  return map[merchantStatus];
-}
-
-function parseAccountStatus(accountStatus) {
-  var map = {'1' : '正常', '2' : '停用'};
-
-  return map[accountStatus];
-}
 

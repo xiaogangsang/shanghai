@@ -2,6 +2,7 @@
 
 var common = require('common');
 var _brands = {};
+var _sources = {};
 var _cities = [];
 var _provinces = {};
 var _areas = [];
@@ -10,15 +11,20 @@ var _pageIndex = 1;
 var _pageSize = 10;
 var _pageTotal = 0;
 var _querying = false;
-var searchCache = {};
-var useCache = false;
+var _searchCache = {};
+var _useCache = false;
 var _submitting = false;
+var _bindMerchantIds = [];
+var _accountStatus = ['', '正常', '停用'];
+var _merchantStatus = ['', '草稿', '已上线', '已下线', '审核驳回', '待审核', '已删除'];
+var _mechantLevel = ['', '总部', '区域'];
 
 $(function () {
   common.init('cinema');
 
   //set search form
   setBrand();
+  setSource();
   setCity();
 
   //data cache
@@ -32,7 +38,7 @@ $(function () {
 $('#formSearch').on('click', 'button[type=submit]', function (event) {
   event.preventDefault();
   _pageIndex = 1;
-  useCache = false;
+  _useCache = false;
   $('#formSearch').trigger('submit');
 });
 
@@ -51,10 +57,10 @@ $('#formSearch').on('submit', function (e) {
   }
 
   _querying = true;
-  if (useCache) {
-    sendData = searchCache;
+  if (_useCache) {
+    sendData = _searchCache;
   } else {
-    searchCache = sendData;
+    _searchCache = sendData;
   }
 
   sendData.pageIndex = _pageIndex;
@@ -69,10 +75,10 @@ $('#formSearch').on('submit', function (e) {
     _querying = false;
     if (!!res.meta.result) {
       if (res.data.rows.length <= 0) {
-        $('#dataTable tbody').html('<tr><td colspan="9" align="center">查不到相关数据，请修改查询条件！</td></tr>');
+        $('#dataTable tbody').html('<tr><td colspan="10" align="center">查不到相关数据，请修改查询条件！</td></tr>');
         $('#pager').html('');
       } else {
-        useCache = true;
+        _useCache = true;
         _pageIndex = res.data.pageIndex;
         _pageTotal = Math.ceil(res.data.total / _pageSize);
         setPager(res.data.total, _pageIndex, res.data.rows.length, _pageTotal);
@@ -277,6 +283,7 @@ $(document).on('submit', '#popup-cinema-form form', function (e) {
   if (_submitting) {
     return false;
   }
+
   _submitting = true;
   var sendData = {
     cinemaName: $.trim($('#popup-cinema-form #cinemaName').val()),
@@ -334,6 +341,170 @@ $(document).on('submit', '#popup-cinema-form form', function (e) {
   return false;
 });
 
+$(document).on('click', '.btn-merchant', function (event) {
+  event.preventDefault();
+  var cinemaId = ~~$(this).closest('tr').data('id');
+  var cinemaName = $(this).closest('tr').find('td:nth-child(3)').text();
+  $('#popup-cinema-bind-merchant h5').text(cinemaName);
+  $('#popup-cinema-bind-merchant #bindStoreId').val(cinemaId);
+  $('.merchant-list tbody').html('<tr><td colspan="6" align="center">点击查询！</td></tr>');
+  $('#formSearchMerchat').trigger('reset');
+  $('.merchant-list').hide();
+  loadBindMerchant(cinemaId);
+});
+
+function loadBindMerchant(cinemaId) {
+  _bindMerchantIds = [];
+  $.ajax({
+    url: common.API_HOST + 'merchant/listById',
+    type: 'POST',
+    dataType: 'json',
+    data: { storeId: cinemaId },
+  })
+  .done(function (res) {
+    if (res.meta.result == 1) {
+      if (res.data != null && res.data.length > 0) {
+        var rows = [];
+        _(res.data).forEach(function (merchant, key) {
+          var tp = _.find(_sources, { sourceId: merchant.tpId });
+          merchant.tpId = tp != undefined ? tp.sourceName : '';
+          merchant.merchantClass = _mechantLevel[merchant.merchantClass];
+          merchant.merchantStatus = _merchantStatus[merchant.merchantStatus];
+          merchant.accountStatus = _accountStatus[merchant.accountStatus];
+          rows.push(merchant);
+          _bindMerchantIds.push(merchant.id);
+        });
+
+        var data = { rows: rows };
+        var template = $('#bind-template').html();
+        Mustache.parse(template);
+        var html = Mustache.render(template, data);
+        $('#merchantTable tbody').html(html);
+      } else {
+        $('#merchantTable tbody').html('<tr><td colspan="7" align="center">暂无关联商户！</td></tr>');
+      }
+
+      $('#popup-cinema-bind-merchant').modal('show');
+    } else {
+      alert('接口错误：' + res.meta.msg);
+    }
+  });
+}
+
+$(document).on('click', '#btn-listMerchant', function (event) {
+  event.preventDefault();
+  if ($(this).text().indexOf('添加商户') >= 0) {
+    $('.merchant-list').slideDown();
+    $(this).html('添加完毕 <span class="glyphicon glyphicon-chevron-up"></span>');
+  } else {
+    $('.merchant-list').slideUp();
+    $(this).html('添加商户 <span class="glyphicon glyphicon-chevron-down"></span>');
+  }
+});
+
+$(document).on('submit', '#formSearchMerchant', function (event) {
+  event.preventDefault();
+  $.ajax({
+    url: common.API_HOST + 'merchant/list',
+    type: 'POST',
+    dataType: 'json',
+    data: {
+      pageSize: 999,
+      pageIndex: 1,
+      merchantId: $('#merchantId').val().trim(),
+      merchantName: $('#merchantName').val().trim(),
+      tpId: $('#tpId').val(),
+      merchantType: $('#merchantType').val(),
+    },
+  })
+  .done(function (res) {
+    if (res.meta.result == 1) {
+      if (res.data.row != null && res.data.row.length > 0) {
+        var unbindMerchants = [];
+        _(res.data.row).forEach(function (merchant, key) {
+          var tp = _.find(_sources, { sourceId: merchant.tpId });
+          merchant.tpId = tp != undefined ? tp.sourceName : '';
+          merchant.merchantClass = _mechantLevel[merchant.merchantClass];
+          merchant.merchantStatus = _merchantStatus[merchant.merchantStatus];
+          merchant.canBind = _bindMerchantIds.indexOf(merchant.id) < 0 ? true : false;
+          unbindMerchants.push(merchant);
+        });
+
+        var data = { rows: unbindMerchants };
+        var template = $('#unbind-template').html();
+        Mustache.parse(template);
+        var html = Mustache.render(template, data);
+        $('.merchant-list tbody').html(html);
+      } else {
+        $('.merchant-list tbody').html('<tr><td colspan="6" align="center">没有符合条件的商户！</td></tr>');
+      }
+    } else {
+      alert('接口错误：' + res.meta.msg);
+    }
+  });
+
+  return false;
+});
+
+$(document).on('click', '.btn-addMerchant', function (event) {
+  event.preventDefault();
+  var $tr = $(this).closest('tr');
+  var id = $(this).closest('tr').data('id');
+  var storeId = $('#bindStoreId').val();
+  $.ajax({
+    url: common.API_HOST + 'merchant/add',
+    type: 'POST',
+    dataType: 'json',
+    data: {
+      id: id,
+      storeId: storeId,
+    },
+  })
+  .done(function (res) {
+    if (res.meta.result == 1) {
+      alert('关联商户成功！');
+      loadBindMerchant(storeId);
+      $tr.remove();
+      if ($('#merchantList tbody tr').length < 1) {
+        $('.merchant-list tbody').html('<tr><td colspan="6" align="center">没有符合条件的商户！</td></tr>');
+      }
+    } else {
+      alert('接口错误：' + res.meta.msg);
+    }
+  });
+});
+
+$(document).on('click', '.btn-delMerchant', function (event) {
+  event.preventDefault();
+  if (!window.confirm('确定要解除与该商户的关联吗？')) {
+    return false;
+  }
+
+  var $tr = $(this).closest('tr');
+  var id = $(this).closest('tr').data('id');
+  var storeId = $('#bindStoreId').val();
+  $.ajax({
+    url: common.API_HOST + 'merchant/del',
+    type: 'POST',
+    dataType: 'json',
+    data: {
+      id: id,
+      storeId: storeId,
+    },
+  })
+  .done(function (res) {
+    if (res.meta.result == 1) {
+      alert('解除关联商户成功！');
+      $tr.remove();
+      delete _bindMerchantIds[_bindMerchantIds.indexOf(id)];
+      loadBindMerchant(storeId);
+      $('#formSearchMerchant').trigger('submit');
+    } else {
+      alert('接口错误：' + res.meta.msg);
+    }
+  });
+});
+
 function setTableData(rows) {
   var data = { rows: rows };
   var template = $('#table-template').html();
@@ -360,6 +531,7 @@ function setModal(cinemaData) {
         _provinces[key].selected = false;
       }
     });
+
     _(cities).forEach(function (value) {
       if (cinemaData.cityId == value.cityId) {
         value.selected = true;
@@ -544,6 +716,27 @@ function getService() {
   .done(function (res) {
     if (!!res.meta.result) {
       _services = res.data;
+    } else {
+      alert('接口错误：' + res.meta.msg);
+    }
+  });
+}
+
+function setSource() {
+  $.ajax({
+    url: common.API_HOST + 'common/sourceList',
+    type: 'GET',
+    dataType: 'json',
+  })
+  .done(function (res) {
+    if (!!~~res.meta.result) {
+      _sources = res.data;
+      var html = '';
+      _(_sources).forEach(function (source) {
+        html += '<option value="' + source.sourceId + '">' + source.sourceName + '</option>';
+      });
+
+      $('#tpId').append(html);
     } else {
       alert('接口错误：' + res.meta.msg);
     }

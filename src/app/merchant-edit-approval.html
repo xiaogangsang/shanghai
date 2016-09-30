@@ -62,7 +62,7 @@
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">TP方</div>
-              <select class="form-control" id="search_merchantStatus">
+              <select class="form-control" id="search_tp">
                 <option value="">全部</option>
                 <option value="2">百度</option>
                 <option value="3">万达</option>
@@ -74,7 +74,7 @@
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">商户级别</div>
-              <select class="form-control" id="search_merchantLevel">
+              <select class="form-control" id="search_merchantClass">
                 <option value="">全部</option>
                 <option value="2">总部</option>
                 <option value="3">区域</option>
@@ -176,10 +176,13 @@
     <tr data-id="{{id}}" data-bannertype="{{bannerType}}">
       <td>{{merchantName}}</td>
       <td>{{merchantId}}</td>
+      <td>{{tpId}}</td>
+      <td>{{merchantClass}}</td>
       <td>{{createTime}}</td>
       <td>{{userName}}</td>　
       <td>
-        <button type="button" class="btn btn-xs btn-default btn-edit">详情</button>
+        <button type="button" class="btn btn-xs btn-default btn-edit">审核</button>
+        <button type="button" class="btn btn-xs btn-default">驳回</button>
       </td>
     </tr>
     {{/rows}}
