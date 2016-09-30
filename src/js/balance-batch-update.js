@@ -1,6 +1,6 @@
 /*
 	收单对账状态批量处理
-  Pan Chong
+  Author: Pan Chong
  */
 
 'use strict;'
@@ -98,7 +98,7 @@ function fileChangeHandler(e, el) {
 	if (files) {
 		var file = files[0];
 		var size = file.size;
-		if (size < 1024576) {
+		if (size < 1024576 * 5) {
 			var fileName = file.name;
 			var fileExt = fileName.substring(fileName.lastIndexOf('.'));
 			var validExts = ['.xls', '.xlsx'];
@@ -112,7 +112,7 @@ function fileChangeHandler(e, el) {
 				alert('不支持的文件格式!  (仅支持 .xls 和 .xlsx)');
 			}
 		} else {
-			alert('文件大小超过1MB!');
+			alert('文件大小超过5MB!');
 		}
 	}
 

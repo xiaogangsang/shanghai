@@ -308,6 +308,11 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
       $('#reconciliationStatusNew option[value="' + detail.reconciliationStatus + '"]').prop('selected', true);
       $('#reasonNew').val([]);
       $('#reasonNew option[value="' + detail.reason + '"]').prop('selected', true);
+
+      // 如果没有原备注的话, 隐藏原备注textarea
+      if (!detail.remarks) {
+        $('#remarksNew').hide();
+      }
     } else {
       $('.modal form').parsley().validate();
     }

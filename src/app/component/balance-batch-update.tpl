@@ -17,7 +17,7 @@
       <div class="col-xs-12">
         <button type="button" class="btn btn-block btn-default btn-upload">确定上传</button>
       </div>
-      <div class="col-xs-12" style="font-size: 13px; margin-top: 15px">* 仅支持 <em>.xls</em> 和 <em>.xlsx</em> 格式. 最大支持1MB.</div>
+      <div class="col-xs-12" style="font-size: 13px; margin-top: 15px">* 仅支持 <em>.xls</em> 和 <em>.xlsx</em> 格式. 最大支持5MB.(上传文件后请耐心等待结果, 不要离开页面)</div>
     </div>
   </div>
 </script>

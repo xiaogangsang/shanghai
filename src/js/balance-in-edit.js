@@ -260,7 +260,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
   $('.modal form').parsley().validate();
 });
 
-// 查看详情
+// 查看详情(对比)
 $('#dataTable').on('click', '.btn-detail', function (e) {
 
   e.preventDefault();
@@ -331,6 +331,11 @@ $('#dataTable').on('click', '.btn-detail', function (e) {
     $('#reasonNew option[value="' + detail.reason + '"]').prop('selected', true);
     $('#payStatusNew').val([]);
     $('#payStatusNew option[value="' + detail.payStatus + '"]').prop('selected', true);
+
+    // 如果没有原备注的话, 隐藏原备注textarea
+    if (!detail.remarks) {
+      $('#remarksNew').hide();
+    }
   });
 });
 
@@ -443,7 +448,7 @@ $('#dataTable').on('click', '.btn-reverse', function(e) {
 
   $.ajax({
     url: common.API_HOST + 'settlement/acquiringCheck/reverse',
-    type: 'GET',
+    type: 'POST',
     data: {id: id}
   })
   .done(function(res) {
@@ -490,7 +495,7 @@ $('.btn-export').click(function(e) {
   }
 
   $.ajax({
-    url: common.API_HOST + 'TODO:',
+    url: common.API_HOST + 'settlement/acquiringCheck/exportModifiedRecordsByMultiMsg',
     type: 'GET',
     data: searchCache
   })
@@ -539,21 +544,7 @@ $('.btn-all-reverse').click(function(e) {
     alert('请先查询再进行此操作!');
     return false;
   }
-
-  $.ajax({
-    url: common.API_HOST + 'TODO:',
-    type: 'GET',
-    data: searchTerms
-  })
-  .done(function(res) {
-    if (!!~~res.meta.result) {
-      alert('操作成功!');
-      $('#formSearch').trigger('submit');
-    } else {
-      alert(res.meta.msg);
-      return false;
-    }
-  });
+  operateAll('5');
 });
 
 // 批量审核通过(from 修改审核)
@@ -638,11 +629,11 @@ $('.btn-all-reject').click(function(e) {
 function operateAll(type) {
 
   var searchTerms = settlementCommon.clone(searchCache);
-  searchTerms.newCheckStatus = type;
+  searchTerms.opCheckStatus = type;
 
   $.ajax({
-    url: common.API_HOST + 'TODO:',
-    type: 'GET',
+    url: common.API_HOST + 'settlement/acquiringCheck/updateBatchByMultiMsg',
+    type: 'POST',
     data: searchTerms
   })
   .done(function(res) {
