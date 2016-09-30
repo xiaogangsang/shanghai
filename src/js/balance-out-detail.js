@@ -505,3 +505,74 @@ $(document).on('submit', '#popup-detail form', function(e) {
     }
   });
 });
+
+/************************************************* 批量操作 ***************************************************/
+$('.multi-check-all').change(function(e) {
+  e.preventDefault();
+  var isChecked = $(this).is(':checked');
+
+  if (isChecked) {
+    $('#dataTable tbody :checkbox:not(:checked)').prop('checked', true);
+  } else {
+    $('#dataTable tbody :checkbox:checked').prop('checked', false);
+  }
+});
+
+
+$('body').on('change', 'tr > td :checkbox', function(e) {
+  e.preventDefault();
+
+  var isChecked = $(this).is(':checked');
+
+  if (!isChecked) {
+    $('.multi-check-all').prop('checked', false);
+  }
+});
+
+// 批量修改对账状态
+$('body').on('click', '.btn-confirm-status-update', function(e) {
+  var ids = selectedIds();
+
+  if (ids.length === 0) {
+    alert('请至少选择一条记录!');
+    return false;
+  }
+
+  $.ajax({
+    url: common.API_HOST + 'settlement/batchUploadFileRecord/batchOperateStatusByIds',
+    type: 'POST',
+    data: {id: ids, operateType: '2', reconciliationStatus: $('#targetStatus').val()}
+  })
+  .done(function(res) {
+    if (!!~~res.meta.result) {
+      alert('操作成功!');
+      $('#popup-status-choose').modal('hide');
+      $('#formSearch').trigger('submit');
+    } else {
+      alert(res.meta.msg);
+      return false;
+    }
+  });
+});
+
+$('body').on('click', '.batch-status-update', function(e) {
+  e.preventDefault();
+  $('#targetStatus option:selected').prop('selected', false);
+  $('#popup-status-choose').modal('show');
+});
+
+$('body').on('click', '.btn-status-update-cancel', function(e) {
+  e.preventDefault();
+  $('#popup-status-choose').modal('hide');
+});
+
+function selectedIds() {
+  var ids = [];
+
+  $('#dataTable tbody :checkbox:checked').each(function(index) {
+    var id = $(this).closest('tr').data('id');
+    ids.push(id);
+  });
+
+  return ids;
+}
