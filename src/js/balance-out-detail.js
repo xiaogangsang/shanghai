@@ -540,14 +540,12 @@ $('body').on('click', '.btn-confirm-status-update', function(e) {
     return false;
   }
 
-  var data = {id: ids, operateType: '2', reconciliationStatus: $('#targetStatus').val()};
+  var data = {id: settlementCommon.toString(ids), operateType: '2', reconciliationStatus: $('#targetStatus').val()};
 
   $.ajax({
     url: common.API_HOST + 'settlement/batchUploadFileRecord/batchOperateStatusByIds',
-    type: 'POST',
-    dataType: 'json',
-    // contentType: 'application/json',
-    data: JSON.stringify(data)
+    type: 'GET',
+    data: data
   })
   .done(function(res) {
     if (!!~~res.meta.result) {

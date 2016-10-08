@@ -260,7 +260,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     $('#reason option[value="' + detail.reason + '"]').prop('selected', true);
   });
 
-  $('.modal form').parsley().validate();
+  $('#popup-detail form').parsley().validate();
 });
 
 // 查看详情(对比)
@@ -516,27 +516,8 @@ $('.btn-export').click(function(e) {
 
 // 批量反审核(from 修改记录)
 $('.btn-batch-reverse').click(function(e) {
-  var ids = selectedIds();
-
-  if (ids.length === 0) {
-    alert('请至少选择一条记录!');
-    return false;
-  }
-
-  $.ajax({
-    url: common.API_HOST + 'settlement/acquiringCheck/reverseByBatchByIds',
-    type: 'POST',
-    data: {ids: ids}
-  })
-  .done(function(res) {
-    if (!!~~res.meta.result) {
-      alert('操作成功!');
-      $('#formSearch').trigger('submit');
-    } else {
-      alert(res.meta.msg);
-      return false;
-    }
-  });
+  e.preventDefault();
+  batchOperate('5');
 });
 
 // 全部反审核
@@ -563,7 +544,7 @@ $('.btn-batch-reject').click(function(e) {
 });
 
 
-// 批量审核(3)/驳回(4)
+// 批量审核(3)/驳回(4)/反审核(5)
 function batchOperate(type) {
   
   var ids = selectedIds();
@@ -573,11 +554,11 @@ function batchOperate(type) {
     return false;
   }
 
-  var param = {ids: ids, checkStatus: type};
+  var param = {ids: settlementCommon.toString(ids), checkStatus: type};
 
   $.ajax({
-    url: common.API_HOST + 'settlement/acquiringCheck/updateAcquiringCheckByBatch',
-    type: 'POST',
+    url: common.API_HOST + 'settlement/acquiringCheck/updateByBatchByIds',
+    type: 'GET',
     data: param
   })
   .done(function(res) {

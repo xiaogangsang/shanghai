@@ -434,7 +434,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     }
   });
 
-  $('.modal form').parsley().validate();
+  $('#popup-detail form').parsley().validate();
 });
 
 
@@ -538,8 +538,8 @@ $('body').on('click', '.btn-confirm-status-update', function(e) {
 
   $.ajax({
     url: common.API_HOST + 'settlement/batchUploadFileRecord/batchOperateStatusByIds',
-    type: 'POST',
-    data: {id: ids, operateType: '1', reconciliationStatus: $('#targetStatus').val()}
+    type: 'GET',
+    data: {id: settlementCommon.toString(ids), operateType: '1', reconciliationStatus: $('#targetStatus').val()}
   })
   .done(function(res) {
     if (!!~~res.meta.result) {

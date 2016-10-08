@@ -316,7 +316,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
         $('#remarksNew').hide();
       }
     } else {
-      $('.modal form').parsley().validate();
+      $('#popup-detail form').parsley().validate();
     }
   });
 });
