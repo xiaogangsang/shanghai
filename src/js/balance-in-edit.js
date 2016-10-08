@@ -392,7 +392,7 @@ $(document).on('submit', '#popup-detail form', function(e) {
     return false;
   }
 
-  if (!$('.modal form').parsley().isValid()) {
+  if (!$('#popup-detail form').parsley().isValid()) {
     return false;
   }
 
