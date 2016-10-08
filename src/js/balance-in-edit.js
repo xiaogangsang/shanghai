@@ -554,12 +554,12 @@ function batchOperate(type) {
     return false;
   }
 
-  var param = {ids: settlementCommon.toString(ids), checkStatus: type};
+  var param = {ids: ids, checkStatus: type};
 
   $.ajax({
-    url: common.API_HOST + 'settlement/acquiringCheck/updateByBatchByIds',
+    url: common.API_HOST + 'settlement/acquiringCheck/updateByBatchByIds?' + settlementCommon.serializeParam(param),
     type: 'GET',
-    data: param
+    dataType: 'json'
   })
   .done(function(res) {
     if (!!~~res.meta.result) {

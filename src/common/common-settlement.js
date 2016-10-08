@@ -244,8 +244,15 @@ settlementCommon.serializeParam = function(param) {
       for (var i = 0; i < value.length; ++i) {
         var obj = value[i];
 
+        var hasInnerKey = false;
+
         for (var innerKey in obj) {
+          hasInnerKey = true;
           queryString += key + '[' + i + '].' + innerKey + '=' + encodeURIComponent(obj[innerKey]) + '&';
+        }
+
+        if (!hasInnerKey) {
+          queryString += key + '[' + i + ']' + '=' + encodeURIComponent(obj) + '&';
         }
       }
     } else {

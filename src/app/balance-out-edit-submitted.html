@@ -5,7 +5,7 @@
   <link rel="icon" href="images/favicon.ico" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <title>出货流水修改记录</title>
+  <title>修改和审核记录</title>
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <link rel="stylesheet" href="css/reset.css">
   <link rel="stylesheet" type="text/css" href="css/balance-detail.css">
@@ -25,7 +25,7 @@
 
         <ol class="breadcrumb">
           <li>出货对账</li>
-          <li class="active">出货流水修改记录</li>
+          <li class="active">修改和审核记录</li>
         </ol>
 
         <form id="formSearch" class="search-area clearfix">
@@ -300,7 +300,7 @@
   <script id="table-template" type="text/x-tmpl-mustache">
     {{#rows}}
     <tr data-id="{{id}}" data-bannertype="{{bannerType}}">
-      <td><input type="checkbox" class="multi-check"></td>
+      <td>{{#canReverse}}<input type="checkbox" class="multi-check">{{/canReverse}}</td>
       <td>{{updateTime}}</td>
       <td>{{thdOrderNo}}</td>
       <td>{{bizOrderNo}}</td>
