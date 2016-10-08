@@ -43,6 +43,8 @@ $('#formSearch').on('click', 'button[type=submit]', function (event) {
 $('#formSearch').on('submit', function (e) {
   e.preventDefault();
 
+  $('.multi-check-all').prop('checked', false);
+
   if (_querying) {
     return false;
   }

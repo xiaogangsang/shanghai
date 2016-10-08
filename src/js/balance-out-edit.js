@@ -56,6 +56,8 @@ $('#formSearch').on('click', 'button[type=submit]', function (event) {
 $('#formSearch').on('submit', function (e) {
   e.preventDefault();
 
+  $('.multi-check-all').prop('checked', false);
+
   if (_querying) {
     return false;
   }
@@ -494,8 +496,8 @@ $('.btn-batch-reverse').click(function(e) {
 
   $.ajax({
     url: common.API_HOST + 'settlement/shipmentInfo/antiExaminationByIds',
-    type: 'POST',
-    data: {ids: ids}
+    type: 'GET',
+    data: {ids: settlementCommon.toString(ids)}
   })
   .done(function(res) {
     if (!!~~res.meta.result) {
@@ -551,7 +553,7 @@ function batchOperate(type) {
     return false;
   }
 
-  var param = {ids: ids, checkStatus: type};
+  var param = {ids: settlementCommon.toString(ids), checkStatus: type};
 
   $.ajax({
     url: common.API_HOST + 'settlement/shipmentInfo/checkByIds',
