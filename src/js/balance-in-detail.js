@@ -529,6 +529,8 @@ $('body').on('change', 'tr > td :checkbox', function(e) {
 
 // 批量修改对账状态
 $('body').on('click', '.btn-confirm-status-update', function(e) {
+  e.preventDefault();
+
   var ids = selectedIds();
 
   if (ids.length === 0) {
@@ -536,20 +538,13 @@ $('body').on('click', '.btn-confirm-status-update', function(e) {
     return false;
   }
 
-  var formData = new FormData();
-  for (var i = 0; i < ids.length; ++i) {
-    formData.append('idArr', ids[i]);
-  }
-  // formData.append('idArr', ids);
-  formData.append('operateType', '1');
-  formData.append('reconciliationStatus', $('#targetStatus').val());
+  var param = {idArr: ids, operateType: '1', reconciliationStatus: $('#targetStatus').val()};
 
   $.ajax({
     url: common.API_HOST + 'settlement/batchUploadFileRecord/batchOperateStatusByIds',
     type: 'POST',
-    contentType: 'application/x-www-form-urlencoded',
-    processData:false,
-    data: formData
+    traditional: true,
+    data: param
   })
   .done(function(res) {
     if (!!~~res.meta.result) {
@@ -565,6 +560,14 @@ $('body').on('click', '.btn-confirm-status-update', function(e) {
 
 $('body').on('click', '.batch-status-update', function(e) {
   e.preventDefault();
+
+  var ids = selectedIds();
+
+  if (ids.length === 0) {
+    alert('请至少选择一条记录!');
+    return false;
+  }
+
   $('#targetStatus option:selected').prop('selected', false);
   $('#popup-status-choose').modal('show');
 });
