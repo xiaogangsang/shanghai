@@ -538,19 +538,18 @@ $('body').on('click', '.btn-confirm-status-update', function(e) {
 
   var formData = new FormData();
   for (var i = 0; i < ids.length; ++i) {
-    formData.append('id', ids[i]);
+    formData.append('idArr', ids[i]);
   }
-  // formData.append('idStr', ids);
+  // formData.append('idArr', ids);
   formData.append('operateType', '1');
   formData.append('reconciliationStatus', $('#targetStatus').val());
 
   $.ajax({
     url: common.API_HOST + 'settlement/batchUploadFileRecord/batchOperateStatusByIds',
     type: 'POST',
-    contentType: false,
+    contentType: 'application/x-www-form-urlencoded',
     processData:false,
     data: formData
-    // data: {id: settlementCommon.toString(ids), operateType: '1', reconciliationStatus: $('#targetStatus').val()}
   })
   .done(function(res) {
     if (!!~~res.meta.result) {

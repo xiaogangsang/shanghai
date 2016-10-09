@@ -449,20 +449,7 @@ $('#dataTable').on('click', '.btn-reverse', function(e) {
 
   var id = $(this).data('id');
 
-  $.ajax({
-    url: common.API_HOST + 'settlement/acquiringCheck/reverse',
-    type: 'POST',
-    data: {id: id, version: $(this).data('version')}
-  })
-  .done(function(res) {
-    if (!!~~res.meta.result) {
-      alert('操作成功!');
-      $('#formSearch').trigger('submit');
-    } else {
-      alert(res.meta.msg);
-      return false;
-    }
-  });
+  approvalOperate([id], '5');
 });
 
 /************************************************* 批量操作 ***************************************************/
@@ -554,6 +541,10 @@ function batchOperate(type) {
     return false;
   }
 
+  approvalOperate(ids, type);
+}
+
+function approvalOperate(ids, type) {
   var param = {ids: ids, checkStatus: type};
 
   $.ajax({
@@ -570,8 +561,6 @@ function batchOperate(type) {
       return false;
     }
   });
-
-  // alert('接口尚未联调.  操作: ' + (type == 1 ? '批量审核通过' : '批量审核驳回') + '. 选择的记录的ID: ' + ids);
 }
 
 

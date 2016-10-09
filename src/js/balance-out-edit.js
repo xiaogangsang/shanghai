@@ -84,9 +84,9 @@ $('#formSearch').on('submit', function (e) {
     _pageSize = $('#search_pageSize').val() || 10;
 
     sendData = {
-      dateType: $('#search_dateType').val(),
-      startTime: $('#search_startTime').val(),
-      endTime: $('#search_endTime').val(),
+      dateType: dateIsRequired ? $('#search_dateType').val() : '',
+      startTime: dateIsRequired ? $('#search_startTime').val() : '',
+      endTime: dateIsRequired ? $('#search_endTime').val() : '',
       merchantName: $('#search_merchantName').val(),
       merchantNo: $('#search_merchantNo').val(),
       shipmentStatus: $('#search_shipmentStatus').val(),
