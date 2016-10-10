@@ -611,7 +611,7 @@ function operateAll(type) {
   })
   .done(function(res) {
     if (!!~~res.meta.result) {
-      alert('操作成功!');
+      alert('操作成功! (点击 "确认" 刷新列表)');
       $('#formSearch').trigger('submit');
     } else {
       alert(res.meta.msg);
