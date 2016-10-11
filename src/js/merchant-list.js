@@ -22,7 +22,7 @@ var dataCache;
 var selectBranch;
 var selectGuy;
 
-var _DEBUG = true;
+var _DEBUG = false;
 
 $(function () {
 
