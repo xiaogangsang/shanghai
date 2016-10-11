@@ -261,6 +261,7 @@
                 <tr>
                   <!-- 参照activity-unit.html -->
                   <th><input type="checkbox" class="multi-check-all"></th>
+                  <th>ID</th>
                   <th>交易时间</th>
                   <th>收单商户</th>
                   <th>收单商户号</th>
@@ -324,6 +325,7 @@
     {{#rows}}
     <tr data-id="{{id}}" data-bannertype="{{bannerType}}">
       <td><input type="checkbox" class="multi-check"></td>
+      <td>{{id}}</td>
       <td>{{createTime}}</td>
       <td>{{chargeMerchant}}</td>
       <td>{{chargeMerchantNo}}</td>

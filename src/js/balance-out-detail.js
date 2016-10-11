@@ -26,6 +26,10 @@ var _DEBUG = false;
 $(function() {
 
 	common.init('balance-out-detail');
+
+  // 初始化涉及的select控件
+  // TP方
+  $('#search_payTool').html(settlementCommon.optionsHTML(settlementCommon.payTool, true));
   
   $('#formSearch').parsley();
 });
@@ -88,6 +92,8 @@ $('#formSearch').on('submit', function (e) {
       bizOrderNo: $('#search_bizOrderNo').val(),
       thdOrderNo: $('#search_thdOrderNo').val(),
       checkStatus: $('#search_checkStatus').val(),
+      payTool: $('#search_payTool').val(),
+      orderNo: $('#search_orderNo').val(),
       pageSize: _pageSize,
     };
 

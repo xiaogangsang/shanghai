@@ -38,6 +38,10 @@ $(function() {
   } else {
   	common.init('balance-out-edit-submitted');
   }
+
+  // 初始化涉及的select控件
+  // TP方
+  $('#search_payTool').html(settlementCommon.optionsHTML(settlementCommon.payTool, true));
   
   $('#formSearch').parsley();
 });
@@ -99,6 +103,8 @@ $('#formSearch').on('submit', function (e) {
       discountName: $('#search_discountName').val(),
       bizOrderNo: $('#search_bizOrderNo').val(),
       thdOrderNo: $('#search_thdOrderNo').val(),
+      payTool: $('#search_payTool').val(),
+      orderNo: $('#search_orderNo').val(),
       checkStatus: approval ? 2 : $('#search_checkStatus').val(), // 审核的时候, 要过滤审核的状态为待审核
       pageSize: _pageSize,
     };
