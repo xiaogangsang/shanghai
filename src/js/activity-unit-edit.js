@@ -525,7 +525,7 @@ $(document).on('click', '#btn-set-dimen', function (event) {
 $(document).on('submit', '#popup-unit-dimen form', function (event) {
   event.preventDefault();
   _popupDataCache.configType = $('input[name=configType]:checked').map(function () {return $(this).next('span').text();}).get();
-  var previewHtmlConfigType = _popupDataCache.configType.length == _configType.length ? '不限' : '[' + _popupDataCache.configType.join('] [') + ']';
+  var previewHtmlConfigType = _popupDataCache.configType.length < 1 ? '不限' : '[' + _popupDataCache.configType.join('] [') + ']';
   $('#preview-dimen').html(previewHtmlConfigType);
   $('#popup-unit-dimen').modal('hide');
   return false;
