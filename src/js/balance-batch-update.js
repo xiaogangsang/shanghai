@@ -88,6 +88,9 @@ $(function() {
 	    }
     }
 	});
+
+
+	$('body').append('<div id="hud-overlay" style="display: none"><div class="hud"><img src="images/loader.gif"><p>上传附件中...</p></div></div>');
 });
 
 function fileChangeHandler(e, el) {
@@ -98,7 +101,7 @@ function fileChangeHandler(e, el) {
 	if (files) {
 		var file = files[0];
 		var size = file.size;
-		if (size < 1024576 * 5) {
+		if (size < 1024576 * 50) {
 			var fileName = file.name;
 			var fileExt = fileName.substring(fileName.lastIndexOf('.'));
 			var validExts = ['.xls'];
@@ -112,7 +115,7 @@ function fileChangeHandler(e, el) {
 				alert('不支持的文件格式!  (仅支持 .xls)');
 			}
 		} else {
-			alert('文件大小超过5MB!');
+			alert('文件大小超过50MB!');
 		}
 	}
 
@@ -137,6 +140,8 @@ $('body').on('click', '.btn-upload', function(e) {
 		formData.append('file', file);
 		formData.append('operateType', operateType);
 
+		$('#hud-overlay').show();
+
 		$.ajax({
 	    url: common.API_HOST + 'settlement/batchUploadFileRecord/batchUploadOperate',
 	    type: 'POST',
@@ -145,6 +150,7 @@ $('body').on('click', '.btn-upload', function(e) {
 	    data: formData
 	  })
 	  .done(function (res) {
+	  	$('#hud-overlay').hide();
 	    if (!!~~res.meta.result == true) {
 	      alert('上传成功！');
 	    } else {

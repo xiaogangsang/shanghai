@@ -164,7 +164,7 @@
           <a href="balance-in-edit-submitted.html" class="list-group-item" id="menu-balance-in-edit-submitted" data-id="196" style="display:none">修改和审核记录</a>
           <a href="balance-in-edit-approval.html" class="list-group-item" id="menu-balance-in-edit-approval" data-id="197" style="display:none">待审核记录</a>
           <a href="balance-in-export.html" class="list-group-item" id="menu-balance-in-export" data-id="215" style="display:none">收单导出下载</a>
-          <a href="balance-in-state-batch-handler.html" class="list-group-item" id="menu-balance-in-state-batch-handler" data-id="244" style="display:none">对账状态批量处理</a>
+          <a href="balance-in-state-batch-handler.html" class="list-group-item" id="menu-balance-in-state-batch-handler" data-id="215" style="display:none">对账状态批量处理</a>
           <a href="balance-in-merchant-batch-update.html" class="list-group-item" id="menu-balance-in-merchant-batch-update" data-id="245" style="display:none">商户信息批量更新</a>
           <a href="balance-in-file-operate-result.html" class="list-group-item" id="menu-balance-in-file-operate-result" data-id="249" style="display:none">对账批处理结果</a>
         </div>
