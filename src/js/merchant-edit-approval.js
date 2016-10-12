@@ -95,7 +95,7 @@ $('#formSearch').on('submit', function (e) {
 
   if (!_DEBUG) {
     $.ajax({
-      url: common.API_HOST + 'settlement/merchantinfo/merchantinfoList.json',
+      url: common.API_HOST + 'settlement/merchantinfo/listMerchantsNeedChecking',
       type: 'GET',
       dataType: 'json',
       data: sendData,
