@@ -28,10 +28,14 @@ $(function() {
 
   var html = parts[parts.length - 1];
 
+	// 提示语
+  var tips = '商户批量更新第一列为id,第二列为二级商户号，之后列不限';
+
   if (html.indexOf('balance-in') > -1) {
   	if (html.indexOf('state') > -1) {
   		operateType = operateTypes.balanceInState;
   		sideBarId = "balance-in-state-batch-handler";
+  		tips = '收单对账excel内容前四列分别为id，二级商户号，收单对账状态，对账不一致原因，之后列不限';
   	} else {
   		operateType=  operateTypes.balanceInMerchant;
   		sideBarId = "balance-in-merchant-batch-update";
@@ -40,6 +44,7 @@ $(function() {
   	if (html.indexOf('state') > -1) {
   		operateType = operateTypes.balanceOutState;
   		sideBarId = "balance-out-state-batch-handler";
+  		tips = '出货对账excel内容前四列分别为id，二级商户号，出货对账状态，对账不一致原因，之后列不限';
   	} else {
   		operateType = operateTypes.balanceOutMercant;
   		sideBarId = "balance-out-state-batch-handler";
@@ -55,6 +60,8 @@ $(function() {
   var html = Mustache.render(template);
 
   $('.breadcrumb').after(html);
+
+  $('.tips').append(tips);
 
 
 

@@ -17,7 +17,7 @@
       <div class="col-xs-12">
         <button type="button" class="btn btn-block btn-default btn-upload">确定上传</button>
       </div>
-      <div class="col-xs-12" style="font-size: 13px; margin-top: 15px">* 仅支持 <em>.xls</em> 格式. 最大支持50MB.<br>* 点击上传后请耐心等待, 上传结果提示框弹出前请不要离开页面<br>* 上传前请确保Excel文件中的商户号在商户表中是真实存在的</div>
+      <div class="col-xs-12 tips" style="font-size: 13px; margin-top: 15px">* 仅支持 <em>.xls</em> 格式. 最大支持50MB.<br>* 点击上传后请耐心等待, 上传结果提示框弹出前请不要离开页面(每MB大约需要5秒, 取决于所处网络环境)<br>* 上传前请确保Excel文件中的商户号在商户表中是真实存在的<br>* </div>
     </div>
   </div>
 </script>
