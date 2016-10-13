@@ -281,7 +281,6 @@ function formatPopupUI(detailData) {
 }
 
 /****************************************** 账户和商户操作 **********************************************/
-// SETTLEMENT_TODO: 完成下面6种操作
 // 编辑商户
 $('#dataTable').on('click', '.btn-edit', function (e) {
 
@@ -298,8 +297,6 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
 $('#dataTable').on('click', '.btn-delete', function(e) {
   e.preventDefault();
   var merchantId = $(this).data('merchantid');
-
-  alert('merchant ID 是' + merchantId + ', 你想删除该商户, 该功能尚未实现');
 
   var param = {merchantId: merchantId};
 
@@ -343,9 +340,6 @@ $('#dataTable').on('click', '.btn-offline', function(e) {
 // 查看商户详情
 $('#dataTable').on('click', '.btn-detail', function(e) {
   e.preventDefault();
-  // var merchantId = $(this).data('merchantid');
-
-  // alert('merchant ID 是' + merchantId + ', 你想查看该商户详情, 该功能尚未实现');
 
   var rowIndex = $(this).closest('tr').prevAll().length;
   var detailData = dataCache[rowIndex];
