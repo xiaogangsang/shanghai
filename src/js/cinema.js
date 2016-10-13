@@ -286,16 +286,17 @@ $(document).on('submit', '#popup-cinema-form form', function (e) {
 
   _submitting = true;
   var sendData = {
-    cinemaName: $.trim($('#popup-cinema-form #cinemaName').val()),
+    cinemaName: $('#popup-cinema-form #cinemaName').val().trim(),
     brandId: $('#popup-cinema-form #brandId').val(),
     provinceId: $('#popup-cinema-form #provinceId').val(),
     cityId: $('#popup-cinema-form #cityId').val(),
     areaId: $('#popup-cinema-form #areaId').val(),
     districtId: $('#popup-cinema-form #districtId').val(),
-    address: $.trim($('#popup-cinema-form #address').val()),
-    tel: $.trim($('#popup-cinema-form #tel').val()),
-    longitude: $.trim($('#popup-cinema-form #longitude').val()),
-    latitude: $.trim($('#popup-cinema-form #latitude').val()),
+    address: $('#popup-cinema-form #address').val().trim(),
+    tel: $('#popup-cinema-form #tel').val().trim(),
+    longitude: $('#popup-cinema-form #longitude').val().trim(),
+    latitude: $('#popup-cinema-form #latitude').val().trim(),
+    score: $('#popup-cinema-form #cinemaScore').val().trim(),
   };
   var idArr = [];
   var desArr = [];
