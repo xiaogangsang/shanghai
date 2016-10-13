@@ -3,7 +3,8 @@
 require('cookie');
 var common = {};
 
-common.API_HOST = window.location.protocol + '//' + window.location.host + '/MovieOps/';
+// common.API_HOST = window.location.protocol + '//' + window.location.host + '/MovieOps/';
+common.API_HOST = 'http://192.168.102.61:8080/';
 
 common.init = function (pageName) {
   common.checkLogin();
@@ -16,24 +17,24 @@ common.init = function (pageName) {
       var redirectUrl = document.location.href;
       switch (jqXHR.status){
         case (500):
-          errorMsg = jqXHR.status + '：服务器无响应，请稍后再试！';
+        errorMsg = jqXHR.status + '：服务器无响应，请稍后再试！';
         break;
         case (401):
-          errorMsg = jqXHR.status + '：未登录或登陆超时，请尝试重新登陆！';
-          redirectUrl = 'login.html?logout';
+        errorMsg = jqXHR.status + '：未登录或登陆超时，请尝试重新登陆！';
+        redirectUrl = 'login.html?logout';
         break;
         case (403):
-          errorMsg = jqXHR.status + '：没有权限，请尝试重新登陆！';
-          redirectUrl = 'login.html?logout';
+        errorMsg = jqXHR.status + '：没有权限，请尝试重新登陆！';
+        redirectUrl = 'login.html?logout';
         break;
         case (404):
-          errorMsg = jqXHR.status + '：服务器暂时无法访问，请稍后再试！';
+        errorMsg = jqXHR.status + '：服务器暂时无法访问，请稍后再试！';
         break;
         case (408):
-          errorMsg = jqXHR.status + '：请求超时，请稍后再试！';
+        errorMsg = jqXHR.status + '：请求超时，请稍后再试！';
         break;
         case (0):
-          errorMsg = jqXHR.status + '：貌似断网了！';
+        errorMsg = jqXHR.status + '：貌似断网了！';
         break;
       }
       $('<div class="modal fade" data-keyboard="false" data-backdrop="static"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><h4 class="modal-title">错误提示</h4></div><div class="modal-body"><p style="text-align:center;">' + errorMsg + '</p></div><div class="modal-footer"><a href="' + redirectUrl + '" class="btn btn-primary">确定</a></div></div></div></div>').appendTo('body').modal('show');
@@ -43,7 +44,7 @@ common.init = function (pageName) {
 };
 
 common.showMenu = function (pageName) {
-  var allowMenus = sessionStorage.getItem('menuAuthority') != null ? sessionStorage.getItem('menuAuthority').split(',') : null;
+  var allowMenus = sessionStorage.getItem('authMenu');
   if (pageName != undefined && pageName != '' && $('#menu-' + pageName).size() > 0) {
     var menuId = '' + $('#menu-' + pageName).data('id');
     if (allowMenus.indexOf(menuId) < 0) {
@@ -66,7 +67,7 @@ common.showMenu = function (pageName) {
 };
 
 common.checkLogin = function () {
-  if (sessionStorage.getItem('menuAuthority') == null || Cookies.get('Xtoken') == undefined) {
+  if (sessionStorage.getItem('authMenu').length < 1 || Cookies.get('Xtoken') == undefined) {
     common.logout();
     window.location.href = 'login.html';
   }
@@ -82,9 +83,9 @@ common.setLoginName = function () {
 common.logout = function () {
   Cookies.remove('Xtoken');
   Cookies.remove('name');
-  sessionStorage.setItem('cityAuthority', '');
-  sessionStorage.setItem('channelAuthority', '');
-  sessionStorage.setItem('menuAuthority', '');
+  sessionStorage.setItem('authCity', []);
+  sessionStorage.setItem('authChannel', []);
+  sessionStorage.setItem('authMenu', []);
 };
 
 common.getDate = function (date) {
