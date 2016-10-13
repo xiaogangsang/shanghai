@@ -3,8 +3,7 @@
 require('cookie');
 var common = {};
 
-// common.API_HOST = window.location.protocol + '//' + window.location.host + '/MovieOps/';
-common.API_HOST = 'http://192.168.102.61:8080/';
+common.API_HOST = window.location.protocol + '//' + window.location.host + '/MovieOps/';
 
 common.init = function (pageName) {
   common.checkLogin();
@@ -17,24 +16,24 @@ common.init = function (pageName) {
       var redirectUrl = document.location.href;
       switch (jqXHR.status){
         case (500):
-        errorMsg = jqXHR.status + '：服务器无响应，请稍后再试！';
+          errorMsg = jqXHR.status + '：服务器无响应，请稍后再试！';
         break;
         case (401):
-        errorMsg = jqXHR.status + '：未登录或登陆超时，请尝试重新登陆！';
-        redirectUrl = 'login.html?logout';
+          errorMsg = jqXHR.status + '：未登录或登陆超时，请尝试重新登陆！';
+          redirectUrl = 'login.html?logout';
         break;
         case (403):
-        errorMsg = jqXHR.status + '：没有权限，请尝试重新登陆！';
-        redirectUrl = 'login.html?logout';
+          errorMsg = jqXHR.status + '：没有权限，请尝试重新登陆！';
+          redirectUrl = 'login.html?logout';
         break;
         case (404):
-        errorMsg = jqXHR.status + '：服务器暂时无法访问，请稍后再试！';
+          errorMsg = jqXHR.status + '：服务器暂时无法访问，请稍后再试！';
         break;
         case (408):
-        errorMsg = jqXHR.status + '：请求超时，请稍后再试！';
+          errorMsg = jqXHR.status + '：请求超时，请稍后再试！';
         break;
         case (0):
-        errorMsg = jqXHR.status + '：貌似断网了！';
+          errorMsg = jqXHR.status + '：貌似断网了！';
         break;
       }
       $('<div class="modal fade" data-keyboard="false" data-backdrop="static"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><h4 class="modal-title">错误提示</h4></div><div class="modal-body"><p style="text-align:center;">' + errorMsg + '</p></div><div class="modal-footer"><a href="' + redirectUrl + '" class="btn btn-primary">确定</a></div></div></div></div>').appendTo('body').modal('show');
