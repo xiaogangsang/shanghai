@@ -10,7 +10,7 @@ var _configType = [
 { name: '4D' },
 { name: 'IMAX' },
 { name: '巨幕' },
-{ name: 'VIP厅' },
+{ name: 'VIP' },
 ];
 var _channels = [];
 var _provinces = [];
