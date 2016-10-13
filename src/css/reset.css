@@ -319,7 +319,7 @@ input[readonly],
 }
 .multi-selection .table {
   margin-bottom: 0;
-  max-width: 640px;
+  max-width: 100%;
   background-color: transparent;
 }
 .multi-selection .table td {
@@ -327,6 +327,9 @@ input[readonly],
 }
 .multi-selection select {
   height: 150px;
+}
+.multi-selction optgroup {
+  font-weight: bold;
 }
 .multi-selection .btn {
   padding: 1px 0;

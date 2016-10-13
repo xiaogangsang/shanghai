@@ -1,5 +1,5 @@
 <div class="modal fade" id="popup-role-form" data-keyboard="false" data-backdrop="static">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <form>
         <div class="modal-header">
@@ -23,6 +23,14 @@
       <table class="table">
         <tbody>
           <tr>
+            <th width="80">角色类型</th>
+            <td>
+              <select id="roleType" class="form-control">
+                <option value="">暂时无效</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
             <th width="80">角色名称</th>
             <td><input type="text" class="form-control" id="roleName" value="{{role.roleName}}" size="10" required></td>
           </tr>
@@ -36,6 +44,39 @@
   </div>
 
   <div class="edit-section">
+    <h5>可分配的角色</h5>
+    <div class="table-responsive multi-selection">
+      <table class="table">
+        <tbody>
+          <tr>
+            <td>
+              <select name="from[]" id="assignedRoleSelect" class="form-control" size="8" multiple="multiple">
+                {{#assignedRoles}}
+                {{^selected}}<option value="{{id}}">{{id}}:{{roleName}}</option>{{/selected}}
+                {{/assignedRoles}}
+              </select>
+            </td>
+            <td width="60">
+              <button type="button" id="assignedRoleSelect_all" class="btn btn-block btn-default">全选</button>
+              <button type="button" id="assignedRoleSelect_right" class="btn btn-block btn-default">添加</button>
+              <button type="button" id="assignedRoleSelect_left" class="btn btn-block btn-default">移除</button>
+              <button type="button" id="assignedRoleSelect_none" class="btn btn-block btn-default">反选</button>
+            </td>
+            <td>
+              <select name="to[]" id="assignedRoleSelect_to" class="form-control" size="8" multiple="multiple" data-parsley-required data-parsley-errors-container="#error-assignedRole">
+                {{#assignedRoles}}
+                {{#selected}}<option value="{{id}}">{{id}}:{{roleName}}</option>{{/selected}}
+                {{/assignedRoles}}
+              </select>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div id="error-assignedRole"></div>
+    </div>
+  </div>
+
+  <div class="edit-section">
     <h5>配置功能</h5>
     <div class="table-responsive multi-selection">
       <table class="table">
@@ -45,7 +86,8 @@
               <select name="from[]" id="resourceSelect" class="form-control" size="8" multiple="multiple">
                 {{#resources}}
                 {{^selected}}
-                <option value="{{id}}">{{name}}</option>
+                {{#group}}<optgroup label="{{name}}">{{#function}}{{#selected}}<option value="{{id}}">{{name}}</option>{{/selected}}{{/function}}<</optgroup>{{/group}}
+                {{^group}}<option value="{{id}}">{{name}}</option>{{/group}}
                 {{/selected}}
                 {{/resources}}
               </select>
@@ -60,7 +102,8 @@
               <select name="to[]" id="resourceSelect_to" class="form-control" size="8" multiple="multiple" data-parsley-required data-parsley-errors-container="#error-resource">
                 {{#resources}}
                 {{#selected}}
-                <option value="{{id}}">{{name}}</option>
+                {{#group}}<optgroup label="{{name}}">{{#function}}{{^selected}}<option value="{{id}}">{{name}}</option>{{/selected}}{{/function}}<</optgroup>{{/group}}
+                {{^group}}<option value="{{id}}">{{name}}</option>{{/group}}
                 {{/selected}}
                 {{/resources}}
               </select>
@@ -116,6 +159,14 @@
       <table class="table">
         <tbody>
           <tr>
+            <th width="80">角色类型</th>
+            <td>
+              <select id="roleType" class="form-control">
+                <option value="">暂时无效</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
             <th width="80">角色名称</th>
             <td><input type="text" class="form-control" id="roleName" value="{{role.roleName}}" size="10" required></td>
           </tr>
@@ -129,6 +180,35 @@
   </div>
 
   <div class="edit-section">
+    <h5>可分配的角色</h5>
+    <div class="table-responsive multi-selection">
+      <table class="table">
+        <tbody>
+          <tr>
+            <td>
+              <select name="from[]" id="assignedRoleSelect" class="form-control" size="8" multiple="multiple">
+                {{#assignedRoles}}
+                <option value="{{id}}">{{id}}:{{roleName}}</option>
+                {{/assignedRoles}}
+              </select>
+            </td>
+            <td width="60">
+              <button type="button" id="assignedRoleSelect_all" class="btn btn-block btn-default">全选</button>
+              <button type="button" id="assignedRoleSelect_right" class="btn btn-block btn-default">添加</button>
+              <button type="button" id="assignedRoleSelect_left" class="btn btn-block btn-default">移除</button>
+              <button type="button" id="assignedRoleSelect_none" class="btn btn-block btn-default">反选</button>
+            </td>
+            <td>
+              <select name="to[]" id="assignedRoleSelect_to" class="form-control" size="8" multiple="multiple" data-parsley-required data-parsley-errors-container="#error-assignedRole"></select>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div id="error-assignedRole"></div>
+    </div>
+  </div>
+
+  <div class="edit-section">
     <h5>配置功能</h5>
     <div class="table-responsive multi-selection">
       <table class="table">
@@ -137,7 +217,8 @@
             <td>
               <select name="from[]" id="resourceSelect" class="form-control" size="8" multiple="multiple">
                 {{#resources}}
-                <option value="{{id}}">{{name}}</option>
+                {{#group}}<optgroup label="{{name}}">{{#function}}<option value="{{id}}">{{name}}</option>{{/function}}</optgroup>{{/group}}
+                {{^group}}<option value="{{id}}">{{name}}</option>{{/group}}
                 {{/resources}}
               </select>
             </td>

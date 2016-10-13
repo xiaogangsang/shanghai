@@ -4,9 +4,9 @@ var common = require('common');
 var _pageIndex = 1;
 var _pageSize = 10;
 var _pageTotal = 0;
-var _roles = {};
-var _users = {};
-var _resources = {};
+var _roles = [];
+var _users = [];
+var _resources = [];
 var _querying = false;
 var searchCache = {};
 var useCache = false;
@@ -68,7 +68,7 @@ $('#formSearch').on('submit', function (e) {
       } else {
         useCache = true;
         _(res.data.rows).forEach(function (item) {
-          if (item.desc.length > 12) {
+          if (item.desc != null && item.desc.length > 12) {
             item.short = item.desc.substr(0, 10) + '...';
           } else {
             item.short = item.desc;
@@ -125,6 +125,7 @@ $(document).on('submit', '#popup-role-form form', function (e) {
   if (_submitting) {
     return false;
   }
+
   _submitting = true;
   var sendData = {
     roleName: $.trim($('#popup-role-form #roleName').val()),
@@ -264,7 +265,6 @@ $(document).on('click', '#btn-delete-multi', function (e) {
       data: JSON.stringify(userIds),
     })
     .done(function (res) {
-      // console.log(res);
       if (!!~~res.meta.result) {
         alert('删除成功！');
         $checkedItems.each(function (index, el) {
@@ -301,10 +301,23 @@ function setModal(roleData) {
   var data;
   var template;
   if (roleData) {
-    _(_resources).forEach(function (value, key) {
-      _resources[key].selected = roleData.resources.indexOf(value.id.toString()) > -1
-      ? true
-      : false;
+    _(_resources).forEach(function (res) {
+      var funcSelected = false;
+      if (res.function.length > 0) {
+        res.group = true;
+        _(res.function).forEach(function (func) {
+          if (roleData.resources.indexOf(func.id.toString()) > -1) {
+            func.selected = true;
+            funcSelected = true;
+          } else {
+            func.selected = false;
+          }
+        });
+
+        res.selected = funcSelected;
+      } else {
+        res.selected = roleData.resources.indexOf(res.id.toString()) > -1 ? true : false;
+      }
     });
 
     delete roleData.resources;
@@ -313,11 +326,18 @@ function setModal(roleData) {
     });
 
     delete roleData.users;
-    data = { role: roleData, resources: _resources, users: _users };
+
+    _(_roles).forEach(function (value, key) {
+      _roles[key].selected = roleData.assignedRoles.indexOf(value.id.toString()) > -1 ? true : false;
+    });
+
+    delete roleData.assignedRoles;
+
+    data = { role: roleData, resources: _resources, users: _users, assignedRoles: _roles };
     template = $('#edit-template').html();
     $('#popup-role-form .modal-title').html('编辑角色');
   } else {
-    data = { resources: _resources, users: _users };
+    data = { resources: _resources, users: _users, assignedRoles: _roles };
     template = $('#create-template').html();
     $('#popup-role-form .modal-title').html('新增角色');
   }
@@ -325,6 +345,30 @@ function setModal(roleData) {
   Mustache.parse(template);
   var html = Mustache.render(template, data);
   $('#popup-role-form .modal-body').html(html);
+
+  $('#assignedRoleSelect').multiselect({
+    search: {
+      left: '<input type="text" name="q" class="form-control" placeholder="筛选..." />',
+      right: '<input type="text" name="q" class="form-control" placeholder="筛选..." />',
+    },
+    right: '#assignedRoleSelect_to',
+    rightAll: '#assignedRoleSelect_all',
+    rightSelected: '#assignedRoleSelect_right',
+    leftSelected: '#assignedRoleSelect_left',
+    leftAll: '#assignedRoleSelect_none',
+  });
+
+  $('#userSelect').multiselect({
+    search: {
+      left: '<input type="text" name="q" class="form-control" placeholder="筛选..." />',
+      right: '<input type="text" name="q" class="form-control" placeholder="筛选..." />',
+    },
+    right: '#userSelect_to',
+    rightAll: '#userSelect_all',
+    rightSelected: '#userSelect_right',
+    leftSelected: '#userSelect_left',
+    leftAll: '#userSelect_none',
+  });
 
   $('#resourceSelect').multiselect({
     search: {
@@ -336,17 +380,6 @@ function setModal(roleData) {
     rightSelected: '#resourceSelect_right',
     leftSelected: '#resourceSelect_left',
     leftAll: '#resourceSelect_none',
-  });
-  $('#userSelect').multiselect({
-    search: {
-      left: '<input type="text" name="q" class="form-control" placeholder="筛选..." />',
-      right: '<input type="text" name="q" class="form-control" placeholder="筛选..." />',
-    },
-    right: '#userSelect_to',
-    rightAll: '#userSelect_all',
-    rightSelected: '#userSelect_right',
-    leftSelected: '#userSelect_left',
-    leftAll: '#userSelect_none',
   });
 }
 
@@ -397,7 +430,7 @@ function getUsers() {
 
 function getResources() {
   $.ajax({
-    url: common.API_HOST + 'security/resource/resourceList',
+    url: common.API_HOST + 'security/resource/resourceListInSelect',
     type: 'POST',
     dataType: 'json',
     data: {
@@ -406,8 +439,11 @@ function getResources() {
     },
   })
   .done(function (res) {
-    if (!!~~res.meta.result) {
-      _resources = res.data.rows;
+    if (!!~~res.meta.result && res.data != null && res.data.length > 0) {
+      _(res.data).forEach(function (res) {
+        res.group = res.function.length > 0 ? true : false;
+        _resources.push(res);
+      });
     } else {
       alert('获取功能列表失败：' + res.msg);
     }
