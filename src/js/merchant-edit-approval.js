@@ -189,10 +189,6 @@ $('.btn-reset').click(function(e) {
   selectBranch.clear();
 });
 
-$('.btn-export').click(function(e) {
-  // TODO: export
-});
-
 function setTableData(rows) {
   var data = { rows: rows };
   var template = $('#table-template').html();

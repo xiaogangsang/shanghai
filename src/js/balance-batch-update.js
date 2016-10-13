@@ -29,7 +29,7 @@ $(function() {
   var html = parts[parts.length - 1];
 
 	// 提示语
-  var tips = '商户批量更新第一列为id,第二列为二级商户号，之后列不限';
+  var tips = '商户批量更新第一列为id，第二列为二级商户号，之后列不限';
 
   if (html.indexOf('balance-in') > -1) {
   	if (html.indexOf('state') > -1) {

@@ -238,7 +238,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     var data = res.data;
     var detail = data.detail;
     detail.payTool = settlementCommon.parsePayTool(detail.payTool);
-    detail.payStatus = settlementCommon.parsePayStatus(detail.payStatus);
+    // detail.payStatus = settlementCommon.parsePayStatus(detail.payStatus);
     detail.bizType = settlementCommon.parseBizType(detail.bizType);
     detail.discountType = settlementCommon.parseDiscountType(detail.discountType);
     detail.chargeMerchant = settlementCommon.parseMerchant(detail.chargeMerchant);
@@ -254,6 +254,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
 
     $('#popup-detail').modal('show');
 
+    $('#payStatus option[value="' + detail.payStatus + '"]').prop('selected', true);
     $('#subsidyType option[value="' + detail.subsidyType + '"]').prop('selected', true);
     $('#partner option[value="' + detail.partner + '"]').prop('selected', true);
     $('#reconciliationStatus option[value="' + detail.reconciliationStatus + '"]').prop('selected', true);

@@ -72,10 +72,11 @@ $('#formSearch').on('submit', function (e) {
 
   if (!useCache) {
 
-    // 输入 商品订单号 或者 二级商户订单号 后, 无需输入日期
+    // 输入 商品订单号 或者 二级商户订单号 或者 交易订单号 后, 无需输入日期
     var bizOrderNo = $('#search_bizOrderNo').val();
     var thdOrderNo = $('#search_thdOrderNo').val();
-    var dateIsRequired = (bizOrderNo === '' && thdOrderNo === '');
+    var orderNo = $('#search_orderNo').val();
+    var dateIsRequired = (bizOrderNo === '' && thdOrderNo === '' && orderNo === '');
 
     $('#search_dateType').prop('required', dateIsRequired);
     $('#search_startTime').prop('required', dateIsRequired);
