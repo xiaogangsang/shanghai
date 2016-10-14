@@ -388,7 +388,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
   })
   .done(function(res) {
     if (res.meta.result == 0) {
-      alert('查询数据失败!');
+      alert(res.meta.msg);
       return false;
     }
     var data = res.data;
