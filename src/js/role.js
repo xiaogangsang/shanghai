@@ -38,7 +38,7 @@ $('#formSearch').on('submit', function (e) {
     roleId: $('#search_roleId').val(),
     createdBy: $.trim($('#search_createdBy').val()),
     pageIndex: _pageIndex,
-    pageSize: _pageSize,
+    pageSize: 9999,
   };
 
   if (!!_querying) {
@@ -62,12 +62,12 @@ $('#formSearch').on('submit', function (e) {
   .done(function (res) {
     _querying = false;
     if (!!~~res.meta.result) {
-      if (res.data.rows.length < 1) {
+      if (res.data.length < 1) {
         $('#dataTable tbody').html('<tr><td colspan="6" align="center">查不到相关数据，请修改查询条件！</td></tr>');
         $('#pager').html('');
       } else {
         useCache = true;
-        _(res.data.rows).forEach(function (item) {
+        _(res.data).forEach(function (item) {
           if (item.desc != null && item.desc.length > 12) {
             item.short = item.desc.substr(0, 10) + '...';
           } else {
@@ -77,8 +77,8 @@ $('#formSearch').on('submit', function (e) {
 
         _pageIndex = res.data.pageIndex;
         _pageTotal = Math.ceil(res.data.total / _pageSize);
-        setPager(res.data.total, res.data.pageIndex, res.data.rows.length, _pageTotal);
-        setTableData(res.data.rows);
+        setPager(res.data.total, res.data.pageIndex, res.data.length, _pageTotal);
+        setTableData(res.data);
       }
     } else {
       alert('接口错误：' + res.msg);
@@ -128,10 +128,12 @@ $(document).on('submit', '#popup-role-form form', function (e) {
 
   _submitting = true;
   var sendData = {
-    roleName: $.trim($('#popup-role-form #roleName').val()),
-    desc: $.trim($('#popup-role-form #desc').val()),
+    // roleType: $('#popup-role-form #roleType').val(),
+    roleName: $('#popup-role-form #roleName').val().trim(),
+    desc: $('#popup-role-form #desc').val().trim(),
     resources: $('#resourceSelect_to').val(),
     userIds: $('#userSelect_to').val(),
+    assignedRoles: $('#assignedRoleSelect_to').val(),
   };
   var ajaxUrl = common.API_HOST + 'security/role/saveRole';
   if ($('#roleId').length > 0) {
@@ -395,7 +397,7 @@ function setRole() {
   })
   .done(function (res) {
     if (!!~~res.meta.result) {
-      _roles = res.data.rows;
+      _roles = res.data;
       var html = '';
       _(_roles).forEach(function (role, key) {
         html += '<option value="' + role.id + '">' + role.roleName + '</option>';
