@@ -27,7 +27,7 @@
         </tr>
         <tr>
           <th width="80">评分</th>
-          <td><input type="text" class="form-control" id="cinemaScore" value="{{cinema.score}}" required></td>
+          <td><input type="text" class="form-control" id="cinemaScore" value="{{cinema.score}}" required data-parsley-pattern="10|^\d{1}$|^\d{1}.{1}\d{1}$"></td>
         </tr>
         <tr>
           <th>院线</th>
@@ -138,7 +138,7 @@
         </tr>
         <tr>
           <th width="80">评分</th>
-          <td><input type="text" class="form-control" id="cinemaScore" required></td>
+          <td><input type="text" class="form-control" id="cinemaScore" required data-parsley-pattern="10|^\d{1}$|^\d{1}.{1}\d{1}$"></td>
         </tr>
         <tr>
           <th>院线</th>
