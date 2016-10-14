@@ -7,7 +7,7 @@
           <h4 class="modal-title">活动优先级</h4>
         </div>
         <div class="modal-body">
-          <input type="text" class="form-control" required data-parsley-type="number" min="1" max="9999" maxlength="4" placeholder="填写优先级">
+          <input type="text" class="form-control" required data-parsley-type="number" min="1" max="99999" maxlength="5" placeholder="填写优先级">
           <h5>当前已有活动单元:</h5>
           <div class="table-responsive" style="height: 300px;">
             <table class="table table-bordered" id="priorityTable">
