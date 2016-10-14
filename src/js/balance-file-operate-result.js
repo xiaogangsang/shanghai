@@ -14,14 +14,29 @@ var searchCache = {};
 var useCache = false;
 var dataCache;
 
+var balanceIn = false;
+
 // _DEBUG 本地JSON字符串, 不连服务器本地调试用
 var _DEBUG = false;
 
 $(function() {
 
-  common.init('balance-out-summary');
+  var location = window.location.href;
 
-  $('#formSearch').parsley();
+  var parts = location.split('/');
+
+  var html = parts[parts.length - 1];
+
+  balanceIn = (html.indexOf('balance-in') > -1);
+
+  if (balanceIn) {
+    common.init('balance-in-file-operate-result');
+  } else {
+    common.init('balance-out-file-operate-result');
+  }
+
+  $('#search_status').html(settlementCommon.optionsHTML(settlementCommon.balanceFileStatus, true));
+
 });
 
 //handle search form
@@ -35,8 +50,6 @@ $('#formSearch').on('click', 'button[type=submit]', function (event) {
 $('#formSearch').on('submit', function (e) {
   e.preventDefault();
 
-  $('.multi-check-all').prop('checked', false);
-
   // a new search triggered by clicking '查询'
   if (!useCache) {
     if (!$('#formSearch').parsley().isValid()) {
@@ -47,13 +60,10 @@ $('#formSearch').on('submit', function (e) {
   _pageSize = $('#search_pageSize').val() || 10;
 
   var sendData = {
-    dateType: $('#search_dateType').val(),
-    startTime: $('#search_startTime').val(),
+    fileType: (balanceIn ? '1' : '2'),
+    beginTime: $('#search_startTime').val(),
     endTime: $('#search_endTime').val(),
-    merchantName: $('#search_merchantName').val(),
-    merchantNo: $('#search_merchantNo').val(),
-    shipmentStatus: $('#search_shipmentStatus').val(),
-    bizType: $('#search_bizType').val(),
+    fileStatus: $('#search_status').val(),
     pageSize: _pageSize,
   };
 
@@ -72,7 +82,7 @@ $('#formSearch').on('submit', function (e) {
 
   if (!_DEBUG) {
     $.ajax({
-      url: common.API_HOST + 'settlement/shipmentInfo/summaryList',
+      url: common.API_HOST + 'settlement/batchUploadFileRecord/selectByCondition',
       type: 'GET',
       dataType: 'json',
       data: sendData,
@@ -81,7 +91,7 @@ $('#formSearch').on('submit', function (e) {
       handleData(res);
     });
   } else {
-    var res = $.parseJSON('{ "meta": { "result": "1", "msg": "操作成功" }, "data": { "summary": { "count": "订单总数", "totalTicketCount": "出票张数", "totalOrderAmount": "交易金额总金额", "totalSubsidyAmountO2o": "补贴金额", "totalReturnFee": "退货手续费总额", "totalSettleAmount": "应付金额", "totalFinalSettleAmount": "实付金额" }, "detail": { "recordCount": "41", "recordDetail": [ { "shipmentDate": "出/退货日期", "merchantName": "二级商户名称", "merchantNo": "二级商户号", "bizType": "业务类别", "orderCount": "订单数", "ticketCount": "张数", "shipmentStatus": "出货状态", "orderAmount": "交易金额", "subsidyAmountO2o": "渠道方补贴金额", "returnFee": "退票手续费", "settleAmount": "应付金额", "finalSettleAmount": "实付金额" } ] } } }');
+    var res = $.parseJSON('{ "meta" : { "result" : "1", "msg" : "操作成功" }, "data" : {"detail": {"records":[{"fileName":"153311629.xls","finishTime":"2016-09-22","createTime":"2016-09-22","fileStatus":"3","id":"11","userId":"1111","fileType":"1"},{"fileName":"153311629.xls","finishTime":"2016-09-22","createTime":"2016-09-22","fileStatus":"3","id":"12","userId":"1111","fileType":"1"},{"fileName":"153311629.xls","finishTime":"2016-09-22","createTime":"2016-09-22","fileStatus":"3","id":"13","userId":"1111","fileType":"1"},{"fileName":"153311629.xls","finishTime":"2016-09-22","createTime":"2016-09-22","fileStatus":"3","id":"14","userId":"1111","fileType":"1"},{"fileName":"153311629.xls","finishTime":"2016-09-22","createTime":"2016-09-22","fileStatus":"3","id":"15","userId":"1111","fileType":"1"},{"fileName":"153311629.xls","finishTime":"2016-09-22","createTime":"2016-09-22","fileStatus":"3","id":"16","userId":"1111","fileType":"1"},{"fileName":"153311629.xls","finishTime":"2016-09-22","createTime":"2016-09-22","fileStatus":"3","id":"17","userId":"1111","fileType":"1"},{"fileName":"153311629.xls","finishTime":"2016-09-23","createTime":"2016-09-23","fileStatus":"3","id":"18","userId":"1111","fileType":"1"},{"fileName":"153311629.xls","finishTime":"2016-09-23","createTime":"2016-09-23","fileStatus":"3","id":"19","userId":"1111","fileType":"1"},{"fileName":"153311629.xls","finishTime":"2016-09-23","createTime":"2016-09-23","fileStatus":"3","id":"20","userId":"1111","fileType":"1"}],"count":29 } }}');
     handleData(res);
   }
 
@@ -101,17 +111,13 @@ function handleData(res) {
     setPager(totalRecord, _pageIndex, record.length, _pageTotal);
 
     _(record).forEach(function(item) {
-      item.bizTypeNo = item.bizType;
-      item.bizType = settlementCommon.parseBizType(item.bizType);
-      item.shipmentStatusNo = item.shipmentStatus;
-      item.shipmentStatus = settlementCommon.parseShipmentStatus(item.shipmentStatus);
+      item.fileType = settlementCommon.parseBalanceFileType(item.fileType);
+      item.fileStatus = settlementCommon.parseBalanceFileStatus(item.fileStatus);
     });
 
     dataCache = record;
 
     setTableData(dataCache);
-
-    setSummaryTableData(res.data.summary);
   }
 }
 
@@ -121,13 +127,6 @@ function setTableData(rows) {
   Mustache.parse(template);
   var html = Mustache.render(template, data);
   $('#dataTable tbody').html(html);
-}
-
-function setSummaryTableData(data) {
-  var template = $('#summary-table-template').html();
-  Mustache.parse(template);
-  var html = Mustache.render(template, data);
-  $('#summaryTable tbody').html(html);
 }
 
 
@@ -182,55 +181,4 @@ $('#pager').on('click', '#btn-pager', function (e) {
 
 $('.btn-reset').click(function(e) {
  $('#formSearch :input:not(:button)').val('');
-
- $('#search_dateType').val('1');
-});
-
-$('.all-detail').click(function(e) {
-  var data = {'type': 0, 'param': searchCache};
-  sessionStorage.setItem('param', JSON.stringify(data));
-  window.location.href = 'balance-out-detail.html';
-});
-
-// 查看选中明细
-$('.selected-detail').click(function(e) {
-  var parameters = [];
-
-  $('#dataTable tbody :checkbox:checked').each(function(index) {
-    var rowIndex = $(this).closest('td').parent()[0].sectionRowIndex;
-    var obj = dataCache[rowIndex];
-    var param = {'shipmentDate': obj.shipmentDate, 'merchantNo': obj.merchantNo, 'bizType': obj.bizTypeNo ,'shipmentStatus':obj.shipmentStatusNo};
-    parameters.push(param);
-  });
-
-  if (parameters.length === 0) {
-    alert('请先选择一条记录!');
-    return false;
-  }
-
-  var data = {'type': 1, 'param': parameters};
-  sessionStorage.setItem('param', JSON.stringify(data));
-  window.location.href = 'balance-out-detail.html';
-});
-
-$('.multi-check-all').change(function(e) {
-  e.preventDefault();
-  var isChecked = $(this).is(':checked');
-
-  if (isChecked) {
-    $('#dataTable tbody :checkbox:not(:checked)').prop('checked', true);
-  } else {
-    $('#dataTable tbody :checkbox:checked').prop('checked', false);
-  }
-});
-
-
-$('body').on('change', 'tr > td :checkbox', function(e) {
-  e.preventDefault();
-
-  var isChecked = $(this).is(':checked');
-
-  if (!isChecked) {
-    $('.multi-check-all').prop('checked', false);
-  }
 });

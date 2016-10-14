@@ -38,12 +38,16 @@ $('#formSearch').on('click', 'button[type=submit]', function (event) {
 $('#formSearch').on('submit', function (e) {
   e.preventDefault();
 
+  $('.multi-check-all').prop('checked', false);
+
   // a new search triggered by clicking '查询'
   if (!useCache) {
     if (!$('#formSearch').parsley().isValid()) {
       return false;
     }
   }
+
+  _pageSize = $('#search_pageSize').val() || 10;
 
   var sendData = {
     dateType: $('#search_dateType').val(),

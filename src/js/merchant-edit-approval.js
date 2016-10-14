@@ -26,7 +26,7 @@ var _submitting = false;
 var selectBranch;
 var selectGuy;
 
-var _DEBUG = true;
+var _DEBUG = false;
 
 $(function () {
 
@@ -95,7 +95,7 @@ $('#formSearch').on('submit', function (e) {
 
   if (!_DEBUG) {
     $.ajax({
-      url: common.API_HOST + 'settlement/merchantinfo/merchantinfoList.json',
+      url: common.API_HOST + 'settlement/merchantinfo/listMerchantsNeedChecking',
       type: 'GET',
       dataType: 'json',
       data: sendData,
@@ -187,10 +187,6 @@ $('.btn-reset').click(function(e) {
   $('#search_merchantClass').val('');
   selectGuy.clear();
   selectBranch.clear();
-});
-
-$('.btn-export').click(function(e) {
-  // TODO: export
 });
 
 function setTableData(rows) {

@@ -18,7 +18,7 @@ var searchCache = {};
 var useCache = false;
 var dataCache;
 
-var _DEBUG = true;
+var _DEBUG = false;
 
 $(function () {
 
@@ -194,6 +194,31 @@ $('.btn-reset').click(function(e) {
   $('#search_merchantNo').val('');
 });
 
+$('.btn-export').click(function(e) {
+
+  e.preventDefault();
+
+  if ($('#dataTable tr td').length < 2) {
+    alert('请先查询再导出!');
+    return false;
+  }
+
+  $.ajax({
+    url: common.API_HOST + 'settlement/merchantinfo/myMerchantinfoListExport',
+    type: 'POST',
+    dataType: 'json',
+    data: searchCache,
+  })
+  .done(function (res) {
+    if (!!~~res.meta.result) {
+      window.location.href = common.API_HOST + 'settlement/merchantAttachment/downLoad?fileUrl=' + res.data.fileUrl;
+      // alert('您的申请已提交，系统正在为您导出数据，需要约15分钟，\n请至下载列表查看并下载导出结果。\n导出的数据仅保留3天，请及时查看并下载。');
+    } else {
+      alert(res.meta.msg);
+    }
+  });
+});
+
 function setTableData(rows) {
   var data = { rows: rows };
   var template = $('#table-template').html();
@@ -211,17 +236,6 @@ function setPager(total, pageIndex, rowsSize, pageTotal) {
 }
 
 /****************************************** Merchant Detail **********************************************/
-
-$('#dataTable').on('click', '.btn-edit', function (e) {
-
-  e.preventDefault();
-
-  var rowIndex = $(this).closest('tr').prevAll().length;
-  var detailData = dataCache[rowIndex];
-
-  setModal(detailData);
-  $('#popup-merchant-detail').modal('show');
-});
 
 function setModal(detailData) {
 
@@ -267,13 +281,16 @@ function formatPopupUI(detailData) {
 }
 
 /****************************************** 账户和商户操作 **********************************************/
-// SETTLEMENT_TODO: 完成下面6中操作
 // 编辑商户
-$('#dataTable').on('click', '.btn-edit', function(e) {
-  e.preventDefault();
-  var merchantId = $(this).data('merchantid');
+$('#dataTable').on('click', '.btn-edit', function (e) {
 
-  alert('merchant ID 是' + merchantId + ', 你想编辑该商户, 该功能尚未实现');
+  e.preventDefault();
+
+  var rowIndex = $(this).closest('tr').prevAll().length;
+  var detailData = dataCache[rowIndex];
+
+  setModal(detailData);
+  $('#popup-merchant-detail').modal('show');
 });
 
 // 删除商户
@@ -281,7 +298,21 @@ $('#dataTable').on('click', '.btn-delete', function(e) {
   e.preventDefault();
   var merchantId = $(this).data('merchantid');
 
-  alert('merchant ID 是' + merchantId + ', 你想删除该商户, 该功能尚未实现');
+  var param = {merchantId: merchantId};
+
+  $.ajax({
+    url: common.API_HOST + 'settlement/merchantinfo/delete.json',
+    type: 'POST',
+    data: param,
+  })
+  .done(function (res) {
+    if (!!~~res.meta.result) {
+      $('#formSearch').trigger('submit');
+      alert(res.meta.msg);
+    } else {
+      alert(res.meta.msg);
+    }
+  });
 });
 
 // 下线商户
@@ -289,15 +320,32 @@ $('#dataTable').on('click', '.btn-offline', function(e) {
   e.preventDefault();
   var merchantId = $(this).data('merchantid');
 
-  alert('merchant ID 是' + merchantId + ', 你想下线该商户, 该功能尚未实现');
+  var param = {merchantId: merchantId};
+
+  $.ajax({
+    url: common.API_HOST + 'settlement/merchantinfo/offline.json',
+    type: 'POST',
+    data: param,
+  })
+  .done(function (res) {
+    if (!!~~res.meta.result) {
+      $('#formSearch').trigger('submit');
+      alert(res.meta.msg);
+    } else {
+      alert(res.meta.msg);
+    }
+  });
 });
 
 // 查看商户详情
 $('#dataTable').on('click', '.btn-detail', function(e) {
   e.preventDefault();
-  var merchantId = $(this).data('merchantid');
 
-  alert('merchant ID 是' + merchantId + ', 你想查看该商户详情, 该功能尚未实现');
+  var rowIndex = $(this).closest('tr').prevAll().length;
+  var detailData = dataCache[rowIndex];
+
+  setModal(detailData);
+  $('#popup-merchant-detail').modal('show');
 });
 
 // 账户停用
@@ -305,7 +353,21 @@ $('#dataTable').on('click', '.btn-disable-account', function(e) {
   e.preventDefault();
   var merchantId = $(this).data('merchantid');
 
-  alert('merchant ID 是' + merchantId + ', 你想停用该商户的账户, 该功能尚未实现');
+  var param = {merchantId: merchantId};
+
+  $.ajax({
+    url: common.API_HOST + 'settlement/merchantinfo/suspendAccount',
+    type: 'POST',
+    data: param,
+  })
+  .done(function (res) {
+    if (!!~~res.meta.result) {
+      $('#formSearch').trigger('submit');
+      alert(res.meta.msg);
+    } else {
+      alert(res.meta.msg);
+    }
+  });
 });
 
 // 启用账户
@@ -313,7 +375,21 @@ $('#dataTable').on('click', '.btn-enable-account', function(e) {
   e.preventDefault();
   var merchantId = $(this).data('merchantid');
 
-  alert('merchant ID 是' + merchantId + ', 你想启用该商户的账户, 该功能尚未实现');
+  var param = {merchantId: merchantId};
+
+  $.ajax({
+    url: common.API_HOST + 'settlement/merchantinfo/activateAccount',
+    type: 'POST',
+    data: param,
+  })
+  .done(function (res) {
+    if (!!~~res.meta.result) {
+      $('#formSearch').trigger('submit');
+      alert(res.meta.msg);
+    } else {
+      alert(res.meta.msg);
+    }
+  });
 });
 
 
