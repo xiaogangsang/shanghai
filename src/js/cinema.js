@@ -655,7 +655,7 @@ function setModal(cinemaData) {
     $('#popup-cinema-form').scrollTop($('#popup-cinema-form').height());
   });
 
-  $('#popup-cinema-form').on('click', '.btn-service-delete', function (e) {
+  $('#popup-cinema-form').off('click').on('click', '.btn-service-delete', function (e) {
     e.preventDefault();
     var $parent = $(this).closest('.service-item');
     if ($parent.find('textarea').val() !== '' && window.confirm('确定要删除此服务吗？') == false) {
