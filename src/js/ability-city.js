@@ -103,7 +103,7 @@ function setUser(cityId) {
   });
 }
 
-$('#citySelect').on('change', function (e) {
+$('#citySelect').on('change click', function (e) {
   e.preventDefault();
   $('#userSelect_to').html('');
   $('#userSelect').html('');

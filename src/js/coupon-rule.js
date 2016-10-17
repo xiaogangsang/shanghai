@@ -85,7 +85,7 @@ $('#formSearch').on('submit', function (e) {
   return false;
 });
 
-$(document).on('change', '#search_level', function (event) {
+$(document).on('change click', '#search_level', function (event) {
   event.preventDefault();
   var level = $(this).val();
   if (level == undefined || level == '') {

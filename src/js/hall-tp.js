@@ -44,7 +44,7 @@ $(function () {
 });
 
 //handle search form
-$('#formSearch').on('change', '#search_relation', function (e) {
+$('#formSearch').on('change click', '#search_relation', function (e) {
   e.preventDefault();
   if ($(this).val() == 1) {
     $('#association').show();

@@ -180,7 +180,7 @@ $(document).on('submit', '#popup-unit-priority form', function (event) {
 });
 
 //成本中心
-$(document).on('change', '#level', function (event) {
+$(document).on('change click', '#level', function (event) {
   event.preventDefault();
   var level = $(this).val();
   if (level == undefined || level == '') {
@@ -611,7 +611,7 @@ $(document).on('click', '#btn-set-cinema', function (event) {
   $('#popup-unit-cinema').modal('show');
 });
 
-$(document).on('change', '#search-cinema-provinceId', function (e) {
+$(document).on('change click', '#search-cinema-provinceId', function (e) {
   var provinceId = parseInt($(this).val());
   var options = '';
   if (!!+provinceId) {
@@ -806,7 +806,7 @@ $(document).on('submit', '#popup-unit-timetable form', function (event) {
   return false;
 });
 
-$(document).on('change', '#activityPattern', function (event) {
+$(document).on('change click', '#activityPattern', function (event) {
   event.preventDefault();
   var current = +$(this).val();
   setPattern(current);

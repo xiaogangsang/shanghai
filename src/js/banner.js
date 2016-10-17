@@ -168,7 +168,7 @@ $(document).on('click', '#btn-create', function (e) {
   $('#popup-banner-form form').parsley();
   $('#popup-banner-form #filmId').chosen();
 
-  $('#popup-banner-form').on('change', '#bannerType', function (event) {
+  $('#popup-banner-form').on('change click', '#bannerType', function (event) {
     event.preventDefault();
     if ($(this).val() == 1) {
       $('.type-2, .type-3').hide();
@@ -192,7 +192,7 @@ $(document).on('click', '#btn-create', function (e) {
   });
 });
 
-$(document).on('change', '#search_provinceId', function (e) {
+$(document).on('change click', '#search_provinceId', function (e) {
   e.preventDefault();
   var provinceId = parseInt($(this).val());
   var options = '';
@@ -519,7 +519,7 @@ $(document).on('click', '#popup-banner-form #btn-city', function (event) {
     }
   });
 
-  $('#popup-city').on('change', '#chooseAll', function (event) {
+  $('#popup-city').on('change click', '#chooseAll', function (event) {
     event.preventDefault();
     $('.choosed-city .label').remove();
     if (!!$(this).prop('checked')) {

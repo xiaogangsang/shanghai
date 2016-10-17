@@ -118,7 +118,7 @@ $(function () {
 });
 
 //成本中心
-$(document).on('change', '#level', function (event) {
+$(document).on('change click', '#level', function (event) {
   event.preventDefault();
   var level = $(this).val();
   if (level == undefined || level == '') {
@@ -333,7 +333,7 @@ $(document).on('click', '#btn-set-cinema', function (event) {
   $('#popup-unit-cinema').modal('show');
 });
 
-$(document).on('change', '#search-cinema-provinceId', function (e) {
+$(document).on('change click', '#search-cinema-provinceId', function (e) {
   var provinceId = parseInt($(this).val());
   var options = '';
   if (!!+provinceId) {

@@ -103,7 +103,7 @@ function setUser(channelId) {
   });
 }
 
-$('#channelSelect').on('change', function (e) {
+$('#channelSelect').on('change click', function (e) {
   e.preventDefault();
   $('#userSelect_to').html('');
   $('#userSelect').html('');

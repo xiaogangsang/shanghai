@@ -281,7 +281,7 @@ $(document).on('click', '#btn-set-cinema', function (event) {
   $('#popup-class-cinema').modal('show');
 });
 
-$(document).on('change', '#search-cinema-provinceId', function (e) {
+$(document).on('change click', '#search-cinema-provinceId', function (e) {
   var provinceId = parseInt($(this).val());
   if (!!+provinceId) {
     var province = _.find(_provinces, { provinceId: provinceId.toString() });

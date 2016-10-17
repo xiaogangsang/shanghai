@@ -573,7 +573,7 @@ function setModal(cinemaData) {
 
   $('#popup-cinema-form .modal-body').html(html);
 
-  $('#popup-cinema-form').on('change', '#provinceId', function (e) {
+  $('#popup-cinema-form').on('change click', '#provinceId', function (e) {
     var provinceId = parseInt($(this).val());
     if (~~provinceId != 0) {
       var province = _.find(_provinces, { provinceId: provinceId.toString() });
@@ -590,7 +590,7 @@ function setModal(cinemaData) {
     return false;
   });
 
-  $('#popup-cinema-form').on('change', '#cityId', function (e) {
+  $('#popup-cinema-form').on('change click', '#cityId', function (e) {
     var cityId = parseInt($(this).val());
     if (~~cityId != 0) {
       $.ajax({
@@ -618,7 +618,7 @@ function setModal(cinemaData) {
     return false;
   });
 
-  $('#popup-cinema-form').on('change', '#areaId', function (e) {
+  $('#popup-cinema-form').on('change click', '#areaId', function (e) {
     var areaId = parseInt($(this).val());
     if (~~areaId != 0) {
       var area = _.find(_areas, { areaId: areaId });
@@ -634,7 +634,7 @@ function setModal(cinemaData) {
     return false;
   });
 
-  $('#popup-cinema-form').on('change', '#btn-service', function (e) {
+  $('#popup-cinema-form').on('change click', '#btn-service', function (e) {
     var serviceId = parseInt($(this).val());
     if (~~serviceId == 0) {
       return false;

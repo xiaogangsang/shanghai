@@ -39,7 +39,7 @@ $(function () {
 });
 
 //handle search form
-$('#formSearch').on('change', '#search_associationStatus', function (e) {
+$('#formSearch').on('change click', '#search_associationStatus', function (e) {
   e.preventDefault();
   if ($(this).val() == 1) {
     $('#association').show();

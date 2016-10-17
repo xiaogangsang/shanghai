@@ -2,7 +2,7 @@
 * @Author: kyle
 * @Date:   2016-08-29 10:37:39
 * @Last Modified by:   kyle
-* @Last Modified time: 2016-09-02 15:43:47
+* @Last Modified time: 2016-10-17 14:23:12
 */
 
 'use strict';
@@ -156,7 +156,7 @@ $('#formSearch').on('submit', function (e) {
   return false;
 });
 
-$('#listDate').on('change', 'select', function (event) {
+$('#listDate').on('change click', 'select', function (event) {
   event.preventDefault();
   queryOrder($('#search_type').val(), $(this).val());
 });

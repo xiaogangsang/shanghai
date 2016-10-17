@@ -110,7 +110,7 @@ function setRole(resourceId) {
   });
 }
 
-$('#resourceSelect').on('change', function (e) {
+$('#resourceSelect').on('change click', function (e) {
   e.preventDefault();
   $('#roleSelect_to').html('');
   $('#roleSelect').html('');
