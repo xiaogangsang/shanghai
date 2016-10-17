@@ -86,7 +86,7 @@
               <select name="from[]" id="resourceSelect" class="form-control" size="8" multiple="multiple">
                 {{#resources}}
                 {{^selected}}
-                {{#group}}<optgroup label="{{name}}">{{#function}}{{#selected}}<option value="{{id}}">{{name}}</option>{{/selected}}{{/function}}<</optgroup>{{/group}}
+                {{#group}}<optgroup label="{{name}}">{{#function}}{{^selected}}<option value="{{id}}">{{name}}</option>{{/selected}}{{/function}}</optgroup>{{/group}}
                 {{^group}}<option value="{{id}}">{{name}}</option>{{/group}}
                 {{/selected}}
                 {{/resources}}
@@ -102,7 +102,7 @@
               <select name="to[]" id="resourceSelect_to" class="form-control" size="8" multiple="multiple" data-parsley-required data-parsley-errors-container="#error-resource">
                 {{#resources}}
                 {{#selected}}
-                {{#group}}<optgroup label="{{name}}">{{#function}}{{^selected}}<option value="{{id}}">{{name}}</option>{{/selected}}{{/function}}<</optgroup>{{/group}}
+                {{#group}}<optgroup label="{{name}}">{{#function}}{{#selected}}<option value="{{id}}">{{name}}</option>{{/selected}}{{/function}}</optgroup>{{/group}}
                 {{^group}}<option value="{{id}}">{{name}}</option>{{/group}}
                 {{/selected}}
                 {{/resources}}

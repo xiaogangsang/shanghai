@@ -45,7 +45,7 @@ common.init = function (pageName) {
 common.showMenu = function (pageName) {
   var allowMenus = sessionStorage.getItem('authMenu');
   if (pageName != undefined && pageName != '' && $('#menu-' + pageName).size() > 0) {
-    var menuId = '' + $('#menu-' + pageName).data('id');
+    var menuId = +$('#menu-' + pageName).data('id');
     if (allowMenus.indexOf(menuId) < 0) {
       common.logout();
       window.location.href = 'login.html';
@@ -57,7 +57,7 @@ common.showMenu = function (pageName) {
 
   var $menus = $('#menu .list-group-item');
   $menus.each(function (index, el) {
-    menuId = '' + $(el).data('id');
+    menuId = +$(el).data('id');
     if (allowMenus.indexOf(menuId) > -1) {
       $(el).show();
       $(el).closest('.panel').show();
