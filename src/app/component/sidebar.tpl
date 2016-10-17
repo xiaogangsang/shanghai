@@ -161,9 +161,12 @@
         <div class="list-group">
           <a href="balance-in-summary.html" class="list-group-item" id="menu-balance-in-summary" data-id="143" style="display:none">对账汇总</a>
           <a href="balance-in-detail.html" class="list-group-item" id="menu-balance-in-detail" data-id="144" style="display:none">对账明细</a>
-          <a href="balance-in-edit-submitted.html" class="list-group-item" id="menu-balance-in-edit-submitted" data-id="196" style="display:none">支付流水修改记录</a>
-          <a href="balance-in-edit-approval.html" class="list-group-item" id="menu-balance-in-edit-approval" data-id="197" style="display:none">支付流水修改审核</a>
+          <a href="balance-in-edit-submitted.html" class="list-group-item" id="menu-balance-in-edit-submitted" data-id="196" style="display:none">修改和审核记录</a>
+          <a href="balance-in-edit-approval.html" class="list-group-item" id="menu-balance-in-edit-approval" data-id="197" style="display:none">待审核记录</a>
           <a href="balance-in-export.html" class="list-group-item" id="menu-balance-in-export" data-id="215" style="display:none">收单导出下载</a>
+          <a href="balance-in-state-batch-handler.html" class="list-group-item" id="menu-balance-in-state-batch-handler" data-id="215" style="display:none">对账状态批量处理</a>
+          <a href="balance-in-merchant-batch-update.html" class="list-group-item" id="menu-balance-in-merchant-batch-update" data-id="245" style="display:none">商户信息批量更新</a>
+          <a href="balance-in-file-operate-result.html" class="list-group-item" id="menu-balance-in-file-operate-result" data-id="249" style="display:none">对账批处理结果</a>
         </div>
       </div>
     </div>
@@ -174,9 +177,12 @@
         <div class="list-group">
           <a href="balance-out-summary.html" class="list-group-item" id="menu-balance-out-summary" data-id="145" style="display:none">对账汇总</a>
           <a href="balance-out-detail.html" class="list-group-item" id="menu-balance-out-detail" data-id="146" style="display:none">对账明细</a>
-          <a href="balance-out-edit-submitted.html" class="list-group-item" id="menu-balance-out-edit-submitted" data-id="188" style="display:none">出货流水修改记录</a>
-          <a href="balance-out-edit-approval.html" class="list-group-item" id="menu-balance-out-edit-approval" data-id="198" style="display:none">出货流水修改审核</a>
+          <a href="balance-out-edit-submitted.html" class="list-group-item" id="menu-balance-out-edit-submitted" data-id="188" style="display:none">修改和审核记录</a>
+          <a href="balance-out-edit-approval.html" class="list-group-item" id="menu-balance-out-edit-approval" data-id="198" style="display:none">待审核记录</a>
           <a href="balance-out-export.html" class="list-group-item" id="menu-balance-out-export" data-id="216" style="display:none">出货导出下载</a>
+          <a href="balance-out-state-batch-handler.html" class="list-group-item" id="menu-balance-out-state-batch-handler" data-id="247" style="display:none">对账状态批量处理</a>
+          <a href="balance-out-merchant-batch-update.html" class="list-group-item" id="menu-balance-out-merchant-batch-update" data-id="248" style="display:none">商户信息批量更新</a>
+          <a href="balance-out-file-operate-result.html" class="list-group-item" id="menu-balance-out-file-operate-result" data-id="249" style="display:none">对账批处理结果</a>
         </div>
       </div>
     </div>

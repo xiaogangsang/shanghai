@@ -1,3 +1,9 @@
+#依赖包问题#
+bootstrap-datetimepicker：
+`this.defaultTimeZone = (new Date).toString().split('(')[1].slice(0, -1);`
+改为
+`this.defaultTimeZone = (new Date).toString().split('GMT')[1].slice(0,3);`
+
 #安装环境#
 - nodejs
 - npm

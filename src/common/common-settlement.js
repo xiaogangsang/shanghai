@@ -84,7 +84,7 @@ settlementCommon.parseSubsidyType = function(status) {
 
 
 // 优惠方式
-settlementCommon.discountType = {'1' : '活动', '2' : '优惠券'};
+settlementCommon.discountType = {'1' : '活动', '2' : '优惠券', '9' : '无优惠'};
 
 settlementCommon.parseDiscountType = function(status) {
   return this.discountType[status];
@@ -100,7 +100,7 @@ settlementCommon.parsePartner = function(status) {
 
 
 // 审核状态
-settlementCommon.checkStatus = {'1' : '未修改', '2' : '待审核', '3' : '审核完成', '4' : '驳回'};
+settlementCommon.checkStatus = {'1' : '未修改', '2' : '待审核', '3' : '审核完成', '4' : '驳回', '5' : '已反审核'};
 
 settlementCommon.parseCheckStatus = function(status) {
   return this.checkStatus[status];
@@ -152,6 +152,19 @@ settlementCommon.fileStatus = {'1' : '生成中', '2' : '可下载', '3' : '生�
 settlementCommon.parseFileStatus = function(status) {
   return this.fileStatus[status];
 }
+
+// 对账批处理类型
+settlementCommon.balanceFileType = {'1' : '收单状态', '2' : '出货状态', '3' : '收单商户信息', '4' : '出货商户信息'};
+settlementCommon.parseBalanceFileType = function(status) {
+  return this.balanceFileType[status];
+}
+
+// 对账批处理状态
+settlementCommon.balanceFileStatus = {'1' : '操作中', '2' : '操作成功', '3' : '操作失败'};
+settlementCommon.parseBalanceFileStatus = function(status) {
+  return this.balanceFileStatus[status];
+}
+
 
 /***************************************** 商户相关编码 **********************************************/
 
@@ -231,8 +244,15 @@ settlementCommon.serializeParam = function(param) {
       for (var i = 0; i < value.length; ++i) {
         var obj = value[i];
 
+        var hasInnerKey = false;
+
         for (var innerKey in obj) {
+          hasInnerKey = true;
           queryString += key + '[' + i + '].' + innerKey + '=' + encodeURIComponent(obj[innerKey]) + '&';
+        }
+
+        if (!hasInnerKey) {
+          queryString += key + '[' + i + ']' + '=' + encodeURIComponent(obj) + '&';
         }
       }
     } else {
@@ -280,6 +300,42 @@ settlementCommon.prehandleData = function(res) {
   return false;
 }
 
+settlementCommon.clone = function(objectToBeCloned) {
+  // Basis.
+  if (!(objectToBeCloned instanceof Object)) {
+    return objectToBeCloned;
+  }
+
+  var objectClone;
+  
+  // Filter out special objects.
+  var Constructor = objectToBeCloned.constructor;
+  switch (Constructor) {
+    // Implement other special objects here.
+    case RegExp:
+      objectClone = new Constructor(objectToBeCloned);
+      break;
+    case Date:
+      objectClone = new Constructor(objectToBeCloned.getTime());
+      break;
+    default:
+      objectClone = new Constructor();
+  }
+  
+  // Clone each property.
+  for (var prop in objectToBeCloned) {
+    objectClone[prop] = this.clone(objectToBeCloned[prop]);
+  }
+  
+  return objectClone;
+}
+
+settlementCommon.resetInput = function(input) {
+  input.replaceWith(input.val('').clone(true));
+}
+
+
+/************************************************* 全局初始化处理 *****************************************************/
 
 // 点击隐藏/显示左侧菜单栏 的按钮
 $(function() {

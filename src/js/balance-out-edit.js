@@ -38,6 +38,10 @@ $(function() {
   } else {
   	common.init('balance-out-edit-submitted');
   }
+
+  // 初始化涉及的select控件
+  // TP方
+  $('#search_payTool').html(settlementCommon.optionsHTML(settlementCommon.payTool, true));
   
   $('#formSearch').parsley();
 });
@@ -56,40 +60,59 @@ $('#formSearch').on('click', 'button[type=submit]', function (event) {
 $('#formSearch').on('submit', function (e) {
   e.preventDefault();
 
-  if (!useCache) {
-    if (!$('#formSearch').parsley().isValid()) {
-      return false;
-    }
-  }
+  $('.multi-check-all').prop('checked', false);
 
-  var sendData = {
-  	dateType: $('#search_dateType').val(),
-    startTime: $('#search_startTime').val(),
-    endTime: $('#search_endTime').val(),
-    merchantName: $('#search_merchantName').val(),
-    merchantNo: $('#search_merchantNo').val(),
-    shipmentStatus: $('#search_shipmentStatus').val(),
-    bizType: $('#search_bizType').val(),
-    partner: $('#search_partner').val(),
-    acquiringReconciliationStatus: $('#search_acquiringReconciliationStatus').val(),
-    reconciliationStatus: $('#search_reconciliationStatus').val(),
-    reason: $('#search_reason').val(),
-    discountType: $('#search_discountType').val(),
-    discountName: $('#search_discountName').val(),
-    bizOrderNo: $('#search_bizOrderNo').val(),
-    thdOrderNo: $('#search_thdOrderNo').val(),
-    checkStatus: approval ? 2 : $('#search_checkStatus').val(), // 审核的时候, 要过滤审核的状态为待审核
-    pageSize: _pageSize,
-  };
-  if (!!_querying) {
+  if (_querying) {
     return false;
   }
 
   _querying = true;
-  if (useCache) {
-    sendData = searchCache;
-  } else {
+
+  var sendData;
+
+  if (!useCache) {
+
+    // 输入 商品订单号 或者 二级商户订单号 或者 交易订单号 后, 无需输入日期
+    var bizOrderNo = $('#search_bizOrderNo').val();
+    var thdOrderNo = $('#search_thdOrderNo').val();
+    var orderNo = $('#search_orderNo').val();
+    var dateIsRequired = (bizOrderNo === '' && thdOrderNo === '' && orderNo === '');
+
+    $('#search_dateType').prop('required', dateIsRequired);
+    $('#search_startTime').prop('required', dateIsRequired);
+    $('#search_endTime').prop('required', dateIsRequired);
+
+    if (!$('#formSearch').parsley().isValid()) {
+      return false;
+    }
+
+    _pageSize = $('#search_pageSize').val() || 10;
+
+    sendData = {
+      dateType: dateIsRequired ? $('#search_dateType').val() : '',
+      startTime: dateIsRequired ? $('#search_startTime').val() : '',
+      endTime: dateIsRequired ? $('#search_endTime').val() : '',
+      merchantName: $('#search_merchantName').val(),
+      merchantNo: $('#search_merchantNo').val(),
+      shipmentStatus: $('#search_shipmentStatus').val(),
+      bizType: $('#search_bizType').val(),
+      partner: $('#search_partner').val(),
+      acquiringReconciliationStatus: $('#search_acquiringReconciliationStatus').val(),
+      reconciliationStatus: $('#search_reconciliationStatus').val(),
+      reason: $('#search_reason').val(),
+      discountType: $('#search_discountType').val(),
+      discountName: $('#search_discountName').val(),
+      bizOrderNo: $('#search_bizOrderNo').val(),
+      thdOrderNo: $('#search_thdOrderNo').val(),
+      payTool: $('#search_payTool').val(),
+      orderNo: $('#search_orderNo').val(),
+      checkStatus: approval ? 2 : $('#search_checkStatus').val(), // 审核的时候, 要过滤审核的状态为待审核
+      pageSize: _pageSize,
+    };
+
     searchCache = sendData;
+  } else {
+    sendData = searchCache;
   }
 
   sendData.pageIndex = _pageIndex;
@@ -118,7 +141,8 @@ function handleData(res) {
     setPager(totalRecord, _pageIndex, record.length, _pageTotal);
 
     _(record).forEach(function(item) {
-      item.canEdit = (item.checkStatus != 2 && item.reconciliationStatus != 4); // 待审核状态不能再修改, 对账状态为确认的也不能修改
+      item.canEdit = (item.checkStatus != 2 && item.checkStatus != 3 && item.reconciliationStatus != 4); // 待审核/审核完成状态不能再修改, 对账状态为确认的也不能修改
+      item.canReverse = (item.checkStatus == 3);
       item.bizType = settlementCommon.parseBizType(item.bizType);
       item.payStatus = settlementCommon.parsePayStatus(item.payStatus);
       item.partner = settlementCommon.parsePartner(item.partner);
@@ -224,21 +248,29 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
   })
   .done(function(res) {
     if (res.meta.result == 0) {
-      alert('查询数据失败!');
+      alert(res.meta.msg);
       return false;
     }
     var data = res.data;
 
+    data.detail = data.onlyShipmentInfo;
     if (compare) {
       if (data.operate && data.operate.length > 0) {
         // 我们这里copy一下, 因为, 上面显示是用的select(需要状态码), 下面显示用的td(直接显示状态码对应的值), 不能重用
-        data.detail = $.extend({}, data.operate[0]);
+        data.detail.lastDetail = $.extend({}, data.operate[0]);
       } else {
-        data.detail = {};
+        data.detail.lastDetail = {};
       }
-      data.detail.currentDetail = data.onlyShipmentInfo;
-    } else {
-      data.detail = data.onlyShipmentInfo;
+
+      // 如果原值, 未被修改, 不用显示. 这里的实现方式是删掉原值中和现值相同的字段
+      var currentDetail = data.detail;
+      var lastDetail = data.detail.lastDetail;
+
+      for (var prop in lastDetail) {
+        if (lastDetail.hasOwnProperty(prop) && currentDetail.hasOwnProperty(prop) && lastDetail[prop] == currentDetail[prop]) {
+          lastDetail[prop] = '';
+        }
+      }
     }
 
     var detail = data.detail;
@@ -275,14 +307,23 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     $('#reason option[value="' + detail.reason + '"]').prop('selected', true);
 
     if (compare) {
-      detail = detail.currentDetail;
+
+      detail = detail.lastDetail;
       // $('#subsidyTypeNew option[value="' + detail.subsidyType + '"]').prop('selected', true);
       // $('#partnerNew option[value="' + detail.partner + '"]').prop('selected', true);
+      $('#shipmentStatusNew').val([]);
       $('#shipmentStatusNew option[value="' + detail.shipmentStatus + '"]').prop('selected', true);
+      $('#reconciliationStatusNew').val([]);
       $('#reconciliationStatusNew option[value="' + detail.reconciliationStatus + '"]').prop('selected', true);
+      $('#reasonNew').val([]);
       $('#reasonNew option[value="' + detail.reason + '"]').prop('selected', true);
+
+      // 如果没有原备注的话, 隐藏原备注textarea
+      if (!detail.remarks) {
+        $('#remarksNew').hide();
+      }
     } else {
-      $('.modal form').parsley().validate();
+      $('#popup-detail form').parsley().validate();
     }
   });
 });
@@ -297,6 +338,7 @@ function formatEditHistory(operate) {
   });
 }
 
+// 审核通过 / 驳回
 $('#dataTable').on('click', '.btn-approval', function (e) {
 
   e.preventDefault();
@@ -311,6 +353,7 @@ $('#dataTable').on('click', '.btn-approval', function (e) {
       alert(res.meta.msg);
       return false;
     } else {
+      $('#formSearch').trigger('submit');
       alert('操作成功!');
     }
   });
@@ -330,7 +373,7 @@ $(document).on('submit', '#popup-detail form', function(e) {
     return false;
   }
   
-  if (!$('.modal form').parsley().isValid()) {
+  if (!$('#popup-detail form').parsley().isValid()) {
     return false;
   }
 
@@ -358,7 +401,8 @@ $(document).on('submit', '#popup-detail form', function(e) {
     finalSettleAmount: $('#finalSettleAmount').val(),
     reconciliationStatus: $('#reconciliationStatus').val(),
     shipmentStatus: $('#shipmentStatus').val(),
-    reason: $('#reason').val()
+    reason: $('#reconciliationStatus').val() == 2 ? $('#reason').val() : '',// 对账不一致才有原因
+    remarks: $('#remarks').val()
   };
 
   $.ajax({
@@ -375,3 +419,218 @@ $(document).on('submit', '#popup-detail form', function(e) {
     }
   });
 });
+
+// 反审核(单条记录)
+$('#dataTable').on('click', '.btn-reverse', function(e) {
+  e.preventDefault();
+
+  var id = $(this).data('id');
+
+  $.ajax({
+    url: common.API_HOST + 'settlement/shipmentInfo/antiExamination',
+    type: 'GET',
+    data: {id: id}
+  })
+  .done(function(res) {
+    if (!!~~res.meta.result) {
+      alert('操作成功!');
+      $('#formSearch').trigger('submit');
+    } else {
+      alert(res.meta.msg);
+      return false;
+    }
+  });
+});
+
+
+/************************************************* 批量操作 ***************************************************/
+$('.multi-check-all').change(function(e) {
+  e.preventDefault();
+  var isChecked = $(this).is(':checked');
+
+  if (isChecked) {
+    $('#dataTable tbody :checkbox:not(:checked)').prop('checked', true);
+  } else {
+    $('#dataTable tbody :checkbox:checked').prop('checked', false);
+  }
+});
+
+
+$('body').on('change', 'tr > td :checkbox', function(e) {
+  e.preventDefault();
+
+  var isChecked = $(this).is(':checked');
+
+  if (!isChecked) {
+    $('.multi-check-all').prop('checked', false);
+  }
+});
+
+// 修改记录导出(from 修改记录)
+$('.btn-export').click(function(e) {
+  e.preventDefault();
+
+  if ($('#dataTable tr td').length < 2) {
+    alert('请先查询再进行此操作!');
+    return false;
+  }
+
+  $.ajax({
+    url: common.API_HOST + 'settlement/shipmentInfo/checkListExport',
+    type: 'GET',
+    data: searchCache
+  })
+  .done(function(res) {
+    if (!!~~res.meta.result) {
+        // window.location.href = common.API_HOST + 'settlement/merchantAttachment/downLoad?fileUrl=' + res.data.fileUrl;
+        alert('您的申请已提交，系统正在为您导出数据，需要约15分钟，\n请至下载列表查看并下载导出结果。\n导出的数据仅保留3天，请及时查看并下载。');
+      } else {
+        alert(res.meta.msg);
+      }
+  });
+
+  // alert('接口尚未调通. 批量导出, 选中的id: ' + ids);
+});
+
+// 批量反审核(from 修改记录)
+$('.btn-batch-reverse').click(function(e) {
+  var ids = selectedIds();
+
+  if (ids.length === 0) {
+    alert('请至少选择一条记录!');
+    return false;
+  }
+
+  $.ajax({
+    url: common.API_HOST + 'settlement/shipmentInfo/antiExaminationByIds',
+    type: 'GET',
+    data: {ids: settlementCommon.toString(ids)}
+  })
+  .done(function(res) {
+    if (!!~~res.meta.result) {
+      alert('操作成功!');
+      $('#formSearch').trigger('submit');
+    } else {
+      alert(res.meta.msg);
+      return false;
+    }
+  });
+});
+
+$('.btn-all-reverse').click(function(e) {
+  e.preventDefault();
+
+  if ($('#dataTable tr td').length < 2) {
+    alert('请先查询再进行此操作!');
+    return false;
+  }
+
+  $.ajax({
+    url: common.API_HOST + 'settlement/shipmentInfo/antiExaminationByCondition',
+    type: 'GET',
+    data: searchCache
+  })
+  .done(function(res) {
+    if (!!~~res.meta.result) {
+      alert('操作成功!');
+      $('#formSearch').trigger('submit');
+    } else {
+      alert(res.meta.msg);
+      return false;
+    }
+  });
+});
+
+// 批量审核通过
+$('.btn-batch-approve').click(function() {
+  batchOperate('3');
+});
+
+// 批量审核驳回
+$('.btn-batch-reject').click(function() {
+  batchOperate('4');
+});
+
+function batchOperate(type) {
+
+  var ids = selectedIds();
+
+  if (ids.length === 0) {
+    alert('请至少选择一条记录!');
+    return false;
+  }
+
+  var param = {ids: settlementCommon.toString(ids), checkStatus: type};
+
+  $.ajax({
+    url: common.API_HOST + 'settlement/shipmentInfo/checkByIds',
+    type: 'GET',
+    data: param
+  })
+  .done(function(res) {
+    if (!!~~res.meta.result) {
+      alert('提交成功!');
+      $('#formSearch').trigger('submit');
+    } else {
+      alert(res.meta.msg);
+      return false;
+    }
+  });
+
+  // alert('接口尚未联调.  操作: ' + (type == 1 ? '批量审核通过' : '批量审核驳回') + '. 选择的记录的ID: ' + parameters);
+}
+
+function selectedIds() {
+  var ids = [];
+
+  $('#dataTable tbody :checkbox:checked').each(function(index) {
+    var id = $(this).closest('tr').data('id');
+    ids.push(id);
+  });
+  return ids;
+}
+
+// 全部审核通过
+$('.btn-all-approve').click(function(e) {
+  e.preventDefault();
+
+  if ($('#dataTable tr td').length < 2) {
+    alert('请先查询再进行此操作!');
+    return false;
+  }
+
+  operateAll('3');
+});
+
+// 全部审核驳回
+$('.btn-all-reject').click(function(e) {
+  e.preventDefault();
+
+  if ($('#dataTable tr td').length < 2) {
+    alert('请先查询再进行此操作!');
+    return false;
+  }
+
+  operateAll('4');
+});
+
+function operateAll(type) {
+
+  var searchTerms = settlementCommon.clone(searchCache);
+  searchTerms.newCheckStatus = type;
+
+  $.ajax({
+    url: common.API_HOST + 'settlement/shipmentInfo/updateCheckByCondition',
+    type: 'GET',
+    data: searchTerms
+  })
+  .done(function(res) {
+    if (!!~~res.meta.result) {
+      alert('操作成功!');
+      $('#formSearch').trigger('submit');
+    } else {
+      alert(res.meta.msg);
+      return false;
+    }
+  });
+}
