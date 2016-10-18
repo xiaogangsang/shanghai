@@ -305,6 +305,7 @@ function setModal(roleData) {
   if (roleData) {
     _(_resources).forEach(function (res) {
       var funcSelected = false;
+      var funcUnSelected = false;
       if (res.function.length > 0) {
         res.group = true;
         _(res.function).forEach(function (func) {
@@ -313,10 +314,12 @@ function setModal(roleData) {
             funcSelected = true;
           } else {
             func.selected = false;
+            funcUnSelected = true;
           }
         });
 
-        res.selected = funcSelected;
+        res.hasSelected = funcSelected;
+        res.hasUnSelected = funcUnSelected;
       } else {
         res.selected = roleData.resources.indexOf(res.id.toString()) > -1 ? true : false;
       }

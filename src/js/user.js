@@ -123,15 +123,9 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
   })
   .done(function (res) {
     if (!!~~res.meta.result) {
-      res.data.channelAuthority = res.data.channelAuthority != undefined
-      ? res.data.channelAuthority
-      : [];
-      res.data.roles = res.data.roles != undefined
-      ? res.data.roles
-      : [];
-      res.data.cityAuthority = res.data.cityAuthority != undefined
-      ? res.data.cityAuthority
-      : [];
+      res.data.channelAuthority = res.data.channelAuthority != undefined ? res.data.channelAuthority : [];
+      res.data.roles = res.data.roles != undefined ? res.data.roles : [];
+      res.data.cityAuthority = res.data.cityAuthority != undefined ? res.data.cityAuthority : [];
       setModal(res.data);
       $('#popup-user-form').modal('show');
       $('#popup-user-form form').parsley();
@@ -292,6 +286,7 @@ $(document).on('click', '#popup-user-form button[type=submit]', function (event)
   if (_submitting) {
     return false;
   }
+
   _submitting = true;
   $('.multi-selection option').prop('selected', true);
   var sendData = {
@@ -375,7 +370,7 @@ function setModal(userData) {
 
     delete userData.roles;
     _(_cities).forEach(function (value, key) {
-      _cities[key].selected = userData.cityAuthority.indexOf(value.cityId) > -1 ? true : false;
+      _cities[key].selected = userData.cityAuthority[0] == 0 || userData.cityAuthority.indexOf(value.cityId) > -1 ? true : false;
     });
 
     delete userData.cityAuthority;
