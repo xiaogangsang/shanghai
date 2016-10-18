@@ -1,6 +1,23 @@
 'use strict;'
 
 require('cookie');
+
+Array.prototype.unique = function () {
+  var o = {};
+  var i;
+  var l = this.length;
+  var r = [];
+  for (i = 0; i < l; i += 1) {
+    o[this[i]] = this[i];
+  }
+
+  for (i in o) {
+    r.push(o[i]);
+  }
+
+  return r;
+};
+
 var common = {};
 
 common.API_HOST = window.location.protocol + '//' + window.location.host + '/MovieOps/';
@@ -85,6 +102,7 @@ common.logout = function () {
   sessionStorage.setItem('authCity', []);
   sessionStorage.setItem('authChannel', []);
   sessionStorage.setItem('authMenu', []);
+  sessionStorage.setItem('authFunction', '{}');
 };
 
 common.getDate = function (date) {
@@ -117,6 +135,42 @@ common.getUrlParam = function () {
   }
 
   return paramArr;
+};
+
+common.getAssignedFuncions = function () {
+  var allowMenus = JSON.parse(sessionStorage.getItem('authFunction'));
+  var assignedFunctions = [];
+  var pageId = +$('#menu a.active').data('id');
+  _(allowMenus).forEach(function (page) {
+    if (page.menuId == pageId && page.function != null && page.function.length > 0) {
+      assignedFunctions =  assignedFunctions.concat(page.function).unique();
+    }
+  });
+
+  return assignedFunctions;
+};
+
+common.verifyPermission = function (funcId) {
+  var pageId = +$('#menu a.active').data('id');
+  var assignedFunctions = this.getAssignedFuncions();
+  if (assignedFunctions.length > 0 && assignedFunctions.indexOf(+funcId) > -1) {
+    return true;
+  }
+
+  return false;
+};
+
+common.showAssignedButton = function () {
+  var assignedFunctions = this.getAssignedFuncions();
+  if (assignedFunctions.length < 1) {
+    return false;
+  }
+
+  $.each($('.auth-ctl'), function (index, el) {
+    if (assignedFunctions.indexOf(+$(this).data('auth')) > -1) {
+      $(this).show();
+    }
+  });
 };
 
 module.exports = common;

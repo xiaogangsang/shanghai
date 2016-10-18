@@ -76,7 +76,7 @@ $('#form-login').on('submit', function (e) {
       Cookies.set('name', res.data.name);
       sessionStorage.setItem('authCity', res.data.cities);
       sessionStorage.setItem('authChannel', res.data.channels);
-      sessionStorage.setItem('authFunction', res.data.allowMenus);
+      sessionStorage.setItem('authFunction', JSON.stringify(res.data.allowMenus));
 
       var allowMenus = [];
       $.each(res.data.allowMenus, function (index, menu) {
