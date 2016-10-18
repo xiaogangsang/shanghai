@@ -61,7 +61,7 @@ function setChannel() {
       _channels = res.data;
       var htmlChannel = '';
       $.each(_channels, function (index, item) {
-        if (sessionStorage.getItem('authChannel').indexOf(item.channelId) > -1) {
+        if (localStorage.getItem('authChannel').indexOf(item.channelId) > -1) {
           htmlChannel += '<option value="' + item.channelId + '">' + item.channelName + '</option>';
         }
       });

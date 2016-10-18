@@ -74,16 +74,16 @@ $('#form-login').on('submit', function (e) {
     if (!!~~res.meta.result) {
       Cookies.set('Xtoken', res.data.Xtoken);
       Cookies.set('name', res.data.name);
-      sessionStorage.setItem('authCity', res.data.cities);
-      sessionStorage.setItem('authChannel', res.data.channels);
-      sessionStorage.setItem('authFunction', JSON.stringify(res.data.allowMenus));
+      localStorage.setItem('authCity', res.data.cities);
+      localStorage.setItem('authChannel', res.data.channels);
+      localStorage.setItem('authFunction', JSON.stringify(res.data.allowMenus));
 
       var allowMenus = [];
       $.each(res.data.allowMenus, function (index, menu) {
         allowMenus.push(menu.menuId);
       });
 
-      sessionStorage.setItem('authMenu', allowMenus);
+      localStorage.setItem('authMenu', allowMenus);
 
       window.location.href = 'index.html';
     } else {
