@@ -30,9 +30,16 @@ var _pageTotal = 0;
 var _querying = false;
 var searchCache = {};
 var useCache = false;
+var _detailPermission = false;
 
 $(function () {
   common.init('order');
+  if (common.verifyPermission(118) == false) {
+    alert('对不起，您没有权限！');
+    common.logout();
+  }
+
+  _detailPermission = common.verifyPermission(119);
   setChannel();
   getSource();
 
@@ -237,7 +244,7 @@ function getSource() {
 }
 
 function setTableData(rows) {
-  var data = { rows: rows };
+  var data = { detailPermission: _detailPermission, rows: rows };
   var template = $('#table-template').html();
   Mustache.parse(template);
   var html = Mustache.render(template, data);

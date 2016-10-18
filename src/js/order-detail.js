@@ -28,6 +28,10 @@ var _submitting = false;
 
 $(function () {
   common.init('order');
+  if (common.verifyPermission(119) == false) {
+    alert('对不起，您没有权限！');
+    common.logout();
+  }
   getChannel();
   getSource();
 
@@ -144,6 +148,8 @@ function setBizOrder(biz) {
   var html = Mustache.render(template, biz);
   $('#bizOrder').append(html);
   $('[data-toggle="tooltip"]').tooltip();
+
+  common.showAssignedButton();
 }
 
 $(document).on('click', '#btn-sendsms', function (event) {
