@@ -141,7 +141,7 @@ $(document).on('submit', '#popup-role-form form', function (e) {
     ajaxUrl = common.API_HOST + 'security/role/updateRole';
 
   }
-console.log(sendData);
+
   $.ajax({
     url: ajaxUrl,
     type: 'POST',
@@ -334,7 +334,7 @@ function setModal(roleData) {
     });
 
     delete roleData.assignedRoles;
-console.log(_resources);
+
     data = { role: roleData, resources: _resources, users: _users, assignedRoles: _roles };
     template = $('#edit-template').html();
     $('#popup-role-form .modal-title').html('编辑角色');

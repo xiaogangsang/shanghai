@@ -445,10 +445,10 @@ function setRole() {
   })
   .done(function (res) {
     if (!!~~res.meta.result) {
-      _roles = res.data.rows;
+      _roles = res.data;
       var html = '';
       $.each(_roles, function (index, role) {
-        html += '<option value="' + role.id + '">' + role.roleName + '</option>';
+        html += '<option value="' + role.id + '">' + role.id + ':' + role.roleName + '</option>';
       });
 
       $('#search_roleId').append(html);

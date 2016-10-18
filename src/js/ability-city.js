@@ -88,9 +88,9 @@ function setUser(cityId) {
       var htmlUnchoosed = '';
       _(_users).forEach(function (value, key) {
         if (res.data.indexOf(value.id.toString()) > -1) {
-          htmlChoosed += '<option value="' + value.id + '">' + value.realName + '</option>';
+          htmlChoosed += '<option value="' + value.id + '">' + value.id + ':' + value.realName + '</option>';
         } else {
-          htmlUnchoosed += '<option value="' + value.id + '">' + value.realName + '</option>';
+          htmlUnchoosed += '<option value="' + value.id + '">' + value.id + ':' + value.realName + '</option>';
         }
       });
 
@@ -103,7 +103,7 @@ function setUser(cityId) {
   });
 }
 
-$('#citySelect').on('change', function (e) {
+$('#citySelect').on('change click', function (e) {
   e.preventDefault();
   $('#userSelect_to').html('');
   $('#userSelect').html('');
@@ -116,6 +116,7 @@ $('#formCity').on('click', 'button[type=submit]', function (event) {
   if (_submitting) {
     return false;
   }
+
   _submitting = true;
   $('.multi-selection select:eq(1) option').prop('selected', true);
   var sendData = {
