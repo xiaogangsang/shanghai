@@ -30,8 +30,9 @@ $(function () {
   common.init('order');
   if (common.verifyPermission(119) == false) {
     alert('对不起，您没有权限！');
-    common.logout();
+    window.location.href = 'login.html?logout';
   }
+
   getChannel();
   getSource();
 

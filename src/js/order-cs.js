@@ -35,7 +35,7 @@ $(function () {
   common.init('order-cs');
   if (common.verifyPermission(113) == false) {
     alert('对不起，您没有权限！');
-    common.logout();
+    window.location.href = 'login.html?logout';
   }
 
   _detailPermission = common.verifyPermission(114);
@@ -73,7 +73,6 @@ $(function () {
   $('#search_placeOrderStartTime').val(beginDate).datetimepicker('setEndDate', endDate);
   $('#search_placeOrderEndTime').val(endDate).datetimepicker('setStartDate', beginDate).datetimepicker('setEndDate', endDate);
 
-  $('#formSearch').trigger('submit');
 });
 
 //handle search form
@@ -205,7 +204,9 @@ function setChannel() {
         html += '<option value="' + item.channelId + '">' + item.channelName + '</option>';
       });
 
-      $('#search_channelId').append(html);
+      $('#search_channelId').html(html);
+
+      $('#formSearch').trigger('submit');
     }
   });
 }

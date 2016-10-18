@@ -39,7 +39,7 @@ $(function () {
   common.init('order-cs');
   if (common.verifyPermission(114) == false) {
     alert('对不起，您没有权限！');
-    common.logout();
+    window.location.href = 'login.html?logout';
   }
 
   getChannel();
