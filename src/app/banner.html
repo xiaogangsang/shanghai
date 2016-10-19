@@ -31,6 +31,18 @@
 
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
+              <div class="input-group-addon">类型</div>
+              <select class="form-control" id="search_bannerType">
+                <option value="1">首页</option>
+                <option value="2">热门影片</option>
+                <option value="3">交叉销售位</option>
+                <option value="4">选座页配置</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
               <div class="input-group-addon">名称</div>
               <input type="text" class="form-control" id="search_bannerName">
             </div>
@@ -70,17 +82,6 @@
 
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
-              <div class="input-group-addon">类型</div>
-              <select class="form-control" id="search_bannerType">
-                <option value="1">首页</option>
-                <option value="2">热门影片</option>
-                <option value="3">交叉销售位</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-group col-sm-6 col-md-4">
-            <div class="input-group">
               <div class="input-group-addon">渠道</div>
               <select class="form-control" id="search_channelId">
                 <option value="">全部</option>
@@ -95,6 +96,17 @@
               </div>
               <div class="col-sm-6">
                 <button type="button" class="btn btn-block btn-default" id="btn-create">新增</button>
+                <div class="btn-group">
+                  <button type="button" class="btn btn-block btn-default dropdown-toggle" data-toggle="dropdown">
+                    新增 <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="#create-home" id="btn-create-home">首页</a></li>
+                    <li><a href="#create-hot" id="btn-create-hot">热门影片</a></li>
+                    <li><a href="#create-cross" id="btn-create-cross">交叉销售位</a></li>
+                    <li><a href="#reate-seat" id="btn-create-seat">选座页配置</a></li>
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
@@ -178,7 +190,10 @@
     {{/rows}}
   </script>
 
-  @@include('component/popup-banner-form.tpl')
+  @@include('component/popup-banner-home.tpl')
+  @@include('component/popup-banner-hot.tpl')
+  @@include('component/popup-banner-sale.tpl')
+  @@include('component/popup-banner-seat.tpl')
   @@include('component/popup-city.tpl')
   @@include('component/popup-banner-upload.tpl')
 </body>

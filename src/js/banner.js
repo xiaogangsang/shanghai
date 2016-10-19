@@ -9,9 +9,9 @@ var _pageIndex = 1;
 var _pageSize = 10;
 var _pageTotal = 0;
 var _querying = false;
-var searchCache = {};
-var useCache = false;
-var dataCache;
+var _searchCache = {};
+var _useCache = false;
+var _dataCache;
 var _submitting = false;
 var _provinces = [];
 
@@ -52,18 +52,18 @@ $(function () {
   $('#search_startTime').val(beginDate).datetimepicker('setEndDate', endDate);
   $('#search_endTime').val(endDate).datetimepicker('setStartDate', beginDate);
 
+  $('#formSearch').trigger('submit');
+
   //data cache
   getCity();
   getMovie();
-
-  $('#formSearch').trigger('submit');
 });
 
 //handle search form
 $('#formSearch').on('click', 'button[type=submit]', function (event) {
   event.preventDefault();
   _pageIndex = 1;
-  useCache = false;
+  _useCache = false;
   $('#formSearch').trigger('submit');
 });
 
@@ -83,10 +83,10 @@ $('#formSearch').on('submit', function (e) {
   }
 
   _querying = true;
-  if (useCache) {
-    sendData = searchCache;
+  if (_useCache) {
+    sendData = _searchCache;
   } else {
-    searchCache = sendData;
+    _searchCache = sendData;
   }
 
   sendData.pageIndex = _pageIndex;
@@ -104,7 +104,7 @@ $('#formSearch').on('submit', function (e) {
         $('#dataTable tbody').html('<tr><td colspan="9" align="center">查不到相关数据，请修改查询条件！</td></tr>');
         $('#pager').html('');
       } else {
-        useCache = true;
+        _useCache = true;
         _pageIndex = res.data.pageIndex;
         _pageTotal = Math.ceil(res.data.total / _pageSize);
         setPager(res.data.total, _pageIndex, res.data.rows.length, _pageTotal);
@@ -121,8 +121,8 @@ $('#formSearch').on('submit', function (e) {
           item.endTime = item.endTime.split(' ')[0];
         });
 
-        dataCache = res.data.rows;
-        setTableData(dataCache);
+        _dataCache = res.data.rows;
+        setTableData(_dataCache);
       }
     } else {
       alert('接口错误：' + res.meta.msg);
@@ -219,7 +219,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
   e.preventDefault();
   var id = $(this).closest('tr').data('id');
   var banner;
-  _(dataCache).forEach(function (item) {
+  _(_dataCache).forEach(function (item) {
     if (item.id == id) {
       banner = item;
     }
@@ -615,7 +615,7 @@ $('#pager').on('click', '.prev,.next', function (e) {
 $('#formSearch').on('click', 'button[type=submit]', function (event) {
   event.preventDefault();
   _pageIndex = 1;
-  useCache = false;
+  _useCache = false;
   $('#formSearch').trigger('submit');
 });
 

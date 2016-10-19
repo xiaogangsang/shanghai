@@ -1,4 +1,4 @@
-<div class="modal fade" id="popup-banner-form" data-keyboard="false" data-backdrop="static">
+<div class="modal fade" id="popup-banner-seat" data-keyboard="false" data-backdrop="static">
   <div class="modal-dialog">
     <div class="modal-content">
       <form>
