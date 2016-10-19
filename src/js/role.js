@@ -4,9 +4,9 @@ var common = require('common');
 var _pageIndex = 1;
 var _pageSize = 10;
 var _pageTotal = 0;
-var _roles = {};
-var _users = {};
-var _resources = {};
+var _roles = [];
+var _users = [];
+var _resources = [];
 var _querying = false;
 var searchCache = {};
 var useCache = false;
@@ -38,7 +38,7 @@ $('#formSearch').on('submit', function (e) {
     roleId: $('#search_roleId').val(),
     createdBy: $.trim($('#search_createdBy').val()),
     pageIndex: _pageIndex,
-    pageSize: _pageSize,
+    pageSize: 9999,
   };
 
   if (!!_querying) {
@@ -62,13 +62,13 @@ $('#formSearch').on('submit', function (e) {
   .done(function (res) {
     _querying = false;
     if (!!~~res.meta.result) {
-      if (res.data.rows.length < 1) {
+      if (res.data.length < 1) {
         $('#dataTable tbody').html('<tr><td colspan="6" align="center">查不到相关数据，请修改查询条件！</td></tr>');
         $('#pager').html('');
       } else {
         useCache = true;
-        _(res.data.rows).forEach(function (item) {
-          if (item.desc.length > 12) {
+        _(res.data).forEach(function (item) {
+          if (item.desc != null && item.desc.length > 12) {
             item.short = item.desc.substr(0, 10) + '...';
           } else {
             item.short = item.desc;
@@ -77,8 +77,8 @@ $('#formSearch').on('submit', function (e) {
 
         _pageIndex = res.data.pageIndex;
         _pageTotal = Math.ceil(res.data.total / _pageSize);
-        setPager(res.data.total, res.data.pageIndex, res.data.rows.length, _pageTotal);
-        setTableData(res.data.rows);
+        setPager(res.data.total, res.data.pageIndex, res.data.length, _pageTotal);
+        setTableData(res.data);
       }
     } else {
       alert('接口错误：' + res.msg);
@@ -125,12 +125,15 @@ $(document).on('submit', '#popup-role-form form', function (e) {
   if (_submitting) {
     return false;
   }
+
   _submitting = true;
   var sendData = {
-    roleName: $.trim($('#popup-role-form #roleName').val()),
-    desc: $.trim($('#popup-role-form #desc').val()),
+    // roleType: $('#popup-role-form #roleType').val(),
+    roleName: $('#popup-role-form #roleName').val().trim(),
+    desc: $('#popup-role-form #desc').val().trim(),
     resources: $('#resourceSelect_to').val(),
     userIds: $('#userSelect_to').val(),
+    assignedRoles: $('#assignedRoleSelect_to').val(),
   };
   var ajaxUrl = common.API_HOST + 'security/role/saveRole';
   if ($('#roleId').length > 0) {
@@ -264,7 +267,6 @@ $(document).on('click', '#btn-delete-multi', function (e) {
       data: JSON.stringify(userIds),
     })
     .done(function (res) {
-      // console.log(res);
       if (!!~~res.meta.result) {
         alert('删除成功！');
         $checkedItems.each(function (index, el) {
@@ -301,10 +303,26 @@ function setModal(roleData) {
   var data;
   var template;
   if (roleData) {
-    _(_resources).forEach(function (value, key) {
-      _resources[key].selected = roleData.resources.indexOf(value.id.toString()) > -1
-      ? true
-      : false;
+    _(_resources).forEach(function (res) {
+      var funcSelected = false;
+      var funcUnSelected = false;
+      if (res.function.length > 0) {
+        res.group = true;
+        _(res.function).forEach(function (func) {
+          if (roleData.resources.indexOf(func.id.toString()) > -1) {
+            func.selected = true;
+            funcSelected = true;
+          } else {
+            func.selected = false;
+            funcUnSelected = true;
+          }
+        });
+
+        res.hasSelected = funcSelected;
+        res.hasUnSelected = funcUnSelected;
+      } else {
+        res.selected = roleData.resources.indexOf(res.id.toString()) > -1 ? true : false;
+      }
     });
 
     delete roleData.resources;
@@ -313,11 +331,18 @@ function setModal(roleData) {
     });
 
     delete roleData.users;
-    data = { role: roleData, resources: _resources, users: _users };
+
+    _(_roles).forEach(function (value, key) {
+      _roles[key].selected = roleData.assignedRoles.indexOf(value.id) > -1 ? true : false;
+    });
+
+    delete roleData.assignedRoles;
+
+    data = { role: roleData, resources: _resources, users: _users, assignedRoles: _roles };
     template = $('#edit-template').html();
     $('#popup-role-form .modal-title').html('编辑角色');
   } else {
-    data = { resources: _resources, users: _users };
+    data = { resources: _resources, users: _users, assignedRoles: _roles };
     template = $('#create-template').html();
     $('#popup-role-form .modal-title').html('新增角色');
   }
@@ -325,6 +350,30 @@ function setModal(roleData) {
   Mustache.parse(template);
   var html = Mustache.render(template, data);
   $('#popup-role-form .modal-body').html(html);
+
+  $('#assignedRoleSelect').multiselect({
+    search: {
+      left: '<input type="text" name="q" class="form-control" placeholder="筛选..." />',
+      right: '<input type="text" name="q" class="form-control" placeholder="筛选..." />',
+    },
+    right: '#assignedRoleSelect_to',
+    rightAll: '#assignedRoleSelect_all',
+    rightSelected: '#assignedRoleSelect_right',
+    leftSelected: '#assignedRoleSelect_left',
+    leftAll: '#assignedRoleSelect_none',
+  });
+
+  $('#userSelect').multiselect({
+    search: {
+      left: '<input type="text" name="q" class="form-control" placeholder="筛选..." />',
+      right: '<input type="text" name="q" class="form-control" placeholder="筛选..." />',
+    },
+    right: '#userSelect_to',
+    rightAll: '#userSelect_all',
+    rightSelected: '#userSelect_right',
+    leftSelected: '#userSelect_left',
+    leftAll: '#userSelect_none',
+  });
 
   $('#resourceSelect').multiselect({
     search: {
@@ -336,17 +385,6 @@ function setModal(roleData) {
     rightSelected: '#resourceSelect_right',
     leftSelected: '#resourceSelect_left',
     leftAll: '#resourceSelect_none',
-  });
-  $('#userSelect').multiselect({
-    search: {
-      left: '<input type="text" name="q" class="form-control" placeholder="筛选..." />',
-      right: '<input type="text" name="q" class="form-control" placeholder="筛选..." />',
-    },
-    right: '#userSelect_to',
-    rightAll: '#userSelect_all',
-    rightSelected: '#userSelect_right',
-    leftSelected: '#userSelect_left',
-    leftAll: '#userSelect_none',
   });
 }
 
@@ -362,7 +400,7 @@ function setRole() {
   })
   .done(function (res) {
     if (!!~~res.meta.result) {
-      _roles = res.data.rows;
+      _roles = res.data;
       var html = '';
       _(_roles).forEach(function (role, key) {
         html += '<option value="' + role.id + '">' + role.roleName + '</option>';
@@ -397,7 +435,7 @@ function getUsers() {
 
 function getResources() {
   $.ajax({
-    url: common.API_HOST + 'security/resource/resourceList',
+    url: common.API_HOST + 'security/resource/resourceListInSelect',
     type: 'POST',
     dataType: 'json',
     data: {
@@ -406,8 +444,11 @@ function getResources() {
     },
   })
   .done(function (res) {
-    if (!!~~res.meta.result) {
-      _resources = res.data.rows;
+    if (!!~~res.meta.result && res.data != null && res.data.length > 0) {
+      _(res.data).forEach(function (res) {
+        res.group = res.function.length > 0 ? true : false;
+        _resources.push(res);
+      });
     } else {
       alert('获取功能列表失败：' + res.msg);
     }

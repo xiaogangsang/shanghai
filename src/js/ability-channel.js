@@ -61,7 +61,9 @@ function setChannel() {
       _channels = res.data;
       var htmlChannel = '';
       $.each(_channels, function (index, item) {
-        htmlChannel += '<option value="' + item.channelId + '">' + item.channelName + '</option>';
+        if (localStorage.getItem('authChannel').indexOf(item.channelId) > -1) {
+          htmlChannel += '<option value="' + item.channelId + '">' + item.channelName + '</option>';
+        }
       });
 
       $('#channelSelect').append(htmlChannel);
@@ -84,13 +86,9 @@ function setUser(channelId) {
       var htmlUnchoosed = '';
       _(_users).forEach(function (value, key) {
         if (res.data.indexOf(value.id.toString()) > -1) {
-          htmlChoosed += '<option value="' + value.id + '">' +
-          value.id + ':' + value.realName +
-          '</option>';
+          htmlChoosed += '<option value="' + value.id + '">' + value.id + ':' + value.realName + '</option>';
         } else {
-          htmlUnchoosed += '<option value="' + value.id + '">' +
-          value.id + ':' + value.realName +
-          '</option>';
+          htmlUnchoosed += '<option value="' + value.id + '">' + value.id + ':' + value.realName + '</option>';
         }
       });
 
@@ -103,7 +101,7 @@ function setUser(channelId) {
   });
 }
 
-$('#channelSelect').on('change', function (e) {
+$('#channelSelect').on('change click', function (e) {
   e.preventDefault();
   $('#userSelect_to').html('');
   $('#userSelect').html('');
@@ -116,6 +114,7 @@ $('#formChannel').on('click', 'button[type=submit]', function (event) {
   if (_submitting) {
     return false;
   }
+
   _submitting = true;
   $('.multi-selection select:eq(1) option').prop('selected', true);
   var sendData = {

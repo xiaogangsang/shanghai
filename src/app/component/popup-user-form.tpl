@@ -72,7 +72,7 @@
               <select name="from[]" id="roleSelect" class="form-control" size="8" multiple="multiple">
                 {{#roles}}
                 {{^selected}}
-                <option value="{{id}}">{{roleName}}</option>
+                <option value="{{id}}">{{id}}:{{roleName}}</option>
                 {{/selected}}
                 {{/roles}}
               </select>
@@ -87,7 +87,7 @@
               <select name="to[]" id="roleSelect_to" class="form-control" size="8" multiple="multiple" data-parsley-required data-parsley-errors-container="#error-role">
                 {{#roles}}
                 {{#selected}}
-                <option selected value="{{id}}">{{roleName}}</option>
+                <option selected value="{{id}}">{{id}}:{{roleName}}</option>
                 {{/selected}}
                 {{/roles}}
               </select>

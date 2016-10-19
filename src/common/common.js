@@ -1,6 +1,23 @@
 'use strict;'
 
 require('cookie');
+
+Array.prototype.unique = function () {
+  var o = {};
+  var i;
+  var l = this.length;
+  var r = [];
+  for (i = 0; i < l; i += 1) {
+    o[this[i]] = this[i];
+  }
+
+  for (i in o) {
+    r.push(o[i]);
+  }
+
+  return r;
+};
+
 var common = {};
 
 common.API_HOST = window.location.protocol + '//' + window.location.host + '/MovieOps/';
@@ -43,9 +60,9 @@ common.init = function (pageName) {
 };
 
 common.showMenu = function (pageName) {
-  var allowMenus = sessionStorage.getItem('menuAuthority') != null ? sessionStorage.getItem('menuAuthority').split(',') : null;
+  var allowMenus = localStorage.getItem('authMenu');
   if (pageName != undefined && pageName != '' && $('#menu-' + pageName).size() > 0) {
-    var menuId = '' + $('#menu-' + pageName).data('id');
+    var menuId = +$('#menu-' + pageName).data('id');
     if (allowMenus.indexOf(menuId) < 0) {
       common.logout();
       window.location.href = 'login.html';
@@ -57,7 +74,7 @@ common.showMenu = function (pageName) {
 
   var $menus = $('#menu .list-group-item');
   $menus.each(function (index, el) {
-    menuId = '' + $(el).data('id');
+    menuId = +$(el).data('id');
     if (allowMenus.indexOf(menuId) > -1) {
       $(el).show();
       $(el).closest('.panel').show();
@@ -66,7 +83,7 @@ common.showMenu = function (pageName) {
 };
 
 common.checkLogin = function () {
-  if (sessionStorage.getItem('menuAuthority') == null || Cookies.get('Xtoken') == undefined) {
+  if (localStorage.getItem('authMenu').length < 1 || Cookies.get('Xtoken') == undefined) {
     common.logout();
     window.location.href = 'login.html';
   }
@@ -82,9 +99,10 @@ common.setLoginName = function () {
 common.logout = function () {
   Cookies.remove('Xtoken');
   Cookies.remove('name');
-  sessionStorage.setItem('cityAuthority', '');
-  sessionStorage.setItem('channelAuthority', '');
-  sessionStorage.setItem('menuAuthority', '');
+  localStorage.setItem('authCity', []);
+  localStorage.setItem('authChannel', []);
+  localStorage.setItem('authMenu', []);
+  localStorage.setItem('authFunction', '{}');
 };
 
 common.getDate = function (date) {
@@ -117,6 +135,42 @@ common.getUrlParam = function () {
   }
 
   return paramArr;
+};
+
+common.getAssignedFuncions = function () {
+  var allowMenus = JSON.parse(localStorage.getItem('authFunction'));
+  var assignedFunctions = [];
+  var pageId = +$('#menu a.active').data('id');
+  _(allowMenus).forEach(function (page) {
+    if (page.menuId == pageId && page.function != null && page.function.length > 0) {
+      assignedFunctions =  assignedFunctions.concat(page.function).unique();
+    }
+  });
+
+  return assignedFunctions;
+};
+
+common.verifyPermission = function (funcId) {
+  var pageId = +$('#menu a.active').data('id');
+  var assignedFunctions = this.getAssignedFuncions();
+  if (assignedFunctions.length > 0 && assignedFunctions.indexOf(+funcId) > -1) {
+    return true;
+  }
+
+  return false;
+};
+
+common.showAssignedButton = function () {
+  var assignedFunctions = this.getAssignedFuncions();
+  if (assignedFunctions.length < 1) {
+    return false;
+  }
+
+  $.each($('.auth-ctl'), function (index, el) {
+    if (assignedFunctions.indexOf(+$(this).data('auth')) > -1) {
+      $(this).show();
+    }
+  });
 };
 
 module.exports = common;
