@@ -14,6 +14,7 @@ var _useCache = false;
 var _dataCache;
 var _submitting = false;
 var _provinces = [];
+var _bannerType = ['', '首页', '热门影片', '交叉销售位', '选座页配置'];
 
 $(function () {
   common.init('banner');
@@ -132,11 +133,9 @@ $('#formSearch').on('submit', function (e) {
   return false;
 });
 
-$(document).on('click', '#btn-create', function (e) {
+$(document).on('click', '.btn-create', function (e) {
   _choosed = [];
-  setModal(false);
-  $('#popup-banner-form').modal('show');
-
+  setModal(false, $(this).data('type'));
   $('#startTime').datetimepicker({
     format: 'yyyy-mm-dd',
     language: 'zh-CN',
@@ -163,32 +162,9 @@ $(document).on('click', '#btn-create', function (e) {
 
   $('#popup-banner-form form').parsley();
   $('#popup-banner-form #filmId').chosen();
-
-  $('#popup-banner-form').on('change', '#bannerType', function (event) {
-    event.preventDefault();
-    if ($(this).val() == 1) {
-      $('.type-2, .type-3').hide();
-      $('.type-2, .type-3').find('input,select').prop('required', false);
-      $('.type-1').show();
-      $('.type-1').find('input,select').prop('required', true);
-    } else if ($(this).val() == 2) {
-      $('.type-1, .type-3').hide();
-      $('.type-1, .type-3').find('input,select').prop('required', false);
-      $('.type-2').show();
-      $('.type-2').find('input,select').prop('required', true);
-    } else {
-      $('.type-1, .type-2').hide();
-      $('.type-1, .type-2').find('input,select').prop('required', false);
-      $('.type-3').show();
-      $('.type-3').find('input,select').prop('required', true);
-    }
-
-    $('.chosen-search input').prop('required', false);
-    $('#popup-banner-form form').parsley().reset();
-  });
 });
 
-$(document).on('change', '#search_provinceId', function (e) {
+$(document).on('change click', '#search_provinceId', function (e) {
   e.preventDefault();
   var provinceId = parseInt($(this).val());
   var options = '';
@@ -453,34 +429,23 @@ $(document).on('click', '#popup-banner-form #btn-city', function (event) {
     htmlGroup = '<div class="input-group"><div class="input-group-addon">' + group.key + '</div>';
     _(group.group).forEach(function (city, key) {
       if (_choosed.indexOf(city.cityId) > -1) {
-
-        // if (_cityAuthority.indexOf('' + city.cityId) > -1) {
         htmlGroup += '<label>';
         htmlGroup += '<input type="checkbox" value="' + city.cityId + '" checked>';
         htmlGroup += '<span>' + city.cityName + '</span>';
         htmlGroup += '</label>';
-
-        // }
-
         htmlChoosed += '<span class="label label-default" data-id="' + city.cityId + '">';
         htmlChoosed += city.cityName;
         htmlChoosed += ' <button type="button" class="close"><span>&times;</span></button>';
         htmlChoosed += '</span>';
-
       } else {
-
-        // if (_cityAuthority.indexOf('' + city.cityId) > -1) {
         htmlGroup += '<label>';
         htmlGroup += '<input type="checkbox" value="' + city.cityId + '">';
         htmlGroup += '<span>' + city.cityName + '</span>';
         htmlGroup += '</label>';
-
-        // }
       }
     });
 
     htmlGroup += '</div>';
-
     htmlPane += htmlGroup;
 
     if (index % 5 == 0 || index == total) {
@@ -553,41 +518,6 @@ $(document).on('click', '#popup-city .choosed-city>.label>.close', function (eve
   // }
 });
 
-function setModal(bannerData) {
-  var data;
-  var template;
-  var html;
-  if (bannerData) {
-    data = { banner: bannerData, channels: _channels };
-    if (bannerData.bannerType == 1) {
-      template = $('#index-template').html();
-      $('#popup-banner-form .modal-title').html('编辑[首页]Banner');
-    } else if (bannerData.bannerType == 2) {
-      data.movies = _movies;
-      _(_movies).forEach(function (movie) {
-        if (movie.filmId == bannerData.filmId) {
-          data.banner.filmName = movie.filmName;
-        }
-      });
-
-      template = $('#movie-template').html();
-      $('#popup-banner-form .modal-title').html('编辑[热门影片]Banner');
-    } else {
-      template = $('#salling-template').html();
-      $('#popup-banner-form .modal-title').html('编辑[交叉销售]Banner');
-    }
-  } else {
-    data = { movies: _movies, channels: _channels };
-    template = $('#create-template').html();
-    $('#popup-banner-form .modal-title').html('新建Banner');
-  }
-
-  Mustache.parse(template);
-  html = Mustache.render(template, data);
-  $('#popup-banner-form .modal-body').html(html);
-  return false;
-}
-
 $('#pager').on('click', '.prev,.next', function (e) {
   e.preventDefault();
   if ($(this).hasClass('prev')) {
@@ -635,6 +565,72 @@ $('#pager').on('click', '#btn-pager', function (e) {
   $('#formSearch').trigger('submit');
   return false;
 });
+
+function setModal(bannerData, type) {
+  var data;
+  var template;
+  var html;
+  type = !~~type ? 1 : +type;
+  if (bannerData) {
+    data = { banner: bannerData, channels: _channels };
+    switch (+bannerData.bannerType) {
+      case 1:
+        template = $('#edit-home-template').html();
+        break;
+      case 2:
+        template = $('#edit-hot-template').html();
+        data.movies = _movies;
+        _(_movies).forEach(function (movie) {
+          if (movie.filmId == bannerData.filmId) {
+            data.banner.filmName = movie.filmName;
+          }
+        });
+
+        break;
+      case 3:
+        template = $('#edit-sale-template').html();
+        break;
+      case 4:
+        template = $('#edit-seat-template').html();
+        data.movies = _movies;
+        _(_movies).forEach(function (movie) {
+          if (movie.filmId == bannerData.filmId) {
+            data.banner.filmName = movie.filmName;
+          }
+        });
+
+        break;
+    }
+
+    $('#popup-banner-form .modal-title').html('编辑[' + _bannerType[bannerData.bannerType] + ']');
+  } else {
+    data = { channels: _channels };
+    switch (type) {
+      case 1:
+        template = $('#create-home-template').html();
+        break;
+      case 2:
+        template = $('#create-hot-template').html();
+        data.movies = _movies;
+        break;
+      case 3:
+        template = $('#create-sale-template').html();
+        break;
+      case 4:
+        template = $('#create-seat-template').html();
+        data.movies = _movies;
+        break;
+    }
+
+    $('#popup-banner-form .modal-title').html('新建[' + _bannerType[type] + ']');
+  }
+
+  Mustache.parse(template);
+  html = Mustache.render(template, data);
+  $('#popup-banner-form .modal-body').html(html);
+  $('#popup-banner-form').modal('show');
+  return false;
+}
 
 function setChannel() {
   $.ajax({

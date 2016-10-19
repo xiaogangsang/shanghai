@@ -263,8 +263,18 @@ input[readonly],
   /*overflow: visible;*/
   margin-bottom: 15px;
 }
-.search-area .btn {
+.search-area .btn,
+.search-area .btn-group {
   margin-bottom: 15px;
+}
+.search-area .btn-group {
+  width: 100%;
+}
+.search-area .btn-group .btn {
+  margin-bottom: 0;
+}
+.search-area .btn-group .dropdown-menu {
+  min-width: 100%;
 }
 .content-area-xs {
   max-width: 640px;
