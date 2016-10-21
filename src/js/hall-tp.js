@@ -199,6 +199,7 @@ $('#dataTable').on('click', '.btn-create', function (e) {
   var screenType = $(this).closest('tr').data('screentype');
   var effect = $(this).closest('tr').data('effect');
   $('#bindCinemaName').val(tpCinemaName);
+  $('#popup-tphall-create #storeId').val('');
   $('#popup-tphall-create #hallName').val(hallName);
   $('#popup-tphall-create #seatNum').val(seatNum);
   $('#popup-tphall-create #screenType').val(screenType);
@@ -276,8 +277,8 @@ $(document).on('click', '#storeId', function (event) {
 $(document).on('submit', '#formSearchCinema', function (e) {
   e.preventDefault();
   var bindCinemaName = $.trim($('#bindCinemaName').val());
-  if (bindCinemaName == '' || bindCinemaName == undefined || _bindCinemaName == bindCinemaName) {
-    alert('搜索关键词不能为空且不能与上次搜索相同！');
+  if (bindCinemaName == '' || bindCinemaName == undefined) {
+    alert('搜索关键词不能为空！');
     return false;
   }
 
