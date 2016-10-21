@@ -63,7 +63,7 @@
               <button type="button" id="assignedRoleSelect_none" class="btn btn-block btn-default">反选</button>
             </td>
             <td>
-              <select name="to[]" id="assignedRoleSelect_to" class="form-control" size="8" multiple="multiple" data-parsley-required data-parsley-errors-container="#error-assignedRole">
+              <select name="to[]" id="assignedRoleSelect_to" class="form-control" size="8" multiple="multiple">
                 {{#assignedRoles}}
                 {{#selected}}<option value="{{id}}">{{id}}:{{roleName}}</option>{{/selected}}
                 {{/assignedRoles}}
@@ -72,7 +72,6 @@
           </tr>
         </tbody>
       </table>
-      <div id="error-assignedRole"></div>
     </div>
   </div>
 
@@ -137,7 +136,7 @@
               <button type="button" id="userSelect_none" class="btn btn-block btn-default">反选</button>
             </td>
             <td>
-              <select name="to[]" id="userSelect_to" class="form-control" size="8" multiple="multiple" data-parsley-required data-parsley-errors-container="#error-user">
+              <select name="to[]" id="userSelect_to" class="form-control" size="8" multiple="multiple">
                 {{#users}}
                 {{#selected}}
                 <option value="{{id}}">{{id}}:{{realName}}</option>
@@ -148,7 +147,6 @@
           </tr>
         </tbody>
       </table>
-      <div id="error-user"></div>
     </div>
   </div>
 </script>
@@ -199,12 +197,11 @@
               <button type="button" id="assignedRoleSelect_none" class="btn btn-block btn-default">反选</button>
             </td>
             <td>
-              <select name="to[]" id="assignedRoleSelect_to" class="form-control" size="8" multiple="multiple" data-parsley-required data-parsley-errors-container="#error-assignedRole"></select>
+              <select name="to[]" id="assignedRoleSelect_to" class="form-control" size="8" multiple="multiple"></select>
             </td>
           </tr>
         </tbody>
       </table>
-      <div id="error-assignedRole"></div>
     </div>
   </div>
 
@@ -258,12 +255,11 @@
               <button type="button" id="userSelect_none" class="btn btn-block btn-default">反选</button>
             </td>
             <td>
-              <select name="to[]" id="userSelect_to" class="form-control" size="8" multiple="multiple" data-parsley-required data-parsley-errors-container="#error-user"></select>
+              <select name="to[]" id="userSelect_to" class="form-control" size="8" multiple="multiple"></select>
             </td>
           </tr>
         </tbody>
       </table>
-      <div id="error-user"></div>
     </div>
   </div>
 </script>

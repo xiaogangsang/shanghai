@@ -17,7 +17,6 @@ $(function () {
   $('#btn-export').attr('href', common.API_HOST + 'security/role/exportRoles');
 
   //set search form
-  setRole();
   getUsers();
   getResources();
 
@@ -35,11 +34,17 @@ $('#formSearch').on('click', 'button[type=submit]', function (event) {
 $('#formSearch').on('submit', function (e) {
   e.preventDefault();
   var sendData = {
-    roleId: $('#search_roleId').val(),
-    createdBy: $.trim($('#search_createdBy').val()),
     pageIndex: _pageIndex,
     pageSize: 9999,
   };
+
+  if ($('#search_roleName').val().trim() != '') {
+    sendData.roleName = $('#search_roleName').val();
+  }
+
+  if ($('#search_createdBy').val().trim() != '') {
+    sendData.createdBy = $('#search_createdBy').val().trim();
+  }
 
   if (!!_querying) {
     return false;
@@ -54,7 +59,7 @@ $('#formSearch').on('submit', function (e) {
 
   sendData.pageIndex = _pageIndex;
   $.ajax({
-    url: common.API_HOST + 'security/role/roleList',
+    url: common.API_HOST + 'security/role/getAllRoles',
     type: 'POST',
     dataType: 'json',
     data: sendData,
@@ -62,12 +67,12 @@ $('#formSearch').on('submit', function (e) {
   .done(function (res) {
     _querying = false;
     if (!!~~res.meta.result) {
-      if (res.data.length < 1) {
+      if (res.data.rows.length < 1) {
         $('#dataTable tbody').html('<tr><td colspan="6" align="center">查不到相关数据，请修改查询条件！</td></tr>');
         $('#pager').html('');
       } else {
         useCache = true;
-        _(res.data).forEach(function (item) {
+        _(res.data.rows).forEach(function (item) {
           if (item.desc != null && item.desc.length > 12) {
             item.short = item.desc.substr(0, 10) + '...';
           } else {
@@ -77,8 +82,8 @@ $('#formSearch').on('submit', function (e) {
 
         _pageIndex = res.data.pageIndex;
         _pageTotal = Math.ceil(res.data.total / _pageSize);
-        setPager(res.data.total, res.data.pageIndex, res.data.length, _pageTotal);
-        setTableData(res.data);
+        setPager(res.data.total, res.data.pageIndex, res.data.rows.length, _pageTotal);
+        setTableData(res.data.rows);
       }
     } else {
       alert('接口错误：' + res.msg);
@@ -159,7 +164,6 @@ $(document).on('submit', '#popup-role-form form', function (e) {
       }
 
       $('#popup-role-form').modal('hide');
-      setRole();
       $('#formSearch').trigger('submit');
     } else {
       alert('接口错误：' + res.meta.msg);
@@ -385,31 +389,6 @@ function setModal(roleData) {
     rightSelected: '#resourceSelect_right',
     leftSelected: '#resourceSelect_left',
     leftAll: '#resourceSelect_none',
-  });
-}
-
-function setRole() {
-  $.ajax({
-    url: common.API_HOST + 'security/role/roleList',
-    type: 'POST',
-    dataType: 'json',
-    data: {
-      pageIndex: 1,
-      pageSize: 9999,
-    },
-  })
-  .done(function (res) {
-    if (!!~~res.meta.result) {
-      _roles = res.data;
-      var html = '';
-      _(_roles).forEach(function (role, key) {
-        html += '<option value="' + role.id + '">' + role.roleName + '</option>';
-      });
-
-      $('#search_roleId').append(html);
-    }
-
-    $('#search_roleId').chosen({ disable_search_threshold: 6, allow_single_deselect: true });
   });
 }
 
