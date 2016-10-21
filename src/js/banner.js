@@ -74,6 +74,7 @@ $('#formSearch').on('submit', function (e) {
     bannerName: $.trim($('#search_bannerName').val()),
     bannerType: $('#search_bannerType').val(),
     channelId: $('#search_channelId').val(),
+    channel: $('#search_channelId').val(),
     startTime: $('#search_startTime').val(),
     endTime: $('#search_endTime').val(),
     cityId: $('#search_cityId').val(),
@@ -92,8 +93,10 @@ $('#formSearch').on('submit', function (e) {
 
   sendData.pageIndex = _pageIndex;
 
+  var ajaxUrl = sendData.bannerType == 4 ? common.API_HOST + 'front/seatIcon/query' : common.API_HOST + 'banner/bannerList';
+
   $.ajax({
-    url: common.API_HOST + 'banner/bannerList',
+    url: ajaxUrl,
     type: 'POST',
     dataType: 'json',
     data: sendData,
@@ -101,28 +104,32 @@ $('#formSearch').on('submit', function (e) {
   .done(function (res) {
     _querying = false;
     if (!!~~res.meta.result) {
-      if (res.data.rows.length < 1) {
+      var data = sendData.bannerType == 4 ? res.data.seatIconList : res.data.rows;
+      if (data.length < 1) {
         $('#dataTable tbody').html('<tr><td colspan="9" align="center">查不到相关数据，请修改查询条件！</td></tr>');
         $('#pager').html('');
       } else {
         _useCache = true;
         _pageIndex = res.data.pageIndex;
         _pageTotal = Math.ceil(res.data.total / _pageSize);
-        setPager(res.data.total, _pageIndex, res.data.rows.length, _pageTotal);
-        _(res.data.rows).forEach(function (item) {
+        setPager(res.data.total, _pageIndex, data.length, _pageTotal);
+        _(data).forEach(function (item) {
           _(_channels).forEach(function (channel, key) {
-            if (channel.channelId == item.channelId) {
+            if (channel.channelId == item.channelId || channel.channelId == item.channel) {
               item.channelName = channel.channelName;
             }
           });
 
-          item.bannerTypeName = item.bannerType == 1 ? '首页' : '热门影片';
+          item.bannerType = item.bannerType == undefined ? 4 : item.bannerType;
+          item.bannerName = item.bannerType == 4 ? item.iconName : item.bannerName;
+          item.bannerTypeName = _bannerType[item.bannerType];
+          item.status = item.iconStatus != undefined ? item.iconStatus : item.status;
           item.statusName = item.status == 1 ? '是' : '否';
           item.startTime = item.startTime.split(' ')[0];
           item.endTime = item.endTime.split(' ')[0];
         });
 
-        _dataCache = res.data.rows;
+        _dataCache = data;
         setTableData(_dataCache);
       }
     } else {
@@ -202,7 +209,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
   });
 
   _(_channels).forEach(function (channel) {
-    channel.selected = banner.channelId == channel.channelId ? true : false;
+    channel.selected = banner.channelId == channel.channelId || banner.channel == channel.channelId ? true : false;
   });
 
   _choosed = banner.cityList != null ? banner.cityList : [];
@@ -233,6 +240,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
   });
 
   $('#popup-banner-form form').parsley();
+  $('#popup-banner-form #filmId').chosen();
 });
 
 $('#dataTable').on('click', '.btn-delete', function (e) {
@@ -283,8 +291,13 @@ $('#dataTable').on('click', '.btn-status', function (event) {
     status: $(this).data('status') == 1 ? 0 : 1,
   };
   var statusName = sendData.status ? '上线' : '下线';
+  var ajaxUrl = common.API_HOST + 'banner/updateBannerStatus';
+  if (sendData.bannerType == 4) {
+    ajaxUrl = sendData.status == 1 ? common.API_HOST + 'front/seatIcon/online' : common.API_HOST + 'front/seatIcon/offline';
+  }
+
   $.ajax({
-    url: common.API_HOST + 'banner/updateBannerStatus',
+    url: ajaxUrl,
     type: 'POST',
     dataType: 'json',
     data: sendData,
@@ -313,49 +326,91 @@ $(document).on('submit', '#popup-banner-form form', function (event) {
   }
 
   _submitting = true;
+
   var sendData = {
-    bannerType: ~~$('#popup-banner-form #bannerType').val(),
-    bannerName: $.trim($('#popup-banner-form #bannerName').val()),
-    channelId: ~~$('#popup-banner-form #channelId').val(),
-    status: ~~$('#popup-banner-form #status').val(),
-    startTime: $.trim($('#popup-banner-form #startTime').val()),
-    endTime: $.trim($('#popup-banner-form #endTime').val()),
+    status: ~~$('#popup-banner-form input[name=status]:checked').val(),
+    startTime: $('#popup-banner-form #startTime').val().trim(),
+    endTime: $('#popup-banner-form #endTime').val().trim(),
   };
 
-  if (sendData.bannerType == 1 || sendData.bannerType == 2) {
-    sendData.position = ~~$.trim($('#popup-banner-form #position').val());
-    sendData.areaType = ~~$('input[name=areaType]:checked').val();
-    sendData.cityList = [];
-    if (sendData.areaType == 1) {
-      sendData.cityList = _choosed;
-      if (sendData.cityList.length < 1) {
-        alert('区域类型的banenr，必须选择城市！');
-        return false;
+  switch (~~$('#popup-banner-form #bannerType').val()) {
+    case 1:
+      sendData.bannerType = ~~$('#popup-banner-form #bannerType').val();
+      sendData.bannerName = $('#popup-banner-form #bannerName').val().trim();
+      sendData.channelId = ~~$('#popup-banner-form input[name=channelId]:checked').val();
+      sendData.position = ~~$.trim($('#popup-banner-form #position').val());
+      sendData.areaType = ~~$('input[name=areaType]:checked').val();
+      sendData.cityList = [];
+      if (sendData.areaType == 1) {
+        sendData.cityList = _choosed;
+        if (sendData.cityList.length < 1) {
+          alert('区域类型的banenr，必须选择城市！');
+          return false;
+        }
       }
-    }
+
+      sendData.imageUrl = $('#popup-banner-form #imageUrl').val();
+      sendData.link = $('#popup-banner-form #link').val();
+      break;
+    case 2:
+      sendData.bannerType = ~~$('#popup-banner-form #bannerType').val();
+      sendData.bannerName = $('#popup-banner-form #bannerName').val().trim();
+      sendData.channelId = ~~$('#popup-banner-form input[name=channelId]:checked').val();
+      sendData.position = ~~$.trim($('#popup-banner-form #position').val());
+      sendData.areaType = ~~$('input[name=areaType]:checked').val();
+      sendData.cityList = [];
+      if (sendData.areaType == 1) {
+        sendData.cityList = _choosed;
+        if (sendData.cityList.length < 1) {
+          alert('区域类型的banenr，必须选择城市！');
+          return false;
+        }
+      }
+
+      sendData.filmId = ~~$('#popup-banner-form #filmId').val();
+      break;
+    case 3:
+      sendData.bannerType = ~~$('#popup-banner-form #bannerType').val();
+      sendData.bannerName = $('#popup-banner-form #bannerName').val().trim();
+      sendData.channelId = ~~$('#popup-banner-form input[name=channelId]:checked').val();
+      sendData.imageUrl = $('#popup-banner-form #imageUrl').val();
+      sendData.link = $('#popup-banner-form #link').val();
+      break;
+    case 4:
+      sendData.channel = ~~$('#popup-banner-form input[name=channelId]:checked').val();
+      sendData.filmId = ~~$('#popup-banner-form #filmId').val();
+      if ($('#popup-banner-form #iconName').size() > 0) {
+        sendData.iconName = $('#popup-banner-form #iconName').val().trim();
+        sendData.seatStatus = $('#popup-banner-form input[name=seatStatus]:checked').val();
+        sendData.picUrl = $('#popup-banner-form input[name=picUrl]').map(function () {
+          if ($(this).val().trim() != '') {
+            return $(this).val().trim();
+          }
+        }).get();
+        sendData.picUrl = sendData.picUrl.join(',');
+      }
+
+      break;
+    default:
+      return false;
+      break;
   }
 
-  if (sendData.bannerType == 1 || sendData.bannerType == 3) {
-    sendData.imageUrl = $('#popup-banner-form #imageUrl').val();
-    sendData.link = $('#popup-banner-form #link').val();
-  }
-
-  if (sendData.bannerType == 2) {
-    sendData.filmId = $('#popup-banner-form #filmId').val();
-  }
-
-  var ajaxUrl = common.API_HOST + 'banner/saveBanner';
+  var ajaxUrl = sendData.bannerType == undefined ? common.API_HOST + 'front/seatIcon/add' : common.API_HOST + 'banner/saveBanner';
   if ($('#popup-banner-form #id').length > 0) {
     sendData.id = $('#popup-banner-form #id').val();
-    ajaxUrl = common.API_HOST + 'banner/updateBanner';
+    ajaxUrl = sendData.bannerType == undefined ? common.API_HOST + 'front/seatIcon/update' : common.API_HOST + 'banner/updateBanner';
   }
+
+  var ajaxContentType = sendData.bannerType == undefined ? 'application/x-www-form-urlencoded; charset=UTF-8' : 'application/json; charset=UTF-8';
+  var sendData = sendData.bannerType == undefined ? sendData : JSON.stringify(sendData);
 
   $.ajax({
     url: ajaxUrl,
     type: 'POST',
     dataType: 'json',
-    contentType: 'application/json; charset=utf-8',
-    data: JSON.stringify(sendData),
+    contentType: ajaxContentType,
+    data: sendData,
   })
   .done(function (res) {
     _submitting = false;
@@ -380,8 +435,9 @@ $(document).on('submit', '#popup-banner-form form', function (event) {
   return false;
 });
 
-$(document).on('click', '#popup-banner-form #btn-upload', function (event) {
+$(document).on('click', '#popup-banner-form #btn-upload, #popup-banner-form .btn-upload-seat', function (event) {
   event.preventDefault();
+  var $this = $(this);
   $('#fileupload').next('span').remove();
   $('#popup-banner-upload').modal('show');
   $('#fileupload').data('url', common.API_HOST + 'banner/uploadPic').fileupload({
@@ -398,7 +454,7 @@ $(document).on('click', '#popup-banner-form #btn-upload', function (event) {
     done: function (e, data) {
       $('#popup-banner-upload button.btn-primary').prop('disable', false).text('上传');
       if (!!~~data.result.meta.result) {
-        $('#imageUrl').val(data.result.data.savePath);
+        $this.closest('tr').find('input').val(data.result.data.savePath);
         alert('上传成功！');
         $('#popup-banner-upload').modal('hide');
       } else {
@@ -593,12 +649,12 @@ function setModal(bannerData, type) {
       case 4:
         template = $('#edit-seat-template').html();
         data.movies = _movies;
-        _(_movies).forEach(function (movie) {
-          if (movie.filmId == bannerData.filmId) {
-            data.banner.filmName = movie.filmName;
-          }
+        _(data.movies).forEach(function (movie) {
+          movie.selected = movie.filmId == bannerData.filmId ? true : false;
         });
 
+        bannerData.seatStatus--;
+        bannerData.picUrls = '<div>' + bannerData.picUrls.join('</div><div>') + '</div>';
         break;
     }
 
