@@ -17,6 +17,7 @@ $(function () {
   $('#btn-export').attr('href', common.API_HOST + 'security/role/exportRoles');
 
   //set search form
+  getAllRoles();
   getUsers();
   getResources();
 
@@ -35,7 +36,7 @@ $('#formSearch').on('submit', function (e) {
   e.preventDefault();
   var sendData = {
     pageIndex: _pageIndex,
-    pageSize: 9999,
+    pageSize: _pageSize,
   };
 
   if ($('#search_roleName').val().trim() != '') {
@@ -430,6 +431,23 @@ function getResources() {
       });
     } else {
       alert('获取功能列表失败：' + res.msg);
+    }
+  });
+}
+
+function getAllRoles() {
+  $.ajax({
+    url: common.API_HOST + 'security/role/getAllRoles',
+    type: 'POST',
+    dataType: 'json',
+    data: {
+      pageIndex: 1,
+      pageSize: 9999,
+    },
+  })
+  .done(function (res) {
+    if (!!~~res.meta.result) {
+      _roles = res.data.rows;
     }
   });
 }
