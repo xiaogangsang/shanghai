@@ -71,7 +71,8 @@ $('#formSearch').on('click', 'button[type=submit]', function (event) {
 $('#formSearch').on('submit', function (e) {
   e.preventDefault();
   var sendData = {
-    bannerName: $.trim($('#search_bannerName').val()),
+    bannerName: $('#search_bannerName').val().trim(),
+    iconName: $('#search_bannerName').val().trim(),
     bannerType: $('#search_bannerType').val(),
     channelId: $('#search_channelId').val(),
     channel: $('#search_channelId').val(),
@@ -377,6 +378,7 @@ $(document).on('submit', '#popup-banner-form form', function (event) {
       sendData.link = $('#popup-banner-form #link').val();
       break;
     case 4:
+      sendData.iconStatus = ~~$('#popup-banner-form input[name=status]:checked').val();
       sendData.channel = ~~$('#popup-banner-form input[name=channelId]:checked').val();
       sendData.filmId = ~~$('#popup-banner-form #filmId').val();
       if ($('#popup-banner-form #iconName').size() > 0) {

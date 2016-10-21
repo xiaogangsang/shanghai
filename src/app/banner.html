@@ -594,10 +594,7 @@
           </tr>
           <tr>
             <th>是否显示</th>
-            <td>
-              <label class="radio-inline"><input type="radio" name="status" value="1"{{#banner.iconStatus}} checked{{/banner.iconStatus}}>是</label>
-              <label class="radio-inline"><input type="radio" name="status" value="0"{{^banner.iconStatus}} checked{{/banner.iconStatus}}>否</label>
-            </td>
+            <td>{{#banner.iconStatus}}是{{/banner.iconStatus}}{{^banner.iconStatus}}否{{/banner.iconStatus}}</td>
           </tr>
         </tbody>
       </table>
