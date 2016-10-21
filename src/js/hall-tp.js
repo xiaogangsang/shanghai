@@ -85,11 +85,11 @@ $('#formSearch').on('submit', function (e) {
     }
 
     if (!!~~$('#search_brandId').val()) {
-      sendData.hallName = $('#search_brandId').val();
+      sendData.brandId = $('#search_brandId').val();
     }
 
     if (!!~~$('#search_cityId').val()) {
-      sendData.hallName = $('#search_cityId').val();
+      sendData.cityId = $('#search_cityId').val();
     }
 
     if ($('#search_startTime').val().trim() != '') {
