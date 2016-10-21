@@ -233,7 +233,7 @@ function setPager(total, pageIndex, rowsSize, pageTotal) {
 
 function getBudgetSource() {
   $.ajax({
-    url: common.API_HOST + 'activity/budgetSourceList',
+    url: common.API_HOST + 'common/budgetSourceList',
     type: 'POST',
     dataType: 'json',
   })
