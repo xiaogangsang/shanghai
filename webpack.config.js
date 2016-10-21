@@ -42,7 +42,7 @@ module.exports = {
     alias: {
       jquery: path.resolve(bowerComponents, 'jquery/dist/jquery.min.js'),
       bootstrap: path.resolve(bowerComponents, 'bootstrap/dist/js/bootstrap.min.js'),
-      multiselect: path.resolve(bowerComponents, 'multiselect/js/multiselect.min.js'),
+      multiselect: path.resolve(bowerComponents, 'multiselect/dist/js/multiselect.min.js'),
       chosen: path.resolve(bowerComponents, 'chosen/chosen.jquery.js'),
       mustache: path.resolve(bowerComponents, 'mustache.js/mustache.js'),
       lodash: path.resolve(bowerComponents, 'lodash/dist/lodash.core.js'),
