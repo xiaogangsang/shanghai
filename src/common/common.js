@@ -112,7 +112,7 @@ common.showMenu = function (pageName) {
   var $menus = $('#menu .list-group-item');
   $menus.each(function (index, el) {
     menuId = +$(el).data('id');
-    if (allowMenus.includes(menuId)) {
+    if (allowMenus.includes(menuId.toString())) {
       $(el).show();
       $(el).closest('.panel').show();
     }
