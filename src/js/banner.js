@@ -122,6 +122,7 @@ $('#formSearch').on('submit', function (e) {
           });
 
           item.bannerType = item.bannerType == undefined ? 4 : item.bannerType;
+          item.noDel = item.bannerType == 4 ? true : false;
           item.bannerName = item.bannerType == 4 ? item.iconName : item.bannerName;
           item.bannerTypeName = _bannerType[item.bannerType];
           item.status = item.iconStatus != undefined ? item.iconStatus : item.status;
