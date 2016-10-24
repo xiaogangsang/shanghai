@@ -656,7 +656,7 @@ function setModal(bannerData, type) {
         });
 
         bannerData.seatStatus--;
-        bannerData.picUrls = '<div>' + bannerData.picUrls.join('</div><div>') + '</div>';
+        bannerData.picUrl = '<div>' + bannerData.picUrls.join('</div><div>') + '</div>';
         break;
     }
 
