@@ -18,6 +18,43 @@ Array.prototype.unique = function () {
   return r;
 };
 
+if (!Array.prototype.includes) {
+  Array.prototype.includes = function (searchElement /*, fromIndex*/) {
+    'use strict';
+    if (this == null) {
+      throw new TypeError('Array.prototype.includes called on null or undefined');
+    }
+
+    var O = Object(this);
+    var len = parseInt(O.length, 10) || 0;
+    if (len === 0) {
+      return false;
+    }
+
+    var n = parseInt(arguments[1], 10) || 0;
+    var k;
+    if (n >= 0) {
+      k = n;
+    } else {
+      k = len + n;
+      if (k < 0) {k = 0;}
+    }
+
+    var currentElement;
+    while (k < len) {
+      currentElement = O[k];
+      if (searchElement === currentElement ||
+         (searchElement !== searchElement && currentElement !== currentElement)) { // NaN !== NaN
+        return true;
+      }
+
+      k++;
+    }
+
+    return false;
+  };
+}
+
 var common = {};
 
 common.API_HOST = window.location.protocol + '//' + window.location.host + '/MovieOps/';
@@ -63,7 +100,7 @@ common.showMenu = function (pageName) {
   var allowMenus = localStorage.getItem('authMenu');
   if (pageName != undefined && pageName != '' && $('#menu-' + pageName).size() > 0) {
     var menuId = +$('#menu-' + pageName).data('id');
-    if (allowMenus.indexOf(menuId) < 0) {
+    if (allowMenus.includes(menuId) < 0) {
       common.logout();
       window.location.href = 'login.html';
     }
