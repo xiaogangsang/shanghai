@@ -97,7 +97,7 @@ common.init = function (pageName) {
 };
 
 common.showMenu = function (pageName) {
-  var allowMenus = localStorage.getItem('authMenu');
+  var allowMenus = localStorage.getItem('authMenu').split(',');
   if (pageName != undefined && pageName != '' && $('#menu-' + pageName).size() > 0) {
     var menuId = +$('#menu-' + pageName).data('id');
     if (!allowMenus.includes(menuId)) {
