@@ -657,7 +657,11 @@ function setModal(bannerData, type) {
         });
 
         bannerData.seatStatus--;
-        bannerData.picUrl = '<div>' + bannerData.picUrls.join('</div><div>') + '</div>';
+        bannerData.pic = '';
+        $.each(bannerData.picUrls, function (index, url) {
+          bannerData.pic += '<img src="' + url + '" title="' + url + '" width="32" height="32"> ';
+        });
+
         break;
     }
 

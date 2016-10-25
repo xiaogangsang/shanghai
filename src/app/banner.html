@@ -546,130 +546,126 @@
   <script id="edit-seat-template" type="text/x-tmpl-mustache">
     <input type="hidden" id="id" value="{{banner.id}}">
     <input type="hidden" id="bannerType" value="4">
-    <div class="table-responsive">
-      <table class="table">
-        <tbody>
-          <tr>
-            <th width="80">配置名称</th>
-            <td>{{banner.iconName}}</td>
-          </tr>
-          <tr>
-            <th>图标类型</th>
-            <td>
-              <label class="radio-inline"><input type="radio" name="seatStatus" value="1"{{^banner.seatStatus}} checked{{/banner.seatStatus}} disabled>已选</label>
-              <label class="radio-inline"><input type="radio" name="seatStatus" value="2"{{#banner.seatStatus}} checked{{/banner.seatStatus}} disabled>已售</label>
-            </td>
-          </tr>
-          <tr>
-            <th>图片</th>
-            <td>{{{banner.picUrl}}}</td>
-          </tr>
-          <tr>
-            <th>影片</th>
-            <td>
-              <select class="form-control" id="filmId" data-placeholder="选择一个影片" data-parsley-errors-container="#error-film" required>
-                <option value=""></option>
-                {{#movies}}
-                <option value="{{filmId}}"{{#selected}} selected{{/selected}}>{{filmName}}</option>
-                {{/movies}}
-              </select>
-              <div id="error-film"></div>
-            </td>
-          </tr>
-          <tr>
-            <th>生效日期</th>
-            <td>
-              <input type="text" class="form-control" style="display:inline-block;width:auto;" id="startTime" value="{{banner.startTime}}" size="10" required data-parsley-errors-container="#error-date" readonly> - <input type="text" class="form-control" style="display:inline-block;width:auto;" id="endTime" value="{{banner.endTime}}" size="10" required data-parsley-errors-container="#error-date" readonly>
-              <div id="error-date"></div>
-            </td>
-          </tr>
-          <tr>
-            <th>渠道</th>
-            <td>
-              {{#channels}}
-              <label class="radio-inline"><input type="radio" name="channelId" value="{{channelId}}" required data-parsley-errors-container="#error-channel"{{#selected}} checked{{/selected}}>{{channelName}}</label>
-              {{/channels}}
-              <div id="error-channel"></div>
-            </td>
-          </tr>
-          <tr>
-            <th>是否显示</th>
-            <td>{{#banner.iconStatus}}是{{/banner.iconStatus}}{{^banner.iconStatus}}否{{/banner.iconStatus}}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <table class="table">
+      <tbody>
+        <tr>
+          <th width="80">配置名称</th>
+          <td>{{banner.iconName}}</td>
+        </tr>
+        <tr>
+          <th>图标类型</th>
+          <td>
+            <label class="radio-inline"><input type="radio" name="seatStatus" value="1"{{^banner.seatStatus}} checked{{/banner.seatStatus}} disabled>已选</label>
+            <label class="radio-inline"><input type="radio" name="seatStatus" value="2"{{#banner.seatStatus}} checked{{/banner.seatStatus}} disabled>已售</label>
+          </td>
+        </tr>
+        <tr>
+          <th>图片</th>
+          <td>{{{banner.pic}}}</td>
+        </tr>
+        <tr>
+          <th>影片</th>
+          <td>
+            <select class="form-control" id="filmId" data-placeholder="选择一个影片" data-parsley-errors-container="#error-film" required>
+              <option value=""></option>
+              {{#movies}}
+              <option value="{{filmId}}"{{#selected}} selected{{/selected}}>{{filmName}}</option>
+              {{/movies}}
+            </select>
+            <div id="error-film"></div>
+          </td>
+        </tr>
+        <tr>
+          <th>生效日期</th>
+          <td>
+            <input type="text" class="form-control" style="display:inline-block;width:auto;" id="startTime" value="{{banner.startTime}}" size="10" required data-parsley-errors-container="#error-date" readonly> - <input type="text" class="form-control" style="display:inline-block;width:auto;" id="endTime" value="{{banner.endTime}}" size="10" required data-parsley-errors-container="#error-date" readonly>
+            <div id="error-date"></div>
+          </td>
+        </tr>
+        <tr>
+          <th>渠道</th>
+          <td>
+            {{#channels}}
+            <label class="radio-inline"><input type="radio" name="channelId" value="{{channelId}}" required data-parsley-errors-container="#error-channel"{{#selected}} checked{{/selected}}>{{channelName}}</label>
+            {{/channels}}
+            <div id="error-channel"></div>
+          </td>
+        </tr>
+        <tr>
+          <th>是否显示</th>
+          <td>{{#banner.iconStatus}}是{{/banner.iconStatus}}{{^banner.iconStatus}}否{{/banner.iconStatus}}</td>
+        </tr>
+      </tbody>
+    </table>
   </script>
   <script id="create-seat-template" type="text/x-tmpl-mustache">
     <input type="hidden" id="bannerType" value="4">
-    <div class="table-responsive">
-      <table class="table">
-        <tbody>
-          <tr>
-            <th width="120">配置名称</th>
-            <td><input type="text" class="form-control" id="iconName" placeholder="必填" required></td>
-          </tr>
-          <tr>
-            <th>影片</th>
-            <td>
-              <select class="form-control" id="filmId" data-placeholder="选择一个影片" data-parsley-errors-container="#error-film" required>
-                <option value=""></option>
-                {{#movies}}
-                <option value="{{filmId}}">{{filmName}}</option>
-                {{/movies}}
-              </select>
-              <div id="error-film"></div>
-            </td>
-          </tr>
-          <tr>
-            <th>图标类型</th>
-            <td>
-              <label class="radio-inline"><input type="radio" name="seatStatus" value="1" checked>已选</label>
-              <label class="radio-inline"><input type="radio" name="seatStatus" value="2">已售</label>
-            </td>
-          </tr>
-          <tr>
-            <th><button type="button" class="btn btn-default btn-upload-seat">上传图1</button></th>
-            <td><input type="text" class="form-control" name="picUrl" placeholder="必填" required></td>
-          </tr>
-          <tr>
-            <th><button type="button" class="btn btn-default btn-upload-seat" placeholder="可选">上传图2</button></th>
-            <td><input type="text" class="form-control" name="picUrl" placeholder="可选"></td>
-          </tr>
-          <tr>
-            <th><button type="button" class="btn btn-default btn-upload-seat">上传图3</button></th>
-            <td><input type="text" class="form-control" name="picUrl" placeholder="可选"></td>
-          </tr>
-          <tr>
-            <th><button type="button" class="btn btn-default btn-upload-seat">上传图4</button></th>
-            <td><input type="text" class="form-control" name="picUrl" placeholder="可选"></td>
-          </tr>
-          <tr>
-            <th>生效日期</th>
-            <td>
-              <input type="text" class="form-control" style="display:inline-block;width:auto;" id="startTime" value="{{banner.startTime}}" size="10" required data-parsley-errors-container="#error-date" readonly> - <input type="text" class="form-control" style="display:inline-block;width:auto;" id="endTime" value="{{banner.endTime}}" size="10" required data-parsley-errors-container="#error-date" readonly>
-              <div id="error-date"></div>
-            </td>
-          </tr>
-          <tr>
-            <th>渠道</th>
-            <td>
-              {{#channels}}
-              <label class="radio-inline"><input type="radio" name="channelId" value="{{channelId}}" required data-parsley-errors-container="#error-channel">{{channelName}}</label>
-              {{/channels}}
-              <div id="error-channel"></div>
-            </td>
-          </tr>
-          <tr>
-            <th>是否显示</th>
-            <td>
-              <label class="radio-inline"><input type="radio" name="status" value="1" checked>是</label>
-              <label class="radio-inline"><input type="radio" name="status" value="0">否</label>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <table class="table">
+      <tbody>
+        <tr>
+          <th width="120">配置名称</th>
+          <td><input type="text" class="form-control" id="iconName" placeholder="必填" required></td>
+        </tr>
+        <tr>
+          <th>影片</th>
+          <td>
+            <select class="form-control" id="filmId" data-placeholder="选择一个影片" data-parsley-errors-container="#error-film" required>
+              <option value=""></option>
+              {{#movies}}
+              <option value="{{filmId}}">{{filmName}}</option>
+              {{/movies}}
+            </select>
+            <div id="error-film"></div>
+          </td>
+        </tr>
+        <tr>
+          <th>图标类型</th>
+          <td>
+            <label class="radio-inline"><input type="radio" name="seatStatus" value="1" checked>已选</label>
+            <label class="radio-inline"><input type="radio" name="seatStatus" value="2">已售</label>
+          </td>
+        </tr>
+        <tr>
+          <th><button type="button" class="btn btn-default btn-upload-seat">上传图1</button></th>
+          <td><input type="text" class="form-control" name="picUrl" placeholder="必填" required></td>
+        </tr>
+        <tr>
+          <th><button type="button" class="btn btn-default btn-upload-seat" placeholder="可选">上传图2</button></th>
+          <td><input type="text" class="form-control" name="picUrl" placeholder="可选"></td>
+        </tr>
+        <tr>
+          <th><button type="button" class="btn btn-default btn-upload-seat">上传图3</button></th>
+          <td><input type="text" class="form-control" name="picUrl" placeholder="可选"></td>
+        </tr>
+        <tr>
+          <th><button type="button" class="btn btn-default btn-upload-seat">上传图4</button></th>
+          <td><input type="text" class="form-control" name="picUrl" placeholder="可选"></td>
+        </tr>
+        <tr>
+          <th>生效日期</th>
+          <td>
+            <input type="text" class="form-control" style="display:inline-block;width:auto;" id="startTime" value="{{banner.startTime}}" size="10" required data-parsley-errors-container="#error-date" readonly> - <input type="text" class="form-control" style="display:inline-block;width:auto;" id="endTime" value="{{banner.endTime}}" size="10" required data-parsley-errors-container="#error-date" readonly>
+            <div id="error-date"></div>
+          </td>
+        </tr>
+        <tr>
+          <th>渠道</th>
+          <td>
+            {{#channels}}
+            <label class="radio-inline"><input type="radio" name="channelId" value="{{channelId}}" required data-parsley-errors-container="#error-channel">{{channelName}}</label>
+            {{/channels}}
+            <div id="error-channel"></div>
+          </td>
+        </tr>
+        <tr>
+          <th>是否显示</th>
+          <td>
+            <label class="radio-inline"><input type="radio" name="status" value="1" checked>是</label>
+            <label class="radio-inline"><input type="radio" name="status" value="0">否</label>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </script>
   @@include('component/popup-city.tpl')
   @@include('component/popup-banner-upload.tpl')
