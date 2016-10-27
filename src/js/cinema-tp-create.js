@@ -2,7 +2,7 @@
 * @Author: kyle
 * @Date:   2016-08-22 14:57:39
 * @Last Modified by:   kyle
-* @Last Modified time: 2016-10-17 14:21:36
+* @Last Modified time: 2016-10-21 16:51:35
 */
 
 'use strict;'
@@ -270,7 +270,7 @@ function setProvince() {
 
 function getService() {
   $.ajax({
-    url: common.API_HOST + 'cinema/standard/serviceList',
+    url: common.API_HOST + 'common/cinema/standard/serviceList',
     type: 'GET',
     dataType: 'json',
   })

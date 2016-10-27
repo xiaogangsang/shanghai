@@ -23,13 +23,13 @@ var _transOrderStatus = [
 { id: 9, name: '已关闭' },
 ];
 var _shipInfoStatus = {
-  '02': '出票成功',
-  '03': '出票失败',
-  '04': '出票中',
-  '05': '同步出票状态成功',
-  '06': '同步出票状态失败',
-  '12': '退票成功',
-  '13': '退票失败',
+  02: '出票成功',
+  03: '出票失败',
+  04: '出票中',
+  05: '同步出票状态成功',
+  06: '同步出票状态失败',
+  12: '退票成功',
+  13: '退票失败',
 };
 var _channels = {};
 var _sources = {};
@@ -37,6 +37,11 @@ var _submitting = false;
 
 $(function () {
   common.init('order-cs');
+  if (common.verifyPermission(114) == false) {
+    alert('对不起，您没有权限！');
+    window.location.href = 'login.html?logout';
+  }
+
   getChannel();
   getSource();
 
@@ -105,7 +110,7 @@ $(function () {
         }
 
         // if (res.data.bizOrder.ticketInfo != null) {
-        res.data.bizOrder.frontTicket = res.data.bizOrder.ticketInfo==null||res.data.bizOrder.ticketInfo.frontInfo==null ? null : res.data.bizOrder.ticketInfo.frontInfo.codeInfoList;
+        res.data.bizOrder.frontTicket = res.data.bizOrder.ticketInfo == null || res.data.bizOrder.ticketInfo.frontInfo == null ? null : res.data.bizOrder.ticketInfo.frontInfo.codeInfoList;
 
         //   res.data.bizOrder.haveFrontTicket = true;
         // } else {
@@ -113,7 +118,7 @@ $(function () {
         // }
 
         // if (res.data.bizOrder.ticketInfo != null) {
-        res.data.bizOrder.machineTicket = res.data.bizOrder.ticketInfo==null||res.data.bizOrder.ticketInfo.machineInfo==null ? null : res.data.bizOrder.ticketInfo.machineInfo.codeInfoList;
+        res.data.bizOrder.machineTicket = res.data.bizOrder.ticketInfo == null || res.data.bizOrder.ticketInfo.machineInfo == null ? null : res.data.bizOrder.ticketInfo.machineInfo.codeInfoList;
 
         //   res.data.bizOrder.haveMachineTicket = true;
         // } else {
@@ -154,6 +159,8 @@ function setBizOrder(biz) {
   var html = Mustache.render(template, biz);
   $('#bizOrder').append(html);
   $('[data-toggle="tooltip"]').tooltip();
+
+  common.showAssignedButton();
 }
 
 $(document).on('click', '#btn-sendsms', function (event) {
@@ -243,7 +250,7 @@ $(document).on('submit', '#popup-undertaker form', function (event) {
     transOrderNo: $('#transOrderNo').val(),
     productOrderNo: $('#productOrderNo').val(),
     // chargeUndertaker: $('input[name=chargeUndertaker]:checked').val(),
-    refundReason: $.trim( $('#popup-undertaker textarea').val() ),
+    refundReason: $.trim($('#popup-undertaker textarea').val()),
   };
   if (sendData.transOrderNo == '' || sendData.productOrderNo == '') {
     alert('非法操作，无法获取订单号！');

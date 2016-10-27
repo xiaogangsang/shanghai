@@ -15,12 +15,8 @@ var dataCache;
 var _submitting = false;
 var _provinces = [];
 
-// var _cityAuthority = sessionStorage.getItem('cityAuthority').split(',');
-
 $(function () {
   common.init('banner');
-
-  //set search form
   setChannel();
   setProvince();
 
