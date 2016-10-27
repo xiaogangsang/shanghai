@@ -5,7 +5,6 @@ var _budgetSource = [];
 var _plans = [];
 var _wandaTicket = [];
 var _movies = [];
-
 var _configType = [
   { name: '2D' },
   { name: '3D' },
@@ -19,15 +18,12 @@ var _provinces = [];
 var _cusTypes = ['新户', '老户'];
 var _submitting = false;
 var _priorities = [];
-var _dimenChanged = false;
 var _popupDataCache = {
   dailyBudgetList: [],
   cusTypes: [1, 2],
   saleLimit: {},
   channels: [],
-  hallType: ['普通'],
-  filmType: ['2D', '3D'],
-  screenType: ['普通'],
+  configType: [],
   films: [],
   cinemas: [],
   timetables: [],
@@ -69,7 +65,6 @@ $(function () {
     setWandaTicket(false);
     setBudgetSource(false);
     setMovie(false);
-    $('#preview-dimen').html('影片制式：不限<br>屏幕规格：[普通]<br>特殊影厅：[普通]');
     setChannel(false);
     setPattern(1);
     setPriority(false);
@@ -511,39 +506,20 @@ $(document).on('submit', '#popup-unit-movie form', function (event) {
 //制式
 $(document).on('click', '#btn-set-dimen', function (event) {
   event.preventDefault();
-  _(_filmType).forEach(function (dimen) {
+  _(_configType).forEach(function (dimen) {
     dimen.checked = true;
-    if (_popupDataCache.filmType.indexOf(dimen.name) < 0) {
+    if (_popupDataCache.configType.indexOf(dimen.name) < 0) {
       dimen.checked = false;
     }
   });
 
-  _(_screenType).forEach(function (dimen) {
-    dimen.checked = true;
-    if (_popupDataCache.screenType.indexOf(dimen.name) < 0) {
-      dimen.checked = false;
-    }
-  });
-
-  _(_hallType).forEach(function (dimen) {
-    dimen.checked = true;
-    if (_popupDataCache.hallType.indexOf(dimen.name) < 0) {
-      dimen.checked = false;
-    }
-  });
-
-  var data = { filmType: _filmType, screenType: _screenType, hallType: _hallType };
+  var data = { configType: _configType };
   var template = $('#dimen-template').html();
   Mustache.parse(template);
   var html = Mustache.render(template, data);
   $('#popup-unit-dimen .modal-body').html(html);
   $('#popup-unit-dimen').modal('show');
   $('#popup-unit-dimen form').parsley();
-});
-
-$(document).on('change', '#popup-unit-dimen input[type=checkbox]', function (event) {
-  event.preventDefault();
-  _dimenChanged = true;
 });
 
 $(document).on('submit', '#popup-unit-dimen form', function (event) {
@@ -804,6 +780,7 @@ $(document).on('submit', '#formUnit', function (event) {
     planId: $('#planId').val(),
     budgetSource: $('#budgetSource').val(),
     wandaTicketId: $('#wandaTicketId').val(),
+    advancePayment: $('input[name=advancePayment]:checked').val(),
     beginDate: $('#beginDate').val(),
     endDate: $('#endDate').val(),
     dailyEffectiveBeginTime: $('#beginHH').val() + ':' + $('#beginMM').val() + ':' + $('#beginSS').val(),
@@ -818,9 +795,7 @@ $(document).on('submit', '#formUnit', function (event) {
     repeatedDay: [],
     customerType: _popupDataCache.cusTypes,
     channels: _popupDataCache.channels,
-    hallType: _popupDataCache.hallType,
-    filmType: _popupDataCache.filmType,
-    screenType: _popupDataCache.screenType,
+    configType: _popupDataCache.configType,
     activityPattern: $('#activityPattern').val(),
     activityPatternList: [],
     totalAmount: _popupDataCache.totalAmount,
@@ -830,18 +805,6 @@ $(document).on('submit', '#formUnit', function (event) {
     cinemas: [],
     timetables: _popupDataCache.timetables,
   };
-
-  switch ($('input[name=advancePayment]:checked').length) {
-    case 0:
-      sendData.advancePayment = 'NO';
-    break;
-    case $('input[name=advancePayment]').length:
-      sendData.advancePayment = 'ALL';
-    break;
-    default:
-      sendData.advancePayment = $('input[name=advancePayment]:checked').map(function () {return $(this).val();}).get().join(',');
-    break;
-  }
 
   $('input[name=repeatedDay]:checked').each(function (index, el) {
     sendData.repeatedDay.push($(el).val());
@@ -930,7 +893,7 @@ $(document).on('submit', '#formUnit', function (event) {
 //数据缓存
 function setBudgetSource(budgetSourceId) {
   $.ajax({
-    url: common.API_HOST + 'common/budgetSourceList',
+    url: common.API_HOST + 'activity/budgetSourceList',
     type: 'POST',
     dataType: 'json',
   })
@@ -1206,20 +1169,20 @@ function setPattern(patternId) {
     case 0:
     case 1:
     case 2:
-      $('.amount').attr('data-parsley-pattern', '^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$');
-      $('.activity-pattern-tip').text('金额需输入大于0的数字，最多两位小数');
+    $('.amount').attr('data-parsley-pattern', '^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$');
+    $('.activity-pattern-tip').text('金额需输入大于0的数字，最多两位小数');
     break;
     case 3:
-      $('.amount').attr('data-parsley-pattern', '^[1-9]{1}$');
-      $('.activity-pattern-tip').text('折扣需输入大于0且小于10的整数；金额需输入大于0的数字，最多两位小数');
+    $('.amount').attr('data-parsley-pattern', '^[1-9]{1}$');
+    $('.activity-pattern-tip').text('折扣需输入大于0且小于10的整数；金额需输入大于0的数字，最多两位小数');
     break;
     case 4:
-      $('.amount').attr('data-parsley-pattern', '^[234]{1}$');
-      $('.activity-pattern-tip').text('张数仅限输入2、3、4；金额需输入大于0的数字，最多两位小数');
+    $('.amount').attr('data-parsley-pattern', '^[234]{1}$');
+    $('.activity-pattern-tip').text('张数仅限输入2、3、4；金额需输入大于0的数字，最多两位小数');
     break;
     case 5:
-      $('.amount').attr('data-parsley-pattern', '^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$');
-      $('.activity-pattern-tip').text('积分需输入大于0的整数；金额需输入大于0的数字，最多两位小数');
+    $('.amount').attr('data-parsley-pattern', '^[1-9]{1}\\d*.{1}\\d{1,2}$|^[1-9]{1}\\d*$|^[0].{1}\\d{1,2}$');
+    $('.activity-pattern-tip').text('积分需输入大于0的整数；金额需输入大于0的数字，最多两位小数');
     break;
   }
 }
@@ -1305,14 +1268,11 @@ function setEdit(unitId) {
       _popupDataCache.totalAmount = ~~unit.totalAmount < 1 ? '' : ~~unit.totalAmount;
       _popupDataCache.totalTicket = ~~unit.totalTicket < 1 ? '' : ~~unit.totalTicket;
       _popupDataCache.dailyBudgetList = unit.dailyBudgetList;
-      _popupDataCache.cusTypes = unit.cusTypes;
-      _popupDataCache.channels = unit.channels;
-      _popupDataCache.films = unit.films;
-      _popupDataCache.filmType = unit.filmType;
-      _popupDataCache.screenType = unit.screenType;
-      _popupDataCache.hallType = unit.hallType;
+      _popupDataCache.cusTypes = unit.cusTypes != null ? unit.cusTypes : [];
+      _popupDataCache.channels = unit.channels != null ? unit.channels : [];
+      _popupDataCache.films = unit.films != null ? unit.filmsfilms : [];
+      _popupDataCache.configType = unit.configType != null ? unit.configType : [];
       _popupDataCache.qualification = unit.qualification != undefined ? unit.qualification[0] : '';
-      _popupDataCache.advancePayment = unit.advancePayment.split(',');
 
       if (unit.cinemas != null) {
         $.ajax({
@@ -1377,7 +1337,7 @@ function setEdit(unitId) {
 
       $('input[name=advancePayment]').prop({ disabled: true, checked: false });
       $('input[name=advancePayment]').each(function (index, el) {
-        $(el).prop('checked', _popupDataCache.advancePayment == 'ALL' || _popupDataCache.advancePayment.indexOf($(el).val()) > -1 ? true : false);
+        $(el).prop('checked', $(el).val() == unit.advancePayment ? true : false);
       });
 
       $('#cinemaPageDesc').val(unit.cinemaPageDesc);
@@ -1481,10 +1441,8 @@ function setEdit(unitId) {
       unit.films != null && unit.films.length > 0 ? setMovie(unit.films) : setMovie(false);
 
       //制式
-      var previewHtmlFilmType = unit.filmType.length == _filmType.length ? '影片制式：不限' : '影片制式：[' + unit.filmType.join('] [') + ']';
-      var previewHtmlScreenType = unit.screenType.length == _screenType.length ? '<br>屏幕规格：不限' : '<br>屏幕规格：[' + unit.screenType.join('] [') + ']';
-      var previewHtmlHallType = unit.hallType.length == _hallType.length ? '<br>特殊影厅：不限' : '<br>特殊影厅：[' + unit.hallType.join('] [') + ']';
-      $('#preview-dimen').html(previewHtmlFilmType + previewHtmlScreenType + previewHtmlHallType);
+      var previewHtmlConfigType = unit.configType == null || unit.configType.length == 0 ? '不限' : '[' + unit.configType.join('] [') + ']';
+      $('#preview-dimen').html(previewHtmlConfigType);
 
       //影院
       $('#preview-cinema').html(unit.cinemas != null && unit.cinemas.length > 0 ? '选择了 ' + unit.cinemas.length + ' 个影院' : '不限');
