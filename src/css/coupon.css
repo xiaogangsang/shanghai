@@ -29,3 +29,9 @@
 .parsley-errors-list+.parsley-errors-list {
   display: none;
 }
+
+#popup-unit-dimen .checkbox-inline {
+  margin-top: 0;
+  margin-left: 10px;
+  min-width: 10%;
+}
