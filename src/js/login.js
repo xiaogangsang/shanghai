@@ -77,13 +77,12 @@ $('#form-login').on('submit', function (e) {
       localStorage.setItem('authCity', res.data.cities);
       localStorage.setItem('authChannel', res.data.channels);
       localStorage.setItem('authFunction', JSON.stringify(res.data.allowMenus));
-
       var allowMenus = [];
       $.each(res.data.allowMenus, function (index, menu) {
         allowMenus.push(menu.menuId);
       });
 
-      localStorage.setItem('authMenu', allowMenus);
+      localStorage.setItem('authMenu', allowMenus.join(','));
 
       window.location.href = 'index.html';
     } else {
