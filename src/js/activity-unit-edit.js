@@ -5,20 +5,14 @@ var _budgetSource = [];
 var _plans = [];
 var _wandaTicket = [];
 var _movies = [];
-var _filmType = [
-{ name: '2D' },
-{ name: '3D' },
-];
-var _screenType = [
-{ name: '普通' },
-{ name: 'IMAX' },
-{ name: 'DMAX' },
-{ name: '巨幕' },
-];
-var _hallType = [
-{ name: '普通' },
-{ name: '4D' },
-{ name: '5D' },
+
+var _configType = [
+  { name: '2D' },
+  { name: '3D' },
+  { name: '4D' },
+  { name: 'IMAX' },
+  { name: '巨幕' },
+  { name: 'VIP' },
 ];
 var _channels = [];
 var _provinces = [];
@@ -554,39 +548,9 @@ $(document).on('change', '#popup-unit-dimen input[type=checkbox]', function (eve
 
 $(document).on('submit', '#popup-unit-dimen form', function (event) {
   event.preventDefault();
-
-  if (!_dimenChanged) {
-    _dimenChanged = true;
-    if (!window.confirm('已为您默认选择普通厅、普通屏幕、2D3D影片，是否确认保存？')) {
-      return false;
-    }
-  }
-
-  var previewHtmlFilmType = '影片制式：';
-  _popupDataCache.filmType = $('input[name=filmType]:checked').map(function () {return $(this).next('span').text();}).get();
-  if (_popupDataCache.filmType.length == _filmType.length) {
-    previewHtmlFilmType += '不限';
-  } else {
-    previewHtmlFilmType += '[' + _popupDataCache.filmType.join('] [') + ']';
-  }
-
-  var previewHtmlScreenType = '<br>屏幕规格：';
-  _popupDataCache.screenType = $('input[name=screenType]:checked').map(function () {return $(this).next('span').text();}).get();
-  if (_popupDataCache.screenType.length == _screenType.length) {
-    previewHtmlScreenType += '不限';
-  } else {
-    previewHtmlScreenType += '[' + _popupDataCache.screenType.join('] [') + ']';
-  }
-
-  var previewHtmlHallType = '<br>特殊影厅：';
-  _popupDataCache.hallType = $('input[name=hallType]:checked').map(function () {return $(this).next('span').text();}).get();
-  if (_popupDataCache.hallType.length == _hallType.length) {
-    previewHtmlHallType += '不限';
-  } else {
-    previewHtmlHallType += '[' + _popupDataCache.hallType.join('] [') + ']';
-  }
-
-  $('#preview-dimen').html(previewHtmlFilmType + previewHtmlScreenType + previewHtmlHallType);
+  _popupDataCache.configType = $('input[name=configType]:checked').map(function () {return $(this).next('span').text();}).get();
+  var previewHtmlConfigType = _popupDataCache.configType.length < 1 ? '不限' : '[' + _popupDataCache.configType.join('] [') + ']';
+  $('#preview-dimen').html(previewHtmlConfigType);
   $('#popup-unit-dimen').modal('hide');
   return false;
 });
