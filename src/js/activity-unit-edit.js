@@ -6,12 +6,12 @@ var _plans = [];
 var _wandaTicket = [];
 var _movies = [];
 var _configType = [
-{ name: '2D' },
-{ name: '3D' },
-{ name: '4D' },
-{ name: 'IMAX' },
-{ name: '巨幕' },
-{ name: 'VIP' },
+  { name: '2D' },
+  { name: '3D' },
+  { name: '4D' },
+  { name: 'IMAX' },
+  { name: '巨幕' },
+  { name: 'VIP' },
 ];
 var _channels = [];
 var _provinces = [];
