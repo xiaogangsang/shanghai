@@ -29,11 +29,16 @@ var _pageTotal = 0;
 var _querying = false;
 var searchCache = {};
 var useCache = false;
+var _detailPermission = false;
 
 $(function () {
   common.init('order-cs');
+  if (common.verifyPermission(113) == false) {
+    alert('对不起，您没有权限！');
+    window.location.href = 'login.html?logout';
+  }
 
-  //set search form
+  _detailPermission = common.verifyPermission(114);
   setChannel();
 
   $('#search_placeOrderStartTime').datetimepicker({
@@ -68,7 +73,6 @@ $(function () {
   $('#search_placeOrderStartTime').val(beginDate).datetimepicker('setEndDate', endDate);
   $('#search_placeOrderEndTime').val(endDate).datetimepicker('setStartDate', beginDate).datetimepicker('setEndDate', endDate);
 
-  $('#formSearch').trigger('submit');
 });
 
 //handle search form
@@ -83,7 +87,7 @@ $('#formSearch').on('click', 'button[type=submit]', function (event) {
 $('#formSearch').on('submit', function (e) {
   e.preventDefault();
   var sendData = {
-    mobile: $.trim($('#search_mobile').val()),
+    mobile: $('#search_mobile').val().trim(),
     productOrderStatus: $('#search_productOrderStatus').val(),
     channelId: $('#search_channelId').val(),
     placeOrderStartTime: $('#search_placeOrderStartTime').val(),
@@ -200,13 +204,15 @@ function setChannel() {
         html += '<option value="' + item.channelId + '">' + item.channelName + '</option>';
       });
 
-      $('#search_channelId').append(html);
+      $('#search_channelId').html(html);
+
+      $('#formSearch').trigger('submit');
     }
   });
 }
 
 function setTableData(rows) {
-  var data = { rows: rows };
+  var data = { detailPermission: _detailPermission, rows: rows };
   var template = $('#table-template').html();
   Mustache.parse(template);
   var html = Mustache.render(template, data);
