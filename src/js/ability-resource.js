@@ -40,7 +40,7 @@ function getRoles() {
   })
   .done(function (res) {
     if (res.meta.result == true) {
-      _(res.data.rows).forEach(function (value, key) {
+      _(res.data).forEach(function (value, key) {
         _roles.push({ id: value.id, name: value.roleName });
       });
     } else {
@@ -51,7 +51,7 @@ function getRoles() {
 
 function setResource() {
   $.ajax({
-    url: common.API_HOST + 'security/resource/resourceList',
+    url: common.API_HOST + 'security/resource/resourceListInSelect',
     type: 'POST',
     dataType: 'json',
     data: {
@@ -61,24 +61,33 @@ function setResource() {
   })
   .done(function (res) {
     if (res.meta.result == true) {
-      var htmlResource = '';
-      _(res.data.rows).forEach(function (value, key) {
-        htmlResource += '<option value="' + value.id + '">' + value.name + '</option>';
+      var resourceHtml = '';
+      _(res.data).forEach(function (res) {
+        if (res.function.length > 0) {
+          resourceHtml += '<optgroup label="' + res.name + '">';
+          _(res.function).forEach(function (func) {
+            resourceHtml += '<option value="' + func.id + '">' + func.name + '</option>';
+          });
+
+          resourceHtml += '</optgroup>';
+        } else {
+          resourceHtml += '<option value="' + res.id + '">' + res.name + '</option>';
+        }
       });
 
-      $('#resourceSelect').append(htmlResource);
+      $('#resourceSelect').append(resourceHtml);
       $('#resourceSelect').chosen();
     }
   });
 }
 
-function setRole(resourceId) {
+function getRolebyResource(resourceId) {
   $.ajax({
-    url: common.API_HOST + 'security/resource/resourceList',
+    url: common.API_HOST + 'security/role/roleList',
     type: 'POST',
     dataType: 'json',
     data: {
-      id: resourceId,
+      resources: resourceId,
       pageIndex: 1,
       pageSize: 9999,
     },
@@ -86,17 +95,19 @@ function setRole(resourceId) {
   .done(function (res) {
     if (res.meta.result == true) {
       var roles = [];
-      _(res.data.rows[0].roles).forEach(function (value, key) {
-        roles.push(value.id);
-      });
+      if (res.data.length > 0) {
+        _(res.data).forEach(function (value, key) {
+          roles.push(value.id);
+        });
+      }
 
       var htmlChoosed = '';
       var htmlUnchoosed = '';
       _(_roles).forEach(function (value, key) {
         if (roles.indexOf(value.id) > -1) {
-          htmlChoosed += '<option value="' + value.id + '">' + value.name + '</option>';
+          htmlChoosed += '<option value="' + value.id + '">' + value.id + ':' + value.name + '</option>';
         } else {
-          htmlUnchoosed += '<option value="' + value.id + '">' + value.name + '</option>';
+          htmlUnchoosed += '<option value="' + value.id + '">' + value.id + ':' + value.name + '</option>';
         }
       });
 
@@ -114,7 +125,7 @@ $('#resourceSelect').on('change click', function (e) {
   e.preventDefault();
   $('#roleSelect_to').html('');
   $('#roleSelect').html('');
-  setRole($(this).val());
+  getRolebyResource(+$(this).val());
   $('#formResource button[type=submit]').prop('disabled', true).text('加载中...');
 });
 
