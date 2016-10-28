@@ -61,13 +61,12 @@ function setChannel() {
       _channels = res.data;
       var htmlChannel = '';
       $.each(_channels, function (index, item) {
-        if (localStorage.getItem('authChannel').indexOf(item.channelId) > -1) {
+        if (Cookies.get('authChannel').indexOf(item.channelId) > -1) {
           htmlChannel += '<option value="' + item.channelId + '">' + item.channelName + '</option>';
         }
       });
 
       $('#channelSelect').append(htmlChannel);
-
       $('#channelSelect').chosen();
     }
   });
