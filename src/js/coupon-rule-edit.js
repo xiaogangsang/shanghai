@@ -519,7 +519,6 @@ $(document).on('submit', '#formEdit', function (event) {
     endDate: $('#endDate').val(),
     budgetSource: $('#budgetSource').val(),
     wandaTicketId: $('#wandaTicketId').val(),
-    advancePayment: $('input[name=advancePayment]:checked').val(),
     couponDesc: $.trim($('#couponDesc').val()),
     imageUrl: $.trim($('#imageUrl').val()),
     maxInventory: $.trim($('#maxInventory').val()),
@@ -531,6 +530,18 @@ $(document).on('submit', '#formEdit', function (event) {
     cinemas: [],
     timetables: _popupDataCache.timetables,
   };
+
+  switch ($('input[name=advancePayment]:checked').length) {
+    case 0:
+      sendData.advancePayment = 'NO';
+    break;
+    case $('input[name=advancePayment]').length:
+      sendData.advancePayment = 'ALL';
+    break;
+    default:
+      sendData.advancePayment = $('input[name=advancePayment]:checked').map(function () {return $(this).val();}).get().join(',');
+    break;
+  }
 
   sendData.patternList.push({ amount: $('#amount').val(), limitNum: $('#limitNum').val(), lowerBound: $('#lowerBound').val(), upperBound: $('#upperBound').val() });
   _(_popupDataCache.cinemas).forEach(function (cinema) {
@@ -961,9 +972,7 @@ function setEdit(couponId) {
 
       $('input[name=advancePayment]').prop({ disabled: true, checked: false });
       $('input[name=advancePayment]').each(function (index, el) {
-        if ($(el).val() == coupon.advancePayment) {
-          $(el).prop('checked', true);
-        }
+        $(el).prop('checked', _popupDataCache.advancePayment == 'ALL' || _popupDataCache.advancePayment.indexOf($(el).val()) > -1 ? true : false);
       });
 
       $('#couponDesc').val(coupon.couponDesc);
