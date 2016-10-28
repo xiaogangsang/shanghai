@@ -938,6 +938,7 @@ function setEdit(couponId) {
       _popupDataCache.films = coupon.films != null ? coupon.films : [];
       _popupDataCache.configType = coupon.configType != null ? coupon.configType : [];
       _popupDataCache.timetables = coupon.timetables != null ? coupon.timetables : [];
+      _popupDataCache.advancePayment = coupon.advancePayment;
 
       coupon.cinemas = coupon.cinemas != null ? coupon.cinemas : [];
       $.ajax({
