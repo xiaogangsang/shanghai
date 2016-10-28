@@ -171,32 +171,6 @@ $(document).on('click', '.btn-create', function (e) {
 
   $('#popup-banner-form form').parsley();
   $('#popup-banner-form #filmId').chosen();
-<<<<<<< HEAD
-
-  $('#popup-banner-form').on('change click', '#bannerType', function (event) {
-    event.preventDefault();
-    if ($(this).val() == 1) {
-      $('.type-2, .type-3').hide();
-      $('.type-2, .type-3').find('input,select').prop('required', false);
-      $('.type-1').show();
-      $('.type-1').find('input,select').prop('required', true);
-    } else if ($(this).val() == 2) {
-      $('.type-1, .type-3').hide();
-      $('.type-1, .type-3').find('input,select').prop('required', false);
-      $('.type-2').show();
-      $('.type-2').find('input,select').prop('required', true);
-    } else {
-      $('.type-1, .type-2').hide();
-      $('.type-1, .type-2').find('input,select').prop('required', false);
-      $('.type-3').show();
-      $('.type-3').find('input,select').prop('required', true);
-    }
-
-    $('.chosen-search input').prop('required', false);
-    $('#popup-banner-form form').parsley().reset();
-  });
-=======
->>>>>>> feature/seatIcon
 });
 
 $(document).on('change click', '#search_provinceId', function (e) {
