@@ -133,7 +133,9 @@ $(function () {
     leftAll: '#movieSelect_none',
   });
 
-  $('#formUnit').parsley();
+  $('#formUnit').parsley().on('form:validated', function () {
+    _submitting = false;
+  });
 
 });
 

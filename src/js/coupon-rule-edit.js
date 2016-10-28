@@ -75,7 +75,9 @@ $(function () {
     leftAll: '#movieSelect_none',
   });
 
-  $('#formEdit').parsley();
+  $('#formEdit').parsley().on('form:validated', function () {
+    _submitting = false;
+  });
 
   //upper of range
   window.Parsley.addValidator('ur', {
