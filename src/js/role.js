@@ -20,8 +20,6 @@ $(function () {
   getAllRoles();
   getUsers();
   getResources();
-
-  $('#formSearch').trigger('submit');
 });
 
 //handle search form
@@ -406,7 +404,9 @@ function getUsers() {
   .done(function (res) {
     if (!!~~res.meta.result) {
       _users = res.data.rows;
-      $('#btn-create').prop('disabled', false).text('新增角色');
+      $('#btn-create').text('新增角色');
+      $('#formSearch button').prop('disabled', false);
+      $('#formSearch').trigger('submit');
     } else {
       alert('接口错误：' + res.meta.msg);
     }
