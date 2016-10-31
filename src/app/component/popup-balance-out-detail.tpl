@@ -175,19 +175,50 @@
           </div>
         </div>
 
+        <!-- whb add -->
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
-            <div class="input-group-addon">渠道方补贴金额(元)</div>
+            <div class="input-group-addon" style="color: red;">常规活动渠道方补贴金额(元)</div>
             <input type="text" class="form-control" id="subsidyAmountO2o" value="{{subsidyAmountO2o}}" readonly>
-            <!-- <input type="text" class="form-control oldValue" id="subsidyAmountO2o" value="{{subsidyAmountO2o}}">
-            <input type="text" class="form-control newValue" id="subsidyAmountO2oNew" value="{{lastDetail.subsidyAmountO2o}}"> -->
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
-            <div class="input-group-addon">补贴付款方式</div>
+            <div class="input-group-addon" style="color: red;">常规活动补贴付款方式</div>
             <input type="text" class="form-control" id="subsidyType" value="{{subsidyType}}" readonly>
+          </div>
+        </div>
+
+        <div class="form-group col-sm-6 col-md-6 editable">
+          <div class="input-group">
+            <div class="input-group-addon" style="color: red;">支付活动补贴金额(元)</div>
+            <input type="text" class="form-control" id="subsidyAmountO2o" value="{{subsidyAmountO2o}}" readonly>
+          </div>
+        </div>
+
+        <div class="form-group col-sm-6 col-md-6">
+          <div class="input-group">
+            <div class="input-group-addon" style="color: red;">支付活动补贴付款方式</div>
+            <input type="text" class="form-control" id="subsidyType" value="{{subsidyType}}" readonly>
+          </div>
+        </div>
+
+
+<!-- 
+        <div class="form-group col-sm-6 col-md-6 editable">
+          <div class="input-group">
+            <div class="input-group-addon">渠道方补贴金额(元)</div>
+            <input type="text" class="form-control" id="subsidyAmountO2o" value="{{subsidyAmountO2o}}" readonly> -->
+            <!-- <input type="text" class="form-control oldValue" id="subsidyAmountO2o" value="{{subsidyAmountO2o}}">
+            <input type="text" class="form-control newValue" id="subsidyAmountO2oNew" value="{{lastDetail.subsidyAmountO2o}}"> -->
+         <!--  </div>
+        </div> -->
+
+        <!-- <div class="form-group col-sm-6 col-md-6">
+          <div class="input-group">
+            <div class="input-group-addon">补贴付款方式</div>
+            <input type="text" class="form-control" id="subsidyType" value="{{subsidyType}}" readonly> -->
             <!-- <select class="form-control oldValue" id="subsidyType" value="{{subsidyType}}">
               <option value=""></option>
               <option value="1">预付</option>
@@ -198,8 +229,8 @@
               <option value="1">预付</option>
               <option value="2">后付</option>
             </select> -->
-          </div>
-        </div>
+         <!--  </div>
+        </div> -->
 
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
@@ -261,9 +292,65 @@
       <div class="row"> 
         <span style="display: block; margin-top: 10px;">优惠信息:</span>
         <hr style="margin-top: 3px;">
-        
 
         <div class="form-group col-sm-6 col-md-6">
+          <div class="input-group">
+            <div class="input-group-addon" style="color: red;">常规活动优惠方式</div>
+            <input type="text" class="form-control" id="discountType" value="{{discountType}}" readonly>
+          </div>
+        </div>
+
+        <div class="form-group col-sm-6 col-md-6">
+          <div class="input-group">
+            <div class="input-group-addon" style="color: red;">常规活动/优惠券名称</div>
+            <input type="text" class="form-control" id="discountName" value="{{discountName}}" readonly>
+          </div>
+        </div>
+
+        <div class="form-group col-sm-6 col-md-6">
+          <div class="input-group">
+            <div class="input-group-addon" style="color: red;">常规活动补贴成本中心</div>
+            <input type="text" class="form-control" id="costCenter" value="{{costCenter}}" readonly>
+          </div>
+        </div>
+
+        <div class="form-group col-sm-6 col-md-6">
+          <div class="input-group">
+            <div class="input-group-addon" style="color: red;">常规活动签报号</div>
+            <input type="text" class="form-control" id="signNum" value="{{signNum}}" readonly>
+          </div>
+        </div>
+
+         <div class="form-group col-sm-6 col-md-6">
+          <div class="input-group">
+            <div class="input-group-addon" style="color: red;">常规活动/优惠券ID</div>
+            <input type="text" class="form-control" id="signNum" value="{{signNum}}" readonly>
+          </div>
+        </div>
+
+         <div class="form-group col-sm-6 col-md-6">
+          <div class="input-group">
+            <div class="input-group-addon" style="color: red;">支付活动ID</div>
+            <input type="text" class="form-control" id="signNum" value="{{signNum}}" readonly>
+          </div>
+        </div>
+
+         <div class="form-group col-sm-6 col-md-6">
+          <div class="input-group">
+            <div class="input-group-addon" style="color: red;">支付活动名称</div>
+            <input type="text" class="form-control" id="signNum" value="{{signNum}}" readonly>
+          </div>
+        </div>
+
+         <div class="form-group col-sm-6 col-md-6">
+          <div class="input-group">
+            <div class="input-group-addon" style="color: red;">支付活动补贴成本中心</div>
+            <input type="text" class="form-control" id="signNum" value="{{signNum}}" readonly>
+          </div>
+        </div>
+        
+
+        <!-- <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">优惠方式</div>
             <input type="text" class="form-control" id="discountType" value="{{discountType}}" readonly>
@@ -289,7 +376,7 @@
             <div class="input-group-addon">签报号</div>
             <input type="text" class="form-control" id="signNum" value="{{signNum}}" readonly>
           </div>
-        </div>
+        </div> -->
 
       </div>
     </div>

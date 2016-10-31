@@ -515,6 +515,11 @@ $(document).on('submit', '#popup-detail form', function(e) {
   });
 });
 
+// 补订单记录
+$('.btn-complement').click(function(e) {
+      alert('跳转到补订单记录页面');
+  });
+
 /************************************************* 批量操作 ***************************************************/
 $('.multi-check-all').change(function(e) {
   e.preventDefault();
