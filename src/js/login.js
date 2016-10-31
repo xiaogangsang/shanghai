@@ -74,17 +74,15 @@ $('#form-login').on('submit', function (e) {
     if (!!~~res.meta.result) {
       Cookies.set('Xtoken', res.data.Xtoken);
       Cookies.set('name', res.data.name);
-      localStorage.setItem('authCity', res.data.cities);
-      localStorage.setItem('authChannel', res.data.channels);
-      localStorage.setItem('authFunction', JSON.stringify(res.data.allowMenus));
-
+      Cookies.set('authCity', res.data.cities);
+      Cookies.set('authChannel', res.data.channels);
+      Cookies.set('authFunction', JSON.stringify(res.data.allowMenus));
       var allowMenus = [];
       $.each(res.data.allowMenus, function (index, menu) {
         allowMenus.push(menu.menuId);
       });
 
-      localStorage.setItem('authMenu', allowMenus);
-
+      Cookies.set('authMenu', allowMenus.join(','));
       window.location.href = 'index.html';
     } else {
       var html = '<div class="alert alert-danger" role="alert">' + res.meta.msg + '</div>';
