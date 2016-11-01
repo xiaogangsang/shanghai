@@ -131,14 +131,6 @@ settlementCommon.orderSource =
   return this.orderSource[status];
  }
 
-  // 支付活动补贴付款方式
-settlementCommon.subsidyTypeTrd = 
-  {'1' : '预付', '2' : '普通'};
-
- settlementCommon.parseSubsidyTypeTrd = function(status) {
-  return this.subsidyTypeTrd[status];
- }
-
 
 // 拨款状态
 settlementCommon.moneyOutStatus = 
