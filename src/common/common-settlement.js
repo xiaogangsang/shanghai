@@ -24,6 +24,13 @@ settlementCommon.parseMerchant = function(status) {
 	return this.merchant[status];
 }
 
+// 收单订单类型
+settlementCommon.acquiringOrderType = {'1' : '支付', '2' : '退款'};
+
+settlementCommon.parseAcquiringOrderType = function(status) {
+	return this.acquiringOrderType[status];
+}
+
 
 // 支付流水状态
 settlementCommon.payStatus = 
@@ -113,6 +120,22 @@ settlementCommon.shipmentStatus =
 
  settlementCommon.parseShipmentStatus = function(status) {
   return this.shipmentStatus[status];
+ }
+
+ // 出货订单类型
+settlementCommon.shipmentOrderType =
+  {'1' : '出货', '2' : '退货', '3' : '出货调整', '4' : '退货调整'};
+
+ settlementCommon.parseShipmentOrderType = function(status) {
+  return this.shipmentOrderType[status];
+ }
+
+ // 订单来源
+settlementCommon.orderSource =
+  {'1' : '人工', '2' : '系统'};
+
+ settlementCommon.parseOrderSource = function(status) {
+  return this.orderSource[status];
  }
 
 

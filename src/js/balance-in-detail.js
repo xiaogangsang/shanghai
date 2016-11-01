@@ -185,6 +185,10 @@ function handleData(res) {
 
     _(record).forEach(function(item) {
       item.chargeMerchant = settlementCommon.parseMerchant(item.chargeMerchant);
+      item.acquiringOrderType = settlementCommon.parseAcquiringOrderType(item.acquiringOrderType);
+      item.subsidyTypeTrd = settlementCommon.parseSubsidyType(item.subsidyTypeTrd);
+      item.subsidyType = settlementCommon.parseSubsidyType(item.subsidyType);
+      item.orderSource = settlementCommon.parseOrderSource(item.orderSource);
       item.payStatus = settlementCommon.parsePayStatus(item.payStatus);
       item.reconciliationStatus = settlementCommon.parseReconciliationStatus(item.reconciliationStatus);
       item.reason = settlementCommon.parseReason(item.reason);
@@ -202,8 +206,13 @@ function handleData(res) {
     setTableData(record);
 
     // 从汇总页点击查看选中明细, 是没有summary返回的
-    if (res.data.summary) {
-      setSummaryTableData(res.data.summary);
+    var summary = res.data.summary;
+    if (summary) {
+      _(summary).forEach(function(item) {
+        item.payTool = settlementCommon.parsePayTool(item.payTool);
+        item.acquiringOrderType = settlementCommon.parseAcquiringOrderType(item.acquiringOrderType);
+      });
+      setSummaryTableData(summary);
     }
   }
 }
