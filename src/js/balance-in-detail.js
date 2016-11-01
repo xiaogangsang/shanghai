@@ -572,6 +572,12 @@ $('body').on('click', '.batch-status-update', function(e) {
   $('#popup-status-choose').modal('show');
 });
 
+$('body').on('click', '.add-order-record', function(e) {
+  e.preventDefault();
+
+  alert('jump to new page');
+});
+
 $('body').on('click', '.btn-status-update-cancel', function(e) {
   e.preventDefault();
   $('#popup-status-choose').modal('hide');
