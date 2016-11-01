@@ -74,11 +74,15 @@ $('#form-login').on('submit', function (e) {
     if (!!~~res.meta.result) {
       Cookies.set('Xtoken', res.data.Xtoken);
       Cookies.set('name', res.data.name);
-      sessionStorage.setItem('cityAuthority', res.data.cities.toString());
-      sessionStorage.setItem('channelAuthority', res.data.channels.toString());
-      sessionStorage.setItem('menuAuthority', res.data.allowMenus.toString());
+      Cookies.set('authCity', res.data.cities);
+      Cookies.set('authChannel', res.data.channels);
+      Cookies.set('authFunction', JSON.stringify(res.data.allowMenus));
+      var allowMenus = [];
+      $.each(res.data.allowMenus, function (index, menu) {
+        allowMenus.push(menu.menuId);
+      });
 
-      // alert('登陆成功！');
+      Cookies.set('authMenu', allowMenus.join(','));
       window.location.href = 'index.html';
     } else {
       var html = '<div class="alert alert-danger" role="alert">' + res.meta.msg + '</div>';
