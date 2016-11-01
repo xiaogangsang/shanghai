@@ -61,8 +61,8 @@ common.API_HOST = window.location.protocol + '//' + window.location.host + '/Mov
 
 common.init = function (pageName) {
   common.checkLogin();
-  common.showMenu(pageName);
   common.setLoginName();
+  common.showMenu(pageName);
 
   $.ajaxSetup({
     error: function (jqXHR, textStatus, errorThrown) {
@@ -97,7 +97,7 @@ common.init = function (pageName) {
 };
 
 common.showMenu = function (pageName) {
-  var allowMenus = localStorage.getItem('authMenu').split(',');
+  var allowMenus = Cookies.get('authMenu').split(',');
   if (pageName != undefined && pageName != '' && $('#menu-' + pageName).size() > 0) {
     var menuId = +$('#menu-' + pageName).data('id');
     if (!allowMenus.includes(menuId.toString())) {
@@ -120,7 +120,7 @@ common.showMenu = function (pageName) {
 };
 
 common.checkLogin = function () {
-  if (localStorage.getItem('authMenu').length < 1 || Cookies.get('Xtoken') == undefined) {
+  if (Cookies.get('authMenu').length < 1 || Cookies.get('Xtoken') == undefined) {
     common.logout();
     window.location.href = 'login.html';
   }
@@ -136,10 +136,10 @@ common.setLoginName = function () {
 common.logout = function () {
   Cookies.remove('Xtoken');
   Cookies.remove('name');
-  localStorage.setItem('authCity', []);
-  localStorage.setItem('authChannel', []);
-  localStorage.setItem('authMenu', []);
-  localStorage.setItem('authFunction', '{}');
+  Cookies.remove('authCity');
+  Cookies.remove('authChannel');
+  Cookies.remove('authMenu');
+  Cookies.remove('authFunction');
 };
 
 common.getDate = function (date) {
@@ -175,7 +175,7 @@ common.getUrlParam = function () {
 };
 
 common.getAssignedFuncions = function () {
-  var allowMenus = JSON.parse(localStorage.getItem('authFunction'));
+  var allowMenus = JSON.parse(Cookies.get('authFunction'));
   var assignedFunctions = [];
   var pageId = +$('#menu a.active').data('id');
   _(allowMenus).forEach(function (page) {

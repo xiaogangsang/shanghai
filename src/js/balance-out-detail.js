@@ -205,6 +205,9 @@ function handleData(res) {
       item.shipmentStatus = settlementCommon.parseShipmentStatus(item.shipmentStatus);
       item.checkStatusNo = item.checkStatus;
       item.checkStatus = settlementCommon.parseCheckStatus(item.checkStatus);
+      item.shipmentOrderType = settlementCommon.parseShipmentOrderType(item.shipmentOrderType);
+      item.orderSource = settlementCommon.parseOrderSource(item.orderSource);
+      item.subsidyTypeTrd = settlementCommon.parseSubsidyTypeTrd(item.subsidyTypeTrd);
     });
 
     if (!_queryingFromSelectedSummary) {
