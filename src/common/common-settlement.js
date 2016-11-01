@@ -115,6 +115,30 @@ settlementCommon.shipmentStatus =
   return this.shipmentStatus[status];
  }
 
+ // 出货订单类型
+settlementCommon.shipmentOrderType = 
+  {'1' : '出货', '2' : '退货', '3' : '出货调整', '4' : '退货调整'};
+
+ settlementCommon.parseShipmentOrderType = function(status) {
+  return this.shipmentOrderType[status];
+ }
+
+ // 订单来源
+settlementCommon.orderSource = 
+  {'1' : '人工', '2' : '系统'};
+
+ settlementCommon.parseOrderSource = function(status) {
+  return this.orderSource[status];
+ }
+
+  // 支付活动补贴付款方式
+settlementCommon.subsidyTypeTrd = 
+  {'1' : '预付', '2' : '普通'};
+
+ settlementCommon.parseSubsidyTypeTrd = function(status) {
+  return this.subsidyTypeTrd[status];
+ }
+
 
 // 拨款状态
 settlementCommon.moneyOutStatus = 
