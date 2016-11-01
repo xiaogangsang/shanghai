@@ -585,7 +585,7 @@ $(document).on('submit', '#formEdit', function (event) {
 //数据缓存
 function setBudgetSource(budgetSourceId) {
   $.ajax({
-    url: common.API_HOST + 'activity/budgetSourceList',
+    url: common.API_HOST + 'common/budgetSourceList',
     type: 'POST',
     dataType: 'json',
   })
