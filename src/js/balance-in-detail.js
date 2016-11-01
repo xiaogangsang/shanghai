@@ -428,6 +428,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     $('#popup-detail').modal('show');
 
     $('#subsidyType option[value="' + detail.subsidyType + '"]').prop('selected', true);
+    $('#subsidyTypeTrd option[value="' + detail.subsidyTypeTrd + '"]').prop('selected', true);
     $('#partner option[value="' + detail.partner + '"]').prop('selected', true);
     $('#reconciliationStatus option[value="' + detail.reconciliationStatus + '"]').prop('selected', true);
     $('#reason option[value="' + detail.reason + '"]').prop('selected', true);
