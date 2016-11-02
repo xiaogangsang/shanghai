@@ -352,6 +352,11 @@ $('.complete-commit').click(function(e) {
     return false;
   }
 
+  var result =  confirm("确定提交?");
+  if(result == false){
+    return;
+  }
+
   if (_queryingFromSelectedSummary) {
     var param = {'acquiringInfoFormCollection' : _selectedSummary.acquiringInfoFormCollection};
     $.ajax({
