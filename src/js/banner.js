@@ -656,7 +656,7 @@ function setModal(bannerData, type) {
           movie.selected = movie.filmId == bannerData.filmId ? true : false;
         });
 
-        bannerData.seatStatus--;
+        bannerData.seatType = bannerData.seatStatus - 1;
         bannerData.pic = '';
         $.each(bannerData.picUrls, function (index, url) {
           bannerData.pic += '<img src="' + url + '" title="' + url + '" width="32" height="32"> ';
