@@ -186,21 +186,30 @@
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon" style="color: red;">常规活动补贴付款方式</div>
-            <input type="text" class="form-control" id="subsidyType" value="{{subsidyType}}" readonly>
+             <select class="form-control oldValue" id="subsidyType">
+              <option value="1">预付</option>
+              <option value="2">后付</option>
+            </select>
+
           </div>
+          
         </div>
 
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
             <div class="input-group-addon" style="color: red;">支付活动补贴金额(元)</div>
-            <input type="text" class="form-control" id="subsidyAmountO2o" value="{{subsidyAmountO2o}}" readonly>
+            <input type="text" class="form-control" id="subsidyAmountTrd" value="{{subsidyAmountTrd}}" readonly>
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon" style="color: red;">支付活动补贴付款方式</div>
-            <input type="text" class="form-control" id="subsidyType" value="{{subsidyType}}" readonly>
+            <!-- <input type="text" class="form-control" id="subsidyTypeTrd" value="{{subsidyTypeTrd}}" readonly> -->
+            <select class="form-control oldValue" id="subsidyTypeTrd">
+              <option value="1">预付</option>
+              <option value="2">后付</option>
+            </select>
           </div>
         </div>
 
@@ -331,21 +340,21 @@
          <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon" style="color: red;">支付活动ID</div>
-            <input type="text" class="form-control" id="signNum" value="{{signNum}}" readonly>
+            <input type="text" class="form-control" id="iscountIdTrd" value="{{iscountIdTrd}}" readonly>
           </div>
         </div>
 
          <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon" style="color: red;">支付活动名称</div>
-            <input type="text" class="form-control" id="signNum" value="{{signNum}}" readonly>
+            <input type="text" class="form-control" id="discountNameTrd" value="{{discountNameTrd}}" readonly>
           </div>
         </div>
 
          <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon" style="color: red;">支付活动补贴成本中心</div>
-            <input type="text" class="form-control" id="signNum" value="{{signNum}}" readonly>
+            <input type="text" class="form-control" id="costCenterTrd" value="{{costCenterTrd}}" readonly>
           </div>
         </div>
         

@@ -234,15 +234,15 @@
                 <button type="button" class="btn btn-block btn-default btn-export-all">申请导出</button>
               </div>
               <div class="col-xs-2">
-                <button type="button" class="btn btn-block btn-default complete-commit">对账完成提交</button>
-              </div>
-              <div class="col-xs-2">
                 <button type="button" class="btn btn-block btn-default batch-status-update">批量修改对账状态</button>
               </div>
               <div class="col-xs-2">
                 <button type="button" class="btn btn-block btn-default btn-complement">补订单记录</button>
               </div>
-
+              <div class="col-xs-2">
+                <button type="button" class="btn btn-block btn-default complete-commit">对账完成提交</button>
+              </div>
+              
             </div>
           </div>
 
@@ -313,7 +313,7 @@
                   <!-- <th>对应影票订单号</th> -->
                   <th>常规活动渠道方补贴金额</th>
                   <th>常规活动补贴付款方式</th>
-                  <th>退票手续费</th>
+                  <!-- <th>退票手续费</th> -->
                   <!-- <th>二级商户订单号</th> -->
                   <th>应付金额</th>
                   <th>实付金额</th>
@@ -378,11 +378,9 @@
       <!-- 结算金额 -->
       <td>{{settleAmount}}</td>
       <!-- 常规活动渠道方补贴金额 -->
-      <td>{{subsidyAmountO2O}}</td>
+      <td>{{subsidyAmountO2o}}</td>
       <!-- 常规活动补贴付款方式 -->
       <td>{{subsidyType}}</td>
-      <!-- 退票手续费 -->
-      <td>{{returnFee}}</td>
       <!-- 应付金额 -->
       <td>{{acceptanceAppropriation}}</td>
       <!-- 实付金额 -->
@@ -418,12 +416,18 @@
       <td>{{totalSettleAmount}}</td>
       <td>{{totalFinalSettleAmount}}</td> -->
 
+      <!-- 订单数 -->
       <td>{{count}}</td>
+      <!-- 张数 -->
       <td>{{totalTicketCount}}</td>
-      <td>{{totalOrderAmount}}</td>
+      <!-- 结算金额 -->
+      <td>{{totalSettleAmount}}</td>
+      <!-- 后付款补贴 -->
       <td>{{totalSubsidyAmountO2o}}</td>
-      <td>{{totalSettlementAmount}}</td>
-      <td>{{totalFinalSettlementAmount}}</td>
+      <!-- 应付金额 -->
+      <td>{{totalAcceptanceAppropriationAmount}}</td>
+      <!-- 实付金额 -->
+      <td>{{totalFinalSettleAmount}}</td>
     </tr>
   </script>
 
