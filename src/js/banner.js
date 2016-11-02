@@ -395,6 +395,7 @@ $(document).on('submit', '#popup-banner-form form', function (event) {
 
       break;
     default:
+      alert('配置类型不存在！');
       return false;
       break;
   }
