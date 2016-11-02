@@ -60,7 +60,7 @@
               <select class="form-control" id="search_chargeMerchant">
                 <option value="">全部</option>
                 <option value="1">O2O-卡中心</option>
-                <option value="2">O2O-总行</option>
+                <option value="2">O2O-分行</option>
               </select>
             </div>
           </div>
@@ -362,15 +362,17 @@
   </script>
 
   <script id="summary-table-template" type="text/x-tmpl-mustache">
+    {{#rows}}
     <tr>
       <td>{{totalOrderCount}}</td>
-      <td>{{payType}}</td>
+      <td>{{payTool}}</td>
       <td>{{acquiringOrderType}}</td>
       <td>{{totalPayAmount}}</td>
       <td>{{totalSubsidyAmountO2o}}</td>
       <td>{{totalO2oReceivableAmount}}</td>
       <td>{{totalServiceAmount}}</td>
     </tr>
+    {{/rows}}
   </script>
 
   <script src="js/vendor.js"></script>

@@ -209,7 +209,7 @@ function handleData(res) {
     var summary = res.data.summary;
     if (summary) {
       _(summary).forEach(function(item) {
-        item.payTool = settlementCommon.parsePayTool(item.payTool);
+        item.payTool = settlementCommon.parseAcquiringPayTool(item.payTool);
         item.acquiringOrderType = settlementCommon.parseAcquiringOrderType(item.acquiringOrderType);
       });
       setSummaryTableData(summary);
@@ -226,7 +226,8 @@ function setTableData(rows) {
 }
 
 function setSummaryTableData(data) {
-	var template = $('#summary-table-template').html();
+  var data = { rows: data };
+  var template = $('#summary-table-template').html();
 	Mustache.parse(template);
 	var html = Mustache.render(template, data);
 	$('#summaryTable tbody').html(html);

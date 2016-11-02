@@ -74,6 +74,14 @@ settlementCommon.parsePayTool = function(status) {
 }
 
 
+// 收单支付渠道
+settlementCommon.acquiringPayTool = {'1' : 'O2O-卡中心', '2' : 'O2O-分行'};
+
+settlementCommon.parseAcquiringPayTool = function(status) {
+  return this.acquiringPayTool[status];
+}
+
+
 // 业务类别
 settlementCommon.bizType = {'1' : '影票', '2' : '手续费'};
 

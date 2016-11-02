@@ -308,28 +308,28 @@
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">常规活动/优惠券ID</div>
-            <input type="text" class="form-control" id="discountType" value="{{discountId}}" readonly>
+            <input type="text" class="form-control" id="discountId" value="{{discountId}}" readonly>
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">支付活动ID</div>
-            <input type="text" class="form-control" id="signatureNo" value="{{discountIdTrd}}" readonly>
+            <input type="text" class="form-control" id="discountIdTrd" value="{{discountIdTrd}}" readonly>
          </div>
 
         </div>
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">支付活动/优惠券名称</div>
-            <input type="text" class="form-control" id="discountName" value="{{discountNameTrd}}" readonly>
+            <input type="text" class="form-control" id="discountNameTrd" value="{{discountNameTrd}}" readonly>
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">支付活动补贴成本中心</div>
-            <input type="text" class="form-control" id="costCenter" value="{{costCenterTrd}}" readonly>
+            <input type="text" class="form-control" id="costCenterTrd" value="{{costCenterTrd}}" readonly>
           </div>
         </div>
 
