@@ -333,7 +333,7 @@
          <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon" style="color: red;">常规活动/优惠券ID</div>
-            <input type="text" class="form-control" id="signNum" value="{{signNum}}" readonly>
+            <input type="text" class="form-control" id="discountId" value="{{discountId}}" readonly>
           </div>
         </div>
 
