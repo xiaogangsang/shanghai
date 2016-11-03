@@ -242,7 +242,6 @@
               <div class="col-xs-2">
                 <button type="button" class="btn btn-block btn-default complete-commit">对账完成提交</button>
               </div>
-              
             </div>
           </div>
 
@@ -254,18 +253,11 @@
             <table class="table table-hover" id="summaryTable">
               <thead>
                 <tr>
-                 <!--  <th>记录数</th>
-                  <th>张数</th>
-                  <th>交易金额(元)</th>
-                  <th>退票手续费(元)</th>
-                  <th>渠道方补贴金额(元)</th>
-                  <th>应付金额(元)</th>
-                  <th>实付金额(元)</th> -->
-                  
                   <th>订单数</th>
                   <th>张数</th>
                   <th>结算金额(元)</th>
-                  <th>后付补贴金额(元)</th>
+                  <th>常规活动后付补贴金额(元)</th>
+                  <th>支付活动后付补贴金额(元)</th>
                   <th>应付金额(元)</th>
                   <th>实付金额(元)</th>
                 </tr>
@@ -285,25 +277,6 @@
                 <tr>
                   <!-- 参照activity-unit.html -->
                   <th><input type="checkbox" class="multi-check-all"></th>
-
-                  <!-- <th>出/退货时间</th>
-                  <th style="color:red">出货订单类型</th>
-                  <th style="color:red">订单来源</th>
-                  <th>交易订单号</th>
-                  <th>张数</th>
-                  <th style="color:red">结算金额</th>
-                  <th style="color:red">常规活动渠道方补贴金额</th>
-                  <th style="color:red">常规活动补贴付款方式</th>
-                  <th>退票手续费(元)</th>
-                  <th>应付金额(元)</th>
-                  <th>实付金额(元)</th>
-                  <th style="color:red">补贴活动补贴金额</th>
-                  <th style="color:red">支付活动补贴付款方式</th>
-                  <th>出货状态</th>
-                  <th>支付状态</th>
-                  <th>出货对账状态</th> -->
-
-
                   <th>出/退货时间</th>
                   <th>出货订单类型</th>
                   <th>订单来源</th>
@@ -408,22 +381,16 @@
 
   <script id="summary-table-template" type="text/x-tmpl-mustache">
     <tr data-id="{{id}}" data-bannertype="{{bannerType}}">
-  <!--     <td>{{count}}</td>
-      <td>{{totalTicketCount}}</td>
-      <td>{{totalOrderAmount}}</td>
-      <td>{{totalReturnFee}}</td>
-      <td>{{totalSubsidyAmountO2o}}</td>
-      <td>{{totalSettleAmount}}</td>
-      <td>{{totalFinalSettleAmount}}</td> -->
-
       <!-- 订单数 -->
       <td>{{count}}</td>
       <!-- 张数 -->
       <td>{{totalTicketCount}}</td>
       <!-- 结算金额 -->
       <td>{{totalSettleAmount}}</td>
-      <!-- 后付款补贴 -->
+      <!-- 常规活动后付补贴金额(元) -->
       <td>{{totalSubsidyAmountO2o}}</td>
+      <!-- 支付活动后付补贴金额(元) -->
+      <td>{{totalSubsidyAmountTrd}}</td>
       <!-- 应付金额 -->
       <td>{{totalAcceptanceAppropriationAmount}}</td>
       <!-- 实付金额 -->
