@@ -2,7 +2,7 @@
 <div class="modal fade" id="popup-balance-out-record" data-keyboard="false" data-backdrop="static">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form>
+            <form id="formBalanceOutRecord">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h5 class="modal-title">出货纪录手工录入</h5>
@@ -14,9 +14,9 @@
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
                                     <div class="input-group-addon">出货订单类型</div>
-                                    <select class="form-control" required>
-                                        <option value="1">出货调整</option>
-                                        <option value="2">退货调整</option>
+                                    <select class="form-control" id="record_shipmentOrderType" required>
+                                        <option value="3">出货调整</option>
+                                        <option value="4">退货调整</option>
                                     </select>
                                 </div>
                             </div>
@@ -32,12 +32,11 @@
                             
                             <span style="display: block; padding-left: 15px; padding-right: 15px;">支付信息</span>
                             <hr style="margin-left: 15px; margin-right: 15px; margin-top: 10px;">
-                            
                     
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
                                     <div class="input-group-addon">订单渠道</div>
-                                    <select class="form-control" required>
+                                    <select class="form-control" id="record_payTool" required>
                                         <option value="1">掌上生活</option>
                                         <option value="2">手机银行</option>
                                     </select>
@@ -45,37 +44,20 @@
                             </div>
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
-                                    <div class="input-group-addon">交易日期</div>
+                                    <div class="input-group-addon">出/退货时间</div>
                                     <input type="text" class="form-control" id="search_startTime" required data-parsley-pattern="[0-9]{4}?-[0-9]{2}?-[0-9]{2}?">
                                 </div>
                             </div>
-                            
-                            <div class="form-group col-sm-12">
-                                <div class="col-sm-6" style="padding-left :0px;">
-                                    <div class="input-group">
-                                        <div class="input-group-addon">支付流水状态</div>
-                                        <select class="form-control" required>
-                                            <option value="1">待支付</option>
-                                            <option value="2">支付成功</option>
-                                            <option value="2">支付失败</option>
-                                            <option value="2">退款成功</option>
-                                            <option value="2">退款失败</option>
-                                            <option value="2">已关闭</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                                    
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
-                                    <div class="input-group-addon">应收用户金额(元)</div>
-                                    <input type="text" class="form-control" data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?">
+                                    <div class="input-group-addon">影片</div>
+                                    <input type="text" id="record_movieName" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
-                                    <div class="input-group-addon">应收用户积分</div>
-                                    <input type="text" class="form-control" data-parsley-pattern="(-)?[0-9]{0,6}">
+                                    <div class="input-group-addon">影院</div>
+                                    <input type="text" id="record_cinemaName" class="form-control">
                                 </div>
                             </div>
                         </div>
@@ -86,53 +68,67 @@
 
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
-                                    <div class="input-group-addon">收单商户</div>
-                                    <select class="form-control" required>
-                                        <option value="1">O2O_卡中心</option>
-                                        <option value="2">O2O_总行</option>
-                                    </select>
+                                    <div class="input-group-addon">二级商户名</div>
+                                    <input type="text" id="record_merchantName" class="form-control" required>
                                 </div>
                             </div>
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
-                                    <div class="input-group-addon">收单商户号</div>
-                                    <input type="text" class="form-control">
+                                    <div class="input-group-addon">二级商户号</div>
+                                    <input type="text" id="record_merhcantNo" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <div class="input-group">
+                                    <div class="input-group-addon">二级商户订单号</div>
+                                    <input type="text" id="record_thdOrderNo" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
                                     <div class="input-group-addon">交易订单号</div>
-                                    <input type="text" class="form-control">
+                                    <input type="text" id="record_orderNo" class="form-control" required>
                                 </div>
                             </div>
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
-                                    <div class="input-group-addon">收单方支付订单号</div>
-                                    <input type="text" class="form-control">
+                                    <div class="input-group-addon">用户支付金额(元)</div>
+                                    <input type="text" id="record_payAmount" class="form-control" required data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?">
                                 </div>
                             </div>
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
-                                    <div class="input-group-addon">票价(元)</div>
-                                    <input type="text" class="form-control" data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?">
+                                    <div class="input-group-addon">用户支付积分</div>
+                                    <input type="text" id="record_receivablePoint" class="form-control" required data-parsley-pattern="(-)?[0-9]{0,6}">
                                 </div>
                             </div>
-                            <div class="form-group col-sm-6">
-                                <div class="input-group">
-                                    <div class="input-group-addon">服务费(元)</div>
-                                    <input type="text" class="form-control" data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?">
-                                </div>
-                            </div>
-                            <div class="form-group col-sm-6">
-                                <div class="input-group">
-                                    <div class="input-group-addon">渠道方常规补贴金额(元)</div>
-                                    <input type="text" class="form-control" data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?">
+                            <div class="col-sm-12" style="padding-left :0px;">
+                                <div class="form-group col-sm-6">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">交易金额(元)</div>
+                                        <input type="text" id="record_settleAmount" class="form-control" required data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?">
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
                                     <div class="input-group-addon">常规补贴付款方式</div>
-                                    <select class="form-control" required>
+                                    <select class="form-control" id="record_subsidyType" required>
+                                        <option value="1">预付</option>
+                                        <option value="2">后付</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <div class="input-group">
+                                    <div class="input-group-addon">渠道方常规补贴金额(元)</div>
+                                    <input type="text" class="form-control" id="record_subsidyAmountO2o" required data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?">
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <div class="input-group">
+                                    <div class="input-group-addon">支付补贴付款方式</div>
+                                    <select class="form-control" id="record_subsidyTypeTrd" required>
                                         <option value="1">预付</option>
                                         <option value="2">后付</option>
                                     </select>
@@ -141,50 +137,35 @@
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
                                     <div class="input-group-addon">支付活动补贴金额(元)</div>
-                                    <input type="text" class="form-control" data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?">
-                                </div>
-                            </div>
-                            <div class="form-group col-sm-6">
-                                <div class="input-group">
-                                    <div class="input-group-addon">支付补贴付款方式</div>
-                                    <select class="form-control" required>
-                                        <option value="1">预付</option>
-                                        <option value="2">后付</option>
-                                    </select>
+                                    <input type="text" class="form-control" id="record_subsidyAmountTrd" required data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?">
                                 </div>
                             </div>
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
                                     <div class="input-group-addon">退票手续费(元)</div>
-                                    <input type="text" class="form-control" data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?">
+                                    <input type="text" class="form-control" id="record_returnFee" required data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?">
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <div class="input-group">
+                                    <div class="input-group-addon">应付金额(元)</div>
+                                    <input type="text" class="form-control" id="record_acceptanceAppropriation" required data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?">
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <div class="input-group">
+                                    <div class="input-group-addon">实付金额(元)</div>
+                                    <input type="text" class="form-control" id="record_finalSettlementAmount" required data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?">
                                 </div>
                             </div>
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
                                     <div class="input-group-addon">退款承债方</div>
-                                    <select class="form-control" required>
-                                        <option value="1">无承债方</option>
-                                        <option value="2">商户承债</option>
-                                        <option value="3">O2O承债</option>
+                                    <select class="form-control" id="record_partner" required>
+                                        <option value="0">无承债方</option>
+                                        <option value="1">O2O承债</option>
+                                        <option value="2">商户承债</option>                                    
                                     </select>
-                                </div>
-                            </div>
-                            <div class="form-group col-sm-6">
-                                <div class="input-group">
-                                    <div class="input-group-addon">O2O应收金额(元)</div>
-                                    <input type="text" class="form-control" data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?">
-                                </div>
-                            </div>
-                             <div class="form-group col-sm-6">
-                                <div class="input-group">
-                                    <div class="input-group-addon">实收金额(元)</div>
-                                    <input type="text" class="form-control" data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?">
-                                </div>
-                            </div>
-                            <div class="form-group col-sm-12">
-                                <div class="input-group">
-                                    <div class="input-group-addon">退款原因</div>
-                                    <input type="text" class="form-control">
                                 </div>
                             </div>
                         </div>
@@ -197,10 +178,10 @@
                                 <div class="form-group col-sm-6">
                                     <div class="input-group">
                                         <div class="input-group-addon">常规优惠方式</div>
-                                        <select class="form-control" required>
-                                            <option value="1">优惠券</option>
-                                            <option value="2">活动</option>
-                                            <option value="2">无优惠</option>
+                                        <select class="form-control" id="record_discountType" required>
+                                            <option value="0">无优惠</option>
+                                            <option value="1">活动</option>
+                                            <option value="2">优惠券</option>
                                         </select>
                                     </div>
                                 </div>
@@ -208,31 +189,50 @@
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
                                     <div class="input-group-addon">活动/优惠券名称</div>
-                                    <input type="text" class="form-control">
+                                    <input type="text" id="record_discountName" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
                                     <div class="input-group-addon">活动/优惠券ID</div>
-                                    <input type="text" class="form-control" data-parsley-pattern="[0-9]{1,21}">
+                                    <input type="text" id="record_discountId" class="form-control" data-parsley-pattern="[0-9]{1,21}">
                                 </div>
                             </div>
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
                                     <div class="input-group-addon">常规补贴成本中心</div>
-                                    <input type="text" class="form-control">
+                                    <input type="text" id="record_costCenter" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
-                                    <div class="input-group-addon">签报号</div>
-                                    <input type="text" class="form-control">
+                                    <div class="input-group-addon">常规活动签报号</div>
+                                    <input type="text" id="record_signNum" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
                                     <div class="input-group-addon">支付活动成本中心</div>
-                                    <input type="text" class="form-control">
+                                    <input type="text" id="record_costCenterTrd" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" style="margin-top :10px;">
+                            <span style="display: block; padding-left: 15px; padding-right: 15px;">状态信息</span>
+                            <hr style="margin-left: 15px; margin-right: 15px; margin-top: 10px;">
+
+                            <div class="form-group col-sm-6">
+                                <div class="input-group">
+                                    <div class="input-group-addon">出货状态</div>
+                                    <select class="form-control" id="record_shipmentStatus">
+                                        <option value="1">未出货</option>
+                                        <option value="2">出货成功</option>
+                                        <option value="3">出货失败</option>
+                                        <option value="4">出货中</option>
+                                        <option value="7">退货成功</option>
+                                        <option value="8">退货失败</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>

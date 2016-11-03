@@ -58,20 +58,23 @@
                         </div>
 
                         <div class="col-sm-12" style="margin-top: 30px; margin-bottom: 10px;">
-                            <button type="button" class="btn btn-block btn-default btn-debug-record-in">收单纪录手工录入</button>
+                            <button type="button" id="btn-debug-record-in" class="btn btn-block btn-default">收单纪录手工录入</button>
                         </div>
                         <div class="col-sm-12">
-                            <button type="button" class="btn btn-block btn-default btn-debug-record-out">出货纪录手工录入</button>
+                            <button type="button" id="btn-debug-record-out" class="btn btn-block btn-default">出货纪录手工录入</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    
     <script src="js/vendor.js"></script>
     <script src="js/balance-out-record-batch-creator.js"></script>
-    @@include('component/popup-balance-in-record.tpl')
+
+    <!-- @@include('component/popup-balance-in-record.tpl') -->
     @@include('component/popup-balance-out-record.tpl')
+
 </body>
 
 </html>
