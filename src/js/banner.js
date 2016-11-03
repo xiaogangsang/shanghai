@@ -630,7 +630,6 @@ function setModal(bannerData, type) {
   var data;
   var template;
   var html;
-  type = !~~type ? 1 : +type;
   if (bannerData) {
     data = { banner: bannerData, channels: _channels };
     switch (+bannerData.bannerType) {
@@ -669,7 +668,7 @@ function setModal(bannerData, type) {
     $('#popup-banner-form .modal-title').html('编辑[' + _bannerType[bannerData.bannerType] + ']');
   } else {
     data = { channels: _channels };
-    switch (type) {
+    switch (+type) {
       case 1:
         template = $('#create-home-template').html();
         break;
