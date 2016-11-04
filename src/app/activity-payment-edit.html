@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="images/favicon.ico" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>活动中心</title>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/activity.css">
+</head>
+<body>
+
+  @@include('component/header.tpl')
+
+  <div class="container-fluid">
+
+    <div class="row">
+
+      @@include('component/sidebar.tpl')
+
+      <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+        <ol class="breadcrumb">
+          <li>活动中心</li>
+          <li>支付活动管理</li>
+          <li class="active">新建</li>
+        </ol>
+
+        <section class="activity-unit-edit">
+          <h3>新建支付活动</h3>
+          <form id="formUnit">
+
+            <div class="edit-section">
+              <h4>基本信息</h4>
+              <div class="form-group col-sm-6">
+                <div class="input-group">
+                  <div class="input-group-addon">活动类型</div>
+                  <select class="form-control" id="type">
+                    <option value="1">随机立减</option>
+                  </select>
+                  <div id="error-planId"></div>
+                </div>
+              </div>
+              <div class="form-group col-sm-6">
+                <div class="input-group">
+                  <div class="input-group-addon">活动名称</div>
+                  <input type="text" class="form-control" id="name" required maxlength="20">
+                </div>
+              </div>
+              <div class="form-group col-sm-6">
+                <div class="input-group">
+                  <div class="input-group-addon">开始日期</div>
+                  <input type="text" class="form-control" id="beginDate" required readonly>
+                </div>
+              </div>
+              <div class="form-group col-sm-6">
+                <div class="input-group">
+                  <div class="input-group-addon">结束日期</div>
+                  <input type="text" class="form-control" id="endDate" required readonly>
+                </div>
+              </div>
+              <div class="form-group col-sm-12">
+                <div class="input-group">
+                  <div class="input-group-addon">每日生效时间</div>
+                  <input type="text" class="form-control time-input" maxlength="2" id="beginHH" value="00" data-parsley-pattern="^\d{1,2}$" min="00" max="23" data-parsley-errors-container="#error-dailytime">时
+                  <input type="text" class="form-control time-input" maxlength="2" id="beginMM" value="00" data-parsley-pattern="^\d{1,2}$" min="00" max="59" data-parsley-errors-container="#error-dailytime">分
+                  <input type="text" class="form-control time-input" maxlength="2" id="beginSS" value="00" data-parsley-pattern="^\d{1,2}$" min="00" max="59" data-parsley-errors-container="#error-dailytime">秒
+                  <span> - </span>
+                  <input type="text" class="form-control time-input" maxlength="2" id="endHH" value="23" data-parsley-pattern="^\d{1,2}$" min="00" max="23" data-parsley-errors-container="#error-dailytime">时
+                  <input type="text" class="form-control time-input" maxlength="2" id="endMM" value="59" data-parsley-pattern="^\d{1,2}$" min="00" max="59" data-parsley-errors-container="#error-dailytime">分
+                  <input type="text" class="form-control time-input" maxlength="2" id="endSS" value="59" data-parsley-pattern="^\d{1,2}$" min="00" max="59" data-parsley-errors-container="#error-dailytime">秒
+                  <div id="error-dailytime"></div>
+                </div>
+              </div>
+              <div class="form-group col-sm-12">
+                <div class="input-group">
+                  <div class="input-group-addon">周期重复选择</div>
+                  <div class="checkbox-inline"><label><input type="checkbox" id="repeatedDayAll"><span>全部</span></label></div>
+                  <div class="checkbox-inline"><label><input type="checkbox" name="repeatedDay" value="1" required data-parsley-errors-container="#error-repeatedDay"><span>周一</span></label></div>
+                  <div class="checkbox-inline"><label><input type="checkbox" name="repeatedDay" value="2" required data-parsley-errors-container="#error-repeatedDay"><span>周二</span></label></div>
+                  <div class="checkbox-inline"><label><input type="checkbox" name="repeatedDay" value="3" required data-parsley-errors-container="#error-repeatedDay"><span>周三</span></label></div>
+                  <div class="checkbox-inline"><label><input type="checkbox" name="repeatedDay" value="4" required data-parsley-errors-container="#error-repeatedDay"><span>周四</span></label></div>
+                  <div class="checkbox-inline"><label><input type="checkbox" name="repeatedDay" value="5" required data-parsley-errors-container="#error-repeatedDay"><span>周五</span></label></div>
+                  <div class="checkbox-inline"><label><input type="checkbox" name="repeatedDay" value="6" required data-parsley-errors-container="#error-repeatedDay"><span>周六</span></label></div>
+                  <div class="checkbox-inline"><label><input type="checkbox" name="repeatedDay" value="7" required data-parsley-errors-container="#error-repeatedDay"><span>周日</span></label></div>
+                  <div id="error-repeatedDay"></div>
+                </div>
+              </div>
+              <div class="form-group col-sm-6">
+                <div class="input-group">
+                  <div class="input-group-addon">成本中心类别</div>
+                  <select class="form-control" id="level">
+                    <option></option>
+                    <option value="0">总行</option>
+                    <option value="1">支行</option>
+                    <option value="2">卡中心</option>
+                    <option value="3">卡部</option>
+                    <option value="4">O2O项目组</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group col-sm-6">
+                <div class="input-group">
+                  <div class="input-group-addon">成本中心</div>
+                  <select class="form-control" id="budgetSource" required data-parsley-errors-container="#error-budgetSource">
+                    <option></option>
+                  </select>
+                  <div id="error-budgetSource"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="edit-section">
+              <h4>活动标记</h4>
+              <div class="form-group col-sm-6">
+                <div class="input-group">
+                  <div class="input-group-addon">影院页</div>
+                  <input type="text" class="form-control" id="cinemaPageDesc" maxlength="10">
+                </div>
+              </div>
+              <div class="form-group col-sm-6">
+                <div class="input-group">
+                  <div class="input-group-addon">活动列表icon</div>
+                  <input type="text" class="form-control" id="activityIcon" maxlength="6">
+                </div>
+              </div>
+              <div class="form-group col-xs-12">
+                <div class="input-group">
+                  <div class="input-group-addon">活动列表描述</div>
+                  <input type="text" class="form-control" id="activityDesc" maxlength="15">
+                </div>
+              </div>
+              <div class="form-group col-xs-12">
+                <div class="input-group">
+                  <div class="input-group-addon">规则描述</div>
+                  <textarea rows="6" class="form-control" id="activityRuleDesc"></textarea>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-4">
+                <button type="submit" class="btn btn-block btn-primary">保存</button>
+              </div>
+            </div>
+
+          </form>
+
+        </section>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="js/vendor.js"></script>
+  <script src="js/activity-payment-edit.js"></script>
+</body>
+</html>
