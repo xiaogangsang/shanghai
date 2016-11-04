@@ -205,6 +205,9 @@ function handleData(res) {
       item.shipmentStatus = settlementCommon.parseShipmentStatus(item.shipmentStatus);
       item.checkStatusNo = item.checkStatus;
       item.checkStatus = settlementCommon.parseCheckStatus(item.checkStatus);
+      item.shipmentOrderType = settlementCommon.parseShipmentOrderType(item.shipmentOrderType);
+      item.orderSource = settlementCommon.parseOrderSource(item.orderSource);
+      item.subsidyTypeTrd = settlementCommon.parseSubsidyType(item.subsidyTypeTrd);
     });
 
     if (!_queryingFromSelectedSummary) {
@@ -357,7 +360,9 @@ $('.complete-commit').click(function(e) {
     return false;
   }
 
-  if (_queryingFromSelectedSummary) {
+  var confirmMessage = confirm("确定要提交吗？");
+  if (confirmMessage == true) {
+    if (_queryingFromSelectedSummary) {
     var param = {'shipmentInfoFormCollection' : _selectedSummary.shipmentInfoFormCollection};
     $.ajax({
       url: common.API_HOST + 'settlement/shipmentInfo/listSummaryDetailUpdate',
@@ -387,6 +392,7 @@ $('.complete-commit').click(function(e) {
       }
     });
   }
+  } 
 });
 
 $('#dataTable').on('click', '.btn-edit', function (e) {
@@ -417,6 +423,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     detail.acquiringReconciliationStatus = settlementCommon.parseReconciliationStatus(detail.acquiringReconciliationStatus);
     detail.subsidyType = settlementCommon.parseSubsidyType(detail.subsidyType);
     detail.partner = settlementCommon.parsePartner(detail.partner);
+    detail.subsidyTypeTrd = settlementCommon.parseSubsidyType(detail.subsidyTypeTrd);
 
     var operate = data.operate;
 
@@ -437,6 +444,8 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
 
     // $('#subsidyType option[value="' + detail.subsidyType + '"]').prop('selected', true);
     // $('#partner option[value="' + detail.partner + '"]').prop('selected', true);
+    $('#subsidyType option[value="' + detail.subsidyType + '"]').prop('selected', true);
+    $('#subsidyTypeTrd option[value="' + detail.subsidyTypeTrd + '"]').prop('selected', true);
     $('#shipmentStatus option[value="' + detail.shipmentStatus + '"]').prop('selected', true);
     $('#reconciliationStatus option[value="' + detail.reconciliationStatus + '"]').prop('selected', true);
     $('#reason option[value="' + detail.reason + '"]').prop('selected', true);
@@ -514,6 +523,11 @@ $(document).on('submit', '#popup-detail form', function(e) {
     }
   });
 });
+
+// 补订单记录
+$('.btn-complement').click(function(e) {
+      alert('跳转到补订单记录页面');
+  });
 
 /************************************************* 批量操作 ***************************************************/
 $('.multi-check-all').change(function(e) {

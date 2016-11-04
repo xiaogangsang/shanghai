@@ -111,7 +111,7 @@ function fileChangeHandler(e, el) {
 		if (size < 1024576 * 50) {
 			var fileName = file.name;
 			var fileExt = fileName.substring(fileName.lastIndexOf('.'));
-			var validExts = ['.xls'];
+			var validExts = ['.xls', '.xlsx'];
 			if (validExts.indexOf(fileExt) >= 0) {
 				var input = $(el).parents('.input-group').find(':text');
 			  input.val(fileName);
