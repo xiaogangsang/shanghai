@@ -185,6 +185,10 @@ function handleData(res) {
 
     _(record).forEach(function(item) {
       item.chargeMerchant = settlementCommon.parseMerchant(item.chargeMerchant);
+      item.acquiringOrderType = settlementCommon.parseAcquiringOrderType(item.acquiringOrderType);
+      item.subsidyTypeTrd = settlementCommon.parseSubsidyType(item.subsidyTypeTrd);
+      item.subsidyType = settlementCommon.parseSubsidyType(item.subsidyType);
+      item.orderSource = settlementCommon.parseOrderSource(item.orderSource);
       item.payStatus = settlementCommon.parsePayStatus(item.payStatus);
       item.reconciliationStatus = settlementCommon.parseReconciliationStatus(item.reconciliationStatus);
       item.reason = settlementCommon.parseReason(item.reason);
@@ -202,8 +206,13 @@ function handleData(res) {
     setTableData(record);
 
     // 从汇总页点击查看选中明细, 是没有summary返回的
-    if (res.data.summary) {
-      setSummaryTableData(res.data.summary);
+    var summary = res.data.summary;
+    if (summary) {
+      _(summary).forEach(function(item) {
+        item.payTool = settlementCommon.parseAcquiringPayTool(item.payTool);
+        item.acquiringOrderType = settlementCommon.parseAcquiringOrderType(item.acquiringOrderType);
+      });
+      setSummaryTableData(summary);
     }
   }
 }
@@ -217,7 +226,8 @@ function setTableData(rows) {
 }
 
 function setSummaryTableData(data) {
-	var template = $('#summary-table-template').html();
+  var data = { rows: data };
+  var template = $('#summary-table-template').html();
 	Mustache.parse(template);
 	var html = Mustache.render(template, data);
 	$('#summaryTable tbody').html(html);
@@ -342,6 +352,11 @@ $('.complete-commit').click(function(e) {
     return false;
   }
 
+  var result =  confirm("确定提交?");
+  if(result == false){
+    return;
+  }
+
   if (_queryingFromSelectedSummary) {
     var param = {'acquiringInfoFormCollection' : _selectedSummary.acquiringInfoFormCollection};
     $.ajax({
@@ -419,6 +434,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     $('#popup-detail').modal('show');
 
     $('#subsidyType option[value="' + detail.subsidyType + '"]').prop('selected', true);
+    $('#subsidyTypeTrd option[value="' + detail.subsidyTypeTrd + '"]').prop('selected', true);
     $('#partner option[value="' + detail.partner + '"]').prop('selected', true);
     $('#reconciliationStatus option[value="' + detail.reconciliationStatus + '"]').prop('selected', true);
     $('#reason option[value="' + detail.reason + '"]').prop('selected', true);
@@ -570,6 +586,12 @@ $('body').on('click', '.batch-status-update', function(e) {
 
   $('#targetStatus option:selected').prop('selected', false);
   $('#popup-status-choose').modal('show');
+});
+
+$('body').on('click', '.add-order-record', function(e) {
+  e.preventDefault();
+
+  alert('jump to new page');
 });
 
 $('body').on('click', '.btn-status-update-cancel', function(e) {
