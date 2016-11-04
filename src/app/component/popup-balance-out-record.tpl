@@ -23,7 +23,9 @@
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
                                     <div class="input-group-addon">订单来源</div>
-                                    <input type="text" class="form-control" value="人工" readonly>
+                                    <select class="form-control" required>
+                                        <option value>人工</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -69,7 +71,7 @@
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
                                     <div class="input-group-addon">二级商户名</div>
-                                    <input type="text" id="record_merchantName" class="form-control" required>
+                                    <input type="text" id="record_merchantName" class="form-control" required readonly>
                                 </div>
                             </div>
                             <div class="form-group col-sm-6">
