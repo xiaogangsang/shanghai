@@ -5,7 +5,6 @@ var cssmin = require('gulp-cssmin');
 var md5 = require('gulp-md5-plus');
 var fileinclude = require('gulp-file-include');
 var clean = require('gulp-clean');
-var browserSync = require('browser-sync');
 var webpack = require('webpack');
 var webpackConfig = require('./webpack.config.js');
 var runSequence = require('run-sequence');
@@ -72,30 +71,15 @@ gulp.task('clean', function (done) {
 
 gulp.task('watch', function (done) {
   gulp.watch('src/**/*', ['build-css', 'build-js', 'fileinclude'])
-  .on('change', browserSync.reload)
   .on('end', done);
 });
 
-gulp.task('connect', function () {
-  browserSync.init({
-    server: {
-      baseDir: 'dist/',
-      directory: true,
-    },
-    reloadDelay: 500,
-  });
-});
-
 //发布
-// gulp.task('release', ['clean', 'fileinclude', 'copy', 'md5:css']);
-
-gulp.task('release', function(callback) {
-  runSequence('clean', ['fileinclude', 'copy', 'md5:css'], callback);
+gulp.task('release', function () {
+  runSequence('clean', ['fileinclude', 'copy', 'md5:css']);
 });
 
 //开发
-// gulp.task('dev', ['clean', 'fileinclude', 'copy', 'build-css', 'build-js', 'connect', 'watch']);
-
-gulp.task('dev', function(callback) {
-  runSequence('clean', ['fileinclude', 'copy', 'build-css', 'build-js', 'connect', 'watch'], callback);
+gulp.task('dev', function () {
+  runSequence('clean', ['fileinclude', 'copy', 'build-css', 'build-js', 'watch']);
 });
