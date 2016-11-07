@@ -48,7 +48,7 @@ function fileChangeHandler(e, el) {
         if (size < 1024576 * 50) {
             var fileName = file.name;
             var fileExt = fileName.substring(fileName.lastIndexOf('.'));
-            var validExts = ['.xls'];
+            var validExts = ['.xls', '.xlsx'];
             if (validExts.indexOf(fileExt) >= 0) {
                 var input = $(el).parents('.input-group').find(':text');
                 input.val(fileName);
@@ -56,7 +56,7 @@ function fileChangeHandler(e, el) {
             } else {
                 var input = $(el).parents('.input-group').find(':text');
                 input.val('');
-                alert('不支持的文件格式!  (仅支持 .xls)');
+                alert('不支持的文件格式!  (仅支持 .xls .xlsx)');
             }
         } else {
             alert('文件大小超过50MB!');
