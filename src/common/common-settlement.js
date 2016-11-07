@@ -185,7 +185,7 @@ settlementCommon.parseFileStatus = function(status) {
 }
 
 // 对账批处理类型
-settlementCommon.balanceFileType = {'1' : '收单状态', '2' : '出货状态', '3' : '收单商户信息', '4' : '出货商户信息'};
+settlementCommon.balanceFileType = {'1' : '收单状态', '2' : '出货状态', '3' : '收单商户信息', '4' : '出货商户信息', '5' : '出货调整', '6' : '退货调整'};
 settlementCommon.parseBalanceFileType = function(status) {
   return this.balanceFileType[status];
 }

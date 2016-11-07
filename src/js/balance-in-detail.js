@@ -453,12 +453,6 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
   $('#popup-detail form').parsley().validate();
 });
 
-
-$(document).on('click', '.modal button[type=submit]', function(event) {
-  event.preventDefault();
-  $('#popup-detail form').trigger('submit');
-});
-
 // 修改详情 "提交"
 $(document).on('submit', '#popup-detail form', function(e) {
   e.preventDefault();
@@ -590,8 +584,7 @@ $('body').on('click', '.batch-status-update', function(e) {
 
 $('body').on('click', '.add-order-record', function(e) {
   e.preventDefault();
-
-  alert('jump to new page');
+  $('#popup-balance-in-record').modal('show');
 });
 
 $('body').on('click', '.btn-status-update-cancel', function(e) {
@@ -610,6 +603,74 @@ function selectedIds() {
   return ids;
 }
 
+/****************** 补订单 *******************/
+
+$(document).on('submit', '#formBalanceInRecord', function(e) {
+  e.preventDefault();
+
+  if (!$('#formBalanceInRecord').parsley().isValid()) {
+    return false;
+  }
+  // 若收单订单类型为退款，则应收用户金额，应收用户积分应该为0或负值
+  var acquiringOrderType = $('#record_acquiringOrderType').val();
+  var payAmount = $('#record_payAmount').val();
+  var receivablePoint = $('#record_receivablePoint').val();
+  if (~~acquiringOrderType === 2) {
+    if (~~payAmount > 0) {
+      alert("若收单订单类型为退款，则应收用户金额应为0或负值");
+      return false;
+    }
+    if (~~receivablePoint > 0) {
+      alert("若收单订单类型为退款，则应收用户积分应为0或负值");
+      return false;
+    }
+  }
+
+  var param = {
+    acquiringOrderType: $('#record_acquiringOrderType').val(),
+    payTool: $('#record_payTool').val(),
+    createTime: $('#record_createTime').val(),
+    payStatus: $('#record_payStatus').val(),
+    payAmount: $('#record_payAmount').val(),
+    receivablePoint: $('#record_receivablePoint').val(),
+    chargeMerchant: $('#record_chargeMerchant').val(),
+    chargeMerchantNo: $('#record_chargeMerchantNo').val(),
+    orderNo: $('#record_orderNo').val(),
+    thdSerialNo: $('#record_thdSerialNo').val(),
+    ticketAmount: $('#record_ticketAmount').val(),
+    serviceAmount: $('#record_serviceAmount').val(),
+    subsidyAmountO2o: $('#record_subsidyAmountO2o').val(),
+    subsidyType: $('#record_subsidyType').val(),
+    subsidyAmountTrd: $('#record_subsidyAmountTrd').val(),
+    subsidyTypeTrd: $('#record_subsidyTypeTrd').val(),
+    returnFee: $('#record_returnFee').val(),
+    partner: $('#record_partner').val(),
+    o2oReceivableAmount: $('#record_o2oReceivableAmount').val(),
+    bankAmount: $('#record_bankAmount').val(),
+    refundReason: $('#record_refundReason').val(),
+    discountType: $('#record_discountType').val(),
+    discountId: $('#record_discountId').val(),
+    discountName: $('#record_discountName').val(),
+    costCenter: $('#record_costCenter').val(),
+    signatureNo: $('#record_signatureNo').val(),
+    costCenterTrd: $('#record_costCenterTrd').val()
+  };
+
+  $.ajax({
+    url: common.API_HOST + "settlement/acquiring/insertOnlyAcquiringInfo",
+    type: 'GET',
+    data: param
+  })
+  .done(function(res) {
+    if (!!~~res.meta.result) {
+      alert("录入成功，请至列表查看");
+      $("#formBalanceInRecord button.close").trigger('click');
+      $("#formBalanceInRecord :input").val("");
+    } else {
+      alert("录入失败，请检查数据后重试");
+    }
+  })  
+});
 
 
 

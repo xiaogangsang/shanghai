@@ -463,11 +463,6 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
   });
 });
 
-$(document).on('click', '.modal button[type=submit]', function(event) {
-  event.preventDefault();
-  $('#popup-detail form').trigger('submit');
-});
-
 // 修改提交
 $(document).on('submit', '#popup-detail form', function(e) {
   e.preventDefault();
@@ -526,8 +521,9 @@ $(document).on('submit', '#popup-detail form', function(e) {
 
 // 补订单记录
 $('.btn-complement').click(function(e) {
-      alert('跳转到补订单记录页面');
-  });
+  e.preventDefault();
+  $('#popup-balance-out-record').modal('show');
+});
 
 /************************************************* 批量操作 ***************************************************/
 $('.multi-check-all').change(function(e) {
@@ -613,3 +609,85 @@ function selectedIds() {
 
   return ids;
 }
+
+/****************** 补订单 *******************/
+
+$(document).on('blur', '#record_merhcantNo', function(e) {
+  e.preventDefault();
+
+  var merchantNo = $('#record_merhcantNo').val().trim();
+  if (!merchantNo) return false;
+  $.ajax({
+    url: common.API_HOST + "settlement/merchantinfo/query",
+    type: 'GET',
+    data: {merchantId: merchantNo}
+  })
+  .done(function(res) {
+    if (!!~~res.meta.result) {
+      var merchantName = res.data.merchantName;
+      if (merchantName) {
+        $('#record_merchantName').val(merchantName);
+      }
+    }
+  })  
+});
+
+$(document).on('submit', '#formBalanceOutRecord', function(e) {
+  e.preventDefault();
+
+  var merchantName = $('#record_merchantName').val();
+  if (!merchantName) {
+    alert("请输入正确的二级商户号，系统会根据商户号自动填充二级商户名，缺少二级商户名无法录入");
+    return false;
+  }
+  
+  if (!$('#formBalanceOutRecord').parsley().isValid()) {
+    return false;
+  }
+
+  var param = {
+    shipmentOrderType: $('#record_shipmentOrderType').val(),
+    payTool: $('#record_payTool').val(),
+    shipmentDate: $('#record_shipmentDate').val(),
+    movieName: $('#record_movieName').val(),
+    cinemaName: $('#record_cinemaName').val(),
+    merchantName: $('#record_merchantName').val(),
+    merhcantNo: $('#record_merhcantNo').val(),
+    orderNo: $('#record_orderNo').val(),
+    thdOrderNo: $('#record_thdOrderNo').val(),
+    payAmount: $('#record_payAmount').val(),
+    receivablePoint: $('#record_receivablePoint').val(),
+    settleAmount: $('#record_settleAmount').val(),
+    subsidyType: $('#record_subsidyType').val(),
+    subsidyAmountO2o: $('#record_subsidyAmountO2o').val(),
+    subsidyTypeTrd: $('#record_subsidyTypeTrd').val(),
+    subsidyAmountTrd: $('#record_subsidyAmountTrd').val(),
+    returnFee: $('#record_returnFee').val(),
+    acceptanceAppropriation: $('#record_acceptanceAppropriation').val(),
+    finalSettlementAmount: $('#record_finalSettlementAmount').val(),
+    partner: $('#record_partner').val(),
+    discountType: $('#record_discountType').val(),
+    discountId: $('#record_discountId').val(),
+    discountName: $('#record_discountName').val(),
+    costCenter: $('#record_costCenter').val(),
+    signNum: $('#record_signNum').val(),
+    costCenterTrd: $('#record_costCenterTrd').val(),
+    shipmentStatus: $('#record_shipmentStatus').val()
+  }
+
+  $.ajax({
+    url: common.API_HOST + "settlement/shipmentInfo/insertOnlyShipmentInfo",
+    type: 'GET',
+    data: param
+  })
+  .done(function(res) {
+    if (!!~~res.meta.result) {
+      alert("录入成功，请至列表查看");
+      $("#formBalanceOutRecord button.close").trigger('click');
+      $("#formBalanceOutRecord :input").val("");
+    } else {
+      alert("录入失败，请检查数据后重试");
+    }
+  })  
+});
+

@@ -23,7 +23,7 @@
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
                                     <div class="input-group-addon">订单来源</div>
-                                    <select class="form-control" required>
+                                    <select class="form-control">
                                         <option value>人工</option>
                                     </select>
                                 </div>
@@ -48,7 +48,7 @@
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
                                     <div class="input-group-addon">支付时间</div>
-                                    <input type="text" class="form-control" id="search_startTime" required data-parsley-pattern="[0-9]{4}?-[0-9]{2}?-[0-9]{2}?">
+                                    <input type="text" class="form-control" id="record_createTime" required data-parsley-pattern="[0-9]{4}?-[0-9]{2}?-[0-9]{2}?">
                                 </div>
                             </div>
                             <div class="form-group col-sm-12">
@@ -250,3 +250,24 @@
         </div>
     </div>
 </div>
+<script>
+    $('#record_createTime').datetimepicker({
+        format: 'yyyy-mm-dd',
+        language: 'zh-CN',
+        minView: 2,
+        todayHighlight: true,
+        autoclose: true,
+    });
+    
+    $(document).on('change', '#record_discountType', function(e) {
+      e.preventDefault();
+      
+      // 若存在常规优惠活动时，以下字段必填
+      var discountType = $('#record_discountType').val();
+      $('#record_discountName').prop('required', (~~discountType > 0)); // 活动/优惠券名称
+      $('#record_discountId').prop('required', (~~discountType > 0));   // 活动/优惠券ID
+      $('#record_costCenter').prop('required', (~~discountType > 0));   // 常规补贴成本中心
+      $('#record_signatureNo').prop('required', (~~discountType > 0));  // 签报号
+      $('#record_costCenterTrd').prop('required', (~~discountType > 0));  // 支付活动成本中心
+    });
+</script>
