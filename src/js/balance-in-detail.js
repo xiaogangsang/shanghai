@@ -185,6 +185,10 @@ function handleData(res) {
 
     _(record).forEach(function(item) {
       item.chargeMerchant = settlementCommon.parseMerchant(item.chargeMerchant);
+      item.acquiringOrderType = settlementCommon.parseAcquiringOrderType(item.acquiringOrderType);
+      item.subsidyTypeTrd = settlementCommon.parseSubsidyType(item.subsidyTypeTrd);
+      item.subsidyType = settlementCommon.parseSubsidyType(item.subsidyType);
+      item.orderSource = settlementCommon.parseOrderSource(item.orderSource);
       item.payStatus = settlementCommon.parsePayStatus(item.payStatus);
       item.reconciliationStatus = settlementCommon.parseReconciliationStatus(item.reconciliationStatus);
       item.reason = settlementCommon.parseReason(item.reason);
@@ -202,8 +206,13 @@ function handleData(res) {
     setTableData(record);
 
     // 从汇总页点击查看选中明细, 是没有summary返回的
-    if (res.data.summary) {
-      setSummaryTableData(res.data.summary);
+    var summary = res.data.summary;
+    if (summary) {
+      _(summary).forEach(function(item) {
+        item.payTool = settlementCommon.parseAcquiringPayTool(item.payTool);
+        item.acquiringOrderType = settlementCommon.parseAcquiringOrderType(item.acquiringOrderType);
+      });
+      setSummaryTableData(summary);
     }
   }
 }
@@ -217,7 +226,8 @@ function setTableData(rows) {
 }
 
 function setSummaryTableData(data) {
-	var template = $('#summary-table-template').html();
+  var data = { rows: data };
+  var template = $('#summary-table-template').html();
 	Mustache.parse(template);
 	var html = Mustache.render(template, data);
 	$('#summaryTable tbody').html(html);
@@ -342,6 +352,11 @@ $('.complete-commit').click(function(e) {
     return false;
   }
 
+  var result =  confirm("确定提交?");
+  if(result == false){
+    return;
+  }
+
   if (_queryingFromSelectedSummary) {
     var param = {'acquiringInfoFormCollection' : _selectedSummary.acquiringInfoFormCollection};
     $.ajax({
@@ -419,6 +434,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     $('#popup-detail').modal('show');
 
     $('#subsidyType option[value="' + detail.subsidyType + '"]').prop('selected', true);
+    $('#subsidyTypeTrd option[value="' + detail.subsidyTypeTrd + '"]').prop('selected', true);
     $('#partner option[value="' + detail.partner + '"]').prop('selected', true);
     $('#reconciliationStatus option[value="' + detail.reconciliationStatus + '"]').prop('selected', true);
     $('#reason option[value="' + detail.reason + '"]').prop('selected', true);
@@ -435,12 +451,6 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
   });
 
   $('#popup-detail form').parsley().validate();
-});
-
-
-$(document).on('click', '.modal button[type=submit]', function(event) {
-  event.preventDefault();
-  $('#popup-detail form').trigger('submit');
 });
 
 // 修改详情 "提交"
@@ -572,6 +582,11 @@ $('body').on('click', '.batch-status-update', function(e) {
   $('#popup-status-choose').modal('show');
 });
 
+$('body').on('click', '.add-order-record', function(e) {
+  e.preventDefault();
+  $('#popup-balance-in-record').modal('show');
+});
+
 $('body').on('click', '.btn-status-update-cancel', function(e) {
   e.preventDefault();
   $('#popup-status-choose').modal('hide');
@@ -588,6 +603,74 @@ function selectedIds() {
   return ids;
 }
 
+/****************** 补订单 *******************/
+
+$(document).on('submit', '#formBalanceInRecord', function(e) {
+  e.preventDefault();
+
+  if (!$('#formBalanceInRecord').parsley().isValid()) {
+    return false;
+  }
+  // 若收单订单类型为退款，则应收用户金额，应收用户积分应该为0或负值
+  var acquiringOrderType = $('#record_acquiringOrderType').val();
+  var payAmount = $('#record_payAmount').val();
+  var receivablePoint = $('#record_receivablePoint').val();
+  if (~~acquiringOrderType === 2) {
+    if (~~payAmount > 0) {
+      alert("若收单订单类型为退款，则应收用户金额应为0或负值");
+      return false;
+    }
+    if (~~receivablePoint > 0) {
+      alert("若收单订单类型为退款，则应收用户积分应为0或负值");
+      return false;
+    }
+  }
+
+  var param = {
+    acquiringOrderType: $('#record_acquiringOrderType').val(),
+    payTool: $('#record_payTool').val(),
+    createTime: $('#record_createTime').val(),
+    payStatus: $('#record_payStatus').val(),
+    payAmount: $('#record_payAmount').val(),
+    receivablePoint: $('#record_receivablePoint').val(),
+    chargeMerchant: $('#record_chargeMerchant').val(),
+    chargeMerchantNo: $('#record_chargeMerchantNo').val(),
+    orderNo: $('#record_orderNo').val(),
+    thdSerialNo: $('#record_thdSerialNo').val(),
+    ticketAmount: $('#record_ticketAmount').val(),
+    serviceAmount: $('#record_serviceAmount').val(),
+    subsidyAmountO2o: $('#record_subsidyAmountO2o').val(),
+    subsidyType: $('#record_subsidyType').val(),
+    subsidyAmountTrd: $('#record_subsidyAmountTrd').val(),
+    subsidyTypeTrd: $('#record_subsidyTypeTrd').val(),
+    returnFee: $('#record_returnFee').val(),
+    partner: $('#record_partner').val(),
+    o2oReceivableAmount: $('#record_o2oReceivableAmount').val(),
+    bankAmount: $('#record_bankAmount').val(),
+    refundReason: $('#record_refundReason').val(),
+    discountType: $('#record_discountType').val(),
+    discountId: $('#record_discountId').val(),
+    discountName: $('#record_discountName').val(),
+    costCenter: $('#record_costCenter').val(),
+    signatureNo: $('#record_signatureNo').val(),
+    costCenterTrd: $('#record_costCenterTrd').val()
+  };
+
+  $.ajax({
+    url: common.API_HOST + "settlement/acquiring/insertOnlyAcquiringInfo",
+    type: 'GET',
+    data: param
+  })
+  .done(function(res) {
+    if (!!~~res.meta.result) {
+      alert("录入成功，请至列表查看");
+      $("#formBalanceInRecord button.close").trigger('click');
+      $("#formBalanceInRecord :input").val("");
+    } else {
+      alert("录入失败，请检查数据后重试");
+    }
+  })  
+});
 
 
 

@@ -184,6 +184,7 @@
           <a href="balance-out-state-batch-handler.html" class="list-group-item" id="menu-balance-out-state-batch-handler" data-id="247" style="display:none">对账状态批量处理</a>
           <a href="balance-out-merchant-batch-update.html" class="list-group-item" id="menu-balance-out-merchant-batch-update" data-id="248" style="display:none">商户信息批量更新</a>
           <a href="balance-out-file-operate-result.html" class="list-group-item" id="menu-balance-out-file-operate-result" data-id="249" style="display:none">对账批处理结果</a>
+          <a href="balance-out-record-batch-creator.html" class="list-group-item" id="menu-balance-out-record-batch-creator" data-id="249" style="display:none">批量新增出货/退货记录</a>
         </div>
       </div>
     </div>

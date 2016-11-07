@@ -134,7 +134,7 @@ function setSummaryTableData(data) {
 function setPager(total, pageIndex, rowsSize, pageTotal) {
   var data = { total: total, pageIndex: pageIndex, rowsSize: rowsSize, pageTotal: pageTotal };
   var template = $('#pager-template').html();
-  Mustache.parse(template);
+  Mustache.parse(template);  
   var html = Mustache.render(template, data);
   $('#pager').html(html);
 }

@@ -60,7 +60,7 @@
               <select class="form-control" id="search_chargeMerchant">
                 <option value="">全部</option>
                 <option value="1">O2O-卡中心</option>
-                <option value="2">O2O-总行</option>
+                <option value="2">O2O-分行</option>
               </select>
             </div>
           </div>
@@ -216,14 +216,17 @@
 
           <div class="col-xs-12 col-sm-12 col-md-12 pull-right">
             <div class="row">
-              <div class="col-xs-4">
+              <div class="col-xs-3">
                 <button type="button" class="btn btn-block btn-default btn-export-all">申请导出</button>
               </div>
-              <div class="col-xs-4">
-                <button type="button" class="btn btn-block btn-default complete-commit">对账完成提交</button>
-              </div>
-              <div class="col-xs-4">
+              <div class="col-xs-3">
                 <button type="button" class="btn btn-block btn-default batch-status-update">批量修改对账状态</button>
+              </div>
+              <div class="col-xs-3">
+                <button type="button" class="btn btn-block btn-default add-order-record">补订单记录</button>
+              </div>
+              <div class="col-xs-3">
+                <button type="button" class="btn btn-block btn-default complete-commit">对账完成提交</button>
               </div>
             </div>
           </div>
@@ -232,18 +235,18 @@
 
         <div class="content-area">
 
-        <div class="table-responsive" style="margin-bottom: 20px;">
+          <div class="table-responsive" style="margin-bottom: 20px;">
             <table class="table table-hover" id="summaryTable">
               <thead>
                 <tr>
                   <th>记录数</th>
-                  <th>张数</th>
-                  <th>票价(元)</th>
-                  <th>退票手续费(元)</th>
-                  <th>服务费(元)</th>
-                  <th>渠道方补贴金额(元)</th>
-                  <th>应收金额(元)</th>
-                  <th>实收金额(元)</th>
+                  <th>渠道</th>
+                  <th>收单订单类型</th>
+                  <th>用户支付金额</th>
+                  <th>常规活动后付款补贴金额</th>
+                  <th>支付活动后付款补贴金额</th>
+                  <th>O2O应收金额</th>
+                  <th>服务费</th>
                 </tr>
               </thead>
               <tbody>
@@ -261,28 +264,25 @@
                 <tr>
                   <!-- 参照activity-unit.html -->
                   <th><input type="checkbox" class="multi-check-all"></th>
-                  <th>ID</th>
                   <th>交易时间</th>
-                  <th>收单商户</th>
-                  <th>收单商户号</th>
-                  <th>业务类别</th>
+                  <th>收单订单类型</th>
+                  <th>订单来源</th>
                   <th>支付流水状态</th>
                   <th>交易订单号</th>
                   <th>收单方支付订单号</th>
                   <th>票价(元)</th>
                   <th>退票手续费(元)</th>
                   <th>服务费(元)</th>
-                  <th>渠道方补贴金额(元)</th>
+                  <th>用户支付金额(元)</th>
+                  <th>用户支付积分</th>
+                  <th>常规活动渠道方补贴金额(元)</th>
+                  <th>常规活动补贴付款方式</th>
                   <th>O2O应收金额(元)</th>
-                  <th>实收金额(元)</th>
+                  <th>支付活动补贴金额</th>
+                  <th>支付活动补贴付款方式</th>
                   <th>承债方</th>
-                  <th>优惠方式</th>
-                  <th>活动/优惠券名称</th>
-                  <th>客户支付金额(元)</th>
-                  <th>客户支付积分</th>
                   <th>收单对账状态</th>
-                  <th>对账不一致原因</th>
-                  <th>修改状态</th>
+                  <th>审核状态</th>
                   <th>操作时间</th>
                   <th>操作</th>
                 </tr>
@@ -325,11 +325,9 @@
     {{#rows}}
     <tr data-id="{{id}}" data-bannertype="{{bannerType}}">
       <td><input type="checkbox" class="multi-check"></td>
-      <td>{{id}}</td>
       <td>{{createTime}}</td>
-      <td>{{chargeMerchant}}</td>
-      <td>{{chargeMerchantNo}}</td>
-      <td>{{bizType}}</td>
+      <td>{{acquiringOrderType}}</td>
+      <td>{{orderSource}}</td>
       <td>{{payStatus}}</td>
       <td>{{orderNo}}</td>
       <td>{{thdSerialNo}}</td>
@@ -337,37 +335,46 @@
       <!-- 退票手续费 -->
       <td>{{returnFee}}</td>
       <td>{{serviceAmount}}</td>
-      <td>{{subsidyAmountO2o}}</td>
-      <td>{{o2oReceivableAmount}}</td>
-      <!-- 实收金额 -->
-      <td>{{bankAmount}}</td>
-      <td>{{partner}}</td>
-      <td>{{discountType}}</td>
-      <td>{{discountName}}</td>
+      <!--用户支付金额，积分-->
       <td>{{payAmount}}</td>
       <td>{{receivablePoint}}</td>
+
+      <!--常规补贴-->
+      <td>{{subsidyAmountO2o}}</td>
+      <td>{{subsidyType}}</td>
+
+      <td>{{o2oReceivableAmount}}</td>
+
+      <!--支付活动补贴-->
+      <td>{{subsidyAmountTrd}}</td>
+      <td>{{subsidyTypeTrd}}</td>
+
+      <!-- 实收金额 -->
+      <td>{{partner}}</td>
       <td>{{reconciliationStatus}}</td>
-      <td>{{reason}}</td>
       <td>{{checkStatus}}</td>
-      <td>{{operateTime}}</td>
+      <td>{{updateTime}}</td>
+
       <td>
-      <button class="btn btn-xs btn-default btn-edit" data-checkstatus="{{checkStatusNo}}">详情</button>
+      <button class="btn btn-xs btn-default btn-edit" data-checkstatus="{{checkStatusNo}}">修改</button>
       </td>
     </tr>
     {{/rows}}
   </script>
 
   <script id="summary-table-template" type="text/x-tmpl-mustache">
+    {{#rows}}
     <tr>
       <td>{{totalOrderCount}}</td>
-      <td>{{totalTicketCount}}</td>
-      <td>{{totalTicketAmount}}</td>
-      <td>{{totalReturnFee}}</td>
-      <td>{{totalServiceAmount}}</td>
+      <td>{{payTool}}</td>
+      <td>{{acquiringOrderType}}</td>
+      <td>{{totalPayAmount}}</td>
       <td>{{totalSubsidyAmountO2o}}</td>
+      <td>{{totalSubsidyAmountTrd}}</td>
       <td>{{totalO2oReceivableAmount}}</td>
-      <td>{{totalBankAmount}}</td>
+      <td>{{totalServiceAmount}}</td>
     </tr>
+    {{/rows}}
   </script>
 
   <script src="js/vendor.js"></script>
@@ -391,6 +398,8 @@
   </div>
 
   @@include('component/popup-balance-status-choose.tpl')
+
+  @@include('component/popup-balance-in-record.tpl')
   
 </body>
 </html>
