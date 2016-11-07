@@ -138,19 +138,27 @@ $(document).on('submit', '#popup-movie-form form', function (e) {
   _submitting = true;
   var sendData = {
     id: $('#popup-movie-form #id').val(),
-    name: $.trim($('#popup-movie-form #name').val()),
-    showDate: $('#popup-movie-form #showDate').val(),
-    duration: $.trim($('#popup-movie-form #duration').val()),
-    summary: $.trim($('#popup-movie-form #summary').val()),
-    description: $.trim($('#popup-movie-form #description').val()),
-    area: $.trim($('#popup-movie-form #area').val()),
-    produceCorp: $.trim($('#popup-movie-form #produceCorp').val()),
-    directors: $.trim($('#popup-movie-form #director').val()),
-    actors: $.trim($('#popup-movie-form #actor').val()),
-    score: $.trim($('#popup-movie-form #score').val()),
-    poster: $.trim($('#popup-movie-form #poster').val()),
+    name: $('#popup-movie-form #name').val().trim(),
+    duration: $('#popup-movie-form #duration').val().trim(),
+    summary: $('#popup-movie-form #summary').val().trim(),
+    description: $('#popup-movie-form #description').val().trim(),
+    area: $('#popup-movie-form #area').val().trim(),
+    produceCorp: $('#popup-movie-form #produceCorp').val().trim(),
+    directors: $('#popup-movie-form #director').val().trim(),
+    actors: $('#popup-movie-form #actor').val().trim(),
+    score: $('#popup-movie-form #score').val().trim(),
+    poster: $('#popup-movie-form #poster').val().trim(),
     status: $('#popup-movie-form #status').val(),
   };
+
+  sendData.showDate = $('#popup-movie-form .release-date input').map(function () {
+    if ($(this).val().trim() != '') {
+      return $(this).val();
+    }
+  }).get();
+
+  sendData.showDate = sendData.showDate.join('-');
+
   var dimenIds = [];
   $('#popup-movie-form input[name=dimenId]:checked').each(function () {
     dimenIds.push($(this).val());
@@ -330,15 +338,19 @@ function setModal(movieData) {
   if (movieData) {
     _(_status).forEach(function (value, key) {
       if (value.id == movieData.status) {
-        // value.selected = true;
+        value.selected = true;
       } else {
-        // value.selected = false;
+        value.selected = false;
       }
     });
 
     _(_versions).forEach(function (value, key) {
       value.selected = movieData.dimenIds.indexOf(value.id) > -1 ? true : false;
     });
+
+    movieData.releaseYear = movieData.showDate.split('-')[0] != undefined ? movieData.showDate.split('-')[0] : '';
+    movieData.releaseMonth = movieData.showDate.split('-')[1] != undefined ? movieData.showDate.split('-')[1] : '';
+    movieData.releaseDay = movieData.showDate.split('-')[2] != undefined ? movieData.showDate.split('-')[2] : '';
 
     data = { movie: movieData, versions: _versions, status: _status };
     template = $('#edit-template').html();
