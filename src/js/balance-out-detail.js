@@ -492,11 +492,18 @@ $(document).on('submit', '#popup-detail form', function(e) {
     merchantName: $('#merchantName').val(),
     merchantId: $('#merchantNo').val(),
     settleAmount: $('#settleAmount').val(),
-    // subsidyAmountO2o: $('#subsidyAmountO2o').val(),
-    // subsidyType: $('#subsidyType').val(),
+    subsidyAmountO2o: $('#subsidyAmountO2o').val(),
+    subsidyType: $('#subsidyType').val(),
     acceptanceAppropriation: $('#acceptanceAppropriation').val(),
     // returnFee: $('#returnFee').val(),
     // partner: $('#returnFee').val(),
+
+    // 支付活动补贴金额(元)
+    subsidyAmountTrd: $('#subsidyAmountTrd').val(),
+    // 支付活动补贴付款方式
+    subsidyTypeTrd: $('#subsidyTypeTrd').val(),
+
+
     finalSettleAmount: $('#finalSettleAmount').val(),
     reconciliationStatus: $('#reconciliationStatus').val(),
     shipmentStatus: $('#shipmentStatus').val(),
