@@ -56,12 +56,8 @@
                                     <div class="input-group">
                                         <div class="input-group-addon">支付流水状态</div>
                                         <select class="form-control" id="record_payStatus" required>
-                                            <option value="1">待支付</option>
                                             <option value="2">支付成功</option>
-                                            <option value="3">支付失败</option>
-                                            <option value="4">退款中</option>
                                             <option value="5">退款成功</option>
-                                            <option value="5">退款失败</option>
                                         </select>
                                     </div>
                                 </div>
@@ -162,7 +158,8 @@
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
                                     <div class="input-group-addon">退款承债方</div>
-                                    <select class="form-control" id="record_partner" required>
+                                    <select class="form-control" id="record_partner">
+                                        <option value></option>
                                         <option value="0">无承债方</option>
                                         <option value="1">O2O承债</option>
                                         <option value="2">商户承债</option>
@@ -261,7 +258,6 @@
     
     $(document).on('change', '#record_discountType', function(e) {
       e.preventDefault();
-      
       // 若存在常规优惠活动时，以下字段必填
       var discountType = $('#record_discountType').val();
       $('#record_discountName').prop('required', (~~discountType > 0)); // 活动/优惠券名称
@@ -270,4 +266,10 @@
       $('#record_signatureNo').prop('required', (~~discountType > 0));  // 签报号
       $('#record_costCenterTrd').prop('required', (~~discountType > 0));  // 支付活动成本中心
     });
+    $(document).on('change', '#record_payStatus', function(e) {
+      e.preventDefault();
+      var payStatus = $('#record_payStatus').val();
+      $('#record_partner').prop('required', (~~payStatus === 5)); // 退款承债方
+    });
+
 </script>

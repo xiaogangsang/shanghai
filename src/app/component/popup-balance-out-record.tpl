@@ -237,7 +237,6 @@
                                         <option value="1">未出货</option>
                                         <option value="2">出货成功</option>
                                         <option value="3">出货失败</option>
-                                        <option value="4">出货中</option>
                                         <option value="7">退货成功</option>
                                         <option value="8">退货失败</option>
                                     </select>

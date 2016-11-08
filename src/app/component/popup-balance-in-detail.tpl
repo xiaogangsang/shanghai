@@ -181,8 +181,8 @@
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
             <div class="input-group-addon">支付活动渠道方补贴金额(元)</div>
-            <input type="text" class="form-control oldValue" id="subsidyAmountO2o" value="{{subsidyAmountTrd}}" data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?">
-            <input type="text" class="form-control newValue" id="subsidyAmountO2oNew" value="{{lastDetail.subsidyAmountTrd}}">
+            <input type="text" class="form-control oldValue" id="subsidyAmountTrd" value="{{subsidyAmountTrd}}" data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?">
+            <input type="text" class="form-control newValue" id="subsidyAmountTrdNew" value="{{lastDetail.subsidyAmountTrd}}">
           </div>
         </div>
 
@@ -194,7 +194,7 @@
               <option value="1">预付</option>
               <option value="2">后付</option>
             </select>
-            <select class="form-control newValue" id="subsidyTypeNew" value="{{lastDetail.subsidyTypeTrd}}">
+            <select class="form-control newValue" id="subsidyTypeTrdNew" value="{{lastDetail.subsidyTypeTrd}}">
               <option value=""></option>
               <option value="1">预付</option>
               <option value="2">后付</option>

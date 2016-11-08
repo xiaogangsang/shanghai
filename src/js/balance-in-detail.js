@@ -493,7 +493,9 @@ $(document).on('submit', '#popup-detail form', function(e) {
     payStatus: $('#payStatus').val(),
     reason: ($('#reconciliationStatus').val() == 2 ? $('#reason').val() : ''),// 对账不一致才有原因
     merchantName: $('#merchantName').val(),
-    remarks: $('#remarks').val()
+    remarks: $('#remarks').val(),
+    subsidyAmountTrd:$('#subsidyAmountTrd').val(),
+    subsidyTypeTrd:$('#subsidyTypeTrd').val()
   };
 
   $.ajax({

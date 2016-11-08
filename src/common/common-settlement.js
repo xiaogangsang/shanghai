@@ -140,7 +140,7 @@ settlementCommon.shipmentOrderType =
 
  // 订单来源
 settlementCommon.orderSource = 
-  {'1' : '人工', '2' : '系统'};
+  {'1' : '系统', '2' : '人工'};
 
  settlementCommon.parseOrderSource = function(status) {
   return this.orderSource[status];
