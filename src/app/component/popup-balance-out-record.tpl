@@ -62,6 +62,12 @@
                                     <input type="text" id="record_cinemaName" class="form-control">
                                 </div>
                             </div>
+                            <div class="form-group col-sm-6">
+                                <div class="input-group">
+                                    <div class="input-group-addon">张数</div>
+                                    <input type="text" id="record_countNum" class="form-control" required data-parsley-pattern="[0-9]{0,4}">
+                                </div>
+                            </div>
                         </div>
 
                         <div class="row" style="margin-top :10px;">
@@ -71,7 +77,7 @@
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
                                     <div class="input-group-addon">二级商户名</div>
-                                    <input type="text" id="record_merchantName" class="form-control" required readonly>
+                                    <input type="text" id="record_merchantName" class="form-control" style="border: none; background: transparent; cursor: text" readonly>
                                 </div>
                             </div>
                             <div class="form-group col-sm-6">
@@ -104,7 +110,7 @@
                                     <input type="text" id="record_receivablePoint" class="form-control" required data-parsley-pattern="(-)?[0-9]{0,6}">
                                 </div>
                             </div>
-                            <div class="col-sm-12" style="padding-left :0px;">
+                            <div class="col-sm-12" style="padding-left :0px; padding-right: 0px;">
                                 <div class="form-group col-sm-6">
                                     <div class="input-group">
                                         <div class="input-group-addon">交易金额(元)</div>
@@ -176,7 +182,7 @@
                             <span style="display: block; padding-left: 15px; padding-right: 15px;">优惠信息</span>
                             <hr style="margin-left: 15px; margin-right: 15px; margin-top: 10px;">
                             
-                            <div class="col-sm-12" style="padding-left: 0px;">
+                            <div class="col-sm-12" style="padding-left: 0px; padding-right: 0px;">
                                 <div class="form-group col-sm-6">
                                     <div class="input-group">
                                         <div class="input-group-addon">常规优惠方式</div>
