@@ -636,7 +636,7 @@ $(document).on('submit', '#formBalanceInRecord', function(e) {
     payAmount: $('#record_payAmount').val(),
     receivablePoint: $('#record_receivablePoint').val(),
     chargeMerchant: $('#record_chargeMerchant').val(),
-    chargeMerchantNo: $('#record_chargeMerchantNo').val(),
+    merchantNo: $('#record_merchantNo').val(),
     orderNo: $('#record_orderNo').val(),
     thdSerialNo: $('#record_thdSerialNo').val(),
     ticketAmount: $('#record_ticketAmount').val(),

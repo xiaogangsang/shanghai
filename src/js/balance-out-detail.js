@@ -658,6 +658,7 @@ $(document).on('submit', '#formBalanceOutRecord', function(e) {
     shipmentDate: $('#record_shipmentDate').val(),
     movieName: $('#record_movieName').val(),
     cinemaName: $('#record_cinemaName').val(),
+    record_countNum: $('#record_countNum').val(),
     merchantName: $('#record_merchantName').val(),
     merhcantNo: $('#record_merhcantNo').val(),
     orderNo: $('#record_orderNo').val(),

@@ -91,8 +91,8 @@
                             </div>
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
-                                    <div class="input-group-addon">收单商户号</div>
-                                    <input type="text" id="record_chargeMerchantNo" class="form-control" required>
+                                    <div class="input-group-addon">二级商户号</div>
+                                    <input type="text" id="record_merchantNo" class="form-control" required>
                                 </div>
                             </div>
                             <div class="form-group col-sm-6">
@@ -190,7 +190,7 @@
                             <span style="display: block; padding-left: 15px; padding-right: 15px;">优惠信息</span>
                             <hr style="margin-left: 15px; margin-right: 15px; margin-top: 10px;">
                             
-                            <div class="col-sm-12" style="padding-left: 0px;">
+                            <div class="col-sm-12" style="padding-left: 0px; padding-right: 0px;">
                                 <div class="form-group col-sm-6">
                                     <div class="input-group">
                                         <div class="input-group-addon">常规优惠方式</div>
