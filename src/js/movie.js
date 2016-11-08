@@ -1,6 +1,8 @@
 'use strict;'
 
 var common = require('common');
+require('fineUploader');
+
 var _status = [
 { id: 0, name: '即将上映' },
 { id: 1, name: '正在热映' },
@@ -200,59 +202,61 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
       res.data.score = parseFloat(res.data.score).toFixed(1);
       setModal(res.data);
       $('#popup-movie-form').modal('show');
-      $('#showDate').datetimepicker({
-        format: 'yyyy-mm-dd',
-        language: 'zh-CN',
-        minView: 2,
-        todayHighlight: true,
-        autoclose: true,
-      });
-      $('#popup-movie-form form').parsley();
+      $('#popup-movie-form').on('shown.bs.modal', function () {
+        var uploader = new qq.FineUploaderBasic({
+          button: $('#fileupload')[0],
+          request: {
+            endpoint: common.API_HOST + 'film/standardFilm/uploadPoster',
+            inputName: 'file',
+            filenameParam: 'file',
+          },
+          callbacks: {
+            onError: function (id, fileName, errorReason) {
+              if (errorReason != 'Upload failure reason unknown') {
+                console.log(errorReason);
+                alert('上传失败');
+              }
+            },
 
-      $('.poster-preview').on('load', function (event) {
-        var poster = $(this).attr('src');
-        window.previewImg = '<img id="previewImg" src="' + poster + '" width="160"><script>window.onload = function() { parent.document.getElementById("frameImg").height = document.getElementById("previewImg").height+"px"; }</script>';
-        var iframe = document.createElement('iframe');
-        iframe.id = 'frameImg';
-        iframe.src = 'javascript:parent.previewImg;';
-        iframe.frameBorder = '0';
-        iframe.scrolling = 'no';
-        iframe.width = '160px';
-        iframe.style.display = 'block';
-        var el = document.querySelector('.poster-preview');
-        el.parentNode.replaceChild(iframe, el);
+            onComplete: function (id, fileName, responseJSON) {
+              if (!!~~responseJSON.meta.result) {
+                $('#poster').val(responseJSON.data.savePath);
+                $('.poster-preview').attr('src', responseJSON.data.savePath);
+                alert('上传成功！');
+              } else {
+                alert('接口错误：' + responseJSON.meta.msg);
+              }
+            },
+          },
+        });
+
+        $('#showDate').datetimepicker({
+          format: 'yyyy-mm-dd',
+          language: 'zh-CN',
+          minView: 2,
+          todayHighlight: true,
+          autoclose: true,
+        });
+
+        $('#popup-movie-form form').parsley();
       });
+
+      // $('.poster-preview').on('load', function (event) {
+      //   var poster = $(this).attr('src');
+      //   window.previewImg = '<img id="previewImg" src="' + poster + '" width="160"><script>window.onload = function() { parent.document.getElementById("frameImg").height = document.getElementById("previewImg").height+"px"; }</script>';
+      //   var iframe = document.createElement('iframe');
+      //   iframe.id = 'frameImg';
+      //   iframe.src = 'javascript:parent.previewImg;';
+      //   iframe.frameBorder = '0';
+      //   iframe.scrolling = 'no';
+      //   iframe.width = '160px';
+      //   iframe.style.display = 'block';
+      //   var el = document.querySelector('.poster-preview');
+      //   el.parentNode.replaceChild(iframe, el);
+      // });
     } else {
       alert('接口错误：' + res.meta.msg);
     }
-  });
-});
-
-$(document).on('click', '#btn-upload', function (event) {
-  event.preventDefault();
-  $('#popup-movie-upload').modal('show');
-  $('#fileupload').data('url', common.API_HOST + 'film/standardFilm/uploadPoster').fileupload({
-    dataType: 'json',
-    add: function (e, data) {
-      $('#fileupload').next('span').remove();
-      $('#fileupload').after(' <span>' + data.files[0].name + '</span>');
-      $('#popup-movie-upload button[type=submit]').off('click').on('click', function () {
-        $(this).prop('disable', true).text('上传中...');
-        data.submit();
-      });
-    },
-
-    done: function (e, data) {
-      $('#popup-movie-upload button[type=submit]').prop('disable', false).text('上传');
-      if (!!~~data.result.meta.result) {
-        $('#poster').val(data.result.data.savePath);
-        $('.poster-preview').attr('src', data.result.data.savePath);
-        alert('上传成功！');
-        $('#popup-movie-upload').modal('hide');
-      } else {
-        alert('上传失败：' + data.result.meta.msg);
-      }
-    },
   });
 });
 
@@ -351,6 +355,8 @@ function setModal(movieData) {
     movieData.releaseYear = movieData.showDate.split('-')[0] != undefined ? movieData.showDate.split('-')[0] : '';
     movieData.releaseMonth = movieData.showDate.split('-')[1] != undefined ? movieData.showDate.split('-')[1] : '';
     movieData.releaseDay = movieData.showDate.split('-')[2] != undefined ? movieData.showDate.split('-')[2] : '';
+
+    movieData.preview = movieData.poster.indexOf('hiphotos.baidu.com') > -1 ? 'https://map.baidu.com/maps/services/thumbnails?width=150&src=' + encodeURI(movieData.poster) + '&quality=100' : movieData.poster;
 
     data = { movie: movieData, versions: _versions, status: _status };
     template = $('#edit-template').html();

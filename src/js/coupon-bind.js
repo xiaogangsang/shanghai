@@ -1,6 +1,8 @@
 'use strict;'
 
 var common = require('common');
+require('fineUploader');
+
 var _pageIndex = 1;
 var _pageSize = 10;
 var _pageTotal = 0;
@@ -13,23 +15,32 @@ $(function () {
   loadHistory();
 });
 
-// $('#fileupload').data('url', 'http://172.16.0.50:8080/movie-ops/couponCode/uploadUserIds').fileupload({
-$('#fileupload').data('url', common.API_HOST + 'couponCode/uploadUserIds').fileupload({
-  dataType: 'json',
-  add: function (e, data) {
-    data.submit();
+var uploader = new qq.FineUploaderBasic({
+  button: $('#fileupload')[0],
+  request: {
+    endpoint: common.API_HOST + 'couponCode/uploadUserIds',
+    inputName: 'file',
+    filenameParam: 'file',
   },
+  callbacks: {
+    onError: function (id, fileName, errorReason) {
+      if (errorReason != 'Upload failure reason unknown') {
+        console.log(errorReason);
+        alert('上传失败');
+      }
+    },
 
-  done: function (e, data) {
-    if (!!~~data.result.meta.result) {
-      $('#fileupload').hide();
-      $('#file').val(data.result.data.fileUniqueId).show();
-      alert('上传成功！');
-      $('#formBind button').prop('disabled', false);
-    } else {
-      alert('上传失败：' + data.result.meta.msg);
-      $('#formBind button').prop('disabled', true);
-    }
+    onComplete: function (id, fileName, responseJSON) {
+      if (!!~~responseJSON.meta.result) {
+        $('#fileupload').hide();
+        $('#file').val(responseJSON.data.fileUniqueId).show();
+        $('#formBind button').prop('disabled', false);
+        alert('上传成功！');
+      } else {
+        alert('接口错误：' + responseJSON.meta.msg);
+        $('#formBind button').prop('disabled', true);
+      }
+    },
   },
 });
 
@@ -43,7 +54,6 @@ $('#formBind').on('submit', function (event) {
 
   $.ajax({
     url: common.API_HOST + 'couponCode/bindingUsers',
-    // url: 'http://172.16.0.50:8080/movie-ops/couponCode/bindingUsers',
     type: 'POST',
     dataType: 'json',
     data: {
@@ -78,7 +88,6 @@ function loadHistory() {
 
   $.ajax({
     url: common.API_HOST + 'couponCode/sendHistory',
-    // url: 'http://172.16.0.50:8080/movie-ops/couponCode/sendHistory',
     type: 'POST',
     dataType: 'json',
     data: {
