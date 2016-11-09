@@ -805,7 +805,7 @@ $(document).on('submit', '#formUnit', function (event) {
     films: _popupDataCache.films,
     cinemas: [],
     timetables: _popupDataCache.timetables,
-    remark: $('#remark').val().trim(),
+    remarks: $('#remark').val().trim(),
   };
 
   switch ($('input[name=advancePayment]:checked').length) {
@@ -1355,7 +1355,7 @@ function setEdit(unitId) {
         $(el).prop('checked', _popupDataCache.advancePayment == 'ALL' || _popupDataCache.advancePayment.indexOf($(el).val()) > -1 ? true : false);
       });
 
-      $('#remark').val(unit.remark);
+      $('#remark').val(unit.remarks);
       $('#cinemaPageDesc').val(unit.cinemaPageDesc);
       $('#activityIcon').val(unit.activityIcon);
       $('#timetablePageDesc').val(unit.timetablePageDesc);
