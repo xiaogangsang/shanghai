@@ -22,7 +22,7 @@ $('#record_createTime').datetimepicker({
     autoclose: true,
 });
 
-$(document).on('change', '#record_discountType', function(e) {
+$('#record_discountType').on('change', function(e) {
     e.preventDefault();
     // 若存在常规优惠活动时，以下字段必填
     var discountType = $('#record_discountType').val();
@@ -32,19 +32,13 @@ $(document).on('change', '#record_discountType', function(e) {
     $('#record_signatureNo').prop('required', (~~discountType > 0)); // 签报号
     $('#record_costCenterTrd').prop('required', (~~discountType > 0)); // 支付活动成本中心
 });
-$(document).on('change', '#record_subsidyAmountTrd', function(e) {
+$('#record_subsidyAmountTrd').on('change', function(e) {
     e.preventDefault();
     var subsidyAmountTrd = $('#record_subsidyAmountTrd').val();
     $('#record_costCenterTrd').prop('required', (~~subsidyAmountTrd !== 0)); // 支付活动成本中心
 });
 
-$(document).on('change', '#record_payStatus', function(e) {
-    e.preventDefault();
-    var payStatus = $('#record_payStatus').val();
-    $('#record_partner').prop('required', (~~payStatus === 5)); // 退款承债方
-});
-
-$(document).on('change', '#record_acquiringOrderType', function(e) {
+$('#record_acquiringOrderType').on('change', function(e) {
     e.preventDefault();
     var acquiringOrderType = $('#record_acquiringOrderType').val();
     if (~~acquiringOrderType === 1) {
@@ -53,7 +47,7 @@ $(document).on('change', '#record_acquiringOrderType', function(e) {
         $('#record_payStatus option[value="5"]').prop('selected', true);
     }
 });
-$(document).on('change', '#record_payStatus', function(e) {
+$('#record_payStatus').on('change', function(e) {
     e.preventDefault();
     var payStatus = $('#record_payStatus').val();
     if (~~payStatus === 2) {
@@ -61,27 +55,15 @@ $(document).on('change', '#record_payStatus', function(e) {
     } else if (~~payStatus === 5) {
         $('#record_acquiringOrderType option[value="2"]').prop('selected', true);
     }
+    $('#record_partner').prop('required', (~~payStatus === 5)); // 退款承债方
 });
 
-$(document).on('submit', '#formBalanceInRecord', function(e) {
+$('#formBalanceInRecord').on('submit', function(e) {
     e.preventDefault();
-
+    
+    $('#formBalanceInRecord').parsley().validate();
     if (!$('#formBalanceInRecord').parsley().isValid()) {
         return false;
-    }
-    // 若收单订单类型为退款，则应收用户金额，应收用户积分应该为0或负值
-    var acquiringOrderType = $('#record_acquiringOrderType').val();
-    var payAmount = $('#record_payAmount').val();
-    var receivablePoint = $('#record_receivablePoint').val();
-    if (~~acquiringOrderType === 2) {
-        if (~~payAmount > 0) {
-            alert("若收单订单类型为退款，则应收用户金额应为0或负值");
-            return false;
-        }
-        if (~~receivablePoint > 0) {
-            alert("若收单订单类型为退款，则应收用户积分应为0或负值");
-            return false;
-        }
     }
 
     var param = {
