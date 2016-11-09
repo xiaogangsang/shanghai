@@ -41,7 +41,7 @@
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">影片</div>
-            <input type="text" class="form-control" id="filmName" value="{{productInfo.filmName}}" readonly>
+            <input type="text" class="form-control" id="filmName" value="{{filmName}}" readonly>
           </div>
         </div>
 
@@ -56,7 +56,7 @@
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
             <div class="input-group-addon">影院</div>
-            <input type="text" class="form-control" id="cinemaName" value="{{productInfo.cinemaName}}" readonly>
+            <input type="text" class="form-control" id="cinemaName" value="{{cinemaName}}" readonly>
           </div>
         </div>
 
