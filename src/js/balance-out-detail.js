@@ -619,10 +619,10 @@ function selectedIds() {
 
 /****************** 补订单 *******************/
 
-$(document).on('blur', '#record_merhcantNo', function(e) {
+$(document).on('blur', '#record_merchantNo', function(e) {
   e.preventDefault();
 
-  var merchantNo = $('#record_merhcantNo').val().trim();
+  var merchantNo = $('#record_merchantNo').val().trim();
   if (!merchantNo) return false;
   $.ajax({
     url: common.API_HOST + "settlement/merchantinfo/query",
@@ -641,12 +641,6 @@ $(document).on('blur', '#record_merhcantNo', function(e) {
 
 $(document).on('submit', '#formBalanceOutRecord', function(e) {
   e.preventDefault();
-
-  var merchantName = $('#record_merchantName').val();
-  if (!merchantName) {
-    alert("请输入正确的二级商户号，系统会根据商户号自动填充二级商户名，缺少二级商户名无法录入");
-    return false;
-  }
   
   if (!$('#formBalanceOutRecord').parsley().isValid()) {
     return false;
@@ -660,8 +654,7 @@ $(document).on('submit', '#formBalanceOutRecord', function(e) {
     cinemaName: $('#record_cinemaName').val(),
     record_countNum: $('#record_countNum').val(),
     merchantName: $('#record_merchantName').val(),
-    merhcantNo: $('#record_merhcantNo').val(),
-    orderNo: $('#record_orderNo').val(),
+    merchantNo: $('#record_merchantNo').val(),
     thdOrderNo: $('#record_thdOrderNo').val(),
     payAmount: $('#record_payAmount').val(),
     receivablePoint: $('#record_receivablePoint').val(),
@@ -694,7 +687,12 @@ $(document).on('submit', '#formBalanceOutRecord', function(e) {
       $("#formBalanceOutRecord button.close").trigger('click');
       $("#formBalanceOutRecord :input").val("");
     } else {
-      alert("录入失败，请检查数据后重试");
+      var msg = res.meta.msg;
+      if (msg) {
+        alert(msg);
+      } else {
+        alert("录入失败，请检查数据后重试");  
+      }
     }
   })  
 });

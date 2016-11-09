@@ -83,38 +83,34 @@
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
                                     <div class="input-group-addon">二级商户号</div>
-                                    <input type="text" id="record_merhcantNo" class="form-control" required>
+                                    <input type="text" id="record_merchantNo" class="form-control" required data-parsley-error-msg="请输入正确的二级商户号，系统会根据商户号自动填充二级商户名，缺少二级商户名无法录入">
                                 </div>
                             </div>
-                            <div class="form-group col-sm-6">
-                                <div class="input-group">
-                                    <div class="input-group-addon">二级商户订单号</div>
-                                    <input type="text" id="record_thdOrderNo" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group col-sm-6">
-                                <div class="input-group">
-                                    <div class="input-group-addon">交易订单号</div>
-                                    <input type="text" id="record_orderNo" class="form-control" required>
+                            <div class="col-sm-12" style="padding-left: 0px; padding-right: 0px;">
+                                <div class="form-group col-sm-6">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">二级商户订单号</div>
+                                        <input type="text" id="record_thdOrderNo" class="form-control">
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
                                     <div class="input-group-addon">用户支付金额(元)</div>
-                                    <input type="text" id="record_payAmount" class="form-control" required data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?">
+                                    <input type="text" id="record_payAmount" class="form-control" required data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?" data-parsley-validate-amount>
                                 </div>
                             </div>
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
                                     <div class="input-group-addon">用户支付积分</div>
-                                    <input type="text" id="record_receivablePoint" class="form-control" required data-parsley-pattern="(-)?[0-9]{0,6}">
+                                    <input type="text" id="record_receivablePoint" class="form-control" required data-parsley-pattern="(-)?[0-9]{0,6}" data-parsley-validate-amount>
                                 </div>
                             </div>
                             <div class="col-sm-12" style="padding-left :0px; padding-right: 0px;">
                                 <div class="form-group col-sm-6">
                                     <div class="input-group">
                                         <div class="input-group-addon">交易金额(元)</div>
-                                        <input type="text" id="record_settleAmount" class="form-control" required data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?">
+                                        <input type="text" id="record_settleAmount" class="form-control" required data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?" data-parsley-validate-amount>
                                     </div>
                                 </div>
                             </div>
@@ -130,7 +126,7 @@
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
                                     <div class="input-group-addon">渠道方常规补贴金额(元)</div>
-                                    <input type="text" class="form-control" id="record_subsidyAmountO2o" required data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?">
+                                    <input type="text" class="form-control" id="record_subsidyAmountO2o" required data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?" data-parsley-validate-amount>
                                 </div>
                             </div>
                             <div class="form-group col-sm-6">
@@ -145,25 +141,25 @@
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
                                     <div class="input-group-addon">支付活动补贴金额(元)</div>
-                                    <input type="text" class="form-control" id="record_subsidyAmountTrd" required data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?">
+                                    <input type="text" class="form-control" id="record_subsidyAmountTrd" required data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?" data-parsley-validate-amount>
                                 </div>
                             </div>
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
                                     <div class="input-group-addon">退票手续费(元)</div>
-                                    <input type="text" class="form-control" id="record_returnFee" required data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?">
+                                    <input type="text" class="form-control" id="record_returnFee" required data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?" data-parsley-validate-amount>
                                 </div>
                             </div>
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
                                     <div class="input-group-addon">应付金额(元)</div>
-                                    <input type="text" class="form-control" id="record_acceptanceAppropriation" required data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?">
+                                    <input type="text" class="form-control" id="record_acceptanceAppropriation" required data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?" data-parsley-validate-amount>
                                 </div>
                             </div>
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
                                     <div class="input-group-addon">实付金额(元)</div>
-                                    <input type="text" class="form-control" id="record_finalSettlementAmount" required data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?">
+                                    <input type="text" class="form-control" id="record_finalSettlementAmount" required data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?" data-parsley-validate-amount>
                                 </div>
                             </div>
                             <div class="form-group col-sm-6">
@@ -276,5 +272,18 @@
       $('#record_costCenter').prop('required', (~~discountType > 0));   // 常规补贴成本中心
       $('#record_signatureNo').prop('required', (~~discountType > 0));  // 签报号
       $('#record_costCenterTrd').prop('required', (~~discountType > 0));  // 支付活动成本中心
+    });
+    $(function () {
+        Parsley.addValidator('validateAmount', {
+            messages: {'zh-cn': '出货调整时，金额应该为0或正值。退货调整时，金额应该为0或负值。'},
+            validate: function (value, requirement) {
+                var shipmentOrderType = $('#record_shipmentOrderType').val();
+                if (~~shipmentOrderType === 3) {
+                    return (~~value < 0) ? false : true;
+                } else if (~~shipmentOrderType === 4) {
+                    return (~~value > 0) ? false : true;
+                }
+            }
+        });
     });
 </script>

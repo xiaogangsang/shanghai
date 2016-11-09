@@ -669,7 +669,12 @@ $(document).on('submit', '#formBalanceInRecord', function(e) {
       $("#formBalanceInRecord button.close").trigger('click');
       $("#formBalanceInRecord :input").val("");
     } else {
-      alert("录入失败，请检查数据后重试");
+      var msg = res.meta.msg;
+      if (msg) {
+        alert(msg);
+      } else {
+        alert("录入失败，请检查数据后重试");  
+      }
     }
   })  
 });
