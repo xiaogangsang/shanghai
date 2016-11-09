@@ -159,13 +159,14 @@
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
                                     <div class="input-group-addon">实付金额(元)</div>
-                                    <input type="text" class="form-control" id="record_finalSettlementAmount" required data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?" data-parsley-validate-amount>
+                                    <input type="text" class="form-control" id="record_finalSettleAmount" required data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?" data-parsley-validate-amount>
                                 </div>
                             </div>
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
                                     <div class="input-group-addon">退款承债方</div>
-                                    <select class="form-control" id="record_partner" required>
+                                    <select class="form-control" id="record_partner">
+                                        <option value></option>
                                         <option value="0">无承债方</option>
                                         <option value="1">O2O承债</option>
                                         <option value="2">商户承债</option>                                    
@@ -230,11 +231,8 @@
                                 <div class="input-group">
                                     <div class="input-group-addon">出货状态</div>
                                     <select class="form-control" id="record_shipmentStatus">
-                                        <option value="1">未出货</option>
                                         <option value="2">出货成功</option>
-                                        <option value="3">出货失败</option>
                                         <option value="7">退货成功</option>
-                                        <option value="8">退货失败</option>
                                     </select>
                                 </div>
                             </div>
@@ -253,37 +251,3 @@
         </div>
     </div>
 </div>
-<script>
-    $('#record_shipmentDate').datetimepicker({
-        format: 'yyyy-mm-dd',
-        language: 'zh-CN',
-        minView: 2,
-        todayHighlight: true,
-        autoclose: true,
-    });
-
-    $(document).on('change', '#record_discountType', function(e) {
-      e.preventDefault();
-      
-      // 若存在常规优惠活动时，以下字段必填
-      var discountType = $('#record_discountType').val();
-      $('#record_discountName').prop('required', (~~discountType > 0)); // 活动/优惠券名称
-      $('#record_discountId').prop('required', (~~discountType > 0));   // 活动/优惠券ID
-      $('#record_costCenter').prop('required', (~~discountType > 0));   // 常规补贴成本中心
-      $('#record_signatureNo').prop('required', (~~discountType > 0));  // 签报号
-      $('#record_costCenterTrd').prop('required', (~~discountType > 0));  // 支付活动成本中心
-    });
-    $(function () {
-        Parsley.addValidator('validateAmount', {
-            messages: {'zh-cn': '出货调整时，金额应该为0或正值。退货调整时，金额应该为0或负值。'},
-            validate: function (value, requirement) {
-                var shipmentOrderType = $('#record_shipmentOrderType').val();
-                if (~~shipmentOrderType === 3) {
-                    return (~~value < 0) ? false : true;
-                } else if (~~shipmentOrderType === 4) {
-                    return (~~value > 0) ? false : true;
-                }
-            }
-        });
-    });
-</script>
