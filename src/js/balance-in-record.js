@@ -29,8 +29,8 @@ $('#record_discountType').on('change', function(e) {
     $('#record_discountName').prop('required', (~~discountType > 0)); // 活动/优惠券名称
     $('#record_discountId').prop('required', (~~discountType > 0)); // 活动/优惠券ID
     $('#record_costCenter').prop('required', (~~discountType > 0)); // 常规补贴成本中心
-    // $('#record_signatureNo').prop('required', (~~discountType > 0)); // 签报号
-    // $('#record_costCenterTrd').prop('required', (~~discountType > 0)); // 支付活动成本中心
+    
+    queryActivityInfo();
 });
 $('#record_subsidyAmountTrd').on('change', function(e) {
     e.preventDefault();
@@ -58,6 +58,38 @@ $('#record_payStatus').on('change', function(e) {
     $('#record_partner').prop('required', (~~payStatus === 5)); // 退款承债方
 });
 
+$('#record_discountId').on('blur', function(e) {
+    e.preventDefault();
+    queryActivityInfo();
+});
+
+function queryActivityInfo () {
+    var discountType = $('#record_discountType').val();
+    var discountId = $('#record_discountId').val();
+
+    if (~~discountType !== 0 && discountId) {
+        $.ajax({
+            url: common.API_HOST + "settlement/shipmentInfo/selectActivity",
+            type: 'GET',
+            data: {discountType: discountType, discountId: discountId},
+        })
+        .done(function(res) {
+            if (!!~~res.meta.result) {
+                var rec = res.data.record;
+                if (rec) {
+                    $('#record_discountName').val(rec.discountName);
+                    $('#record_costCenter').val(rec.costCenter);
+                    $('#record_signNum').val(rec.signNum);
+                } else {
+                    $('#record_discountName').val('');
+                    $('#record_costCenter').val('');
+                    $('#record_signNum').val('');
+                }
+            }
+        })       
+    }
+}
+
 $('#formBalanceInRecord').on('submit', function(e) {
     e.preventDefault();
     
@@ -66,6 +98,10 @@ $('#formBalanceInRecord').on('submit', function(e) {
         return false;
     }
 
+    var partner = $('#record_partner').val();
+    if (~~partner === 0) {
+        partner = '';
+    }
     var param = {
         acquiringOrderType: $('#record_acquiringOrderType').val(),
         payTool: $('#record_payTool').val(),
