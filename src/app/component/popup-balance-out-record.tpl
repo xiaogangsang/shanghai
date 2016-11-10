@@ -77,13 +77,13 @@
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
                                     <div class="input-group-addon">二级商户名</div>
-                                    <input type="text" id="record_merchantName" class="form-control" style="border: none; background: transparent; cursor: text" readonly>
+                                    <input type="text" id="record_merchantName" class="form-control" style="border: none; background: transparent; cursor: text" readonly required data-parsley-error-message="缺少二级商户名无法录入，请输入正确的二级商户号，系统会根据商户号自动填充二级商户名">
                                 </div>
                             </div>
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
                                     <div class="input-group-addon">二级商户号</div>
-                                    <input type="text" id="record_merchantNo" class="form-control" required data-parsley-error-msg="请输入正确的二级商户号，系统会根据商户号自动填充二级商户名，缺少二级商户名无法录入">
+                                    <input type="text" id="record_merchantNo" class="form-control" required>
                                 </div>
                             </div>
                             <div class="col-sm-12" style="padding-left: 0px; padding-right: 0px;">
@@ -193,14 +193,14 @@
                             </div>
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
-                                    <div class="input-group-addon">活动/优惠券名称</div>
-                                    <input type="text" id="record_discountName" class="form-control">
+                                    <div class="input-group-addon">活动/优惠券ID</div>
+                                    <input type="text" id="record_discountId" class="form-control" data-parsley-pattern="[0-9]{1,21}">
                                 </div>
                             </div>
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
-                                    <div class="input-group-addon">活动/优惠券ID</div>
-                                    <input type="text" id="record_discountId" class="form-control" data-parsley-pattern="[0-9]{1,21}">
+                                    <div class="input-group-addon">活动/优惠券名称</div>
+                                    <input type="text" id="record_discountName" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group col-sm-6">

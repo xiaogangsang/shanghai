@@ -29,8 +29,8 @@ $('#record_discountType').on('change', function(e) {
     $('#record_discountName').prop('required', (~~discountType > 0)); // 活动/优惠券名称
     $('#record_discountId').prop('required', (~~discountType > 0)); // 活动/优惠券ID
     $('#record_costCenter').prop('required', (~~discountType > 0)); // 常规补贴成本中心
-    $('#record_signatureNo').prop('required', (~~discountType > 0)); // 签报号
-    $('#record_costCenterTrd').prop('required', (~~discountType > 0)); // 支付活动成本中心
+    // $('#record_signatureNo').prop('required', (~~discountType > 0)); // 签报号
+    // $('#record_costCenterTrd').prop('required', (~~discountType > 0)); // 支付活动成本中心
 });
 
 $('#record_subsidyAmountTrd').on('change', function(e) {
@@ -59,33 +59,57 @@ $('record_shipmentStatus').on('change', function(e) {
     }
 });
 
-$(document).on('blur', '#record_merchantNo', function(e) {
+$('#record_merchantNo').on('blur', function(e) {
     e.preventDefault();
 
     var merchantNo = $('#record_merchantNo').val().trim();
     if (!merchantNo) return false;
     $.ajax({
-            url: common.API_HOST + "settlement/merchantinfo/query",
+        url: common.API_HOST + "settlement/merchantinfo/query",
+        type: 'GET',
+        data: { merchantId: merchantNo }
+    })
+    .done(function(res) {
+        if (!!~~res.meta.result) {
+            $('#record_merchantName').val(res.data.merchantName);
+        }
+    })
+});
+
+$('#record_discountId').on('blur', function(e) {
+    e.preventDefault();
+    
+    var discountType = $('#record_discountType').val();
+    var discountId = $('#record_discountId').val();
+
+    if (~~discountType !== 0 && discountId) {
+        $.ajax({
+            url: common.API_HOST + "settlement/shipmentInfo/selectActivity",
             type: 'GET',
-            data: { merchantId: merchantNo }
+            data: {discountType: discountType, discountId: discountId},
         })
         .done(function(res) {
             if (!!~~res.meta.result) {
-                var merchantName = res.data.merchantName;
-                if (merchantName) {
-                    $('#record_merchantName').val(merchantName);
-                }
+                $('#record_discountName').val(res.data.record.discountName);
+                $('#record_costCenter').val(res.data.record.costCenter);
+                $('#record_signNum').val(res.data.record.signNum);
             }
-        })
+        })       
+    }
 });
 
-$(document).on('submit', '#formBalanceOutRecord', function(e) {
+$('#formBalanceOutRecord').on('submit', function(e) {
     e.preventDefault();
 
+    $('#formBalanceOutRecord').parsley().validate();
     if (!$('#formBalanceOutRecord').parsley().isValid()) {
         return false;
     }
 
+    var partner = $('#record_partner').val();
+    if (~~partner === 0) {
+        partner = '';
+    }
     var param = {
         shipmentOrderType: $('#record_shipmentOrderType').val(),
         payTool: $('#record_payTool').val(),
@@ -106,7 +130,7 @@ $(document).on('submit', '#formBalanceOutRecord', function(e) {
         returnFee: $('#record_returnFee').val(),
         acceptanceAppropriation: $('#record_acceptanceAppropriation').val(),
         finalSettleAmount: $('#record_finalSettleAmount').val(),
-        partner: $('#record_partner').val(),
+        partner: partner,
         discountType: $('#record_discountType').val(),
         discountId: $('#record_discountId').val(),
         discountName: $('#record_discountName').val(),
