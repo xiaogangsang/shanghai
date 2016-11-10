@@ -29,8 +29,8 @@ $('#record_discountType').on('change', function(e) {
     $('#record_discountName').prop('required', (~~discountType > 0)); // 活动/优惠券名称
     $('#record_discountId').prop('required', (~~discountType > 0)); // 活动/优惠券ID
     $('#record_costCenter').prop('required', (~~discountType > 0)); // 常规补贴成本中心
-    $('#record_signatureNo').prop('required', (~~discountType > 0)); // 签报号
-    $('#record_costCenterTrd').prop('required', (~~discountType > 0)); // 支付活动成本中心
+    // $('#record_signatureNo').prop('required', (~~discountType > 0)); // 签报号
+    // $('#record_costCenterTrd').prop('required', (~~discountType > 0)); // 支付活动成本中心
 });
 $('#record_subsidyAmountTrd').on('change', function(e) {
     e.preventDefault();

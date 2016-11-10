@@ -204,14 +204,14 @@
                             </div>
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
-                                    <div class="input-group-addon">活动/优惠券名称</div>
-                                    <input type="text" id="record_discountName" class="form-control">
+                                    <div class="input-group-addon">活动/优惠券ID</div>
+                                    <input type="text" id="record_discountId" class="form-control" data-parsley-pattern="[0-9]{1,21}">
                                 </div>
                             </div>
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
-                                    <div class="input-group-addon">活动/优惠券ID</div>
-                                    <input type="text" id="record_discountId" class="form-control" data-parsley-pattern="[0-9]{1,21}">
+                                    <div class="input-group-addon">活动/优惠券名称</div>
+                                    <input type="text" id="record_discountName" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group col-sm-6">
