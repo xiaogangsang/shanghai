@@ -43,6 +43,7 @@ $('#record_discountType').on('change', function(e) {
 $('#record_subsidyAmountTrd').on('change', function(e) {
     e.preventDefault();
     var subsidyAmountTrd = $('#record_subsidyAmountTrd').val();
+    $('#record_discountIdTrd').prop('required', (~~subsidyAmountTrd !== 0)); // 支付活动ID
     $('#record_costCenterTrd').prop('required', (~~subsidyAmountTrd !== 0)); // 支付活动成本中心
 });
 
@@ -92,6 +93,9 @@ function queryNormalActivityInfo () {
                     $('#record_costCenter').val('');
                     $('#record_signNum').val('');
                 }
+            } else {
+                $('#record_costCenter').val('');
+                $('#record_signNum').val('');
             }
         })       
     }
@@ -114,6 +118,8 @@ $('#record_discountIdTrd').on('blur', function(e) {
                 } else {
                     $('#record_costCenterTrd').val('');
                 }
+            } else {
+                $('#record_costCenterTrd').val('');
             }
         })       
     }
@@ -139,7 +145,7 @@ $('#formBalanceInRecord').on('submit', function(e) {
         payAmount: $('#record_payAmount').val(),
         receivablePoint: $('#record_receivablePoint').val(),
         chargeMerchant: $('#record_chargeMerchant').val(),
-        merchantNo: $('#record_merchantNo').val(),
+        merchantNo: $('#record_merchantNo').val().trim(),
         orderNo: $('#record_orderNo').val(),
         thdSerialNo: $('#record_thdSerialNo').val(),
         ticketAmount: $('#record_ticketAmount').val(),

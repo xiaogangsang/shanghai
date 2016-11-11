@@ -88,7 +88,7 @@ $('#formBalanceOutRecord').on('submit', function(e) {
         cinemaName: $('#record_cinemaName').val(),
         countNum: $('#record_countNum').val(),
         merchantName: $('#record_merchantName').val(),
-        merchantNo: $('#record_merchantNo').val(),
+        merchantNo: $('#record_merchantNo').val().trim(),
         thdOrderNo: $('#record_thdOrderNo').val(),
         payAmount: $('#record_payAmount').val(),
         receivablePoint: $('#record_receivablePoint').val(),
