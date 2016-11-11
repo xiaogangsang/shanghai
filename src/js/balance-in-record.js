@@ -155,7 +155,7 @@ $('#formBalanceInRecord').on('submit', function(e) {
         subsidyAmountTrd: $('#record_subsidyAmountTrd').val(),
         subsidyTypeTrd: $('#record_subsidyTypeTrd').val(),
         returnFee: $('#record_returnFee').val(),
-        partner: $('#record_partner').val(),
+        partner: partner,
         o2oReceivableAmount: $('#record_o2oReceivableAmount').val(),
         bankAmount: $('#record_bankAmount').val(),
         refundReason: $('#record_refundReason').val(),
