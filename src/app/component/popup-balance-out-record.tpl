@@ -174,54 +174,6 @@
                                 </div>
                             </div>
                         </div>
-        
-                        <div class="row" style="margin-top :10px;">
-                            <span style="display: block; padding-left: 15px; padding-right: 15px;">优惠信息</span>
-                            <hr style="margin-left: 15px; margin-right: 15px; margin-top: 10px;">
-                            
-                            <div class="col-sm-12" style="padding-left: 0px; padding-right: 0px;">
-                                <div class="form-group col-sm-6">
-                                    <div class="input-group">
-                                        <div class="input-group-addon">常规优惠方式</div>
-                                        <select class="form-control" id="record_discountType" required>
-                                            <option value="0">无优惠</option>
-                                            <option value="1">活动</option>
-                                            <option value="2">优惠券</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group col-sm-6">
-                                <div class="input-group">
-                                    <div class="input-group-addon">活动/优惠券ID</div>
-                                    <input type="text" id="record_discountId" class="form-control" data-parsley-pattern="[0-9]{1,21}">
-                                </div>
-                            </div>
-                            <div class="form-group col-sm-6">
-                                <div class="input-group">
-                                    <div class="input-group-addon">活动/优惠券名称</div>
-                                    <input type="text" id="record_discountName" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group col-sm-6">
-                                <div class="input-group">
-                                    <div class="input-group-addon">常规补贴成本中心</div>
-                                    <input type="text" id="record_costCenter" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group col-sm-6">
-                                <div class="input-group">
-                                    <div class="input-group-addon">常规活动签报号</div>
-                                    <input type="text" id="record_signNum" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group col-sm-6">
-                                <div class="input-group">
-                                    <div class="input-group-addon">支付活动成本中心</div>
-                                    <input type="text" id="record_costCenterTrd" class="form-control">
-                                </div>
-                            </div>
-                        </div>
 
                         <div class="row" style="margin-top :10px;">
                             <span style="display: block; padding-left: 15px; padding-right: 15px;">状态信息</span>

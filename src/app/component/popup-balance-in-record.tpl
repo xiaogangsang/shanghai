@@ -204,32 +204,32 @@
                             </div>
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
-                                    <div class="input-group-addon">活动/优惠券ID</div>
+                                    <div class="input-group-addon">常规活动/优惠券ID</div>
                                     <input type="text" id="record_discountId" class="form-control" data-parsley-pattern="[0-9]{1,21}">
                                 </div>
                             </div>
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
-                                    <div class="input-group-addon">活动/优惠券名称</div>
-                                    <input type="text" id="record_discountName" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group col-sm-6">
-                                <div class="input-group">
                                     <div class="input-group-addon">常规补贴成本中心</div>
-                                    <input type="text" id="record_costCenter" class="form-control">
+                                    <input type="text" id="record_costCenter" class="form-control" data-parsley-error-message="请填写正确常规活动/优惠券ID，系统会根据ID查询常规补贴成本中心">
                                 </div>
                             </div>
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
-                                    <div class="input-group-addon">签报号</div>
+                                    <div class="input-group-addon">常规活动签报号</div>
                                     <input type="text" id="record_signatureNo" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
+                                    <div class="input-group-addon">支付活动/优惠券ID</div>
+                                    <input type="text" id="record_discountIdTrd" class="form-control" data-parsley-pattern="[0-9]{1,21}">
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <div class="input-group">
                                     <div class="input-group-addon">支付活动成本中心</div>
-                                    <input type="text" id="record_costCenterTrd" class="form-control">
+                                    <input type="text" id="record_costCenterTrd" class="form-control" data-parsley-error-message="请填写正确支付活动/优惠券ID，系统会根据ID查询支付活动成本中心">
                                 </div>
                             </div>
                         </div>

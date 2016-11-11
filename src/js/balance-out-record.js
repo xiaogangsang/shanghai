@@ -2,6 +2,15 @@
 
 var common = require('common');
 
+$(function () {
+    setupDefaultValue();
+})
+
+function setupDefaultValue () {
+    $('#record_subsidyAmountO2o').val(0);
+    $('#record_subsidyAmountTrd').val(0);
+}
+
 Parsley.addValidator('validateAmount', {
     messages: { 'zh-cn': '出货调整时，金额应该为0或正值。退货调整时，金额应该为0或负值。' },
     validate: function(value, requirement) {
@@ -20,25 +29,8 @@ $('#record_shipmentDate').datetimepicker({
     minView: 2,
     todayHighlight: true,
     autoclose: true,
+    startDate: new Date(),
 });
-
-$('#record_discountType').on('change', function(e) {
-    e.preventDefault();
-    // 若存在常规优惠活动时，以下字段必填
-    var discountType = $('#record_discountType').val();
-    $('#record_discountName').prop('required', (~~discountType > 0)); // 活动/优惠券名称
-    $('#record_discountId').prop('required', (~~discountType > 0)); // 活动/优惠券ID
-    $('#record_costCenter').prop('required', (~~discountType > 0)); // 常规补贴成本中心
-    // $('#record_signatureNo').prop('required', (~~discountType > 0)); // 签报号
-    // $('#record_costCenterTrd').prop('required', (~~discountType > 0)); // 支付活动成本中心
-});
-
-$('#record_subsidyAmountTrd').on('change', function(e) {
-    e.preventDefault();
-    var subsidyAmountTrd = $('#record_subsidyAmountTrd').val();
-    $('#record_costCenterTrd').prop('required', (~~subsidyAmountTrd !== 0)); // 支付活动成本中心
-});
-
 
 $('#record_shipmentOrderType').on('change', function(e) {
     e.preventDefault();
@@ -76,28 +68,6 @@ $('#record_merchantNo').on('blur', function(e) {
     })
 });
 
-$('#record_discountId').on('blur', function(e) {
-    e.preventDefault();
-    
-    var discountType = $('#record_discountType').val();
-    var discountId = $('#record_discountId').val();
-
-    if (~~discountType !== 0 && discountId) {
-        $.ajax({
-            url: common.API_HOST + "settlement/shipmentInfo/selectActivity",
-            type: 'GET',
-            data: {discountType: discountType, discountId: discountId},
-        })
-        .done(function(res) {
-            if (!!~~res.meta.result) {
-                $('#record_discountName').val(res.data.record.discountName);
-                $('#record_costCenter').val(res.data.record.costCenter);
-                $('#record_signNum').val(res.data.record.signNum);
-            }
-        })       
-    }
-});
-
 $('#formBalanceOutRecord').on('submit', function(e) {
     e.preventDefault();
 
@@ -118,7 +88,7 @@ $('#formBalanceOutRecord').on('submit', function(e) {
         cinemaName: $('#record_cinemaName').val(),
         countNum: $('#record_countNum').val(),
         merchantName: $('#record_merchantName').val(),
-        merchantNo: $('#record_merchantNo').val(),
+        merchantNo: $('#record_merchantNo').val().trim(),
         thdOrderNo: $('#record_thdOrderNo').val(),
         payAmount: $('#record_payAmount').val(),
         receivablePoint: $('#record_receivablePoint').val(),
@@ -131,12 +101,6 @@ $('#formBalanceOutRecord').on('submit', function(e) {
         acceptanceAppropriation: $('#record_acceptanceAppropriation').val(),
         finalSettleAmount: $('#record_finalSettleAmount').val(),
         partner: partner,
-        discountType: $('#record_discountType').val(),
-        discountId: $('#record_discountId').val(),
-        discountName: $('#record_discountName').val(),
-        costCenter: $('#record_costCenter').val(),
-        signNum: $('#record_signNum').val(),
-        costCenterTrd: $('#record_costCenterTrd').val(),
         shipmentStatus: $('#record_shipmentStatus').val()
     }
 
@@ -150,6 +114,7 @@ $('#formBalanceOutRecord').on('submit', function(e) {
             alert("录入成功，请至列表查看");
             $("#formBalanceOutRecord button.close").trigger('click');
             $("#formBalanceOutRecord :input").val("");
+            setupDefaultValue();
         } else {
             var msg = res.meta.msg;
             if (msg) {
