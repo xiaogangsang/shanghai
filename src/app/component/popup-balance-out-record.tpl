@@ -117,7 +117,8 @@
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
                                     <div class="input-group-addon">常规补贴付款方式</div>
-                                    <select class="form-control" id="record_subsidyType" required>
+                                    <select class="form-control" id="record_subsidyType">
+                                        <option value></option>
                                         <option value="1">预付</option>
                                         <option value="2">后付</option>
                                     </select>
@@ -132,7 +133,8 @@
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
                                     <div class="input-group-addon">支付补贴付款方式</div>
-                                    <select class="form-control" id="record_subsidyTypeTrd" required>
+                                    <select class="form-control" id="record_subsidyTypeTrd">
+                                        <option value></option>
                                         <option value="1">预付</option>
                                         <option value="2">后付</option>
                                     </select>

@@ -121,14 +121,9 @@
                             </div>
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
-                                    <div class="input-group-addon">渠道方常规补贴金额(元)</div>
-                                    <input title="无补贴或退款则为0" type="text" id="record_subsidyAmountO2o" class="form-control" required data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?" data-parsley-validate-amount>
-                                </div>
-                            </div>
-                            <div class="form-group col-sm-6">
-                                <div class="input-group">
                                     <div class="input-group-addon">常规补贴付款方式</div>
-                                    <select class="form-control" id="record_subsidyType" required>
+                                    <select class="form-control" id="record_subsidyType">
+                                        <option value></option>
                                         <option value="1">预付</option>
                                         <option value="2">后付</option>
                                     </select>
@@ -136,17 +131,25 @@
                             </div>
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
-                                    <div class="input-group-addon">支付活动补贴金额(元)</div>
-                                    <input title="无补贴或退款则为0" type="text" id="record_subsidyAmountTrd" class="form-control" required data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?" data-parsley-validate-amount>
+                                    <div class="input-group-addon">渠道方常规补贴金额(元)</div>
+                                    <input title="无补贴或退款则为0" type="text" id="record_subsidyAmountO2o" required class="form-control" data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?" data-parsley-validate-amount>
                                 </div>
                             </div>
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
                                     <div class="input-group-addon">支付补贴付款方式</div>
-                                    <select class="form-control" id="record_subsidyTypeTrd" required>
+                                    <select class="form-control" id="record_subsidyTypeTrd">
+                                        <option value></option>
                                         <option value="1">预付</option>
                                         <option value="2">后付</option>
                                     </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-sm-6">
+                                <div class="input-group">
+                                    <div class="input-group-addon">支付活动补贴金额(元)</div>
+                                    <input title="无补贴或退款则为0" type="text" id="record_subsidyAmountTrd" required class="form-control" data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?" data-parsley-validate-amount>
                                 </div>
                             </div>
                             <div class="form-group col-sm-6">
