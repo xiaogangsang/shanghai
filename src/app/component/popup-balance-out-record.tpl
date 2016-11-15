@@ -10,7 +10,13 @@
                 <div class="modal-body">
                     <div class="container-fluid">
 
-                        <div class="row">
+                    <div class="row">
+                        <div class="col-md-4 pull-right">
+                         <button type="submit" class="form-control btn btn-default edit-submit">提交</button>
+                        </div>
+                     </div>
+
+                        <div class="row" style="display: block; margin-top: 10px;">
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
                                     <div class="input-group-addon">出货订单类型</div>
@@ -192,12 +198,12 @@
                             </div>
                         </div>
                         
-                        <div class="row">
+                       <!--  <div class="row">
                             <hr style="margin-left: 15px; margin-right: 15px; margin-top: 10px;">
                             <div class="col-sm-4 col-sm-offset-4">
                                 <button type="submit" class="form-control btn btn-default edit-submit">提交</button>
                             </div>
-                        </div>
+                        </div> -->
 
                     </div>
                 </div>

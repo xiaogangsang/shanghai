@@ -4,6 +4,7 @@ var common = require('common');
 
 $(function () {
     setupDefaultValue();
+    $('#record_shipmentStatus').prop('disabled',true);
 })
 
 function setupDefaultValue () {
