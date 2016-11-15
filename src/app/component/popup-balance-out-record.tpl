@@ -10,11 +10,11 @@
                 <div class="modal-body">
                     <div class="container-fluid">
 
-                    <div class="row">
-                        <div class="col-md-4 pull-right">
-                         <button type="submit" class="form-control btn btn-default edit-submit">提交</button>
+                        <div class="row">
+                            <div class="col-md-4 pull-right">
+                                <button type="submit" class="form-control btn btn-default edit-submit">提交</button>
+                            </div>
                         </div>
-                     </div>
 
                         <div class="row" style="display: block; margin-top: 10px;">
                             <div class="form-group col-sm-6">
@@ -36,11 +36,27 @@
                             </div>
                         </div>
 
+                        <div class="row" style="margin-top: 15px;">
+                            <span style="display: block; padding-left: 15px; padding-right: 15px;">城市信息</span>
+                            <hr style="margin-left: 15px; margin-right: 15px; margin-top: 10px;">
+
+                            <div class="col-xs-6">
+                                <select class="form-control" id="record-provinceId">
+                                    <option value="">选择省</option>
+                                </select>
+                            </div>
+                            <div class="col-xs-6">
+                                <select class="form-control" id="record-cityId" required="">
+                                    <option value="">选择城市</option>
+                                </select>
+                            </div>
+                        </div>
+
                         <div class="row" style="margin-top :10px;">
-                            
+
                             <span style="display: block; padding-left: 15px; padding-right: 15px;">支付信息</span>
                             <hr style="margin-left: 15px; margin-right: 15px; margin-top: 10px;">
-                    
+
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
                                     <div class="input-group-addon">订单渠道</div>
@@ -177,7 +193,7 @@
                                         <option value></option>
                                         <option value="0">无承债方</option>
                                         <option value="1">O2O承债</option>
-                                        <option value="2">商户承债</option>                                    
+                                        <option value="2">商户承债</option>
                                     </select>
                                 </div>
                             </div>
@@ -197,13 +213,13 @@
                                 </div>
                             </div>
                         </div>
-                        
-                       <!--  <div class="row">
-                            <hr style="margin-left: 15px; margin-right: 15px; margin-top: 10px;">
-                            <div class="col-sm-4 col-sm-offset-4">
-                                <button type="submit" class="form-control btn btn-default edit-submit">提交</button>
-                            </div>
-                        </div> -->
+
+                        <!--  <div class="row">
+                             <hr style="margin-left: 15px; margin-right: 15px; margin-top: 10px;">
+                             <div class="col-sm-4 col-sm-offset-4">
+                                 <button type="submit" class="form-control btn btn-default edit-submit">提交</button>
+                             </div>
+                         </div> -->
 
                     </div>
                 </div>
