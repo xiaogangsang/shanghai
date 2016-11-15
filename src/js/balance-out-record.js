@@ -101,11 +101,11 @@ $('#record_merchantNo').on('blur', function(e) {
         type: 'GET',
         data: { merchantId: merchantNo }
     })
-    .done(function(res) {
-        if (!!~~res.meta.result) {
-            $('#record_merchantName').val(res.data.merchantName);
-        }
-    })
+        .done(function(res) {
+            if (!!~~res.meta.result) {
+                $('#record_merchantName').val(res.data.merchantName);
+            }
+        })
 });
 
 $('#formBalanceOutRecord').on('submit', function(e) {
@@ -150,19 +150,19 @@ $('#formBalanceOutRecord').on('submit', function(e) {
         type: 'GET',
         data: param
     })
-    .done(function(res) {
-        if (!!~~res.meta.result) {
-            alert("录入成功，请至列表查看");
-            $("#formBalanceOutRecord button.close").trigger('click');
-            $("#formBalanceOutRecord :input").val("");
-            setupDefaultValue();
-        } else {
-            var msg = res.meta.msg;
-            if (msg) {
-                alert(msg);
+        .done(function(res) {
+            if (!!~~res.meta.result) {
+                alert("录入成功，请至列表查看");
+                $("#formBalanceOutRecord button.close").trigger('click');
+                $("#formBalanceOutRecord :input").val("");
+                setupDefaultValue();
             } else {
-                alert("录入失败，请检查数据后重试");
+                var msg = res.meta.msg;
+                if (msg) {
+                    alert(msg);
+                } else {
+                    alert("录入失败，请检查数据后重试");
+                }
             }
-        }
-    })
+        })
 });
