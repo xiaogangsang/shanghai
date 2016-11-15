@@ -36,6 +36,22 @@
                             </div>
                         </div>
 
+                        <div class="row" style="margin-top: 15px;">
+                            <span style="display: block; padding-left: 15px; padding-right: 15px;">城市信息</span>
+                            <hr style="margin-left: 15px; margin-right: 15px; margin-top: 10px;">
+
+                            <div class="col-xs-6">
+                                <select class="form-control" id="record-provinceId">
+                                    <option value="">选择省</option>
+                                </select>
+                            </div>
+                            <div class="col-xs-6">
+                                <select class="form-control" id="record-cityId" required="">
+                                    <option value="">选择城市</option>
+                                </select>
+                            </div>
+                        </div>
+
                         <div class="row" style="margin-top :10px;">
                             
                             <span style="display: block; padding-left: 15px; padding-right: 15px;">支付信息</span>
