@@ -6,6 +6,8 @@ var _status = [
 { id: 1, name: '正在热映' },
 { id: 2, name: '下映存档' },
 ];
+
+var _sources = {};
 var _versions = {};
 var _pageIndex = 1;
 var _pageSize = 10;
@@ -20,6 +22,7 @@ $(function () {
 
   //set search form
   setVersion();
+  setSource();
 
   $('#search_beginShowDate').datetimepicker({
     format: 'yyyy-mm-dd',
@@ -66,13 +69,17 @@ $('#formSearch').on('click', 'button[type=submit]', function (event) {
 
 $('#formSearch').on('submit', function (e) {
   e.preventDefault();
+  var sourceId = !!~~$('#search_sourceId').val() == false ? 1 : $('#search_sourceId').val();
+
   var sendData = {
     name: $.trim($('#search_name').val()),
+    tpFilmName: $.trim($('#search_name_tp').val()),
     produceCorp: $.trim($('#search_produceCorp').val()),
     dimenId: $('#search_dimenId').val(),
     beginShowDate: $('#search_beginShowDate').val(),
     endShowDate: $('#search_endShowDate').val(),
     status: $('#search_status').val(),
+    sourceId: sourceId,
     associationStatus: $('#search_associationStatus').val(),
     pageSize: _pageSize,
   };
@@ -90,7 +97,7 @@ $('#formSearch').on('submit', function (e) {
   sendData.pageIndex = _pageIndex;
 
   $.ajax({
-    url: common.API_HOST + 'film/standardFilm/list',
+    url: common.API_HOST + 'film/tpFilm/tpfilmList',
     type: 'POST',
     dataType: 'json',
     data: sendData,
@@ -98,15 +105,15 @@ $('#formSearch').on('submit', function (e) {
   .done(function (res) {
     _querying = false;
     if (!!~~res.meta.result) {
-      if (res.data.rows.length < 1) {
+      if (res.data.list.length < 1) {
         $('#dataTable tbody').html('<tr><td colspan="8" align="center">查不到相关数据，请修改查询条件！</td></tr>');
         $('#pager').html('');
       } else {
         useCache = true;
         _pageIndex = res.data.pageIndex;
         _pageTotal = Math.ceil(res.data.total / _pageSize);
-        setPager(res.data.total, _pageIndex, res.data.rows.length, _pageTotal);
-        _(res.data.rows).forEach(function (item) {
+        setPager(res.data.total, _pageIndex, res.data.list.length, _pageTotal);
+        _(res.data.list).forEach(function (item,key) {
           _(_status).forEach(function (value) {
             if (item.status == value.id) {
               item.statusName = value.name;
@@ -116,9 +123,14 @@ $('#formSearch').on('submit', function (e) {
           item.showDate = item.showDate.split(' ')[0];
           /*item.dimenName = item.dimenNames.join(',');*/
           item.associationStatus = item.associationStatus == 1 ? '已关联' : '未关联';
+
+          var source = _.find(_sources, { sourceId: parseInt(item.sourceId) });
+          if (source) {
+            res.data.list[key].sourceName = source.sourceName;
+          }
         });
 
-        setTableData(res.data.rows);
+        setTableData(res.data.list);
       }
 
     } else {
@@ -178,7 +190,7 @@ $(document).on('submit', '#popup-movie-form form', function (e) {
   return false;
 });
 
-$('#dataTable').on('click', '.btn-edit', function (e) {
+$('#dataTable').on('click', '.btn-movie-create', function (e) {
   e.preventDefault();
   $.ajax({
     url: common.API_HOST + 'film/standardFilm/detail',
@@ -265,7 +277,7 @@ $('#dataTable').on('click', '.btn-detail', function (e) {
         }
       });
 
-      data.dimenName = data.dimenNames.join(',');
+      //data.dimenName = data.dimenNames.join(',');
       var template = $('#detail-template').html();
       Mustache.parse(template);
       var html = Mustache.render(template, data);
@@ -382,4 +394,28 @@ function setPager(total, pageIndex, rowsSize, pageTotal) {
   Mustache.parse(template);
   var html = Mustache.render(template, data);
   $('#pager').html(html);
+}
+
+
+function setSource() {
+  $.ajax({
+    url: common.API_HOST + 'common/sourceList',
+    type: 'GET',
+    dataType: 'json',
+  })
+      .done(function (res) {
+        if (!!~~res.meta.result) {
+          _sources = res.data;
+          var html = '';
+          _(_sources).forEach(function (source) {
+            html += '<option value="' + source.sourceId + '">' + source.sourceName + '</option>';
+          });
+
+          $('#search_sourceId').append(html);
+          $('#search_sourceId').chosen({ disable_search_threshold: 10, allow_single_deselect: true });
+          $('#search_sourceId option[value="1"]').prop('selected',true);
+        } else {
+          alert('接口错误：' + res.meta.msg);
+        }
+      });
 }
