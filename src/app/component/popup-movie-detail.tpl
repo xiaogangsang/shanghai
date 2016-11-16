@@ -20,7 +20,7 @@
       <span>上映状态：</span>{{statusName}}
     </div>
     <div class="detail-item col-xs-12 col-sm-6">
-      <span>影片制式：</span>{{dimenName}}
+      <span>影片制式：</span>{{dimen}}
     </div>
     <div class="detail-item col-xs-12 col-sm-6">
       <span>影片时长：</span>{{duration}}

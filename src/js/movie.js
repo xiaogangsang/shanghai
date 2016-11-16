@@ -265,7 +265,7 @@ $('#dataTable').on('click', '.btn-detail', function (e) {
         }
       });
 
-      data.dimenName = data.dimenNames.join(',');
+      //data.dimenName = data.dimenNames.join(',');
       var template = $('#detail-template').html();
       Mustache.parse(template);
       var html = Mustache.render(template, data);

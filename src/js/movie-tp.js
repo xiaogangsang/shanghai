@@ -263,10 +263,12 @@ $(document).on('click', '#btn-upload', function (event) {
 $('#dataTable').on('click', '.btn-detail', function (e) {
   e.preventDefault();
   $.ajax({
-    url: common.API_HOST + 'film/standardFilm/detail',
+    url: common.API_HOST + 'film/tpFilm/tpfilmDetail',
     type: 'POST',
     dataType: 'json',
-    data: { id: $(this).closest('tr').data('id') },
+    data: { thirdPartyFilmId: $(this).closest('tr').data('id'),
+      sourceId: $(this).closest('tr').data('sourceid'),
+    },
   })
   .done(function (res) {
     if (!!~~res.meta.result) {
