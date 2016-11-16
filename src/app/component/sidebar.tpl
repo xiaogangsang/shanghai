@@ -36,6 +36,7 @@
       <div id="menu3" class="panel-collapse collapse" role="tabpanel">
         <div class="list-group">
           <a href="movie.html" class="list-group-item" id="menu-movie" data-id="9" style="display:none">标准影片库</a>
+          <a href="movie-tp.html" class="list-group-item" id="menu-movie-tp" data-id="9" style="display:none">合作方影片库</a>
         </div>
       </div>
     </div>
