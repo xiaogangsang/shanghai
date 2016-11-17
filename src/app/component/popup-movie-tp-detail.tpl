@@ -17,6 +17,9 @@
       <span>合作方影片ID：</span>{{sFilmId}}
     </div>
     <div class="detail-item col-xs-12 col-sm-6">
+      <span>合作方：</span>{{sourceName}}
+    </div>
+    <div class="detail-item col-xs-12 col-sm-6">
       <span>上映日期：</span>{{releaseDate}}
     </div>
     <div class="detail-item col-xs-12 col-sm-6">

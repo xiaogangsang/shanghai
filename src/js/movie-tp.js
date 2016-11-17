@@ -279,6 +279,8 @@ $('#dataTable').on('click', '.btn-detail', function (e) {
         }
       });
 
+      data.sourceName = _.find(_sources,{ sourceId: parseInt(data.sourceId)}).sourceName;
+
       //data.dimenName = data.dimenNames.join(',');
       var template = $('#detail-template').html();
       Mustache.parse(template);
