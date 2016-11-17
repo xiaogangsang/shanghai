@@ -283,8 +283,8 @@ $('#dataTable').on('click', '.btn-detail', function (e) {
       var template = $('#detail-template').html();
       Mustache.parse(template);
       var html = Mustache.render(template, data);
-      $('#popup-movie-detail .modal-body').html(html);
-      $('#popup-movie-detail').modal('show');
+      $('#popup-movie-tp-detail .modal-body').html(html);
+      $('#popup-movie-tp-detail').modal('show');
     } else {
       alert('接口错误：' + res.meta.msg);
     }
