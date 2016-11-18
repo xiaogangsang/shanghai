@@ -8,7 +8,6 @@
         </div>
         <div class="modal-body"></div>
         <div class="modal-footer">
-          <!-- <input type="hidden" id="thirdPartyId"> -->
           <button type="submit" class="btn btn-save">保存</button>
           <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
         </div>
@@ -70,15 +69,13 @@
         <tr>
           <th>影片制式</th>
           <td colspan="3">
-           <!--  {{#versions}}
-            <div class="checkbox-inline"><label><input type="checkbox" name="dimenId" value="{{id}}"{{#selected}} checked{{/selected}}><span>{{dimen}}</span></label></div>
-            {{/versions}} -->
-
-            <select class="form-control oldValue" id="dimen" value="{{dimen}}" required>
-              <option value="1"></option>
-              <option value="1">2D</option>
-              <option value="2">3D</option>
-            </select>
+            <label class="checkbox-inline">
+                <input type="checkbox" id="inlineCheckbox1" value="2D"> 2D
+            </label>
+            <label class="checkbox-inline">
+                <input type="checkbox" id="inlineCheckbox2" value="3D"> 3D
+            </label>
+               
           </td>
         </tr>
         <tr>
@@ -99,9 +96,9 @@
           </td>
         </tr>
         <tr>
-          <input type="hidden" id="sourceId">
-          <input type="hidden" id="thirdPartyFilmId">
-          <input type="hidden" id="filmId">
+          <input type="hidden" id="sourceId" value="{{sourceId}}">
+          <input type="hidden" id="thirdPartyFilmId" value="{{thirdPartyFilmId}}">
+          <input type="hidden" id="filmId" value="{{filmId}}">
         </tr>
       </tbody>
     </table>

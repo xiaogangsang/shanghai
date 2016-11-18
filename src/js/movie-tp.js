@@ -206,15 +206,8 @@ $('#dataTable').on('click', '.btn-bind', function (e) {
 
  var rowIndex = $(this).closest('tr')[0].sectionRowIndex;
   var obj = dataCache[rowIndex];
-  // var movieName = $('').
-  // var tpMovieName = $('h2').text();
-  // var thirdPartyFilmId = tr.data('id');
-  // var thirdPartyId = tr.data('tpid');
-
   $('#bindMovieName').val(obj.sFilmName);
-  $('#bindTpMovie').val(obj.filmName);
-  // $('h4').text = obj.filmName;
-
+  $('#bindTpMovie').text(obj.filmName);
   $('#thirdPartyFilmId').val(obj.sFilmId);
   $('#thirdPartyId').val(obj.filmId);
   $('#formSearchMovie').trigger('submit');
@@ -343,11 +336,8 @@ $('#dataTable').on('click', '.btn-movie-create', function (e) {
 
   var rowIndex = $(this).closest('tr')[0].sectionRowIndex;
   var obj = dataCache[rowIndex];
+  $('#bindTpMovie').text(obj.filmName);
 
-  $('#sourceId').val(obj.sourceid);
-  $('#thirdPartyFilmId').val(obj.sFilmId);
-  $('#filmId').val(obj.filmId);
-  
   $.ajax({
     url: common.API_HOST + 'film/tpFilm/tpfilmDetail',
     type: 'POST',
@@ -366,11 +356,25 @@ $('#dataTable').on('click', '.btn-movie-create', function (e) {
       });
 
       data.sourceName = _.find(_sources,{ sourceId: parseInt(data.sourceId)}).sourceName;
+      data.sourceId = obj.sourceId;
+      data.thirdPartyFilmId = obj.sFilmId;
+      data.filmId = obj.filmId;
       var template = $('#edit-template').html();
       Mustache.parse(template);
       var html = Mustache.render(template, data);
       $('#popup-movie-creat-tp .modal-body').html(html);
       $('#popup-movie-creat-tp').modal('show');
+
+      var dimenStr = data.dimen;
+
+      if (dimenStr.indexOf("2D") >= 0) {
+        $('#inlineCheckbox1').prop("checked",true);
+      };
+
+      if (dimenStr.indexOf("3D") >= 0) {
+        $('#inlineCheckbox2').prop("checked",true);
+      };
+
     } else {
       alert('接口错误：' + res.meta.msg);
     }
@@ -379,11 +383,19 @@ $('#dataTable').on('click', '.btn-movie-create', function (e) {
 
 $('body').on('click', '.btn-save', function (e) {
   e.preventDefault();
+  var dimenSelected = '';
+  if ($('#inlineCheckbox1').prop('checked')) {
+        dimenSelected += $('#inlineCheckbox1').val();
+      }
+
+  if ($('#inlineCheckbox2').prop('checked')) {
+        dimenSelected += $('#inlineCheckbox2').val();
+      }
 
   var sendData = {
     id: $('#filmId').val(),
     name: $('#name').val(),
-    dimen: $('#dimen').val(),
+    dimen: dimenSelected,
     showDate:$('#showDate').val(),
     duration:$('#duration').val(),
     summary:$('#summary').val(),
