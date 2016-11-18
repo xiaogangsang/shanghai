@@ -418,8 +418,9 @@ $.ajax({
   return false;
 });
 
-$('body').on('click', '.btn-upload', function (event) {
+$('body').on('click', '#btn-upload', function (event) {
   event.preventDefault();
+  alert('a');
   $('#popup-movie-upload').modal('show');
   $('#fileupload').data('url', common.API_HOST + 'film/standardFilm/uploadPoster').fileupload({
     dataType: 'json',
