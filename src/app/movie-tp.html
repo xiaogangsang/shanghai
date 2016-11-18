@@ -184,7 +184,8 @@
       <td>{{filmId}}</td>
       <td>{{filmName}}</td>
       <td>
-        <a href="movie-bind.html?movieId={{sFilmId}}" class="btn btn-xs btn-default" target="_blank">设置关联</a>
+        <!-- <a href="movie-bind.html?movieId={{sFilmId}}" class="btn btn-xs btn-default" target="_blank">设置关联</a> -->
+        <button type="button" class="btn btn-xs btn-default btn-bind">设置关联</button>
         <button type="button" class="btn btn-xs btn-default btn-movie-create">新建并关联</button>
       </td>
     </tr>
@@ -192,7 +193,9 @@
   </script>
 
   @@include('component/popup-movie-tp-detail.tpl')
-  @@include('component/popup-movie-form.tpl')
-  @@include('component/popup-movie-upload.tpl')
+  @@include('component/popup-movie-bind.tpl')
+  <!-- @@include('component/popup-movie-upload.tpl') -->
+  @@include('component/popup-movie-creat-tp.tpl')
+  
 </body>
 </html>
