@@ -87,17 +87,19 @@ $('#formSearch').on('submit', function (e) {
   var sourceId = !!~~$('#search_sourceId').val() == false ? 1 : $('#search_sourceId').val();
 
   var sendData = {
-    name: $.trim($('#search_name').val()),
-    tpFilmName: $.trim($('#search_name_tp').val()),
     produceCorp: $.trim($('#search_produceCorp').val()),
-    // dimenId: $('#search_dimenId').val(),
-    beginShowDate: $('#search_beginShowDate').val(),
-    endShowDate: $('#search_endShowDate').val(),
-    // status: $('#search_status').val(),
     sourceId: sourceId,
     associationStatus: $('#search_associationStatus').val(),
     pageSize: _pageSize,
   };
+
+  if ($('#search_associationStatus').val() == 1) {
+    sendData.name = $.trim($('#search_name').val());
+    sendData.beginShowDate = $('#search_beginShowDate').val();
+    sendData.endShowDate = $('#search_endShowDate').val();
+  }
+
+
   if (!!_querying) {
     return false;
   }
@@ -140,7 +142,7 @@ $('#formSearch').on('submit', function (e) {
           item.showDate = item.showDate.split(' ')[0];
           /*item.dimenName = item.dimenNames.join(',');*/
 
-          item.associationStatus = item.associationStatus == 1 ? '已关联' : '未关联';
+          // item.associationStatus = item.associationStatus == 1 ? '已关联' : '未关联';
 
           var source = _.find(_sources, { sourceId: parseInt(item.sourceId) });
           if (source) {
