@@ -29,42 +29,24 @@ $(function () {
   setVersion();
   setSource();
 
-  $('#search_beginShowDate').datetimepicker({
+  $('#search_beginDate,#search_endDate').datetimepicker({
     format: 'yyyy-mm-dd',
     language: 'zh-CN',
     minView: 2,
     todayHighlight: true,
     autoclose: true,
-  }).on('changeDate', function (ev) {
-    var startDate = new Date(ev.date.valueOf());
-    startDate.setDate(startDate.getDate(new Date(ev.date.valueOf())));
-    $('#search_endShowDate').datetimepicker('setStartDate', startDate);
   });
-
-  $('#search_endShowDate').datetimepicker({
-    format: 'yyyy-mm-dd',
-    language: 'zh-CN',
-    minView: 2,
-    todayHighlight: true,
-    autoclose: true,
-  }).on('changeDate', function (ev) {
-    var FromEndDate = new Date(ev.date.valueOf());
-    FromEndDate.setDate(FromEndDate.getDate(new Date(ev.date.valueOf())));
-    $('#search_beginShowDate').datetimepicker('setEndDate', FromEndDate);
-  });
-
   var beginDate = new Date();
   var endDate = new Date();
   beginDate.setDate(beginDate.getDate() - 7);
   beginDate = common.getDate(beginDate);
   endDate = common.getDate(endDate);
-  $('#search_beginShowDate').val(beginDate).datetimepicker('setEndDate', endDate);
-  $('#search_endShowDate').val(endDate).datetimepicker('setStartDate', beginDate);
+  $('#search_beginDate').datetimepicker('setEndDate', endDate);
+  $('#search_endDate').datetimepicker('setStartDate', beginDate).datetimepicker('setEndDate', endDate);
 
   $('#formSearch').trigger('submit');
 });
 
-//handle search form
 //handle search form
 $('#formSearch').on('change click', '#search_associationStatus', function (e) {
   e.preventDefault();
@@ -95,8 +77,8 @@ $('#formSearch').on('submit', function (e) {
 
   if ($('#search_associationStatus').val() == 1) {
     sendData.name = $.trim($('#search_name').val());
-    sendData.beginShowDate = $('#search_beginShowDate').val();
-    sendData.endShowDate = $('#search_endShowDate').val();
+    sendData.beginShowDate = $('#search_beginDate').val();
+    sendData.endShowDate = $('#search_endDate').val();
   }
 
 

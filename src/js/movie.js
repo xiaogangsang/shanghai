@@ -162,7 +162,7 @@ $(document).on('submit', '#popup-movie-form form', function (e) {
   sendData.showDate = sendData.showDate.join('-');
 
   var dimenIds = [];
-  $('#popup-movie-form input[name=dimenId]:checked').each(function () {
+  $('#popup-movie-form input[name=dimen]:checked').each(function () {
     dimenIds.push($(this).val());
   });
 
@@ -349,7 +349,7 @@ function setModal(movieData) {
     });
 
     _(_versions).forEach(function (value, key) {
-      value.selected = movieData.dimenIds.indexOf(value.id) > -1 ? true : false;
+      value.selected = movieData.dimen.indexOf(value.id) > -1 ? true : false;
     });
 
     movieData.releaseYear = movieData.showDate.split('-')[0] != undefined ? movieData.showDate.split('-')[0] : '';
