@@ -116,7 +116,7 @@ $('#formSearch').on('submit', function (e) {
           });
 
           item.showDate = item.showDate.split(' ')[0];
-          item.dimenName = item.dimenNames.join(',');
+          /*item.dimenName = item.dimenNames.join(',');*/
           item.associationStatus = item.associationStatus == 1 ? '已关联' : '未关联';
         });
 
@@ -277,7 +277,7 @@ $('#dataTable').on('click', '.btn-detail', function (e) {
         }
       });
 
-      data.dimenName = data.dimenNames.join(',');
+      //data.dimenName = data.dimenNames.join(',');
       var template = $('#detail-template').html();
       Mustache.parse(template);
       var html = Mustache.render(template, data);
