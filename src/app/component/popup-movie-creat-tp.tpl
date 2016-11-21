@@ -4,7 +4,7 @@
       <form>
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title">新建并关联 【<span id="bindTpMovie"></span>】</h4>
+          <h4 class="modal-title">新建并关联 【<span id="sbindTpMovie"></span>】</h4>
         </div>
         <div class="modal-body"></div>
         <div class="modal-footer">
@@ -27,7 +27,7 @@
           <th>上映日期</th>
           <!-- <td><input type="text" class="form-control" id="showDate" value="{{releaseDate}}" required></td> -->
 
-          <td class="release-date"><input type="text" class="form-control" id="releaseYear" value="{{year}}" size="4" maxlength="4" required> 年 <input type="text" class="form-control" id="releaseMonth" value="{{month}}" size="2" maxlength="2"> 月 <input type="text" class="form-control" id="releaseDay" value="{{day}}"  size="2" maxlength="2"> 日 </td>
+          <td><input width="80" type="text" class="form-control" id="releaseYear" value="{{year}}" size="4" maxlength="4" required> 年 <input type="text" class="form-control" id="releaseMonth" value="{{month}}" size="2" maxlength="2"> 月 <input type="text" class="form-control" id="releaseDay" value="{{day}}"  size="2" maxlength="2"> 日 </td>
 
         </tr>
         <tr>
@@ -94,7 +94,7 @@
           <td colspan="3">
             <img class="poster-preview" src="{{posterUrl}}" width="160" style="display: block;">
             <input type="text" class="form-control" id="poster" value="{{posterUrl}}">
-            <button type="button" class="btn btn-xs btn-default" id="btn-upload">上传图片</button> <span>图片大小不超过100k</span>
+            <button type="button" class="btn btn-xs btn-default" id="tpBtn-upload">上传图片</button> <span>图片大小不超过100k</span>
             
           </td>
         </tr>

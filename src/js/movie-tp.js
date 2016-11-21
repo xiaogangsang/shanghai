@@ -336,7 +336,7 @@ $('#dataTable').on('click', '.btn-movie-create', function (e) {
 
   var rowIndex = $(this).closest('tr')[0].sectionRowIndex;
   var obj = dataCache[rowIndex];
-  $('#bindTpMovie').text(obj.filmName);
+  
 
   $.ajax({
     url: common.API_HOST + 'film/tpFilm/tpfilmDetail',
@@ -381,6 +381,8 @@ $('#dataTable').on('click', '.btn-movie-create', function (e) {
       var html = Mustache.render(template, data);
       $('#popup-movie-creat-tp .modal-body').html(html);
       $('#popup-movie-creat-tp').modal('show');
+
+      $('#sbindTpMovie').text(obj.filmName);
 
       var dimenStr = data.dimen;
 
@@ -458,9 +460,8 @@ $.ajax({
   return false;
 });
 
-$('body').on('click', '#btn-upload', function (event) {
+$('body').on('click', '#tpBtn-upload', function (event) {
   event.preventDefault();
-  alert('a');
   $('#popup-movie-upload').modal('show');
   $('#fileupload').data('url', common.API_HOST + 'film/standardFilm/uploadPoster').fileupload({
     dataType: 'json',
