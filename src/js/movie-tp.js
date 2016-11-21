@@ -514,38 +514,38 @@ $('body').on('click', '#tpBtn-upload', function (event) {
   });
 });
 
-// $('#dataTable').on('click', '.btn-detail', function (e) {
-//   e.preventDefault();
-//   $.ajax({
-//     url: common.API_HOST + 'film/tpFilm/tpfilmDetail',
-//     type: 'POST',
-//     dataType: 'json',
-//     data: { thirdPartyFilmId: $(this).closest('tr').data('id'),
-//       sourceId: $(this).closest('tr').data('sourceid'),
-//     },
-//   })
-//   .done(function (res) {
-//     if (!!~~res.meta.result) {
-//       var data = res.data;
-//       _(_status).forEach(function (value) {
-//         if (data.status == value.id) {
-//           data.statusName = value.name;
-//         }
-//       });
+$('#dataTable').on('click', '.btn-detail', function (e) {
+  e.preventDefault();
+  $.ajax({
+    url: common.API_HOST + 'film/tpFilm/tpfilmDetail',
+    type: 'POST',
+    dataType: 'json',
+    data: { thirdPartyFilmId: $(this).closest('tr').data('id'),
+      sourceId: $(this).closest('tr').data('sourceid'),
+    },
+  })
+  .done(function (res) {
+    if (!!~~res.meta.result) {
+      var data = res.data;
+      _(_status).forEach(function (value) {
+        if (data.status == value.id) {
+          data.statusName = value.name;
+        }
+      });
 
-//       data.sourceName = _.find(_sources,{ sourceId: parseInt(data.sourceId)}).sourceName;
+      data.sourceName = _.find(_sources,{ sourceId: parseInt(data.sourceId)}).sourceName;
 
-//       //data.dimenName = data.dimenNames.join(',');
-//       var template = $('#detail-template').html();
-//       Mustache.parse(template);
-//       var html = Mustache.render(template, data);
-//       $('#popup-movie-tp-detail .modal-body').html(html);
-//       $('#popup-movie-tp-detail').modal('show');
-//     } else {
-//       alert('接口错误：' + res.meta.msg);
-//     }
-//   });
-// });
+      //data.dimenName = data.dimenNames.join(',');
+      var template = $('#detail-template').html();
+      Mustache.parse(template);
+      var html = Mustache.render(template, data);
+      $('#popup-movie-tp-detail .modal-body').html(html);
+      $('#popup-movie-tp-detail').modal('show');
+    } else {
+      alert('接口错误：' + res.meta.msg);
+    }
+  });
+});
 
 $('#pager').on('click', '.prev,.next', function (e) {
   e.preventDefault();

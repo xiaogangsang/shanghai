@@ -23,33 +23,21 @@ $(function () {
   //set search form
   setVersion();
 
-  $('#search_beginShowDate').datetimepicker({
-    format: 'yyyy-mm-dd',
-    language: 'zh-CN',
-    minView: 2,
-    todayHighlight: true,
-    autoclose: true,
-  }).on('changeDate', function (ev) {
-    var startDate = new Date(ev.date.valueOf());
-    startDate.setDate(startDate.getDate(new Date(ev.date.valueOf())));
-    $('#search_endShowDate').datetimepicker('setStartDate', startDate);
-  });
-
-  $('#search_endShowDate').datetimepicker({
+  $('#search_beginShowDate,#search_endShowDate').datetimepicker({
     format: 'yyyy-mm-dd',
     language: 'zh-CN',
     minView: 2,
     todayHighlight: true,
     autoclose: true,
   });
-
+  
   var beginDate = new Date();
   var endDate = new Date();
   beginDate.setDate(beginDate.getDate() - 7);
   beginDate = common.getDate(beginDate);
   endDate = common.getDate(endDate);
-  $('#search_beginShowDate').val(beginDate).datetimepicker('setEndDate', endDate);
-  $('#search_endShowDate').val(endDate).datetimepicker('setStartDate', beginDate);
+  // $('#search_beginShowDate').val(beginDate).datetimepicker('setEndDate', endDate);
+  // $('#search_endShowDate').val(endDate).datetimepicker('setStartDate', beginDate);
 
   $('#formSearch').trigger('submit');
 });
