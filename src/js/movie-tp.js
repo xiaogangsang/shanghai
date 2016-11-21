@@ -209,7 +209,7 @@ $('#dataTable').on('click', '.btn-bind', function (e) {
   $('#bindMovieName').val(obj.sFilmName);
   $('#bindTpMovie').text(obj.filmName);
   $('#thirdPartyFilmId').val(obj.sFilmId);
-  $('#thirdPartyId').val(obj.filmId);
+  $('#thirdPartyId').val(obj.sourceId);
   $('#formSearchMovie').trigger('submit');
   $('#popup-movie-bind').modal('show');
   return false;
@@ -354,6 +354,23 @@ $('#dataTable').on('click', '.btn-movie-create', function (e) {
           data.statusName = value.name;
         }
       });
+      var array;
+      var releaseDate = data.releaseDate;
+      if (releaseDate.length > 0) {
+        array = releaseDate.split("-");
+      }
+
+      if (array.length >= 1) {
+        data.year = array[0];
+      }
+
+      if (array.length >= 2) {
+        data.month = array[1];
+      }
+
+      if (array.length >= 3) {
+        data.day = array[2];
+      }
 
       data.sourceName = _.find(_sources,{ sourceId: parseInt(data.sourceId)}).sourceName;
       data.sourceId = obj.sourceId;
@@ -389,14 +406,24 @@ $('body').on('click', '.btn-save', function (e) {
       }
 
   if ($('#inlineCheckbox2').prop('checked')) {
-        dimenSelected += $('#inlineCheckbox2').val();
+        dimenSelected = dimenSelected + '/' + $('#inlineCheckbox2').val();
       }
+
+  var showDate = '';
+  if ($('#releaseYear').val() && $('#releaseMonth').val().length && $('#releaseDay').val().length) {
+    showDate = $('#releaseYear').val() + '-' + $('#releaseMonth').val() + '-' + $('#releaseDay').val();
+  } else if ($('#releaseYear').val() && $('#releaseMonth').val().length) {
+    showDate = $('#releaseYear').val() + '-' + $('#releaseMonth').val();
+  } else {
+    showDate = $('#releaseYear').val();
+  }
+
 
   var sendData = {
     id: $('#filmId').val(),
     name: $('#name').val(),
     dimen: dimenSelected,
-    showDate:$('#showDate').val(),
+    showDate:showDate,
     duration:$('#duration').val(),
     summary:$('#summary').val(),
     description:$('#description').val(),
@@ -408,7 +435,8 @@ $('body').on('click', '.btn-save', function (e) {
     directors:$('#director').val(),
     score:$('#score').val(),
     sourceId:$('#sourceId').val(),
-    thirdPartyFilmId:$('#thirdPartyFilmId').val(),
+    thirdPartyFilmId:$('#sFilmId').val(),
+    theme:$('#type').val(),
   };
 
 $.ajax({

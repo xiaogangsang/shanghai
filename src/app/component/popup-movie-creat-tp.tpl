@@ -25,7 +25,10 @@
           <th width="100">影片名称</th>
           <td><input type="text" class="form-control" id="name" value="{{filmName}}" required></td>
           <th>上映日期</th>
-          <td><input type="text" class="form-control" id="showDate" value="{{releaseDate}}" required></td>
+          <!-- <td><input type="text" class="form-control" id="showDate" value="{{releaseDate}}" required></td> -->
+
+          <td class="release-date"><input type="text" class="form-control" id="releaseYear" value="{{year}}" size="4" maxlength="4" required> 年 <input type="text" class="form-control" id="releaseMonth" value="{{month}}" size="2" maxlength="2"> 月 <input type="text" class="form-control" id="releaseDay" value="{{day}}"  size="2" maxlength="2"> 日 </td>
+
         </tr>
         <tr>
           <th>上映状态</th>
@@ -97,7 +100,7 @@
         </tr>
         <tr>
           <input type="hidden" id="sourceId" value="{{sourceId}}">
-          <input type="hidden" id="thirdPartyFilmId" value="{{thirdPartyFilmId}}">
+          <input type="hidden" id="sFilmId" value="{{thirdPartyFilmId}}">
           <input type="hidden" id="filmId" value="{{filmId}}">
         </tr>
       </tbody>
