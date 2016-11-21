@@ -1,6 +1,8 @@
 'use strict;'
 
 var common = require('common');
+require('fineUploader');
+
 var _status = [
 { id: 0, name: '即将上映' },
 { id: 1, name: '正在热映' },
@@ -72,6 +74,7 @@ $('#formSearch').on('submit', function (e) {
     produceCorp: $.trim($('#search_produceCorp').val()),
     sourceId: sourceId,
     associationStatus: $('#search_associationStatus').val(),
+    tpFilmName:$('#search_name_tp').val(),
     pageSize: _pageSize,
   };
 
@@ -110,9 +113,8 @@ $('#formSearch').on('submit', function (e) {
       } else {
         useCache = true;
 
-        // $('#total').text(res.data.totalCount);
         _pageIndex = res.data.pageIndex;
-        _pageTotal = Math.ceil(res.data.total / _pageSize);
+        _pageTotal = Math.ceil(res.data.totalCount / _pageSize);
         setPager(res.data.totalCount, _pageIndex, res.data.list.length, _pageTotal);
         _(res.data.list).forEach(function (item,key) {
           _(_status).forEach(function (value) {
@@ -378,11 +380,8 @@ $('#dataTable').on('click', '.btn-movie-create', function (e) {
       var html = Mustache.render(template, data);
       $('#popup-movie-creat-tp .modal-body').html(html);
       $('#popup-movie-creat-tp').modal('show');
-
       $('#sbindTpMovie').text(obj.filmName);
-
       var dimenStr = data.dimen;
-
       if (dimenStr.indexOf("2D") >= 0) {
         $('#inlineCheckbox1').prop("checked",true);
       };
@@ -390,6 +389,35 @@ $('#dataTable').on('click', '.btn-movie-create', function (e) {
       if (dimenStr.indexOf("3D") >= 0) {
         $('#inlineCheckbox2').prop("checked",true);
       };
+
+      $('#popup-movie-creat-tp').on('shown.bs.modal', function () {
+        var uploader = new qq.FineUploaderBasic({
+          button: $('#fileupload')[0],
+          request: {
+            endpoint: common.API_HOST + 'film/standardFilm/uploadPoster',
+            inputName: 'file',
+            filenameParam: 'file',
+          },
+          callbacks: {
+            onError: function (id, fileName, errorReason) {
+              if (errorReason != 'Upload failure reason unknown') {
+                console.log(errorReason);
+                alert('上传失败');
+              }
+            },
+
+            onComplete: function (id, fileName, responseJSON) {
+              if (!!~~responseJSON.meta.result) {
+                $('#poster').val(responseJSON.data.savePath);
+                $('.poster-preview').attr('src', responseJSON.data.savePath);
+                alert('上传成功！');
+              } else {
+                alert('接口错误：' + responseJSON.meta.msg);
+              }
+            },
+          },
+        });
+      });
 
     } else {
       alert('接口错误：' + res.meta.msg);
@@ -448,6 +476,7 @@ $.ajax({
     _querying = false;
     if (!!~~res.meta.result) {
       alert('保存成功');
+      $('#popup-movie-creat-tp').modal('hide');
 
     } else {
       alert('接口错误：' + res.meta.msg);

@@ -41,10 +41,6 @@ $(function () {
     minView: 2,
     todayHighlight: true,
     autoclose: true,
-  }).on('changeDate', function (ev) {
-    var FromEndDate = new Date(ev.date.valueOf());
-    FromEndDate.setDate(FromEndDate.getDate(new Date(ev.date.valueOf())));
-    $('#search_beginShowDate').datetimepicker('setEndDate', FromEndDate);
   });
 
   var beginDate = new Date();
