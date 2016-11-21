@@ -65,6 +65,16 @@ $(function () {
 });
 
 //handle search form
+//handle search form
+$('#formSearch').on('change click', '#search_associationStatus', function (e) {
+  e.preventDefault();
+  if ($(this).val() == 1) {
+    $('#association').show();
+  } else {
+    $('#association').hide();
+  }
+});
+
 $('#formSearch').on('click', 'button[type=submit]', function (event) {
   event.preventDefault();
   _pageIndex = 1;
@@ -80,10 +90,10 @@ $('#formSearch').on('submit', function (e) {
     name: $.trim($('#search_name').val()),
     tpFilmName: $.trim($('#search_name_tp').val()),
     produceCorp: $.trim($('#search_produceCorp').val()),
-    dimenId: $('#search_dimenId').val(),
+    // dimenId: $('#search_dimenId').val(),
     beginShowDate: $('#search_beginShowDate').val(),
     endShowDate: $('#search_endShowDate').val(),
-    status: $('#search_status').val(),
+    // status: $('#search_status').val(),
     sourceId: sourceId,
     associationStatus: $('#search_associationStatus').val(),
     pageSize: _pageSize,
@@ -115,9 +125,11 @@ $('#formSearch').on('submit', function (e) {
         $('#pager').html('');
       } else {
         useCache = true;
+
+        // $('#total').text(res.data.totalCount);
         _pageIndex = res.data.pageIndex;
         _pageTotal = Math.ceil(res.data.total / _pageSize);
-        setPager(res.data.total, _pageIndex, res.data.list.length, _pageTotal);
+        setPager(res.data.totalCount, _pageIndex, res.data.list.length, _pageTotal);
         _(res.data.list).forEach(function (item,key) {
           _(_status).forEach(function (value) {
             if (item.status == value.id) {
@@ -127,6 +139,7 @@ $('#formSearch').on('submit', function (e) {
 
           item.showDate = item.showDate.split(' ')[0];
           /*item.dimenName = item.dimenNames.join(',');*/
+
           item.associationStatus = item.associationStatus == 1 ? '已关联' : '未关联';
 
           var source = _.find(_sources, { sourceId: parseInt(item.sourceId) });

@@ -33,8 +33,8 @@
             <div class="input-group">
               <div class="input-group-addon">关联关系</div>
               <select class="form-control" id="search_associationStatus">
-                <option value="1">已关联</option>
                 <option value="0">待关联</option>
+                <option value="1">已关联</option>
               </select>
             </div>
           </div>
@@ -53,6 +53,8 @@
             </div>
           </div>
 
+
+          <div id="association">
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">标准影片名</div>
@@ -67,7 +69,7 @@
             </div>
           </div>-->
 
-          <div class="form-group col-sm-6 col-md-4">
+          <!-- <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">影片制式</div>
               <select class="form-control" id="search_dimenId">
@@ -87,7 +89,7 @@
               </select>
             </div>
           </div>
-
+ -->
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">上映日期</div>
@@ -101,6 +103,7 @@
               <input type="text" class="form-control" id="search_endShowDate" readonly>
             </div>
           </div>
+        </div>
 
 
           <div class="col-xs-12 col-sm-6 col-md-4 pull-right">
@@ -179,14 +182,17 @@
       <td>{{sourceName}}</td>
       <td>{{statusName}}</td>
       <td>{{showDate}}</td>
-      <td>{{associationStatus}}</td>
+      <!-- <td>{{associationStatus}}</td> -->
+
+      <td>{{#associationStatus}}已关联{{/associationStatus}}{{^associationStatus}}未关联{{/associationStatus}}</td>
       <td>{{associationTime}}</td>
       <td>{{filmId}}</td>
       <td>{{filmName}}</td>
       <td>
         <!-- <a href="movie-bind.html?movieId={{sFilmId}}" class="btn btn-xs btn-default" target="_blank">设置关联</a> -->
         <button type="button" class="btn btn-xs btn-default btn-bind">设置关联</button>
-        <button type="button" class="btn btn-xs btn-default btn-movie-create">新建并关联</button>
+        {{^associationStatus}}<button type="button" class="btn btn-xs btn-default btn-movie-create">新建并关联</button>{{/associationStatus}}
+
       </td>
     </tr>
     {{/rows}}
