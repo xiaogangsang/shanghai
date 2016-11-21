@@ -16,6 +16,11 @@ var _querying = false;
 var searchCache = {};
 var useCache = false;
 var _submitting = false;
+var dataCache;
+var _movieId = 0;
+var _bindMovieName = '';
+var _querying = false;
+var _submitting = false;
 
 $(function () {
   common.init('movie-tp');
@@ -131,6 +136,8 @@ $('#formSearch').on('submit', function (e) {
         });
 
         setTableData(res.data.list);
+        dataCache = res.data.list;
+
       }
 
     } else {
@@ -190,41 +197,133 @@ $(document).on('submit', '#popup-movie-form form', function (e) {
   return false;
 });
 
-$('#dataTable').on('click', '.btn-movie-create', function (e) {
+
+$('#dataTable').on('click', '.btn-bind', function (e) {
   e.preventDefault();
+
+  // var rowIndex = $(this).closest('td').parent()[0].sectionRowIndex;
+  //   var obj = dataCache[rowIndex];
+
+ var rowIndex = $(this).closest('tr')[0].sectionRowIndex;
+  var obj = dataCache[rowIndex];
+  $('#bindMovieName').val(obj.sFilmName);
+  $('#bindTpMovie').text(obj.filmName);
+  $('#thirdPartyFilmId').val(obj.sFilmId);
+  $('#thirdPartyId').val(obj.sourceId);
+  $('#formSearchMovie').trigger('submit');
+  $('#popup-movie-bind').modal('show');
+  return false;
+});
+
+$(document).on('submit', '#formBindMovie', function (e) {
+  e.preventDefault();
+  if (_submitting) {
+    return false;
+  }
+  _submitting = true;
+  var sendData = {
+    id: $('#cinemaId').val(),
+    thirdPartyFilmId: $('#thirdPartyFilmId').val(),
+    sourceId: $('#thirdPartyId').val(),
+    status: 1,
+  };
   $.ajax({
-    url: common.API_HOST + 'film/standardFilm/detail',
+    url: common.API_HOST + 'film/standardFilm/updateAssociation',
     type: 'POST',
     dataType: 'json',
-    data: { id: $(this).closest('tr').data('id') },
+    data: sendData,
   })
   .done(function (res) {
+    _submitting = false;
     if (!!~~res.meta.result) {
-      res.data.showDate = res.data.showDate.split(' ')[0];
-      res.data.score = parseFloat(res.data.score).toFixed(1);
-      setModal(res.data);
-      $('#popup-movie-form').modal('show');
-      $('#showDate').datetimepicker({
-        format: 'yyyy-mm-dd',
-        language: 'zh-CN',
-        minView: 2,
-        todayHighlight: true,
-        autoclose: true,
+      $.ajax({
+        url: common.API_HOST + 'film/standardFilm/associationTpFilms',
+        type: 'POST',
+        dataType: 'json',
+        data: { id: _movieId },
+      })
+      .done(function (res) {
+        if (!!~~res.meta.result) {
+          var data = { movies: res.data };
+          var template = $('#tpmovie-template').html();
+          Mustache.parse(template);
+          var html = Mustache.render(template, data);
+          $('#tpMovieTable tbody').html(html);
+        } else {
+          alert('接口错误：' + res.meta.msg);
+        }
       });
-      $('#popup-movie-form form').parsley();
 
-      $('.poster-preview').on('load', function (event) {
-        var poster = $(this).attr('src');
-        window.previewImg = '<img id="previewImg" src="' + poster + '" width="160"><script>window.onload = function() { parent.document.getElementById("frameImg").height = document.getElementById("previewImg").height+"px"; }</script>';
-        var iframe = document.createElement('iframe');
-        iframe.id = 'frameImg';
-        iframe.src = 'javascript:parent.previewImg;';
-        iframe.frameBorder = '0';
-        iframe.scrolling = 'no';
-        iframe.width = '160px';
-        iframe.style.display = 'block';
-        var el = document.querySelector('.poster-preview');
-        el.parentNode.replaceChild(iframe, el);
+      alert('绑定成功！');
+      $('#popup-movie-bind').modal('hide');
+    } else {
+      alert('接口错误：' + res.meta.msg);
+    }
+  });
+});
+
+$(document).on('submit', '#formSearchMovie', function (e) {
+  e.preventDefault();
+  var bindMovieName = $.trim($('#bindMovieName').val());
+  if (bindMovieName == '' || bindMovieName == undefined || _bindMovieName == bindMovieName) {
+    if (bindMovieName == '') {
+      alert('搜索关键词不能为空！');
+    }
+
+    return false;
+  }
+
+  if (!!_querying) {
+    return false;
+  }
+
+  _querying = true;
+
+  _bindMovieName = bindMovieName;
+  $.ajax({
+    url: common.API_HOST + 'film/standardFilm/list',
+    type: 'POST',
+    dataType: 'json',
+    data: {
+      name: bindMovieName,
+      pageIndex: 1,
+      pageSize: 9999,
+    },
+  })
+  .done(function (res) {
+    _querying = false;
+    if (!!~~res.meta.result) {
+      if (res.data != null && res.data.rows.length <= 0) {
+        var html = '<tr><td colspan="5" align="center">暂无匹配，请尝试搜索其他影片名</td></tr>';
+        $('#popup-movie-bind tbody').html(html);
+        return false;
+      }
+
+      var rows = [];
+      _(res.data.rows).forEach(function (movie, key) {
+        if (movie.id != _movieId) {
+          // movie.dimen = movie.dimenNames.join(',');
+          movie.showDate = movie.showDate.split(' ')[0];
+          rows.push(movie);
+        }
+      });
+
+      if (rows.length <= 0) {
+        $('#popup-movie-bind tbody').html('<tr><td colspan="5" align="center">暂无匹配，请尝试搜索其他影片名</td></tr>');
+        return false;
+      }
+
+      var data = { rows: rows };
+      // console.log(res.data);
+      var template = $('#tr-template').html();
+      Mustache.parse(template);
+      var html = Mustache.render(template, data);
+      $('#popup-movie-bind tbody').html(html);
+      $('#popup-movie-bind').on('click', '#movieTable tbody tr', function (e) {
+        e.preventDefault();
+        $('#movieTable tbody tr.selected').removeClass('selected');
+        $(this).addClass('selected');
+        $('#cinemaId').val($(this).data('id'));
       });
     } else {
       alert('接口错误：' + res.meta.msg);
@@ -232,8 +331,136 @@ $('#dataTable').on('click', '.btn-movie-create', function (e) {
   });
 });
 
-$(document).on('click', '#btn-upload', function (event) {
+$('#dataTable').on('click', '.btn-movie-create', function (e) {
+  e.preventDefault();
+
+  var rowIndex = $(this).closest('tr')[0].sectionRowIndex;
+  var obj = dataCache[rowIndex];
+  $('#bindTpMovie').text(obj.filmName);
+
+  $.ajax({
+    url: common.API_HOST + 'film/tpFilm/tpfilmDetail',
+    type: 'POST',
+    dataType: 'json',
+    data: { thirdPartyFilmId: $(this).closest('tr').data('id'),
+      sourceId: $(this).closest('tr').data('sourceid'),
+    },
+  })
+  .done(function (res) {
+    if (!!~~res.meta.result) {
+      var data = res.data;
+      _(_status).forEach(function (value) {
+        if (data.status == value.id) {
+          data.statusName = value.name;
+        }
+      });
+      var array;
+      var releaseDate = data.releaseDate;
+      if (releaseDate.length > 0) {
+        array = releaseDate.split("-");
+      }
+
+      if (array.length >= 1) {
+        data.year = array[0];
+      }
+
+      if (array.length >= 2) {
+        data.month = array[1];
+      }
+
+      if (array.length >= 3) {
+        data.day = array[2];
+      }
+
+      data.sourceName = _.find(_sources,{ sourceId: parseInt(data.sourceId)}).sourceName;
+      data.sourceId = obj.sourceId;
+      data.thirdPartyFilmId = obj.sFilmId;
+      data.filmId = obj.filmId;
+      var template = $('#edit-template').html();
+      Mustache.parse(template);
+      var html = Mustache.render(template, data);
+      $('#popup-movie-creat-tp .modal-body').html(html);
+      $('#popup-movie-creat-tp').modal('show');
+
+      var dimenStr = data.dimen;
+
+      if (dimenStr.indexOf("2D") >= 0) {
+        $('#inlineCheckbox1').prop("checked",true);
+      };
+
+      if (dimenStr.indexOf("3D") >= 0) {
+        $('#inlineCheckbox2').prop("checked",true);
+      };
+
+    } else {
+      alert('接口错误：' + res.meta.msg);
+    }
+  });
+});
+
+$('body').on('click', '.btn-save', function (e) {
+  e.preventDefault();
+  var dimenSelected = '';
+  if ($('#inlineCheckbox1').prop('checked')) {
+        dimenSelected += $('#inlineCheckbox1').val();
+      }
+
+  if ($('#inlineCheckbox2').prop('checked')) {
+        dimenSelected = dimenSelected + '/' + $('#inlineCheckbox2').val();
+      }
+
+  var showDate = '';
+  if ($('#releaseYear').val() && $('#releaseMonth').val().length && $('#releaseDay').val().length) {
+    showDate = $('#releaseYear').val() + '-' + $('#releaseMonth').val() + '-' + $('#releaseDay').val();
+  } else if ($('#releaseYear').val() && $('#releaseMonth').val().length) {
+    showDate = $('#releaseYear').val() + '-' + $('#releaseMonth').val();
+  } else {
+    showDate = $('#releaseYear').val();
+  }
+
+
+  var sendData = {
+    id: $('#filmId').val(),
+    name: $('#name').val(),
+    dimen: dimenSelected,
+    showDate:showDate,
+    duration:$('#duration').val(),
+    summary:$('#summary').val(),
+    description:$('#description').val(),
+    area:$('#area').val(),
+    produceCorp:$('#produceCorp').val(),
+    poster:$('#poster').val(),
+    status:$('#status').val(),
+    actors:$('#actor').val(),
+    directors:$('#director').val(),
+    score:$('#score').val(),
+    sourceId:$('#sourceId').val(),
+    thirdPartyFilmId:$('#sFilmId').val(),
+    theme:$('#type').val(),
+  };
+
+$.ajax({
+    url: common.API_HOST + 'film/standardFilm/saveOrUpdate',
+    type: 'POST',
+    dataType: 'json',
+    data: sendData,
+  })
+  .done(function (res) {
+    _querying = false;
+    if (!!~~res.meta.result) {
+      alert('保存成功');
+
+    } else {
+      alert('接口错误：' + res.meta.msg);
+    }
+  });
+
+  return false;
+});
+
+$('body').on('click', '#btn-upload', function (event) {
   event.preventDefault();
+  alert('a');
   $('#popup-movie-upload').modal('show');
   $('#fileupload').data('url', common.API_HOST + 'film/standardFilm/uploadPoster').fileupload({
     dataType: 'json',
