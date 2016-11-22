@@ -380,7 +380,7 @@ $('#dataTable').on('click', '.btn-movie-create', function (e) {
       var html = Mustache.render(template, data);
       $('#popup-movie-creat-tp .modal-body').html(html);
       $('#popup-movie-creat-tp').modal('show');
-      $('#sbindTpMovie').text(obj.filmName);
+      $('#sbindTpMovie').text(res.data.filmName);
       var dimenStr = data.dimen;
       if (dimenStr.indexOf("2D") >= 0) {
         $('#inlineCheckbox1').prop("checked",true);
