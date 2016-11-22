@@ -76,30 +76,42 @@ module.exports = {
 
     //各种加载器，即让各种文件格式可用require引用
     loaders: [
-      {
-        test: path.resolve(bowerComponents, 'jquery/dist/jquery.min'),
-        loader: 'expose?jQuery!expose?$',
-      },
-      {
-        test: path.resolve(bowerComponents, 'mustache.js/mustache.js'),
-        loader: 'expose?Mustache',
-      },
-      {
-        test: path.resolve(bowerComponents, 'lodash/dist/lodash.min.js'),
-        loader: 'expose?_',
-      },
-      {
-        test: path.resolve(bowerComponents, 'js-cookie/src/js.cookie.js'),
-        loader: 'expose?Cookies',
-      },
-      {
-        test: path.resolve(bowerComponents, 'echarts/dist/echarts.js'),
-        loader: 'expose?echarts',
-      },
-      {
+    {
+      test: path.resolve(bowerComponents, 'jquery/dist/jquery.min'),
+      loader: 'expose?jQuery!expose?$',
+    },
+    {
+      test: path.resolve(bowerComponents, 'mustache.js/mustache.js'),
+      loader: 'expose?Mustache',
+    },
+    {
+      test: path.resolve(bowerComponents, 'lodash/dist/lodash.min.js'),
+      loader: 'expose?_',
+    },
+    {
+      test: path.resolve(bowerComponents, 'js-cookie/src/js.cookie.js'),
+      loader: 'expose?Cookies',
+    },
+    {
+      test: path.resolve(bowerComponents, 'echarts/dist/echarts.js'),
+      loader: 'expose?echarts',
+    },
+    {
         test: path.resolve(bowerComponents, 'fine-uploader/dist/fine-uploader.core'),
         loader: 'expose?qq',
       },
+
+    // {
+    //   test: /\.jsx?$/,
+    //   loader: 'babel',
+    //   query: {
+    //     presets: ['es2015'],
+    //   },
+    // },
+    // {
+    //   test: /\.woff$/,
+    //   loader: 'url?limit=100000',
+    // },
     ],
   },
   plugins: [
@@ -109,5 +121,21 @@ module.exports = {
   //     'jQuery': 'jquery',
   //     '$': 'jquery'
   // }),
-  ]
+  //将公共代码抽离出来合并为一个文件
+  // new CommonsChunkPlugin("upload.js", ["jquery.ui.widget.js", "jquery.iframe-transport.js", "jquery.fileupload.js"]),
+  // new CommonsChunkPlugin("commons.js", ["p1", "p2", "admin-commons.js"])
+  // 在不同页面用<script>标签引入如下js:
+  // page1.html: commons.js, p1.js
+  // page2.html: commons.js, p2.js
+  // page3.html: p3.js
+  // admin-page1.html: commons.js, admin-commons.js, ap1.js
+  // admin-page2.html: commons.js, admin-commons.js, ap2.js
+  // new CommonsChunkPlugin('common.js'),
+  // new uglifyJsPlugin({
+  //     compress: {
+  //         warnings: false
+  //     }
+  // }),
+  // new webpack.HotModuleReplacementPlugin()
+  ],
 };

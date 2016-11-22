@@ -94,7 +94,7 @@
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">上映日期</div>
-              <input type="text" class="form-control" id="search_endDate" readonly>
+              <input type="text" class="form-control" id="search_beginDate" readonly>
             </div>
           </div>
 
@@ -194,7 +194,6 @@
         <!-- <a href="movie-bind.html?movieId={{sFilmId}}" class="btn btn-xs btn-default" target="_blank">设置关联</a> -->
         <button type="button" class="btn btn-xs btn-default btn-bind">设置关联</button>
         {{^associationStatus}}<button type="button" class="btn btn-xs btn-default btn-movie-create">新建并关联</button>{{/associationStatus}}
-
       </td>
     </tr>
     {{/rows}}

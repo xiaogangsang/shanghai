@@ -346,6 +346,7 @@ $('#dataTable').on('click', '.btn-movie-create', function (e) {
     },
   })
   .done(function (res) {
+    _submitting = false;
     if (!!~~res.meta.result) {
       var data = res.data;
       _(_status).forEach(function (value) {
@@ -488,6 +489,7 @@ $.ajax({
 
 $('body').on('click', '#tpBtn-upload', function (event) {
   event.preventDefault();
+  alert('a');
   $('#popup-movie-upload').modal('show');
   $('#fileupload').data('url', common.API_HOST + 'film/standardFilm/uploadPoster').fileupload({
     dataType: 'json',
