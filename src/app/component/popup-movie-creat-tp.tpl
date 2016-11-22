@@ -8,7 +8,9 @@
         </div>
         <div class="modal-body"></div>
         <div class="modal-footer">
-          <button type="submit" class="btn btn-save">保存</button>
+
+          <button type="submit" class="btn btn-save" style=" background-color: #ff8903;border: 1px solid #ff8903;color: #fff;">保存</button>
+          <!-- <button type="submit" class="btn btn-primary">保存</button> -->
           <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
         </div>
       </form>
