@@ -207,7 +207,7 @@ $('#dataTable').on('click', '.btn-bind', function (e) {
  var rowIndex = $(this).closest('tr')[0].sectionRowIndex;
   var obj = dataCache[rowIndex];
   $('#bindMovieName').val(obj.sFilmName);
-  $('#bindTpMovie').text(obj.filmName);
+  $('#bindTpMovie').text(obj.sFilmName);
   $('#thirdPartyFilmId').val(obj.sFilmId);
   $('#thirdPartyId').val(obj.sourceId);
   $('#formSearchMovie').trigger('submit');
