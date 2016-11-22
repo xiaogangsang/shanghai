@@ -1,6 +1,8 @@
 'use strict;'
 
 var common = require('common');
+require('fineUploader');
+
 var _status = [
 { id: 0, name: '即将上映' },
 { id: 1, name: '正在热映' },
@@ -29,42 +31,34 @@ $(function () {
   setVersion();
   setSource();
 
-  $('#search_beginShowDate').datetimepicker({
+  $('#search_beginDate,#search_endDate').datetimepicker({
     format: 'yyyy-mm-dd',
     language: 'zh-CN',
     minView: 2,
     todayHighlight: true,
     autoclose: true,
-  }).on('changeDate', function (ev) {
-    var startDate = new Date(ev.date.valueOf());
-    startDate.setDate(startDate.getDate(new Date(ev.date.valueOf())));
-    $('#search_endShowDate').datetimepicker('setStartDate', startDate);
   });
-
-  $('#search_endShowDate').datetimepicker({
-    format: 'yyyy-mm-dd',
-    language: 'zh-CN',
-    minView: 2,
-    todayHighlight: true,
-    autoclose: true,
-  }).on('changeDate', function (ev) {
-    var FromEndDate = new Date(ev.date.valueOf());
-    FromEndDate.setDate(FromEndDate.getDate(new Date(ev.date.valueOf())));
-    $('#search_beginShowDate').datetimepicker('setEndDate', FromEndDate);
-  });
-
   var beginDate = new Date();
   var endDate = new Date();
   beginDate.setDate(beginDate.getDate() - 7);
   beginDate = common.getDate(beginDate);
   endDate = common.getDate(endDate);
-  $('#search_beginShowDate').val(beginDate).datetimepicker('setEndDate', endDate);
-  $('#search_endShowDate').val(endDate).datetimepicker('setStartDate', beginDate);
+  $('#search_beginDate').datetimepicker('setEndDate', endDate);
+  $('#search_endDate').datetimepicker('setStartDate', beginDate).datetimepicker('setEndDate', endDate);
 
   $('#formSearch').trigger('submit');
 });
 
 //handle search form
+$('#formSearch').on('change click', '#search_associationStatus', function (e) {
+  e.preventDefault();
+  if ($(this).val() == 1) {
+    $('#association').show();
+  } else {
+    $('#association').hide();
+  }
+});
+
 $('#formSearch').on('click', 'button[type=submit]', function (event) {
   event.preventDefault();
   _pageIndex = 1;
@@ -77,17 +71,20 @@ $('#formSearch').on('submit', function (e) {
   var sourceId = !!~~$('#search_sourceId').val() == false ? 1 : $('#search_sourceId').val();
 
   var sendData = {
-    name: $.trim($('#search_name').val()),
-    tpFilmName: $.trim($('#search_name_tp').val()),
     produceCorp: $.trim($('#search_produceCorp').val()),
-    dimenId: $('#search_dimenId').val(),
-    beginShowDate: $('#search_beginShowDate').val(),
-    endShowDate: $('#search_endShowDate').val(),
-    status: $('#search_status').val(),
     sourceId: sourceId,
     associationStatus: $('#search_associationStatus').val(),
+    tpFilmName:$('#search_name_tp').val(),
     pageSize: _pageSize,
   };
+
+  if ($('#search_associationStatus').val() == 1) {
+    sendData.name = $.trim($('#search_name').val());
+    sendData.beginShowDate = $('#search_beginDate').val();
+    sendData.endShowDate = $('#search_endDate').val();
+  }
+
+
   if (!!_querying) {
     return false;
   }
@@ -115,9 +112,10 @@ $('#formSearch').on('submit', function (e) {
         $('#pager').html('');
       } else {
         useCache = true;
+
         _pageIndex = res.data.pageIndex;
-        _pageTotal = Math.ceil(res.data.total / _pageSize);
-        setPager(res.data.total, _pageIndex, res.data.list.length, _pageTotal);
+        _pageTotal = Math.ceil(res.data.totalCount / _pageSize);
+        setPager(res.data.totalCount, _pageIndex, res.data.list.length, _pageTotal);
         _(res.data.list).forEach(function (item,key) {
           _(_status).forEach(function (value) {
             if (item.status == value.id) {
@@ -125,9 +123,10 @@ $('#formSearch').on('submit', function (e) {
             }
           });
 
-          item.showDate = item.showDate.split(' ')[0];
+          // item.showDate = item.showDate.split(' ')[0];
           /*item.dimenName = item.dimenNames.join(',');*/
-          item.associationStatus = item.associationStatus == 1 ? '已关联' : '未关联';
+
+          // item.associationStatus = item.associationStatus == 1 ? '已关联' : '未关联';
 
           var source = _.find(_sources, { sourceId: parseInt(item.sourceId) });
           if (source) {
@@ -336,7 +335,7 @@ $('#dataTable').on('click', '.btn-movie-create', function (e) {
 
   var rowIndex = $(this).closest('tr')[0].sectionRowIndex;
   var obj = dataCache[rowIndex];
-  $('#bindTpMovie').text(obj.filmName);
+  
 
   $.ajax({
     url: common.API_HOST + 'film/tpFilm/tpfilmDetail',
@@ -347,6 +346,7 @@ $('#dataTable').on('click', '.btn-movie-create', function (e) {
     },
   })
   .done(function (res) {
+    _submitting = false;
     if (!!~~res.meta.result) {
       var data = res.data;
       _(_status).forEach(function (value) {
@@ -372,7 +372,7 @@ $('#dataTable').on('click', '.btn-movie-create', function (e) {
         data.day = array[2];
       }
 
-      data.sourceName = _.find(_sources,{ sourceId: parseInt(data.sourceId)}).sourceName;
+      // data.sourceName = _.find(_sources,{ sourceId: parseInt(data.sourceId)}).sourceName;
       data.sourceId = obj.sourceId;
       data.thirdPartyFilmId = obj.sFilmId;
       data.filmId = obj.filmId;
@@ -381,9 +381,8 @@ $('#dataTable').on('click', '.btn-movie-create', function (e) {
       var html = Mustache.render(template, data);
       $('#popup-movie-creat-tp .modal-body').html(html);
       $('#popup-movie-creat-tp').modal('show');
-
+      $('#sbindTpMovie').text(res.data.filmName);
       var dimenStr = data.dimen;
-
       if (dimenStr.indexOf("2D") >= 0) {
         $('#inlineCheckbox1').prop("checked",true);
       };
@@ -391,6 +390,35 @@ $('#dataTable').on('click', '.btn-movie-create', function (e) {
       if (dimenStr.indexOf("3D") >= 0) {
         $('#inlineCheckbox2').prop("checked",true);
       };
+
+      $('#popup-movie-creat-tp').on('shown.bs.modal', function () {
+        var uploader = new qq.FineUploaderBasic({
+          button: $('#fileupload')[0],
+          request: {
+            endpoint: common.API_HOST + 'film/standardFilm/uploadPoster',
+            inputName: 'file',
+            filenameParam: 'file',
+          },
+          callbacks: {
+            onError: function (id, fileName, errorReason) {
+              if (errorReason != 'Upload failure reason unknown') {
+                console.log(errorReason);
+                alert('上传失败');
+              }
+            },
+
+            onComplete: function (id, fileName, responseJSON) {
+              if (!!~~responseJSON.meta.result) {
+                $('#poster').val(responseJSON.data.savePath);
+                $('.poster-preview').attr('src', responseJSON.data.savePath);
+                alert('上传成功！');
+              } else {
+                alert('接口错误：' + responseJSON.meta.msg);
+              }
+            },
+          },
+        });
+      });
 
     } else {
       alert('接口错误：' + res.meta.msg);
@@ -449,6 +477,7 @@ $.ajax({
     _querying = false;
     if (!!~~res.meta.result) {
       alert('保存成功');
+      $('#popup-movie-creat-tp').modal('hide');
 
     } else {
       alert('接口错误：' + res.meta.msg);
@@ -458,7 +487,7 @@ $.ajax({
   return false;
 });
 
-$('body').on('click', '#btn-upload', function (event) {
+$('body').on('click', '#tpBtn-upload', function (event) {
   event.preventDefault();
   alert('a');
   $('#popup-movie-upload').modal('show');

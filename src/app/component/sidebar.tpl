@@ -55,9 +55,10 @@
       <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu5"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> 活动中心</a>
       <div id="menu5" class="panel-collapse collapse" role="tabpanel">
         <div class="list-group">
-          <a href="activity-plan.html" class="list-group-item" id="menu-activity-plan" data-id="10" style="display:none">活动计划管理</a>
-          <a href="activity-unit.html" class="list-group-item" id="menu-activity-unit" data-id="11" style="display:none">活动单元管理</a>
-          <a href="activity-cs.html" class="list-group-item" id="menu-activity-cs" data-id="24" style="display:none">活动查询</a>
+          <a href="activity-plan.html" class="list-group-item" id="menu-activity-plan" data-id="10" style="display:none">常态活动计划管理</a>
+          <a href="activity-unit.html" class="list-group-item" id="menu-activity-unit" data-id="11" style="display:none">常态活动单元管理</a>
+          <a href="activity-cs.html" class="list-group-item" id="menu-activity-cs" data-id="24" style="display:none">常态活动查询</a>
+          <a href="activity-payment.html" class="list-group-item" id="menu-activity-payment" data-id="11" style="display:none">支付活动管理</a>
         </div>
       </div>
     </div>
@@ -184,6 +185,7 @@
           <a href="balance-out-state-batch-handler.html" class="list-group-item" id="menu-balance-out-state-batch-handler" data-id="247" style="display:none">对账状态批量处理</a>
           <a href="balance-out-merchant-batch-update.html" class="list-group-item" id="menu-balance-out-merchant-batch-update" data-id="248" style="display:none">商户信息批量更新</a>
           <a href="balance-out-file-operate-result.html" class="list-group-item" id="menu-balance-out-file-operate-result" data-id="249" style="display:none">对账批处理结果</a>
+          <a href="balance-out-record-batch-creator.html" class="list-group-item" id="menu-balance-out-record-batch-creator" data-id="287" style="display:none">批量新增出货/退货记录</a>
         </div>
       </div>
     </div>
