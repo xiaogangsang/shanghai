@@ -31,8 +31,11 @@
 
          <!--  <td><input type="text" class="form-control" id="releaseYear" value="{{year}}" size="4" maxlength="4" required> 年 <input type="text" class="form-control" id="releaseMonth" value="{{month}}" size="2" maxlength="2"> 月 <input type="text" class="form-control" id="releaseDay" value="{{day}}"  size="2" maxlength="2"> 日 </td> -->
 
-
-          <td class="release-date"><input type="text" class="form-control" id="releaseYear" value="{{year}}" size="4" maxlength="4" required> 年 <input type="text" class="form-control" id="releaseMonth" value="{{month}}" size="2" maxlength="2"> 月 <input type="text" class="form-control" id="releaseDay" value="{{day}}"  size="2" maxlength="2"> 日 </td>
+          <td class="release-date">
+          <!-- <div class="row" > -->
+           <input type="text" class="form-control" id="releaseYear" value="{{year}}" size="4" maxlength="4" required style="width: 64px; display: inline-block;" > 年 <input type="text" class="form-control" id="releaseMonth" value="{{month}}" size="2" maxlength="2" style="width: 54px;    display: inline-block;"> 月 <input type="text" class="form-control" id="releaseDay" value="{{day}}"  size="2" maxlength="2" style="width: 54px;    display: inline-block;"> 日 
+          <!-- </div> -->
+         </td>
 
         </tr>
         <tr>

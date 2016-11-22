@@ -1,7 +1,7 @@
 'use strict;'
 
 var common = require('common');
-// require('fineUploader');
+require('fineUploader');
 
 var _status = [
 { id: 0, name: '即将上映' },
