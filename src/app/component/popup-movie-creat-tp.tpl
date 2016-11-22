@@ -8,7 +8,9 @@
         </div>
         <div class="modal-body"></div>
         <div class="modal-footer">
-          <button type="submit" class="btn btn-save">保存</button>
+
+          <button type="submit" class="btn btn-save" style=" background-color: #ff8903;border: 1px solid #ff8903;color: #fff;">保存</button>
+          <!-- <button type="submit" class="btn btn-primary">保存</button> -->
           <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
         </div>
       </form>
@@ -27,7 +29,10 @@
           <th>上映日期</th>
           <!-- <td><input type="text" class="form-control" id="showDate" value="{{releaseDate}}" required></td> -->
 
-          <td><input width="80" type="text" class="form-control" id="releaseYear" value="{{year}}" size="4" maxlength="4" required> 年 <input type="text" class="form-control" id="releaseMonth" value="{{month}}" size="2" maxlength="2"> 月 <input type="text" class="form-control" id="releaseDay" value="{{day}}"  size="2" maxlength="2"> 日 </td>
+         <!--  <td><input type="text" class="form-control" id="releaseYear" value="{{year}}" size="4" maxlength="4" required> 年 <input type="text" class="form-control" id="releaseMonth" value="{{month}}" size="2" maxlength="2"> 月 <input type="text" class="form-control" id="releaseDay" value="{{day}}"  size="2" maxlength="2"> 日 </td> -->
+
+
+          <td class="release-date"><input type="text" class="form-control" id="releaseYear" value="{{year}}" size="4" maxlength="4" required> 年 <input type="text" class="form-control" id="releaseMonth" value="{{month}}" size="2" maxlength="2"> 月 <input type="text" class="form-control" id="releaseDay" value="{{day}}"  size="2" maxlength="2"> 日 </td>
 
         </tr>
         <tr>
@@ -90,12 +95,19 @@
           <td colspan="3"><textarea class="form-control" id="description" required>{{description}}</textarea></td>
         </tr>
         <tr>
-          <th>海报</th>
+         <!--  <th>海报</th>
           <td colspan="3">
             <img class="poster-preview" src="{{posterUrl}}" width="160" style="display: block;">
             <input type="text" class="form-control" id="poster" value="{{posterUrl}}">
             <button type="button" class="btn btn-xs btn-default" id="tpBtn-upload">上传图片</button> <span>图片大小不超过100k</span>
             
+          </td> -->
+
+           <th>海报</th>
+          <td colspan="3">
+            <img class="poster-preview" src="{{posterUrl}}" width="150">
+            <input type="text" class="form-control" id="poster" value="{{posterUrl}}">
+            <div class="btn btn-default" id="fileupload">上传海报图</div>
           </td>
         </tr>
         <tr>
