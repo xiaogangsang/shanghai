@@ -357,20 +357,19 @@ $('#dataTable').on('click', '.btn-movie-create', function (e) {
       });
       var array;
       var releaseDate = data.releaseDate;
-      if (releaseDate.length > 0) {
+      if (releaseDate != null && releaseDate.length > 0) {
         array = releaseDate.split("-");
-      }
+        if (array.length >= 1) {
+          data.year = array[0];
+        }
 
-      if (array.length >= 1) {
-        data.year = array[0];
-      }
+        if (array.length >= 2) {
+          data.month = array[1];
+        }
 
-      if (array.length >= 2) {
-        data.month = array[1];
-      }
-
-      if (array.length >= 3) {
-        data.day = array[2];
+        if (array.length >= 3) {
+          data.day = array[2];
+        }
       }
 
       // data.sourceName = _.find(_sources,{ sourceId: parseInt(data.sourceId)}).sourceName;
