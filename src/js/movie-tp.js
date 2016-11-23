@@ -43,8 +43,8 @@ $(function () {
   beginDate.setDate(beginDate.getDate() - 7);
   beginDate = common.getDate(beginDate);
   endDate = common.getDate(endDate);
-  $('#search_beginDate').datetimepicker('setEndDate', endDate);
-  $('#search_endDate').datetimepicker('setStartDate', beginDate).datetimepicker('setEndDate', endDate);
+  //$('#search_beginDate').datetimepicker('setEndDate', endDate);
+  //$('#search_endDate').datetimepicker('setStartDate', beginDate).datetimepicker('setEndDate', endDate);
 
   $('#formSearch').trigger('submit');
 });
@@ -68,16 +68,17 @@ $('#formSearch').on('click', 'button[type=submit]', function (event) {
 
 $('#formSearch').on('submit', function (e) {
   e.preventDefault();
-  var sourceId = !!~~$('#search_sourceId').val() == false ? 1 : $('#search_sourceId').val();
 
   var sendData = {
     produceCorp: $.trim($('#search_produceCorp').val()),
-    sourceId: sourceId,
     associationStatus: $('#search_associationStatus').val(),
     tpFilmName:$('#search_name_tp').val(),
     pageSize: _pageSize,
   };
 
+  if (!!~~$('#search_sourceId').val()) {
+    sendData.sourceId = $('#search_sourceId').val();
+  }
   if ($('#search_associationStatus').val() == 1) {
     sendData.name = $.trim($('#search_name').val());
     sendData.beginShowDate = $('#search_beginDate').val();
@@ -206,7 +207,7 @@ $('#dataTable').on('click', '.btn-bind', function (e) {
  var rowIndex = $(this).closest('tr')[0].sectionRowIndex;
   var obj = dataCache[rowIndex];
   $('#bindMovieName').val(obj.sFilmName);
-  $('#bindTpMovie').text(obj.filmName);
+  $('#bindTpMovie').text(obj.sFilmName);
   $('#thirdPartyFilmId').val(obj.sFilmId);
   $('#thirdPartyId').val(obj.sourceId);
   $('#formSearchMovie').trigger('submit');
@@ -536,6 +537,7 @@ $('#dataTable').on('click', '.btn-detail', function (e) {
       });
 
       data.sourceName = _.find(_sources,{ sourceId: parseInt(data.sourceId)}).sourceName;
+      data.associationStatus = _.find(_status,{id:parseInt(data.status)}).name;
 
       //data.dimenName = data.dimenNames.join(',');
       var template = $('#detail-template').html();
@@ -673,7 +675,6 @@ function setSource() {
 
           $('#search_sourceId').append(html);
           $('#search_sourceId').chosen({ disable_search_threshold: 10, allow_single_deselect: true });
-          $('#search_sourceId option[value="1"]').prop('selected',true);
         } else {
           alert('接口错误：' + res.meta.msg);
         }
