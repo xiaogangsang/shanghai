@@ -10,3 +10,4 @@ node_modules
 ### Custom ###
 dist
 bower_components
+.idea/
