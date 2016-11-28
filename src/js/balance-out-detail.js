@@ -96,8 +96,8 @@ $('#formSearch').on('submit', function (e) {
       payTool: $('#search_payTool').val(),
       orderNo: $('#search_orderNo').val(),
       pageSize: _pageSize,
-      orderSource  = $('#search_orderSource').val(),
-      shipmentOrderType = $('search_shipmentOrderType').val(),
+      orderSource: $('#search_orderSource').val(),
+      shipmentOrderType: $('#search_shipmentOrderType').val(),
     };
 
     searchCache = sendData;
