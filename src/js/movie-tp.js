@@ -43,8 +43,8 @@ $(function () {
   beginDate.setDate(beginDate.getDate() - 7);
   beginDate = common.getDate(beginDate);
   endDate = common.getDate(endDate);
-  $('#search_beginDate').datetimepicker('setEndDate', endDate);
-  $('#search_endDate').datetimepicker('setStartDate', beginDate).datetimepicker('setEndDate', endDate);
+  //$('#search_beginDate').datetimepicker('setEndDate', endDate);
+  //$('#search_endDate').datetimepicker('setStartDate', beginDate).datetimepicker('setEndDate', endDate);
 
   $('#formSearch').trigger('submit');
 });
@@ -68,16 +68,17 @@ $('#formSearch').on('click', 'button[type=submit]', function (event) {
 
 $('#formSearch').on('submit', function (e) {
   e.preventDefault();
-  var sourceId = !!~~$('#search_sourceId').val() == false ? 1 : $('#search_sourceId').val();
 
   var sendData = {
     produceCorp: $.trim($('#search_produceCorp').val()),
-    sourceId: sourceId,
     associationStatus: $('#search_associationStatus').val(),
     tpFilmName:$('#search_name_tp').val(),
     pageSize: _pageSize,
   };
 
+  if (!!~~$('#search_sourceId').val()) {
+    sendData.sourceId = $('#search_sourceId').val();
+  }
   if ($('#search_associationStatus').val() == 1) {
     sendData.name = $.trim($('#search_name').val());
     sendData.beginShowDate = $('#search_beginDate').val();
@@ -206,7 +207,7 @@ $('#dataTable').on('click', '.btn-bind', function (e) {
  var rowIndex = $(this).closest('tr')[0].sectionRowIndex;
   var obj = dataCache[rowIndex];
   $('#bindMovieName').val(obj.sFilmName);
-  $('#bindTpMovie').text(obj.filmName);
+  $('#bindTpMovie').text(obj.sFilmName);
   $('#thirdPartyFilmId').val(obj.sFilmId);
   $('#thirdPartyId').val(obj.sourceId);
   $('#formSearchMovie').trigger('submit');
@@ -346,33 +347,38 @@ $('#dataTable').on('click', '.btn-movie-create', function (e) {
     },
   })
   .done(function (res) {
+    _submitting = false;
     if (!!~~res.meta.result) {
       var data = res.data;
       _(_status).forEach(function (value) {
         if (data.status == value.id) {
-          data.statusName = value.name;
+          // data.statusName = value.name;
+          value.selected = true;
+        } else {
+          value.selected = false;
         }
+        
       });
       var array;
       var releaseDate = data.releaseDate;
-      if (releaseDate.length > 0) {
+      if (releaseDate != null && releaseDate.length > 0) {
         array = releaseDate.split("-");
-      }
+        if (array.length >= 1) {
+          data.year = array[0];
+        }
 
-      if (array.length >= 1) {
-        data.year = array[0];
-      }
+        if (array.length >= 2) {
+          data.month = array[1];
+        }
 
-      if (array.length >= 2) {
-        data.month = array[1];
-      }
-
-      if (array.length >= 3) {
-        data.day = array[2];
+        if (array.length >= 3) {
+          data.day = array[2];
+        }
       }
 
       // data.sourceName = _.find(_sources,{ sourceId: parseInt(data.sourceId)}).sourceName;
       data.sourceId = obj.sourceId;
+      data.status = _status;
       data.thirdPartyFilmId = obj.sFilmId;
       data.filmId = obj.filmId;
       var template = $('#edit-template').html();
@@ -488,6 +494,7 @@ $.ajax({
 
 $('body').on('click', '#tpBtn-upload', function (event) {
   event.preventDefault();
+  alert('a');
   $('#popup-movie-upload').modal('show');
   $('#fileupload').data('url', common.API_HOST + 'film/standardFilm/uploadPoster').fileupload({
     dataType: 'json',
@@ -534,6 +541,7 @@ $('#dataTable').on('click', '.btn-detail', function (e) {
       });
 
       data.sourceName = _.find(_sources,{ sourceId: parseInt(data.sourceId)}).sourceName;
+      data.associationStatus = _.find(_status,{id:parseInt(data.status)}).name;
 
       //data.dimenName = data.dimenNames.join(',');
       var template = $('#detail-template').html();
@@ -671,7 +679,6 @@ function setSource() {
 
           $('#search_sourceId').append(html);
           $('#search_sourceId').chosen({ disable_search_threshold: 10, allow_single_deselect: true });
-          $('#search_sourceId option[value="1"]').prop('selected',true);
         } else {
           alert('接口错误：' + res.meta.msg);
         }

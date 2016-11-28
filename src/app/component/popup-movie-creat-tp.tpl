@@ -28,28 +28,24 @@
           <td><input type="text" class="form-control" id="name" value="{{filmName}}" required></td>
           <th>上映日期</th>
           <!-- <td><input type="text" class="form-control" id="showDate" value="{{releaseDate}}" required></td> -->
-
          <!--  <td><input type="text" class="form-control" id="releaseYear" value="{{year}}" size="4" maxlength="4" required> 年 <input type="text" class="form-control" id="releaseMonth" value="{{month}}" size="2" maxlength="2"> 月 <input type="text" class="form-control" id="releaseDay" value="{{day}}"  size="2" maxlength="2"> 日 </td> -->
 
-
-          <td class="release-date"><input type="text" class="form-control" id="releaseYear" value="{{year}}" size="4" maxlength="4" required> 年 <input type="text" class="form-control" id="releaseMonth" value="{{month}}" size="2" maxlength="2"> 月 <input type="text" class="form-control" id="releaseDay" value="{{day}}"  size="2" maxlength="2"> 日 </td>
+          <td class="release-date">
+          <!-- <div class="row" > -->
+           <input type="text" class="form-control" id="releaseYear" value="{{year}}" size="4" maxlength="4" required style="width: 64px; display: inline-block;" > 年 <input type="text" class="form-control" id="releaseMonth" value="{{month}}" size="2" maxlength="2" style="width: 54px;    display: inline-block;"> 月 <input type="text" class="form-control" id="releaseDay" value="{{day}}"  size="2" maxlength="2" style="width: 54px;    display: inline-block;"> 日 
+          <!-- </div> -->
+         </td>
 
         </tr>
         <tr>
           <th>上映状态</th>
           <td>
-            <!-- <select class="form-control" id="status" required> -->
-
-            <select class="form-control oldValue" id="status" value="{{statusName}}" required>
-              <option value="0">即将上映</option>
-              <option value="1">正在热映</option>
-              <option value="2">下映存档</option>
+            <select class="form-control" id="status" required>
+              {{#status}}
+              <option value="{{id}}"{{#selected}} selected{{/selected}}>{{name}}</option>
+              {{/status}}
             </select>
 
-            <!--   {{#status}}
-              <option value="{{id}}"{{#selected}} selected{{/selected}}>{{statusName}}</option>
-              {{/status}} -->
-            <!-- </select> -->
           </td>
           <th>制片方</th>
           <td><input type="text" class="form-control" id="produceCorp" value="{{movie.produceCorp}}"></td>
