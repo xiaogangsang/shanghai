@@ -352,8 +352,12 @@ $('#dataTable').on('click', '.btn-movie-create', function (e) {
       var data = res.data;
       _(_status).forEach(function (value) {
         if (data.status == value.id) {
-          data.statusName = value.name;
+          // data.statusName = value.name;
+          value.selected = true;
+        } else {
+          value.selected = false;
         }
+        
       });
       var array;
       var releaseDate = data.releaseDate;
@@ -374,6 +378,7 @@ $('#dataTable').on('click', '.btn-movie-create', function (e) {
 
       // data.sourceName = _.find(_sources,{ sourceId: parseInt(data.sourceId)}).sourceName;
       data.sourceId = obj.sourceId;
+      data.status = _status;
       data.thirdPartyFilmId = obj.sFilmId;
       data.filmId = obj.filmId;
       var template = $('#edit-template').html();

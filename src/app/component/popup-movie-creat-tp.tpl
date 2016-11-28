@@ -40,18 +40,12 @@
         <tr>
           <th>上映状态</th>
           <td>
-            <!-- <select class="form-control" id="status" required> -->
-
-            <select class="form-control oldValue" id="status" value="{{statusName}}" required>
-              <option value="0">即将上映</option>
-              <option value="1">正在热映</option>
-              <option value="2">下映存档</option>
+            <select class="form-control" id="status" required>
+              {{#status}}
+              <option value="{{id}}"{{#selected}} selected{{/selected}}>{{name}}</option>
+              {{/status}}
             </select>
 
-            <!--   {{#status}}
-              <option value="{{id}}"{{#selected}} selected{{/selected}}>{{statusName}}</option>
-              {{/status}} -->
-            <!-- </select> -->
           </td>
           <th>制片方</th>
           <td><input type="text" class="form-control" id="produceCorp" value="{{movie.produceCorp}}"></td>
