@@ -87,6 +87,8 @@ $('#formSearch').on('submit', function (e) {
       thdSerialNo: $('#search_thdSerialNo').val(),
       // paySequenceNo: $('#search_paySequenceNo').val(),
       checkStatus: $('#search_checkStatus').val(),
+      orderSource:$('#search_orderSource').val(),
+      acquiringOrderType:$('#search_acquiringOrderType').val(),
       pageSize: _pageSize,
     };
 
