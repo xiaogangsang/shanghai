@@ -87,6 +87,8 @@ $('#formSearch').on('submit', function (e) {
       thdSerialNo: $('#search_thdSerialNo').val(),
       // paySequenceNo: $('#search_paySequenceNo').val(),
       checkStatus: $('#search_checkStatus').val(),
+      orderSource:$('#search_orderSource').val(),
+      acquiringOrderType:$('#search_acquiringOrderType').val(),
       pageSize: _pageSize,
     };
 
@@ -396,6 +398,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
   var id = $(this).closest('tr').data('id');
   var checkStatus = $(this).data('checkstatus');
 
+  $('#payId').html(id);
   $.ajax({
     url: common.API_HOST + 'settlement/acquiring/queryAcquiringInfo',
     type: 'GET',

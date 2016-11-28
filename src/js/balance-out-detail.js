@@ -96,6 +96,8 @@ $('#formSearch').on('submit', function (e) {
       payTool: $('#search_payTool').val(),
       orderNo: $('#search_orderNo').val(),
       pageSize: _pageSize,
+      orderSource: $('#search_orderSource').val(),
+      shipmentOrderType: $('#search_shipmentOrderType').val(),
     };
 
     searchCache = sendData;
@@ -421,9 +423,11 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     detail.chargeMerchant = settlementCommon.parseMerchant(detail.chargeMerchant);
     detail.discountType = settlementCommon.parseDiscountType(detail.discountType);
     detail.acquiringReconciliationStatus = settlementCommon.parseReconciliationStatus(detail.acquiringReconciliationStatus);
-    detail.subsidyType = settlementCommon.parseSubsidyType(detail.subsidyType);
+    // detail.subsidyType = settlementCommon.parseSubsidyType(detail.subsidyType);
+    detail.subsidyType = detail.subsidyType;
     detail.partner = settlementCommon.parsePartner(detail.partner);
-    detail.subsidyTypeTrd = settlementCommon.parseSubsidyType(detail.subsidyTypeTrd);
+    // detail.subsidyTypeTrd = settlementCommon.parseSubsidyType(detail.subsidyTypeTrd);
+    detail.subsidyTypeTrd = detail.subsidyTypeTrd;
 
     var operate = data.operate;
 
