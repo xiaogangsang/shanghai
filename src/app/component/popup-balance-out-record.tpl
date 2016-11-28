@@ -46,7 +46,7 @@
                                 </select>
                             </div>
                             <div class="col-xs-6">
-                                <select class="form-control" id="record-cityId" required="">
+                                <select class="form-control" id="record-cityId">
                                     <option value="">选择城市</option>
                                 </select>
                             </div>
