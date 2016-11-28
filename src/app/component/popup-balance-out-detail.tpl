@@ -190,7 +190,8 @@
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">常规活动补贴付款方式</div>
-             <select class="form-control oldValue" id="subsidyType">
+             <select class="form-control oldValue" id="subsidyType" value="{{subsidyType}}">
+              <option value=""></option>
               <option value="1">预付</option>
               <option value="2">后付</option>
             </select>
@@ -211,7 +212,8 @@
           <div class="input-group">
             <div class="input-group-addon">支付活动补贴付款方式</div>
             <!-- <input type="text" class="form-control" id="subsidyTypeTrd" value="{{subsidyTypeTrd}}" readonly> -->
-            <select class="form-control oldValue" id="subsidyTypeTrd">
+            <select class="form-control oldValue" id="subsidyTypeTrd" value="{{subsidyTypeTrd}}">
+              <option value=""></option>
               <option value="1">预付</option>
               <option value="2">后付</option>
             </select>
