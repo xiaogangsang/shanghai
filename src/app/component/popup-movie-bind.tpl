@@ -51,7 +51,7 @@
   <tr data-id="{{id}}">
     <td>{{id}}</td>
     <td>{{name}}</td>
-    <td>{{dimenNames}}</td>
+    <td>{{dimen}}</td>
     <td>{{showDate}}</td>
     <td>{{director}}</td>
   </tr>
