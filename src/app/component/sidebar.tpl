@@ -198,6 +198,35 @@
       </div>
     </div>
 
+    <div class="panel">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#diff"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 差异管理</a>
+      
+      <div id="diff" class="pannel-collapse collapse" role="tabpanel">
+        <div class="list-group">
+          
+          <a class="list-group-item" data-toggle="collapse" data-parent="#diff" href="#diff-sub-1">基础信息管理</a>
+          <div id="diff-sub-1" class="pannel-collapse collapse" role="tabpanel">
+            <div class="list-group list-group-sub">
+              <a href="diff-base-info-type.html" class="list-group-item list-group-item-sub" id="menu-diff-base-info-type" data-id="">差异类型管理</a>
+            </div>
+          </div>
+
+          <a href="" class="list-group-item" id="" data-id="">出货异常数据</a>
+
+          <a class="list-group-item" data-toggle="collapse" data-parent="#diff" href="#diff-sub-2">差异处理</a>
+          <div id="diff-sub-2" class="pannel-collapse collapse" role="tabpanel">
+            <div class="list-group list-group-sub">
+              <a href="diff-base-info-type.html" class="list-group-item list-group-item-sub" id="menu-diff-base-info-type" data-id="">启动自动整理</a>
+            </div>
+          </div>
+
+          <a href="" class="list-group-item" id="" data-id="">差异数据查询</a>
+
+        </div>
+      </div>
+      
+    </div>
+
     <div class="panel" style="display:none">
       <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#monitor"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> 订单监控</a>
       <div id="monitor" class="panel-collapse collapse" role="tabpanel">
