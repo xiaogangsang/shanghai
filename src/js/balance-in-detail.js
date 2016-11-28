@@ -398,6 +398,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
   var id = $(this).closest('tr').data('id');
   var checkStatus = $(this).data('checkstatus');
 
+  $('#payId').html(id);
   $.ajax({
     url: common.API_HOST + 'settlement/acquiring/queryAcquiringInfo',
     type: 'GET',
