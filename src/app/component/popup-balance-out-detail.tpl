@@ -20,6 +20,15 @@
 
       <div class="row">
 
+      <div class="form-group col-sm-12">
+          <div class="col-sm-6" style="padding-left :0px;">
+              <div class="input-group">
+                  <div class="input-group-addon">订单ID</div>
+                  <input type="text" class="form-control" value="{{id}}" readonly>
+              </div>
+          </div>
+      </div>
+
       <span style="display: block; margin-top: 10px;">商品信息:</span>
       <hr style="margin-top: 3px;">
 
