@@ -30,7 +30,7 @@ $(function () {
     todayHighlight: true,
     autoclose: true,
   });
-  
+
   var beginDate = new Date();
   var endDate = new Date();
   beginDate.setDate(beginDate.getDate() - 7);
@@ -333,7 +333,7 @@ function setModal(movieData) {
     });
 
     _(_versions).forEach(function (value, key) {
-      value.selected = movieData.dimen.indexOf(value.id) > -1 ? true : false;
+      value.selected = movieData.dimen != null && movieData.dimen.indexOf(value.id) > -1 ? true : false;
     });
 
     movieData.releaseYear = movieData.showDate.split('-')[0] != undefined ? movieData.showDate.split('-')[0] : '';
