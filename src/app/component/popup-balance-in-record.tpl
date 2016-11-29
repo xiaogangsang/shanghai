@@ -14,7 +14,7 @@
                                 <button type="submit" class="form-control btn btn-default edit-submit">提交</button>
                             </div>
                         </div>
-                        <div class="row" style="margin-top: 15px">
+                        <div class="row" style="margin-top: 20px">
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
                                     <div class="input-group-addon">收单订单类型</div>

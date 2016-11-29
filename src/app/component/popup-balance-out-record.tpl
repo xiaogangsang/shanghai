@@ -16,7 +16,7 @@
                             </div>
                         </div>
 
-                        <div class="row" style="display: block; margin-top: 10px;">
+                        <div class="row" style="display: block; margin-top: 20px;">
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
                                     <div class="input-group-addon">出货订单类型</div>
@@ -40,20 +40,19 @@
                             <span style="display: block; padding-left: 15px; padding-right: 15px;">城市信息</span>
                             <hr style="margin-left: 15px; margin-right: 15px; margin-top: 10px;">
 
-                            <div class="col-xs-6">
+                            <div class="form-group col-sm-6">
                                 <select class="form-control" id="record-provinceId">
                                     <option value="">选择省</option>
                                 </select>
                             </div>
-                            <div class="col-xs-6">
+                            <div class="form-group col-sm-6">
                                 <select class="form-control" id="record-cityId">
                                     <option value="">选择城市</option>
                                 </select>
                             </div>
                         </div>
 
-                        <div class="row" style="margin-top :10px;">
-
+                        <div class="row" style="margin-top :15px;">
                             <span style="display: block; padding-left: 15px; padding-right: 15px;">支付信息</span>
                             <hr style="margin-left: 15px; margin-right: 15px; margin-top: 10px;">
 
@@ -140,9 +139,9 @@
                                 <div class="input-group">
                                     <div class="input-group-addon">常规补贴付款方式</div>
                                     <select class="form-control" id="record_subsidyType">
-                                        <option value></option>
-                                        <option value="1">预付</option>
                                         <option value="2">后付</option>
+                                        <option value="1">预付</option>
+                                        <option value></option>
                                     </select>
                                 </div>
                             </div>
@@ -156,9 +155,9 @@
                                 <div class="input-group">
                                     <div class="input-group-addon">支付补贴付款方式</div>
                                     <select class="form-control" id="record_subsidyTypeTrd">
-                                        <option value></option>
                                         <option value="1">预付</option>
                                         <option value="2">后付</option>
+                                        <option value></option>
                                     </select>
                                 </div>
                             </div>
