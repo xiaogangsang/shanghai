@@ -119,7 +119,7 @@ function fileChangeHandler(e, el) {
 			} else {
 				var input = $(el).parents('.input-group').find(':text');
 			  input.val('');
-				alert('不支持的文件格式!  (仅支持 .xls)');
+				alert('不支持的文件格式!  (仅支持 .xls .xlsx)');
 			}
 		} else {
 			alert('文件大小超过50MB!');

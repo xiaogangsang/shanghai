@@ -108,6 +108,8 @@ $('#formSearch').on('submit', function (e) {
       orderNo: $('#search_orderNo').val(),
       checkStatus: approval ? 2 : $('#search_checkStatus').val(), // 审核的时候, 要过滤审核的状态为待审核
       pageSize: _pageSize,
+      orderSource: $('#search_orderSource').val(),
+      shipmentOrderType: $('#search_shipmentOrderType').val(),
     };
 
     searchCache = sendData;

@@ -20,6 +20,15 @@
 
       <div class="row">
 
+      <div class="form-group col-sm-12">
+          <div class="col-sm-6" style="padding-left :0px;">
+              <div class="input-group">
+                  <div class="input-group-addon">订单ID</div>
+                  <input type="text" class="form-control" value="{{id}}" readonly>
+              </div>
+          </div>
+      </div>
+
       <span style="display: block; margin-top: 10px;">商品信息:</span>
       <hr style="margin-top: 3px;">
 
@@ -41,7 +50,7 @@
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">影片</div>
-            <input type="text" class="form-control" id="filmName" value="{{productInfo.filmName}}" readonly>
+            <input type="text" class="form-control" id="filmName" value="{{filmName}}" readonly>
           </div>
         </div>
 
@@ -56,7 +65,7 @@
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
             <div class="input-group-addon">影院</div>
-            <input type="text" class="form-control" id="cinemaName" value="{{productInfo.cinemaName}}" readonly>
+            <input type="text" class="form-control" id="cinemaName" value="{{cinemaName}}" readonly>
           </div>
         </div>
 
@@ -168,26 +177,73 @@
 
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
-            <div class="input-group-addon">交易金额(元)</div>
+            <div class="input-group-addon">结算金额(元)</div>
             <!-- <input type="text" class="form-control" id="settleAmount" value="{{settleAmount}}" readonly> -->
             <input type="text" class="form-control oldValue" id="settleAmount" value="{{settleAmount}}" data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?">
             <input type="text" class="form-control newValue" id="settleAmountNew" value="{{lastDetail.settleAmount}}">
           </div>
         </div>
 
+        <!-- whb add -->
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
-            <div class="input-group-addon">渠道方补贴金额(元)</div>
-            <input type="text" class="form-control" id="subsidyAmountO2o" value="{{subsidyAmountO2o}}" readonly>
-            <!-- <input type="text" class="form-control oldValue" id="subsidyAmountO2o" value="{{subsidyAmountO2o}}">
-            <input type="text" class="form-control newValue" id="subsidyAmountO2oNew" value="{{lastDetail.subsidyAmountO2o}}"> -->
+            <div class="input-group-addon">常规活动渠道方补贴金额(元)</div>
+            <!-- <input type="text" class="form-control" id="subsidyAmountO2o" value="{{subsidyAmountO2o}}" readonly> -->
+
+            <input type="text" class="form-control oldValue" id="subsidyAmountO2o" value="{{subsidyAmountO2o}}" data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?">
+            <input type="text" class="form-control newValue" id="subsidyAmountO2oNew" value="{{lastDetail.subsidyAmountO2o}}">
+
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
+            <div class="input-group-addon">常规活动补贴付款方式</div>
+             <select class="form-control oldValue" id="subsidyType" value="{{subsidyType}}">
+              <option value=""></option>
+              <option value="1">预付</option>
+              <option value="2">后付</option>
+            </select>
+
+          </div>
+          
+        </div>
+
+        <div class="form-group col-sm-6 col-md-6 editable">
+          <div class="input-group">
+            <div class="input-group-addon">支付活动补贴金额(元)</div>
+            <input type="text" class="form-control" id="subsidyAmountTrd" value="{{subsidyAmountTrd}}" data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?">
+
+          </div>
+        </div>
+
+        <div class="form-group col-sm-6 col-md-6">
+          <div class="input-group">
+            <div class="input-group-addon">支付活动补贴付款方式</div>
+            <!-- <input type="text" class="form-control" id="subsidyTypeTrd" value="{{subsidyTypeTrd}}" readonly> -->
+            <select class="form-control oldValue" id="subsidyTypeTrd" value="{{subsidyTypeTrd}}">
+              <option value=""></option>
+              <option value="1">预付</option>
+              <option value="2">后付</option>
+            </select>
+          </div>
+        </div>
+
+
+<!-- 
+        <div class="form-group col-sm-6 col-md-6 editable">
+          <div class="input-group">
+            <div class="input-group-addon">渠道方补贴金额(元)</div>
+            <input type="text" class="form-control" id="subsidyAmountO2o" value="{{subsidyAmountO2o}}" readonly> -->
+            <!-- <input type="text" class="form-control oldValue" id="subsidyAmountO2o" value="{{subsidyAmountO2o}}">
+            <input type="text" class="form-control newValue" id="subsidyAmountO2oNew" value="{{lastDetail.subsidyAmountO2o}}"> -->
+         <!--  </div>
+        </div> -->
+
+        <!-- <div class="form-group col-sm-6 col-md-6">
+          <div class="input-group">
             <div class="input-group-addon">补贴付款方式</div>
-            <input type="text" class="form-control" id="subsidyType" value="{{subsidyType}}" readonly>
+            <input type="text" class="form-control" id="subsidyType" value="{{subsidyType}}" readonly> -->
             <!-- <select class="form-control oldValue" id="subsidyType" value="{{subsidyType}}">
               <option value=""></option>
               <option value="1">预付</option>
@@ -198,8 +254,8 @@
               <option value="1">预付</option>
               <option value="2">后付</option>
             </select> -->
-          </div>
-        </div>
+         <!--  </div>
+        </div> -->
 
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
@@ -261,9 +317,65 @@
       <div class="row"> 
         <span style="display: block; margin-top: 10px;">优惠信息:</span>
         <hr style="margin-top: 3px;">
-        
 
         <div class="form-group col-sm-6 col-md-6">
+          <div class="input-group">
+            <div class="input-group-addon">常规活动优惠方式</div>
+            <input type="text" class="form-control" id="discountType" value="{{discountType}}" readonly>
+          </div>
+        </div>
+
+        <div class="form-group col-sm-6 col-md-6">
+          <div class="input-group">
+            <div class="input-group-addon">常规活动/优惠券名称</div>
+            <input type="text" class="form-control" id="discountName" value="{{discountName}}" readonly>
+          </div>
+        </div>
+
+        <div class="form-group col-sm-6 col-md-6">
+          <div class="input-group">
+            <div class="input-group-addon">常规活动补贴成本中心</div>
+            <input type="text" class="form-control" id="costCenter" value="{{costCenter}}" readonly>
+          </div>
+        </div>
+
+        <div class="form-group col-sm-6 col-md-6">
+          <div class="input-group">
+            <div class="input-group-addon">常规活动签报号</div>
+            <input type="text" class="form-control" id="signNum" value="{{signNum}}" readonly>
+          </div>
+        </div>
+
+         <div class="form-group col-sm-6 col-md-6">
+          <div class="input-group">
+            <div class="input-group-addon">常规活动/优惠券ID</div>
+            <input type="text" class="form-control" id="discountId" value="{{discountId}}" readonly>
+          </div>
+        </div>
+
+         <div class="form-group col-sm-6 col-md-6">
+          <div class="input-group">
+            <div class="input-group-addon">支付活动ID</div>
+            <input type="text" class="form-control" id="iscountIdTrd" value="{{iscountIdTrd}}" readonly>
+          </div>
+        </div>
+
+         <div class="form-group col-sm-6 col-md-6">
+          <div class="input-group">
+            <div class="input-group-addon">支付活动名称</div>
+            <input type="text" class="form-control" id="discountNameTrd" value="{{discountNameTrd}}" readonly>
+          </div>
+        </div>
+
+         <div class="form-group col-sm-6 col-md-6">
+          <div class="input-group">
+            <div class="input-group-addon">支付活动补贴成本中心</div>
+            <input type="text" class="form-control" id="costCenterTrd" value="{{costCenterTrd}}" readonly>
+          </div>
+        </div>
+        
+
+        <!-- <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">优惠方式</div>
             <input type="text" class="form-control" id="discountType" value="{{discountType}}" readonly>
@@ -289,7 +401,7 @@
             <div class="input-group-addon">签报号</div>
             <input type="text" class="form-control" id="signNum" value="{{signNum}}" readonly>
           </div>
-        </div>
+        </div> -->
 
       </div>
     </div>

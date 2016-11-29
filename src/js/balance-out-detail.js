@@ -96,6 +96,8 @@ $('#formSearch').on('submit', function (e) {
       payTool: $('#search_payTool').val(),
       orderNo: $('#search_orderNo').val(),
       pageSize: _pageSize,
+      orderSource: $('#search_orderSource').val(),
+      shipmentOrderType: $('#search_shipmentOrderType').val(),
     };
 
     searchCache = sendData;
@@ -205,6 +207,9 @@ function handleData(res) {
       item.shipmentStatus = settlementCommon.parseShipmentStatus(item.shipmentStatus);
       item.checkStatusNo = item.checkStatus;
       item.checkStatus = settlementCommon.parseCheckStatus(item.checkStatus);
+      item.shipmentOrderType = settlementCommon.parseShipmentOrderType(item.shipmentOrderType);
+      item.orderSource = settlementCommon.parseOrderSource(item.orderSource);
+      item.subsidyTypeTrd = settlementCommon.parseSubsidyType(item.subsidyTypeTrd);
     });
 
     if (!_queryingFromSelectedSummary) {
@@ -357,7 +362,9 @@ $('.complete-commit').click(function(e) {
     return false;
   }
 
-  if (_queryingFromSelectedSummary) {
+  var confirmMessage = confirm("确定要提交吗？");
+  if (confirmMessage == true) {
+    if (_queryingFromSelectedSummary) {
     var param = {'shipmentInfoFormCollection' : _selectedSummary.shipmentInfoFormCollection};
     $.ajax({
       url: common.API_HOST + 'settlement/shipmentInfo/listSummaryDetailUpdate',
@@ -387,6 +394,7 @@ $('.complete-commit').click(function(e) {
       }
     });
   }
+  } 
 });
 
 $('#dataTable').on('click', '.btn-edit', function (e) {
@@ -415,8 +423,11 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     detail.chargeMerchant = settlementCommon.parseMerchant(detail.chargeMerchant);
     detail.discountType = settlementCommon.parseDiscountType(detail.discountType);
     detail.acquiringReconciliationStatus = settlementCommon.parseReconciliationStatus(detail.acquiringReconciliationStatus);
-    detail.subsidyType = settlementCommon.parseSubsidyType(detail.subsidyType);
+    // detail.subsidyType = settlementCommon.parseSubsidyType(detail.subsidyType);
+    detail.subsidyType = detail.subsidyType;
     detail.partner = settlementCommon.parsePartner(detail.partner);
+    // detail.subsidyTypeTrd = settlementCommon.parseSubsidyType(detail.subsidyTypeTrd);
+    detail.subsidyTypeTrd = detail.subsidyTypeTrd;
 
     var operate = data.operate;
 
@@ -437,6 +448,8 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
 
     // $('#subsidyType option[value="' + detail.subsidyType + '"]').prop('selected', true);
     // $('#partner option[value="' + detail.partner + '"]').prop('selected', true);
+    $('#subsidyType option[value="' + detail.subsidyType + '"]').prop('selected', true);
+    $('#subsidyTypeTrd option[value="' + detail.subsidyTypeTrd + '"]').prop('selected', true);
     $('#shipmentStatus option[value="' + detail.shipmentStatus + '"]').prop('selected', true);
     $('#reconciliationStatus option[value="' + detail.reconciliationStatus + '"]').prop('selected', true);
     $('#reason option[value="' + detail.reason + '"]').prop('selected', true);
@@ -452,11 +465,6 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     
     $('#popup-detail form').parsley().validate();
   });
-});
-
-$(document).on('click', '.modal button[type=submit]', function(event) {
-  event.preventDefault();
-  $('#popup-detail form').trigger('submit');
 });
 
 // 修改提交
@@ -488,11 +496,18 @@ $(document).on('submit', '#popup-detail form', function(e) {
     merchantName: $('#merchantName').val(),
     merchantId: $('#merchantNo').val(),
     settleAmount: $('#settleAmount').val(),
-    // subsidyAmountO2o: $('#subsidyAmountO2o').val(),
-    // subsidyType: $('#subsidyType').val(),
+    subsidyAmountO2o: $('#subsidyAmountO2o').val(),
+    subsidyType: $('#subsidyType').val(),
     acceptanceAppropriation: $('#acceptanceAppropriation').val(),
     // returnFee: $('#returnFee').val(),
     // partner: $('#returnFee').val(),
+
+    // 支付活动补贴金额(元)
+    subsidyAmountTrd: $('#subsidyAmountTrd').val(),
+    // 支付活动补贴付款方式
+    subsidyTypeTrd: $('#subsidyTypeTrd').val(),
+
+
     finalSettleAmount: $('#finalSettleAmount').val(),
     reconciliationStatus: $('#reconciliationStatus').val(),
     shipmentStatus: $('#shipmentStatus').val(),
@@ -513,6 +528,12 @@ $(document).on('submit', '#popup-detail form', function(e) {
       return false;
     }
   });
+});
+
+// 补订单记录
+$('.btn-complement').click(function(e) {
+  e.preventDefault();
+  $('#popup-balance-out-record').modal('show');
 });
 
 /************************************************* 批量操作 ***************************************************/

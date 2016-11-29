@@ -86,7 +86,7 @@
 
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
-              <div class="input-group-addon">优惠方式</div>
+              <div class="input-group-addon">常规优惠方式</div>
               <select class="form-control" id="search_discountType">
                 <option value="">全部</option>
                 <option value="1">活动</option>
@@ -98,7 +98,7 @@
 
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
-              <div class="input-group-addon">活动/优惠券名称</div>
+              <div class="input-group-addon">常规活动/优惠券名称</div>
               <input type="text" class="form-control" id="search_discountName">
             </div>
           </div>
@@ -191,6 +191,28 @@
 
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
+              <div class="input-group-addon">订单来源</div>
+              <select class="form-control" id="search_orderSource">
+                <option value="">全部</option>
+                <option value="1">系统</option>
+                <option value="2">手工</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">收单订单类型</div>
+              <select class="form-control" id="search_acquiringOrderType">
+                <option value="">全部</option>
+                <option value="1">支付</option>
+                <option value="2">退款</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
               <div class="input-group-addon">分页条数</div>
               <select class="form-control" id="search_pageSize">
                 <option value="10">10</option>
@@ -202,7 +224,7 @@
             </div>
           </div>
 
-          <div class="col-xs-8">
+          <div class="col-xs-6 pull-right">
             <div class="row">
               <div class="col-xs-6">
                 <button type="submit" class="btn btn-block btn-primary">查询</button>
@@ -240,6 +262,8 @@
                   <th><input type="checkbox" class="multi-check-all"></th>
                   <th>操作时间</th>
                   <th>交易订单号</th>
+                  <th>收单订单类型</th>
+                  <th>订单来源</th>
                   <th>收单商户</th>
                   <th>收单商户号</th>
                   <th>业务类别</th>
@@ -250,8 +274,8 @@
                   <th>渠道方补贴金额(元)</th>
                   <th>O2O应收金额(元)</th>
                   <th>承债方</th>
-                  <th>优惠方式</th>
-                  <th>活动/优惠券名称</th>
+                  <th>常规优惠方式</th>
+                  <th>常规活动/优惠券名称</th>
                   <th>收单对账状态</th>
                   <th>修改状态</th>
                   <th>操作</th>
@@ -298,6 +322,8 @@
       <td>{{#canReverse}}<input type="checkbox" class="multi-check">{{/canReverse}}</td>
       <td>{{operateTime}}</td>
       <td>{{orderNo}}</td>
+      <td>{{acquiringOrderType}}</td>
+      <td>{{orderSource}}</td>
       <td>{{chargeMerchant}}</td>
       <td>{{chargeMerchantNo}}</td>
       <td>{{bizType}}</td>

@@ -87,6 +87,8 @@ $('#formSearch').on('submit', function (e) {
       thdSerialNo: $('#search_thdSerialNo').val(),
       // paySequenceNo: $('#search_paySequenceNo').val(),
       checkStatus: $('#search_checkStatus').val(),
+      orderSource:$('#search_orderSource').val(),
+      acquiringOrderType:$('#search_acquiringOrderType').val(),
       pageSize: _pageSize,
     };
 
@@ -185,6 +187,10 @@ function handleData(res) {
 
     _(record).forEach(function(item) {
       item.chargeMerchant = settlementCommon.parseMerchant(item.chargeMerchant);
+      item.acquiringOrderType = settlementCommon.parseAcquiringOrderType(item.acquiringOrderType);
+      item.orderSource = settlementCommon.parseOrderSource(item.orderSource);
+      item.subsidyTypeTrd = settlementCommon.parseSubsidyType(item.subsidyTypeTrd);
+      item.subsidyType = settlementCommon.parseSubsidyType(item.subsidyType);
       item.payStatus = settlementCommon.parsePayStatus(item.payStatus);
       item.reconciliationStatus = settlementCommon.parseReconciliationStatus(item.reconciliationStatus);
       item.reason = settlementCommon.parseReason(item.reason);
@@ -202,8 +208,13 @@ function handleData(res) {
     setTableData(record);
 
     // 从汇总页点击查看选中明细, 是没有summary返回的
-    if (res.data.summary) {
-      setSummaryTableData(res.data.summary);
+    var summary = res.data.summary;
+    if (summary) {
+      _(summary).forEach(function(item) {
+        item.payTool = settlementCommon.parseAcquiringPayTool(item.payTool);
+        item.acquiringOrderType = settlementCommon.parseAcquiringOrderType(item.acquiringOrderType);
+      });
+      setSummaryTableData(summary);
     }
   }
 }
@@ -217,7 +228,8 @@ function setTableData(rows) {
 }
 
 function setSummaryTableData(data) {
-	var template = $('#summary-table-template').html();
+  var data = { rows: data };
+  var template = $('#summary-table-template').html();
 	Mustache.parse(template);
 	var html = Mustache.render(template, data);
 	$('#summaryTable tbody').html(html);
@@ -342,6 +354,11 @@ $('.complete-commit').click(function(e) {
     return false;
   }
 
+  var result =  confirm("确定提交?");
+  if(result == false){
+    return;
+  }
+
   if (_queryingFromSelectedSummary) {
     var param = {'acquiringInfoFormCollection' : _selectedSummary.acquiringInfoFormCollection};
     $.ajax({
@@ -381,6 +398,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
   var id = $(this).closest('tr').data('id');
   var checkStatus = $(this).data('checkstatus');
 
+  $('#payId').html(id);
   $.ajax({
     url: common.API_HOST + 'settlement/acquiring/queryAcquiringInfo',
     type: 'GET',
@@ -419,6 +437,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     $('#popup-detail').modal('show');
 
     $('#subsidyType option[value="' + detail.subsidyType + '"]').prop('selected', true);
+    $('#subsidyTypeTrd option[value="' + detail.subsidyTypeTrd + '"]').prop('selected', true);
     $('#partner option[value="' + detail.partner + '"]').prop('selected', true);
     $('#reconciliationStatus option[value="' + detail.reconciliationStatus + '"]').prop('selected', true);
     $('#reason option[value="' + detail.reason + '"]').prop('selected', true);
@@ -435,12 +454,6 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
   });
 
   $('#popup-detail form').parsley().validate();
-});
-
-
-$(document).on('click', '.modal button[type=submit]', function(event) {
-  event.preventDefault();
-  $('#popup-detail form').trigger('submit');
 });
 
 // 修改详情 "提交"
@@ -483,7 +496,9 @@ $(document).on('submit', '#popup-detail form', function(e) {
     payStatus: $('#payStatus').val(),
     reason: ($('#reconciliationStatus').val() == 2 ? $('#reason').val() : ''),// 对账不一致才有原因
     merchantName: $('#merchantName').val(),
-    remarks: $('#remarks').val()
+    remarks: $('#remarks').val(),
+    subsidyAmountTrd:$('#subsidyAmountTrd').val(),
+    subsidyTypeTrd:$('#subsidyTypeTrd').val()
   };
 
   $.ajax({
@@ -572,6 +587,11 @@ $('body').on('click', '.batch-status-update', function(e) {
   $('#popup-status-choose').modal('show');
 });
 
+$('body').on('click', '.add-order-record', function(e) {
+  e.preventDefault();
+  $('#popup-balance-in-record').modal('show');
+});
+
 $('body').on('click', '.btn-status-update-cancel', function(e) {
   e.preventDefault();
   $('#popup-status-choose').modal('hide');
@@ -587,16 +607,3 @@ function selectedIds() {
 
   return ids;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

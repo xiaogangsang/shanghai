@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="images/favicon.ico" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>批量新增出货/退货记录</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/merchant.css">
+    <link rel="stylesheet" type="text/css" href="css/css-hud.css">
+    <!-- <link rel="stylesheet" href="css/banner.css"> -->
+</head>
+
+<body>
+    @@include('component/header.tpl')
+    <div class="container-fluid">
+        <div class="row">
+            @@include('component/sidebar.tpl')
+            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                <ol class="breadcrumb">
+                    <li>出货对账</li>
+                    <li class="active">批量新增出货/退货记录</li>
+                </ol>
+                <div class="content-area col-sm-4 col-sm-offset-4">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="input-group">
+                                <div class="input-group-addon">出货订单类型：</div>
+                                <select class="form-control" id="order_type" required>
+                                    <option value="5">出货调整</option>
+                                    <option value="6">退货调整</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row file-upload-container" style="margin: 12px 0px;">
+                        <div class="input-group">
+                            <span class="input-group-addon">数据文件</span>
+                            <input type="text" class="form-control" readonly>
+                            <span class="input-group-btn">
+                                <span class="btn btn-default btn-file">
+                                    <span>选择文件</span>
+                                    <input class="file-upload" type="file" name="file">
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <button type="button" class="btn btn-block btn-default btn-upload">确定上传</button>
+                        </div>
+                        <div class="col-sm-12 tips" style="font-size: 13px; margin-top: 15px">
+                            * 仅支持 <em>.xls</em> 和 <em>.xlsx</em> 格式. 最大支持50MB.
+                            <br>* 点击上传后请耐心等待, 上传结果提示框弹出前请不要离开页面(每MB大约需要5秒, 取决于所处网络环境)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="js/vendor.js"></script>
+    <script src="js/balance-out-record-batch-creator.js"></script>
+
+</body>
+
+</html>
