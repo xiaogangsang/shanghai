@@ -91,7 +91,7 @@ settlementCommon.parseBizType = function(status) {
 
 
 // 补贴付款方式
-settlementCommon.subsidyType = {'0' : '未知', '1' : '预付', '2' : '后付'};
+settlementCommon.subsidyType = {'0' : '无', '1' : '预付', '2' : '后付'};
 
 settlementCommon.parseSubsidyType = function(status) {
   return this.subsidyType[status];
@@ -132,7 +132,7 @@ settlementCommon.shipmentStatus =
 
  // 出货订单类型
 settlementCommon.shipmentOrderType = 
-  {'0' : '未知', '1' : '出货', '2' : '退货', '3' : '出货调整', '4' : '退货调整'};
+  {'0' : '无', '1' : '出货', '2' : '退货', '3' : '出货调整', '4' : '退货调整'};
 
  settlementCommon.parseShipmentOrderType = function(status) {
   return this.shipmentOrderType[status];
