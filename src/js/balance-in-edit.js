@@ -96,6 +96,8 @@ $('#formSearch').on('submit', function (e) {
       thdSerialNo: $('#search_thdSerialNo').val(),
       // paySequenceNo: $('#search_paySequenceNo').val(),
       checkStatus: approval ? 2 : $('#search_checkStatus').val(),
+      orderSource:$('#search_orderSource').val(),
+      acquiringOrderType:$('#search_acquiringOrderType').val(),
       pageSize: _pageSize,
     };
 
@@ -140,6 +142,8 @@ function handleData(res) {
       item.discountType = settlementCommon.parseDiscountType(item.discountType);
       item.partner = settlementCommon.parsePartner(item.partner);
       item.checkStatus = settlementCommon.parseCheckStatus(item.checkStatus);
+      item.acquiringOrderType = settlementCommon.parseAcquiringOrderType(item.acquiringOrderType);
+      item.orderSource = settlementCommon.parseOrderSource(item.orderSource);
     });
 
     if (!_queryingFromSelectedSummary) {

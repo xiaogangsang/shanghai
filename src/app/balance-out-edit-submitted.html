@@ -222,6 +222,30 @@
             </div>
           </div>
 
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">出货订单类型</div>
+              <select class="form-control" id="search_shipmentOrderType">
+                <option value="">全部</option>
+                <option value="1">出货</option>
+                <option value="2">退货</option>
+                <option value="3">出货调整</option>
+                <option value="4">退货调整</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">订单来源</div>
+              <select class="form-control" id="search_orderSource">
+                <option value="">全部</option>
+                <option value="1">系统</option>
+                <option value="2">手工</option>
+              </select>
+            </div>
+          </div>
+
           <div class="col-xs-12">
             <div class="row">
               <div class="col-xs-6">
@@ -261,6 +285,8 @@
                   <th>操作时间</th>
                   <!-- <th>二级商户订单号</th> -->
                   <th>交易订单号</th>
+                  <th>出货订单类型</th>
+                  <th>订单来源</th>
                   <th>O2O应收金额</th>
                   <th>商品订单号</th>
                   <th>二级商户</th>
@@ -322,6 +348,8 @@
       <td>{{updateTime}}</td>
       <!-- <td>{{thdOrderNo}}</td> -->
       <td>{{orderNo}}</td>
+      <td>{{shipmentOrderType}}</td>
+      <td>{{orderSource}}</td>
       <td>{{o2oReceivableAmount}}</td>
       <td>{{bizOrderNo}}</td>
       <td>{{merchantName}}</td>
@@ -329,9 +357,7 @@
       <td>{{bizType}}</td>
       <td>{{shipmentStatus}}</td>
       <td>{{settleAmount}}</td>
-
       <td>{{subsidyAmountO2o}}</td>
-
       <td>{{subsidyType}}</td>
       <!-- 收单对账状态 -->
       <td>{{returnFee}}</td>

@@ -177,7 +177,7 @@
 
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
-            <div class="input-group-addon">交易金额(元)</div>
+            <div class="input-group-addon">结算金额(元)</div>
             <!-- <input type="text" class="form-control" id="settleAmount" value="{{settleAmount}}" readonly> -->
             <input type="text" class="form-control oldValue" id="settleAmount" value="{{settleAmount}}" data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?">
             <input type="text" class="form-control newValue" id="settleAmountNew" value="{{lastDetail.settleAmount}}">
