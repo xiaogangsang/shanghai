@@ -186,7 +186,7 @@ function handleData(res) {
     setPager(totalRecord, _pageIndex, record.length, _pageTotal);
 
     _(record).forEach(function(item) {
-      item.chargeMerchant = settlementCommon.parseMerchant(item.chargeMerchant);
+      item.chargeMerchant = settlementCommon.parseChargeMerchant(item.chargeMerchant);
       item.acquiringOrderType = settlementCommon.parseAcquiringOrderType(item.acquiringOrderType);
       item.orderSource = settlementCommon.parseOrderSource(item.orderSource);
       item.subsidyTypeTrd = settlementCommon.parseSubsidyType(item.subsidyTypeTrd);
@@ -414,12 +414,12 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     detail.payTool = settlementCommon.parsePayTool(detail.payTool);
     detail.bizType = settlementCommon.parseBizType(detail.bizType);
     detail.discountType = settlementCommon.parseDiscountType(detail.discountType);
-    detail.chargeMerchant = settlementCommon.parseMerchant(detail.chargeMerchant);
+    detail.chargeMerchant = settlementCommon.parseChargeMerchant(detail.chargeMerchant);
 
     var operateRecords = data.operateRecords;
 
     operateRecords.forEach(function(obj) {
-      obj.chargeMerchant = settlementCommon.parseMerchant(obj.chargeMerchant);
+      obj.chargeMerchant = settlementCommon.parseChargeMerchant(obj.chargeMerchant);
       obj.bizType = settlementCommon.parseBizType(obj.bizType);
       obj.payStatus = settlementCommon.parsePayStatus(obj.payStatus);
       obj.partner = settlementCommon.parsePartner(obj.partner);

@@ -24,6 +24,12 @@ settlementCommon.parseMerchant = function(status) {
 	return this.merchant[status];
 }
 
+settlementCommon.chargeMerchat = {'1' : 'O2O-卡中心', '2' : 'O2O-分行'};
+
+settlementCommon.parseChargeMerchant = function(status) {
+  return this.chargeMerchat[status];
+}
+
 // 收单订单类型
 settlementCommon.acquiringOrderType = {'1' : '支付', '2' : '退款'};
 
