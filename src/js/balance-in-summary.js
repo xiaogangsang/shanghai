@@ -102,7 +102,7 @@ function handleData(res) {
     setPager(totalRecord, _pageIndex, record.length, _pageTotal);
 
     _(record).forEach(function(item) {
-      item.chargeMerchant = settlementCommon.parseMerchant(item.chargeMerchant);
+      item.chargeMerchant = settlementCommon.parseChargeMerchant(item.chargeMerchant);
       item.payStatusNo = item.payStatus;
       item.payStatus = settlementCommon.parsePayStatus(item.payStatus);
     });
