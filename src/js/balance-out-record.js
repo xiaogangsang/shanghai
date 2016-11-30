@@ -47,11 +47,13 @@ $(document).on('change click', '#record-provinceId', function (e) {
 });
 
 function setupDefaultValue () {
+    $('#record_payAmount').val(0);
+    $('#record_receivablePoint').val(0);
     $('#record_subsidyAmountO2o').val(0);
     $('#record_subsidyAmountTrd').val(0);
+    $('#record_returnFee').val(0);
     $('#record_subsidyType').val(2);
     $('#record_subsidyTypeTrd').val(1);
-    
 }
 
 Parsley.addValidator('validateAmount', {

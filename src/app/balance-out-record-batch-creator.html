@@ -24,9 +24,9 @@
                     <li>出货对账</li>
                     <li class="active">批量新增出货/退货记录</li>
                 </ol>
-                <div class="content-area col-sm-4 col-sm-offset-4">
+                <div class="content-area col-sm-8 col-sm-offset-2">
                     <div class="row">
-                        <div class="col-sm-12">
+                        <div class="col-sm-6 col-sm-offset-3" style="padding-left: 8px; padding-right: 8px;">
                             <div class="input-group">
                                 <div class="input-group-addon">出货订单类型：</div>
                                 <select class="form-control" id="order_type" required>
@@ -37,24 +37,76 @@
                         </div>
                     </div>
                     <div class="row file-upload-container" style="margin: 12px 0px;">
-                        <div class="input-group">
-                            <span class="input-group-addon">数据文件</span>
-                            <input type="text" class="form-control" readonly>
-                            <span class="input-group-btn">
-                                <span class="btn btn-default btn-file">
-                                    <span>选择文件</span>
-                                    <input class="file-upload" type="file" name="file">
+                        <div class="col-sm-6 col-sm-offset-3" style="padding-left: 0px; padding-right:0px;">
+                            <div class="input-group">
+                                <span class="input-group-addon">数据文件</span>
+                                <input type="text" class="form-control" readonly>
+                                <span class="input-group-btn">
+                                    <span class="btn btn-default btn-file">
+                                        <span>选择文件</span>
+                                        <input class="file-upload" type="file" name="file">
+                                    </span>
                                 </span>
-                            </span>
+                            </div>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-12">
+                        <div class="col-sm-6 col-sm-offset-3">
                             <button type="button" class="btn btn-block btn-default btn-upload">确定上传</button>
                         </div>
                         <div class="col-sm-12 tips" style="font-size: 13px; margin-top: 15px">
-                            * 仅支持 <em>.xls</em> 和 <em>.xlsx</em> 格式. 最大支持50MB.
-                            <br>* 点击上传后请耐心等待, 上传结果提示框弹出前请不要离开页面(每MB大约需要5秒, 取决于所处网络环境)
+                            * 仅支持 <em>.xls</em> 和 <em>.xlsx</em> 格式. 最大支持50MB.<br>
+                            * 点击上传后请耐心等待, 上传结果提示框弹出前请不要离开页面(每MB大约需要5秒, 取决于所处网络环境)<br>
+                            * Excel格式请参造以下表格，表格字段顺序不能变更。
+                            <table class="table table-condensed table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>交易订单号</th>
+                                        <th>用户支付金额(元)</th>
+                                        <th>用户支付积分</th>
+                                        <th>O2O应收金额(元)</th>
+                                        <th>结算金额(元)</th>
+                                        <th>渠道方常规补贴付款方式</th>
+                                        <th>支付活动补贴付款方式</th>
+                                        <th>渠道方常规补贴金额(元)</th>
+                                        <th>支付活动补贴金额</th>
+                                        <th>应付金额(元)</th>
+                                        <th>实付金额(元)</th>
+                                        <th>张数</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th>748549602206158848</th>
+                                        <th>0</th>
+                                        <th>0</th>
+                                        <th>0</th>
+                                        <th>-10</th>
+                                        <th>后付</th>
+                                        <th>预付</th>
+                                        <th>0</th>
+                                        <th></th>
+                                        <th>-10</th>
+                                        <th>-10</th>
+                                        <th>5</th>
+                                    </tr>
+                                    <tr>
+                                        <th>748592289785450496</th>
+                                        <th>3</th>
+                                        <th>3</th>
+                                        <th>3</th>
+                                        <th>-10.67</th>
+                                        <th>后付</th>
+                                        <th>预付</th>
+                                        <th>0</th>
+                                        <th></th>
+                                        <th>-10.67</th>
+                                        <th>-10.67</th>
+                                        <th>5</th>
+                                    </tr>
+
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
