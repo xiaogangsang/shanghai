@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<link rel="icon" href="images/favicon.ico">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<title>差异处理</title>
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/reset.css">
+</head>
+<body>
+	
+	@@include('component/header.tpl')
+
+	<div class="container-fluid">
+		
+		<div class="row">
+			
+			@@include('component/sidebar.tpl')
+
+			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+				
+				<ol class="breadcrumb">
+					<li>差异管理</li>
+					<li class="active">差异处理</li>
+				</ol>
+
+				<form id="formSearch" class="search-area clearfix">
+					<div class="col-sm-8">
+						<div class="form-group col-sm-6">
+							<div class="input-group">
+								<div class="input-group-addon">结算日期</div>
+								<input type="text" class="form-control" id="search_startTime" required data-parsley-pattern="[0-9]{4}?-[0-9]{2}?-[0-9]{2}?">
+							</div>
+						</div>
+						<div class="form-group col-sm-6">
+							<div class="input-group">
+								<div class="input-group-addon">至</div>
+								<input type="text" class="form-control" id="search_endTime" required data-parsley-pattern="[0-9]{4}?-[0-9]{2}?-[0-9]{2}?">
+							</div>
+						</div>
+						<div class="form-group col-sm-6">
+							<div class="input-group">
+								<div class="input-group-addon">交易订单号</div>
+								<input type="text" class="form-control" id="search_orderNo">
+							</div>
+						</div>
+						<div class="form-group col-sm-6">
+							<div class="input-group">
+								<div class="input-group-addon">对账一致</div>
+								<select class="form-control" id="search_balanceStatus">
+									<option value="0">是</option>
+									<option value="1">否</option>
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-3 pull-right">
+							<button type="sumbit" class="btn btn-block btn-primary">查询</button>
+							<button type="sumbit" class="btn btn-block btn-default">导出</button>
+					</div>
+				</form>
+
+				<div class="col-sm-8 pull-right">
+					<div class="col-sm-3">
+						<button type="sumbit" class="btn btn-block btn-default">自动整理</button>
+					</div>
+					<div class="col-sm-3">
+						<button type="sumbit" class="btn btn-block btn-default">批量生成差异</button>
+					</div>
+					<div class="col-sm-3">
+						<button type="sumbit" class="btn btn-block btn-default">同步出货对账状态</button>
+					</div>
+					<div class="col-sm-3">
+						<button type="sumbit" class="btn btn-block btn-default btn-test">test</button>
+					</div>
+				</div>
+
+				<div class="row" id="pager"></div>
+
+				<div class="content-area">
+					<div class="table-responsive" style="margin-top: 20px;">
+						<table class="table table-hover" id="diffTable">
+							<thead>
+								<tr>
+									<th><input type="checkbox" class="multi-check-all"></th>
+									<th>结算日期</th>
+									<th>交易订单号</th>
+									<th>销售结算价</th>
+									<th>实收销售款</th>
+									<th>退货结算价</th>
+									<th>实退销售额</th>
+									<th>常规活动后付补贴金额</th>
+									<th>支付活动后付补贴金额</th>
+									<th>差异计算器</th>
+									<th>差异拆分值</th>
+									<th>对账一致</th>
+									<th>操作</th>
+								</tr>
+							</thead>
+						</table>
+					</div>
+				</div>
+
+			</div>
+		
+		</div>
+	</div>
+
+	<script src="js/vendor.js"></script>
+	<script src="js/diff-operation.js"></script>
+</body>
+</html>
