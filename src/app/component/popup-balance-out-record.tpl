@@ -141,7 +141,6 @@
                                     <select class="form-control" id="record_subsidyType">
                                         <option value="2">后付</option>
                                         <option value="1">预付</option>
-                                        <option value></option>
                                     </select>
                                 </div>
                             </div>
@@ -157,7 +156,6 @@
                                     <select class="form-control" id="record_subsidyTypeTrd">
                                         <option value="1">预付</option>
                                         <option value="2">后付</option>
-                                        <option value></option>
                                     </select>
                                 </div>
                             </div>
@@ -170,7 +168,7 @@
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
                                     <div class="input-group-addon">退票手续费(元)</div>
-                                    <input type="text" class="form-control" id="record_returnFee" required data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?" data-parsley-validate-amount>
+                                    <input type="text" class="form-control" id="record_returnFee" required data-parsley-pattern="[0-9]{0,6}(\.[0-9]{0,2})?">
                                 </div>
                             </div>
                             <div class="form-group col-sm-6">

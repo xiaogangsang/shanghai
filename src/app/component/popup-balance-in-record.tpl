@@ -129,7 +129,6 @@
                                     <select class="form-control" id="record_subsidyType">
                                         <option value="2">后付</option>
                                         <option value="1">预付</option>
-                                        <option value></option>
                                     </select>
                                 </div>
                             </div>
@@ -145,7 +144,6 @@
                                     <select class="form-control" id="record_subsidyTypeTrd">
                                         <option value="1">预付</option>
                                         <option value="2">后付</option>
-                                        <option value></option>
                                     </select>
                                 </div>
                             </div>
