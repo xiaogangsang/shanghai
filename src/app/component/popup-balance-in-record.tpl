@@ -88,8 +88,8 @@
                                 <div class="input-group">
                                     <div class="input-group-addon">收单商户</div>
                                     <select class="form-control" id="record_chargeMerchant" required>
-                                        <option value="1">O2O_卡中心</option>
-                                        <option value="2">O2O_总行</option>
+                                        <option value="1">O2O-卡中心</option>
+                                        <option value="2">O2O-分行</option>
                                     </select>
                                 </div>
                             </div>
@@ -127,9 +127,9 @@
                                 <div class="input-group">
                                     <div class="input-group-addon">常规补贴付款方式</div>
                                     <select class="form-control" id="record_subsidyType">
-                                        <option value></option>
-                                        <option value="1">预付</option>
                                         <option value="2">后付</option>
+                                        <option value="1">预付</option>
+                                        <option value></option>
                                     </select>
                                 </div>
                             </div>
@@ -143,9 +143,9 @@
                                 <div class="input-group">
                                     <div class="input-group-addon">支付补贴付款方式</div>
                                     <select class="form-control" id="record_subsidyTypeTrd">
-                                        <option value></option>
                                         <option value="1">预付</option>
                                         <option value="2">后付</option>
+                                        <option value></option>
                                     </select>
                                 </div>
                             </div>

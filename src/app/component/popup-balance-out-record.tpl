@@ -68,7 +68,7 @@
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
                                     <div class="input-group-addon">出/退货时间</div>
-                                    <input type="text" class="form-control" id="record_shipmentDate" required data-parsley-pattern="[0-9]{4}?-[0-9]{2}?-[0-9]{2}?">
+                                    <input type="text" class="form-control" id="record_shipmentDate" readonly required data-parsley-pattern="[0-9]{4}?-[0-9]{2}?-[0-9]{2}?">
                                 </div>
                             </div>
                             <div class="form-group col-sm-6">
@@ -130,7 +130,7 @@
                             <div class="col-sm-12" style="padding-left :0px; padding-right: 0px;">
                                 <div class="form-group col-sm-6">
                                     <div class="input-group">
-                                        <div class="input-group-addon">交易金额(元)</div>
+                                        <div class="input-group-addon">结算金额(元)</div>
                                         <input type="text" id="record_settleAmount" class="form-control" required data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?" data-parsley-validate-amount>
                                     </div>
                                 </div>
