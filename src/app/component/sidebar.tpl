@@ -183,6 +183,7 @@
           <a href="balance-out-state-batch-handler.html" class="list-group-item" id="menu-balance-out-state-batch-handler" data-id="247" style="display:none">对账状态批量处理</a>
           <a href="balance-out-merchant-batch-update.html" class="list-group-item" id="menu-balance-out-merchant-batch-update" data-id="248" style="display:none">商户信息批量更新</a>
           <a href="balance-out-file-operate-result.html" class="list-group-item" id="menu-balance-out-file-operate-result" data-id="249" style="display:none">对账批处理结果</a>
+          <a href="balance-out-error.html" class="list-group-item" id="menu-balance-out-error" data-id="217">出货异常数据</a>
         </div>
       </div>
     </div>
@@ -198,22 +199,26 @@
       </div>
     </div>
 
-    <div class="panel">
+    <div class="panel" style="display:none">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#base"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 基础信息管理</a>
+      <div id="base" class="panel-collapse collapse" role="tabpanel">
+        <div class="list-group">
+          <a href="diff-base-info-type.html" class="list-group-item" id="menu-diff-base-info-type" data-id="217" >差异类型管理</a>
+          <a href="" class="list-group-item" id="" data-id="217">差异处理标示管理</a>
+          <a href="" class="list-group-item" id="" data-id="217">责任部门管理</a>
+          <a href="" class="list-group-item" id="" data-id="217">差异处理状态管理</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="display:none">
       <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#diff"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 差异管理</a>
       <div id="diff" class="panel-collapse collapse" role="tabpanel">
         <div class="list-group">
-          <a class="list-group-item" data-toggle="collapse" data-parent="#diff" href="#diff-sub-1">基础信息管理</a>
-          <div id="diff-sub-1" class="panel-collapse collapse" role="tabpanel">
-            <div class="list-group list-group-sub">
-              <a href="diff-base-info-type.html" class="list-group-item list-group-item-sub" id="menu-diff-base-info-type" data-id="217">差异类型管理</a>
-            </div>
-          </div>
-          <a href="diff-out-error.html" class="list-group-item" id="menu-diff-out-error" data-id="217">出货异常数据</a>
           <a href="diff-operation.html" class="list-group-item" id="menu-diff-operation" data-id="217" >差异处理</a>
-          <a href="" class="list-group-item" id="" data-id="">差异数据查询</a>
+          <a href="" class="list-group-item" id="" data-id="217">差异数据查询</a>
         </div>
       </div>
-      
     </div>
 
     <div class="panel" style="display:none">

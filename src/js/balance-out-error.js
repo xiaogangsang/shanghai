@@ -3,5 +3,5 @@
 var common = require('common');
 
 $(function () {
-	common.init('diff-out-error');
+	common.init('balance-out-error');
 })

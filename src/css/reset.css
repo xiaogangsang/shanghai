@@ -259,12 +259,6 @@ input[readonly],
 .sidebar .panel .list-group-item.active {
   color: #ff8903;
 }
-.sidebar .panel .list-group-sub {
-  margin-bottom: 0px;
-}
-.sidebar .panel .list-group-item-sub {
-  padding-left: 40px;
-}
 .main {
   margin-top: 52px;
   margin-bottom: 60px;
