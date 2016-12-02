@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>差异数据查询</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/reset.css">
+</head>
+<body>
+@@include('component/header.tpl')
+
+<div class='container-fluid'>
+
+    <div class="row">
+        @@include('component/sidebar.tpl');
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <ol class="breadcrumb">
+                <li>差异管理</li>
+                <li class="active">差异数据查询</li>
+            </ol>
+
+
+            <!--搜索区域-->
+
+            <form id="formSearch" class="search-area clearfix">
+                <div class="form-group col-sm-4">
+                    <div class="input-group">
+                        <div class="input-group-addon">日期类型</div>
+                        <select id="search_dateType" class="form-control">
+                            <option value="1">交易日期</option>
+                            <option value="2">操作日期</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group col-sm-4">
+                    <div class="input-group">
+                        <div class="input-group-addon">日期</div>
+                        <input class="form-control" type="text" id="search_beginDate" readonly/>
+                    </div>
+                </div>
+
+                <div class="form-group col-sm-4">
+                    <div class="input-group">
+                        <div class="input-group-addon">至</div>
+                        <input id="serach_endDate" type="text" class="form-control" readonly/>
+                    </div>
+                </div>
+
+                <div class="form-group col-sm-4">
+                    <div class="input-group">
+                        <div class="input-group-addon">差异类型</div>
+                        <select id="search_diffType" class="form-control">
+                            <option value="">全部</option>
+                            <option value="1">收入</option>
+                            <option value="2">成本</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group col-sm-4">
+                    <div class="input-group">
+                        <div class="input-group-addon">渠道</div>
+                        <select id="search_channel" class="form-control">
+                            <option value="0">全部</option>
+                            <option value="1">掌上生活</option>
+                            <option value="2">手机银行</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group col-sm-4">
+                    <div class="input-group">
+                        <div class="input-group-addon">处理状态</div>
+                        <select id="search_diffStatus" class="form-control">
+                            <option value="">全部</option>
+                            <option value="1">待处理</option>
+                            <option value="2">已处理</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group col-sm-4">
+                    <div class="input-group">
+                        <div class="input-group-addon">处理标识</div>
+                        <select id="search_diffTag" class="form-control">
+                            <option value="">全部</option>
+                            <option value="1">活动限购</option>
+                            <option value="2">票类有无</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group col-sm-4">
+                    <div class="input-group">
+                        <div class="input-group-addon">日期类型</div>
+                        <input id="search_orderNo" type="text" class="form-control"/>
+                    </div>
+                </div>
+
+                <div class="form-group col-sm-4">
+                    <div class="input-group">
+                        <div class="input-group-addon">差异编号</div>
+                        <input id="search_diffNo" type="text" class="form-control"/>
+                    </div>
+                </div>
+
+                <!--按钮-->
+                <div class="form-group col-sm-12 col-md-10 pull-right">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <button type="submit" class="btn btn-block btn-primary">查询</button>
+                        </div>
+                        <div class="col-sm-3">
+                            <button type="button" class="btn btn-block btn-default">新增</button>
+                        </div>
+                        <div class="col-sm-3">
+                            <button type="button" class="btn btn-block btn-default">批量删除</button>
+                        </div>
+                        <div class="col-sm-3">
+                            <button type="button" class="btn btn-block btn-default">导出数据</button>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </form>
+
+            <!--结果区域-->
+            <div class="content-area">
+                <div class="row" id="pager"></div>
+                <div class="table-responsive" id="dataTable">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <td><input type="checkbox" id="multi-check-all"/></td>
+                            <td>差异编号</td>
+                            <td>结算日期</td>
+                            <td>交易订单号</td>
+                            <td>差异类型</td>
+                            <td>差异标识</td>
+                            <td>渠道</td>
+                            <td>二级商户号</td>
+                            <td>二级商户名</td>
+                            <td>差异金额</td>
+                            <td>差异说明</td>
+                            <td>差异处理状态</td>
+                            <td>批次号</td>
+                            <td>操作</td>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+<script src="js/vendor.js"></script>
+<script src="js/diff-query.js"></script>
+
+</body>
+</html>

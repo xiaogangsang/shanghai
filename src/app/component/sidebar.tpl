@@ -216,7 +216,7 @@
       <div id="diff" class="panel-collapse collapse" role="tabpanel">
         <div class="list-group">
           <a href="diff-operation.html" class="list-group-item" id="menu-diff-operation" data-id="217" >差异处理</a>
-          <a href="" class="list-group-item" id="" data-id="217">差异数据查询</a>
+          <a href="diff-query.html" class="list-group-item" id="menu-diff-query" data-id="217">差异数据查询</a>
         </div>
       </div>
     </div>
