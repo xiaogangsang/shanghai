@@ -11,7 +11,8 @@ module.exports = {
     "Mustache": true
   },
   "rules":{
-    "no-alert":0
+    "no-alert": 0,
+    "func-names": 0
   },
   "extends": "eslint-config-airbnb-es5"
 }
