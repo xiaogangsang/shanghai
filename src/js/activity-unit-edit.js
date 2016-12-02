@@ -1287,7 +1287,12 @@ function setEdit(unitId) {
       _popupDataCache.totalTicket = ~~unit.totalTicket < 1 ? '' : ~~unit.totalTicket;
       _popupDataCache.dailyBudgetList = unit.dailyBudgetList;
       _popupDataCache.cusTypes = unit.cusTypes != null ? unit.cusTypes : [];
-      _popupDataCache.channels = unit.channels != null ? unit.channels : [];
+      _popupDataCache.channels = [];
+      if (unit.channels != null) {
+        _(unit.channels).forEach(function (channelId) {
+          _popupDataCache.channels.push(~~channelId);
+        });
+      }
       _popupDataCache.films = unit.films != null ? unit.filmsfilms : [];
       _popupDataCache.configType = unit.configType != null ? unit.configType : [];
       _popupDataCache.qualification = unit.qualification != undefined ? unit.qualification[0] : '';
