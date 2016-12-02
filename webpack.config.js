@@ -50,6 +50,7 @@ module.exports = {
       'parsley-cn': path.resolve(bowerComponents, 'parsleyjs/dist/i18n/zh_cn.js'),
       cookie: path.resolve(bowerComponents, 'js-cookie/src/js.cookie.js'),
       echarts: path.resolve(bowerComponents, 'echarts/dist/echarts.js'),
+      fineUploader: path.resolve(bowerComponents, 'fine-uploader/dist/fine-uploader.core'),
       datetimepicker: srcDir + '/lib/bootstrap-datetimepicker.min.js',
       'datetimepicker-cn': srcDir + '/lib/bootstrap-datetimepicker.zh-CN.js',
       common: srcDir + '/common/common.js',
@@ -70,6 +71,7 @@ module.exports = {
     'datetimepicker',
     'datetimepicker-cn',
     'echarts',
+    'fineUploader',
     ],
 
     //各种加载器，即让各种文件格式可用require引用
@@ -94,6 +96,10 @@ module.exports = {
       test: path.resolve(bowerComponents, 'echarts/dist/echarts.js'),
       loader: 'expose?echarts',
     },
+    {
+        test: path.resolve(bowerComponents, 'fine-uploader/dist/fine-uploader.core'),
+        loader: 'expose?qq',
+      },
 
     // {
     //   test: /\.jsx?$/,

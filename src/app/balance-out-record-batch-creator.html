@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="images/favicon.ico" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>批量新增出货/退货记录</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/merchant.css">
+    <link rel="stylesheet" type="text/css" href="css/css-hud.css">
+    <!-- <link rel="stylesheet" href="css/banner.css"> -->
+</head>
+
+<body>
+    @@include('component/header.tpl')
+    <div class="container-fluid">
+        <div class="row">
+            @@include('component/sidebar.tpl')
+            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                <ol class="breadcrumb">
+                    <li>出货对账</li>
+                    <li class="active">批量新增出货/退货记录</li>
+                </ol>
+                <div class="content-area col-sm-8 col-sm-offset-2">
+                    <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3" style="padding-left: 8px; padding-right: 8px;">
+                            <div class="input-group">
+                                <div class="input-group-addon">出货订单类型：</div>
+                                <select class="form-control" id="order_type" required>
+                                    <option value="5">出货调整</option>
+                                    <option value="6">退货调整</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row file-upload-container" style="margin: 12px 0px;">
+                        <div class="col-sm-6 col-sm-offset-3" style="padding-left: 0px; padding-right:0px;">
+                            <div class="input-group">
+                                <span class="input-group-addon">数据文件</span>
+                                <input type="text" class="form-control" readonly>
+                                <span class="input-group-btn">
+                                    <span class="btn btn-default btn-file">
+                                        <span>选择文件</span>
+                                        <input class="file-upload" type="file" name="file">
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3">
+                            <button type="button" class="btn btn-block btn-default btn-upload">确定上传</button>
+                        </div>
+                        <div class="col-sm-12 tips" style="font-size: 13px; margin-top: 20px">
+                            * 仅支持 <em>.xls</em> 和 <em>.xlsx</em> 格式. 最大支持50MB.<br>
+                            * 点击上传后请耐心等待, 上传结果提示框弹出前请不要离开页面(每MB大约需要5秒, 取决于所处网络环境)<br>
+                            * Excel格式请参照以下表格，表格字段不可缺失且顺序不可变更。
+                            <table class="table table-condensed table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>交易订单号</th>
+                                        <th>用户支付金额(元)</th>
+                                        <th>用户支付积分</th>
+                                        <th>O2O应收金额(元)</th>
+                                        <th>结算金额(元)</th>
+                                        <th>常规活动补贴付款方式</th>
+                                        <th>支付活动补贴付款方式</th>
+                                        <th>常规活动渠道方补贴金额(元)</th>
+                                        <th>支付活动补贴金额</th>
+                                        <th>应付金额(元)</th>
+                                        <th>实付金额(元)</th>
+                                        <th>张数</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th>793271704288890880</th>
+                                        <th>0</th>
+                                        <th>0</th>
+                                        <th>0</th>
+                                        <th>5.01</th>
+                                        <th>后付</th>
+                                        <th>预付</th>
+                                        <th>0</th>
+                                        <th>0</th>
+                                        <th>5.01</th>
+                                        <th>5.01</th>
+                                        <th>0</th>
+                                    </tr>
+                                    <tr>
+                                        <th>793277604848340992</th>
+                                        <th>0</th>
+                                        <th>0</th>
+                                        <th>0</th>
+                                        <th>-1</th>
+                                        <th>后付</th>
+                                        <th>预付</th>
+                                        <th>0</th>
+                                        <th>0</th>
+                                        <th>-1</th>
+                                        <th>-1</th>
+                                        <th>0</th>
+                                    </tr>
+                                    <tr>
+                                        <th>793282046255566848</th>
+                                        <th>0</th>
+                                        <th>0</th>
+                                        <th>0</th>
+                                        <th>4</th>
+                                        <th>预付</th>
+                                        <th>预付</th>
+                                        <th>3.11</th>
+                                        <th>0</th>
+                                        <th>4</th>
+                                        <th>4</th>
+                                        <th>0</th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="js/vendor.js"></script>
+    <script src="js/balance-out-record-batch-creator.js"></script>
+
+</body>
+
+</html>

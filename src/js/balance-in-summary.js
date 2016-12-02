@@ -102,7 +102,7 @@ function handleData(res) {
     setPager(totalRecord, _pageIndex, record.length, _pageTotal);
 
     _(record).forEach(function(item) {
-      item.chargeMerchant = settlementCommon.parseMerchant(item.chargeMerchant);
+      item.chargeMerchant = settlementCommon.parseChargeMerchant(item.chargeMerchant);
       item.payStatusNo = item.payStatus;
       item.payStatus = settlementCommon.parsePayStatus(item.payStatus);
     });
@@ -134,7 +134,7 @@ function setSummaryTableData(data) {
 function setPager(total, pageIndex, rowsSize, pageTotal) {
   var data = { total: total, pageIndex: pageIndex, rowsSize: rowsSize, pageTotal: pageTotal };
   var template = $('#pager-template').html();
-  Mustache.parse(template);
+  Mustache.parse(template);  
   var html = Mustache.render(template, data);
   $('#pager').html(html);
 }

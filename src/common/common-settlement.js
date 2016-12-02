@@ -24,6 +24,19 @@ settlementCommon.parseMerchant = function(status) {
 	return this.merchant[status];
 }
 
+settlementCommon.chargeMerchat = {'1' : 'O2O-卡中心', '2' : 'O2O-分行'};
+
+settlementCommon.parseChargeMerchant = function(status) {
+  return this.chargeMerchat[status];
+}
+
+// 收单订单类型
+settlementCommon.acquiringOrderType = {'1' : '支付', '2' : '退款'};
+
+settlementCommon.parseAcquiringOrderType = function(status) {
+	return this.acquiringOrderType[status];
+}
+
 
 // 支付流水状态
 settlementCommon.payStatus = 
@@ -67,6 +80,14 @@ settlementCommon.parsePayTool = function(status) {
 }
 
 
+// 收单支付渠道
+settlementCommon.acquiringPayTool = {'1' : 'O2O-卡中心', '2' : 'O2O-分行'};
+
+settlementCommon.parseAcquiringPayTool = function(status) {
+  return this.acquiringPayTool[status];
+}
+
+
 // 业务类别
 settlementCommon.bizType = {'1' : '影票', '2' : '手续费'};
 
@@ -76,7 +97,7 @@ settlementCommon.parseBizType = function(status) {
 
 
 // 补贴付款方式
-settlementCommon.subsidyType = {'1' : '预付', '2' : '后付'};
+settlementCommon.subsidyType = {'0' : '无', '1' : '预付', '2' : '后付'};
 
 settlementCommon.parseSubsidyType = function(status) {
   return this.subsidyType[status];
@@ -113,6 +134,22 @@ settlementCommon.shipmentStatus =
 
  settlementCommon.parseShipmentStatus = function(status) {
   return this.shipmentStatus[status];
+ }
+
+ // 出货订单类型
+settlementCommon.shipmentOrderType = 
+  {'0' : '无', '1' : '出货', '2' : '退货', '3' : '出货调整', '4' : '退货调整'};
+
+ settlementCommon.parseShipmentOrderType = function(status) {
+  return this.shipmentOrderType[status];
+ }
+
+ // 订单来源
+settlementCommon.orderSource = 
+  {'1' : '系统', '2' : '人工'};
+
+ settlementCommon.parseOrderSource = function(status) {
+  return this.orderSource[status];
  }
 
 
@@ -154,7 +191,7 @@ settlementCommon.parseFileStatus = function(status) {
 }
 
 // 对账批处理类型
-settlementCommon.balanceFileType = {'1' : '收单状态', '2' : '出货状态', '3' : '收单商户信息', '4' : '出货商户信息'};
+settlementCommon.balanceFileType = {'1' : '收单状态', '2' : '出货状态', '3' : '收单商户信息', '4' : '出货商户信息', '5' : '出货调整', '6' : '退货调整'};
 settlementCommon.parseBalanceFileType = function(status) {
   return this.balanceFileType[status];
 }

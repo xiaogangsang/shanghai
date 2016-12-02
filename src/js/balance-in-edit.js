@@ -96,6 +96,8 @@ $('#formSearch').on('submit', function (e) {
       thdSerialNo: $('#search_thdSerialNo').val(),
       // paySequenceNo: $('#search_paySequenceNo').val(),
       checkStatus: approval ? 2 : $('#search_checkStatus').val(),
+      orderSource:$('#search_orderSource').val(),
+      acquiringOrderType:$('#search_acquiringOrderType').val(),
       pageSize: _pageSize,
     };
 
@@ -132,7 +134,7 @@ function handleData(res) {
     _(record).forEach(function(item) {
       item.canEdit = (item.checkStatus != 2 && item.checkStatus != 3 && item.reconciliationStatus != 4); // 待审核/审核完成状态不能再修改, 对账状态为确认的也不能修改
       item.canReverse = (item.checkStatus == 3);
-      item.chargeMerchant = settlementCommon.parseMerchant(item.chargeMerchant);
+      item.chargeMerchant = settlementCommon.parseChargeMerchant(item.chargeMerchant);
       item.payStatus = settlementCommon.parsePayStatus(item.payStatus);
       item.reconciliationStatus = settlementCommon.parseReconciliationStatus(item.reconciliationStatus);
       item.reason = settlementCommon.parseReason(item.reason);
@@ -140,6 +142,8 @@ function handleData(res) {
       item.discountType = settlementCommon.parseDiscountType(item.discountType);
       item.partner = settlementCommon.parsePartner(item.partner);
       item.checkStatus = settlementCommon.parseCheckStatus(item.checkStatus);
+      item.acquiringOrderType = settlementCommon.parseAcquiringOrderType(item.acquiringOrderType);
+      item.orderSource = settlementCommon.parseOrderSource(item.orderSource);
     });
 
     if (!_queryingFromSelectedSummary) {
@@ -241,7 +245,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     // detail.payStatus = settlementCommon.parsePayStatus(detail.payStatus);
     detail.bizType = settlementCommon.parseBizType(detail.bizType);
     detail.discountType = settlementCommon.parseDiscountType(detail.discountType);
-    detail.chargeMerchant = settlementCommon.parseMerchant(detail.chargeMerchant);
+    detail.chargeMerchant = settlementCommon.parseChargeMerchant(detail.chargeMerchant);
 
     if (data.operateRecords) {
       formatEditHistory(data.operateRecords);
@@ -286,7 +290,7 @@ $('#dataTable').on('click', '.btn-detail', function (e) {
     detail.payTool = settlementCommon.parsePayTool(detail.payTool);
     detail.bizType = settlementCommon.parseBizType(detail.bizType);
     detail.discountType = settlementCommon.parseDiscountType(detail.discountType);
-    detail.chargeMerchant = settlementCommon.parseMerchant(detail.chargeMerchant);
+    detail.chargeMerchant = settlementCommon.parseChargeMerchant(detail.chargeMerchant);
 
     // 如果原值, 未被修改, 不用显示. 这里的实现方式是删掉原值中和现值相同的字段
     var currentDetail = data.currentDetail;
@@ -347,7 +351,7 @@ $('#dataTable').on('click', '.btn-detail', function (e) {
 // 修改记录列表的状态码转换
 function formatEditHistory(operateRecords) {
   operateRecords.forEach(function(obj) {
-    obj.chargeMerchant = settlementCommon.parseMerchant(obj.chargeMerchant);
+    obj.chargeMerchant = settlementCommon.parseChargeMerchant(obj.chargeMerchant);
     obj.bizType = settlementCommon.parseBizType(obj.bizType);
     obj.payStatus = settlementCommon.parsePayStatus(obj.payStatus);
     obj.partner = settlementCommon.parsePartner(obj.partner);
