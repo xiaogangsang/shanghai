@@ -7,5 +7,5 @@ $(function () {
 })
 
 $('.btn-test').click(function(e) {
-	alert('test');
+	$('#popup-edit-diff').modal('show');
 });
