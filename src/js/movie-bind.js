@@ -26,7 +26,7 @@ $(function () {
   .done(function (res) {
     if (!!~~res.meta.result) {
       var data = res.data;
-      res.data.dimenName = res.data.dimenNames.join(',');
+      res.data.dimenName = res.data.dimen != null ? res.data.dimen : '';
       var template = $('#movie-template').html();
       Mustache.parse(template);
       var html = Mustache.render(template, data);
@@ -159,7 +159,7 @@ $(document).on('submit', '#formSearchMovie', function (e) {
       var rows = [];
       _(res.data.rows).forEach(function (movie, key) {
         if (movie.id != _movieId) {
-          movie.dimenNames = movie.dimenNames.join(',');
+          movie.dimenNames = movie.dimen != null ? movie.dimen : '';
           movie.showDate = movie.showDate.split(' ')[0];
           rows.push(movie);
         }
