@@ -775,7 +775,7 @@ $(document).on('submit', '#formUnit', function (event) {
   }
 
   _submitting = true;
-  $('#formUnit input[type=submit]').prop('disabled', true).text('更新中...');
+  $('#formUnit button[type=submit]').prop('disabled', true).text('更新中...');
   var sendData = {
     name: $.trim($('#name').val()),
     signNo: $('#signNo').val(),
@@ -886,7 +886,7 @@ $(document).on('submit', '#formUnit', function (event) {
   })
   .done(function (res) {
     _submitting = false;
-    $('#formUnit input[type=submit]').prop('disabled', false).text('保存');
+    $('#formUnit button[type=submit]').prop('disabled', false).text('保存');
     if (!!~~res.meta.result) {
       if (ajaxUrl == 'activity/updateActivity') {
         alert('更新成功！');
