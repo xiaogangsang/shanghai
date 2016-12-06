@@ -207,9 +207,9 @@
       <div id="base" class="panel-collapse collapse" role="tabpanel">
         <div class="list-group">
           <a href="diff-base-info-type.html" class="list-group-item" id="menu-diff-base-info-type" data-id="217" >差异类型管理</a>
-          <a href="" class="list-group-item" id="" data-id="217">差异处理标示管理</a>
-          <a href="" class="list-group-item" id="" data-id="217">责任部门管理</a>
-          <a href="" class="list-group-item" id="" data-id="217">差异处理状态管理</a>
+          <a href="diff-base-info-mark.html" class="list-group-item" id="menu-diff-base-info-mark" data-id="217">差异处理标识管理</a>
+          <a href="diff-base-info-department.html" class="list-group-item" id="menu-diff-base-info-department" data-id="217">责任部门管理</a>
+          <a href="diff-base-info-status.html" class="list-group-item" id="menu-diff-base-info-status" data-id="217">差异处理状态管理</a>
         </div>
       </div>
     </div>
@@ -218,7 +218,7 @@
       <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#diff"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 差异管理</a>
       <div id="diff" class="panel-collapse collapse" role="tabpanel">
         <div class="list-group">
-          <a href="diff-operation.html" class="list-group-item" id="menu-diff-operation" data-id="217" >差异处理</a>
+          <a href="diff-operation.html" class="list-group-item" id="menu-diff-operation" data-id="217">差异处理</a>
           <a href="diff-query.html" class="list-group-item" id="menu-diff-query" data-id="217">差异数据查询</a>
         </div>
       </div>

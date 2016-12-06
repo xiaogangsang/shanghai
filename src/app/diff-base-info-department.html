@@ -5,7 +5,7 @@
 	<link rel="icon" href="images/favicon.ico">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-	<title>差异类型管理</title>
+	<title>责任部门管理</title>
 	<link rel="stylesheet" href="css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/reset.css">
 </head>
@@ -23,7 +23,7 @@
 				
 				<ol class="breadcrumb">
 					<li>基础结算信息管理</li>
-					<li>差异类型管理</li>
+					<li>责任部门管理</li>
 				</ol>
 
 				<form id="formSearch" class="search-area clearfix">
@@ -79,13 +79,7 @@
 							<tr>
 								<th><input type="checkbox" class="multi-check-all"></th>
 								<th>编号</th>
-								<th>差异类型</th>
-								<th>允许在差异管理界面增加差异</th>
-								<th>允许责任部门为空</th>
-								<th>生成差异提示更新结算进度</th>
-								<th>正负号</th>
-								<th>默认责任部门</th>
-								<th>默认处理状态</th>
+								<th>责任部门</th>
 								<th>创建人</th>
 								<th>创建时间</th>
 								<th>使用状态</th>
@@ -113,60 +107,8 @@
 							
 							<div class="form-group">
 								<div class="input-group">
-									<div class="input-group-addon">差异类型</div>
+									<div class="input-group-addon">责任部门</div>
 									<input type="text" class="form-control" id="">
-								</div>
-							</div>
-							<div class="form-group">
-								<div class="input-group">
-									<div class="input-group-addon">允许在差异管理界面增加差异</div>
-									<select class="form-control" id="">
-										<option value="0">是</option>
-										<option value="1">否</option>
-									</select>
-								</div>
-							</div>
-							<div class="form-group">
-								<div class="input-group">
-									<div class="input-group-addon">允许责任部门为空</div>
-									<select class="form-control" id="">
-										<option value="0">是</option>
-										<option value="1">否</option>
-									</select>
-								</div>
-							</div>
-							<div class="form-group">
-								<div class="input-group">
-									<div class="input-group-addon">生成差异提示更新结算进度</div>
-									<select class="form-control" id="">
-										<option value="0">是</option>
-										<option value="1">否</option>
-									</select>
-								</div>
-							</div>
-							<div class="form-group">
-								<div class="input-group">
-									<div class="input-group-addon">对应差异正负</div>
-									<select class="form-control" id="">
-										<option value="0">+</option>
-										<option value="1">-</option>
-									</select>
-								</div>
-							</div>
-							<div class="form-group">
-								<div class="input-group">
-									<div class="input-group-addon">默认责任部门</div>
-									<select class="form-control" id="">
-										<option value="0">责任部门列表</option>
-									</select>
-								</div>
-							</div>
-							<div class="form-group">
-								<div class="input-group">
-									<div class="input-group-addon">默认处理状态</div>
-									<select class="form-control" id="">
-										<option value="0">差异处理状态管理表</option>
-									</select>
 								</div>
 							</div>
 							<div class="form-group">
@@ -178,7 +120,7 @@
 									</select>
 								</div>
 							</div>
-
+							
 							<div class="col-sm-8 col-sm-offset-2" style="margin-top: 10px; margin-bottom: 10px;">
 								<div class="col-sm-6">
 									<button type="sumbit" class="btn btn-block btn-primary">确定</button>
@@ -196,6 +138,6 @@
 	</div>
 
 	<script src="js/vendor.js"></script>
-	<script src="js/diff-base-info-type.js"></script>
+	<script src="js/diff-base-info-department.js"></script>
 </body>
 </html>

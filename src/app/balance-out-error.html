@@ -74,11 +74,11 @@
 					</div>
 				</div>
 
-				<div class="col-sm-8">
-					<div class="col-sm-3">
+				<div class="col-sm-6 pull-right">
+					<div class="col-sm-6">
 						<button type="sumbit" class="btn btn-block btn-primary">查询</button>
 					</div>
-					<div class="col-sm-3">
+					<div class="col-sm-6">
 						<button type="sumbit" class="btn btn-block btn-default">重置条件</button>
 					</div>
 			  </div>
@@ -125,35 +125,40 @@
 			</div>
 
 			<script id="pager-template" type="text/x-tmpl-mustache">
-   	  <div class="col xs-12 col-sm-6 rowStatics">共 <span id="total">{{total}}</span> 条数据，当前显示 <span id="rowsSize">{{rowsSize}}</span> 条</div>
-   		{{#pageTotal}}
-    	<div class="col xs-12 col-sm-6">
-      <nav>
-        <ul class="pagination pagination-sm">
-          <li><a href="#" class="prev"><span>&lt;</span></a></li>
-          <li><span id="pageIndex">{{pageIndex}}</span> / <span id="pageTotal">{{pageTotal}}</span></li>
-          <li><a href="#" class="next"><span>&gt;</span></a></li>
-          <li><input type="number" name="pageNo" id="pageNo" pattern="[0-9]+"></li>
-          <li><button type="button" class="btn" id="btn-pager">跳转</button></li>
-        </ul>
-     </nav>
-     </div>
-    {{/pageTotal}}
-  	</script>
+			  <div class="col xs-12 col-sm-6 rowStatics">共 <span id="total">{{total}}</span> 条数据，当前显示 <span id="rowsSize">{{rowsSize}}</span> 条</div>
+			  {{#pageTotal}}
+			  <div class="col xs-12 col-sm-6">
+			    <nav>
+			      <ul class="pagination pagination-sm">
+			        <li><a href="#" class="prev"><span>&lt;</span></a></li>
+			        <li><span id="pageIndex">{{pageIndex}}</span> / <span id="pageTotal">{{pageTotal}}</span></li>
+			        <li><a href="#" class="next"><span>&gt;</span></a></li>
+			        <li>
+			          <input type="number" name="pageNo" id="pageNo" pattern="[0-9]+">
+			        </li>
+			        <li>
+			          <button type="button" class="btn" id="btn-pager">跳转</button>
+			        </li>
+			      </ul>
+			    </nav>
+			  </div>
+			  {{/pageTotal}}
+			</script>
 
-  	<script id="table-template" type="text/x-tmpl-mustache">
-    {{#rows}}
-    <tr data-id="{{id}}" data-bannertype="{{bannerType}}">
-      <td><input type="checkbox" class="multi-check"></td>
-      <!-- 出/退货时间 -->
-      <td>{{}}</td>
-      
-      <td>
-      <button class="btn btn-xs btn-default btn-edit" data-checkstatus="{{checkStatusNo}}">编辑</button>
-      </td>
-    </tr>
-    {{/rows}}
-    </script>
+			<script id="table-template" type="text/x-tmpl-mustache">
+			  {{#rows}}
+			  <tr data-id="{{id}}" data-bannertype="{{bannerType}}">
+			    <td>
+			      <input type="checkbox" class="multi-check">
+			    </td>
+			    <!-- 出/退货时间 -->
+			    <td>{{}}</td>
+			    <td>
+			      <button class="btn btn-xs btn-default btn-edit" data-checkstatus="{{checkStatusNo}}">编辑</button>
+			    </td>
+			  </tr>
+			  {{/rows}}
+			</script>
 
 	 </div>
 	</div>

@@ -8,18 +8,117 @@
 		</div>
 
 		<div class="row">
+
 			<div class="form-group col-sm-6">
 				<div class="input-group">
 					<div class="input-group-addon">结算日期</div>
-					<input type="text" class="form-control" id="" readonly>
+					<input type="text" class="form-control" id="">
 				</div>
 			</div>
 			<div class="form-group col-sm-6">
 				<div class="input-group">
 					<div class="input-group-addon">订单号</div>
+					<input type="text" class="form-control" id="">
+				</div>
+			</div>
+			<div class="form-group col-sm-6">
+				<div class="input-group">
+					<div class="input-group-addon">差异编号</div>
+					<input type="text" class="form-control" id="">
+				</div>
+			</div>
+			<div class="form-group col-sm-6">
+				<div class="input-group">
+					<div class="input-group-addon">差异类型</div>
+					<select class="form-control" id="">
+						<option value="0">收入</option>
+						<option value="1">成本</option>
+						<option value="2">待退款</option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group col-sm-6">
+				<div class="input-group">
+					<div class="input-group-addon">渠道</div>
+					<select class="form-control" id="">
+						<option value="1">掌上生活</option>
+						<option value="2">手机银行</option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group col-sm-6">
+				<div class="input-group">
+					<div class="input-group-addon">处理标识</div>
+					<select class="form-control" id="">
+						<option value="0">活动限购</option>
+						<option value="1">票类有误</option>
+						<option value="2">待退款</option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group col-sm-6">
+				<div class="input-group">
+					<div class="input-group-addon">批次号</div>
+					<input type="text" class="form-control" id="">
+				</div>
+			</div>
+			<div class="form-group col-sm-6">
+				<div class="input-group">
+					<div class="input-group-addon">差异金额</div>
+					<input type="text" class="form-control" id="">
+				</div>
+			</div>
+			<div class="form-group col-sm-6">
+				<div class="input-group">
+					<div class="input-group-addon">处理状态</div>
+					<select class="form-control" id="">
+						<option value="0">待处理</option>
+						<option value="1">已处理</option>
+						<option value="2">无需处理</option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group col-sm-6">
+				<div class="input-group">
+					<div class="input-group-addon">责任部门</div>
+					<select class="form-control" id="">
+						<option value="0">影票</option>
+						<option value="1">卡中心</option>
+						<option value="2">其他</option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group col-sm-12">
+				<div class="input-group">
+					<div class="input-group-addon">差异说明</div>
+					<textarea class="form-control" style="resize: vertical;" id=""></textarea>
+				</div>
+			</div>
+			<div class="form-group col-sm-12">
+				<div class="input-group">
+					<div class="input-group-addon">差异备注</div>
+					<textarea class="form-control" style="resize: vertical;" id=""></textarea>
+				</div>
+			</div>
+			<div class="form-group col-sm-12">
+				<div class="input-group">
+					<div class="input-group-addon">处理备注</div>
+					<textarea class="form-control" style="resize: vertical;" id=""></textarea>
+				</div>
+			</div>
+			<div class="form-group col-sm-6">
+				<div class="input-group">
+					<div class="input-group-addon">处理人</div>
 					<input type="text" class="form-control" id="" readonly>
 				</div>
 			</div>
+			<div class="form-group col-sm-6">
+				<div class="input-group">
+					<div class="input-group-addon">处理时间</div>
+					<input type="text" class="form-control" id="" readonly>
+				</div>
+			</div>
+
 		</div>
 
 	</form>
