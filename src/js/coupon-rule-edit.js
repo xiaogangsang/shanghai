@@ -506,11 +506,8 @@ $(document).on('submit', '#formEdit', function (event) {
   if (_submitting) {
     return false;
   }
-
   _submitting = true;
-
-  $('#formUnit input[type=submit]').prop('disabled', true).text('更新中...');
-
+  $('#formEdit button[type=submit]').prop('disabled', true).text('更新中...');
   var sendData = {
     name: $.trim($('#name').val()),
     signNo: $.trim($('#signNo').val()),
@@ -529,6 +526,7 @@ $(document).on('submit', '#formEdit', function (event) {
     films: _popupDataCache.films,
     cinemas: [],
     timetables: _popupDataCache.timetables,
+    remarks: $('#remark').val().trim(),
   };
 
   switch ($('input[name=advancePayment]:checked').length) {
@@ -563,7 +561,6 @@ $(document).on('submit', '#formEdit', function (event) {
   })
   .done(function (res) {
     _submitting = false;
-    $('#formUnit input[type=submit]').prop('disabled', false).text('保存');
     if (!!~~res.meta.result) {
       if (ajaxUrl == 'coupon/couponUpdate') {
         alert('更新成功！');
@@ -575,6 +572,8 @@ $(document).on('submit', '#formEdit', function (event) {
     } else {
       alert('接口错误：' + res.meta.msg);
     }
+
+    $('#formEdit button[type=submit]').prop('disabled', false).text('保存');
   });
 
   return false;
@@ -983,6 +982,7 @@ function setEdit(couponId) {
       $('#couponDesc').val(coupon.couponDesc);
       $('#imageUrl').val(coupon.imageUrl);
       $('#maxInventory').val(coupon.maxInventory);
+      $('#remark').val(coupon.remarks);
 
       //成本中心
       if (coupon.budgetSource != '' && coupon.budgetSource != null && coupon.budgetSource != undefined) {
