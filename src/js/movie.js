@@ -244,6 +244,36 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
   });
 });
 
+$('#dataTable').on('click', '.btn-delete', function (e) {
+  e.preventDefault();
+  var $btn = $(this);
+  var $tr = $(this).closest('tr');
+  $btn.prop('disabled', true);
+  var movieName = $tr.find('td:nth-child(2)').text();
+  var movieId = $tr.data('id');
+  if (window.confirm('确定要删除标准影片【' + movieName + '】吗？')) {
+    $.ajax({
+      url: common.API_HOST + 'film/standardFilm/delete',
+      type: 'POST',
+      dataType: 'json',
+      data: { id: movieId },
+    })
+    .done(function (res) {
+      if (!!~~res.meta.result) {
+        alert('删除成功！');
+        $tr.animate({opacity: 0.25}, 600, function() {
+          $tr.remove();
+        });
+      } else {
+        alert('接口错误：' + res.meta.msg);
+        $btn.prop('disabled', false);
+      }
+    });
+  }
+
+  return false;
+});
+
 $('#dataTable').on('click', '.btn-detail', function (e) {
   e.preventDefault();
   $.ajax({
