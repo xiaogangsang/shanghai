@@ -148,6 +148,7 @@
   </div>
 
   <script src="js/vendor.js"></script>
+  <script src="lib/jquery.quicksearch.min.js"></script>
   <script src="lib/blueimp-file-upload/jquery.ui.widget.js"></script>
   <script src="lib/blueimp-file-upload/jquery.iframe-transport.js"></script>
   <script src="lib/blueimp-file-upload/jquery.fileupload.js"></script>
@@ -293,6 +294,17 @@
           <tr style="display:none;">
             <th><button type="button" class="btn btn-default" id="btn-city">选择城市</button></th>
             <td>点击左侧按钮查看/选择城市</td>
+          </tr>
+          <tr>
+            <th>影院限制</th>
+            <td>
+              <div class="radio-inline"><label><input type="radio" name="cinemaType" value="0" checked><span>不限制</span></label></div>
+              <div class="radio-inline"><label><input type="radio" name="cinemaType" value="1"><span>限制</span></label></div>
+            </td>
+          </tr>
+          <tr style="display:none;">
+            <th><button type="button" class="btn btn-default" id="btn-cinema">选择影院</button></th>
+            <td>点击左侧按钮查看/选择影院</td>
           </tr>
           <tr>
             <th>生效日期</th>
@@ -670,5 +682,6 @@
   </script>
   @@include('component/popup-city.tpl')
   @@include('component/popup-banner-upload.tpl')
+  @@include('component/popup-unit-cinema.tpl')
 </body>
 </html>
