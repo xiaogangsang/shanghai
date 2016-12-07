@@ -38,13 +38,9 @@ gulp.task('build-css', ['copy'], function (done) {
 });
 
 //引用webpack对js进行操作
-gulp.task('build-js', ['fileinclude'], function (callback) {
+gulp.task('build-js', ['fileinclude'], function () {
   devCompiler.run(function (err, stats) {
     if (err) throw new gutil.PluginError('webpack:build-js', err);
-    gutil.log('[webpack:build-js]', stats.toString({
-      colors: true,
-    }));
-    callback();
   });
 });
 
