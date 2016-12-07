@@ -137,10 +137,11 @@
       <div class="col-xs-12 col-sm-6"><label>常态活动ID：</label>{{activityId}}</div>
       <div class="col-xs-12 col-sm-6"><label>常态活动名称：</label>{{activityName}}</div>
 
-      <div class="col-xs-12 col-sm-6"><label>支付活动ID：</label>{{}}</div>
-      <div class="col-xs-12 col-sm-6"><label>支付活动名称：</label>{{}}</div>
-      <div class="col-xs-12 col-sm-6"><label>支付活动补贴金额：</label>{{}}</div>
-
+      {{#thdActList}}
+      <div class="col-xs-12 col-sm-6"><label>支付活动ID：</label>{{id}}</div>
+      <div class="col-xs-12 col-sm-6"><label>支付活动名称：</label>{{name}}</div>
+      <div class="col-xs-12 col-sm-6"><label>支付活动补贴金额：</label>{{discountAmount}}</div>
+      {{/thdActList}}
       <div class="col-xs-12 col-sm-6"><label>票类ID：</label>{{wandaTicketId}}</div>
       <div class="col-xs-12 col-sm-6"><label>优惠券规则ID：</label>{{couponId}}</div>
       <div class="col-xs-12 col-sm-6"><label>优惠券名称：</label>{{couponName}}</div>
