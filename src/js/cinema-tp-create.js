@@ -2,7 +2,7 @@
 * @Author: kyle
 * @Date:   2016-08-22 14:57:39
 * @Last Modified by:   kyle
-* @Last Modified time: 2016-10-21 16:51:35
+* @Last Modified time: 2016-12-07 16:31:33
 */
 
 'use strict;'
@@ -223,6 +223,7 @@ $(document).on('submit', '#formCinema', function (e) {
     _submitting = false;
     if (!!~~res.meta.result) {
       alert('新建标准影院，并关联成功！');
+      window.location = 'cinema-tp.html';
     } else {
       alert('接口错误：' + res.meta.msg);
     }
