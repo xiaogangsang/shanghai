@@ -182,7 +182,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
   })
   .done(function (res) {
     if (!!~~res.meta.result) {
-      res.data.showDate = res.data.showDate.split(' ')[0];
+      // res.data.showDate = res.data.showDate.split(' ')[0];
       res.data.score = parseFloat(res.data.score).toFixed(1);
       setModal(res.data);
       $('#popup-movie-form').modal('show');
