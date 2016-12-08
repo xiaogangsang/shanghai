@@ -368,9 +368,9 @@ function setModal(movieData) {
       value.selected = movieData.dimen.indexOf(value.name) > -1 ? true : false;
     });
 
-    movieData.releaseYear = movieData.showDate.split('-')[0] != undefined ? movieData.showDate.split('-')[0] : '';
-    movieData.releaseMonth = movieData.showDate.split('-')[1] != undefined ? movieData.showDate.split('-')[1] : '';
-    movieData.releaseDay = movieData.showDate.split('-')[2] != undefined ? movieData.showDate.split('-')[2] : '';
+    movieData.releaseYear = movieData.showDate != null && movieData.showDate.split('-')[0] != undefined ? movieData.showDate.split('-')[0] : '';
+    movieData.releaseMonth = movieData.showDate != null && movieData.showDate.split('-')[1] != undefined ? movieData.showDate.split('-')[1] : '';
+    movieData.releaseDay = movieData.showDate != null && movieData.showDate.split('-')[2] != undefined ? movieData.showDate.split('-')[2] : '';
 
     movieData.preview = movieData.poster.indexOf('hiphotos.baidu.com') > -1 ? 'https://map.baidu.com/maps/services/thumbnails?width=150&src=' + encodeURI(movieData.poster) + '&quality=100' : movieData.poster;
 
