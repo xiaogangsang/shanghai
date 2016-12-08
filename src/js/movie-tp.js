@@ -303,7 +303,7 @@ $(document).on('submit', '#formSearchMovie', function (e) {
       _(res.data.rows).forEach(function (movie, key) {
         if (movie.id != _movieId) {
           // movie.dimen = movie.dimenNames.join(',');
-          movie.showDate = movie.showDate.split(' ')[0];
+          movie.showDate = movie.showDate != null ? movie.showDate.split(' ')[0] : '';
           rows.push(movie);
         }
       });
@@ -336,7 +336,7 @@ $('#dataTable').on('click', '.btn-movie-create', function (e) {
 
   var rowIndex = $(this).closest('tr')[0].sectionRowIndex;
   var obj = dataCache[rowIndex];
-  
+
 
   $.ajax({
     url: common.API_HOST + 'film/tpFilm/tpfilmDetail',
