@@ -207,6 +207,7 @@
       </div>
     </div>
   </div>
+
   <script id="edit-home-template" type="text/x-tmpl-mustache">
     <input type="hidden" id="id" value="{{banner.id}}">
     <input type="hidden" id="bannerType" value="1">
@@ -294,17 +295,6 @@
           <tr style="display:none;">
             <th><button type="button" class="btn btn-default" id="btn-city">选择城市</button></th>
             <td>点击左侧按钮查看/选择城市</td>
-          </tr>
-          <tr>
-            <th>影院限制</th>
-            <td>
-              <div class="radio-inline"><label><input type="radio" name="cinemaType" value="0" checked><span>不限制</span></label></div>
-              <div class="radio-inline"><label><input type="radio" name="cinemaType" value="1"><span>限制</span></label></div>
-            </td>
-          </tr>
-          <tr style="display:none;">
-            <th><button type="button" class="btn btn-default" id="btn-cinema">选择影院</button></th>
-            <td>点击左侧按钮查看/选择影院</td>
           </tr>
           <tr>
             <th>生效日期</th>
@@ -476,6 +466,17 @@
             <td><input type="text" class="form-control" id="link" value="{{banner.link}}" required></td>
           </tr>
           <tr>
+            <th>影院限制</th>
+            <td>
+              <div class="radio-inline"><label><input type="radio" name="cinemaType" value="0"{{^banner.cinemaType}} checked{{/banner.cinemaType}} disabled><span>不限制</span></label></div>
+              <div class="radio-inline"><label><input type="radio" name="cinemaType" value="1"{{#banner.cinemaType}} checked{{/banner.cinemaType}} disabled><span>限制</span></label></div>
+            </td>
+          </tr>
+          <tr{{^banner.cinemaType}} style="display:none;"{{/banner.cinemaType}}>
+            <th><button type="button" class="btn btn-default" id="btn-cinema">选择影院</button></th>
+            <td>点击左侧按钮查看/选择影院</td>
+          </tr>
+          <tr>
             <th>生效日期</th>
             <td>
               <input type="text" class="form-control" style="display:inline-block;width:auto;" id="startTime" value="{{banner.startTime}}" size="10" required data-parsley-errors-container="#error-date" readonly> - <input type="text" class="form-control" style="display:inline-block;width:auto;" id="endTime" value="{{banner.endTime}}" size="10" required data-parsley-errors-container="#error-date" readonly>
@@ -528,6 +529,17 @@
           <tr>
             <th>跳转链接</th>
             <td><input type="text" class="form-control" id="link" required></td>
+          </tr>
+          <tr>
+            <th>影院限制</th>
+            <td>
+              <div class="radio-inline"><label><input type="radio" name="cinemaType" value="0" checked><span>不限制</span></label></div>
+              <div class="radio-inline"><label><input type="radio" name="cinemaType" value="1"><span>限制</span></label></div>
+            </td>
+          </tr>
+          <tr style="display:none;">
+            <th><button type="button" class="btn btn-default" id="btn-cinema">选择影院</button></th>
+            <td>点击左侧按钮查看/选择影院</td>
           </tr>
           <tr>
             <th>生效日期</th>

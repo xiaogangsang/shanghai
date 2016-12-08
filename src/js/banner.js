@@ -355,6 +355,15 @@ $(document).on('click', '#btn-cinema-filter', function (event) {
 
 $(document).on('submit', '#popup-unit-cinema form', function (event) {
   event.preventDefault();
+  _cacheCinemas = $('#search-cinema-choosed tbody tr').map(function () {
+    var cinema = {
+      cinemaId: $(this).data('id'),
+      cinemaName: $(this).find('td:nth-child(1)').html(),
+      cityName: $(this).find('td:nth-child(2)').html(),
+      brandName: $(this).find('td:nth-child(3)').html(),
+    };
+    return cinema;
+  }).get();
   $('#popup-unit-cinema').modal('hide');
   return false;
 });
@@ -512,7 +521,6 @@ $(document).on('submit', '#popup-banner-form form', function (event) {
           return false;
         }
       }
-
       sendData.imageUrl = $('#popup-banner-form #imageUrl').val();
       sendData.link = $('#popup-banner-form #link').val();
       break;
@@ -539,6 +547,17 @@ $(document).on('submit', '#popup-banner-form form', function (event) {
       sendData.channelId = ~~$('#popup-banner-form input[name=channelId]:checked').val();
       sendData.imageUrl = $('#popup-banner-form #imageUrl').val();
       sendData.link = $('#popup-banner-form #link').val();
+      sendData.cinemaType = ~~$('input[name=cinemaType]:checked').val();
+      sendData.cinemaList = [];
+      if (sendData.cinemaType == 1) {
+        _(_cacheCinemas).forEach(function(item){
+          sendData.cinemaList.push(item.cinemaId);
+        });
+        if (sendData.cinemaList.length < 1) {
+          alert('当前选择了限制影院，请至少选择一个影院！');
+          return false;
+        }
+      }
       break;
     case 4:
       sendData.iconStatus = ~~$('#popup-banner-form input[name=status]:checked').val();
@@ -810,6 +829,27 @@ function setModal(bannerData, type) {
         break;
       case 3:
         template = $('#edit-sale-template').html();
+        data.banner.cinemaType = 0;
+        if (data.banner.cinemaList != null && data.banner.cinemaList.length > 0) {
+          data.banner.cinemaType = 1;
+          $.ajax({
+            url: common.API_HOST + 'common/getCinemasByIds',
+            type: 'POST',
+            dataType: 'json',
+            data: { ids: data.banner.cinemaList.join('|') },
+          })
+          .done(function (res) {
+            if (!!~~res.meta.result) {
+              if (res.data == null || res.data.length < 1) {
+                return false;
+              } else {
+                _cacheCinemas = res.data;
+              }
+            } else {
+              alert('接口错误：' + res.meta.msg);
+            }
+          });
+        }
         break;
       case 4:
         template = $('#edit-seat-template').html();
