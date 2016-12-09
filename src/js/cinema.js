@@ -224,6 +224,37 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
   });
 });
 
+$('#dataTable').on('click', '.btn-delete', function (e) {
+  e.preventDefault();
+  var $btn = $(this);
+  var $tr = $(this).closest('tr');
+  $btn.prop('disabled', true);
+  var cinemaName = $tr.find('td:nth-child(3)').text();
+  var cinemaId = $tr.data('id');
+  if (window.confirm('确定要删除标准影院【' + cinemaName + '】吗？')) {
+    $.ajax({
+      url: common.API_HOST + 'cinema/standard/delete',
+      type: 'POST',
+      dataType: 'json',
+      data: { cinemaId: cinemaId },
+    })
+    .done(function (res) {
+      if (!!~~res.meta.result) {
+        alert('删除成功！');
+        $tr.animate({opacity: 0.25}, 600, function() {
+          $tr.remove();
+        });
+      } else {
+        alert('接口错误：' + res.meta.msg);
+        $btn.prop('disabled', false);
+      }
+    });
+  }
+
+  $btn.prop('disabled', false);
+  return false;
+});
+
 $(document).on('click', '#btn-create', function (e) {
   e.preventDefault();
   setModal(false);
