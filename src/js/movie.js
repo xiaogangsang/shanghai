@@ -270,7 +270,7 @@ $('#dataTable').on('click', '.btn-delete', function (e) {
       }
     });
   }
-
+  $btn.prop('disabled', false);
   return false;
 });
 
