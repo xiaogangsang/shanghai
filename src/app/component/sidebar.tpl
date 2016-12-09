@@ -6,8 +6,8 @@
       <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu1"><span class="glyphicon glyphicon-send" aria-hidden="true"></span> 合作方管理</a>
       <div id="menu1" class="panel-collapse collapse">
         <div class="list-group">
-          <a href="tp.html" class="list-group-item" id="menu-tp" data-id="16" style="display:none">合作方管理</a>
           <a href="class.html" class="list-group-item" id="menu-class" data-id="16" style="display:none">万达票类管理</a>
+          <a href="tp.html" class="list-group-item" id="menu-tp" data-id="296" style="display:none">TP方管理</a>
         </div>
       </div>
     </div>
