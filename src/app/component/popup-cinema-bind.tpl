@@ -7,13 +7,62 @@
       </div>
       <div class="modal-body">
         <form id="formSearchCinema">
-          <div class="form-group">
-            <div class="input-group">
-              <div class="input-group-addon">搜索标准影院名</div>
-              <input type="text" class="form-control" id="bindCinemaName">
+          <h4>搜索标准影院：</h4>
+          <div class="row">
+            <div class="form-group col-sm-4">
+              <div class="input-group">
+                <div class="input-group-addon">影院名</div>
+                <input type="text" class="form-control" id="filter_cinemaName">
+              </div>
+            </div>
+            <div class="form-group col-sm-4">
+              <div class="input-group">
+                <div class="input-group-addon">院线</div>
+                <select class="form-control" id="filter_brandId">
+                  <option value="">全部</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group col-sm-4">
+              <div class="input-group">
+                <div class="input-group-addon">城市</div>
+                <select class="form-control" id="filter_cityId">
+                  <option value="">全部</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group col-sm-4">
+              <div class="input-group">
+                <div class="input-group-addon">电话</div>
+                <input type="text" class="form-control" id="filter_tel">
+              </div>
+            </div>
+            <div class="form-group col-sm-4">
+              <div class="input-group">
+                <div class="input-group-addon">经度</div>
+                <input type="text" class="form-control" id="filter_longitude">
+              </div>
+            </div>
+            <div class="form-group col-sm-4">
+              <div class="input-group">
+                <div class="input-group-addon">纬度</div>
+                <input type="text" class="form-control" id="filter_latitude">
+              </div>
+            </div>
+            <div class="form-group col-sm-10">
+              <div class="input-group">
+                <div class="input-group-addon">地址</div>
+                <input type="text" class="form-control" id="filter_address">
+              </div>
+            </div>
+            <div class="form-group col-sm-2">
+              <button type="submit" class="btn btn-block btn-primary">搜素</button>
             </div>
           </div>
         </form>
+
+        <hr>
+
         <div class="table-responsive" style="max-height: 300px;">
           <table class="table table-bordered table-condensed table-hover" id="cinemaTable">
             <thead>
@@ -27,7 +76,7 @@
             </thead>
             <tbody>
               <tr>
-                <td colspan="5" align="center">暂无匹配，请尝试搜索其他影院名</td>
+                <td colspan="5" align="center">点击搜索</td>
               </tr>
             </tbody>
           </table>
@@ -48,10 +97,10 @@
 
 <script id="tr-template" type="text/x-tmpl-mustache">
   {{#rows}}
-  <tr data-id="{{cinemaId}}">
-    <td>{{cinemaId}}</td>
-    <td>{{cinemaName}}</td>
-    <td>{{cinemaAddress}}</td>
+  <tr data-id="{{id}}">
+    <td>{{id}}</td>
+    <td>{{name}}</td>
+    <td>{{address}}</td>
     <td>{{cityName}}</td>
     <td>{{tel}}</td>
   </tr>
