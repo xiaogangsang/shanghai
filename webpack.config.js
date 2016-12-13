@@ -55,6 +55,7 @@ module.exports = {
       'datetimepicker-cn': srcDir + '/lib/bootstrap-datetimepicker.zh-CN.js',
       common: srcDir + '/common/common.js',
       settlementCommon: srcDir + '/common/common-settlement.js',
+      pager: srcDir + '/common/pager.js',
     },
   },
   module: {

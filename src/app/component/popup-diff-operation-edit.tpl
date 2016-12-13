@@ -12,7 +12,7 @@
 			<div class="form-group col-sm-6">
 				<div class="input-group">
 					<div class="input-group-addon">结算日期</div>
-					<input type="text" class="form-control" id="">
+					<input type="text" class="form-control" id="diff_settleDate">
 				</div>
 			</div>
 			<div class="form-group col-sm-6">
@@ -24,13 +24,13 @@
 			<div class="form-group col-sm-6">
 				<div class="input-group">
 					<div class="input-group-addon">差异编号</div>
-					<input type="text" class="form-control" id="">
+					<input type="text" class="form-control" id="diff_number">
 				</div>
 			</div>
 			<div class="form-group col-sm-6">
 				<div class="input-group">
 					<div class="input-group-addon">差异类型</div>
-					<select class="form-control" id="">
+					<select class="form-control" id="diff_differType">
 						<option value="0">收入</option>
 						<option value="1">成本</option>
 						<option value="2">待退款</option>
@@ -40,7 +40,7 @@
 			<div class="form-group col-sm-6">
 				<div class="input-group">
 					<div class="input-group-addon">渠道</div>
-					<select class="form-control" id="">
+					<select class="form-control" id="diff_channelId">
 						<option value="1">掌上生活</option>
 						<option value="2">手机银行</option>
 					</select>
@@ -49,7 +49,7 @@
 			<div class="form-group col-sm-6">
 				<div class="input-group">
 					<div class="input-group-addon">处理标识</div>
-					<select class="form-control" id="">
+					<select class="form-control" id="diff_processType">
 						<option value="0">活动限购</option>
 						<option value="1">票类有误</option>
 						<option value="2">待退款</option>
@@ -59,19 +59,19 @@
 			<div class="form-group col-sm-6">
 				<div class="input-group">
 					<div class="input-group-addon">批次号</div>
-					<input type="text" class="form-control" id="">
+					<input type="text" class="form-control" id="diff_batchNo">
 				</div>
 			</div>
 			<div class="form-group col-sm-6">
 				<div class="input-group">
 					<div class="input-group-addon">差异金额</div>
-					<input type="text" class="form-control" id="">
+					<input type="text" class="form-control" id="diff_amount">
 				</div>
 			</div>
 			<div class="form-group col-sm-6">
 				<div class="input-group">
 					<div class="input-group-addon">处理状态</div>
-					<select class="form-control" id="">
+					<select class="form-control" id="diff_processStatus">
 						<option value="0">待处理</option>
 						<option value="1">已处理</option>
 						<option value="2">无需处理</option>
@@ -91,7 +91,7 @@
 			<div class="form-group col-sm-12">
 				<div class="input-group">
 					<div class="input-group-addon">差异说明</div>
-					<textarea class="form-control" style="resize: vertical;" id=""></textarea>
+					<textarea class="form-control" style="resize: vertical;" id="diff_describe"></textarea>
 				</div>
 			</div>
 			<div class="form-group col-sm-12">
