@@ -29,34 +29,6 @@
           <th>所属影院</th>
           <td><input type="text" class="form-control" id="storeId" data-id="{{hall.storeId}}" value="【{{hall.storeId}}】{{hall.storeName}}" readonly required></td>
         </tr>
-        <tr>
-          <th>座位数</th>
-          <td><input type="text" class="form-control" id="seatNum" value="{{hall.seatNum}}" required></td>
-        </tr>
-        <tr>
-          <th>屏幕类型</th>
-          <td>
-            <select class="form-control" id="screenType" required data-parsley-errors-container="#error-screenType">
-              <option value=""></option>
-              {{#screenTypes}}
-              <option value="{{id}}" {{#selected}}selected{{/selected}}>{{name}}</option>
-              {{/screenTypes}}
-            </select>
-            <div id="error-screenType"></div>
-          </td>
-        </tr>
-        <tr>
-          <th>特效</th>
-          <td>
-            <select class="form-control" id="effect" required data-parsley-errors-container="#error-effect">
-              <option value=""></option>
-              {{#effectTypes}}
-              <option value="{{id}}" {{#selected}}selected{{/selected}}>{{name}}</option>
-              {{/effectTypes}}
-            </select>
-            <div id="error-effect"></div>
-          </td>
-        </tr>
       </tbody>
     </table>
   </div>
@@ -73,34 +45,6 @@
         <tr>
           <th>所属影院</th>
           <td><input type="text" class="form-control" id="storeId" readonly required></td>
-        </tr>
-        <tr>
-          <th>座位数</th>
-          <td><input type="text" class="form-control" id="seatNum" required></td>
-        </tr>
-        <tr>
-          <th>屏幕类型</th>
-          <td>
-            <select class="form-control" id="screenType" required data-parsley-errors-container="#error-screenType">
-              <option value=""></option>
-              {{#screenTypes}}
-              <option value="{{id}}">{{name}}</option>
-              {{/screenTypes}}
-            </select>
-            <div id="error-screenType"></div>
-          </td>
-        </tr>
-        <tr>
-          <th>特效</th>
-          <td>
-            <select class="form-control" id="effect" required data-parsley-errors-container="#error-effect">
-              <option value=""></option>
-              {{#effectTypes}}
-              <option value="{{id}}">{{name}}</option>
-              {{/effectTypes}}
-            </select>
-            <div id="error-effect"></div>
-          </td>
         </tr>
       </tbody>
     </table>
