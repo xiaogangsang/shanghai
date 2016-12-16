@@ -137,12 +137,15 @@ $(document).on('submit', '#popup-movie-form form', function (e) {
     status: $('#popup-movie-form #status').val(),
   };
 
-  sendData.showDate = $('#popup-movie-form .release-date input').map(function () {
-    if ($(this).val().trim() != '') {
-      return $(this).val();
+  sendData.showDate = [];
+  $.each($('#popup-movie-form .release-date input'), function(index, input) {
+    var str = $(input).val().trim();
+    if (str !== '') {
+      sendData.showDate.push(str);
+    } else {
+      return false;
     }
-  }).get();
-
+  });
   sendData.showDate = sendData.showDate.join('-');
 
   var dimens = [];
