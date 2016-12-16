@@ -73,7 +73,7 @@ $('#formSearch').on('submit', function (e) {
   })
   .done(function (res) {
     _querying = false;
-    if (!!res.meta.result) {
+    if (!!~~res.meta.result) {
       if (res.data.rows.length <= 0) {
         $('#dataTable tbody').html('<tr><td colspan="10" align="center">查不到相关数据，请修改查询条件！</td></tr>');
         $('#pager').html('');
@@ -171,7 +171,7 @@ $('#dataTable').on('click', '.btn-status', function (e) {
     data: JSON.stringify(sendData),
   })
   .done(function (res) {
-    if (!!res.meta.result) {
+    if (!!~~res.meta.result) {
       $btn.data('onlineStatus', sendData.onlineStatus).html(sendData.onlineStatus ? '下线' : '上线');
       $tr.find('td:nth-child(6)').html('已' + statusName);
       $('#formSearch').trigger('submit');
@@ -191,7 +191,7 @@ $('#dataTable').on('click', '.btn-detail', function (e) {
     data: { cinemaId: $(this).closest('tr').data('id') },
   })
   .done(function (res) {
-    if (!!res.meta.result) {
+    if (!!~~res.meta.result) {
       var data = res.data;
       data.service = data.service != undefined && data.service != '' ? data.service = JSON.parse(data.service) : [];
       var template = $('#detail-template').html();
@@ -214,7 +214,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     data: { cinemaId: $(this).closest('tr').data('id') },
   })
   .done(function (res) {
-    if (!!res.meta.result) {
+    if (!!~~res.meta.result) {
       setModal(res.data);
       $('#popup-cinema-form').modal('show');
       $('#popup-cinema-form form').parsley();
@@ -260,7 +260,7 @@ $(document).on('click', '#btn-online-multi,#btn-offline-multi', function (e) {
       data: JSON.stringify(sendData),
     })
     .done(function (res) {
-      if (!!res.meta.result) {
+      if (!!~~res.meta.result) {
         $checkedItems.each(function (index, el) {
           $(this).closest('tr').find('td:nth-child(6)').html('已' + onlineStatusName);
           var buttonText = onlineStatus == 1 ? '下线' : '上线';
@@ -325,7 +325,7 @@ $(document).on('submit', '#popup-cinema-form form', function (e) {
   })
   .done(function (res) {
     _submitting = false;
-    if (!!res.meta.result) {
+    if (!!~~res.meta.result) {
       if ($('#cinemaId').length > 0) {
         alert('更新成功！');
       } else {
@@ -601,7 +601,7 @@ function setModal(cinemaData) {
         data: { cityId: cityId },
       })
       .done(function (res) {
-        if (!!res.meta.result) {
+        if (!!~~res.meta.result) {
           _areas = res.data;
           var options = '<option value=""></option>';
           _(_areas).forEach(function (value, key) {
@@ -678,7 +678,7 @@ function setBrand() {
     dataType: 'json',
   })
   .done(function (res) {
-    if (!!res.meta.result) {
+    if (!!~~res.meta.result) {
       _brands = res.data;
       var html = '';
       _(_brands).forEach(function (brand) {
@@ -700,7 +700,7 @@ function getProvince() {
     dataType: 'json',
   })
   .done(function (res) {
-    if (!!res.meta.result) {
+    if (!!~~res.meta.result) {
       _provinces = res.data;
     } else {
       alert('接口错误：' + res.meta.msg);
@@ -715,7 +715,7 @@ function getService() {
     dataType: 'json',
   })
   .done(function (res) {
-    if (!!res.meta.result) {
+    if (!!~~res.meta.result) {
       _services = res.data;
     } else {
       alert('接口错误：' + res.meta.msg);
@@ -751,7 +751,7 @@ function setCity() {
     dataType: 'json',
   })
   .done(function (res) {
-    if (!!res.meta.result) {
+    if (!!~~res.meta.result) {
       _(res.data).forEach(function (group) {
         _(group).forEach(function (city) {
           _cities.push(city);
@@ -779,7 +779,7 @@ function setArea(cityId, areaId, districtId) {
     data: { cityId: cityId },
   })
   .done(function (res) {
-    if (!!res.meta.result) {
+    if (!!~~res.meta.result) {
       _areas = res.data;
       var html = '';
       _(_areas).forEach(function (area, key) {
