@@ -45,6 +45,9 @@ $('#dataTable').on('click', '.btn-status', function (e) {
     id: tr.data('id'),
     status: $btn.data('status') == 1 ? 0 : 1,
   };
+  if (sendData.status == 0 && !window.confirm('下线合作方会导致无法从该合作方获取场次，是否确认下线？')) {
+    return false;
+  }
   var statusName = sendData.status == 1 ? '上线' : '下线';
   $.ajax({
     url: common.API_HOST + 'tp/updateTpInfo',
