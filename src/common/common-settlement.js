@@ -231,6 +231,12 @@ settlementCommon.parseMerchantLevel = function(status) {
   return this.merchantLevel[status];
 }
 
+// 责任部门使用状态
+settlementCommon.departmentUseStatus = {'1' : '启用', '2' : '停用', '3' : '删除'};
+settlementCommon.parseDepartmentUseStatus = function(status) {
+  return this.departmentUseStatus[status];
+}
+
 
 /**
  * 根据选项自动生成<option> html

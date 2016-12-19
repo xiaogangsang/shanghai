@@ -30,7 +30,7 @@
 					<div class="form-group col-sm-4">
 						<div class="input-group">
 							<div class="input-group-addon">编号</div>
-							<input type="text" class="form-control" id="">
+							<input type="text" class="form-control" id="dep_number">
 						</div>
 					</div>
 					<div class="form-group col-sm-4">
@@ -48,7 +48,7 @@
 					<div class="form-group col-sm-4">
 						<div class="input-group">
 							<div class="input-group-addon">状态</div>
-							<select class="form-control" id="">
+							<select class="form-control" id="dep_status">
 								<option value="0">全部</option>
 								<option value="1">出货</option>
 								<option value="2">退货</option>
@@ -58,7 +58,7 @@
 						</div>
 					</div>
 					<div class="col-sm-3 pull-right">
-						<button type="sumbit" class="btn btn-block btn-primary">查询</button>
+						<button type="submit" class="btn btn-block btn-primary">查询</button>
 					</div>
 				</form>
 
@@ -86,6 +86,11 @@
 								<th>操作</th>
 							</tr>
 						</thead>
+						 <tbody>
+                <tr>
+                  <td colspan="26" align="center">请点击“查询”按钮！</td>
+                </tr>
+             </tbody>
 					</table>
 				</div>
 
@@ -93,6 +98,45 @@
 		
 		</div>
 	</div>
+
+	<script src="js/vendor.js"></script>
+  <script src="js/diff-base-info-department.js"></script>
+
+  <script id="pager-template" type="text/x-tmpl-mustache">
+    <div class="col xs-12 col-sm-6 rowStatics">共 <span id="total">{{total}}</span> 条数据，当前显示 <span id="rowsSize">{{rowsSize}}</span> 条</div>
+    {{#pageTotal}}
+    <div class="col xs-12 col-sm-6">
+      <nav>
+        <ul class="pagination pagination-sm">
+          <li><a href="#" class="prev"><span>&lt;</span></a></li>
+          <li><span id="pageIndex">{{pageIndex}}</span> / <span id="pageTotal">{{pageTotal}}</span></li>
+          <li><a href="#" class="next"><span>&gt;</span></a></li>
+          <li><input type="number" name="pageNo" id="pageNo" pattern="[0-9]+"></li>
+          <li><button type="button" class="btn" id="btn-pager">跳转</button></li>
+        </ul>
+      </nav>
+    </div>
+    {{/pageTotal}}
+  </script>
+
+  <script id="table-template" type="text/x-tmpl-mustache">
+    {{#rows}}
+    <tr data-id="{{id}}" data-bannertype="{{bannerType}}">
+      <td><input type="checkbox" class="multi-check"></td>
+      <td>{{id}}</td>
+      <td>{{departmentName}}</td>
+      <td>{{dutyUser}}</td>
+      <td>{{updateTime}}</td>
+      <td>{{departmentUseStatus}}</td>
+      <td>
+        <button class="btn btn-xs btn-default btn-edit" data-compare="1" data-id="{{id}}">修改</button>
+        <button class="btn btn-xs btn-default btn-delete" data-compare="1" data-id="{{id}}">删除</button>
+      </td>
+    </tr>
+    {{/rows}}
+  </script>
+
+
 
 	<div class="modal fade" id="popup-add-diff">
 		<div class="modal-dialog">
@@ -108,13 +152,13 @@
 							<div class="form-group">
 								<div class="input-group">
 									<div class="input-group-addon">责任部门</div>
-									<input type="text" class="form-control" id="">
+									<input type="text" class="form-control" id="departmentName">
 								</div>
 							</div>
 							<div class="form-group">
 								<div class="input-group">
 									<div class="input-group-addon">使用状态</div>
-									<select class="form-control" id="">
+									<select class="form-control" id="departmentUseStatus">
 										<option value="0">启用</option>
 										<option value="1">停用</option>
 									</select>
@@ -123,7 +167,7 @@
 							
 							<div class="col-sm-8 col-sm-offset-2" style="margin-top: 10px; margin-bottom: 10px;">
 								<div class="col-sm-6">
-									<button type="sumbit" class="btn btn-block btn-primary">确定</button>
+									<button type="sumbit" class="btn btn-block btn-primary" id="btn-save">确定</button>
 								</div>
 								<div class="col-sm-6">
 									<button type="sumbit" class="btn btn-block btn-default">取消</button>
