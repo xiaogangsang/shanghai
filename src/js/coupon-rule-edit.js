@@ -39,6 +39,8 @@ $(function () {
     setBudgetSource(false);
     setMovie(false);
     setChannel(false);
+
+    $('#formEdit button[type=submit]').prop('disabled', false);
   }
 
   $('#beginDate').datetimepicker({
@@ -963,10 +965,10 @@ function setEdit(couponId) {
             alert('接口错误：' + res.meta.msg);
           }
 
-          $('button[type=submit]').prop('disabled', false);
+          $('#formEdit button[type=submit]').prop('disabled', false);
         });
       } else {
-        $('button[type=submit]').prop('disabled', false);
+        $('#formEdit button[type=submit]').prop('disabled', false);
       }
 
       if (coupon == null || coupon == undefined) {
