@@ -1310,7 +1310,11 @@ function setEdit(unitId) {
           } else {
             alert('接口错误：' + res.meta.msg);
           }
+
+          $('button[type=submit]').prop('disabled', false);
         });
+      } else {
+        $('button[type=submit]').prop('disabled', false);
       }
 
       _popupDataCache.timetables = unit.timetables;
