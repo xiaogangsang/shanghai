@@ -68,6 +68,8 @@ $(function () {
     setChannel(false);
     setPattern(1);
     setPriority(false);
+
+    $('#formUnit button[type=submit]').prop('disabled', false);
   }
 
   //upper of range
@@ -1311,10 +1313,10 @@ function setEdit(unitId) {
             alert('接口错误：' + res.meta.msg);
           }
 
-          $('button[type=submit]').prop('disabled', false);
+          $('#formUnit button[type=submit]').prop('disabled', false);
         });
       } else {
-        $('button[type=submit]').prop('disabled', false);
+        $('#formUnit button[type=submit]').prop('disabled', false);
       }
 
       _popupDataCache.timetables = unit.timetables;
