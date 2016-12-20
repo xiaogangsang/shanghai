@@ -34,6 +34,88 @@ $(function () {
   $('#formSearch').trigger('submit');
 });
 
+$(document).on('change click', '#popup-cinema-form #provinceId', function (e) {
+  var provinceId = parseInt($(this).val());
+  if (~~provinceId != 0) {
+    var province = _.find(_provinces, { provinceId: provinceId.toString() });
+    var cityList = province.cityList;
+    var options = '<option value=""></option>';
+    _(cityList).forEach(function (value, key) {
+      options += '<option value="' + value.cityId + '">' + value.cityName + '</option>';
+    });
+
+    $('#cityId').html(options);
+    $('#areaId,#districtId').html('<option value=""></option>');
+  }
+
+  return false;
+});
+
+$(document).on('change click', '#popup-cinema-form #cityId', function (e) {
+  var cityId = parseInt($(this).val());
+  if (~~cityId != 0) {
+    $.ajax({
+      url: common.API_HOST + 'common/areaList',
+      type: 'POST',
+      dataType: 'json',
+      data: { cityId: cityId },
+    })
+    .done(function (res) {
+      if (!!~~res.meta.result) {
+        _areas = res.data;
+        var options = '<option value=""></option>';
+        _(_areas).forEach(function (value, key) {
+          options += '<option value="' + value.areaId + '">' + value.areaName + '</option>';
+        });
+
+        $('#areaId').html(options);
+        $('#districtId').html('<option value=""></option>');
+      } else {
+        alert('接口错误：' + res.meta.msg);
+      }
+    });
+  }
+
+  return false;
+});
+
+$(document).on('change click', '#popup-cinema-form #areaId', function (e) {
+  var areaId = parseInt($(this).val());
+  if (~~areaId != 0) {
+    var area = _.find(_areas, { areaId: areaId });
+    var districtInfoList = area.districtInfoList;
+    var options = '<option value=""></option>';
+    _(districtInfoList).forEach(function (value, key) {
+      options += '<option value="' + value.districtId + '">' + value.districtName + '</option>';
+    });
+
+    $('#districtId').html(options);
+  }
+
+  return false;
+});
+
+$(document).on('change click', '#popup-cinema-form #btn-service', function (e) {
+  var serviceId = parseInt($(this).val());
+  if (~~serviceId == 0) {
+    return false;
+  }
+
+  var service = _.find(_services, { id: serviceId });
+  data = { service: service };
+  template = $('#service-template').html();
+  Mustache.parse(template);
+  var html = Mustache.render(template, data);
+  $(this).before(html);
+  $('#btn-service option').each(function () {
+    if (serviceId == $(this).val()) {
+      $(this).remove();
+    }
+  });
+
+  $('#popup-cinema-form').scrollTop($('#popup-cinema-form').height());
+});
+
 //handle search form
 $('#formSearch').on('click', 'button[type=submit]', function (event) {
   event.preventDefault();
@@ -604,88 +686,6 @@ function setModal(cinemaData) {
   }
 
   $('#popup-cinema-form .modal-body').html(html);
-
-  $('#popup-cinema-form').on('change click', '#provinceId', function (e) {
-    var provinceId = parseInt($(this).val());
-    if (~~provinceId != 0) {
-      var province = _.find(_provinces, { provinceId: provinceId.toString() });
-      var cityList = province.cityList;
-      var options = '<option value=""></option>';
-      _(cityList).forEach(function (value, key) {
-        options += '<option value="' + value.cityId + '">' + value.cityName + '</option>';
-      });
-
-      $('#cityId').html(options);
-      $('#areaId,#districtId').html('<option value=""></option>');
-    }
-
-    return false;
-  });
-
-  $('#popup-cinema-form').on('change click', '#cityId', function (e) {
-    var cityId = parseInt($(this).val());
-    if (~~cityId != 0) {
-      $.ajax({
-        url: common.API_HOST + 'common/areaList',
-        type: 'POST',
-        dataType: 'json',
-        data: { cityId: cityId },
-      })
-      .done(function (res) {
-        if (!!~~res.meta.result) {
-          _areas = res.data;
-          var options = '<option value=""></option>';
-          _(_areas).forEach(function (value, key) {
-            options += '<option value="' + value.areaId + '">' + value.areaName + '</option>';
-          });
-
-          $('#areaId').html(options);
-          $('#districtId').html('<option value=""></option>');
-        } else {
-          alert('接口错误：' + res.meta.msg);
-        }
-      });
-    }
-
-    return false;
-  });
-
-  $('#popup-cinema-form').on('change click', '#areaId', function (e) {
-    var areaId = parseInt($(this).val());
-    if (~~areaId != 0) {
-      var area = _.find(_areas, { areaId: areaId });
-      var districtInfoList = area.districtInfoList;
-      var options = '<option value=""></option>';
-      _(districtInfoList).forEach(function (value, key) {
-        options += '<option value="' + value.districtId + '">' + value.districtName + '</option>';
-      });
-
-      $('#districtId').html(options);
-    }
-
-    return false;
-  });
-
-  $('#popup-cinema-form').on('change click', '#btn-service', function (e) {
-    var serviceId = parseInt($(this).val());
-    if (~~serviceId == 0) {
-      return false;
-    }
-
-    var service = _.find(_services, { id: serviceId });
-    data = { service: service };
-    template = $('#service-template').html();
-    Mustache.parse(template);
-    var html = Mustache.render(template, data);
-    $(this).before(html);
-    $('#btn-service option').each(function () {
-      if (serviceId == $(this).val()) {
-        $(this).remove();
-      }
-    });
-
-    $('#popup-cinema-form').scrollTop($('#popup-cinema-form').height());
-  });
 
   $('#popup-cinema-form').off('click').on('click', '.btn-service-delete', function (e) {
     e.preventDefault();
