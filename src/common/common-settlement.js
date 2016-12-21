@@ -238,6 +238,7 @@ settlementCommon.parseDepartmentUseStatus = function(status) {
 }
 
 
+
 /**
  * 根据选项自动生成<option> html
  * 动态生成options可以使得状态编码如果修改的话, 只需要改一处即可, 所有select都会改过来
