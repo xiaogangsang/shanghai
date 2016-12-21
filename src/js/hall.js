@@ -10,15 +10,15 @@ var searchCache = {};
 var useCache = false;
 var _submitting = false;
 var _screenType = [
-  { id: 4, name: '普通' },
-  { id: 1, name: 'IMAX' },
-  { id: 2, name: 'DMAX' },
-  { id: 3, name: '巨幕' },
+{ id: 4, name: '普通' },
+{ id: 1, name: 'IMAX' },
+{ id: 2, name: 'DMAX' },
+{ id: 3, name: '巨幕' },
 ];
 var _hallType = [
-  { id: 3, name: '普通' },
-  { id: 1, name: '4D' },
-  { id: 2, name: '5D' },
+{ id: 3, name: '普通' },
+{ id: 1, name: '4D' },
+{ id: 2, name: '5D' },
 ];
 var _bindCinemaName = '';
 
@@ -80,8 +80,8 @@ $('#formSearch').on('submit', function (e) {
         _pageTotal = Math.ceil(res.data.total / _pageSize);
         setPager(res.data.total, _pageIndex, res.data.data.length, _pageTotal);
         _(res.data.data).forEach(function (item) {
-          item.relation = item.relation == 1 ? '已关联' : '未关联';
-          item.onlineTime = common.getDate(new Date(item.onlineTime));
+          item.relationText = item.relation == 1 ? '已关联' : '未关联';
+          item.onlineTime = item.onlineTime != undefined && item.onlineTime != null ? common.getDate(new Date(item.onlineTime)) : '';
         });
 
         setTableData(res.data.data);
@@ -195,6 +195,36 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
       alert('接口错误：' + res.meta.msg);
     }
   });
+});
+
+$('#dataTable').on('click', '.btn-delete', function (e) {
+  e.preventDefault();
+  var $btn = $(this);
+  var $tr = $(this).closest('tr');
+  $btn.prop('disabled', true);
+  var hallName = $tr.find('td:nth-child(3)').text();
+  var hallId = $tr.data('id');
+  if (window.confirm('确定要删除影厅【' + hallName + '】吗？')) {
+    $.ajax({
+      url: common.API_HOST + 'hall/standard/delete',
+      type: 'POST',
+      dataType: 'json',
+      data: { hallId: hallId },
+    })
+    .done(function (res) {
+      if (!!~~res.meta.result) {
+        alert('删除成功！');
+        $tr.animate({opacity: 0.25}, 600, function() {
+          $tr.remove();
+        });
+      } else {
+        alert('接口错误：' + res.meta.msg);
+        $btn.prop('disabled', false);
+      }
+    });
+  }
+  $btn.prop('disabled', false);
+  return false;
 });
 
 $(document).on('click', '#btn-create', function (e) {
