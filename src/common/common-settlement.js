@@ -458,4 +458,12 @@ $(function() {
   });
 });
 
+$(function() {
+  var elements = $('[required]');
+  elements.each(function(index, el) {
+    var $element = $($(this).siblings('.input-group-addon')[0]);
+    $element.html($element.text() + '<span style="color: #D70F0F; font-size: 16px;"> *</span>');
+  });
+});
+
 
