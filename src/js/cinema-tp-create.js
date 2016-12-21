@@ -2,7 +2,7 @@
 * @Author: kyle
 * @Date:   2016-08-22 14:57:39
 * @Last Modified by:   kyle
-* @Last Modified time: 2016-12-07 16:23:40
+* @Last Modified time: 2016-12-21 09:13:51
 */
 
 'use strict;'
@@ -276,7 +276,6 @@ function getService() {
     dataType: 'json',
   })
   .done(function (res) {
-    console.log(res);
     if (!!~~res.meta.result) {
       _services = res.data;
       var html = '';
