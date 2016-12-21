@@ -258,6 +258,7 @@ $(document).on('submit', '#popup-plan-form form', function (e) {
     return false;
   }
   _submitting = true;
+  $('#popup-plan-form button[type=submit]').prop('disabled', true).text('处理中...');
   var sendData = {
     name: $.trim($('#popup-plan-form #name').val()),
     dailyAmount: $('#popup-plan-form #dailyAmount').val(),
@@ -292,6 +293,7 @@ $(document).on('submit', '#popup-plan-form form', function (e) {
 
       $('#popup-plan-form').modal('hide');
       $('#formSearch').trigger('submit');
+      $('#popup-plan-form button[type=submit]').prop('disabled', false).text('保存');
     } else {
       alert('接口错误：' + res.meta.msg);
     }

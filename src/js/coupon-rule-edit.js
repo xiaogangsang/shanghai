@@ -39,6 +39,8 @@ $(function () {
     setBudgetSource(false);
     setMovie(false);
     setChannel(false);
+
+    $('#formEdit button[type=submit]').prop('disabled', false);
   }
 
   $('#beginDate').datetimepicker({
@@ -944,23 +946,30 @@ function setEdit(couponId) {
       _popupDataCache.advancePayment = coupon.advancePayment;
 
       coupon.cinemas = coupon.cinemas != null ? coupon.cinemas : [];
-      $.ajax({
-        url: common.API_HOST + 'common/getCinemasByIds',
-        type: 'POST',
-        dataType: 'json',
-        data: { ids: coupon.cinemas.join('|') },
-      })
-      .done(function (res) {
-        if (!!~~res.meta.result) {
-          if (res.data == null || res.data.length < 1) {
-            return false;
+
+      if (coupon.cinemas.length > 0) {
+        $.ajax({
+          url: common.API_HOST + 'common/getCinemasByIds',
+          type: 'POST',
+          dataType: 'json',
+          data: { ids: coupon.cinemas.join('|') },
+        })
+        .done(function (res) {
+          if (!!~~res.meta.result) {
+            if (res.data == null || res.data.length < 1) {
+              return false;
+            } else {
+              _popupDataCache.cinemas = res.data;
+            }
           } else {
-            _popupDataCache.cinemas = res.data;
+            alert('接口错误：' + res.meta.msg);
           }
-        } else {
-          alert('接口错误：' + res.meta.msg);
-        }
-      });
+
+          $('#formEdit button[type=submit]').prop('disabled', false);
+        });
+      } else {
+        $('#formEdit button[type=submit]').prop('disabled', false);
+      }
 
       if (coupon == null || coupon == undefined) {
         alert('无法获取要编辑的活动单元信息，这个不太正常，让[猴子们]来查一查！');
