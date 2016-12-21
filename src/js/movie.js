@@ -8,7 +8,7 @@ var _status = [
 { id: 1, name: '正在热映' },
 { id: 2, name: '下映存档' },
 ];
-var _versions = {};
+var _dimens = {};
 var _pageIndex = 1;
 var _pageSize = 10;
 var _pageTotal = 0;
@@ -21,7 +21,7 @@ $(function () {
   common.init('movie');
 
   //set search form
-  setVersion();
+  setDimen();
 
   $('#search_beginShowDate,#search_endShowDate').datetimepicker({
     format: 'yyyy-mm-dd',
@@ -55,7 +55,7 @@ $('#formSearch').on('submit', function (e) {
   var sendData = {
     name: $.trim($('#search_name').val()),
     produceCorp: $.trim($('#search_produceCorp').val()),
-    dimenId: $('#search_dimenId').val(),
+    dimen: $('#search_dimen').val(),
     beginShowDate: $('#search_beginShowDate').val(),
     endShowDate: $('#search_endShowDate').val(),
     status: $('#search_status').val(),
@@ -99,8 +99,8 @@ $('#formSearch').on('submit', function (e) {
             }
           });
 
-          item.showDate = item.showDate.split(' ')[0];
-          /*item.dimenName = item.dimenNames.join(',');*/
+          // item.showDate = item.showDate.split(' ')[0];
+          // item.dimenName = item.dimenNames.join(',');
           item.associationStatus = item.associationStatus == 1 ? '已关联' : '未关联';
         });
 
@@ -137,20 +137,23 @@ $(document).on('submit', '#popup-movie-form form', function (e) {
     status: $('#popup-movie-form #status').val(),
   };
 
-  sendData.showDate = $('#popup-movie-form .release-date input').map(function () {
-    if ($(this).val().trim() != '') {
-      return $(this).val();
+  sendData.showDate = [];
+  $.each($('#popup-movie-form .release-date input'), function(index, input) {
+    var str = $(input).val().trim();
+    if (str !== '') {
+      sendData.showDate.push(str);
+    } else {
+      return false;
     }
-  }).get();
-
+  });
   sendData.showDate = sendData.showDate.join('-');
 
-  var dimenIds = [];
+  var dimens = [];
   $('#popup-movie-form input[name=dimen]:checked').each(function () {
-    dimenIds.push($(this).val());
+    dimens.push($(this).val());
   });
 
-  sendData.dimenId = dimenIds.join('|');
+  sendData.dimen = dimens.join('/');
 
   $.ajax({
     url: common.API_HOST + 'film/standardFilm/saveOrUpdate',
@@ -182,7 +185,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
   })
   .done(function (res) {
     if (!!~~res.meta.result) {
-      res.data.showDate = res.data.showDate.split(' ')[0];
+      // res.data.showDate = res.data.showDate.split(' ')[0];
       res.data.score = parseFloat(res.data.score).toFixed(1);
       setModal(res.data);
       $('#popup-movie-form').modal('show');
@@ -242,6 +245,36 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
       alert('接口错误：' + res.meta.msg);
     }
   });
+});
+
+$('#dataTable').on('click', '.btn-delete', function (e) {
+  e.preventDefault();
+  var $btn = $(this);
+  var $tr = $(this).closest('tr');
+  $btn.prop('disabled', true);
+  var movieName = $tr.find('td:nth-child(2)').text();
+  var movieId = $tr.data('id');
+  if (window.confirm('确定要删除标准影片【' + movieName + '】吗？')) {
+    $.ajax({
+      url: common.API_HOST + 'film/standardFilm/delete',
+      type: 'POST',
+      dataType: 'json',
+      data: { id: movieId },
+    })
+    .done(function (res) {
+      if (!!~~res.meta.result) {
+        alert('删除成功！');
+        $tr.animate({opacity: 0.25}, 600, function() {
+          $tr.remove();
+        });
+      } else {
+        alert('接口错误：' + res.meta.msg);
+        $btn.prop('disabled', false);
+      }
+    });
+  }
+  $btn.prop('disabled', false);
+  return false;
 });
 
 $('#dataTable').on('click', '.btn-detail', function (e) {
@@ -332,18 +365,20 @@ function setModal(movieData) {
       }
     });
 
-    _(_versions).forEach(function (value, key) {
-      value.selected = movieData.dimen != null && movieData.dimen.indexOf(value.id) > -1 ? true : false;
+    movieData.dimen = movieData.dimen.split('/');
+
+    _(_dimens).forEach(function (value, key) {
+      value.selected = movieData.dimen.indexOf(value.name) > -1 ? true : false;
     });
 
-    movieData.releaseYear = movieData.showDate.split('-')[0] != undefined ? movieData.showDate.split('-')[0] : '';
-    movieData.releaseMonth = movieData.showDate.split('-')[1] != undefined ? movieData.showDate.split('-')[1] : '';
-    movieData.releaseDay = movieData.showDate.split('-')[2] != undefined ? movieData.showDate.split('-')[2] : '';
+    movieData.releaseYear = movieData.showDate != null && movieData.showDate.split('-')[0] != undefined ? movieData.showDate.split('-')[0] : '';
+    movieData.releaseMonth = movieData.showDate != null && movieData.showDate.split('-')[1] != undefined ? movieData.showDate.split('-')[1] : '';
+    movieData.releaseDay = movieData.showDate != null && movieData.showDate.split('-')[2] != undefined ? movieData.showDate.split('-')[2] : '';
 
 
     movieData.preview = movieData.poster.indexOf('hiphotos.baidu.com') > -1 ? 'https://map.baidu.com/maps/services/thumbnails?width=150&src=' + encodeURI(movieData.poster) + '&quality=100' : movieData.poster;
 
-    data = { movie: movieData, versions: _versions, status: _status };
+    data = { movie: movieData, dimens: _dimens, status: _status };
     template = $('#edit-template').html();
     Mustache.parse(template);
     var html = Mustache.render(template, data);
@@ -353,17 +388,17 @@ function setModal(movieData) {
   return false;
 }
 
-function setVersion() {
+function setDimen() {
   $.ajax({
     url: common.API_HOST + 'common/dimenList',
     type: 'GET',
     dataType: 'json',
   })
   .done(function (res) {
-    if (!!~~res.meta.result) {
-      _versions = res.data;
-      _(_versions).forEach(function (item) {
-        $('#search_dimenId').append($('<option></option>').attr('value', item.id).text(item.name));
+    if (!!~~res.meta.result && res.data != null && res.data.length > 0) {
+      _dimens = res.data;
+      _(_dimens).forEach(function (item) {
+        $('#search_dimen').append($('<option></option>').attr('value', item.name).text(item.name));
       });
     } else {
       alert('接口错误：' + res.meta.msg);

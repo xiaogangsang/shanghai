@@ -25,7 +25,7 @@
           <th width="100">影片名称</th>
           <td><input type="text" class="form-control" id="name" value="{{movie.name}}" required></td>
           <th>上映日期</th>
-          <td class="release-date"><input type="text" class="form-control" id="releaseYear" value="{{movie.releaseYear}}" size="4" maxlength="4" required> 年 <input type="text" class="form-control" id="releaseMonth" value="{{movie.releaseMonth}}" size="2" maxlength="2"> 月 <input type="text" class="form-control" id="releaseDay" value="{{movie.releaseDay}}"  size="2" maxlength="2"> 日 </td>
+          <td class="release-date"><input type="text" class="form-control" id="releaseYear" value="{{movie.releaseYear}}" size="4" maxlength="4"> 年 <input type="text" class="form-control" id="releaseMonth" value="{{movie.releaseMonth}}" size="2" maxlength="2"> 月 <input type="text" class="form-control" id="releaseDay" value="{{movie.releaseDay}}"  size="2" maxlength="2"> 日 </td>
         </tr>
         <tr>
           <th>上映状态</th>
@@ -62,9 +62,9 @@
         <tr>
           <th>影片制式</th>
           <td colspan="3">
-            {{#versions}}
-            <div class="checkbox-inline"><label><input type="checkbox" name="dimenId" value="{{id}}"{{#selected}} checked{{/selected}}><span>{{name}}</span></label></div>
-            {{/versions}}
+            {{#dimens}}
+            <div class="checkbox-inline"><label><input type="checkbox" name="dimen" value="{{name}}"{{#selected}} checked{{/selected}}><span>{{name}}</span></label></div>
+            {{/dimens}}
           </td>
         </tr>
         <tr>
