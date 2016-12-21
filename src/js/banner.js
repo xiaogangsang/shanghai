@@ -1,6 +1,8 @@
 'use strict;'
 
 var common = require('common');
+require('fineUploader');
+
 var _channels = {};
 var _cities = [];
 var _choosed = [];
@@ -353,7 +355,7 @@ $(document).on('submit', '#popup-banner-form form', function (event) {
 
       sendData.imageUrl = $('#popup-banner-form #imageUrl').val();
       sendData.link = $('#popup-banner-form #link').val();
-      break;
+    break;
     case 2:
       sendData.bannerType = ~~$('#popup-banner-form #bannerType').val();
       sendData.bannerName = $('#popup-banner-form #bannerName').val().trim();
@@ -370,14 +372,14 @@ $(document).on('submit', '#popup-banner-form form', function (event) {
       }
 
       sendData.filmId = ~~$('#popup-banner-form #filmId').val();
-      break;
+    break;
     case 3:
       sendData.bannerType = ~~$('#popup-banner-form #bannerType').val();
       sendData.bannerName = $('#popup-banner-form #bannerName').val().trim();
       sendData.channelId = ~~$('#popup-banner-form input[name=channelId]:checked').val();
       sendData.imageUrl = $('#popup-banner-form #imageUrl').val();
       sendData.link = $('#popup-banner-form #link').val();
-      break;
+    break;
     case 4:
       sendData.iconStatus = ~~$('#popup-banner-form input[name=status]:checked').val();
       sendData.channel = ~~$('#popup-banner-form input[name=channelId]:checked').val();
@@ -393,11 +395,11 @@ $(document).on('submit', '#popup-banner-form form', function (event) {
         sendData.picUrl = sendData.picUrl.join(',');
       }
 
-      break;
+    break;
     default:
       alert('配置类型不存在！');
       return false;
-      break;
+    break;
   }
 
   var ajaxUrl = sendData.bannerType == undefined ? common.API_HOST + 'front/seatIcon/add' : common.API_HOST + 'banner/saveBanner';
@@ -437,35 +439,6 @@ $(document).on('submit', '#popup-banner-form form', function (event) {
   });
 
   return false;
-});
-
-$(document).on('click', '#popup-banner-form #btn-upload, #popup-banner-form .btn-upload-seat', function (event) {
-  event.preventDefault();
-  var $this = $(this);
-  $('#fileupload').next('span').remove();
-  $('#popup-banner-upload').modal('show');
-  $('#fileupload').data('url', common.API_HOST + 'banner/uploadPic').fileupload({
-    dataType: 'json',
-    add: function (e, data) {
-      $('#fileupload').next('span').remove();
-      $('#fileupload').after(' <span>' + data.files[0].name + '</span>');
-      $('#popup-banner-upload button.btn-primary').off('click').on('click', function () {
-        $(this).prop('disable', true).text('上传中...');
-        data.submit();
-      });
-    },
-
-    done: function (e, data) {
-      $('#popup-banner-upload button.btn-primary').prop('disable', false).text('上传');
-      if (!!~~data.result.meta.result) {
-        $this.closest('tr').find('input').val(data.result.data.savePath);
-        alert('上传成功！');
-        $('#popup-banner-upload').modal('hide');
-      } else {
-        alert('上传失败：' + data.result.meta.msg);
-      }
-    },
-  });
 });
 
 $(document).on('click', '#popup-banner-form #btn-city', function (event) {
@@ -630,12 +603,14 @@ function setModal(bannerData, type) {
   var data;
   var template;
   var html;
+  var uploadButton;
   if (bannerData) {
     data = { banner: bannerData, channels: _channels };
     switch (+bannerData.bannerType) {
       case 1:
         template = $('#edit-home-template').html();
-        break;
+        uploadButton = '#fine-upload';
+      break;
       case 2:
         template = $('#edit-hot-template').html();
         data.movies = _movies;
@@ -645,10 +620,11 @@ function setModal(bannerData, type) {
           }
         });
 
-        break;
+      break;
       case 3:
         template = $('#edit-sale-template').html();
-        break;
+        uploadButton = '#fine-upload';
+      break;
       case 4:
         template = $('#edit-seat-template').html();
         data.movies = _movies;
@@ -662,7 +638,7 @@ function setModal(bannerData, type) {
           bannerData.pic += '<img src="' + url + '" title="' + url + '" width="32" height="32"> ';
         });
 
-        break;
+      break;
     }
 
     $('#popup-banner-form .modal-title').html('编辑[' + _bannerType[bannerData.bannerType] + ']');
@@ -671,18 +647,21 @@ function setModal(bannerData, type) {
     switch (+type) {
       case 1:
         template = $('#create-home-template').html();
-        break;
+        uploadButton = '#fine-upload';
+      break;
       case 2:
         template = $('#create-hot-template').html();
         data.movies = _movies;
-        break;
+      break;
       case 3:
         template = $('#create-sale-template').html();
-        break;
+        uploadButton = '#fine-upload';
+      break;
       case 4:
         template = $('#create-seat-template').html();
+        uploadButton = '.fine-upload';
         data.movies = _movies;
-        break;
+      break;
     }
 
     $('#popup-banner-form .modal-title').html('新建[' + _bannerType[type] + ']');
@@ -692,6 +671,65 @@ function setModal(bannerData, type) {
   html = Mustache.render(template, data);
   $('#popup-banner-form .modal-body').html(html);
   $('#popup-banner-form').modal('show');
+  $('#popup-banner-form').on('shown.bs.modal', function (event) {
+    event.preventDefault();
+    if (uploadButton != undefined) {
+      if (type == 4) {
+        for (var i = 0; i < 4; i++) {
+          var uploader = new qq.FineUploaderBasic({
+            button: $(uploadButton)[i],
+            request: {
+              endpoint: common.API_HOST + 'banner/uploadPic',
+              inputName: 'file',
+              filenameParam: 'file',
+            },
+            callbacks: {
+              onError: function (id, fileName, errorReason) {
+                if (errorReason != 'Upload failure reason unknown') {
+                  alert('上传失败' + errorReason);
+                }
+              },
+
+              onComplete: function (id, fileName, responseJSON) {
+                if (!!~~responseJSON.meta.result) {
+                  $(this._options.button).closest('tr').find('input[type=text]').val(responseJSON.data.savePath);
+                  alert('上传成功！');
+                } else {
+                  alert('上传失败：' + responseJSON.meta.msg);
+                }
+              },
+            },
+          });
+        }
+      } else {
+        var uploader = new qq.FineUploaderBasic({
+          button: $(uploadButton)[0],
+          request: {
+            endpoint: common.API_HOST + 'banner/uploadPic',
+            inputName: 'file',
+            filenameParam: 'file',
+          },
+          callbacks: {
+            onError: function (id, fileName, errorReason) {
+              if (errorReason != 'Upload failure reason unknown') {
+                alert('上传失败' + errorReason);
+              }
+            },
+
+            onComplete: function (id, fileName, responseJSON) {
+              if (!!~~responseJSON.meta.result) {
+                $(uploadButton).closest('tr').find('input[type=text]').val(responseJSON.data.savePath);
+                alert('上传成功！');
+              } else {
+                alert('上传失败：' + responseJSON.meta.msg);
+              }
+            },
+          },
+        });
+      }
+    }
+  });;
+
   return false;
 }
 

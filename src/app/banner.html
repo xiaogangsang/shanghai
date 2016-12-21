@@ -148,9 +148,6 @@
   </div>
 
   <script src="js/vendor.js"></script>
-  <script src="lib/blueimp-file-upload/jquery.ui.widget.js"></script>
-  <script src="lib/blueimp-file-upload/jquery.iframe-transport.js"></script>
-  <script src="lib/blueimp-file-upload/jquery.fileupload.js"></script>
   <script src="js/banner.js"></script>
 
   <script id="pager-template" type="text/x-tmpl-mustache">
@@ -217,7 +214,7 @@
             <td><input type="text" class="form-control" id="bannerName" value="{{banner.bannerName}}" required></td>
           </tr>
           <tr>
-            <th><button type="button" class="btn btn-default" id="btn-upload">上传图片</button></th>
+            <th><div class="btn btn-default" id="fine-upload">上传图片</div></th>
             <td><input type="text" class="form-control" id="imageUrl" value="{{banner.imageUrl}}" required></td>
           </tr>
           <tr>
@@ -276,7 +273,7 @@
             <td><input type="text" class="form-control" id="bannerName" required></td>
           </tr>
           <tr>
-            <th><button type="button" class="btn btn-default" id="btn-upload">上传图片</button></th>
+            <th><div class="btn btn-default" id="fine-upload">上传图片</div></th>
             <td><input type="text" class="form-control" id="imageUrl" required></td>
           </tr>
           <tr>
@@ -456,7 +453,7 @@
             <td><input type="text" class="form-control" id="bannerName" value="{{banner.bannerName}}" required></td>
           </tr>
           <tr>
-            <th><button type="button" class="btn btn-default" id="btn-upload">上传图片</button></th>
+            <th><div class="btn btn-default" id="fine-upload">上传图片</div></th>
             <td><input type="text" class="form-control" id="imageUrl" value="{{banner.imageUrl}}" required></td>
           </tr>
           <tr>
@@ -510,7 +507,7 @@
             <td><input type="text" class="form-control" id="bannerName" required></td>
           </tr>
           <tr>
-            <th><button type="button" class="btn btn-default" id="btn-upload">上传图片</button></th>
+            <th><div class="btn btn-default" id="fine-upload">上传图片</div></th>
             <td><input type="text" class="form-control" id="imageUrl" required></td>
           </tr>
           <tr>
@@ -627,19 +624,19 @@
           </td>
         </tr>
         <tr>
-          <th><button type="button" class="btn btn-default btn-upload-seat">上传图1</button></th>
+          <th><div class="btn btn-default fine-upload">上传图1</div></th>
           <td><input type="text" class="form-control" name="picUrl" placeholder="必填" required></td>
         </tr>
         <tr>
-          <th><button type="button" class="btn btn-default btn-upload-seat" placeholder="可选">上传图2</button></th>
+          <th><div class="btn btn-default fine-upload">上传图2</div></th>
           <td><input type="text" class="form-control" name="picUrl" placeholder="可选"></td>
         </tr>
         <tr>
-          <th><button type="button" class="btn btn-default btn-upload-seat">上传图3</button></th>
+          <th><div class="btn btn-default fine-upload">上传图3</div></th>
           <td><input type="text" class="form-control" name="picUrl" placeholder="可选"></td>
         </tr>
         <tr>
-          <th><button type="button" class="btn btn-default btn-upload-seat">上传图4</button></th>
+          <th><div class="btn btn-default fine-upload">上传图4</div></th>
           <td><input type="text" class="form-control" name="picUrl" placeholder="可选"></td>
         </tr>
         <tr>
@@ -669,6 +666,5 @@
     </table>
   </script>
   @@include('component/popup-city.tpl')
-  @@include('component/popup-banner-upload.tpl')
 </body>
 </html>

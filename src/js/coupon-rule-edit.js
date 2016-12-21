@@ -1,6 +1,8 @@
 'use strict;'
 
 var common = require('common');
+require('fineUploader');
+
 var _budgetSource = [];
 var _wandaTicket = [];
 var _movies = [];
@@ -106,6 +108,31 @@ $(function () {
     },
   });
 
+  var uploader = new qq.FineUploaderBasic({
+    button: $('#fileupload')[0],
+    request: {
+      endpoint: common.API_HOST + 'coupon/uploadImage',
+      inputName: 'file',
+      filenameParam: 'file',
+    },
+    callbacks: {
+      onError: function (id, fileName, errorReason) {
+        if (errorReason != 'Upload failure reason unknown') {
+          console.log(errorReason);
+          alert('上传失败');
+        }
+      },
+
+      onComplete: function (id, fileName, responseJSON) {
+        if (!!~~responseJSON.meta.result) {
+          $('#imageUrl').val(responseJSON.data.savePath);
+          alert('上传成功！');
+        } else {
+          alert('接口错误：' + responseJSON.meta.msg);
+        }
+      },
+    },
+  });
 });
 
 //成本中心
@@ -135,35 +162,6 @@ $(document).on('change click', '#level', function (event) {
       $('#budgetSource').closest('.form-group').show();
     }
   }
-});
-
-//上传图片
-$(document).on('click', '#btn-upload', function (event) {
-  event.preventDefault();
-  $('#fileupload').next('span').remove();
-  $('#popup-coupon-image-upload').modal('show');
-  $('#fileupload').data('url', common.API_HOST + 'coupon/uploadImage').fileupload({
-    dataType: 'json',
-    add: function (e, data) {
-      $('#fileupload').next('span').remove();
-      $('#fileupload').after(' <span>' + data.files[0].name + '</span>');
-      $('#popup-coupon-image-upload button.btn-primary').off('click').on('click', function () {
-        $(this).prop('disable', true).text('上传中...');
-        data.submit();
-      });
-    },
-
-    done: function (e, data) {
-      $('#popup-coupon-image-upload button.btn-primary').prop('disable', false).text('上传');
-      if (!!~~data.result.meta.result) {
-        $('#imageUrl').val(data.result.data.savePath);
-        alert('上传成功！');
-        $('#popup-coupon-image-upload').modal('hide');
-      } else {
-        alert('上传失败：' + data.result.meta.msg);
-      }
-    },
-  });
 });
 
 //渠道
@@ -1026,7 +1024,7 @@ function setEdit(couponId) {
       coupon.films != null && coupon.films.length > 0 ? setMovie(coupon.films) : setMovie(false);
 
       //制式
-      var previewHtmlConfigType = coupon.configType== null || coupon.configType.length == 0 ? '不限' : '[' + coupon.configType.join('] [') + ']';
+      var previewHtmlConfigType = coupon.configType == null || coupon.configType.length == 0 ? '不限' : '[' + coupon.configType.join('] [') + ']';
       $('#preview-dimen').html(previewHtmlConfigType);
 
       //影院

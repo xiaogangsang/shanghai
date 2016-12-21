@@ -340,6 +340,7 @@ function setModal(movieData) {
     movieData.releaseMonth = movieData.showDate.split('-')[1] != undefined ? movieData.showDate.split('-')[1] : '';
     movieData.releaseDay = movieData.showDate.split('-')[2] != undefined ? movieData.showDate.split('-')[2] : '';
 
+
     movieData.preview = movieData.poster.indexOf('hiphotos.baidu.com') > -1 ? 'https://map.baidu.com/maps/services/thumbnails?width=150&src=' + encodeURI(movieData.poster) + '&quality=100' : movieData.poster;
 
     data = { movie: movieData, versions: _versions, status: _status };
