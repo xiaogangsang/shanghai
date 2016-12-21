@@ -20,6 +20,11 @@
           <div class="form-group">
             <div class="input-group">
               <div class="input-group-addon">退款原因</div>
+              <select class="form-control" id="dropdown-reason">
+                <option value="">快速选择一个原因</option>
+                <option value="百度申请退款">百度申请退款</option>
+                <option value="微票申请退款">微票申请退款</option>
+              </select>
               <textarea class="form-control" id="reason" required></textarea>
             </div>
           </div>
