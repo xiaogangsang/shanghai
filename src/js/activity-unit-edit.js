@@ -1022,8 +1022,12 @@ function setPlan(planId) {
 function setWandaTicket(wandaTicketId) {
   $.ajax({
     url: common.API_HOST + 'activity/wandaActivityTicketList',
-    type: 'GET',
+    type: 'POST',
     dataType: 'json',
+    data: {
+      pageIndex: 1,
+      pageSize: 9999,
+    },
   })
   .done(function (res) {
     if (!!~~res.meta.result) {
