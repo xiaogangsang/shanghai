@@ -1,9 +1,9 @@
 <div class="container-fluid">
 	<form>
-		
+
 		<div class="row" style="margin-bottom: 20px;">
 			<div class="col-sm-4 pull-right">
-				<button type="sumbit" class="form-control btn btn-default edit-submit">保存</button>
+				<button type="submit" class="form-control btn btn-default edit-submit">保存</button>
 			</div>
 		</div>
 
@@ -18,13 +18,13 @@
 			<div class="form-group col-sm-6">
 				<div class="input-group">
 					<div class="input-group-addon">订单号</div>
-					<input type="text" class="form-control" id="">
+					<input type="text" class="form-control" id="" ata-parsley-pattern="[0-9]+>
 				</div>
 			</div>
 			<div class="form-group col-sm-6">
 				<div class="input-group">
 					<div class="input-group-addon">差异编号</div>
-					<input type="text" class="form-control" id="diff_number">
+					<input type="text" class="form-control" id="diff_number" ata-parsley-pattern="[0-9]+>
 				</div>
 			</div>
 			<div class="form-group col-sm-6">
