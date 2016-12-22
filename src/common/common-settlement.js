@@ -404,18 +404,28 @@ $(function() {
   });
 });
 
-
-// 查询日期的跨度小于等于7天
+// 必填项添加*号标识
 $(function() {
-  $('#search_startTime').datetimepicker({
+  var elements = $('[required]');
+  elements.each(function(index, el) {
+    var $element = $($(this).siblings('.input-group-addon')[0]);
+    $element.html($element.text() + '<span style="color: #D70F0F; font-size: 16px;"> *</span>');
+  });
+});
+
+$(function() {
+  // 查询日期的跨度小于等于7天
+  settlementCommon.datetimepickerRegister($('#search_startTime'), $('#search_endTime'));
+});
+
+settlementCommon.datetimepickerRegister = function ($startTime, $endTime) {
+  $startTime.datetimepicker({
     format: 'yyyy-mm-dd',
     language: 'zh-CN',
     minView: 2,
     todayHighlight: true,
     autoclose: true,
   }).on('changeDate', function (ev) {
-    var $endTime = $('#search_endTime');
-
     var startDate = new Date(ev.date.valueOf());
     var endDate = new Date(startDate);
     endDate.setDate(startDate.getDate() + 6);
@@ -432,15 +442,13 @@ $(function() {
     $endTime.datetimepicker('setDate', correctEndDate);
   });
 
-  $('#search_endTime').datetimepicker({
+  $endTime.datetimepicker({
     format: 'yyyy-mm-dd',
     language: 'zh-CN',
     minView: 2,
     todayHighlight: true,
     autoclose: true,
   }).on('changeDate', function (ev) {
-    var $startTime = $('#search_startTime');
-
     var endDate = new Date(ev.date.valueOf());
     var startDate = new Date(endDate);
     startDate.setDate(endDate.getDate() - 6);
@@ -456,14 +464,4 @@ $(function() {
 
     $startTime.datetimepicker('setDate', correctStartDate);
   });
-});
-
-$(function() {
-  var elements = $('[required]');
-  elements.each(function(index, el) {
-    var $element = $($(this).siblings('.input-group-addon')[0]);
-    $element.html($element.text() + '<span style="color: #D70F0F; font-size: 16px;"> *</span>');
-  });
-});
-
-
+}
