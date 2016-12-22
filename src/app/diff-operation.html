@@ -8,19 +8,20 @@
 	<title>差异处理</title>
 	<link rel="stylesheet" href="css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/reset.css">
+	<link rel="stylesheet" href="css/css-hud.css">
 </head>
 <body>
-	
+
 	@@include('component/header.tpl')
 
 	<div class="container-fluid">
-		
+
 		<div class="row">
-			
+
 			@@include('component/sidebar.tpl')
 
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-				
+
 				<ol class="breadcrumb">
 					<li>差异管理</li>
 					<li class="active">差异处理</li>
@@ -43,7 +44,7 @@
 						<div class="form-group col-sm-6">
 							<div class="input-group">
 								<div class="input-group-addon">交易订单号</div>
-								<input type="text" class="form-control" id="search_orderNo" data-parsley-pattern="[0-9]+">
+								<input type="text" class="form-control" id="search_orderNo" data-parsley-pattern="[0-9]+" data-parsley-error-message="格式不正确，请输入数字">
 							</div>
 						</div>
 						<div class="form-group col-sm-6">
@@ -57,28 +58,29 @@
 						</div>
 					</div>
 					<div class="col-sm-3 pull-right">
-							<button type="sumbit" class="btn btn-block btn-primary">查询</button>
+							<button type="submit" class="btn btn-block btn-primary">查询</button>
+							<div class="col-sm-6" style="padding-left: 0px; padding-right: 5px;">
+								<button type="button" class="btn btn-block btn-default" id="btn-export">导出</button>
+							</div>
+							<div class="col-sm-6" style="padding-left: 5px; padding-right: 0px;">
+								<button type="button" class="btn btn-block btn-default" id="btn-batch">批量生成差异</button>
+							</div>
 					</div>
 				</form>
 
-				<div class="col-sm-8 pull-right" style="padding-right: 0px;">
-					<div class="col-sm-3">
-						<button type="button" class="btn btn-block btn-default" id="btn-export">导出</button>
-					</div>
-					<div class="col-sm-3">
-						<button type="button" class="btn btn-block btn-default" id="btn-batch">批量生成差异</button>
-					</div>
-					<div class="col-sm-3">
+				<div class="col-sm-6 pull-right" style="padding-right: 0px;">
+ 					<div class="col-sm-6">
 						<button type="button" class="btn btn-block btn-default" id="btn-sync">同步出货对账状态</button>
 					</div>
-					<div class="col-sm-3">
+					<div class="col-sm-6">
 						<button type="button" class="btn btn-block btn-default" data-toggle="modal" data-target="#popup-auto-diff">自动整理</button>
 					</div>
 				</div>
 
 				<div class="row" id="pager"></div>
+				@@include('component/pager.tpl')
 
-				<div class="table-responsive" style="margin-top: 20px;">
+				<div class="table-responsive">
 					<table class="table table-hover" id="diffTable">
 						<thead>
 							<tr>
@@ -101,8 +103,8 @@
 						</tbody>
 					</table>
 				</div>
-			</div>
 
+			</div>
 		</div>
 	</div>
 
@@ -115,25 +117,27 @@
 				</div>
 				<div class="modal-body">
 					<div class="container-fluid">
-						<div class="row">
-							<div class="form-group col-sm-6">
-								<div class="input-group">
-									<div class="input-group-addon">结算日期</div>
-									<input type="text" class="form-control" id="" required data-parsley-pattern="[0-9]{4}?-[0-9]{2}?-[0-9]{2}?">
+						<form id="formAutoDiff">
+							<div class="row">
+								<div class="form-group col-sm-6">
+									<div class="input-group">
+										<div class="input-group-addon">结算日期</div>
+										<input type="text" class="form-control" id="auto_beginTime" required data-parsley-pattern="[0-9]{4}?-[0-9]{2}?-[0-9]{2}?">
+									</div>
+								</div>
+								<div class="form-group col-sm-6">
+									<div class="input-group">
+										<div class="input-group-addon">至</div>
+										<input type="text" class="form-control" id="auto_endTime" required data-parsley-pattern="[0-9]{4}?-[0-9]{2}?-[0-9]{2}?">
+									</div>
 								</div>
 							</div>
-							<div class="form-group col-sm-6">
-								<div class="input-group">
-									<div class="input-group-addon">至</div>
-									<input type="text" class="form-control" id="" required data-parsley-pattern="[0-9]{4}?-[0-9]{2}?-[0-9]{2}?">
+							<div class="row">
+								<div class="col-sm-4 col-sm-offset-4">
+									<button type="submit" class="form-control btn btn-primary">启动</button>
 								</div>
 							</div>
-						</div>
-						<div class="row">
-							<div class="col-sm-4 col-sm-offset-4">
-								<button type="sumbit" class="form-control btn btn-default edit-submit">启动</button>
-							</div>
-						</div>
+						</form>
 					</div>
 				</div>
 			</div>
@@ -153,15 +157,18 @@
 			</div>
 		</div>
 	</div>
-	
-	@@include('component/pager.tpl')
+	<script src="js/diff-operation-edit.js"></script>
+
+	<div id="hud-overlay" style="display: none">
+	  <div class="hud"><img src="images/loader.gif">
+	    <p>计算中...</p>
+	  </div>
+	</div>
 
 	<script id="table-template" type="text/x-tmpl-mustache">
 	  {{#rows}}
 	  <tr>
-	    <td>
-	      <input type="checkbox" class="multi-check">
-	    </td>
+	    <td><input type="checkbox" class="multi-check"></td>
 	    <!-- 结算日期 -->
 	    <td>{{settleDate}}</td>
 	    <!-- 交易订单号 -->
@@ -184,9 +191,7 @@
 	    <td>{{differAmount}}</td>
 	    <!-- 差异拆分值 -->
 	    <td>{{differSplitAmount}}</td>
-	    <td>
-	      <button class="btn btn-xs btn-default btn-edit">创建差异</button>
-	    </td>
+	    <td><button class="btn btn-xs btn-default btn-edit">创建差异</button></td>
 	  </tr>
 	  {{/rows}}
 	</script>

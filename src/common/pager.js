@@ -4,10 +4,10 @@ var pager = {};
 
 pager.pageIndex = 1;
 pager.pageTotal = 0;
-pager.pageSize = 10;
+pager.pageSize = 1;
 
 pager.init = function ($element) {
-  
+
   $element.on('click', '.prev,.next', function (e) {
     e.preventDefault();
     if ($(this).hasClass('prev')) {
@@ -17,7 +17,7 @@ pager.init = function ($element) {
         return false;
       }
       pager.pageIndex--;
-    
+
     } else {
       if (pager.pageIndex >= pager.pageTotal) {
         pager.pageIndex = pager.pageTotal;

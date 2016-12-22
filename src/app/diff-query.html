@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-
 <head>
-  <meta charset="UTF-8">
+ <meta charset="UTF-8">
+  <link rel="icon" href="images/favicon.ico">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <title>差异数据查询</title>
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <link rel="stylesheet" href="css/reset.css">
@@ -10,20 +12,26 @@
 
 <body>
   @@include('component/header.tpl')
+
   <div class='container-fluid'>
+
     <div class="row">
+
       @@include('component/sidebar.tpl');
+
       <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
         <ol class="breadcrumb">
           <li>差异管理</li>
           <li class="active">差异数据查询</li>
         </ol>
-        <!--搜索区域-->
+
         <form id="formSearch" class="search-area clearfix">
+
           <div class="form-group col-sm-4">
             <div class="input-group">
               <div class="input-group-addon">日期类型</div>
-              <select id="search_dateType" class="form-control">
+              <select class="form-control" id="search_dateType">
                 <option value="1">交易日期</option>
                 <option value="2">操作日期</option>
               </select>
@@ -32,19 +40,19 @@
           <div class="form-group col-sm-4">
             <div class="input-group">
               <div class="input-group-addon">日期</div>
-              <input class="form-control" type="text" id="search_beginDate" readonly/>
+              <input class="form-control" type="text" id="search_beginDate" readonly data-parsley-pattern="[0-9]{4}?-[0-9]{2}?-[0-9]{2}?">
             </div>
           </div>
           <div class="form-group col-sm-4">
             <div class="input-group">
               <div class="input-group-addon">至</div>
-              <input id="serach_endDate" type="text" class="form-control" readonly/>
+              <input type="text" class="form-control" id="search_endDate" readonly data-parsley-pattern="[0-9]{4}?-[0-9]{2}?-[0-9]{2}?">
             </div>
           </div>
           <div class="form-group col-sm-4">
             <div class="input-group">
               <div class="input-group-addon">差异类型</div>
-              <select id="search_diffType" class="form-control">
+              <select class="form-control" id="search_diffType">
                 <option value="">全部</option>
                 <option value="1">收入</option>
                 <option value="2">成本</option>
@@ -54,7 +62,7 @@
           <div class="form-group col-sm-4">
             <div class="input-group">
               <div class="input-group-addon">渠道</div>
-              <select id="search_channel" class="form-control">
+              <select class="form-control" id="search_channelId">
                 <option value="0">全部</option>
                 <option value="1">掌上生活</option>
                 <option value="2">手机银行</option>
@@ -64,7 +72,7 @@
           <div class="form-group col-sm-4">
             <div class="input-group">
               <div class="input-group-addon">处理状态</div>
-              <select id="search_diffStatus" class="form-control">
+              <select class="form-control" id="search_processStatus">
                 <option value="">全部</option>
                 <option value="1">待处理</option>
                 <option value="2">已处理</option>
@@ -74,7 +82,7 @@
           <div class="form-group col-sm-4">
             <div class="input-group">
               <div class="input-group-addon">处理标识</div>
-              <select id="search_diffTag" class="form-control">
+              <select class="form-control" id="search_processType">
                 <option value="">全部</option>
                 <option value="1">活动限购</option>
                 <option value="2">票类有无</option>
@@ -83,66 +91,99 @@
           </div>
           <div class="form-group col-sm-4">
             <div class="input-group">
-              <div class="input-group-addon">日期类型</div>
-              <input id="search_orderNo" type="text" class="form-control" />
+              <div class="input-group-addon">订单号</div>
+              <input type="text" class="form-control" id="search_orderNo" data-parsley-pattern="[0-9]+">
             </div>
           </div>
           <div class="form-group col-sm-4">
             <div class="input-group">
               <div class="input-group-addon">差异编号</div>
-              <input id="search_diffNo" type="text" class="form-control" />
+              <input type="text" class="form-control" id="search_number" data-parsley-pattern="[0-9]+">
             </div>
           </div>
           <div class="col-sm-3 pull-right">
-            <button type="sumbit" class="btn btn-block btn-primary">查询</button>
+            <button type="submit" class="btn btn-block btn-primary">查询</button>
           </div>
+
         </form>
 
         <div class="form-group col-sm-9 pull-right">
           <div class="row">
             <div class="col-sm-4">
-              <button type="button" class="btn btn-block btn-default">新增</button>
+              <button type="button" class="btn btn-block btn-default" id="btn-add">新增</button>
             </div>
             <div class="col-sm-4">
-              <button type="button" class="btn btn-block btn-default">批量删除</button>
+              <button type="button" class="btn btn-block btn-default" id="btn-batch-delete">批量删除</button>
             </div>
             <div class="col-sm-4">
-              <button type="button" class="btn btn-block btn-default">导出数据</button>
+              <button type="button" class="btn btn-block btn-default" id="btn-export">数据导出</button>
             </div>
           </div>
         </div>
 
-        <!--结果区域-->
-        <div class="content-area">
-          <div class="row" id="pager"></div>
-          <div class="table-responsive" id="dataTable">
-            <table class="table">
-              <thead>
-                <tr>
-                  <td>
-                    <input type="checkbox" id="multi-check-all" />
-                  </td>
-                  <td>差异编号</td>
-                  <td>结算日期</td>
-                  <td>交易订单号</td>
-                  <td>差异类型</td>
-                  <td>差异标识</td>
-                  <td>渠道</td>
-                  <td>二级商户号</td>
-                  <td>二级商户名</td>
-                  <td>差异金额</td>
-                  <td>差异说明</td>
-                  <td>差异处理状态</td>
-                  <td>批次号</td>
-                  <td>操作</td>
-                </tr>
-              </thead>
-            </table>
-          </div>
+        <div class="row" id="pager"></div>
+
+        <div class="table-responsive" style="margin-top: 20px;">
+          <table class="table table-hover" id="dataTable">
+            <thead>
+              <tr>
+                <th><input type="checkbox" id="multi-check-all"></th>
+                <th>差异编号</th>
+                <th>结算日期</th>
+                <th>交易订单号</th>
+                <th>差异类型</th>
+                <th>差异标识</th>
+                <th>渠道</th>
+                <th>二级商户号</th>
+                <th>二级商户名</th>
+                <th>差异金额</th>
+                <th>差异说明</th>
+                <th>差异处理状态</th>
+                <th>批次号</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
         </div>
+
       </div>
     </div>
   </div>
+
+  <script id="table-template" type="text/x-tmpl-mustache">
+    {{#rows}}
+    <tr>
+      <td><input type="checkbox" class="multi-check"></td>
+      <!-- 差异编号 -->
+      <td>{{number}}</td>
+      <!-- 结算日期 -->
+      <td>{{settleDate}}</td>
+      <!-- 交易订单号 -->
+      <td>{{orderNo}}</td>
+      <!-- 差异类型 -->
+      <td>{{differType}}</td>
+      <!-- 处理标识 -->
+      <td>{{processType}}</td>
+      <!-- 渠道 -->
+      <td>{{channelId}}</td>
+      <!-- 差异金额 -->
+      <td>{{amount}}</td>
+      <!-- 差异说明 -->
+      <td>{{describe}}</td>
+      <!-- 处理状态 -->
+      <td>{{processStatus}}</td>
+      <!-- 批次号 -->
+      <td>{{batchNo}}</td>
+      <td>
+        <button class="btn btn-xs btn-default btn-edit">修改</button>
+        <button class="btn btn-xs btn-default btn-delete">删除</button>
+      </td>
+    </tr>
+    {{/rows}}
+  </script>
+
   <script src="js/vendor.js"></script>
   <script src="js/diff-query.js"></script>
 </body>
