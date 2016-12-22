@@ -231,6 +231,14 @@ settlementCommon.parseMerchantLevel = function(status) {
   return this.merchantLevel[status];
 }
 
+// 责任部门使用状态
+settlementCommon.departmentUseStatus = {'1' : '启用', '2' : '停用', '3' : '删除'};
+settlementCommon.parseDepartmentUseStatus = function(status) {
+  return this.departmentUseStatus[status];
+}
+
+
+
 /**
  * 根据选项自动生成<option> html
  * 动态生成options可以使得状态编码如果修改的话, 只需要改一处即可, 所有select都会改过来
@@ -397,15 +405,16 @@ $(function() {
 });
 
 
-settlementCommon.datetimepickerRegister = function ($startTime, $endTime) {
-  
-  $startTime.datetimepicker({
+// 查询日期的跨度小于等于7天
+$(function() {
+  $('#search_startTime').datetimepicker({
     format: 'yyyy-mm-dd',
     language: 'zh-CN',
     minView: 2,
     todayHighlight: true,
     autoclose: true,
   }).on('changeDate', function (ev) {
+    var $endTime = $('#search_endTime');
 
     var startDate = new Date(ev.date.valueOf());
     var endDate = new Date(startDate);
@@ -423,13 +432,14 @@ settlementCommon.datetimepickerRegister = function ($startTime, $endTime) {
     $endTime.datetimepicker('setDate', correctEndDate);
   });
 
-  $endTime.datetimepicker({
+  $('#search_endTime').datetimepicker({
     format: 'yyyy-mm-dd',
     language: 'zh-CN',
     minView: 2,
     todayHighlight: true,
     autoclose: true,
   }).on('changeDate', function (ev) {
+    var $startTime = $('#search_startTime');
 
     var endDate = new Date(ev.date.valueOf());
     var startDate = new Date(endDate);
@@ -446,11 +456,6 @@ settlementCommon.datetimepickerRegister = function ($startTime, $endTime) {
 
     $startTime.datetimepicker('setDate', correctStartDate);
   });
-}
-
-$(function() {
-  // 查询日期的跨度小于等于7天
-  settlementCommon.datetimepickerRegister($('#search_startTime'), $('#search_endTime'));
 });
 
 $(function() {
