@@ -46,9 +46,9 @@ $('#formSearch').submit(function(e) {
 		beginTime: beginTime,
 		endTime: endTime,
 		orderNo: orderNo,
-		matched: matched
-		pageSize: pager.pageSize;
-		pageIndex: pager.pageIndex;
+		matched: matched,
+		pageSize: pager.pageSize,
+		pageIndex: pager.pageIndex,
 	}
 
 	if (_useCache) {
@@ -59,7 +59,7 @@ $('#formSearch').submit(function(e) {
 	}
 
 	$.ajax({
-		url: common.API_HOST + 'settle/differDetail/queryDifferDetailList.json'
+		url: common.API_HOST + 'settle/differDetail/queryDifferDetailList.json',
 		type: 'POST',
 		dataType: 'json',
 		data: param,
@@ -112,7 +112,7 @@ $('#btn-export').click(function(e) {
 	}
 
 	$.ajax({
-		url: common.API_HOST + 'settle/differDetail/queryDefferDetailListExport.json'
+		url: common.API_HOST + 'settle/differDetail/queryDefferDetailListExport.json',
 		type: 'POST',
 		dataType: 'json',
 		data: param,

@@ -99,56 +99,55 @@ function setPager(total, pageIndex, rowsSize, pageTotal) {
   $('#pager').html(html);
 }
 
-$('#pager').on('click', '.prev,.next', function (e) {
-  e.preventDefault();
-  if ($(this).hasClass('prev')) {
-    if (_pageIndex <= 1) {
-      _pageIndex = 1;
-      alert('已经是第一页！');
+  $('#pager').on('click', '.prev,.next', function (e) {
+    e.preventDefault();
+    if ($(this).hasClass('prev')) {
+      if (_pageIndex <= 1) {
+        _pageIndex = 1;
+        alert('已经是第一页！');
+        return false;
+      }
+      _pageIndex--;
+
+    } else {
+      if (_pageIndex >= _pageTotal) {
+        _pageIndex = _pageTotal;
+        alert('已经是最后一页！');
+        return false;
+      }
+      _pageIndex++;
+    }
+   $('#formSearch').trigger('submit');
+    return false;
+  });
+
+  $('#pager').on('click', '#btn-pager', function (e) {
+    e.preventDefault();
+    if ('' == $('#pageNo').val()) {
       return false;
     }
 
-    _pageIndex--;
-  } else {
-    if (_pageIndex >= _pageTotal) {
-      _pageIndex = _pageTotal;
-      alert('已经是最后一页！');
+    var pageNo = parseInt($('#pageNo').val());
+    if (NaN == pageNo || pageNo < 1 || pageNo > _pageTotal) {
+      alert('要跳转的页码超过了范围！');
       return false;
     }
 
-    _pageIndex++;
-  }
- $('#formSearch').trigger('submit');
-  return false;
-});
-
-$('#pager').on('click', '#btn-pager', function (e) {
-  e.preventDefault();
-  if ('' == $('#pageNo').val()) {
+    _pageIndex = pageNo;
+    $('#formSearch').trigger('submit');
     return false;
-  }
+  });
 
-  var pageNo = parseInt($('#pageNo').val());
-  if (NaN == pageNo || pageNo < 1 || pageNo > _pageTotal) {
-    alert('要跳转的页码超过了范围！');
-    return false;
-  }
+  $('.multi-check-all').change(function(e) {
+    e.preventDefault();
+    var isChecked = $(this).is(':checked');
 
-  _pageIndex = pageNo;
-  $('#formSearch').trigger('submit');
-  return false;
-});
-
-$('.multi-check-all').change(function(e) {
-  e.preventDefault();
-  var isChecked = $(this).is(':checked');
-
-  if (isChecked) {
-    $('#dataTable tbody :checkbox:not(:checked)').prop('checked', true);
-  } else {
-    $('#dataTable tbody :checkbox:checked').prop('checked', false);
-  }
-});
+    if (isChecked) {
+      $('#dataTable tbody :checkbox:not(:checked)').prop('checked', true);
+    } else {
+      $('#dataTable tbody :checkbox:checked').prop('checked', false);
+    }
+  });
 
 
   $('body').on('change', 'tr > td :checkbox', function(e) {
@@ -161,7 +160,7 @@ $('.multi-check-all').change(function(e) {
     }
   });
 
-// 修改
+  // 修改
   $('body').on('click', '.btn-edit', function (e) {
     e.preventDefault();
 
@@ -188,6 +187,7 @@ $('.multi-check-all').change(function(e) {
     $('#popup-add-diff').modal('show');
   });
 
+  // 保存
   $('body').on('click', '#btn-save', function (e) {
 	  e.preventDefault();
 
@@ -212,7 +212,6 @@ $('.multi-check-all').change(function(e) {
 	  .done(function (res) {
 	    if (!!~~res.meta.result) {
           alert('保存成功');
-          // location.reload();
           $('#formSearch').trigger('submit');
           $('#popup-add-diff').modal('hide');
 
@@ -224,6 +223,7 @@ $('.multi-check-all').change(function(e) {
 	  return false;
   });
 
+  // 新增
   $('#formSearch').on('click','button[type=button]', function (event) {
     event.preventDefault();
 
