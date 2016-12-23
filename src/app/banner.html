@@ -486,20 +486,10 @@
           <tr>
             <th>渠道</th>
             <td>
-              <select class="form-control" id="channelId">
-                {{#channels}}
-                <option value="{{channelId}}"{{#selected}} selected{{/selected}}>{{channelName}}</option>
-                {{/channels}}
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <th>是否显示</th>
-            <td>
-              <select class="form-control" id="status">
-                <option value="1"{{#banner.status}} selected{{/banner.status}}>是</option>
-                <option value="0"{{^banner.status}} selected{{/banner.status}}>否</option>
-              </select>
+              {{#channels}}
+              <label class="radio-inline"><input type="radio" name="channelId" value="{{channelId}}" required data-parsley-errors-container="#error-channel"{{#selected}} checked{{/selected}}>{{channelName}}</label>
+              {{/channels}}
+              <div id="error-channel"></div>
             </td>
           </tr>
           <tr>
