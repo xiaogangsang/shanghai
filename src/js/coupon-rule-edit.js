@@ -137,6 +137,21 @@ $(function () {
   });
 });
 
+//优惠券有效期类型
+$(":radio").click(function(){
+   if($(this).val() == 'duration'){
+     $('#couponType_fixDate_begin').hide();
+     $('#beginDate').val('');
+     $('#couponType_fixDate_end').hide();
+     $('#endDate').val('');
+     $('#couponType_duration').show();
+   }else{
+     $('#couponType_fixDate_begin').show();
+     $('#couponType_fixDate_end').show();
+     $('#couponType_duration').hide();
+     $('#effectiveDays').val('');
+   }
+});
 //成本中心
 $(document).on('change click', '#level', function (event) {
   event.preventDefault();
@@ -529,8 +544,15 @@ $(document).on('submit', '#formEdit', function (event) {
     cinemas: [],
     timetables: _popupDataCache.timetables,
     remarks: $('#remark').val().trim(),
+    effectiveDays:$('#effectiveDays').val().trim(),
   };
 
+  if((sendData.beginDate == null || sendData.beginDate.length == 0) &&
+      (sendData.endDate == null || sendData.endDate.length == 0) &&
+      (sendData.effectiveDays == null || sendData.effectiveDays.length == 0)){
+    alert('优惠券有效期不能为空');
+    _submitting = false;
+  }
   switch ($('input[name=advancePayment]:checked').length) {
     case 0:
       sendData.advancePayment = 'NO';
