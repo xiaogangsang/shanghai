@@ -11,17 +11,16 @@ var _querying = false;
 $(function () {
 	common.init('diff-query');
 	pager.init($('#pager'));
-	settlementCommon.datetimepickerRegister($('#auto_beginTime'), $('#auto_endTime'));
+	// settlementCommon.datetimepickerRegister($('#search_start'), $('#search_endDate'));
 
 	var todayDate = new Date();
   todayDate = common.getDate(todayDate);
-  $('#search_beginDate').val(todayDate);
-  $('#search_endDate').val(todayDate);
+  $('#search_startTime').val(todayDate);
+  $('#search_endTime').val(todayDate);
 })
 
 $('#formSearch').on('click', 'button[type=submit]', function(e) {
 	e.preventDefault();
-	$('#dataTable tbody').html('<tr><td colspan="30" align="center">查询中...</td></tr>');
 	pager.pageIndex = 1;
 	_useCache = false;
 	$('#formSearch').trigger('submit');
@@ -30,17 +29,18 @@ $('#formSearch').on('click', 'button[type=submit]', function(e) {
 $('#formSearch').submit(function(e) {
 	e.preventDefault();
 
-	if (_querying) return false;
-	_querying = true;
-
 	$('#formSearch').parsley().validate();
 	if (!$('#formSearch').parsley().isValid()) {
 	    return false;
 	}
 
+	if (_querying) return false;
+	_querying = true;
+
+	$('#dataTable tbody').html('<tr><td colspan="30" align="center">查询中...</td></tr>');
+
 	var param = {
-		dateType: $('#search_dateType').val(),
-		beginTime: $('#search_beginTime').val(),
+		startTime: $('#search_startTime').val(),
 		endTime: $('#search_endTime').val(),
 		differType: $('#search_diffType').val(),
 		channelId: $('#search_channelId').val(),
@@ -60,7 +60,7 @@ $('#formSearch').submit(function(e) {
 	}
 
 	$.ajax({
-		url: common.API_HOST + 'settlement/differAppend/queryDifferAppendList.json',
+		url: common.API_HOST + 'settlement/differAppend/queryDifferAppendList',
 		type: 'POST',
 		dataType: 'json',
 		data: param,
@@ -73,18 +73,40 @@ $('#formSearch').submit(function(e) {
 function handleData(res) {
 	_querying = false;
 	if (!!~~res.meta.result) {
-		if (res.data == null || res.data.rows.length < 1) {
-			var html = '<tr><td colspan="30" align="center">查不到相关数据，请修改查询条件！</td></tr>';
-			$('#dataTable tbody').html(html);
-			$('#pager').html('');
+		if (res.data == null || res.data.detail.records.length < 1) {
+			handleEmptyData(res);
 		} else {
 			useCache = true;
 			var totalRecord = res.data.detail.count;
 			var records = res.data.detail.records;
+			_records = $.extend(true, {}, records);
+
 			pager.pageTotal = Math.ceil(totalRecord / pager.pageSize);
 			pager.setPager(totalRecord, pager.pageIndex, records.length, pager.pageTotal);
+
+			_(records).forEach(function(item) {
+				var today = new Date(item.settleDate);
+				item.settleDate = common.getDate(today);
+			});
+
+			var template = $('#table-template').html();
+			Mustache.parse(template);
+			var html = Mustache.render(template, {rows: records});
+			$('#dataTable tbody').html(html);
 		}
+	} else {
+		handleEmptyData(res);
 	}
+}
+
+function handleEmptyData (res) {
+	var message = res.meta.msg;
+	if (!!~~res.meta.result && res.data.detail.records.length < 1) {
+		message = '查询成功，无记录。';
+	}
+	var html = '<tr><td colspan="30" align="center">' + message + '</td></tr>';
+	$('#dataTable tbody').html(html);
+	$('#pager').html('');
 }
 
 $('#btn-batch-delete').click(function(e) {

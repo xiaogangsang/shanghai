@@ -98,46 +98,56 @@ function handleData(res) {
 }
 
 function handleEmptyData (res) {
-	var html = '<tr><td colspan="30" align="center">' + res.meta.msg + '</td></tr>';
+	var message = res.meta.msg;
+	if (!!~~res.meta.result && res.data.detail.records.length < 1) {
+		message = '查询成功，无记录。';
+	}
+	var html = '<tr><td colspan="30" align="center">' + message + '</td></tr>';
 	$('#dataTable tbody').html(html);
 	$('#pager').html('');
+}
+
+function queryData (callback) {
+	$.ajax({
+		url: common.API_HOST + 'settlement/department/selectList',
+		type: 'GET',
+		dataType: 'json',
+		data: {pageIndex: 1, pageSize: 100},
+	})
+	.done(function(departmentRes) {
+		if (!!~~departmentRes.meta.result) {
+			var departmentHtml = '';
+			_(departmentRes.data.detail.records).forEach(function (item) {
+				departmentHtml += '<option value="' + item.id + '">' + item.departmentName + '</option>';
+			});
+			$('#add_departmentId').html(departmentHtml);
+
+			$.ajax({
+				url: common.API_HOST + 'settlement/dispose/selectList',
+				type: 'GET',
+				dataType: 'json',
+			})
+			.done(function(disposeRes) {
+				if (!!~~disposeRes.meta.result) {
+					var disposeHtml = '';
+					_(disposeRes.data.detail.records).forEach(function (item) {
+						disposeHtml += '<option value="' + item.id + '">' + item.disposeName + '</option>';
+					});
+					$('#add_disposeId').html(disposeHtml);
+					callback();
+				}
+			});
+		}
+	});
 }
 
 $('#btn-add').click(function(e) {
 	e.preventDefault();
 
-  $.ajax({
-  	url: common.API_HOST + 'settlement/department/selectList',
-  	type: 'GET',
-  	dataType: 'json',
-  	data: {pageIndex: 1, pageSize: 100},
-  })
-  .done(function(departmentRes) {
-  	if (!!~~departmentRes.meta.result) {
-  		var departmentHtml = '<option value></option>';
-  		_(departmentRes.data.detail.records).forEach(function (item) {
-  			departmentHtml += '<option value="' + item.id + '">' + item.departmentName + '</option>';
-  		});
-  		$('#add_departmentId').html(departmentHtml);
-
-  		$.ajax({
-  			url: common.API_HOST + 'settlement/dispose/selectList',
-  			type: 'GET',
-  			dataType: 'json',
-  		})
-  		.done(function(disposeRes) {
-  			if (!!~~disposeRes.meta.result) {
-  				var disposeHtml = '<option value></option>';
-  				_(disposeRes.data.detail.records).forEach(function (item) {
-  					disposeHtml += '<option value="' + item.id + '">' + item.disposeName + '</option>';
-  				});
-  				$('#add_disposeId').html(disposeHtml);
-
-  				$('#popup-add-diff-type').modal('show');
-  			}
-  		});
-  	}
-  });
+	queryData(function () {
+		$('#formAdd button[type=submit]').data('id', '');
+		$('#popup-add-diff-type').modal('show');
+	})
 });
 
 $('#dataTable').on('click', '.btn-edit', function (e) {
@@ -151,18 +161,20 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
 		}
 	});
 
-	$('#btn-add').trigger('click');
-
-	if (selectedItem) {
-		$('#add_differenceName').val(selectedItem.differenceName);
-		$('#add_addStatus').val(selectedItem.addStatus);
-	 	$('#add_departmentStatus').val(selectedItem.departmentStatus);
-	 	$('#add_settlementStatus').val(selectedItem.settlementStatus);
-	 	$('#add_differenceStatus').val(selectedItem.differenceStatus);
-	 	$('#add_departmentId').val(selectedItem.departmentId);
-	 	$('#add_disposeId').val(selectedItem.disposeId);
-	 	$('#add_useStatus').val(selectedItem.useStatus);
-	}
+	queryData(function () {
+		if (selectedItem) {
+			$('#add_differenceName').val(selectedItem.differenceName);
+			$('#add_addStatus').val(selectedItem.addStatus);
+		 	$('#add_departmentStatus').val(selectedItem.departmentStatus);
+		 	$('#add_settlementStatus').val(selectedItem.settlementStatus);
+		 	$('#add_differenceStatus').val(selectedItem.differenceStatus);
+		 	$('#add_departmentId').val(selectedItem.departmentId);
+		 	$('#add_disposeId').val(selectedItem.disposeId);
+		 	$('#add_useStatus').val(selectedItem.useStatus);
+		 	$('#formAdd button[type=submit]').data('id', selectedItem.id);
+		}
+		$('#popup-add-diff-type').modal('show');
+	})
 });
 
 $('#formAdd').submit(function(e) {
@@ -173,6 +185,7 @@ $('#formAdd').submit(function(e) {
 	}
 
 	var param = {
+		id: $('#formAdd button[type=submit]').data('id'),
 		addStatus: $('#add_addStatus').val(),
 		departmentStatus: $('#add_departmentStatus').val(),
 		settlementStatus: $('#add_settlementStatus').val(),
@@ -183,29 +196,51 @@ $('#formAdd').submit(function(e) {
 		useStatus: $('#add_useStatus').val()
 	};
 
-	$.ajax({
-		url: common.API_HOST + 'settlement/type/insertType',
-		type: 'GET',
-		dataType: 'json',
-		data: param
-	})
-	.done(function(res) {
-		var message =  null;
-		if (!!~~res.meta.result) {
-			$('#formAdd :input').val('');
-			$('#popup-add-diff-type').modal('hide');
-			message = '新增成功！';
-		}
-		if (message == null) {
-			message = res.meta.msg;
-		}
-		alert(message);
-	});
+	if (param.id.length === 0) {
+		$.ajax({
+			url: common.API_HOST + 'settlement/type/insertType',
+			type: 'GET',
+			dataType: 'json',
+			data: param
+		})
+		.done(function(res) {
+			var message =  null;
+			if (!!~~res.meta.result) {
+				$('#formAdd button[type=button]').trigger('click');
+				$('#formSearch').trigger('submit');
+				message = '新增成功！';
+			}
+			if (message == null) {
+				message = res.meta.msg;
+			}
+			alert(message);
+		});
+	} else {
+		$.ajax({
+			url: common.API_HOST + 'settlement/type/updateType',
+			type: 'GET',
+			dataType: 'json',
+			data: param
+		})
+		.done(function(res) {
+			var message =  null;
+			if (!!~~res.meta.result) {
+				$('#formAdd button[type=button]').trigger('click');
+				$('#formSearch').trigger('submit');
+				message = '修改成功！';
+			}
+			if (message == null) {
+				message = res.meta.msg;
+			}
+			alert(message);
+		});
+	}
 });
 
 $('#formAdd button[type=button]').click(function(e) {
 	e.preventDefault();
 	$('#formAdd :input').val('');
+	$('#formAdd button[type=submit]').data('id', '');
 	$('#popup-add-diff-type').modal('hide');
 });
 

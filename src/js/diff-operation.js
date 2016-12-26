@@ -9,15 +9,16 @@ var _formCache = {};
 var _querying = false;
 var _records = {}
 
+var _matched = {1 : '是', 2 : '否'};
+
 $(function () {
 	common.init('diff-operation');
 	pager.init($('#pager'));
-	settlementCommon.datetimepickerRegister($('#auto_beginTime'), $('#auto_endTime'));
+	settlementCommon.datetimepickerRegister($('#auto_startTime'), $('#auto_endTime'));
 })
 
 $('#formSearch').on('click', 'button[type=submit]', function(e) {
 	e.preventDefault();
-	$('#dataTable tbody').html('<tr><td colspan="30" align="center">查询中...</td></tr>');
 	pager.pageIndex = 1;
 	_useCache = false;
 	$('#formSearch').trigger('submit');
@@ -44,8 +45,10 @@ $('#formSearch').submit(function(e) {
 	if (_querying) return false;
 	_querying = true;
 
+	$('#dataTable tbody').html('<tr><td colspan="30" align="center">查询中...</td></tr>');
+
 	var param = {
-		beginTime: beginTime,
+		startTime: beginTime,
 		endTime: endTime,
 		orderNo: orderNo,
 		matched: matched,
@@ -61,8 +64,8 @@ $('#formSearch').submit(function(e) {
 	}
 
 	$.ajax({
-		url: common.API_HOST + 'settlement/differDetail/queryDifferDetailList.json',
-		type: 'POST',
+		url: common.API_HOST + 'settlement/differDetail/queryDifferDetailList',
+		type: 'GET',
 		dataType: 'json',
 		data: param,
 	})
@@ -85,6 +88,12 @@ function handleData(res) {
 			pager.pageTotal = Math.ceil(totalRecord / pager.pageSize);
 			pager.setPager(totalRecord, pager.pageIndex, records.length, pager.pageTotal);
 
+			_(records).forEach(function(item) {
+				item.matched = _matched[item.matched];
+				var today = new Date(item.settleDate);
+				item.settleDate = common.getDate(today);
+			});
+
 			var template = $('#table-template').html();
 			Mustache.parse(template);
 			var html = Mustache.render(template, {rows: records});
@@ -96,7 +105,11 @@ function handleData(res) {
 }
 
 function handleEmptyData (res) {
-	var html = '<tr><td colspan="30" align="center">' + res.meta.msg + '</td></tr>';
+	var message = res.meta.msg;
+	if (!!~~res.meta.result && res.data.detail.records.length < 1) {
+		message = '查询成功，无记录。';
+	}
+	var html = '<tr><td colspan="30" align="center">' + message + '</td></tr>';
 	$('#dataTable tbody').html(html);
 	$('#pager').html('');
 }
@@ -129,7 +142,7 @@ $('#btn-export').click(function(e) {
 	}
 
 	$.ajax({
-		url: common.API_HOST + 'settlement/differDetail/queryDefferDetailListExport.json',
+		url: common.API_HOST + 'settlement/differDetail/queryDefferDetailListExport',
 		type: 'POST',
 		dataType: 'json',
 		data: param,
@@ -139,7 +152,7 @@ $('#btn-export').click(function(e) {
 			var fileUrl = res.data.detail.fileUrl;
 		}
 		if (fileUrl && fileUrl.length > 0) {
-			window.location.href = comon.API_HOST + 'settlement/differDetail/downloadDifferDetailList.json?fileUrl=' + fileUrl;
+			window.location.href = comon.API_HOST + 'settlement/differDetail/downloadDifferDetailList?fileUrl=' + fileUrl;
 		}
 	})
 	.always(function() {
@@ -163,7 +176,7 @@ $('#btn-batch').click(function(e) {
 	$('#hud-overlay').show();
 
 	$.ajax({
-		url: common.API_HOST + 'settlement/differAppend/autoHandleDifferAppend.json',
+		url: common.API_HOST + 'settlement/differAppend/autoHandleDifferAppend',
 		type: 'GET',
 		dataType: 'json',
 	})
@@ -190,7 +203,7 @@ $('#formAutoDiff').submit(function(e) {
 		endTime: $('#auto_endTime').val()
 	}
 	$.ajax({
-		url: common.API_HOST +  'settlement/differDetail/autoHandleDifferDetail.json',
+		url: common.API_HOST +  'settlement/differDetail/autoHandleDifferDetail',
 		type: 'GET',
 		dataType: 'json',
 		data: param
@@ -208,7 +221,7 @@ $('#btn-sync').click(function(e) {
 	e.preventDefault();
 
 	$.ajax({
-		url: common.API_HOST + 'settlement/differDetail/syncShipmentInfoStatus/check.json',
+		url: common.API_HOST + 'settlement/differDetail/syncShipmentInfoStatus/check',
 		type: 'GET',
 		dataType: 'json'
 	})
@@ -216,7 +229,7 @@ $('#btn-sync').click(function(e) {
 		if (!!~~res.meta.result) {
 			if (res.data.detail.checkStatus) {
 				$.ajax({
-					url: common.API_HOST + 'settlement/differDetail/syncShipmentInfoStatus.json',
+					url: common.API_HOST + 'settlement/differDetail/syncShipmentInfoStatus',
 					type: 'GET',
 					dataType: 'json',
 				})
@@ -226,4 +239,13 @@ $('#btn-sync').click(function(e) {
 			}
 		}
 	})
+});
+
+$('body').on('change', 'tr > td :checkbox', function(e) {
+  e.preventDefault();
+
+  var isChecked = $(this).is(':checked');
+  if (!isChecked) {
+    $('.multi-check-all').prop('checked', false);
+  }
 });

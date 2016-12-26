@@ -82,6 +82,9 @@
 								</tr>
 							</thead>
 							<tbody>
+								<tr>
+								  <td colspan="30" align="center">请点击“查询”按钮！</td>
+								</tr>
 							</tbody>
 						</table>
 					</div>
@@ -162,7 +165,7 @@
 								<div class="form-group">
 									<div class="input-group">
 										<div class="input-group-addon">使用状态</div>
-										<select class="form-control" id="add_useStatus">
+										<select class="form-control" id="add_useStatus" required>
 											<option value="1">启用</option>
 											<option value="2">停用</option>
 											<option value="3">删除</option>
@@ -172,7 +175,7 @@
 
 								<div class="col-sm-8 col-sm-offset-2" style="margin-top: 10px; margin-bottom: 10px;">
 									<div class="col-sm-6">
-										<button type="submit" class="btn btn-block btn-primary">确定</button>
+										<button type="submit" class="btn btn-block btn-primary" data-id="">确定</button>
 									</div>
 									<div class="col-sm-6">
 										<button type="button" class="btn btn-block btn-default">取消</button>

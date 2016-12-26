@@ -10,17 +10,17 @@
 	<link rel="stylesheet" href="css/reset.css">
 </head>
 <body>
-	
+
 	@@include('component/header.tpl')
 
 	<div class="container-fluid">
-		
+
 		<div class="row">
-			
+
 			@@include('component/sidebar.tpl')
 
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-				
+
 				<ol class="breadcrumb">
 					<li>基础结算信息管理</li>
 					<li>责任部门管理</li>
@@ -37,24 +37,15 @@
 						<div class="input-group">
 							<div class="input-group-addon">名称</div>
 							<input type="text" class="form-control" id="dep_name">
-							<!-- <select class="form-control" id="">
-								<option value="0">全部</option>
-								<option value="1">出货</option>
-								<option value="2">退货</option>
-								<option value="3">出货调整</option>
-								<option value="4">退货调整</option>
-							</select> -->
 						</div>
 					</div>
 					<div class="form-group col-sm-4">
 						<div class="input-group">
 							<div class="input-group-addon">状态</div>
 							<select class="form-control" id="dep_status">
-								<option value="0">全部</option>
-								<option value="1">出货</option>
-								<option value="2">退货</option>
-								<option value="3">出货调整</option>
-								<option value="4">退货调整</option>
+								<option value>全部</option>
+								<option value="1">启用</option>
+								<option value="2">停用</option>
 							</select>
 						</div>
 					</div>
@@ -67,58 +58,43 @@
 						</div>
 				</form>
 
-				<div class="row" id="pager"></div>
+				<div class="content-area">
 
-				<div class="table-responsive" style="margin-top: 10px;">
-					<table class="table table-hover" id="dataTable">
-						<thead>
-							<tr>
-								<th><input type="checkbox" class="multi-check-all"></th>
-								<th>编号</th>
-								<th>责任部门</th>
-								<th>创建人</th>
-								<th>创建时间</th>
-								<th>使用状态</th>
-								<th>操作</th>
-							</tr>
-						</thead>
-						 <tbody>
-                <tr>
-                  <td colspan="26" align="center">请点击“查询”按钮！</td>
-                </tr>
-             </tbody>
-					</table>
+					<div class="row" id="pager"></div>
+					@@include('component/pager.tpl')
+
+					<div class="table-responsive">
+						<table class="table table-hover" id="dataTable">
+							<thead>
+								<tr>
+									<th>编号</th>
+									<th>责任部门</th>
+									<th>创建人</th>
+									<th>创建时间</th>
+									<th>使用状态</th>
+									<th>操作</th>
+								</tr>
+							</thead>
+							 <tbody>
+	                <tr>
+	                  <td colspan="26" align="center">请点击“查询”按钮！</td>
+	                </tr>
+	             </tbody>
+						</table>
+					</div>
+
 				</div>
 
 			</div>
-		
 		</div>
 	</div>
 
 	<script src="js/vendor.js"></script>
   <script src="js/diff-base-info-department.js"></script>
 
-  <script id="pager-template" type="text/x-tmpl-mustache">
-    <div class="col xs-12 col-sm-6 rowStatics">共 <span id="total">{{total}}</span> 条数据，当前显示 <span id="rowsSize">{{rowsSize}}</span> 条</div>
-    {{#pageTotal}}
-    <div class="col xs-12 col-sm-6">
-      <nav>
-        <ul class="pagination pagination-sm pull-right">
-          <li><a href="#" class="prev"><span>&lt;</span></a></li>
-          <li><span id="pageIndex">{{pageIndex}}</span> / <span id="pageTotal">{{pageTotal}}</span></li>
-          <li><a href="#" class="next"><span>&gt;</span></a></li>
-          <li><input type="number" name="pageNo" id="pageNo" pattern="[0-9]+"></li>
-          <li><button type="button" class="btn" id="btn-pager">跳转</button></li>
-        </ul>
-      </nav>
-    </div>
-    {{/pageTotal}}
-  </script>
-
   <script id="table-template" type="text/x-tmpl-mustache">
     {{#rows}}
     <tr data-id="{{id}}" data-bannertype="{{bannerType}}">
-      <td><input type="checkbox" class="multi-check"></td>
       <td>{{id}}</td>
       <td>{{departmentName}}</td>
       <td>{{dutyUser}}</td>
@@ -131,7 +107,6 @@
     </tr>
     {{/rows}}
   </script>
-
 
   <div class="modal fade" id="popup-add-diff"></div>
 
@@ -162,7 +137,7 @@
 			            </select>
 								</div>
 							</div>
-							
+
 							<div class="col-sm-8 col-sm-offset-2" style="margin-top: 10px; margin-bottom: 10px;">
 								<div class="col-sm-6">
 									<button type="sumbit" class="btn btn-block btn-primary" id="btn-save">确定</button>
