@@ -365,7 +365,7 @@ function setModal(movieData) {
       }
     });
 
-    movieData.dimen = movieData.dimen.split('/');
+    movieData.dimen = movieData.dimen == null ? '' : movieData.dimen.split('/');
 
     _(_dimens).forEach(function (value, key) {
       value.selected = movieData.dimen.indexOf(value.name) > -1 ? true : false;
