@@ -198,12 +198,14 @@ $('#dataTable').on('click', '.btn-create', function (e) {
   var seatNum = $(this).closest('tr').data('seatnum');
   var screenType = $(this).closest('tr').data('screentype');
   var effect = $(this).closest('tr').data('effect');
+  var sourceId = $(this).closest('tr').data('sourceid');
   $('#bindCinemaName').val(tpCinemaName);
   $('#popup-tphall-create #storeId').val('');
   $('#popup-tphall-create #hallName').val(hallName);
   $('#popup-tphall-create #seatNum').val(seatNum);
   $('#popup-tphall-create #screenType').val(screenType);
   $('#popup-tphall-create #effect').val(effect);
+  $('#popup-tphall-create #sourceId').val(sourceId);
   $('#popup-tphall-create form').parsley();
   $('#popup-tphall-create').modal('show');
 });
@@ -237,6 +239,7 @@ $(document).on('submit', '#popup-tphall-create form', function (e) {
         hallId: res.data.hallId,
         tpHallId: _tpHallId,
         tpStoreId: _tpStoreId,
+        sourceId:$.trim($('#popup-tphall-create #sourceId').val()),
       };
 
       $.ajax({
@@ -333,9 +336,11 @@ $('#dataTable').on('click', '.btn-bind', function (e) {
   e.preventDefault();
   var tpHallId = $(this).closest('tr').data('id');
   var tpStoreId = $(this).closest('tr').data('tpstoreid');
+  var sourceId = $(this).closest('tr').data('sourceid');
   $('#hallId').val('');
   $('#tpHallId').val(tpHallId);
   $('#tpStoreId').val(tpStoreId);
+  $('#sourceId').val(sourceId);
   $('#hallTable tbody').html('');
 
   $.ajax({
@@ -345,6 +350,7 @@ $('#dataTable').on('click', '.btn-bind', function (e) {
     data: {
       tpHallId: tpHallId,
       tpStoreId: tpStoreId,
+      sourceId:sourceId,
     },
   })
   .done(function (res) {
@@ -380,6 +386,7 @@ $(document).on('submit', '#formBindHall', function (e) {
     hallId: $('#hallId').val(),
     tpHallId: $('#tpHallId').val(),
     tpStoreId: $('#tpStoreId ').val(),
+    sourceId:$('#sourceId').val(),
   };
 
   $.ajax({
