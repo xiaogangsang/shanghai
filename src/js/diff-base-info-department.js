@@ -66,36 +66,20 @@ $('#formSearch').on('submit', function (e) {
 function handleData(res) {
 	_querying = false;
 
-	if (!!~~res.meta.result) {
-    if (res.data == null || res.data.detail.records.length < 1) {
-      handleEmptyData(res);
-    } else {
-      var totalRecord = res.data.detail.count;
-  		var record = res.data.detail.records;
+	if (settlementCommon.prehandleData(res)) {
+    var totalRecord = res.data.detail.count;
+		var record = res.data.detail.records;
 
-  		pager.pageTotal = Math.ceil(totalRecord / pager.pageSize);
-  		pager.setPager(totalRecord, pager.pageIndex, record.length, pager.pageTotal);
+		pager.pageTotal = Math.ceil(totalRecord / pager.pageSize);
+		pager.setPager(totalRecord, pager.pageIndex, record.length, pager.pageTotal);
 
-  		_(record).forEach(function(item) {
-        item.departmentUseStatus = settlementCommon.parseDepartmentUseStatus(item.departmentUseStatus);
-      });
+		_(record).forEach(function(item) {
+      item.departmentUseStatus = settlementCommon.parseDepartmentUseStatus(item.departmentUseStatus);
+    });
 
-  		_dataCache = record;
-  		setTableData(_dataCache);
-    }
-  } else {
-    handleEmptyData(res);
+		_dataCache = record;
+		setTableData(_dataCache);
   }
-}
-
-function handleEmptyData (res) {
-  var message = res.meta.msg;
-  if (!!~~res.meta.result && res.data.detail.records.length < 1) {
-    message = '查询成功，无记录。';
-  }
-  var html = '<tr><td colspan="30" align="center">' + message + '</td></tr>';
-  $('#dataTable tbody').html(html);
-  $('#pager').html('');
 }
 
 function setTableData(rows) {

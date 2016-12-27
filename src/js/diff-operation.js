@@ -15,6 +15,13 @@ $(function () {
 	common.init('diff-operation');
 	pager.init($('#pager'));
 	settlementCommon.datetimepickerRegister($('#auto_startTime'), $('#auto_endTime'));
+
+	var todayDate = new Date();
+  todayDate = common.getDate(todayDate);
+  $('#search_startTime').val(todayDate);
+  $('#search_endTime').val(todayDate);
+  $('#auto_startTime').val(todayDate);
+  $('#auto_endTime').val(todayDate);
 })
 
 $('#formSearch').on('click', 'button[type=submit]', function(e) {
@@ -38,7 +45,7 @@ $('#formSearch').submit(function(e) {
 	var matched = $('#search_matched').val();
 
 	if (!(orderNo || (beginTime && endTime))) {
-		alert('查询前请输入结算日期或交易订单号');
+		settlementCommon.warning('查询前请选择结算日期或输入交易订单号');
 		return false;
 	}
 
@@ -76,42 +83,27 @@ $('#formSearch').submit(function(e) {
 
 function handleData(res) {
 	_querying = false;
-	if (!!~~res.meta.result) {
-		if (res.data == null || res.data.detail.records.length < 1) {
-			handleEmptyData(res);
-		} else {
-			useCache = true;
-			var totalRecord = res.data.detail.count;
-			var records = res.data.detail.records;
-			_records = $.extend(true, {}, records);
 
-			pager.pageTotal = Math.ceil(totalRecord / pager.pageSize);
-			pager.setPager(totalRecord, pager.pageIndex, records.length, pager.pageTotal);
+	if (settlementCommon.prehandleData(res)) {
+		useCache = true;
+		var totalRecord = res.data.detail.count;
+		var records = res.data.detail.records;
+		_records = $.extend(true, {}, records);
 
-			_(records).forEach(function(item) {
-				item.matched = _matched[item.matched];
-				var today = new Date(item.settleDate);
-				item.settleDate = common.getDate(today);
-			});
+		pager.pageTotal = Math.ceil(totalRecord / pager.pageSize);
+		pager.setPager(totalRecord, pager.pageIndex, records.length, pager.pageTotal);
 
-			var template = $('#table-template').html();
-			Mustache.parse(template);
-			var html = Mustache.render(template, {rows: records});
-			$('#dataTable tbody').html(html);
-		}
-	} else {
-		handleEmptyData(res);
+		_(records).forEach(function(item) {
+			item.matched = _matched[item.matched];
+			var today = new Date(item.settleDate);
+			item.settleDate = common.getDate(today);
+		});
+
+		var template = $('#table-template').html();
+		Mustache.parse(template);
+		var html = Mustache.render(template, {rows: records});
+		$('#dataTable tbody').html(html);
 	}
-}
-
-function handleEmptyData (res) {
-	var message = res.meta.msg;
-	if (!!~~res.meta.result && res.data.detail.records.length < 1) {
-		message = '查询成功，无记录。';
-	}
-	var html = '<tr><td colspan="30" align="center">' + message + '</td></tr>';
-	$('#dataTable tbody').html(html);
-	$('#pager').html('');
 }
 
 $('#btn-export').click(function(e) {
@@ -128,7 +120,7 @@ $('#btn-export').click(function(e) {
 	var matched = $('#search_matched').val();
 
 	if (!(orderNo || (beginTime && endTime))) {
-		alert('导出前请输入结算日期或交易订单号');
+		alert('导出前请选择结算日期或输入交易订单号');
 		return false;
 	}
 
@@ -142,17 +134,20 @@ $('#btn-export').click(function(e) {
 	}
 
 	$.ajax({
-		url: common.API_HOST + 'settlement/differDetail/queryDefferDetailListExport',
+		url: common.API_HOST + 'settlement/differDetail/queryDifferDetailListExport',
 		type: 'POST',
 		dataType: 'json',
 		data: param,
 	})
 	.done(function(res) {
-		if (!!~~res.meta.result) {
-			var fileUrl = res.data.detail.fileUrl;
-		}
-		if (fileUrl && fileUrl.length > 0) {
-			window.location.href = comon.API_HOST + 'settlement/differDetail/downloadDifferDetailList?fileUrl=' + fileUrl;
+		var fileUrl = null;
+		if (!!~~res.meta.result && res.data &&res.data.detail) {
+			fileUrl = res.data.detail.fileUrl;
+			if (fileUrl && fileUrl.length > 0) {
+				window.location.href = comon.API_HOST + 'settlement/downloadFile/downloadByUrl?fileUrl=' + fileUrl;
+			}
+		} else {
+			settlementCommon.warning('该时间段内无差异数据！');
 		}
 	})
 	.always(function() {
@@ -163,11 +158,6 @@ $('#btn-export').click(function(e) {
 
 $('#btn-batch').click(function(e) {
 	e.preventDefault();
-
-	if ($('#diffTable tbody tr').length < 1) {
-		alert('请先查询再进行此操作!');
-		return false;
-	}
 
 	if (!confirm('即将开始运算，可能需要几分钟，请稍等，系统运算过程中请勿操作系统。')) {
 		return;
@@ -181,7 +171,11 @@ $('#btn-batch').click(function(e) {
 		dataType: 'json',
 	})
 	.done(function(res) {
-
+		if (!!~~res.meta.result) {
+			settlementCommon.success('批量生成成功，请选择日期查询差异数据！');
+		} else {
+			settlementCommon.warning(res.meta.msg);
+		}
 	})
 	.always(function () {
 		$('#hud-overlay').hide();
@@ -199,7 +193,7 @@ $('#formAutoDiff').submit(function(e) {
 	$('#hud-overlay').show();
 
 	var param = {
-		beginTime: $('#auto_beginTime').val(),
+		startTime: $('#auto_startTime').val(),
 		endTime: $('#auto_endTime').val()
 	}
 	$.ajax({
@@ -209,7 +203,12 @@ $('#formAutoDiff').submit(function(e) {
 		data: param
 	})
 	.done(function(res) {
-
+		if (!!~~res.meta.result) {
+			settlementCommon.success('启动自动整理成功！');
+			$('#popup-auto-diff').modal('hide');
+		} else {
+			settlementCommon.warning(res.meta.msg);
+		}
 	})
 	.always(function () {
 		$('#hud-overlay').hide();
@@ -225,27 +224,37 @@ $('#btn-sync').click(function(e) {
 		type: 'GET',
 		dataType: 'json'
 	})
-	.done(function() {
+	.done(function(res) {
 		if (!!~~res.meta.result) {
-			if (res.data.detail.checkStatus) {
+			if (res.data.detail.checkStatus === 'true') {
 				$.ajax({
 					url: common.API_HOST + 'settlement/differDetail/syncShipmentInfoStatus',
 					type: 'GET',
 					dataType: 'json',
 				})
 				.done(function() {
-					console.log("success");
+					if (!!~~res.meta.result) {
+						settlementCommon.success('同步出货对账状态成功！');
+					} else {
+						settlementCommon.warning(res.meta.msg);
+					}
 				})
+			} else {
+				settlementCommon.warning('差异数据未处理完，无法同步！');
 			}
 		}
 	})
 });
 
-$('body').on('change', 'tr > td :checkbox', function(e) {
-  e.preventDefault();
+$('#dataTable').on('click', '.btn-edit', function (e) {
+	e.preventDefault();
 
-  var isChecked = $(this).is(':checked');
-  if (!isChecked) {
-    $('.multi-check-all').prop('checked', false);
-  }
+	var id=$($(this).closest('tr').children('td')[0]).html();
+	var selectedItem = null;
+	_(_records).forEach(function (item) {
+		if (item.id === parseInt(id)) {
+			selectedItem = item;
+		}
+	});
+	$('#popup-edit-diff').modal('show');
 });

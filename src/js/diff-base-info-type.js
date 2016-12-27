@@ -67,44 +67,28 @@ $('#formSearch').submit(function(e) {
 
 function handleData(res) {
 	_querying = false;
-	if (!!~~res.meta.result) {
-		if (res.data == null || res.data.detail.records.length < 1) {
-			handleEmptyData(res);
-		} else {
-			useCache = true;
-			var totalRecord = res.data.detail.count;
-			var records = res.data.detail.records;
-			_records = $.extend(true, {}, records);
+	if (settlementCommon.prehandleData(res)) {
+		useCache = true;
+		var totalRecord = res.data.detail.count;
+		var records = res.data.detail.records;
+		_records = $.extend(true, {}, records);
 
-			pager.pageTotal = Math.ceil(totalRecord / pager.pageSize);
-			pager.setPager(totalRecord, pager.pageIndex, records.length, pager.pageTotal);
+		pager.pageTotal = Math.ceil(totalRecord / pager.pageSize);
+		pager.setPager(totalRecord, pager.pageIndex, records.length, pager.pageTotal);
 
-			_(records).forEach(function(item) {
-				item.addStatus = _yesOrNo[item.addStatus];
-				item.departmentStatus = _yesOrNo[item.departmentStatus];
-				item.settlementStatus = _yesOrNo[item.settlementStatus];
-				item.differenceStatus = _postiveOrNegative[item.differenceStatus];
-				item.useStatus = _useStatus[item.useStatus];
-			});
+		_(records).forEach(function(item) {
+			item.addStatus = _yesOrNo[item.addStatus];
+			item.departmentStatus = _yesOrNo[item.departmentStatus];
+			item.settlementStatus = _yesOrNo[item.settlementStatus];
+			item.differenceStatus = _postiveOrNegative[item.differenceStatus];
+			item.useStatus = _useStatus[item.useStatus];
+		});
 
-			var template = $('#table-template').html();
-			Mustache.parse(template);
-			var html = Mustache.render(template, {rows: records});
-			$('#dataTable tbody').html(html);
-		}
-	} else {
-		handleEmptyData(res);
+		var template = $('#table-template').html();
+		Mustache.parse(template);
+		var html = Mustache.render(template, {rows: records});
+		$('#dataTable tbody').html(html);
 	}
-}
-
-function handleEmptyData (res) {
-	var message = res.meta.msg;
-	if (!!~~res.meta.result && res.data.detail.records.length < 1) {
-		message = '查询成功，无记录。';
-	}
-	var html = '<tr><td colspan="30" align="center">' + message + '</td></tr>';
-	$('#dataTable tbody').html(html);
-	$('#pager').html('');
 }
 
 function queryData (callback) {
@@ -112,13 +96,13 @@ function queryData (callback) {
 		url: common.API_HOST + 'settlement/department/selectList',
 		type: 'GET',
 		dataType: 'json',
-		data: {pageIndex: 1, pageSize: 100},
+		data: {pageIndex: 1, pageSize: 100, useStatus: 1},
 	})
 	.done(function(departmentRes) {
 		if (!!~~departmentRes.meta.result) {
 			var departmentHtml = '';
 			_(departmentRes.data.detail.records).forEach(function (item) {
-				departmentHtml += '<option value="' + item.id + '">' + item.departmentName + '</option>';
+					departmentHtml += '<option value="' + item.id + '">' + item.departmentName + '</option>';
 			});
 			$('#add_departmentId').html(departmentHtml);
 
@@ -131,7 +115,9 @@ function queryData (callback) {
 				if (!!~~disposeRes.meta.result) {
 					var disposeHtml = '';
 					_(disposeRes.data.detail.records).forEach(function (item) {
-						disposeHtml += '<option value="' + item.id + '">' + item.disposeName + '</option>';
+						if (parseInt(item.disposeUseStatus) === 1) {
+							disposeHtml += '<option value="' + item.id + '">' + item.disposeName + '</option>';
+						}
 					});
 					$('#add_disposeId').html(disposeHtml);
 					callback();

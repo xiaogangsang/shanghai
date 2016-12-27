@@ -65,72 +65,41 @@ $('#formSearch').submit(function(e) {
 
 function handleData(res) {
 	_querying = false;
-	if (!!~~res.meta.result) {
-		if (res.data == null || res.data.detail.records.length < 1) {
-			handleEmptyData(res);
-		} else {
-			useCache = true;
-			var totalRecord = res.data.detail.count;
-			var records = res.data.detail.records;
-			_records = $.extend(true, {}, records);
+	if (settlementCommon.prehandleData(res)) {
+		useCache = true;
+		var totalRecord = res.data.detail.count;
+		var records = res.data.detail.records;
+		_records = $.extend(true, {}, records);
 
-			pager.pageTotal = Math.ceil(totalRecord / pager.pageSize);
-			pager.setPager(totalRecord, pager.pageIndex, records.length, pager.pageTotal);
+		pager.pageTotal = Math.ceil(totalRecord / pager.pageSize);
+		pager.setPager(totalRecord, pager.pageIndex, records.length, pager.pageTotal);
 
-			_(records).forEach(function(item) {
-				item.signUseStatus = _signUseStatus[item.signUseStatus];
-			});
+		_(records).forEach(function(item) {
+			item.signUseStatus = _signUseStatus[item.signUseStatus];
+		});
 
-			var template = $('#table-template').html();
-			Mustache.parse(template);
-			var html = Mustache.render(template, {rows: records});
-			$('#dataTable tbody').html(html);
-		}
-	} else {
-		handleEmptyData(res);
+		var template = $('#table-template').html();
+		Mustache.parse(template);
+		var html = Mustache.render(template, {rows: records});
+		$('#dataTable tbody').html(html);
 	}
-}
-
-function handleEmptyData (res) {
-	var message = res.meta.msg;
-	if (!!~~res.meta.result && res.data.detail.records.length < 1) {
-		message = '查询成功，无记录。';
-	}
-	var html = '<tr><td colspan="30" align="center">' + message + '</td></tr>';
-	$('#dataTable tbody').html(html);
-	$('#pager').html('');
 }
 
 function queryData (callback) {
 	$.ajax({
-		url: common.API_HOST + 'settlement/department/selectList',
+		url: common.API_HOST + 'settlement/type/selectList',
 		type: 'GET',
 		dataType: 'json',
-		data: {pageIndex: 1, pageSize: 100},
+		data: {pageIndex: 1, pageSize: 100, useStatus: 1}
 	})
-	.done(function(departmentRes) {
-		if (!!~~departmentRes.meta.result) {
-			var departmentHtml = '';
-			_(departmentRes.data.detail.records).forEach(function (item) {
-				departmentHtml += '<option value="' + item.id + '">' + item.departmentName + '</option>';
+	.done(function(typeRes) {
+		if (!!~~typeRes.meta.result) {
+			var typeHtml = '';
+			_(typeRes.data.detail.records).forEach(function (item) {
+				typeHtml += '<option value="' + item.id + '">' + item.differenceName + '</option>';
 			});
-			$('#add_departmentId').html(departmentHtml);
-
-			$.ajax({
-				url: common.API_HOST + 'settlement/dispose/selectList',
-				type: 'GET',
-				dataType: 'json',
-			})
-			.done(function(disposeRes) {
-				if (!!~~disposeRes.meta.result) {
-					var disposeHtml = '';
-					_(disposeRes.data.detail.records).forEach(function (item) {
-						disposeHtml += '<option value="' + item.id + '">' + item.disposeName + '</option>';
-					});
-					$('#add_disposeId').html(disposeHtml);
-					callback();
-				}
-			});
+			$('#add_differenceId').html(typeHtml);
+			callback();
 		}
 	});
 }
@@ -140,7 +109,7 @@ $('#btn-add').click(function(e) {
 
 	queryData(function () {
 		$('#formAdd button[type=submit]').data('id', '');
-		$('#popup-add-diff-type').modal('show');
+		$('#popup-add-diff-mark').modal('show');
 	})
 });
 
@@ -157,22 +126,18 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
 
 	queryData(function () {
 		if (selectedItem) {
-			$('#add_differenceName').val(selectedItem.differenceName);
-			$('#add_addStatus').val(selectedItem.addStatus);
-		 	$('#add_departmentStatus').val(selectedItem.departmentStatus);
-		 	$('#add_settlementStatus').val(selectedItem.settlementStatus);
-		 	$('#add_differenceStatus').val(selectedItem.differenceStatus);
-		 	$('#add_departmentId').val(selectedItem.departmentId);
-		 	$('#add_disposeId').val(selectedItem.disposeId);
-		 	$('#add_useStatus').val(selectedItem.useStatus);
+			$('#add_signName').val(selectedItem.signName);
+			$('#add_differenceId').val(selectedItem.differenceId);
+		 	$('#add_signUseStatus').val(selectedItem.signUseStatus);
 		 	$('#formAdd button[type=submit]').data('id', selectedItem.id);
 		}
-		$('#popup-add-diff-type').modal('show');
+		$('#popup-add-diff-mark').modal('show');
 	})
 });
 
 $('#formAdd').submit(function(e) {
 	e.preventDefault();
+
 	$('#formAdd').parsley().validate();
 	if (!$('#formAdd').parsley().isValid()) {
 	    return false;
@@ -180,19 +145,14 @@ $('#formAdd').submit(function(e) {
 
 	var param = {
 		id: $('#formAdd button[type=submit]').data('id'),
-		addStatus: $('#add_addStatus').val(),
-		departmentStatus: $('#add_departmentStatus').val(),
-		settlementStatus: $('#add_settlementStatus').val(),
-		differenceStatus: $('#add_differenceStatus').val(),
-		differenceName: $('#add_differenceName').val(),
-		departmentId: $('#add_departmentId').val(),
-		disposeId: $('#add_disposeId').val(),
-		useStatus: $('#add_useStatus').val()
+		signName: $('#add_signName').val(),
+		differenceId: $('#add_differenceId').val(),
+		signUseStatus: $('#add_signUseStatus').val(),
 	};
 
 	if (param.id.length === 0) {
 		$.ajax({
-			url: common.API_HOST + 'settlement/type/insertType',
+			url: common.API_HOST + 'settlement/sign/insertSign',
 			type: 'GET',
 			dataType: 'json',
 			data: param
@@ -211,7 +171,7 @@ $('#formAdd').submit(function(e) {
 		});
 	} else {
 		$.ajax({
-			url: common.API_HOST + 'settlement/type/updateType',
+			url: common.API_HOST + 'settlement/sign/updateSign',
 			type: 'GET',
 			dataType: 'json',
 			data: param
@@ -235,6 +195,6 @@ $('#formAdd button[type=button]').click(function(e) {
 	e.preventDefault();
 	$('#formAdd :input').val('');
 	$('#formAdd button[type=submit]').data('id', '');
-	$('#popup-add-diff-type').modal('hide');
+	$('#popup-add-diff-mark').modal('hide');
 });
 

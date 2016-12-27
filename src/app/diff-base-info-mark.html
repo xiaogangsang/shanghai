@@ -54,7 +54,7 @@
 							<button type="submit" class="btn btn-block btn-primary">查询</button>
 						</div>
 						<div class="col-sm-6">
-							<button type="button" class="btn btn-block btn-default" data-toggle="modal" data-target="#popup-add-diff">新增</button>
+							<button type="button" class="btn btn-block btn-default" id="btn-add">新增</button>
 						</div>
 					</div>
 				</form>
@@ -90,7 +90,7 @@
 		</div>
 	</div>
 
-	<div class="modal fade" id="popup-add-diff">
+	<div class="modal fade" id="popup-add-diff-mark">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -100,39 +100,40 @@
 				<div class="modal-body">
 					<div class="container-fluid">
 						<div class="row">
+							<form id="formAdd">
+								<div class="form-group">
+									<div class="input-group">
+										<div class="input-group-addon">差异处理标识</div>
+										<input type="text" class="form-control" id="add_signName" required>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="input-group">
+										<div class="input-group-addon">对应差异类型</div>
+										<select class="form-control" id="add_differenceId" required>
+										</select>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="input-group">
+										<div class="input-group-addon">使用状态</div>
+										<select class="form-control" id="add_signUseStatus" required>
+											<option value="1">启用</option>
+											<option value="2">停用</option>
+											<option value="3">删除</option>
+										</select>
+									</div>
+								</div>
 
-							<div class="form-group">
-								<div class="input-group">
-									<div class="input-group-addon">差异处理标识</div>
-									<input type="text" class="form-control" id="add_id">
+								<div class="col-sm-8 col-sm-offset-2" style="margin-top: 10px; margin-bottom: 10px;">
+									<div class="col-sm-6">
+										<button type="submit" class="btn btn-block btn-primary">确定</button>
+									</div>
+									<div class="col-sm-6">
+										<button type="button" class="btn btn-block btn-default">取消</button>
+									</div>
 								</div>
-							</div>
-							<div class="form-group">
-								<div class="input-group">
-									<div class="input-group-addon">对应差异类型</div>
-									<input type="text" class="form-control" id="add_differenceName">
-								</div>
-							</div>
-							<div class="form-group">
-								<div class="input-group">
-									<div class="input-group-addon">使用状态</div>
-									<select class="form-control" id="add_signUseStatus">
-										<option value="1">启用</option>
-										<option value="2">停用</option>
-										<option value="3">删除</option>
-									</select>
-								</div>
-							</div>
-
-							<div class="col-sm-8 col-sm-offset-2" style="margin-top: 10px; margin-bottom: 10px;">
-								<div class="col-sm-6">
-									<button type="submit" class="btn btn-block btn-primary">确定</button>
-								</div>
-								<div class="col-sm-6">
-									<button type="submit" class="btn btn-block btn-default">取消</button>
-								</div>
-							</div>
-
+							</form>
 						</div>
 					</div>
 				</div>

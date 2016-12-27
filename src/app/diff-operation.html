@@ -51,6 +51,7 @@
 							<div class="input-group">
 								<div class="input-group-addon">对账一致</div>
 								<select class="form-control" id="search_matched">
+									<option>全部</option>
 									<option value="1">是</option>
 									<option value="2">否</option>
 								</select>
@@ -85,7 +86,6 @@
 						<table class="table table-hover" id="dataTable">
 							<thead>
 								<tr>
-									<th><input type="checkbox" class="multi-check-all"></th>
 									<th>结算日期</th>
 									<th>交易订单号</th>
 									<th>销售结算价</th>
@@ -113,6 +113,9 @@
 			</div>
 		</div>
 	</div>
+
+	<script src="js/vendor.js"></script>
+	<script src="js/diff-operation.js"></script>
 
 	<div class="modal fade" id="popup-auto-diff">
 		<div class="modal-dialog">
@@ -174,7 +177,6 @@
 	<script id="table-template" type="text/x-tmpl-mustache">
 	  {{#rows}}
 	  <tr>
-	    <td><input type="checkbox" class="multi-check"></td>
 	    <!-- 结算日期 -->
 	    <td>{{settleDate}}</td>
 	    <!-- 交易订单号 -->
@@ -203,8 +205,5 @@
 	  </tr>
 	  {{/rows}}
 	</script>
-
-	<script src="js/vendor.js"></script>
-	<script src="js/diff-operation.js"></script>
 </body>
 </html>

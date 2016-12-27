@@ -18,13 +18,13 @@
 			<div class="form-group col-sm-6">
 				<div class="input-group">
 					<div class="input-group-addon">订单号</div>
-					<input type="text" class="form-control" id="" ata-parsley-pattern="[0-9]+>
+					<input type="text" class="form-control" id="" data-parsley-pattern="[0-9]+">
 				</div>
 			</div>
 			<div class="form-group col-sm-6">
 				<div class="input-group">
 					<div class="input-group-addon">差异编号</div>
-					<input type="text" class="form-control" id="diff_number" ata-parsley-pattern="[0-9]+>
+					<input type="text" class="form-control" id="diff_number" data-parsley-pattern="[0-9]+">
 				</div>
 			</div>
 			<div class="form-group col-sm-6">
