@@ -193,10 +193,12 @@ $('#dataTable').on('click', '.btn-create', function (e) {
   _tpStoreId = $(this).closest('tr').data('tpstoreid');
   var hallName = $(this).closest('tr').children('td:nth-child(2)').text();
   var tpCinemaName = $(this).closest('tr').children('td:nth-child(6)').text().trim();
+
   $('#bindCinemaName').val(tpCinemaName);
   $('#popup-tphall-create #storeId').val('');
   $('#popup-tphall-create #hallName').val(hallName);
-  $('#popup-tphall-create #sourceId').val(sourceId);
+  $('#popup-tphall-create #sourceId').val($(this).closest('tr').data('sourceid'));
+
   $('#popup-tphall-create form').parsley();
   $('#popup-tphall-create').modal('show');
 });
