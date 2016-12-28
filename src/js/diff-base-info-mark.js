@@ -39,7 +39,7 @@ $('#formSearch').submit(function(e) {
 
 	var param = {
 		id: $('#search_id').val(),
-		signUser: $('#search_signUser').val(),
+		signName: $('#search_signName').val(),
 		signUseStatus: $('#search_signUseStatus').val(),
 		pageSize: pager.pageSize,
 		pageIndex: pager.pageIndex,
