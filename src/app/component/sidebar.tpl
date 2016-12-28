@@ -58,7 +58,7 @@
           <a href="activity-plan.html" class="list-group-item" id="menu-activity-plan" data-id="10" style="display:none">常态活动计划管理</a>
           <a href="activity-unit.html" class="list-group-item" id="menu-activity-unit" data-id="11" style="display:none">常态活动单元管理</a>
           <a href="activity-cs.html" class="list-group-item" id="menu-activity-cs" data-id="24" style="display:none">常态活动查询</a>
-          <a href="activity-payment.html" class="list-group-item" id="menu-activity-payment" data-id="11" style="display:none">支付活动管理</a>
+          <a href="activity-payment.html" class="list-group-item" id="menu-activity-payment" data-id="282" style="display:none">支付活动管理</a>
         </div>
       </div>
     </div>
