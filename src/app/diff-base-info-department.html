@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<link rel="icon" href="images/favicon.ico">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<title>责任部门管理</title>
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/reset.css">
+</head>
+<body>
+
+	@@include('component/header.tpl')
+
+	<div class="container-fluid">
+
+		<div class="row">
+
+			@@include('component/sidebar.tpl')
+
+			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+				<ol class="breadcrumb">
+					<li>基础结算信息管理</li>
+					<li>责任部门管理</li>
+				</ol>
+
+				<form id="formSearch" class="search-area clearfix">
+					<div class="form-group col-sm-4">
+						<div class="input-group">
+							<div class="input-group-addon">编号</div>
+							<input type="text" class="form-control" id="dep_number">
+						</div>
+					</div>
+					<div class="form-group col-sm-4">
+						<div class="input-group">
+							<div class="input-group-addon">名称</div>
+							<input type="text" class="form-control" id="dep_name">
+						</div>
+					</div>
+					<div class="form-group col-sm-4">
+						<div class="input-group">
+							<div class="input-group-addon">状态</div>
+							<select class="form-control" id="dep_status">
+								<option value>全部</option>
+								<option value="1">启用</option>
+								<option value="2">停用</option>
+							</select>
+						</div>
+					</div>
+
+						<div class="col-sm-3 pull-right">
+							<button type="button" class="btn btn-block btn-default">新增</button>
+						</div>
+						<div class="col-sm-3 pull-right">
+							<button type="submit" class="btn btn-block btn-primary">查询</button>
+						</div>
+				</form>
+
+				<div class="content-area">
+
+					<div class="row" id="pager"></div>
+					@@include('component/pager.tpl')
+
+					<div class="table-responsive">
+						<table class="table table-hover" id="dataTable">
+							<thead>
+								<tr>
+									<th>编号</th>
+									<th>责任部门</th>
+									<th>创建人</th>
+									<th>创建时间</th>
+									<th>使用状态</th>
+									<th>操作</th>
+								</tr>
+							</thead>
+							 <tbody>
+	                <tr>
+	                  <td colspan="26" align="center">请点击“查询”按钮！</td>
+	                </tr>
+	             </tbody>
+						</table>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<script src="js/vendor.js"></script>
+  <script src="js/diff-base-info-department.js"></script>
+
+  <script id="table-template" type="text/x-tmpl-mustache">
+    {{#rows}}
+    <tr data-id="{{id}}" data-bannertype="{{bannerType}}">
+      <td>{{id}}</td>
+      <td>{{departmentName}}</td>
+      <td>{{dutyUser}}</td>
+      <td>{{updateTime}}</td>
+      <td>{{departmentUseStatus}}</td>
+      <td>
+        <button class="btn btn-xs btn-default btn-edit" data-compare="1" data-id="{{id}}">修改</button>
+       <!--  <button class="btn btn-xs btn-default btn-delete" data-compare="1" data-id="{{id}}">删除</button> -->
+      </td>
+    </tr>
+    {{/rows}}
+  </script>
+
+  <div class="modal fade" id="popup-add-diff"></div>
+
+	<script id="edit-template" type="text/x-tmpl-mustache">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h5 class="modal-title">{{title}}</h5>
+				</div>
+
+				<div class="modal-body">
+					<div class="container-fluid">
+						<div class="row">
+							<div class="form-group">
+								<div class="input-group">
+									<div class="input-group-addon">责任部门</div>
+									<input type="text" class="form-control" id="departmentName" value="{{departmentName}}">
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="input-group">
+									<div class="input-group-addon">使用状态</div>
+									 <select class="form-control" id="departmentUseStatus" required>
+			              {{#status}}
+			              <option value="{{id}}"{{#selected}} selected{{/selected}}>{{name}}</option>
+			              {{/status}}
+			            </select>
+								</div>
+							</div>
+
+							<div class="col-sm-8 col-sm-offset-2" style="margin-top: 10px; margin-bottom: 10px;">
+								<div class="col-sm-6">
+									<button type="sumbit" class="btn btn-block btn-primary" id="btn-save">确定</button>
+								</div>
+								<div class="col-sm-6">
+									<button type="sumbit" class="btn btn-block btn-default" data-dismiss="modal">取消</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</script>
+
+	<!-- <script src="js/vendor.js"></script>
+	<script src="js/diff-base-info-department.js"></script> -->
+</body>
+</html>

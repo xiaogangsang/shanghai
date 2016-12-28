@@ -106,7 +106,6 @@ common.showMenu = function (pageName) {
     }
 
     $('#menu-' + pageName).addClass('active').closest('.panel-collapse').collapse('show');
-
   }
 
   var $menus = $('#menu .list-group-item');

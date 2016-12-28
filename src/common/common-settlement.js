@@ -231,6 +231,13 @@ settlementCommon.parseMerchantLevel = function(status) {
   return this.merchantLevel[status];
 }
 
+// 责任部门使用状态
+settlementCommon.departmentUseStatus = {'1' : '启用', '2' : '停用', '3' : '删除'};
+settlementCommon.parseDepartmentUseStatus = function(status) {
+  return this.departmentUseStatus[status];
+}
+
+
 
 /**
  * 根据选项自动生成<option> html
@@ -319,9 +326,9 @@ settlementCommon.prehandleData = function(res) {
   // 接口错误, 弹alert
   // 内容错误(语义错误), 错误message显示在table里
   if (!!~~res.meta.result) {
-    if (res.data == null || res.data.detail == null || res.data.detail.count < 1) {
+    if (res.data == null || res.data.detail == null || res.data.detail.records == null || res.data.detail.records.length < 1) {
       // var errorMsg = res.meta.msg;
-      var errorMsg = '无满足条件记录';
+      var errorMsg = '查询成功，无满足条件记录';
       $('#dataTable tbody').html('<tr><td colspan="30" align="center">' + errorMsg + '</td></tr>');
       $('#summaryTable tbody').html('<tr><td colspan="30" align="center">' + errorMsg + '</td></tr>');
       $('#pager').html('');
@@ -329,9 +336,10 @@ settlementCommon.prehandleData = function(res) {
       return true;
     }
   } else {
-    alert(res.meta.msg);
-    $('#dataTable tbody').html('');
-    $('#summaryTable tbody').html('');
+    // alert(res.meta.msg);
+    var info = '<tr><td colspan="30" align="center">' + message + '</td></tr>';
+    $('#dataTable tbody').html(info);
+    $('#summaryTable tbody').html(info);
     $('#pager').html('');
   }
   return false;
@@ -344,7 +352,7 @@ settlementCommon.clone = function(objectToBeCloned) {
   }
 
   var objectClone;
-  
+
   // Filter out special objects.
   var Constructor = objectToBeCloned.constructor;
   switch (Constructor) {
@@ -358,12 +366,12 @@ settlementCommon.clone = function(objectToBeCloned) {
     default:
       objectClone = new Constructor();
   }
-  
+
   // Clone each property.
   for (var prop in objectToBeCloned) {
     objectClone[prop] = this.clone(objectToBeCloned[prop]);
   }
-  
+
   return objectClone;
 }
 
@@ -371,6 +379,56 @@ settlementCommon.resetInput = function(input) {
   input.replaceWith(input.val('').clone(true));
 }
 
+settlementCommon.success = function (msg) {
+  var alertHtml = '<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert">&times;</button><div class="alert-content">' + msg + '</div></div>';
+  $('.breadcrumb').after(alertHtml);
+}
+
+settlementCommon.warning = function (msg) {
+  var alertHtml = '<div class="alert alert-warning alert-dismissible"><button type="button" class="close" data-dismiss="alert">&times;</button><div class="alert-content">' + msg + '</div></div>';
+  $('.breadcrumb').after(alertHtml);
+}
+
+settlementCommon.fetchBasicData = function (callback) {
+  $.ajax({
+    url: window.location.protocol + '//' + window.location.host + '/MovieOps/' + 'settlement/sign/allList',
+    type: 'GET',
+    dataType: 'json',
+  })
+  .done(function(res) {
+    if (!!~~res.meta.result) {
+
+      // 处理标识
+      var signObj = {};
+      _(res.data.detail.sign).each(function(item) {
+        signObj[item.id] = item.signName;
+      });
+
+      // 处理状态
+      var disposeObj = {};
+      _(res.data.detail.dispose).each(function(item) {
+        disposeObj[item.id] = item.disposeName;
+      });
+
+      // 责任部门
+      var departmentObj = {};
+      _(res.data.detail.department).each(function(item) {
+        departmentObj[item.id] = item.departmentName;
+      });
+
+      // 差异类型
+      var typeObj = {};
+      _(res.data.detail.type).each(function(item) {
+        typeObj[item.id] = item.differenceName;
+      });
+
+      callback({"sign" : signObj, "dispose" : disposeObj, "department" : departmentObj, "type" : typeObj});
+
+    } else {
+      callback(null);
+    }
+  })
+}
 
 /************************************************* 全局初始化处理 *****************************************************/
 
@@ -397,18 +455,28 @@ $(function() {
   });
 });
 
-
-// 查询日期的跨度小于等于7天
+// 必填项添加*号标识
 $(function() {
-  $('#search_startTime').datetimepicker({
+  var elements = $('[required]');
+  elements.each(function(index, el) {
+    var $element = $($(this).siblings('.input-group-addon')[0]);
+    $element.html($element.text() + '<span style="color: #D70F0F; font-size: 16px;"> *</span>');
+  });
+});
+
+$(function() {
+  // 查询日期的跨度小于等于7天
+  settlementCommon.datetimepickerRegister($('#search_startTime'), $('#search_endTime'));
+});
+
+settlementCommon.datetimepickerRegister = function ($startTime, $endTime) {
+  $startTime.datetimepicker({
     format: 'yyyy-mm-dd',
     language: 'zh-CN',
     minView: 2,
     todayHighlight: true,
     autoclose: true,
   }).on('changeDate', function (ev) {
-    var $endTime = $('#search_endTime');
-
     var startDate = new Date(ev.date.valueOf());
     var endDate = new Date(startDate);
     endDate.setDate(startDate.getDate() + 6);
@@ -425,15 +493,13 @@ $(function() {
     $endTime.datetimepicker('setDate', correctEndDate);
   });
 
-  $('#search_endTime').datetimepicker({
+  $endTime.datetimepicker({
     format: 'yyyy-mm-dd',
     language: 'zh-CN',
     minView: 2,
     todayHighlight: true,
     autoclose: true,
   }).on('changeDate', function (ev) {
-    var $startTime = $('#search_startTime');
-
     var endDate = new Date(ev.date.valueOf());
     var startDate = new Date(endDate);
     startDate.setDate(endDate.getDate() - 6);
@@ -449,6 +515,4 @@ $(function() {
 
     $startTime.datetimepicker('setDate', correctStartDate);
   });
-});
-
-
+}

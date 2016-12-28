@@ -187,6 +187,7 @@
           <a href="balance-out-merchant-batch-update.html" class="list-group-item" id="menu-balance-out-merchant-batch-update" data-id="248" style="display:none">商户信息批量更新</a>
           <a href="balance-out-file-operate-result.html" class="list-group-item" id="menu-balance-out-file-operate-result" data-id="249" style="display:none">对账批处理结果</a>
           <a href="balance-out-record-batch-creator.html" class="list-group-item" id="menu-balance-out-record-batch-creator" data-id="287" style="display:none">批量新增出货/退货记录</a>
+          <a href="balance-out-error.html" class="list-group-item" id="menu-balance-out-error" data-id="217">出货异常数据</a>
         </div>
       </div>
     </div>
@@ -198,6 +199,28 @@
           <a href="money-out-summary.html" class="list-group-item" id="menu-money-out-summary" data-id="147" style="display:none">拨款汇总</a>
           <a href="money-out-log.html" class="list-group-item" id="menu-money-out-log" data-id="148" style="display:none">拨款日志</a>
           <a href="money-out-export.html" class="list-group-item" id="menu-money-out-export" data-id="217" style="display:none">拨款导出下载</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="display:none">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#base"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 基础信息管理</a>
+      <div id="base" class="panel-collapse collapse" role="tabpanel">
+        <div class="list-group">
+          <a href="diff-base-info-type.html" class="list-group-item" id="menu-diff-base-info-type" data-id="217" >差异类型管理</a>
+          <a href="diff-base-info-mark.html" class="list-group-item" id="menu-diff-base-info-mark" data-id="217">差异处理标识管理</a>
+          <a href="diff-base-info-department.html" class="list-group-item" id="menu-diff-base-info-department" data-id="217">责任部门管理</a>
+          <a href="diff-base-info-status.html" class="list-group-item" id="menu-diff-base-info-status" data-id="217">差异处理状态管理</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="display:none">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#diff"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 差异管理</a>
+      <div id="diff" class="panel-collapse collapse" role="tabpanel">
+        <div class="list-group">
+          <a href="diff-operation.html" class="list-group-item" id="menu-diff-operation" data-id="217">差异处理</a>
+          <a href="diff-query.html" class="list-group-item" id="menu-diff-query" data-id="217">差异数据查询</a>
         </div>
       </div>
     </div>
