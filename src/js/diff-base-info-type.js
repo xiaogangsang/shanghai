@@ -121,8 +121,12 @@ function queryData (callback) {
 					});
 					$('#add_disposeId').html(disposeHtml);
 					callback();
+				} else {
+					settlementCommon.warning(disposeRes.meta.msg);
 				}
 			});
+		} else {
+			settlementCommon.warning(departmentRes.meta.msg);
 		}
 	});
 }
