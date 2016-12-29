@@ -68,6 +68,8 @@ $(function () {
     setChannel(false);
     setPattern(1);
     setPriority(false);
+
+    $('#formUnit button[type=submit]').prop('disabled', false);
   }
 
   //upper of range
@@ -775,7 +777,7 @@ $(document).on('submit', '#formUnit', function (event) {
   }
 
   _submitting = true;
-  $('#formUnit input[type=submit]').prop('disabled', true).text('更新中...');
+  $('#formUnit button[type=submit]').prop('disabled', true).text('更新中...');
   var sendData = {
     name: $.trim($('#name').val()),
     signNo: $('#signNo').val(),
@@ -887,7 +889,7 @@ $(document).on('submit', '#formUnit', function (event) {
   })
   .done(function (res) {
     _submitting = false;
-    $('#formUnit input[type=submit]').prop('disabled', false).text('保存');
+    $('#formUnit button[type=submit]').prop('disabled', false).text('保存');
     if (!!~~res.meta.result) {
       if (ajaxUrl == 'activity/updateActivity') {
         alert('更新成功！');
@@ -1022,8 +1024,12 @@ function setPlan(planId) {
 function setWandaTicket(wandaTicketId) {
   $.ajax({
     url: common.API_HOST + 'activity/wandaActivityTicketList',
-    type: 'GET',
+    type: 'POST',
     dataType: 'json',
+    data: {
+      pageIndex: 1,
+      pageSize: 9999,
+    },
   })
   .done(function (res) {
     if (!!~~res.meta.result) {
@@ -1283,7 +1289,12 @@ function setEdit(unitId) {
       _popupDataCache.totalTicket = ~~unit.totalTicket < 1 ? '' : ~~unit.totalTicket;
       _popupDataCache.dailyBudgetList = unit.dailyBudgetList;
       _popupDataCache.cusTypes = unit.cusTypes != null ? unit.cusTypes : [];
-      _popupDataCache.channels = unit.channels != null ? unit.channels : [];
+      _popupDataCache.channels = [];
+      if (unit.channels != null) {
+        _(unit.channels).forEach(function (channelId) {
+          _popupDataCache.channels.push(~~channelId);
+        });
+      }
       _popupDataCache.films = unit.films != null ? unit.filmsfilms : [];
       _popupDataCache.configType = unit.configType != null ? unit.configType : [];
       _popupDataCache.qualification = unit.qualification != undefined ? unit.qualification[0] : '';
@@ -1306,7 +1317,11 @@ function setEdit(unitId) {
           } else {
             alert('接口错误：' + res.meta.msg);
           }
+
+          $('#formUnit button[type=submit]').prop('disabled', false);
         });
+      } else {
+        $('#formUnit button[type=submit]').prop('disabled', false);
       }
 
       _popupDataCache.timetables = unit.timetables;

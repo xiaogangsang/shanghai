@@ -7,7 +7,6 @@ var _cities = [];
 var _pageIndex = 1;
 var _pageSize = 10;
 var _pageTotal = 0;
-var _bindCinemaName = '';
 var _querying = false;
 var searchCache = {};
 var useCache = false;
@@ -196,12 +195,12 @@ $('#dataTable').on('click', '.btn-bind', function (e) {
   var tpCinemaId = $(this).closest('tr').data('id');
   var sourceId = $(this).closest('tr').data('sourceid');
 
-  $('#bindCinemaName').val(tpCinemaName);
+  $('#filter_cinemaName').val(tpCinemaName);
   $('#bindTpCinema').text(tpCinemaName);
   $('#cinemaId').val();
   $('#thirdPartyCinemaId').val(tpCinemaId);
   $('#sourceId').val(sourceId);
-  $('#formSearchCinema').trigger('submit');
+  $('#popup-cinema-bind tbody').html('<tr><td colspan="5" align="center">点击搜索</td></tr>');
   $('#popup-cinema-bind').modal('show');
 });
 
@@ -228,47 +227,47 @@ $('#dataTable').on('click', '.btn-bind-create', function (e) {
 
 $(document).on('submit', '#formSearchCinema', function (e) {
   e.preventDefault();
-  var bindCinemaName = $.trim($('#bindCinemaName').val());
-  if (bindCinemaName == '' || bindCinemaName == undefined || _bindCinemaName == bindCinemaName) {
-    if (bindCinemaName == '') {
-      alert('搜索关键词不能为空！');
-    }
-
-    return false;
-  }
-
-  _bindCinemaName = bindCinemaName;
   if (!!_querying) {
     return false;
   }
 
   _querying = true;
+  $('#popup-cinema-bind tbody').html('<tr><td colspan="5" align="center">搜索中...</td></tr>');
   $.ajax({
-    url: common.API_HOST + 'common/cinemaList',
+    url: common.API_HOST + 'common/cinemas',
     type: 'POST',
     dataType: 'json',
-    data: { cinemaName: bindCinemaName },
+    data: {
+      cinemaName: $('#filter_cinemaName').val().trim(),
+      brandId: $('#filter_brandId').val(),
+      cityId: $('#filter_cityId').val(),
+      tel: $('#filter_tel').val().trim(),
+      longitude: $('#filter_longitude').val().trim(),
+      latitude: $('#filter_latitude').val().trim(),
+      address: $('#filter_address').val().trim(),
+    },
   })
   .done(function (res) {
     _querying = false;
     if (!!~~res.meta.result) {
       if (res.data.length <= 0) {
-        var html = '<tr><td colspan="5" align="center">暂无匹配，请尝试搜索其他影院名</td></tr>';
-        $('#popup-cinema-bind tbody').html(html);
+        $('#popup-cinema-bind tbody').html('<tr><td colspan="5" align="center">暂无匹配，请尝试修改搜索条件</td></tr>');
         return false;
       }
 
-      var data = { rows: res.data };
+      var data = { rows: res.data.rows };
       var template = $('#tr-template').html();
       Mustache.parse(template);
       var html = Mustache.render(template, data);
       $('#popup-cinema-bind tbody').html(html);
+
       $('#popup-cinema-bind').on('click', '#cinemaTable tbody tr', function (e) {
         e.preventDefault();
         $('#cinemaTable tbody tr.selected').removeClass('selected');
         $(this).addClass('selected');
         $('#cinemaId').val($(this).data('id'));
       });
+
     } else {
       alert('接口错误：' + res.meta.msg);
     }
@@ -399,8 +398,7 @@ function setBrand() {
         html += '<option value="' + brand.id + '">' + brand.name + '</option>';
       });
 
-      $('#search_brandId').append(html);
-      $('#search_brandId').chosen({ disable_search_threshold: 10, allow_single_deselect: true });
+      $('#search_brandId, #filter_brandId').append(html);
     } else {
       alert('接口错误：' + res.meta.msg);
     }
@@ -426,8 +424,8 @@ function setCity() {
         html += '<option value="' + item.cityId + '">' + item.cityName + '</option>';
       });
 
-      $('#search_cityId').append(html);
-      $('#search_cityId').chosen({ disable_search_threshold: 10, allow_single_deselect: true });
+      $('#search_cityId, #filter_cityId').append(html);
+      $('#search_cityId, #filter_cityId').chosen({ disable_search_threshold: 10, allow_single_deselect: true });
     } else {
       alert('接口错误：' + res.meta.msg);
     }

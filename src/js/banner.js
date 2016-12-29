@@ -1,6 +1,8 @@
 'use strict;'
 
 var common = require('common');
+require('fineUploader');
+
 var _channels = {};
 var _cities = [];
 var _choosed = [];
@@ -15,11 +17,13 @@ var _dataCache;
 var _submitting = false;
 var _provinces = [];
 var _bannerType = ['', '首页', '热门影片', '交叉销售位', '选座页配置'];
+var _cacheCinemas = [];
 
 $(function () {
   common.init('banner');
   setChannel();
   setProvince();
+  setBrand();
 
   $('#search_startTime').datetimepicker({
     format: 'yyyy-mm-dd',
@@ -200,6 +204,175 @@ $(document).on('change', 'input[name=areaType]', function (e) {
   }
 });
 
+/**
+ * 选择影院
+ */
+$(document).on('change', 'input[name=cinemaType]', function (e) {
+  e.preventDefault();
+  if (!!~~$('input[name=cinemaType]:checked').val()) {
+    $('#btn-cinema').closest('tr').show();
+  } else {
+    $('#btn-cinema').closest('tr').hide();
+  }
+});
+
+$(document).on('click', '#btn-cinema', function (event) {
+  event.preventDefault();
+  $('#search-cinema-brandId option ,#search-cinema-provinceId option').prop('selected', false);
+  $('#search-cinema-cityId').html('<option value="">城市</option>');
+  $('#search-cinema-candidate tbody, #search-cinema-choosed tbody').html('');
+  $('#input-cinema-filter, #search-cinema-cinemaName').val('');
+  if (_cacheCinemas != null && _cacheCinemas.length > 0) {
+    var html = '';
+    _(_cacheCinemas).forEach(function (cinema) {
+      html += '<tr data-id="' + cinema.cinemaId + '"><td>' + cinema.cinemaName + '</td><td>' + cinema.cityName + '</td><td>' + cinema.brandName + '</td></tr>';
+    });
+
+    $('#search-cinema-choosed tbody').html(html);
+    $('#input-cinema-filter').quicksearch('#search-cinema-choosed tbody tr');
+  }
+
+  $('#popup-unit-cinema').modal('show');
+});
+
+$(document).on('change click', '#search-cinema-provinceId', function (e) {
+  var provinceId = parseInt($(this).val());
+  var options = '';
+  if (!!+provinceId) {
+    var province = _.find(_provinces, { provinceId: provinceId.toString() });
+    var cityList = province.cityList;
+    _(cityList).forEach(function (value, key) {
+      options += '<option value="' + value.cityId + '">' + value.cityName + '</option>';
+    });
+  } else {
+    options = '<option value="">城市</option>';
+  }
+
+  $('#search-cinema-cityId').html(options);
+  return false;
+});
+
+$(document).on('click', '#btn-search-cinema', function (event) {
+  event.preventDefault();
+  var sendData = {
+    brandId: $('#search-cinema-brandId').val(),
+    cityId: $('#search-cinema-cityId').val(),
+    cinemaName: $.trim($('#search-cinema-cinemaName').val()),
+    associationStatus: 1,
+    onlineStatus: 1,
+    pageIndex: 1,
+    pageSize: 9999,
+  };
+  if (sendData.brandId == '' && sendData.cityId == '') {
+    alert('院线或城市，请至少选择一个！');
+    $('#search-cinema-brandId').focus();
+    return false;
+  }
+
+  $('#search-cinema-candidate tbody').html('<tr><td colspan="3" align="center">查询中，请稍等...</td></tr>');
+  $.ajax({
+    url: common.API_HOST + 'common/cinemas',
+    type: 'POST',
+    dataType: 'json',
+    data: sendData,
+  })
+  .done(function (res) {
+    if (!!~~res.meta.result) {
+      if (res.data.rows.length <= 0) {
+        $('#search-cinema-candidate tbody').html('<tr><td colspan="3" align="center">查不到数据！</td></tr>');
+        return false;
+      }
+
+      var html = '';
+      _(res.data.rows).forEach(function (cinema) {
+        html += '<tr data-id="' + cinema.id + '"><td>' + cinema.name + '</td><td>' + cinema.cityName + '</td><td>' + cinema.brandName + '</td></tr>';
+      });
+
+      $('#search-cinema-candidate tbody').html(html);
+    } else {
+      $('#search-cinema-candidate tbody').html('<tr><td colspan="3" align="center">查不到数据！</td></tr>');
+      alert('接口错误：' + res.meta.msg);
+    }
+  });
+});
+
+$(document).on('click', '#search-cinema-candidate tbody tr, #search-cinema-choosed tbody tr', function (event) {
+  event.preventDefault();
+  $(this).toggleClass('selected');
+});
+
+$(document).on('click', '#search-cinema-add-all', function (event) {
+  event.preventDefault();
+  var choosedIds = [];
+  $('#search-cinema-choosed tbody tr').each(function (index, el) {
+    choosedIds.push($(el).data('id'));
+  });
+
+  $('#search-cinema-candidate tbody tr').each(function (index, el) {
+    if (choosedIds.indexOf($(el).data('id')) == -1) {
+      $(el).clone().appendTo('#search-cinema-choosed tbody').removeClass('selected');
+    }
+  });
+
+  $('#input-cinema-filter').quicksearch('#search-cinema-choosed tbody tr');
+  $('#choosedCount').text($('#search-cinema-choosed tbody tr').length);
+});
+
+$(document).on('click', '#search-cinema-add', function (event) {
+  event.preventDefault();
+  var choosedIds = [];
+  $('#search-cinema-choosed tbody tr').each(function (index, el) {
+    choosedIds.push($(el).data('id'));
+  });
+
+  $('#search-cinema-candidate tbody tr.selected').each(function (index, el) {
+    if (choosedIds.indexOf($(el).data('id')) == -1) {
+      $(el).clone().appendTo('#search-cinema-choosed tbody').removeClass('selected');
+    }
+  });
+
+  $('#input-cinema-filter').quicksearch('#search-cinema-choosed tbody tr');
+  $('#choosedCount').text($('#search-cinema-choosed tbody tr').length);
+});
+
+$(document).on('click', '#search-cinema-remove-all', function (event) {
+  event.preventDefault();
+  $('#search-cinema-choosed tbody tr').remove();
+  $('#input-cinema-filter').quicksearch('#search-cinema-choosed tbody tr');
+  $('#choosedCount').text('0');
+});
+
+$(document).on('click', '#search-cinema-remove', function (event) {
+  event.preventDefault();
+  $('#search-cinema-choosed tbody tr.selected').remove();
+  $('#input-cinema-filter').quicksearch('#search-cinema-choosed tbody tr');
+  $('#choosedCount').text($('#search-cinema-choosed tbody tr').length);
+});
+
+$(document).on('click', '#btn-cinema-filter', function (event) {
+  event.preventDefault();
+  $('#input-cinema-filter').val('');
+  $('#search-cinema-choosed tbody tr').show();
+});
+
+$(document).on('submit', '#popup-unit-cinema form', function (event) {
+  event.preventDefault();
+  _cacheCinemas = $('#search-cinema-choosed tbody tr').map(function () {
+    var cinema = {
+      cinemaId: $(this).data('id'),
+      cinemaName: $(this).find('td:nth-child(1)').html(),
+      cityName: $(this).find('td:nth-child(2)').html(),
+      brandName: $(this).find('td:nth-child(3)').html(),
+    };
+    return cinema;
+  }).get();
+  $('#popup-unit-cinema').modal('hide');
+  return false;
+});
+
+/**
+ * 编辑按钮
+ */
 $('#dataTable').on('click', '.btn-edit', function (e) {
   e.preventDefault();
   var id = $(this).closest('tr').data('id');
@@ -350,10 +523,9 @@ $(document).on('submit', '#popup-banner-form form', function (event) {
           return false;
         }
       }
-
       sendData.imageUrl = $('#popup-banner-form #imageUrl').val();
       sendData.link = $('#popup-banner-form #link').val();
-      break;
+    break;
     case 2:
       sendData.bannerType = ~~$('#popup-banner-form #bannerType').val();
       sendData.bannerName = $('#popup-banner-form #bannerName').val().trim();
@@ -370,13 +542,24 @@ $(document).on('submit', '#popup-banner-form form', function (event) {
       }
 
       sendData.filmId = ~~$('#popup-banner-form #filmId').val();
-      break;
+    break;
     case 3:
       sendData.bannerType = ~~$('#popup-banner-form #bannerType').val();
       sendData.bannerName = $('#popup-banner-form #bannerName').val().trim();
       sendData.channelId = ~~$('#popup-banner-form input[name=channelId]:checked').val();
       sendData.imageUrl = $('#popup-banner-form #imageUrl').val();
       sendData.link = $('#popup-banner-form #link').val();
+      sendData.cinemaType = ~~$('input[name=cinemaType]:checked').val();
+      sendData.cinemaList = [];
+      if (sendData.cinemaType == 1) {
+        _(_cacheCinemas).forEach(function(item){
+          sendData.cinemaList.push(item.cinemaId);
+        });
+        if (sendData.cinemaList.length < 1) {
+          alert('当前选择了限制影院，请至少选择一个影院！');
+          return false;
+        }
+      }
       break;
     case 4:
       sendData.iconStatus = ~~$('#popup-banner-form input[name=status]:checked').val();
@@ -393,11 +576,11 @@ $(document).on('submit', '#popup-banner-form form', function (event) {
         sendData.picUrl = sendData.picUrl.join(',');
       }
 
-      break;
+    break;
     default:
       alert('配置类型不存在！');
       return false;
-      break;
+    break;
   }
 
   var ajaxUrl = sendData.bannerType == undefined ? common.API_HOST + 'front/seatIcon/add' : common.API_HOST + 'banner/saveBanner';
@@ -437,35 +620,6 @@ $(document).on('submit', '#popup-banner-form form', function (event) {
   });
 
   return false;
-});
-
-$(document).on('click', '#popup-banner-form #btn-upload, #popup-banner-form .btn-upload-seat', function (event) {
-  event.preventDefault();
-  var $this = $(this);
-  $('#fileupload').next('span').remove();
-  $('#popup-banner-upload').modal('show');
-  $('#fileupload').data('url', common.API_HOST + 'banner/uploadPic').fileupload({
-    dataType: 'json',
-    add: function (e, data) {
-      $('#fileupload').next('span').remove();
-      $('#fileupload').after(' <span>' + data.files[0].name + '</span>');
-      $('#popup-banner-upload button.btn-primary').off('click').on('click', function () {
-        $(this).prop('disable', true).text('上传中...');
-        data.submit();
-      });
-    },
-
-    done: function (e, data) {
-      $('#popup-banner-upload button.btn-primary').prop('disable', false).text('上传');
-      if (!!~~data.result.meta.result) {
-        $this.closest('tr').find('input').val(data.result.data.savePath);
-        alert('上传成功！');
-        $('#popup-banner-upload').modal('hide');
-      } else {
-        alert('上传失败：' + data.result.meta.msg);
-      }
-    },
-  });
 });
 
 $(document).on('click', '#popup-banner-form #btn-city', function (event) {
@@ -630,12 +784,14 @@ function setModal(bannerData, type) {
   var data;
   var template;
   var html;
+  var uploadButton;
   if (bannerData) {
     data = { banner: bannerData, channels: _channels };
     switch (+bannerData.bannerType) {
       case 1:
         template = $('#edit-home-template').html();
-        break;
+        uploadButton = '#fine-upload';
+      break;
       case 2:
         template = $('#edit-hot-template').html();
         data.movies = _movies;
@@ -645,9 +801,30 @@ function setModal(bannerData, type) {
           }
         });
 
-        break;
+      break;
       case 3:
         template = $('#edit-sale-template').html();
+        data.banner.cinemaType = 0;
+        if (data.banner.cinemaList != null && data.banner.cinemaList.length > 0) {
+          data.banner.cinemaType = 1;
+          $.ajax({
+            url: common.API_HOST + 'common/getCinemasByIds',
+            type: 'POST',
+            dataType: 'json',
+            data: { ids: data.banner.cinemaList.join('|') },
+          })
+          .done(function (res) {
+            if (!!~~res.meta.result) {
+              if (res.data == null || res.data.length < 1) {
+                return false;
+              } else {
+                _cacheCinemas = res.data;
+              }
+            } else {
+              alert('接口错误：' + res.meta.msg);
+            }
+          });
+        }
         break;
       case 4:
         template = $('#edit-seat-template').html();
@@ -662,7 +839,7 @@ function setModal(bannerData, type) {
           bannerData.pic += '<img src="' + url + '" title="' + url + '" width="32" height="32"> ';
         });
 
-        break;
+      break;
     }
 
     $('#popup-banner-form .modal-title').html('编辑[' + _bannerType[bannerData.bannerType] + ']');
@@ -671,18 +848,21 @@ function setModal(bannerData, type) {
     switch (+type) {
       case 1:
         template = $('#create-home-template').html();
-        break;
+        uploadButton = '#fine-upload';
+      break;
       case 2:
         template = $('#create-hot-template').html();
         data.movies = _movies;
-        break;
+      break;
       case 3:
         template = $('#create-sale-template').html();
-        break;
+        uploadButton = '#fine-upload';
+      break;
       case 4:
         template = $('#create-seat-template').html();
+        uploadButton = '.fine-upload';
         data.movies = _movies;
-        break;
+      break;
     }
 
     $('#popup-banner-form .modal-title').html('新建[' + _bannerType[type] + ']');
@@ -692,6 +872,65 @@ function setModal(bannerData, type) {
   html = Mustache.render(template, data);
   $('#popup-banner-form .modal-body').html(html);
   $('#popup-banner-form').modal('show');
+  $('#popup-banner-form').on('shown.bs.modal', function (event) {
+    event.preventDefault();
+    if (uploadButton != undefined) {
+      if (type == 4) {
+        for (var i = 0; i < 4; i++) {
+          var uploader = new qq.FineUploaderBasic({
+            button: $(uploadButton)[i],
+            request: {
+              endpoint: common.API_HOST + 'banner/uploadPic',
+              inputName: 'file',
+              filenameParam: 'file',
+            },
+            callbacks: {
+              onError: function (id, fileName, errorReason) {
+                if (errorReason != 'Upload failure reason unknown') {
+                  alert('上传失败' + errorReason);
+                }
+              },
+
+              onComplete: function (id, fileName, responseJSON) {
+                if (!!~~responseJSON.meta.result) {
+                  $(this._options.button).closest('tr').find('input[type=text]').val(responseJSON.data.savePath);
+                  alert('上传成功！');
+                } else {
+                  alert('上传失败：' + responseJSON.meta.msg);
+                }
+              },
+            },
+          });
+        }
+      } else {
+        var uploader = new qq.FineUploaderBasic({
+          button: $(uploadButton)[0],
+          request: {
+            endpoint: common.API_HOST + 'banner/uploadPic',
+            inputName: 'file',
+            filenameParam: 'file',
+          },
+          callbacks: {
+            onError: function (id, fileName, errorReason) {
+              if (errorReason != 'Upload failure reason unknown') {
+                alert('上传失败' + errorReason);
+              }
+            },
+
+            onComplete: function (id, fileName, responseJSON) {
+              if (!!~~responseJSON.meta.result) {
+                $(uploadButton).closest('tr').find('input[type=text]').val(responseJSON.data.savePath);
+                alert('上传成功！');
+              } else {
+                alert('上传失败：' + responseJSON.meta.msg);
+              }
+            },
+          },
+        });
+      }
+    }
+  });;
+
   return false;
 }
 
@@ -755,7 +994,7 @@ function setProvince() {
         html += '<option value="' + province.provinceId + '">' + province.provinceName + '</option>';
       });
 
-      $('#search_provinceId').append(html);
+      $('#search_provinceId,#search-cinema-provinceId').append(html);
     } else {
       alert('接口错误：' + res.meta.msg);
     }
@@ -776,4 +1015,21 @@ function setPager(total, pageIndex, rowsSize, pageTotal) {
   Mustache.parse(template);
   var html = Mustache.render(template, data);
   $('#pager').html(html);
+}
+
+function setBrand() {
+  $.ajax({
+    url: common.API_HOST + 'common/brandList',
+    type: 'GET',
+    dataType: 'json',
+  })
+  .done(function (res) {
+    if (!!~~res.meta.result) {
+      _(res.data).forEach(function (brand) {
+        $('#search-cinema-brandId').append($('<option></option>').attr('value', brand.id).text(brand.name));
+      });
+    } else {
+      alert('接口错误：' + res.meta.msg);
+    }
+  });
 }

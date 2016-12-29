@@ -92,7 +92,7 @@
             <div class="col-xs-12 extra-btns">
               <button type="button" class="btn btn-default" id="btn-delete-multi">删除选中用户</button>
               <a href="#" class="btn btn-default" id="btn-export" target="_blank">导出全部用户</a>
-              <button type="button" class="btn btn-default" id="btn-import">批量导入用户</button>
+              <div class="btn btn-default" id="fileupload">批量导入用户</div>
             </div>
           </div>
 
@@ -130,9 +130,6 @@
   </div>
 
   <script src="js/vendor.js"></script>
-  <script src="lib/blueimp-file-upload/jquery.ui.widget.js"></script>
-  <script src="lib/blueimp-file-upload/jquery.iframe-transport.js"></script>
-  <script src="lib/blueimp-file-upload/jquery.fileupload.js"></script>
   <script src="js/user.js"></script>
 
   <script id="pager-template" type="text/x-tmpl-mustache">
@@ -173,7 +170,5 @@
   </script>
 
   @@include('component/popup-user-form.tpl')
-  @@include('component/popup-user-import.tpl')
-
 </body>
 </html>

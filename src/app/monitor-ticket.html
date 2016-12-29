@@ -27,6 +27,22 @@
           <li class="active">出票失败率</li>
         </ol>
 
+        <form id="formDict" style="min-width: 320px;max-width: 375px;">
+          <input type="hidden" id="dict_id" value="5">
+          <div class="row">
+            <div class="form-group col-sm-8">
+              <div class="input-group">
+                <div class="input-group-addon">失败率报警值%</div>
+                <input type="text" class="form-control" id="dict_value" required data-parsley-pattern="^\d{1,2}$|^\d{1,2}\.{1}\d{1,2}$|^0$|^100$" data-parsley-error-message="阈值应该在0~100之间，最多2位小数" data-parsley-errors-container="#dict_error">
+              </div>
+            </div>
+            <div class="form-group col-sm-4">
+              <button type="submit" class="btn btn-block btn-primary">修改</button>
+            </div>
+            <div class="form-group col-xs-12" id="dict_error"></div>
+          </div>
+        </form>
+
         <form id="formSearch" class="search-area clearfix">
 
           <input type="hidden" id="search_type" value="4">
