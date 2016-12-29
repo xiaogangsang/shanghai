@@ -992,18 +992,18 @@ function setPriority(exclude) {
 
 function setPlan(planId) {
   $.ajax({
-    url: common.API_HOST + 'plan/planList',
+    url: common.API_HOST + 'plan/getAllPlans',
     type: 'POST',
     dataType: 'json',
     data: { status: 1, pageIndex: 1, pageSize: 9999 },
   })
   .done(function (res) {
     if (!!~~res.meta.result) {
-      if (res.data == null || res.data.rows.length < 1) {
+      if (res.data == null || res.data.length < 1) {
         alert('没有已上线的计划，这不正常哦！');
         return false;
       } else {
-        _plans = res.data.rows;
+        _plans = res.data;
         var html = '';
         _(_plans).forEach(function (plan) {
           if (planId == plan.id) {
