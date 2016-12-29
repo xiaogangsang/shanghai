@@ -337,7 +337,7 @@ settlementCommon.prehandleData = function(res) {
     }
   } else {
     // alert(res.meta.msg);
-    var info = '<tr><td colspan="30" align="center">' + message + '</td></tr>';
+    var info = '<tr><td colspan="30" align="center">' + res.meta.msg + '</td></tr>';
     $('#dataTable tbody').html(info);
     $('#summaryTable tbody').html(info);
     $('#pager').html('');

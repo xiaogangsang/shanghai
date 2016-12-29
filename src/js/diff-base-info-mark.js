@@ -100,6 +100,8 @@ function queryData (callback) {
 			});
 			$('#add_differenceId').html(typeHtml);
 			callback();
+		} else {
+			settlementCommon.warning(typeRes.meta.msg);
 		}
 	});
 }
