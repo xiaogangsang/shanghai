@@ -963,7 +963,7 @@ function setBrand() {
 
 function setPriority(exclude) {
   $.ajax({
-    url: common.API_HOST + 'activity/activityList',
+    url: common.API_HOST + 'activity/priorityList',
     type: 'POST',
     dataType: 'json',
     data: { pageIndex: 1, pageSize: 999999, sord: 'priority', sidx: 'DESC' },
@@ -971,7 +971,7 @@ function setPriority(exclude) {
   .done(function (res) {
     if (!!~~res.meta.result) {
       var html = '';
-      _(res.data.rows).forEach(function (value, key) {
+      _(res.data).forEach(function (value, key) {
         if (value.priority != exclude) {
           _priorities.push(value.priority);
           html += '<tr><th>' + value.priority + '</th><td>' + value.name + '</td></tr>';
