@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="images/favicon.ico" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>合作方管理</title>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/class.css">
+</head>
+<body>
+
+  @@include('component/header.tpl')
+
+  <div class="container-fluid">
+
+    <div class="row">
+
+      @@include('component/sidebar.tpl')
+
+      <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+        <ol class="breadcrumb">
+          <li>合作方管理</li>
+          <li class="active">TP方管理</li>
+        </ol>
+
+        <div class="content-area">
+
+          <div class="table-responsive" id="dataTable">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>名称</th>
+                  <th>优先级</th>
+                  <th>状态</th>
+                  <th width="100">操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td colspan="5" align="center">加载中...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="js/vendor.js"></script>
+  <script src="js/tp.js"></script>
+
+  <script id="table-template" type="text/x-tmpl-mustache">
+    {{#rows}}
+    <tr data-id="{{sourceId}}" data-status="{{status}}">
+      <td>{{sourceId}}</td>
+      <td>{{sourceName}}</td>
+      <td>{{sort}}</td>
+      <td>{{statusName}}</td>
+      <td>
+        <button type="button" class="btn btn-xs btn-default btn-status" data-status="{{status}}">{{#status}}下线{{/status}}{{^status}}上线{{/status}}</button>
+        <button type="button" class="btn btn-xs btn-default btn-edit">编辑</button>
+      </td>
+    </tr>
+    {{/rows}}
+  </script>
+
+  <div class="modal fade" id="popup-tp-form" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form>
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">编辑TP方</h4>
+          </div>
+          <div class="modal-body">
+            <input type="hidden" id="sourceId" value="">
+            <div class="edit-section">
+              <div class="table-responsive">
+                <table class="table">
+                  <tbody>
+                    <tr>
+                      <th width="80">名称</th>
+                      <td><input type="text" class="form-control" id="sourceName" value="" required></td>
+                    </tr>
+                    <tr>
+                      <th>优先级</th>
+                      <td><input type="text" class="form-control" id="sort" value="" required></td>
+                    </tr>
+                    <tr>
+                      <th>状态</th>
+                      <td>
+                        <label class="radio-inline"><input type="radio" name="status" value="1" required><span>上线</span></label>
+                        <label class="radio-inline"><input type="radio" name="status" value="0" required><span>下线</span></label>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">保存</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

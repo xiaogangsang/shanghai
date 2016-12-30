@@ -1,4 +1,4 @@
-'use strict;'
+'use strict';
 
 var common = require('common');
 var _brands = {};
@@ -13,25 +13,25 @@ var _screenType = [
   { id: 4, name: '普通' },
   { id: 1, name: 'IMAX' },
   { id: 2, name: 'DMAX' },
-  { id: 3, name: '巨幕' },
+  { id: 3, name: '巨幕' }
 ];
 var _hallType = [
   { id: 3, name: '普通' },
   { id: 1, name: '4D' },
-  { id: 2, name: '5D' },
+  { id: 2, name: '5D' }
 ];
 var _bindCinemaName = '';
 
 $(function () {
   common.init('hall');
 
-  //set search form
+  // set search form
   setBrand();
 
   $('#formSearch').trigger('submit');
 });
 
-//handle search form
+// handle search form
 $('#formSearch').on('click', 'button[type=submit]', function (event) {
   event.preventDefault();
   _pageIndex = 1;
@@ -47,7 +47,7 @@ $('#formSearch').on('submit', function (e) {
     storeName: $('#search_storeName').val(),
     status: $('#search_status').val(),
     relation: $('#search_relation').val(),
-    pageSize: _pageSize,
+    pageSize: _pageSize
   };
   if (!!_querying) {
     return false;
@@ -66,7 +66,7 @@ $('#formSearch').on('submit', function (e) {
     url: common.API_HOST + 'hall/standard/list',
     type: 'POST',
     dataType: 'json',
-    data: sendData,
+    data: sendData
   })
   .done(function (res) {
     _querying = false;
@@ -80,8 +80,8 @@ $('#formSearch').on('submit', function (e) {
         _pageTotal = Math.ceil(res.data.total / _pageSize);
         setPager(res.data.total, _pageIndex, res.data.data.length, _pageTotal);
         _(res.data.data).forEach(function (item) {
-          item.relation = item.relation == 1 ? '已关联' : '未关联';
-          item.onlineTime = common.getDate(new Date(item.onlineTime));
+          item.relationText = +item.relation === 1 ? '已关联' : '未关联';
+          item.onlineTime = typeof item.onlineTime !== 'undefined' && item.onlineTime !== null && item.onlineTime !== '' ? common.getDate(new Date(item.onlineTime)) : '';
         });
 
         setTableData(res.data.data);
@@ -155,7 +155,7 @@ $('#dataTable').on('click', '.btn-status', function (e) {
   var $tr = $(this).closest('tr');
   var $btn = $(this);
   var sendData = {
-    hallIdList: $tr.data('id'),
+    hallIdList: $tr.data('id')
   };
   var changeToStatus = $btn.data('status') == 1 ? 0 : 1;
   var statusName = changeToStatus ? '上线' : '下线';
@@ -164,7 +164,7 @@ $('#dataTable').on('click', '.btn-status', function (e) {
     url: common.API_HOST + ajaxUrl,
     type: 'POST',
     dataType: 'json',
-    data: sendData,
+    data: sendData
   })
   .done(function (res) {
     if (!!~~res.meta.result) {
@@ -184,7 +184,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     url: common.API_HOST + 'hall/standard/get',
     type: 'POST',
     dataType: 'json',
-    data: { hallId: $(this).closest('tr').data('id') },
+    data: { hallId: $(this).closest('tr').data('id') }
   })
   .done(function (res) {
     if (!!~~res.meta.result) {
@@ -195,6 +195,36 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
       alert('接口错误：' + res.meta.msg);
     }
   });
+});
+
+$('#dataTable').on('click', '.btn-delete', function (e) {
+  e.preventDefault();
+  var $btn = $(this);
+  var $tr = $(this).closest('tr');
+  $btn.prop('disabled', true);
+  var hallName = $tr.find('td:nth-child(3)').text();
+  var hallId = $tr.data('id');
+  if (window.confirm('确定要删除影厅【' + hallName + '】吗？')) {
+    $.ajax({
+      url: common.API_HOST + 'hall/standard/delete',
+      type: 'POST',
+      dataType: 'json',
+      data: { hallId: hallId }
+    })
+    .done(function (res) {
+      if (!!~~res.meta.result) {
+        alert('删除成功！');
+        $tr.animate({opacity: 0.25}, 600, function () {
+          $tr.remove();
+        });
+      } else {
+        alert('接口错误：' + res.meta.msg);
+        $btn.prop('disabled', false);
+      }
+    });
+  }
+  $btn.prop('disabled', false);
+  return false;
 });
 
 $(document).on('click', '#btn-create', function (e) {
@@ -221,14 +251,14 @@ $(document).on('click', '#btn-online-multi,#btn-offline-multi', function (e) {
     });
 
     var sendData = {
-      hallIdList: ids.join(','),
+      hallIdList: ids.join(',')
     };
     var ajaxUrl = changeToStatus == 1 ? 'hall/standard/online' : 'hall/standard/offline';
     $.ajax({
       url: common.API_HOST + ajaxUrl,
       type: 'POST',
       dataType: 'json',
-      data: sendData,
+      data: sendData
     })
     .done(function (res) {
       if (!!~~res.meta.result) {
@@ -278,13 +308,14 @@ $(document).on('submit', '#formSearchCinema', function (e) {
     url: common.API_HOST + 'common/cinemaList',
     type: 'POST',
     dataType: 'json',
-    data: { cinemaName: bindCinemaName },
+    data: { cinemaName: bindCinemaName }
   })
   .done(function (res) {
     _querying = false;
+    var html;
     if (!!~~res.meta.result) {
       if (res.data.length <= 0) {
-        var html = '<tr><td colspan="5" align="center">暂无匹配，请尝试搜索其他影院名</td></tr>';
+        html = '<tr><td colspan="5" align="center">暂无匹配，请尝试搜索其他影院名</td></tr>';
         $('#popup-hall-bind tbody').html(html);
         return false;
       }
@@ -292,10 +323,10 @@ $(document).on('submit', '#formSearchCinema', function (e) {
       var data = { rows: res.data };
       var template = $('#tr-template').html();
       Mustache.parse(template);
-      var html = Mustache.render(template, data);
+      html = Mustache.render(template, data);
       $('#popup-hall-bind tbody').html(html);
-      $('#popup-hall-bind').on('click', '#cinemaTable tbody tr', function (e) {
-        e.preventDefault();
+      $('#popup-hall-bind').on('click', '#cinemaTable tbody tr', function (event) {
+        event.preventDefault();
         $('#popup-hall-bind #bindSelect').prop('disabled', false);
         $('#cinemaTable tbody tr.selected').removeClass('selected');
         $(this).addClass('selected');
@@ -325,10 +356,7 @@ $(document).on('submit', '#popup-hall-form form', function (e) {
 
   var sendData = {
     hallName: $.trim($('#popup-hall-form #hallName').val()),
-    storeId: $('#popup-hall-form #storeId').data('id'),
-    seatNum: $('#popup-hall-form #seatNum').val(),
-    screenType: $.trim($('#popup-hall-form #screenType').val()),
-    effect: $.trim($('#popup-hall-form #effect').val()),
+    storeId: $('#popup-hall-form #storeId').data('id')
   };
 
   if ($('#hallId').length > 0) {
@@ -339,7 +367,7 @@ $(document).on('submit', '#popup-hall-form form', function (e) {
     url: common.API_HOST + 'hall/standard/saveOrUpdate',
     type: 'POST',
     dataType: 'json',
-    data: sendData,
+    data: sendData
   })
   .done(function (res) {
     _submitting = false;
@@ -371,38 +399,23 @@ function setTableData(rows) {
 function setModal(hallData) {
   var data;
   var template;
-  var cities;
+  var html;
   if (hallData) {
-    _(_screenType).forEach(function (value, key) {
-      _screenType[key].selected = hallData.screenType == value.name ? true : false;
-    });
-
-    _(_hallType).forEach(function (value, key) {
-      _hallType[key].selected = hallData.effectType == value.name ? true : false;
-    });
-
     _(_brands).forEach(function (value, key) {
       _brands[key].selected = hallData.brandId == value.id ? true : false;
     });
 
-    data = {
-      hall: hallData,
-      screenTypes: _screenType,
-      effectTypes: _hallType,
-    };
+    data = {hall: hallData};
     template = $('#edit-template').html();
     Mustache.parse(template);
-    var html = Mustache.render(template, data);
+    html = Mustache.render(template, data);
     $('#popup-hall-form .modal-title').html('编辑标准影厅');
   } else {
-    data = {
-      screenTypes: _screenType,
-      effectTypes: _hallType,
-    };
+    data = {};
     template = $('#create-template').html();
     $('#popup-hall-form .modal-title').html('新增标准影厅');
     Mustache.parse(template);
-    var html = Mustache.render(template, data);
+    html = Mustache.render(template, data);
   }
 
   $('#popup-hall-form .modal-body').html(html);
@@ -412,7 +425,7 @@ function setBrand() {
   $.ajax({
     url: common.API_HOST + 'common/brandList',
     type: 'GET',
-    dataType: 'json',
+    dataType: 'json'
   })
   .done(function (res) {
     if (!!~~res.meta.result) {

@@ -2,7 +2,7 @@
 * @Author: kyle
 * @Date:   2016-08-22 14:57:39
 * @Last Modified by:   kyle
-* @Last Modified time: 2016-10-21 16:51:35
+* @Last Modified time: 2016-12-23 16:51:04
 */
 
 'use strict;'
@@ -80,7 +80,7 @@ $(function () {
   $('#formCinema').parsley();
 });
 
-$(document).on('change', '#provinceId', function (e) {
+$(document).on('click change', '#provinceId', function (e) {
   var provinceId = parseInt($(this).val());
   if (~~provinceId != 0) {
     var province = _.find(_provinces, { provinceId: provinceId.toString() });
@@ -97,7 +97,7 @@ $(document).on('change', '#provinceId', function (e) {
   return false;
 });
 
-$(document).on('change', '#cityId', function (e) {
+$(document).on('click change', '#cityId', function (e) {
   var cityId = parseInt($(this).val());
   if (~~cityId != 0) {
     $.ajax({
@@ -125,7 +125,7 @@ $(document).on('change', '#cityId', function (e) {
   return false;
 });
 
-$(document).on('change', '#areaId', function (e) {
+$(document).on('click change', '#areaId', function (e) {
   var areaId = parseInt($(this).val());
   if (~~areaId != 0) {
     var area = _.find(_areas, { areaId: areaId });
@@ -141,7 +141,7 @@ $(document).on('change', '#areaId', function (e) {
   return false;
 });
 
-$(document).on('change', '#btn-service', function (e) {
+$(document).on('click', '#btn-service', function (e) {
   var serviceId = parseInt($(this).val());
   if (~~serviceId != 0) {
     var service = _.find(_services, { id: serviceId });
@@ -223,6 +223,7 @@ $(document).on('submit', '#formCinema', function (e) {
     _submitting = false;
     if (!!~~res.meta.result) {
       alert('新建标准影院，并关联成功！');
+      window.location = 'cinema-tp.html';
     } else {
       alert('接口错误：' + res.meta.msg);
     }
@@ -275,7 +276,6 @@ function getService() {
     dataType: 'json',
   })
   .done(function (res) {
-    console.log(res);
     if (!!~~res.meta.result) {
       _services = res.data;
       var html = '';

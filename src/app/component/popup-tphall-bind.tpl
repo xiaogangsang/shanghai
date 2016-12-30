@@ -27,6 +27,7 @@
       <form id="formBindHall">
         <div class="modal-footer">
           <input type="hidden" id="hallId">
+          <input type="hidden" id="sourceId">
           <input type="hidden" id="tpHallId">
           <input type="hidden" id="tpStoreId">
           <button type="submit" class="btn btn-primary">设置</button>
@@ -39,7 +40,7 @@
 
 <script id="tp-tr-template" type="text/x-tmpl-mustache">
   {{#rows}}
-  <tr data-id="{{id}}">
+  <tr data-id="{{id}}" data-sourceId="{{sourceId}}">
     <td>{{id}}</td>
     <td>{{name}}</td>
     <td>{{storeId}}</td>

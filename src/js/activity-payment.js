@@ -2,7 +2,7 @@
 * @Author: kyle
 * @Date:   2016-11-04 14:59:49
 * @Last Modified by:   kyle
-* @Last Modified time: 2016-11-04 16:29:04
+* @Last Modified time: 2016-12-14 12:06:14
 */
 
 'use strict;'
@@ -237,7 +237,7 @@ function setPager(total, pageIndex, rowsSize, pageTotal) {
 
 function getBudgetSource() {
   $.ajax({
-    url: common.API_HOST + 'activity/budgetSourceList',
+    url: common.API_HOST + 'common/budgetSourceList',
     type: 'POST',
     dataType: 'json',
   })

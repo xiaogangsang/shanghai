@@ -4,8 +4,11 @@
   "author": "66beta",
   "descreption": "Management System for CMB(CC) Mobile App Movie Channel.",
   "devDependencies": {
-    "browser-sync": "^2.11.1",
+    "babel-eslint": "^6.1.2",
     "css-loader": "^0.23.1",
+    "eslint": "^3.9.1",
+    "eslint-config-airbnb-es5": "^1.1.0",
+    "eslint-plugin-react": "^6.6.0",
     "expose-loader": "^0.7.1",
     "file-loader": "^0.8.5",
     "gulp": "^3.9.1",

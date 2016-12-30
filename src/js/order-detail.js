@@ -188,6 +188,17 @@ $(document).on('click', '#btn-refund', function (event) {
   event.preventDefault();
   $('#popup-refund').modal('show');
   $('#popup-refund form').parsley();
+
+  $('input[name=refundAmountUndertaker]').prop('checked', false);
+  $('#popup-refund #reason')[0].value = '';
+
+  $('#dropdown-reason').on('change click', function(event) {
+    event.preventDefault();
+    var reason = $(this).val();
+    if (reason != '') {
+      $('#popup-refund #reason')[0].value = reason;
+    }
+  });
 });
 
 $(document).on('submit', '#popup-refund form', function (event) {
@@ -275,6 +286,7 @@ $(document).on('click', '#btn-returnTicket', function (event) {
   event.preventDefault();
   $('#popup-undertaker').modal('show');
   $('#popup-undertaker form').parsley();
+  $('#popup-undertaker #reason')[0].value = '';
 });
 
 $(document).on('submit', '#popup-undertaker form', function (event) {

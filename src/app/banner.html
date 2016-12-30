@@ -148,9 +148,6 @@
   </div>
 
   <script src="js/vendor.js"></script>
-  <script src="lib/blueimp-file-upload/jquery.ui.widget.js"></script>
-  <script src="lib/blueimp-file-upload/jquery.iframe-transport.js"></script>
-  <script src="lib/blueimp-file-upload/jquery.fileupload.js"></script>
   <script src="js/banner.js"></script>
 
   <script id="pager-template" type="text/x-tmpl-mustache">
@@ -206,6 +203,7 @@
       </div>
     </div>
   </div>
+
   <script id="edit-home-template" type="text/x-tmpl-mustache">
     <input type="hidden" id="id" value="{{banner.id}}">
     <input type="hidden" id="bannerType" value="1">
@@ -217,7 +215,7 @@
             <td><input type="text" class="form-control" id="bannerName" value="{{banner.bannerName}}" required></td>
           </tr>
           <tr>
-            <th><button type="button" class="btn btn-default" id="btn-upload">上传图片</button></th>
+            <th><div class="btn btn-default" id="fine-upload">上传图片</div></th>
             <td><input type="text" class="form-control" id="imageUrl" value="{{banner.imageUrl}}" required></td>
           </tr>
           <tr>
@@ -276,7 +274,7 @@
             <td><input type="text" class="form-control" id="bannerName" required></td>
           </tr>
           <tr>
-            <th><button type="button" class="btn btn-default" id="btn-upload">上传图片</button></th>
+            <th><div class="btn btn-default" id="fine-upload">上传图片</div></th>
             <td><input type="text" class="form-control" id="imageUrl" required></td>
           </tr>
           <tr>
@@ -456,12 +454,23 @@
             <td><input type="text" class="form-control" id="bannerName" value="{{banner.bannerName}}" required></td>
           </tr>
           <tr>
-            <th><button type="button" class="btn btn-default" id="btn-upload">上传图片</button></th>
+            <th><div class="btn btn-default" id="fine-upload">上传图片</div></th>
             <td><input type="text" class="form-control" id="imageUrl" value="{{banner.imageUrl}}" required></td>
           </tr>
           <tr>
             <th>跳转链接</th>
             <td><input type="text" class="form-control" id="link" value="{{banner.link}}" required></td>
+          </tr>
+          <tr>
+            <th>影院限制</th>
+            <td>
+              <div class="radio-inline"><label><input type="radio" name="cinemaType" value="0"{{^banner.cinemaType}} checked{{/banner.cinemaType}} disabled><span>不限制</span></label></div>
+              <div class="radio-inline"><label><input type="radio" name="cinemaType" value="1"{{#banner.cinemaType}} checked{{/banner.cinemaType}} disabled><span>限制</span></label></div>
+            </td>
+          </tr>
+          <tr{{^banner.cinemaType}} style="display:none;"{{/banner.cinemaType}}>
+            <th><button type="button" class="btn btn-default" id="btn-cinema">选择影院</button></th>
+            <td>点击左侧按钮查看/选择影院</td>
           </tr>
           <tr>
             <th>生效日期</th>
@@ -473,20 +482,10 @@
           <tr>
             <th>渠道</th>
             <td>
-              <select class="form-control" id="channelId">
-                {{#channels}}
-                <option value="{{channelId}}"{{#selected}} selected{{/selected}}>{{channelName}}</option>
-                {{/channels}}
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <th>是否显示</th>
-            <td>
-              <select class="form-control" id="status">
-                <option value="1"{{#banner.status}} selected{{/banner.status}}>是</option>
-                <option value="0"{{^banner.status}} selected{{/banner.status}}>否</option>
-              </select>
+              {{#channels}}
+              <label class="radio-inline"><input type="radio" name="channelId" value="{{channelId}}" required data-parsley-errors-container="#error-channel"{{#selected}} checked{{/selected}}>{{channelName}}</label>
+              {{/channels}}
+              <div id="error-channel"></div>
             </td>
           </tr>
           <tr>
@@ -510,12 +509,23 @@
             <td><input type="text" class="form-control" id="bannerName" required></td>
           </tr>
           <tr>
-            <th><button type="button" class="btn btn-default" id="btn-upload">上传图片</button></th>
+            <th><div class="btn btn-default" id="fine-upload">上传图片</div></th>
             <td><input type="text" class="form-control" id="imageUrl" required></td>
           </tr>
           <tr>
             <th>跳转链接</th>
             <td><input type="text" class="form-control" id="link" required></td>
+          </tr>
+          <tr>
+            <th>影院限制</th>
+            <td>
+              <div class="radio-inline"><label><input type="radio" name="cinemaType" value="0" checked><span>不限制</span></label></div>
+              <div class="radio-inline"><label><input type="radio" name="cinemaType" value="1"><span>限制</span></label></div>
+            </td>
+          </tr>
+          <tr style="display:none;">
+            <th><button type="button" class="btn btn-default" id="btn-cinema">选择影院</button></th>
+            <td>点击左侧按钮查看/选择影院</td>
           </tr>
           <tr>
             <th>生效日期</th>
@@ -627,19 +637,19 @@
           </td>
         </tr>
         <tr>
-          <th><button type="button" class="btn btn-default btn-upload-seat">上传图1</button></th>
+          <th><div class="btn btn-default fine-upload">上传图1</div></th>
           <td><input type="text" class="form-control" name="picUrl" placeholder="必填" required></td>
         </tr>
         <tr>
-          <th><button type="button" class="btn btn-default btn-upload-seat" placeholder="可选">上传图2</button></th>
+          <th><div class="btn btn-default fine-upload">上传图2</div></th>
           <td><input type="text" class="form-control" name="picUrl" placeholder="可选"></td>
         </tr>
         <tr>
-          <th><button type="button" class="btn btn-default btn-upload-seat">上传图3</button></th>
+          <th><div class="btn btn-default fine-upload">上传图3</div></th>
           <td><input type="text" class="form-control" name="picUrl" placeholder="可选"></td>
         </tr>
         <tr>
-          <th><button type="button" class="btn btn-default btn-upload-seat">上传图4</button></th>
+          <th><div class="btn btn-default fine-upload">上传图4</div></th>
           <td><input type="text" class="form-control" name="picUrl" placeholder="可选"></td>
         </tr>
         <tr>
@@ -669,6 +679,5 @@
     </table>
   </script>
   @@include('component/popup-city.tpl')
-  @@include('component/popup-banner-upload.tpl')
 </body>
 </html>

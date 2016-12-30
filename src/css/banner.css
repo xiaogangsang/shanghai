@@ -127,9 +127,13 @@
 #popup-city .radio-inline>input[disabled]+span {
   border: none;
 }
-
 #popup-unit-dimen .checkbox-inline {
   margin-top: 0;
   margin-left: 10px;
   width: 20%;
+}
+#search-cinema-candidate tr.selected td,
+#search-cinema-choosed tr.selected td {
+  background-color: #ff8903;
+  color: #fff;
 }

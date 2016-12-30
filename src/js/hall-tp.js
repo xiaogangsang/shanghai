@@ -134,8 +134,6 @@ $('#formSearch').on('submit', function (e) {
         setPager(res.data.total, _pageIndex, res.data.data.length, _pageTotal);
         _(res.data.data).forEach(function (tpHall) {
           tpHall.createTime = tpHall.createTime != undefined ? common.getDate(new Date(tpHall.createTime)) : '';
-          tpHall.effect = _effectType[~~tpHall.effect];
-          tpHall.screenType = _screenType[~~tpHall.screenType];
         });
 
         setTableData(res.data.data);
@@ -195,15 +193,12 @@ $('#dataTable').on('click', '.btn-create', function (e) {
   _tpStoreId = $(this).closest('tr').data('tpstoreid');
   var hallName = $(this).closest('tr').children('td:nth-child(2)').text();
   var tpCinemaName = $(this).closest('tr').children('td:nth-child(6)').text().trim();
-  var seatNum = $(this).closest('tr').data('seatnum');
-  var screenType = $(this).closest('tr').data('screentype');
-  var effect = $(this).closest('tr').data('effect');
+
   $('#bindCinemaName').val(tpCinemaName);
   $('#popup-tphall-create #storeId').val('');
   $('#popup-tphall-create #hallName').val(hallName);
-  $('#popup-tphall-create #seatNum').val(seatNum);
-  $('#popup-tphall-create #screenType').val(screenType);
-  $('#popup-tphall-create #effect').val(effect);
+  $('#popup-tphall-create #sourceId').val($(this).closest('tr').data('sourceid'));
+
   $('#popup-tphall-create form').parsley();
   $('#popup-tphall-create').modal('show');
 });
@@ -218,10 +213,7 @@ $(document).on('submit', '#popup-tphall-create form', function (e) {
 
   var sendData = {
     hallName: $.trim($('#popup-tphall-create #hallName').val()),
-    storeId: $('#popup-tphall-create #storeId').data('id'),
-    seatNum: $('#popup-tphall-create #seatNum').val(),
-    screenType: $.trim($('#popup-tphall-create #screenType').val()),
-    effect: $.trim($('#popup-tphall-create #effect').val()),
+    storeId: $('#popup-tphall-create #storeId').data('id')
   };
 
   $.ajax({
@@ -237,6 +229,7 @@ $(document).on('submit', '#popup-tphall-create form', function (e) {
         hallId: res.data.hallId,
         tpHallId: _tpHallId,
         tpStoreId: _tpStoreId,
+        sourceId:$.trim($('#popup-tphall-create #sourceId').val()),
       };
 
       $.ajax({
@@ -333,9 +326,11 @@ $('#dataTable').on('click', '.btn-bind', function (e) {
   e.preventDefault();
   var tpHallId = $(this).closest('tr').data('id');
   var tpStoreId = $(this).closest('tr').data('tpstoreid');
+  var sourceId = $(this).closest('tr').data('sourceid');
   $('#hallId').val('');
   $('#tpHallId').val(tpHallId);
   $('#tpStoreId').val(tpStoreId);
+  $('#sourceId').val(sourceId);
   $('#hallTable tbody').html('');
 
   $.ajax({
@@ -345,6 +340,7 @@ $('#dataTable').on('click', '.btn-bind', function (e) {
     data: {
       tpHallId: tpHallId,
       tpStoreId: tpStoreId,
+      sourceId:sourceId,
     },
   })
   .done(function (res) {
@@ -380,6 +376,7 @@ $(document).on('submit', '#formBindHall', function (e) {
     hallId: $('#hallId').val(),
     tpHallId: $('#tpHallId').val(),
     tpStoreId: $('#tpStoreId ').val(),
+    sourceId:$('#sourceId').val(),
   };
 
   $.ajax({
