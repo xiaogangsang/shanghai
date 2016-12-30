@@ -96,7 +96,7 @@ function queryData (callback) {
 		url: common.API_HOST + 'settlement/department/selectList',
 		type: 'GET',
 		dataType: 'json',
-		data: {pageIndex: 1, pageSize: 100, useStatus: 1},
+		data: {pageIndex: 1, pageSize: 100, departmentUseStatus: 1},
 	})
 	.done(function(departmentRes) {
 		if (!!~~departmentRes.meta.result) {
@@ -110,6 +110,7 @@ function queryData (callback) {
 				url: common.API_HOST + 'settlement/dispose/selectList',
 				type: 'GET',
 				dataType: 'json',
+				data: {pageIndex: 1, pageSize: 100, disposeUseStatus: 1},
 			})
 			.done(function(disposeRes) {
 				if (!!~~disposeRes.meta.result) {
