@@ -204,7 +204,7 @@
     </div>
 
     <div class="panel" style="display:none">
-      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#base"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 基础信息管理</a>
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#base"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 基础结算信息管理</a>
       <div id="base" class="panel-collapse collapse" role="tabpanel">
         <div class="list-group">
           <a href="diff-base-info-type.html" class="list-group-item" id="menu-diff-base-info-type" data-id="217" >差异类型管理</a>
