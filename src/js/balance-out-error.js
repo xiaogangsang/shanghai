@@ -10,7 +10,14 @@ var _records = {};
 
 $(function () {
 	common.init('balance-out-error');
-})
+
+	var urlParam = common.getUrlParam();
+	if (urlParam['startTime'] && urlParam['endTime']) {
+		$('#search_startTime').val(urlParam['startTime']);
+		$('#search_endTime').val(urlParam['endTime']);
+		$('#formSearch button[type=submit]').trigger('click');
+	}
+});
 
 $('#formSearch').on('click', 'button[type=submit]', function(e) {
 	e.preventDefault();
@@ -96,8 +103,44 @@ $('#btn-reset').click(function(e) {
 	$('#formSearch :input').val('');
 });
 
-$('#btn-export').click(function(event) {
+$('#btn-export').click(function(e) {
 	e.preventDefault();
+
+	$('#formSearch').parsley().validate();
+	if (!$('#formSearch').parsley().isValid()) {
+	    return false;
+	}
+
+	$('#hud-overlay').show();
+
+	var param = {
+		startTime: $('#search_startTime').val(),
+		endTime: $('#search_endTime').val(),
+		orderNo: $('#search_orderNo').val(),
+		shipmentOrderType: $('#search_shipmentOrderType').val(),
+		exception: $('#search_exception').val(),
+	}
+
+	$.ajax({
+		url: common.API_HOST + 'settlement/shipmentInfo/exceptionExport',
+		type: 'GET',
+		dataType: 'json',
+		data: param,
+	})
+	.done(function(res) {
+		var fileUrl = null;
+		if (!!~~res.meta.result && res.data) {
+			fileUrl = res.data.fileUrl;
+			if (fileUrl && fileUrl.length > 0) {
+				settlementCommon.success('申请导出成功！');
+			}
+		} else {
+			settlementCommon.warning('申请导出失败！');
+		}
+	})
+	.always(function() {
+		$('#hud-overlay').hide();
+	});
 });
 
 $('#dataTable').on('click', '.btn-edit', function (e) {

@@ -222,6 +222,11 @@ function handleData(res) {
     if (res.data.summary) {
       setSummaryTableData(res.data.summary);
     }
+
+    if (res.data.detail.exceptionCount) {
+      $('.content-area .alert').show();
+      $('#exceptionCount').html(res.data.detail.exceptionCount);
+    }
   }
 }
 
@@ -620,3 +625,8 @@ function selectedIds() {
 
   return ids;
 }
+
+$('.alert-warning a').click(function(e) {
+  e.preventDefault();
+  window.location = 'balance-out-error.html?startTime=' + $('#search_startTime').val() + '&endTime=' + $('#search_endTime').val();
+});

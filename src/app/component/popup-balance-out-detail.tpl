@@ -508,12 +508,12 @@
       <div class="row"> 
         <span style="display: block; margin-top: 10px;">备注信息:</span>
         <hr style="margin-top: 3px;">
-        
-        <div class="form-group col-sm-6 col-md-6 editable">
+
+        <div class="form-group col-sm-12 col-md-12 editable">
           <div class="input-group">
             <div class="input-group-addon">备注</div>
-            <textarea class="form-control oldValue" id="remarks">{{remarks}}</textarea>
-            <textarea class="form-control newValue" id="remarksNew">{{lastDetail.remarks}}</textarea>
+            <textarea class="form-control oldValue" style="resize: vertical;" id="remarks">{{remarks}}</textarea>
+            <textarea class="form-control newValue" style="resize: vertical;" id="remarksNew">{{lastDetail.remarks}}</textarea>
           </div>
         </div>
       </div>

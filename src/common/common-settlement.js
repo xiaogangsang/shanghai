@@ -384,6 +384,15 @@ settlementCommon.resetInput = function(input) {
   input.replaceWith(input.val('').clone(true));
 }
 
+// 必填项加*号
+settlementCommon.addStarMark = function() {
+  var elements = $('[required]');
+  elements.each(function(index, el) {
+    var $element = $($(this).siblings('.input-group-addon')[0]);
+    $element.html($element.text() + '<span style="color: #D70F0F; font-size: 16px;"> *</span>');
+  });
+}
+
 settlementCommon.success = function (msg) {
   var alertHtml = '<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert">&times;</button><div class="alert-content">' + msg + '</div></div>';
   $('.breadcrumb').after(alertHtml);
@@ -462,11 +471,7 @@ $(function() {
 
 // 必填项添加*号标识
 $(function() {
-  var elements = $('[required]');
-  elements.each(function(index, el) {
-    var $element = $($(this).siblings('.input-group-addon')[0]);
-    $element.html($element.text() + '<span style="color: #D70F0F; font-size: 16px;"> *</span>');
-  });
+  settlementCommon.addStarMark();
 });
 
 $(function() {
