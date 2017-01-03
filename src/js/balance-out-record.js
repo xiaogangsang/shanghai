@@ -47,8 +47,6 @@ $(document).on('change click', '#record-provinceId', function (e) {
 });
 
 function setupDefaultValue () {
-    $('#record_payAmount').val(0);
-    $('#record_receivablePoint').val(0);
     $('#record_subsidyAmountO2o').val(0);
     $('#record_subsidyAmountTrd').val(0);
     $('#record_returnFee').val(0);
@@ -135,8 +133,6 @@ $('#formBalanceOutRecord').on('submit', function(e) {
         merchantName: $('#record_merchantName').val(),
         merchantNo: $('#record_merchantNo').val().trim(),
         thdOrderNo: $('#record_thdOrderNo').val(),
-        payAmount: $('#record_payAmount').val(),
-        receivablePoint: $('#record_receivablePoint').val(),
         settleAmount: $('#record_settleAmount').val(),
         subsidyType: $('#record_subsidyType').val(),
         subsidyAmountO2o: $('#record_subsidyAmountO2o').val(),

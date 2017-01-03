@@ -83,11 +83,8 @@ $('#formSearch').on('submit', function (e) {
       merchantName: $('#search_merchantName').val(),
       merchantNo: $('#search_merchantNo').val(),
       shipmentStatus: $('#search_shipmentStatus').val(),
-      bizType: $('#search_bizType').val(),
       partner: $('#search_partner').val(),
-      acquiringReconciliationStatus: $('#search_acquiringReconciliationStatus').val(),
       reconciliationStatus: $('#search_reconciliationStatus').val(),
-      reason: $('#search_reason').val(),
       discountType: $('#search_discountType').val(),
       discountName: $('#search_discountName').val(),
       bizOrderNo: $('#search_bizOrderNo').val(),
@@ -118,7 +115,6 @@ $('#formSearch').on('submit', function (e) {
       handleData(res);
     });
   } else {
-    // var res = $.parseJSON('{ "meta": { "result": "1", "msg": "操作成功" }, "data": { "summary": { "count": "订单总数", "totalTicketCount": "出票张数", "totalTiketAmount": " 票价 ", "totalReturnFee":"退票手续费", "totalServiceAmount": "总服务费", "totalSubsidyAmountO2o": "补贴总金额", "totalO2oReceivableAmount": "应收总金额", "totalBankAmount": "实际收到总金额" }, "detail": { "recordCount": "42", "recordDetail": [ { "receivablePoint": "积分", "bizType": "业务类型", "orderNo": "订单号", "countNum": "票数", "reconciliationDate": "对账日期", "thdSerialNo":"收单方订单号", "costCenter": "成本中心", "externalId": "支付流水", "o2oReceivableAmount": "应收金额", "subsidyType": "补贴方式", "chargeMerchant":"1", "subsidyAmountO2o": "补贴金额", "discountName": "活动/优惠方式名称", "bankAmount":"实收金额", "returnFee":"退票手续费", "payAmount": "支付金额", "serviceAmount": "服务费", "ticketAmount":"交易金额", "reconciliationStatus":"1", "createTime": "支付时间(交易)", "discountType": "优惠方式", "id": 1934, "payStatus": "1", "chargeMerchantNo": "商户号", "partner":"退款承债方", "reason":"1" } ] } } }');
     var res = $.parseJSON('{"meta" : {"result" : "1", "msg" : "操作成功"}, "data" : {"summary" : {}, "detail":{"count" : 2, "records":[{"checkStatus" : "1"}, {"checkStatus" : "2"}]}}}');
     handleData(res);
   }
@@ -172,7 +168,6 @@ function handlePresetQuery() {
         $('#search_merchantName').val(parameters.merchantName);
         $('#search_merchantNo').val(parameters.MerchantNo);
         $('#search_shipmentStatus').val(parameters.shipmentStatus);
-        $('#search_bizType').val(parameters.bizType);
 
         _pageIndex = 1;
         useCache = false;
@@ -197,12 +192,9 @@ function handleData(res) {
 
     _(record).forEach(function(item) {
       item.bizType = settlementCommon.parseBizType(item.bizType);
-      item.payStatus = settlementCommon.parsePayStatus(item.payStatus);
       item.partner = settlementCommon.parsePartner(item.partner);
-      item.acquiringReconciliationStatus = settlementCommon.parseReconciliationStatus(item.acquiringReconciliationStatus);
       item.subsidyType = settlementCommon.parseSubsidyType(item.subsidyType);
       item.reconciliationStatus = settlementCommon.parseReconciliationStatus(item.reconciliationStatus);
-      item.reason = settlementCommon.parseOutReason(item.reason);
       item.discountType = settlementCommon.parseDiscountType(item.discountType);
       item.shipmentStatus = settlementCommon.parseShipmentStatus(item.shipmentStatus);
       item.checkStatusNo = item.checkStatus;
@@ -423,11 +415,9 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     data.detail = data.onlyShipmentInfo;
     var detail = data.detail;
     detail.payTool = settlementCommon.parsePayTool(detail.payTool);
-    detail.payStatus = settlementCommon.parsePayStatus(detail.payStatus);
     detail.bizType = settlementCommon.parseBizType(detail.bizType);
     detail.chargeMerchant = settlementCommon.parseMerchant(detail.chargeMerchant);
     detail.discountType = settlementCommon.parseDiscountType(detail.discountType);
-    detail.acquiringReconciliationStatus = settlementCommon.parseReconciliationStatus(detail.acquiringReconciliationStatus);
     // detail.subsidyType = settlementCommon.parseSubsidyType(detail.subsidyType);
     detail.subsidyType = detail.subsidyType;
     detail.partner = settlementCommon.parsePartner(detail.partner);
@@ -441,7 +431,6 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
       // obj.partner = settlementCommon.parsePartner(obj.partner);
       obj.reconciliationStatus = settlementCommon.parseReconciliationStatus(obj.reconciliationStatus);
       obj.shipmentStatus = settlementCommon.parseShipmentStatus(obj.shipmentStatus);
-      obj.reason = settlementCommon.parseOutReason(obj.reason);
     });
 
     var template = $('#detail-template').html();
@@ -457,7 +446,6 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     $('#subsidyTypeTrd option[value="' + detail.subsidyTypeTrd + '"]').prop('selected', true);
     $('#shipmentStatus option[value="' + detail.shipmentStatus + '"]').prop('selected', true);
     $('#reconciliationStatus option[value="' + detail.reconciliationStatus + '"]').prop('selected', true);
-    $('#reason option[value="' + detail.reason + '"]').prop('selected', true);
 
     if (checkStatus == 2 || checkStatus == 3 || detail.reconciliationStatus == 4) { // 待审核/审核完成不能再修改, 出货对账状态为确认的也不能再修改
       $('.detail-area').addClass('read-only');
@@ -539,6 +527,11 @@ $(document).on('submit', '#popup-detail form', function(e) {
 $('.btn-complement').click(function(e) {
   e.preventDefault();
   $('#popup-balance-out-record').modal('show');
+});
+
+$('.alert-warning a').click(function(e) {
+  e.preventDefault();
+  window.location = 'balance-out-error.html?startTime=' + $('#search_startTime').val() + '&endTime=' + $('#search_endTime').val();
 });
 
 /************************************************* 批量操作 ***************************************************/
@@ -625,8 +618,3 @@ function selectedIds() {
 
   return ids;
 }
-
-$('.alert-warning a').click(function(e) {
-  e.preventDefault();
-  window.location = 'balance-out-error.html?startTime=' + $('#search_startTime').val() + '&endTime=' + $('#search_endTime').val();
-});

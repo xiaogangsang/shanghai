@@ -84,36 +84,12 @@
 
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
-              <div class="input-group-addon">业务类别</div>
-              <select class="form-control" id="search_bizType">
-                <option value="">全部</option>
-                <option value="1">影票</option>
-                <option value="2">手续费</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-group col-sm-6 col-md-4">
-            <div class="input-group">
               <div class="input-group-addon">退款承债方</div>
               <select class="form-control" id="search_partner">
                 <option value="">全部</option>
                 <option value="1">O2O</option>
                 <option value="2">TP方</option>
                 <option value="3">渠道方</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-group col-sm-6 col-md-4">
-            <div class="input-group">
-              <div class="input-group-addon">收单对账状态</div>
-              <select class="form-control" id="search_acquiringReconciliationStatus">
-                <option value="">全部</option>
-                <option value="1">未对账</option>
-                <option value="2">对账不一致</option>
-                <option value="3">对账成功</option>
-                <option value="4">确认</option>
               </select>
             </div>
           </div>
@@ -127,22 +103,6 @@
                 <option value="2">对账不一致</option>
                 <option value="3">对账成功</option>
                 <option value="4">确认</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-group col-sm-6 col-md-4">
-            <div class="input-group">
-              <div class="input-group-addon">对账不一致原因</div>
-              <select class="form-control" id="search_reason">
-                <option value="">全部</option>
-                <option value="1">出货失败, 支付成功(未退款)</option>
-                <option value="2">退货失败, 退款成功(无承债方)</option>
-                <option value="3">退货成功, 退款失败(未退款)</option>
-                <option value="4">退货成功, 支付成功(未退款)</option>
-                <option value="5">金额不符</option>
-                <option value="6">票类错误</option>
-                <option value="7">出货成功, 支付失败(未扣款)</option>
               </select>
             </div>
           </div>
@@ -321,7 +281,6 @@
                   <th>支付活动补贴金额</th>
                   <th>支付活动补贴付款方式</th>
                   <th>出货状态</th>
-                  <th>支付流水状态</th>
                   <th>出货对账状态</th>
                   <th>审核状态</th>
                   <th>操作时间</th>
@@ -392,8 +351,6 @@
       <td>{{subsidyTypeTrd}}</td>
       <!-- 出货状态 -->
       <td>{{shipmentStatus}}</td>
-      <!-- 支付流水状态 -->
-      <td>{{payStatus}}</td>
       <!-- 出货对账状态 -->
       <td>{{reconciliationStatus}}</td>
       <!-- 审批状态 -->
