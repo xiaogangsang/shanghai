@@ -4,7 +4,7 @@ var pager = {};
 
 pager.pageIndex = 1;
 pager.pageTotal = 0;
-pager.pageSize = 1;
+pager.pageSize = 10;
 
 pager.init = function ($element) {
 

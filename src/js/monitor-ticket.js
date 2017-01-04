@@ -2,7 +2,7 @@
 * @Author: kyle
 * @Date:   2016-08-29 10:37:39
 * @Last Modified by:   kyle
-* @Last Modified time: 2016-10-17 14:23:12
+* @Last Modified time: 2016-12-09 11:28:45
 */
 
 'use strict';
@@ -17,6 +17,9 @@ var _queryDates = [];
 
 $(function () {
   common.init('monitor-ticket');
+
+  $('#formDict').parsley();
+  loadDict(5);
 
   $('#search_beginTime').datetimepicker({
     format: 'yyyy-mm-dd',
@@ -199,3 +202,43 @@ function queryOrder(type, queryDate) {
     }
   });
 }
+
+function loadDict(dictId) {
+  $.ajax({
+    url: common.API_HOST + 'monitor/dict/getDictDetail',
+    type: 'POST',
+    dataType: 'json',
+    data: {id: +dictId},
+  })
+  .done(function(res) {
+    if (!!~~res.meta.result) {
+      var dictValue = res.data != null && res.data.monitorDict != null && res.data.monitorDict.value != undefined ? res.data.monitorDict.value : 0;
+      $('#dict_value').val(dictValue);
+    } else {
+      alert('接口报错：' + res.meta.msg);
+    }
+  });
+}
+
+$(document).on('submit', '#formDict', function (event) {
+  event.preventDefault();
+  var dictId = $('#dict_id').val();
+  var dictValue = $('#dict_value').val();
+  $.ajax({
+    url: common.API_HOST + 'monitor/dict/updateDict',
+    type: 'POST',
+    dataType: 'json',
+    data: {
+      id: dictId,
+      value: dictValue,
+    },
+  })
+  .done(function(res) {
+    if (!!~~res.meta.result) {
+      alert('阈值更新成功');
+    } else {
+      alert('接口报错：' + res.meta.msg);
+      loadDict(5);
+    }
+  });
+});

@@ -124,9 +124,6 @@
                   <th>院线</th>
                   <th>城市</th>
                   <th>合作方影院</th>
-                  <th>座位数</th>
-                  <th>屏幕类型</th>
-                  <th>特效</th>
                   <th class="associated">关联时间</th>
                   <th class="associated">关联标准影厅ID</th>
                   <th class="associated">关联标准影厅名</th>
@@ -170,16 +167,13 @@
   </script>
   <script id="table-template" type="text/x-tmpl-mustache">
     {{#rows}}
-    <tr data-id="{{tpHallId}}" data-tpStoreId="{{tpStoreId}}">
+    <tr data-id="{{tpHallId}}" data-tpStoreId="{{tpStoreId}}" data-sourceId="{{sourceId}}">
       <td>{{tpHallId}}</td>
       <td>{{tpHallName}}</td>
       <td>{{source}}</td>
       <td>{{brand}}</td>
       <td>{{city}}</td>
       <td>{{tpStoreName}}</td>
-      <td>{{seatNum}}</td>
-      <td>{{screenType}}</td>
-      <td>{{effect}}</td>
       <td>{{createTime}}</td>
       <td>{{hallId}}</td>
       <td>{{hallName}}</td>

@@ -1,6 +1,8 @@
 'use strict;'
 
 var common = require('common');
+require('fineUploader');
+
 var _pageIndex = 1;
 var _pageSize = 10;
 var _pageTotal = 0;
@@ -16,25 +18,29 @@ $(function () {
   common.init('user');
 
   $('#btn-export').attr('href', common.API_HOST + 'security/user/exportUsers');
-  $('#fileupload').data('url', common.API_HOST + 'security/user/importUsers').fileupload({
-    dataType: 'json',
-    add: function (e, data) {
-      $('#fileupload').next('span').remove();
-      $('#fileupload').after(' <span>' + data.files[0].name + '</span>');
-      $('#popup-user-import button[type=submit]').off('click').on('click', function () {
-        $(this).prop('disable', true).text('上传中...');
-        data.submit();
-      });
+
+  var uploader = new qq.FineUploaderBasic({
+    button: $('#fileupload')[0],
+    request: {
+      endpoint: common.API_HOST + 'security/user/importUsers',
+      inputName: 'file',
+      filenameParam: 'file',
     },
+    callbacks: {
+      onError: function (id, fileName, errorReason) {
+        if (errorReason != 'Upload failure reason unknown') {
+          console.log(errorReason);
+          alert('上传失败');
+        }
+      },
 
-    done: function (e, data) {
-      if (!!~~data.result.meta.result) {
-        alert('导入成功！');
-      } else {
-        alert('导入失败：' + data.result.meta.msg);
-      }
-
-      $('#popup-user-import button[type=submit]').prop('disable', false).text('上传');
+      onComplete: function (id, fileName, responseJSON) {
+        if (!!~~responseJSON.meta.result) {
+          alert('导入成功！');
+        } else {
+          alert('接口错误：' + responseJSON.meta.msg);
+        }
+      },
     },
   });
 

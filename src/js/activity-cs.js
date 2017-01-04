@@ -65,7 +65,7 @@ $('#formSearch').on('submit', function (e) {
         _pageTotal = Math.ceil(res.data.total / _pageSize);
 
         _(res.data.rows).forEach(function (value, key) {
-          value.activityRuleDesc = value.activityRuleDesc != null ? value.activityRuleDesc.replace(/\n/g, '</p><p>') : '';
+          value.activityRuleDesc = value.activityRuleDesc != null ? value.activityRuleDesc.replace(/\n/g, '<br>') : '';
         });
 
         setPager(res.data.total, _pageIndex, res.data.rows.length, _pageTotal);

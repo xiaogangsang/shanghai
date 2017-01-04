@@ -7,6 +7,7 @@
       <div id="menu1" class="panel-collapse collapse">
         <div class="list-group">
           <a href="class.html" class="list-group-item" id="menu-class" data-id="16" style="display:none">万达票类管理</a>
+          <a href="tp.html" class="list-group-item" id="menu-tp" data-id="296" style="display:none">TP方管理</a>
         </div>
       </div>
     </div>
@@ -58,7 +59,7 @@
           <a href="activity-plan.html" class="list-group-item" id="menu-activity-plan" data-id="10" style="display:none">常态活动计划管理</a>
           <a href="activity-unit.html" class="list-group-item" id="menu-activity-unit" data-id="11" style="display:none">常态活动单元管理</a>
           <a href="activity-cs.html" class="list-group-item" id="menu-activity-cs" data-id="24" style="display:none">常态活动查询</a>
-          <a href="activity-payment.html" class="list-group-item" id="menu-activity-payment" data-id="11" style="display:none">支付活动管理</a>
+          <a href="activity-payment.html" class="list-group-item" id="menu-activity-payment" data-id="282" style="display:none">支付活动管理</a>
         </div>
       </div>
     </div>
@@ -208,7 +209,7 @@
     </div>
 
     <div class="panel" style="display:none">
-      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#base"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 基础信息管理</a>
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#base"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 基础结算信息管理</a>
       <div id="base" class="panel-collapse collapse" role="tabpanel">
         <div class="list-group">
           <a href="diff-base-info-type.html" class="list-group-item" id="menu-diff-base-info-type" data-id="217" >差异类型管理</a>

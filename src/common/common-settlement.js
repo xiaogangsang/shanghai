@@ -202,6 +202,11 @@ settlementCommon.parseBalanceFileStatus = function(status) {
   return this.balanceFileStatus[status];
 }
 
+settlementCommon.reconciliationStatus = {'1' : '未对账', '2' : '对账不一致', '3' : '对账成功', '4' : '确认'};
+settlementCommon.parseReconciliationStatus = function(status) {
+  return this.reconciliationStatus[status];
+}
+
 
 /***************************************** 商户相关编码 **********************************************/
 
@@ -326,9 +331,9 @@ settlementCommon.prehandleData = function(res) {
   // 接口错误, 弹alert
   // 内容错误(语义错误), 错误message显示在table里
   if (!!~~res.meta.result) {
-    if (res.data == null || res.data.detail == null || res.data.detail.count < 1) {
+    if (res.data == null || res.data.detail == null || res.data.detail.records == null || res.data.detail.records.length < 1) {
       // var errorMsg = res.meta.msg;
-      var errorMsg = '无满足条件记录';
+      var errorMsg = '查询成功，无满足条件记录';
       $('#dataTable tbody').html('<tr><td colspan="30" align="center">' + errorMsg + '</td></tr>');
       $('#summaryTable tbody').html('<tr><td colspan="30" align="center">' + errorMsg + '</td></tr>');
       $('#pager').html('');
@@ -336,9 +341,10 @@ settlementCommon.prehandleData = function(res) {
       return true;
     }
   } else {
-    alert(res.meta.msg);
-    $('#dataTable tbody').html('');
-    $('#summaryTable tbody').html('');
+    // alert(res.meta.msg);
+    var info = '<tr><td colspan="30" align="center">' + res.meta.msg + '</td></tr>';
+    $('#dataTable tbody').html(info);
+    $('#summaryTable tbody').html(info);
     $('#pager').html('');
   }
   return false;
@@ -351,7 +357,7 @@ settlementCommon.clone = function(objectToBeCloned) {
   }
 
   var objectClone;
-  
+
   // Filter out special objects.
   var Constructor = objectToBeCloned.constructor;
   switch (Constructor) {
@@ -365,12 +371,12 @@ settlementCommon.clone = function(objectToBeCloned) {
     default:
       objectClone = new Constructor();
   }
-  
+
   // Clone each property.
   for (var prop in objectToBeCloned) {
     objectClone[prop] = this.clone(objectToBeCloned[prop]);
   }
-  
+
   return objectClone;
 }
 
@@ -378,6 +384,56 @@ settlementCommon.resetInput = function(input) {
   input.replaceWith(input.val('').clone(true));
 }
 
+settlementCommon.success = function (msg) {
+  var alertHtml = '<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert">&times;</button><div class="alert-content">' + msg + '</div></div>';
+  $('.breadcrumb').after(alertHtml);
+}
+
+settlementCommon.warning = function (msg) {
+  var alertHtml = '<div class="alert alert-warning alert-dismissible"><button type="button" class="close" data-dismiss="alert">&times;</button><div class="alert-content">' + msg + '</div></div>';
+  $('.breadcrumb').after(alertHtml);
+}
+
+settlementCommon.fetchBasicData = function (callback) {
+  $.ajax({
+    url: window.location.protocol + '//' + window.location.host + '/MovieOps/' + 'settlement/sign/allList',
+    type: 'GET',
+    dataType: 'json',
+  })
+  .done(function(res) {
+    if (!!~~res.meta.result) {
+
+      // 处理标识
+      var signObj = {};
+      _(res.data.detail.sign).each(function(item) {
+        signObj[item.id] = item.signName;
+      });
+
+      // 处理状态
+      var disposeObj = {};
+      _(res.data.detail.dispose).each(function(item) {
+        disposeObj[item.id] = item.disposeName;
+      });
+
+      // 责任部门
+      var departmentObj = {};
+      _(res.data.detail.department).each(function(item) {
+        departmentObj[item.id] = item.departmentName;
+      });
+
+      // 差异类型
+      var typeObj = {};
+      _(res.data.detail.type).each(function(item) {
+        typeObj[item.id] = item.differenceName;
+      });
+
+      callback({"sign" : signObj, "dispose" : disposeObj, "department" : departmentObj, "type" : typeObj});
+
+    } else {
+      callback(null);
+    }
+  })
+}
 
 /************************************************* 全局初始化处理 *****************************************************/
 

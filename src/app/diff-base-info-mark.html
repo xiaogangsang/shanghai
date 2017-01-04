@@ -10,17 +10,17 @@
 	<link rel="stylesheet" href="css/reset.css">
 </head>
 <body>
-	
+
 	@@include('component/header.tpl')
 
 	<div class="container-fluid">
-		
+
 		<div class="row">
-			
+
 			@@include('component/sidebar.tpl')
 
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-				
+
 				<ol class="breadcrumb">
 					<li>基础结算信息管理</li>
 					<li>差异处理标识管理</li>
@@ -30,72 +30,67 @@
 					<div class="form-group col-sm-4">
 						<div class="input-group">
 							<div class="input-group-addon">编号</div>
-							<input type="text" class="form-control" id="">
+							<input type="text" class="form-control" id="search_id">
 						</div>
 					</div>
 					<div class="form-group col-sm-4">
 						<div class="input-group">
-							<div class="input-group-addon">名称</div>
-							<select class="form-control" id="">
-								<option value="0">全部</option>
-								<option value="1">出货</option>
-								<option value="2">退货</option>
-								<option value="3">出货调整</option>
-								<option value="4">退货调整</option>
-							</select>
+							<div class="input-group-addon">差异处理标识</div>
+							<input type="text" class="form-control" id="search_signName">
 						</div>
 					</div>
 					<div class="form-group col-sm-4">
 						<div class="input-group">
 							<div class="input-group-addon">状态</div>
-							<select class="form-control" id="">
-								<option value="0">全部</option>
-								<option value="1">出货</option>
-								<option value="2">退货</option>
-								<option value="3">出货调整</option>
-								<option value="4">退货调整</option>
+							<select class="form-control" id="search_signUseStatus">
+								<option value>全部</option>
+								<option value="1">启用</option>
+								<option value="2">停用</option>
 							</select>
 						</div>
 					</div>
-					<div class="col-sm-3 pull-right">
-						<button type="submit" class="btn btn-block btn-primary">查询</button>
+					<div class="col-sm-6 pull-right">
+						<div class="col-sm-6">
+							<button type="submit" class="btn btn-block btn-primary">查询</button>
+						</div>
+						<div class="col-sm-6">
+							<button type="button" class="btn btn-block btn-default" id="btn-add">新增</button>
+						</div>
 					</div>
 				</form>
 
-				<div class="col-sm-6 pull-right" style="padding-right: 0px;">
-					<div class="col-sm-6">
-						<button type="button" class="btn btn-block btn-default" data-toggle="modal" data-target="#popup-add-diff">新增</button>
-					</div>
-					<div class="col-sm-6">
-						<button type="button" class="btn btn-block btn-default" id="">批量删除</button>
-					</div>
-				</div>
+				<div class="content-area">
+					<div class="row" id="pager"></div>
+					@@include('component/pager.tpl')
 
-				<div class="row" id="pager"></div>
-
-				<div class="table-responsive" style="margin-top: 20px;">
-					<table class="table table-hover" id="">
-						<thead>
-							<tr>
-								<th><input type="checkbox" class="multi-check-all"></th>
-								<th>编号</th>
-								<th>差异处理标识</th>
-								<th>对应差异类型</th>
-								<th>创建人</th>
-								<th>创建时间</th>
-								<th>使用状态</th>
-								<th>操作</th>
-							</tr>
-						</thead>
-					</table>
+					<div class="table-responsive">
+						<table class="table table-hover" id="dataTable">
+							<thead>
+								<tr>
+									<th>编号</th>
+									<th>差异处理标识</th>
+									<th>对应差异类型</th>
+									<th>创建人</th>
+									<th>创建时间</th>
+									<th>使用状态</th>
+									<th>操作</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+								  <td colspan="30" align="center">请点击“查询”按钮！</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
 				</div>
 
 			</div>
-		
+
 		</div>
 	</div>
 
-	<div class="modal fade" id="popup-add-diff">
+	<div class="modal fade" id="popup-add-diff-mark">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -105,48 +100,68 @@
 				<div class="modal-body">
 					<div class="container-fluid">
 						<div class="row">
-							
-							<div class="form-group">
-								<div class="input-group">
-									<div class="input-group-addon">差异处理标识</div>
-									<input type="text" class="form-control" id="">
+							<form id="formAdd">
+								<div class="form-group">
+									<div class="input-group">
+										<div class="input-group-addon">差异处理标识</div>
+										<input type="text" class="form-control" id="add_signName" required>
+									</div>
 								</div>
-							</div>
-							<div class="form-group">
-								<div class="input-group">
-									<div class="input-group-addon">对应差异类型</div>
-									<select class="form-control" id="">
-										<option value="0">收入</option>
-										<option value="1">成本</option>
-										<option value="1">待退款</option>
-									</select>
+								<div class="form-group">
+									<div class="input-group">
+										<div class="input-group-addon">对应差异类型</div>
+										<select class="form-control" id="add_differenceId" required>
+										</select>
+									</div>
 								</div>
-							</div>
-							<div class="form-group">
-								<div class="input-group">
-									<div class="input-group-addon">使用状态</div>
-									<select class="form-control" id="">
-										<option value="0">启用</option>
-										<option value="1">停用</option>
-									</select>
+								<div class="form-group">
+									<div class="input-group">
+										<div class="input-group-addon">使用状态</div>
+										<select class="form-control" id="add_signUseStatus" required>
+											<option value="1">启用</option>
+											<option value="2">停用</option>
+											<option value="3">删除</option>
+										</select>
+									</div>
 								</div>
-							</div>
-							
-							<div class="col-sm-8 col-sm-offset-2" style="margin-top: 10px; margin-bottom: 10px;">
-								<div class="col-sm-6">
-									<button type="submit" class="btn btn-block btn-primary">确定</button>
-								</div>
-								<div class="col-sm-6">
-									<button type="submit" class="btn btn-block btn-default">取消</button>
-								</div>
-							</div>
 
+								<div class="col-sm-8 col-sm-offset-2" style="margin-top: 10px; margin-bottom: 10px;">
+									<div class="col-sm-6">
+										<button type="submit" class="btn btn-block btn-primary">确定</button>
+									</div>
+									<div class="col-sm-6">
+										<button type="button" class="btn btn-block btn-default">取消</button>
+									</div>
+								</div>
+							</form>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+
+	<script id="table-template" type="text/x-tmpl-mustache">
+	  {{#rows}}
+	  <tr>
+	    <!-- 编号 -->
+	    <td>{{id}}</td>
+	    <!-- 差异处理标识 -->
+	    <td>{{signName}}</td>
+	    <!-- 对应差异类型 -->
+	    <td>{{differenceName}}</td>
+	    <!-- 创建人 -->
+	    <td>{{signUser}}</td>
+	    <!-- 创建时间 -->
+	    <td>{{updateTime}}</td>
+	    <!-- 使用状态 -->
+	    <td>{{signUseStatus}}</td>
+	    <td>
+	    	<button class="btn btn-xs btn-default btn-edit">修改</button>
+	    </td>
+	  </tr>
+	  {{/rows}}
+	</script>
 
 	<script src="js/vendor.js"></script>
 	<script src="js/diff-base-info-mark.js"></script>
