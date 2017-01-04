@@ -6,7 +6,9 @@
 
 'use strict;'
 var common = require('common');
+// require('fineUploader');
 var settlementCommon = require('settlementCommon');
+var fileIds = new Array();
 
 $(function() {
 
@@ -35,6 +37,8 @@ $(function() {
 	// 4. 配置商户级别和TP方数据源 
   $('#detail-merchantClass').html(settlementCommon.optionsHTML(settlementCommon.merchantLevel, true));
   $('#detail-tpId').html(settlementCommon.optionsHTML(settlementCommon.TP, true));
+  $('#detail-merchantStatus').html(settlementCommon.optionsHTML(settlementCommon.merchantStatus, true));
+
 
   $('#attachment-table').hide();
 
@@ -44,23 +48,7 @@ $(function() {
 
   $('#attachments-container').append(html);
 
-	// /****************************************** event handler **********************************************/
-	// $(document).on('click', '.submit', function(e) {
-	// 	e.preventDefault();
-
-	// 	// 搜集type=text的输入项, 必输项
-	// 	var mandatoryKeys = ['merchantName', 
-	// 	'merchantContacter', 
-	// 	'merchantPhone', 
-	// 	'accountName', 
-	// 	'bankAccount', 
-	// 	'bankCode'];
-
-	// 	// 搜集type=text的输入项, 可选项
-	// 	var optionKeys = ['merchantRemark', 'allocationRemark'];
-
-	// 	// 搜集其他类型
-	// });
+  $('#detail_formSearch').parsley();
 
 
 	/****************************************** event handler **********************************************/
@@ -162,22 +150,79 @@ $(function() {
 	  var input = $(el).parents('.input-group').find(':text');
 	  input.val(fileName);
 
-	  var $parentSpan = $(el).parent();
-	  $parentSpan.find('span').text('删除文件');
-	  $parentSpan.removeClass('btn-default');
-	  $parentSpan.addClass('btn-danger');
+    var uploadFile = $('.file-upload').prop('files')[0];
+    var fileName = $('.file-upload').prop('files')[0].name;
 
-	  var template = $('#file-upload-template').html();
-	  Mustache.parse(template);
-	  var html = Mustache.render(template);
+    var formData = new FormData();
+    formData.append('image', uploadFile);
+    formData.append('imageFileName', fileName);
+    
+	   if (uploadFile) {
+	      $('#hud-overlay').show();
+	      $.ajax({
+	       url: common.API_HOST + 'settlement/merchantAttachment/uploadAttachment.json',
+	       type: 'POST',
+	       contentType: false,
+	       processData: false,
+	       data: formData
+		   })
+		   .done(function(res) {
+		       $('#hud-overlay').hide();
+		       if (!!~~res.meta.result == true) {
+		           alert('上传成功！');
+		           var $parentSpan = $(el).parent();
+						  $parentSpan.find('span').text('删除文件');
+						  $parentSpan.removeClass('btn-default');
+						  $parentSpan.addClass('btn-danger');
 
-	  $('#attachments-container').append(html);
+						  fileIds.push(res.data.fileId);
+
+						  var fileId = res.data.fileId;
+							$parentSpan[0].setAttribute("id", fileId);
+
+		       } else {
+		          alert('接口错误：' + res.meta.msg);
+			       	var $parentSpan = $(el).parent();
+			       	$parentSpan.parent().parent().remove()
+		       }
+		       var template = $('#file-upload-template').html();
+					 Mustache.parse(template);
+					 var html = Mustache.render(template);
+					 $('#attachments-container').append(html);
+		   });
+	    } else {
+	        alert('请先选择文件');
+	    }
+
 	}
 
 	$('body').on('click', '.btn-file', function(e) {
 		if ($(this).hasClass('btn-danger')) {
 			var $div = $(this).closest('.row');
-      $div.remove();
+			var fileId = $div.context.id;
+
+			var sendData = {
+		    id: fileId,
+		  };
+
+		  $.ajax({
+	      url: common.API_HOST + 'settlement/merchantAttachment/delete.json',
+	      type: 'POST',
+	      dataType: 'json',
+	      data: sendData,
+		  })
+		  .done(function (res) {
+		  	if (!!~~res.meta.result == true) {
+		  		$.each(fileIds,function(index,item){ 
+			      if(item==fileId){
+			         fileIds.splice(index,1);
+			      }
+			    });
+	     		$div.remove();
+			  } else {
+			  	alert('接口错误：' + res.meta.msg);
+			  }
+		 });
       return false;
 		}
 	});
@@ -185,34 +230,103 @@ $(function() {
 	/***************************************** 提交 ******************************************/
 
 	$('.submit').click(function(e) {
-		e.preventDefault();
-		var formData = new FormData();
+			e.preventDefault();
 
-		if ($('.file-upload').length > 1) {
-			$('.file-upload').each(function() {
-				var file = $(this).prop('files')[0];
-				if (file) {
-					formData.append('file', file);
-				}
-			});
-		}
+			if (!$('#detail_formSearch').parsley().isValid()) {
+			     return false;
+			  }
 
-		$('#hud-overlay').show();
+			var merchantType = '';
+			if ($('#merchantTypeCheckbox').prop('checked')) {
+			      merchantType = 1;
+			    }
 
-		$.ajax({
-	    url: common.API_HOST + 'settlement/test',
-	    type: 'POST',
-	    contentType: false,
-	    processData:false,
-	    data: formData
-	  })
-	  .done(function (res) {
-	  	$('#hud-overlay').hide();
-	    if (res.meta.result == true) {
-	      alert('保存成功！');
-	    } else {
-	      alert('接口错误：' + res.meta.msg);
+	    var allocationDetail = '';
+	   	if ($('#inlineCheckbox1').prop('checked')) {
+	      allocationDetail = 1;
+	    } else if ($('#inlineCheckbox2').prop('checked')) {
+	    allocationDetail = 0;
 	    }
-	  });
+
+	    var allocationDetailReceiver = '';
+	    if ($('#allocationDetailReceiver1').prop('checked') && $('#allocationDetailReceiver2').prop('checked')) {
+	      allocationDetailReceiver = 3;
+	    } else if ($('#allocationDetailReceiver1').prop('checked')) {
+	    allocationDetailReceiver = 1;
+	    } else if ($('#allocationDetailReceiver2').prop('checked')) {
+	    allocationDetailReceiver = 2;
+	    } else {
+	    allocationDetailReceiver = 4;
+	    }
+
+	  var sendData = {
+	  // 商户名称
+	   merchantName: $('#merchantName').val(),
+	   // 商户号
+	   merchantId: $('#merchantNo').val(),
+	   // 商户状态
+	   merchantStatus: $('#detail-merchantStatus').val(),
+	   // 商户联系人
+	   merchantContacter: $('#merchantContacter').val(),
+	   // 联系电话
+	   merchantPhone: $('#merchantPhone').val(),
+	   // 员工姓名
+	   userName: $('#userName').val(),
+	   // 员工编号
+	   userId: $('#userId').val(),
+	   // 商户级别
+	   merchantClass: $('#merchantClass').val(),
+	   // 商户类别
+	   merchantType: $('#merchantType').val(),
+	   // TP方
+	   tpId: $('#detail-tpId').val(),
+	   // 商户类别
+	   merchantType: merchantType,
+	   // 商户备注信息
+	   merchantRemark: $('#merchantRemark').val(),
+	   // 拨款模式
+	   allocationType: $('#select-allocation-type').val(),
+	   // 拨款周期
+	   allocationPeriod: $('#allocationPeriod').val(),
+	   // 拨款延迟天数
+	   allocationDelay: $('#allocationDelay').val(),
+	   // 拨款摘要
+	   allocationRemark: $('#allocationRemark').val(),
+	   // 是否发送拨款明细
+	   allocationDetail: allocationDetail,
+	   // 发送对象
+	   allocationDetailReceiver: allocationDetailReceiver,  
+	   // 商户E-mail
+	   email: $('#email').val(),
+	   // 卡部E-mail
+	   departmentEmail: $('#cardEmail').val(),
+	   // 账户名
+	   accountName: $('#accountName').val(),
+	   // 账号
+	   bankAccount: $('#bankAccount').val(),
+	   // 开户行
+	   branchName: $('#bankName').val(),
+	   // 银行行号
+	   bankCode: $('#bankCode').val(),
+	   // 上传文件
+	   fileIds: fileIds,
+
+	  };
+
+	$.ajax({
+	   url: common.API_HOST + 'settlement/merchantinfo/addMerchant.json',
+	   type: 'POST',
+     traditional: true,
+	   data: sendData,
+	 })
+	 .done(function (res) {
+	   if (res.meta.result == true) {
+	     alert('保存成功！');
+	     window.location.reload();
+	   } else {
+	     alert('接口错误：' + res.meta.msg);
+	   }
+	 });
 	});
+
 });
