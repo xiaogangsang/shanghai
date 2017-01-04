@@ -2,6 +2,7 @@
 
 var common = require('common');
 var settlementCommon = require('settlementCommon');
+var pager = require('pager');
 
 var _status = [
 { id: 0, name: '启用' },
@@ -20,19 +21,19 @@ var selectedsectionData;
 
 $(function () {
 	common.init('diff-base-info-department');
-	
+	pager.init($('#pager'));
 })
 
 $('#formSearch').on('click', 'button[type=submit]', function (event) {
 	event.preventDefault();
 
-	_pageSize = 10;
+	pager.pageIndex = 1;
 	useCache = false;
 
 	var sendData = {
 		id: $('#dep_number').val(),
-		pageIndex: _pageIndex,
-		pageSize: _pageSize,
+		pageSize: pager.pageSize,
+    pageIndex: pager.pageIndex,
 		departmentName: $('#dep_name').val(),
 		departmentUseStatus: $('#dep_status').val(),
 
@@ -43,7 +44,7 @@ $('#formSearch').on('click', 'button[type=submit]', function (event) {
   } else {
     searchCache = sendData;
   }
-  sendData.pageIndex = _pageIndex;
+  sendData.pageIndex = pager.pageIndex;
 
   $.ajax({
     url: common.API_HOST + 'settlement/department/selectList',
@@ -58,85 +59,39 @@ $('#formSearch').on('click', 'button[type=submit]', function (event) {
   return false;
 });
 
-function handleData(res) {
-	_querying = false;
+  function handleData(res) {
+  	_querying = false;
 
-	if (!!~~res.meta.result) {
-    // if (res.data.detail.record.length < 1) {
-    //   $('#dataTable tbody').html('<tr><td colspan="9" align="center">查不到相关数据，请修改查询条件！</td></tr>');
-    //   $('#pager').html('');
-    // } else {
-      var totalRecord = res.data.detail.count;
-  		var record = res.data.detail.records;
+  	if (!!~~res.meta.result) {
+      if (res.data == null || res.data.detail.records.length < 1) {
+          $('#dataTable tbody').html('<tr><td colspan="9" align="center">查不到相关数据，请修改查询条件！</td></tr>');
+          $('#pager').html('');
 
-  		_pageTotal = Math.ceil(totalRecord / _pageSize);
-  		setPager(totalRecord, _pageIndex, record.length, _pageTotal);
+        } else {
+          var totalRecord = res.data.detail.count;
+          var record = res.data.detail.records;
 
-  		_(record).forEach(function(item) {
-      item.departmentUseStatus = settlementCommon.parseDepartmentUseStatus(item.departmentUseStatus);
-    });
-  		dataCache = record;
-  		setTableData(dataCache);
-    // }
-  } else {
-    alert('接口错误：' + res.meta.msg);
-  }	
-}
+          pager.pageTotal = Math.ceil(totalRecord / pager.pageSize);
+          pager.setPager(totalRecord, pager.pageIndex, record.length, pager.pageTotal);
 
-function setTableData(rows) {
-	var data = {rows : rows};
-  var template = $('#table-template').html();
-  Mustache.parse(template);
-  var html = Mustache.render(template, data);
-  $('#dataTable tbody').html(html);
-}
-
-function setPager(total, pageIndex, rowsSize, pageTotal) {
-	var data = { total: total, pageIndex: pageIndex, rowsSize: rowsSize, pageTotal: pageTotal };
-  var template = $('#pager-template').html();
-  Mustache.parse(template);
-  var html = Mustache.render(template, data);
-  $('#pager').html(html);
-}
-
-  $('#pager').on('click', '.prev,.next', function (e) {
-    e.preventDefault();
-    if ($(this).hasClass('prev')) {
-      if (_pageIndex <= 1) {
-        _pageIndex = 1;
-        alert('已经是第一页！');
-        return false;
+          _(record).forEach(function(item) {
+          item.departmentUseStatus = settlementCommon.parseDepartmentUseStatus(item.departmentUseStatus);
+        });
+      		dataCache = record;
+      		setTableData(dataCache);
       }
-      _pageIndex--;
-
     } else {
-      if (_pageIndex >= _pageTotal) {
-        _pageIndex = _pageTotal;
-        alert('已经是最后一页！');
-        return false;
-      }
-      _pageIndex++;
-    }
-   $('#formSearch').trigger('submit');
-    return false;
-  });
+      alert('接口错误：' + res.meta.msg);
+    }	
+  }
 
-  $('#pager').on('click', '#btn-pager', function (e) {
-    e.preventDefault();
-    if ('' == $('#pageNo').val()) {
-      return false;
-    }
-
-    var pageNo = parseInt($('#pageNo').val());
-    if (NaN == pageNo || pageNo < 1 || pageNo > _pageTotal) {
-      alert('要跳转的页码超过了范围！');
-      return false;
-    }
-
-    _pageIndex = pageNo;
-    $('#formSearch').trigger('submit');
-    return false;
-  });
+  function setTableData(rows) {
+  	var data = {rows : rows};
+    var template = $('#table-template').html();
+    Mustache.parse(template);
+    var html = Mustache.render(template, data);
+    $('#dataTable tbody').html(html);
+  }
 
   $('.multi-check-all').change(function(e) {
     e.preventDefault();

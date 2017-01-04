@@ -150,9 +150,14 @@
         <div class="list-group">
           <a href="merchant-list.html" class="list-group-item" id="menu-merchant-list" data-id="141" style="display:none">商户列表</a>
           <a href="merchant-creation.html" class="list-group-item" id="menu-merchant-creation" data-id="142" style="display:none">商户新增</a>
-          <a href="merchant-edit-submitted.html" class="list-group-item" id="menu-merchant-edit-submitted" data-id="194" style="display:none">我提交的商户</a>
+          
+          <a href="merchant-edit-submitted.html" class="list-group-item" id="menu-merchant-edit-submitted" data-id="142" style="display:none">我提交的商户</a>
+          <!-- <a href="merchant-creation.html" class="list-group-item" id="menu-merchant-draft" data-id="142" style="display:none">草稿箱</a> -->
+          <a href="merchant-edit-approval.html" class="list-group-item" id="menu-merchant-edit-approval" data-id="142" style="display:none">商户审核</a>
+
+         <!--  <a href="merchant-edit-submitted.html" class="list-group-item" id="menu-merchant-edit-submitted" data-id="194" style="display:none">我提交的商户</a>
           <a href="merchant-creation.html" class="list-group-item" id="menu-merchant-draft" data-id="195" style="display:none">草稿箱</a>
-          <a href="merchant-edit-approval.html" class="list-group-item" id="menu-merchant-edit-approval" data-id="203" style="display:none">商户审核</a>
+          <a href="merchant-edit-approval.html" class="list-group-item" id="menu-merchant-edit-approval" data-id="203" style="display:none">商户审核</a> -->
         </div>
       </div>
     </div>

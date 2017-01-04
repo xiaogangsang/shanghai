@@ -17,6 +17,8 @@ var _querying = false;
 var searchCache = {};
 var useCache = false;
 var dataCache;
+var merchantAttachments;
+var fileIds = new Array();
 
 var _DEBUG = false;
 
@@ -52,7 +54,129 @@ $(function () {
     FromEndDate.setDate(FromEndDate.getDate(new Date(ev.date.valueOf())));
     $('#search_startTime').datetimepicker('setEndDate', FromEndDate);
   });
+
 });
+
+  /***************************************** 选择文件 ******************************************/
+
+  // jQuery way
+  // $(document).on('change', '.file-upload', fileChangeHandler);
+
+  // static bind way
+  // document.getElementsByClass("file-upload").addEventListener("click", fileChangeHandler);
+
+  /* 
+   * jQuery 1.12 动态绑定change事件在firefox8下不起作用, 所以还是用最原始的绑定方式, 
+   */
+  document.addEventListener("change", function(event) {
+    // retrieve an event if it was called manually
+    event = event || window.event;
+
+    // retrieve the related element
+    var el = event.target || event.srcElement;
+
+    var className = el.className;
+
+    if (className.indexOf('file-upload') > -1) {
+
+      var parent = el.parentNode;
+      if (parent.className.indexOf('btn-danger') < 0) {
+        event.preventDefault();
+        fileChangeHandler(event, el);
+        return false;
+      }
+    }
+  });
+
+  function fileChangeHandler(e, el) {
+   e.preventDefault();
+
+    var path = $(el).val();
+    fileName = path.match(/[^\/\\]*$/)[0];
+
+    var input = $(el).parents('.input-group').find(':text');
+    input.val(fileName);
+
+    var uploadFile = $('.file-upload').prop('files')[0];
+    var fileName = $('.file-upload').prop('files')[0].name;
+
+    var formData = new FormData();
+    formData.append('image', uploadFile);
+    formData.append('imageFileName', fileName);
+    var merchantId = $('#merchantNo').val();
+    formData.append('merchantId',merchantId);
+     
+     if (uploadFile) {
+
+        $('#hud-overlay').show();
+
+        $.ajax({
+         url: common.API_HOST + 'settlement/merchantAttachment/uploadAttachment.json',
+         type: 'POST',
+         contentType: false,
+         processData: false,
+         data: formData
+       })
+       .done(function(res) {
+           $('#hud-overlay').hide();
+           if (!!~~res.meta.result == true) {
+               alert('上传成功！');
+               var $parentSpan = $(el).parent();
+              $parentSpan.find('span').text('删除文件');
+              $parentSpan.removeClass('btn-default');
+              $parentSpan.addClass('btn-danger');
+
+              fileIds.push(res.data.fileId);
+              var fileId = res.data.fileId;
+              $parentSpan[0].setAttribute("id", fileId);
+
+           } else {
+              alert('接口错误：' + res.meta.msg);
+              var $parentSpan = $(el).parent();
+              $parentSpan.parent().parent().remove()
+           }
+           var template = $('#file-upload-template').html();
+           Mustache.parse(template);
+           var html = Mustache.render(template);
+           $('#attachments-container').append(html);
+       });
+      } else {
+          alert('请先选择文件');
+      }
+
+  }
+
+  $('body').on('click', '.btn-file', function(e) {
+    if ($(this).hasClass('btn-danger')) {
+      var $div = $(this).closest('.row');
+      var fileId = $div.context.id;
+
+      var sendData = {
+        id: fileId,
+        merchantId:$('#merchantNo').val(),
+      };
+
+      $.ajax({
+        url: common.API_HOST + 'settlement/merchantAttachment/delete.json',
+        type: 'POST',
+        dataType: 'json',
+        data: sendData,
+      })
+      .done(function (res) {
+        if (!!~~res.meta.result == true) {
+          $.each(fileIds,function(index,item){ 
+            if(item==fileId){
+               fileIds.splice(index,1);
+            }
+          });
+          $div.remove();
+        } else {
+          alert('接口错误：' + res.meta.msg);
+        }
+     });
+      return false;
+    }
+  });
 
 //handle search form
 $('#formSearch').on('click', 'button[type=submit]', function (event) {
@@ -64,13 +188,19 @@ $('#formSearch').on('click', 'button[type=submit]', function (event) {
 
 $('#formSearch').on('submit', function (e) {
   e.preventDefault();
+
+  if (!useCache) {
+    if (!$('#formSearch').parsley().isValid()) {
+      return false;
+    }
+  }
   var sendData = {
     periodStart: $('#search_startTime').val(),
     periodEnd: $('#search_endTime').val(),
     merchantStatus: $('#search_merchantStatus').val(),
     merchantName: $('#search_merchantName').val(),
     merchantId: $('#search_merchantNo').val(),
-    userName: $('#search_merchantSubscribeGuy').val(),
+    // userName: $('#search_merchantSubscribeGuy').val(),
     tpId: $('#search_TP').val(),
     merchantClass: $('#search_merchantLevel').val(),
     pageSize: _pageSize,
@@ -153,7 +283,6 @@ $('#pager').on('click', '.prev,.next', function (e) {
       alert('已经是第一页！');
       return false;
     }
-
     _pageIndex--;
   } else {
     if (_pageIndex >= _pageTotal) {
@@ -161,7 +290,6 @@ $('#pager').on('click', '.prev,.next', function (e) {
       alert('已经是最后一页！');
       return false;
     }
-
     _pageIndex++;
   }
 
@@ -237,21 +365,31 @@ function setPager(total, pageIndex, rowsSize, pageTotal) {
 
 /****************************************** Merchant Detail **********************************************/
 
-function setModal(detailData) {
+function setModal(data) {
+
+  var detailData = data.merchantInfo;
+  var attachments = data.merchantAttachments;
+  detailData.attachments = attachments;
+
+  merchantAttachments = data.merchantAttachments;
 
   var template = $('#detail-template').html();
   Mustache.parse(template);
   var html = Mustache.render(template, detailData);
-
   $('#popup-merchant-detail .modal-body').html(html);
 
   formatPopupUI(detailData);
 }
 
 function formatPopupUI(detailData) {
-  // make all the input lable-like
-  $('.detail-area :input').prop('readonly', true);
-  $('.detail-area :input').prop('disabled', true);
+
+  // 设置商户级别和TP方的的选择
+  $('#detail-merchantClass').html(settlementCommon.optionsHTML(settlementCommon.merchantLevel, true));
+  $('#detail-merchantClass option[value="' + detailData.merchantClass + '"]').prop('selected', true);
+  $('#detail-tpId').html(settlementCommon.optionsHTML(settlementCommon.TP, true));
+  $('#detail-tpId option[value="' + detailData.tpId + '"]').prop('selected', true);
+  $('#detail-merchantStatus').html(settlementCommon.optionsHTML(settlementCommon.merchantStatus, true));
+  $('#detail-merchantStatus option[value="' + detailData.merchantStatus + '"]').prop('selected', true);
 
   // 拨款模式不同, 相应控件显示隐藏
   var allocationType = detailData.allocationType;
@@ -288,9 +426,37 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
 
   var rowIndex = $(this).closest('tr').prevAll().length;
   var detailData = dataCache[rowIndex];
+  var merchantId = detailData.merchantId;
 
-  setModal(detailData);
-  $('#popup-merchant-detail').modal('show');
+  if (!_DEBUG) {
+      $.ajax({
+        url: common.API_HOST + 'settlement/merchantinfo/query.json',
+        type: 'POST',
+        dataType: 'json',
+        data: {merchantId: merchantId},
+      })
+      .done(function (res) {
+
+        if (!!~~res.meta.result) {
+          setModal(res.data);
+          $('#edit-merchantNoTitle').prop('hidden', false);
+          $('#popup-merchant-detail').modal('show');
+          $('#edit-merchantNo').text(detailData.merchantId);
+          $('#detail_formSearch').parsley();
+          var template = $('#file-upload-template').html();
+          Mustache.parse(template);
+          var html = Mustache.render(template);
+          $('#attachments-container').append(html);
+        } else {
+          alert(res.meta.msg);
+        }
+      });
+    } else {
+      var res = $.parseJSON('{ "meta" : { "result" : "1", "msg" : "操作成功" }, "data" : { "merchantName" : "商户名称", "merchantId" : "商户号", "merchantStatus" : "商户状态", "merchantContacter" : "商户联系人", "merchantPhone" : "商户联系电话", "userName" : "员工姓名", "userId" : "员工编号", "tpId":"1", "merchantClass":"1", "merchantType" : "商户类别", "merchantRemark" : "商户备注", "allocationType" : "2", "allocationPeriod" : "28", "allocationDelay" : "拨款延迟", "fixedAllocationDay" : "28", "allocationDetail" : "是否给拨款明细", "allocationRemark" : "拨款摘要", "allocationDetailReceiver":"1", "email":"商户邮箱", "departmentEmail":"卡部邮箱", "accountName" : "账户名", "accountStatus" : "账户状态", "bankAccount" : "银行账号", "bankCode" : "联行行号", "branchName":"开户行", "attachments":[ { "attachmentName":"附件名", "createTime":"上传时间", "fileUrl":"文件路径", "fileId":"文件id" } ] } }');
+      setModal(res.data);
+      $('#popup-merchant-detail').modal('show');
+    }
+
 });
 
 // 删除商户
@@ -343,9 +509,40 @@ $('#dataTable').on('click', '.btn-detail', function(e) {
 
   var rowIndex = $(this).closest('tr').prevAll().length;
   var detailData = dataCache[rowIndex];
+  var merchantId = detailData.merchantId;
 
-  setModal(detailData);
-  $('#popup-merchant-detail').modal('show');
+  if (!_DEBUG) {
+      $.ajax({
+        url: common.API_HOST + 'settlement/merchantinfo/query.json',
+        type: 'POST',
+        dataType: 'json',
+        data: {merchantId: merchantId},
+      })
+      .done(function (res) {
+
+        if (!!~~res.meta.result) {
+          setModal(res.data);
+
+          // make all the input lable-like
+          $('.detail-area :input').prop('readonly', true);
+          // 详情时失能所有的select, radio, checkbox
+          $('.detail-area select, .detail-area :radio, .detail-area :checkbox').prop('disabled', true);
+          // 隐藏所有的button
+          $('.detail-area :button').hide();
+          $("#uploadBtnDiv").prop('hidden', true);
+          $("#commitBtnDiv").prop('hidden', true);
+          $('#popup-merchant-detail').modal('show');
+
+        } else {
+          alert(res.meta.msg);
+        }
+      });
+    } else {
+      var res = $.parseJSON('{ "meta" : { "result" : "1", "msg" : "操作成功" }, "data" : { "merchantName" : "商户名称", "merchantId" : "商户号", "merchantStatus" : "商户状态", "merchantContacter" : "商户联系人", "merchantPhone" : "商户联系电话", "userName" : "员工姓名", "userId" : "员工编号", "tpId":"1", "merchantClass":"1", "merchantType" : "商户类别", "merchantRemark" : "商户备注", "allocationType" : "2", "allocationPeriod" : "28", "allocationDelay" : "拨款延迟", "fixedAllocationDay" : "28", "allocationDetail" : "是否给拨款明细", "allocationRemark" : "拨款摘要", "allocationDetailReceiver":"1", "email":"商户邮箱", "departmentEmail":"卡部邮箱", "accountName" : "账户名", "accountStatus" : "账户状态", "bankAccount" : "银行账号", "bankCode" : "联行行号", "branchName":"开户行", "attachments":[ { "attachmentName":"附件名", "createTime":"上传时间", "fileUrl":"文件路径", "fileId":"文件id" } ] } }');
+      setModal(res.data);
+      $('#popup-merchant-detail').modal('show');
+    }
+  
 });
 
 // 账户停用
@@ -356,8 +553,8 @@ $('#dataTable').on('click', '.btn-disable-account', function(e) {
   var param = {merchantId: merchantId};
 
   $.ajax({
-    url: common.API_HOST + 'settlement/merchantinfo/suspendAccount',
-    type: 'POST',
+    url: common.API_HOST + 'settlement/merchantinfo/suspendAccount.json',
+    type: 'GET',
     data: param,
   })
   .done(function (res) {
@@ -378,7 +575,7 @@ $('#dataTable').on('click', '.btn-enable-account', function(e) {
   var param = {merchantId: merchantId};
 
   $.ajax({
-    url: common.API_HOST + 'settlement/merchantinfo/activateAccount',
+    url: common.API_HOST + 'settlement/merchantinfo/activateAccount.json',
     type: 'POST',
     data: param,
   })
@@ -390,6 +587,105 @@ $('#dataTable').on('click', '.btn-enable-account', function(e) {
       alert(res.meta.msg);
     }
   });
+});
+
+$('body').on('click','.submit',function(e){
+  e.preventDefault();
+
+  // if (!$('#detail_formSearch').parsley().isValid()) {
+  //          return false;
+  //       }
+
+      var merchantType = '';
+      if ($('#merchantTypeCheckbox').prop('checked')) {
+            merchantType = 1;
+          }
+
+      var allocationDetail = '';
+      if ($('#inlineCheckbox1').prop('checked')) {
+        allocationDetail = 1;
+      } else if ($('#inlineCheckbox2').prop('checked')) {
+      allocationDetail = 0;
+      }
+
+      var allocationDetailReceiver = '';
+      if ($('#allocationDetailReceiver1').prop('checked') && $('#allocationDetailReceiver2').prop('checked')) {
+        allocationDetailReceiver = 3;
+      } else if ($('#allocationDetailReceiver1').prop('checked')) {
+      allocationDetailReceiver = 1;
+      } else if ($('#allocationDetailReceiver2').prop('checked')) {
+      allocationDetailReceiver = 2;
+      } else {
+      allocationDetailReceiver = 4;
+      }
+
+    var sendData = {
+    // 商户名称
+     merchantName: $('#merchantName').val(),
+     // 商户号
+     merchantId: $('#merchantNo').val(),
+     // 商户状态
+     merchantStatus: $('#detail-merchantStatus').val(),
+     // 商户联系人
+     merchantContacter: $('#merchantContacter').val(),
+     // 联系电话
+     merchantPhone: $('#merchantPhone').val(),
+     // 员工姓名
+     userName: $('#userName').val(),
+     // 员工编号
+     userId: $('#userId').val(),
+     // 商户级别
+     merchantClass: $('#merchantClass').val(),
+     // 商户类别
+     merchantType: $('#merchantType').val(),
+     // TP方
+     tpId: $('#detail-tpId').val(),
+     // 商户类别
+     merchantType: merchantType,
+     // 商户备注信息
+     merchantRemark: $('#merchantRemark').val(),
+     // 拨款模式
+     allocationType: $('#select-allocation-type').val(),
+     // 拨款周期
+     allocationPeriod: $('#allocationPeriod').val(),
+     // 拨款延迟天数
+     allocationDelay: $('#allocationDelay').val(),
+     // 拨款摘要
+     allocationRemark: $('#allocationRemark').val(),
+     // 是否发送拨款明细
+     allocationDetail: allocationDetail,
+     // 发送对象
+     allocationDetailReceiver: allocationDetailReceiver,  
+     // 商户E-mail
+     email: $('#email').val(),
+     // 卡部E-mail
+     departmentEmail: $('#cardEmail').val(),
+     // 账户名
+     accountName: $('#accountName').val(),
+     // 账号
+     bankAccount: $('#bankAccount').val(),
+     // 开户行
+     branchName: $('#bankName').val(),
+     // 银行行号
+     bankCode: $('#bankCode').val(),
+     // 上传文件
+     // fileIds: fileIds,
+
+    };
+
+  $.ajax({
+     url: common.API_HOST + 'settlement/merchantinfo/editMerchant.json',
+     type: 'POST',
+     data: sendData,
+   })
+   .done(function (res) {
+     if (res.meta.result == true) {
+       alert('保存成功！');
+       // window.location.reload();
+     } else {
+       alert('接口错误：' + res.meta.msg);
+     }
+   });
 });
 
 
@@ -432,4 +728,13 @@ $('.modal').on('change', ':checkbox[name="send-to"]', function(e) {
       $('.branch-email').hide();
     }
   }
+});
+
+$('.modal').on('click', '.download', function(e) {
+  var fileUrl = $(this).data('fileurl');
+  // alert('文件路径为 ' + fileUrl + ', 本接口尚未实现.');
+  var rowIndex = $(this).closest('tr').prevAll().length;
+  var attachment = merchantAttachments[rowIndex];
+  window.location.href = common.API_HOST + 'settlement/merchantAttachment/downLoad.json?id=' + attachment.id;
+
 });

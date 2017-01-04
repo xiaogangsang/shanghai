@@ -66,7 +66,9 @@
 						</div>
 				</form>
 
+				<div class="content-area">
 				<div class="row" id="pager"></div>
+				@@include('component/pager.tpl')
 
 				<div class="table-responsive" style="margin-top: 20px;">
 					<table class="table table-hover" id="dataTable">
@@ -86,33 +88,15 @@
                   <td colspan="26" align="center">请点击“查询”按钮！</td>
                 </tr>
              </tbody>
-					</table>
+						</table>
+					</div>
 				</div>
-
 			</div>
-		
 		</div>
 	</div>
 
 	<script src="js/vendor.js"></script>
   <script src="js/diff-base-info-status.js"></script>
-
-  <script id="pager-template" type="text/x-tmpl-mustache">
-    <div class="col xs-12 col-sm-6 rowStatics">共 <span id="total">{{total}}</span> 条数据，当前显示 <span id="rowsSize">{{rowsSize}}</span> 条</div>
-    {{#pageTotal}}
-    <div class="col xs-12 col-sm-6 pull-right">
-      <nav>
-        <ul class="pagination pagination-sm pull-right">
-          <li><a href="#" class="prev"><span>&lt;</span></a></li>
-          <li><span id="pageIndex">{{pageIndex}}</span> / <span id="pageTotal">{{pageTotal}}</span></li>
-          <li><a href="#" class="next"><span>&gt;</span></a></li>
-          <li><input type="number" name="pageNo" id="pageNo" pattern="[0-9]+"></li>
-          <li><button type="button" class="btn" id="btn-pager">跳转</button></li>
-        </ul>
-      </nav>
-    </div>
-    {{/pageTotal}}
-  </script>
 
   <script id="table-template" type="text/x-tmpl-mustache">
     {{#rows}}

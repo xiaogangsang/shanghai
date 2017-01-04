@@ -22,6 +22,7 @@ var searchCache = {};
 var useCache = false;
 var dataCache;
 var _submitting = false;
+var _firstShow = true;
 
 var selectBranch;
 var selectGuy;
@@ -70,9 +71,14 @@ $('#formSearch').on('click', 'button[type=submit]', function (event) {
 
 $('#formSearch').on('submit', function (e) {
   e.preventDefault();
+  if (!useCache) {
+    if (!$('#formSearch').parsley().isValid()) {
+      return false;
+    }
+  }
   var sendData = {
-    periodStart: $('#search_startTime').val(),
-    periodEnd: $('#search_endTime').val(),
+    startTime: $('#search_startTime').val(),
+    endTime: $('#search_endTime').val(),
     userId: $('#search_merchantSubscribeGuy').val(),
     merchantName: $('#search_merchantName').val(),
     merchantId: $('#search_merchantNo').val(),
@@ -95,8 +101,8 @@ $('#formSearch').on('submit', function (e) {
 
   if (!_DEBUG) {
     $.ajax({
-      url: common.API_HOST + 'settlement/merchantinfo/listMerchantsNeedChecking',
-      type: 'GET',
+      url: common.API_HOST + 'settlement/merchantinfo/listMerchantsNeedChecking.json',
+      type: 'POST',
       dataType: 'json',
       data: sendData,
     })
@@ -211,6 +217,15 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
 
   e.preventDefault();
 
+  if (_firstShow) {
+    var template = $('#reject-result-template').html();
+    Mustache.parse(template);
+    var html = Mustache.render(template);
+    $('#detail-template').append(html);
+    _firstShow = false;
+  };
+  
+
   var rowIndex = $(this).closest('tr').prevAll().length;
   var detailData = dataCache[rowIndex];
 
@@ -233,6 +248,7 @@ function formatPopupUI(detailData) {
   // make all the input lable-like
   $('.detail-area :input').prop('readonly', true);
   $('.detail-area :input').prop('disabled', true);
+  $('#commitBtn').hide();
 
   // 拨款模式不同, 相应控件显示隐藏
   var allocationType = detailData.allocationType;
@@ -261,6 +277,62 @@ function formatPopupUI(detailData) {
   });
 }
 
+
+$('#dataTable').on('click', '.btn-reject', function (e) {
+  e.preventDefault();
+
+  var rowIndex = $(this).closest('tr').prevAll().length;
+  var detailData = dataCache[rowIndex];
+  sendRejectRequest(detailData.merchantId);
+});
+
+$('body').on('click', '#btn-reject', function (e) {
+  e.preventDefault();
+  var merchantNo = $('#merchantNo').val();
+  sendRejectRequest(merchantNo);
+
+});
+
+function sendRejectRequest(merchantNo) {
+  var param = {merchantId: merchantNo};
+  $.ajax({
+    url: common.API_HOST + 'settlement/merchantinfo/disable.json',
+    type: 'GET',
+    data: param,
+  })
+  .done(function (res) {
+    if (!!~~res.meta.result) {
+      alert(res.meta.msg);
+      
+      $('#formSearch').trigger('submit');
+      $('#popup-merchant-detail').modal('hide');
+    } else {
+      alert(res.meta.msg);
+    }
+  });
+}
+
+$('body').on('click', '#btn-egis', function (e) {
+    e.preventDefault();
+
+    var merchantNo = $('#merchantNo').val();
+    var param = {merchantId: merchantNo};
+    $.ajax({
+      url: common.API_HOST + 'settlement/merchantinfo/online.json',
+      type: 'POST',
+      data: param,
+    })
+    .done(function (res) {
+      if (!!~~res.meta.result) {
+        alert(res.meta.msg);
+        
+        $('#formSearch').trigger('submit');
+        $('#popup-merchant-detail').modal('hide');
+      } else {
+        alert(res.meta.msg);
+      }
+    });
+});
 
 /****************************************** event handler **********************************************/
 // 拨款模式

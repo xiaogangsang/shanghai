@@ -2,14 +2,12 @@
 
 var common = require('common');
 var settlementCommon = require('settlementCommon');
+var pager = require('pager');
 var _status = [
 { id: 0, name: '启用' },
 { id: 1, name: '停用' },
 ];
 
-var _pageIndex = 1;
-var _pageSize = 10;
-var _pageTotal = 0;
 var useCache = false;
 var _querying = false;
 var searchCache = {};
@@ -18,18 +16,19 @@ var selectedsectionData;
 
   $(function () {
   	common.init('diff-base-info-status');
+    pager.init($('#pager'));
   })
 
   $('#formSearch').on('click', 'button[type=submit]', function (event) {
   	event.preventDefault();
 
-  	_pageSize = 10;
+    pager.pageIndex = 1;
   	useCache = false;
 
   	var sendData = {
   		id: $('#dis_number').val(),
-  		pageIndex: _pageIndex,
-  		pageSize: _pageSize,
+      pageSize: pager.pageSize,
+      pageIndex: pager.pageIndex,
   		disposeName: $('#dis_name').val(),
   		disposeUseStatus: $('#dis_status').val(),
 
@@ -40,7 +39,7 @@ var selectedsectionData;
     } else {
       searchCache = sendData;
     }
-    sendData.pageIndex = _pageIndex;
+    sendData.pageIndex = pager.pageIndex;
 
     $.ajax({
       url: common.API_HOST + 'settlement/dispose/selectList',
@@ -59,22 +58,22 @@ var selectedsectionData;
   	_querying = false;
 
   	if (!!~~res.meta.result) {
-      // if (res.data.detail.record.length < 1) {
-      //   $('#dataTable tbody').html('<tr><td colspan="9" align="center">查不到相关数据，请修改查询条件！</td></tr>');
-      //   $('#pager').html('');
-      // } else {
+      if (res.data == null || res.data.detail.records.length < 1) {
+        $('#dataTable tbody').html('<tr><td colspan="9" align="center">查不到相关数据，请修改查询条件！</td></tr>');
+        $('#pager').html('');
+      } else {
         var totalRecord = res.data.detail.count;
     		var record = res.data.detail.records;
 
-    		_pageTotal = Math.ceil(totalRecord / _pageSize);
-    		setPager(totalRecord, _pageIndex, record.length, _pageTotal);
+        pager.pageTotal = Math.ceil(totalRecord / pager.pageSize);
+        pager.setPager(totalRecord, pager.pageIndex, record.length, pager.pageTotal);
 
     		_(record).forEach(function(item) {
         item.disposeUseStatus = settlementCommon.parseDepartmentUseStatus(item.disposeUseStatus);
       });
     		dataCache = record;
     		setTableData(dataCache);
-      // }
+      }
     } else {
       alert('接口错误：' + res.meta.msg);
     }	
@@ -88,54 +87,6 @@ var selectedsectionData;
     $('#dataTable tbody').html(html);
   }
 
-  function setPager(total, pageIndex, rowsSize, pageTotal) {
-  	var data = { total: total, pageIndex: pageIndex, rowsSize: rowsSize, pageTotal: pageTotal };
-    var template = $('#pager-template').html();
-    Mustache.parse(template);
-    var html = Mustache.render(template, data);
-    $('#pager').html(html);
-  }
-
-  $('#pager').on('click', '.prev,.next', function (e) {
-    e.preventDefault();
-    if ($(this).hasClass('prev')) {
-      if (_pageIndex <= 1) {
-        _pageIndex = 1;
-        alert('已经是第一页！');
-        return false;
-      }
-
-      _pageIndex--;
-    } else {
-      if (_pageIndex >= _pageTotal) {
-        _pageIndex = _pageTotal;
-        alert('已经是最后一页！');
-        return false;
-      }
-
-      _pageIndex++;
-    }
-   $('#formSearch').trigger('submit');
-    return false;
-  });
-
-  $('#pager').on('click', '#btn-pager', function (e) {
-    e.preventDefault();
-    if ('' == $('#pageNo').val()) {
-      return false;
-    }
-
-    var pageNo = parseInt($('#pageNo').val());
-    if (NaN == pageNo || pageNo < 1 || pageNo > _pageTotal) {
-      alert('要跳转的页码超过了范围！');
-      return false;
-    }
-
-    _pageIndex = pageNo;
-    $('#formSearch').trigger('submit');
-    return false;
-  });
-
   $('.multi-check-all').change(function(e) {
     e.preventDefault();
     var isChecked = $(this).is(':checked');
@@ -147,17 +98,14 @@ var selectedsectionData;
     }
   });
 
-
   $('body').on('change', 'tr > td :checkbox', function(e) {
     e.preventDefault();
 
     var isChecked = $(this).is(':checked');
-
     if (!isChecked) {
       $('.multi-check-all').prop('checked', false);
     }
   });
-
 
   // 修改
   $('body').on('click', '.btn-edit', function (e) {
@@ -184,7 +132,6 @@ var selectedsectionData;
     $('#popup-add-diff').html(html);
     $('#popup-add-diff').modal('show');
   });
-
 
   // 保存
   $('body').on('click', '#btn-save', function (e) {
@@ -220,7 +167,6 @@ var selectedsectionData;
 	  });
 	  return false;
   });
-
 
   // 新增
   $('#formSearch').on('click','button[type=button]', function (event) {
