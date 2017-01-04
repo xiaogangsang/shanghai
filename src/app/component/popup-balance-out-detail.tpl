@@ -192,7 +192,7 @@
             </select>
 
           </div>
-          
+
         </div>
 
         <div class="form-group col-sm-6 col-md-6 editable">
@@ -216,7 +216,7 @@
         </div>
 
 
-<!-- 
+<!--
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
             <div class="input-group-addon">渠道方补贴金额(元)</div>
@@ -293,7 +293,7 @@
 
     <div class="container-fluid">
 
-      <div class="row"> 
+      <div class="row">
         <span style="display: block; margin-top: 10px;">优惠信息:</span>
         <hr style="margin-top: 3px;">
 
@@ -352,7 +352,7 @@
             <input type="text" class="form-control" id="costCenterTrd" value="{{costCenterTrd}}" readonly>
           </div>
         </div>
-        
+
 
         <!-- <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">

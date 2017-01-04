@@ -30,8 +30,8 @@ $(function() {
   // 初始化涉及的select控件
   // TP方
   $('#search_payTool').html(settlementCommon.optionsHTML(settlementCommon.payTool, true));
-  
   $('#formSearch').parsley();
+  settlementCommon.datetimepickerRegister($('#search_settleDate'), null);
 });
 
 
@@ -95,6 +95,12 @@ $('#formSearch').on('submit', function (e) {
       pageSize: _pageSize,
       orderSource: $('#search_orderSource').val(),
       shipmentOrderType: $('#search_shipmentOrderType').val(),
+      settleDate: $('#search_settleDate').val(),
+      settlementPlan: $('#search_settlementPlan').val(),
+      appStatus: $('#search_appStatus').val(),
+      batchNo: $('#search_batchNo').val(),
+      waitBatchNo: $('#search_waitBatchNo').val(),
+      cityName: $('#search_cityName').val(),
     };
 
     searchCache = sendData;

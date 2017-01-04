@@ -480,49 +480,62 @@ $(function() {
 });
 
 settlementCommon.datetimepickerRegister = function ($startTime, $endTime) {
-  $startTime.datetimepicker({
-    format: 'yyyy-mm-dd',
-    language: 'zh-CN',
-    minView: 2,
-    todayHighlight: true,
-    autoclose: true,
-  }).on('changeDate', function (ev) {
-    var startDate = new Date(ev.date.valueOf());
-    var endDate = new Date(startDate);
-    endDate.setDate(startDate.getDate() + 6);
 
-    var currentEndDate = $endTime.datetimepicker('getDate');
-    var correctEndDate = currentEndDate;
+  if ($startTime && $endTime) {
+    $startTime.datetimepicker({
+      format: 'yyyy-mm-dd',
+      language: 'zh-CN',
+      minView: 2,
+      todayHighlight: true,
+      autoclose: true,
+    }).on('changeDate', function (ev) {
+      var startDate = new Date(ev.date.valueOf());
+      var endDate = new Date(startDate);
+      endDate.setDate(startDate.getDate() + 6);
 
-    if (currentEndDate < startDate) {
-      correctEndDate = startDate;
-    } else if (currentEndDate > endDate) {
-      correctEndDate = endDate;
-    }
+      var currentEndDate = $endTime.datetimepicker('getDate');
+      var correctEndDate = currentEndDate;
 
-    $endTime.datetimepicker('setDate', correctEndDate);
-  });
+      if (currentEndDate < startDate) {
+        correctEndDate = startDate;
+      } else if (currentEndDate > endDate) {
+        correctEndDate = endDate;
+      }
 
-  $endTime.datetimepicker({
-    format: 'yyyy-mm-dd',
-    language: 'zh-CN',
-    minView: 2,
-    todayHighlight: true,
-    autoclose: true,
-  }).on('changeDate', function (ev) {
-    var endDate = new Date(ev.date.valueOf());
-    var startDate = new Date(endDate);
-    startDate.setDate(endDate.getDate() - 6);
+      $endTime.datetimepicker('setDate', correctEndDate);
+    });
 
-    var currentStartDate = $startTime.datetimepicker('getDate');
-    var correctStartDate = currentStartDate;
+    $endTime.datetimepicker({
+      format: 'yyyy-mm-dd',
+      language: 'zh-CN',
+      minView: 2,
+      todayHighlight: true,
+      autoclose: true,
+    }).on('changeDate', function (ev) {
+      var endDate = new Date(ev.date.valueOf());
+      var startDate = new Date(endDate);
+      startDate.setDate(endDate.getDate() - 6);
 
-    if (currentStartDate < startDate) {
-      correctStartDate = startDate;
-    } else if (currentStartDate > endDate) {
-      correctStartDate = endDate;
-    }
+      var currentStartDate = $startTime.datetimepicker('getDate');
+      var correctStartDate = currentStartDate;
 
-    $startTime.datetimepicker('setDate', correctStartDate);
-  });
+      if (currentStartDate < startDate) {
+        correctStartDate = startDate;
+      } else if (currentStartDate > endDate) {
+        correctStartDate = endDate;
+      }
+
+      $startTime.datetimepicker('setDate', correctStartDate);
+    });
+  }
+
+  if ($startTime && ($endTime === null)) {
+    $startTime.datetimepicker({
+      format: 'yyyy-mm-dd',
+      language: 'zh-CN',
+      minView: 2,
+      todayHighlight: true,
+      autoclose: true,
+    });
+  }
 }
