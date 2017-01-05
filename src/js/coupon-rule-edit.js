@@ -995,6 +995,12 @@ function setEdit(couponId) {
       $('#name').val(coupon.name).prop('disabled', true);
       $('#inlineRadio1').prop('disabled', true);
       $('#inlineRadio2').prop('disabled', true);
+      $('#beginDate').prop('disabled', true);
+      $('#beginDate').prop('readonly', false);
+      $('#endDate').prop('disabled', true);
+      $('#endDate').prop('readonly', false);
+      $('#effectiveDays').prop('disabled', true);
+
       if(coupon.effectiveDays > 0){
         $('#inlineRadio2').prop('checked', true);
         $('#effectiveDays').val(coupon.effectiveDays);
