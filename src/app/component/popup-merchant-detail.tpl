@@ -5,10 +5,11 @@
 
   <div class="container-fluid detail-area">
 
+  <form id="detail_formSearch">
+
     <div class="container-fluid">
 
       <div class="row">
-      <form id="detail_formSearch">
         <div class="form-group col-sm-6 col-md-4">
           <div class="input-group">
             <div class="input-group-addon">商户名称</div>
@@ -80,8 +81,6 @@
             <!-- <input type="text" class="form-control" id="" value="{{tpId}}"> -->
           </div>
         </div>
-      </form>
-
       </div>
     </div>
 
@@ -126,7 +125,7 @@
         <div class="form-group col-sm-6 col-md-4">
           <div class="input-group">
             <div class="input-group-addon">拨款模式</div>
-            <select class="form-control" id="select-allocation-type">
+            <select class="form-control" id="select-allocation-type" required>
               <option value="">请选择</option>
               <option value="1">周期拨款模式</option>
               <option value="2">固定日期拨款</option>
@@ -227,14 +226,14 @@
           <div class="form-group col-sm-6 col-md-4 merchant-email">
             <div class="input-group">
               <div class="input-group-addon">商户E-mail</div>
-              <input type="text" class="form-control" value="{{email}}" id="email">
+              <input type="text" class="form-control" value="{{email}}" id="email" required data-parsley-pattern="/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/" data-parsley-error-message="邮箱格式不正确">
             </div>
           </div>
 
           <div class="form-group col-sm-6 col-md-4 branch-email" id="cardEmailDiv">
             <div class="input-group">
               <div class="input-group-addon">卡部E-mail</div>
-              <input type="text" class="form-control" value="{{departmentEmail}}" id="cardEmail">
+              <input type="text" class="form-control" value="{{departmentEmail}}" id="cardEmail" required data-parsley-pattern="/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/" data-parsley-error-message="邮箱格式不正确">
             </div>
           </div>
 
@@ -308,6 +307,7 @@
             </table>
           </div>
         </div>
+      </form>
     </div>
 
     </div>

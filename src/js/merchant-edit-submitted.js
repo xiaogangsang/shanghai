@@ -681,7 +681,6 @@ $('body').on('click','.submit',function(e){
    .done(function (res) {
      if (res.meta.result == true) {
        alert('保存成功！');
-       // window.location.reload();
      } else {
        alert('接口错误：' + res.meta.msg);
      }
@@ -735,6 +734,6 @@ $('.modal').on('click', '.download', function(e) {
   // alert('文件路径为 ' + fileUrl + ', 本接口尚未实现.');
   var rowIndex = $(this).closest('tr').prevAll().length;
   var attachment = merchantAttachments[rowIndex];
-  window.location.href = common.API_HOST + 'settlement/merchantAttachment/downLoad.json?id=' + attachment.id;
+  window.location.href = common.API_HOST + 'settlement/merchantAttachment/downLoadById.json?id=' + attachment.id;
 
 });

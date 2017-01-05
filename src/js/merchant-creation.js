@@ -39,17 +39,14 @@ $(function() {
   $('#detail-tpId').html(settlementCommon.optionsHTML(settlementCommon.TP, true));
   $('#detail-merchantStatus').html(settlementCommon.optionsHTML(settlementCommon.merchantStatus, true));
 
-
   $('#attachment-table').hide();
 
   var template = $('#file-upload-template').html();
   Mustache.parse(template);
   var html = Mustache.render(template);
-
   $('#attachments-container').append(html);
 
   $('#detail_formSearch').parsley();
-
 
 	/****************************************** event handler **********************************************/
 	// 拨款模式
@@ -232,9 +229,12 @@ $(function() {
 	$('.submit').click(function(e) {
 			e.preventDefault();
 
+			// 手动调用parsley验证，如果把button写在form里面则会自动触发验证。
+			$('#detail_formSearch').parsley().validate();
+
 			if (!$('#detail_formSearch').parsley().isValid()) {
-			     return false;
-			  }
+			  return false;
+			}
 
 			var merchantType = '';
 			if ($('#merchantTypeCheckbox').prop('checked')) {
