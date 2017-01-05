@@ -110,19 +110,22 @@ $(function () {
 
 //优惠券有效期类型
 $(":radio").click(function(){
-   if($(this).val() == 'duration'){
-     $('#couponType_fixDate_begin').hide();
-     $('#beginDate').val('');
-     $('#couponType_fixDate_end').hide();
-     $('#endDate').val('');
-     $('#couponType_duration').show();
-   }else{
-     $('#couponType_fixDate_begin').show();
-     $('#couponType_fixDate_end').show();
-     $('#couponType_duration').hide();
-     $('#effectiveDays').val('');
-   }
+   setDateType($(this).val() == 'duration');
 });
+function setDateType(isDuration) {
+  if(isDuration){
+    $('#couponType_fixDate_begin').hide();
+    $('#beginDate').val('');
+    $('#couponType_fixDate_end').hide();
+    $('#endDate').val('');
+    $('#couponType_duration').show();
+  }else{
+    $('#couponType_fixDate_begin').show();
+    $('#couponType_fixDate_end').show();
+    $('#couponType_duration').hide();
+    $('#effectiveDays').val('');
+  }
+}
 //成本中心
 $(document).on('change click', '#level', function (event) {
   event.preventDefault();
@@ -989,10 +992,18 @@ function setEdit(couponId) {
 
       $('#formEdit').prepend('<input type="hidden" id="id" value="' + coupon.id + '">');
 
-      $('#name').val(coupon.name).prop('disabled', true);;
+      $('#name').val(coupon.name).prop('disabled', true);
+      $('#inlineRadio1').prop('disabled', true);
+      $('#inlineRadio2').prop('disabled', true);
+      if(coupon.effectType > 0){
+        $('#inlineRadio2').prop('checked', true);
+        $('#effectiveDays').val(coupon.effectType);
+        setDateType(true)
+      }else{
+        $('#beginDate').val(coupon.beginDate.split(' ')[0]);
+        $('#endDate').val(coupon.endDate.split(' ')[0]);
+      }
       $('#signNo').val(coupon.signNo).prop('disabled', true);;
-      $('#beginDate').val(coupon.beginDate.split(' ')[0]);
-      $('#endDate').val(coupon.endDate.split(' ')[0]);
 
       $('input[name=advancePayment]').prop({ disabled: true, checked: false });
       $('input[name=advancePayment]').each(function (index, el) {
