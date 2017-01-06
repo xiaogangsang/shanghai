@@ -1,65 +1,73 @@
 
 <script id="detail-template" type="text/x-tmpl-mustache">
 
+  <h4 class="modal-title" id="edit-merchantNoTitle" hidden="true">商户号：<span id="edit-merchantNo"></span></h4>
+
   <div class="container-fluid detail-area">
+
+  <form id="detail_formSearch">
 
     <div class="container-fluid">
 
       <div class="row">
-
         <div class="form-group col-sm-6 col-md-4">
           <div class="input-group">
             <div class="input-group-addon">商户名称</div>
-            <input type="text" class="form-control" id="merchantName" value="{{merchantName}}">
+            <input type="text" class="form-control" id="merchantName" value="{{merchantName}}" required>
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-4">
           <div class="input-group">
             <div class="input-group-addon">商户号</div>
-            <input type="text" class="form-control" id="" value="{{merchantId}}">
+            <input required type="text" class="form-control" id="merchantNo" value="{{merchantId}}">
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-4">
           <div class="input-group">
             <div class="input-group-addon">商户状态</div>
-            <input type="text" class="form-control" id="" value="{{merchantStatus}}">
+            <!-- <input type="text" class="form-control" id="merchanrStatus" value="{{merchantStatus}}"> -->
+            <select class="form-control" id="detail-merchantStatus" required>
+            </select>
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-4">
           <div class="input-group">
             <div class="input-group-addon">商户联系人</div>
-            <input type="text" class="form-control" id="merchantContacter" value="{{merchantContacter}}">
+            <input type="text" class="form-control" id="merchantContacter" value="{{merchantContacter}}" required>
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-4">
           <div class="input-group">
             <div class="input-group-addon">联系电话</div>
-            <input type="text" class="form-control" id="merchantPhone" value="{{merchantPhone}}">
+            <input type="text" class="form-control" id="merchantPhone" value="{{merchantPhone}}" required>
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-4">
           <div class="input-group">
             <div class="input-group-addon">员工姓名</div>
-            <input type="text" class="form-control" id="" value="{{userName}}">
+            <input type="text" class="form-control" id="userName" value="{{userName}}" required>
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-4">
           <div class="input-group">
             <div class="input-group-addon">员工编号</div>
-            <input type="text" class="form-control" id="" value="{{userId}}">
+            <input type="text" class="form-control" id="userId" value="{{userId}}" required>
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-4">
           <div class="input-group">
             <div class="input-group-addon">商户级别</div>
-            <select class="form-control" id="detail-merchantClass">
+            <select class="form-control" id="detail-merchantClass" value="{{merchantClass}}" required>
+               <option value=""></option>
+              <option value="1">预付</option>
+              <option value="2">后付</option>
             </select>
             <!-- <input type="text" class="form-control" id="" value="{{merchantClass}}"> -->
           </div>
@@ -68,12 +76,11 @@
         <div class="form-group col-sm-6 col-md-4">
           <div class="input-group">
             <div class="input-group-addon">TP方</div>
-            <select class="form-control" id="detail-tpId">
+            <select class="form-control" id="detail-tpId" required>
             </select>
             <!-- <input type="text" class="form-control" id="" value="{{tpId}}"> -->
           </div>
         </div>
-
       </div>
     </div>
 
@@ -86,7 +93,7 @@
             <div class="input-group-addon">商户类别</div>
             <div class="checkbox-inline">
               <label>
-                <input type="checkbox" name="repeatedDay" value="1" required data-parsley-errors-container="#error-repeatedDay" checked>
+                <input type="checkbox" name="repeatedDay" value="1" required data-parsley-errors-container="#error-repeatedDay" id="merchantTypeCheckbox" checked>
                 <span>在线选座</span>
               </label>
             </div>
@@ -118,7 +125,7 @@
         <div class="form-group col-sm-6 col-md-4">
           <div class="input-group">
             <div class="input-group-addon">拨款模式</div>
-            <select class="form-control" id="select-allocation-type">
+            <select class="form-control" id="select-allocation-type" required>
               <option value="">请选择</option>
               <option value="1">周期拨款模式</option>
               <option value="2">固定日期拨款</option>
@@ -196,8 +203,8 @@
         <div class="form-group col-sm-6">
           <div class="input-group">
             <div class="input-group-addon">是否发送拨款明细</div>
-            <div class="radio-inline"><label><input type="radio" name="allocation-detail-input" value="1" required data-parsley-errors-container="#error-allocation-detail-input" {{#allocationDetail}}checked{{/allocationDetail}}><span>是</span></label></div>
-            <div class="radio-inline"><label><input type="radio" name="allocation-detail-input" value="0" required data-parsley-errors-container="#error-allocation-detail-input" {{^allocationDetail}}checked{{/allocationDetail}}><span>否</span></label></div>
+            <div class="radio-inline"><label><input type="radio" name="allocation-detail-input" value="1" id="inlineCheckbox1"  data-parsley-errors-container="#error-allocation-detail-input" {{#allocationDetail}}checked{{/allocationDetail}}><span>是</span></label></div>
+            <div class="radio-inline"><label><input type="radio" name="allocation-detail-input" value="0" id="inlineCheckbox2" data-parsley-errors-container="#error-allocation-detail-input" {{^allocationDetail}}checked{{/allocationDetail}}><span>否</span></label></div>
             <div id="error-allocation-detail-input"></div>
           </div>
         </div>
@@ -208,8 +215,8 @@
           <div class="form-group col-sm-12">
             <div class="input-group">
               <div class="input-group-addon">发送对象</div>
-              <div class="checkbox-inline"><label><input type="checkbox" name="send-to" value="1" required data-parsley-errors-container="#error-send-to"><span>商户</span></label></div>
-              <div class="checkbox-inline"><label><input type="checkbox" name="send-to" value="2" required data-parsley-errors-container="#error-send-to"><span>卡部</span></label></div>
+              <div class="checkbox-inline"><label><input type="checkbox" name="send-to" value="1" data-parsley-errors-container="#error-send-to" id="allocationDetailReceiver1"><span>商户</span></label></div>
+              <div class="checkbox-inline"><label><input type="checkbox" name="send-to" value="2" data-parsley-errors-container="#error-send-to" id="allocationDetailReceiver2"><span>卡部</span></label></div>
               <div id="error-send-to"></div>
             </div>
           </div>
@@ -219,14 +226,14 @@
           <div class="form-group col-sm-6 col-md-4 merchant-email">
             <div class="input-group">
               <div class="input-group-addon">商户E-mail</div>
-              <input type="text" class="form-control" value="{{email}}">
+              <input type="text" class="form-control" value="{{email}}" id="email" required data-parsley-pattern="/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/" data-parsley-error-message="邮箱格式不正确">
             </div>
           </div>
 
-          <div class="form-group col-sm-6 col-md-4 branch-email">
+          <div class="form-group col-sm-6 col-md-4 branch-email" id="cardEmailDiv">
             <div class="input-group">
               <div class="input-group-addon">卡部E-mail</div>
-              <input type="text" class="form-control" value="{{departmentEmail}}">
+              <input type="text" class="form-control" value="{{departmentEmail}}" id="cardEmail" required data-parsley-pattern="/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/" data-parsley-error-message="邮箱格式不正确">
             </div>
           </div>
 
@@ -237,14 +244,14 @@
         <div class="form-group col-sm-6 col-md-4">
           <div class="input-group">
             <div class="input-group-addon">账户名</div>
-            <input type="text" class="form-control" id="accountName" value="{{bankAccount}}">
+            <input type="text" class="form-control" id="accountName" value="{{bankAccount}}" required>
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-4">
           <div class="input-group">
             <div class="input-group-addon">账号</div>
-            <input type="text" class="form-control" id="bankAccount" value="{{bankCode}}">
+            <input type="text" class="form-control" id="bankAccount" value="{{bankCode}}" required>
           </div>
         </div>
       </div>
@@ -275,12 +282,8 @@
     <div class="container-fluid" id="attachments-container">
       <div class="row">
         <span>商户附件列表:</span>
-<!--         <div class="col-md-4">
-          <button class="btn btn-default">上传附件</button>
-        </div> -->
-      </div>
-
-      <div class="row" id="attachment-table">
+    </div>
+    <div class="row" id="attachment-table">
         <div class="table-responsive">
             <table class="table table-hover" id="dataTable">
               <thead>
@@ -296,16 +299,30 @@
                   <td>{{attachmentName}}</td>
                   <td>{{createTime}}</td>
                   <td>
-                    <a class="download" data-fileurl="{{fileUrl}}">下载</button>
+                    <a class="download" data-fileurl="{{filePath}}">下载</button>
                   </td>
                 </tr>
               {{/attachments}}
               </tbody>
             </table>
           </div>
-      </div>
+        </div>
+      </form>
     </div>
 
+    </div>
+  <!-- <div class="container-fluid" style="margin-top: 15px;"> -->
+          <div class="row" style="margin-top: 15px;">
+            <div class="col-md-3 col-md-push-2" id="commitBtnDiv">
+              <button type="button" class="btn btn-default submit form-control" id="commitBtn">提交审核</button>
+            </div>
+            <!-- <div class="col-md-3 col-md-push-4 save">
+              <button class="btn btn-default form-control">保存草稿</button>
+            </div> -->
+          <!-- </div> -->
+        </div>
+      </div>
+    </div>
   </div>
 
 </script>

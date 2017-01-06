@@ -16,6 +16,7 @@ var _pageSize = 10;
 var _pageTotal = 0;
 var _querying = false;
 var searchCache = {};
+var merchantAttachments;
 var useCache = false;
 var dataCache;
 
@@ -38,6 +39,8 @@ $(function () {
   $('#search_merchantLevel').html(settlementCommon.optionsHTML(settlementCommon.merchantLevel, true));
   // 商户状态
   $('#search_merchantStatus').html(settlementCommon.optionsHTML(settlementCommon.merchantStatus, true));
+
+  // settlementCommon.datetimepickerRegister($('#search_startTime'), $('#search_endTime'));
 
   // var selectBranch = $('#search_merchantBranch').selectize()[0].selectize;
   selectGuy = $('#search_merchantSubscribeGuy').selectize()[0].selectize;
@@ -127,6 +130,7 @@ function handleDepartmentData(dataWeGot, callback) {
   }
 }
 
+
   $('#search_startTime').datetimepicker({
     format: 'yyyy-mm-dd',
     language: 'zh-CN',
@@ -162,6 +166,13 @@ $('#formSearch').on('click', 'button[type=submit]', function (event) {
 
 $('#formSearch').on('submit', function (e) {
   e.preventDefault();
+
+  if (!useCache) {
+    if (!$('#formSearch').parsley().isValid()) {
+      return false;
+    }
+  }
+
   var sendData = {
     startTime: $('#search_startTime').val(),
     endTime: $('#search_endTime').val(),
@@ -185,6 +196,7 @@ $('#formSearch').on('submit', function (e) {
   }
 
   sendData.pageIndex = _pageIndex;
+  $('#hud-overlay').show();
 
   if (!_DEBUG) {
     $.ajax({
@@ -194,6 +206,7 @@ $('#formSearch').on('submit', function (e) {
       data: sendData,
     })
     .done(function (res) {
+      $('#hud-overlay').hide();
       handleMerchantData(res);
     });
   } else {
@@ -222,7 +235,8 @@ function handleMerchantData(res) {
       setPager(totalRecord, _pageIndex, record.length, _pageTotal);
 
       _(record).forEach(function (item) {
-
+        item.tpId = settlementCommon.parseTP(item.tpId);
+        item.merchantClass = settlementCommon.parseMerchantLevel(item.merchantClass);
         item.merchantStatus = settlementCommon.parseMerchantStatus(item.merchantStatus);
         item.accountStatus = settlementCommon.parseAccountStatus(item.accountStatus);
       });
@@ -343,7 +357,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
 if (!_DEBUG) {
     $.ajax({
       url: common.API_HOST + 'settlement/merchantinfo/query.json',
-      type: 'GET',
+      type: 'POST',
       dataType: 'json',
       data: {merchantId: merchantId},
     })
@@ -363,8 +377,16 @@ if (!_DEBUG) {
   }
 });
 
-function setModal(detailData) {
+function setModal(data) {
 
+  var detailData = data.merchantInfo;
+  var attachments = data.merchantAttachments;
+  detailData.attachments = attachments;
+
+  merchantAttachments = data.merchantAttachments;
+
+  // detailData.merchantStatus = settlementCommon.parseMerchantStatus(detailData.merchantStatus);
+  // detailData.merchantClass = settlementCommon.parseMerchantLevel(detailData.merchant_class);
   var template = $('#detail-template').html();
   Mustache.parse(template);
   var html = Mustache.render(template, detailData);
@@ -382,11 +404,18 @@ function formatPopupUI(detailData) {
   // 隐藏所有的button
   $('.detail-area :button').hide();
 
+  $('#file-upload-container').hide();
+
+  $('#commitBtn').hide();
+
   // 设置商户级别和TP方的的选择
   $('#detail-merchantClass').html(settlementCommon.optionsHTML(settlementCommon.merchantLevel, true));
   $('#detail-merchantClass option[value="' + detailData.merchantClass + '"]').prop('selected', true);
   $('#detail-tpId').html(settlementCommon.optionsHTML(settlementCommon.TP, true));
   $('#detail-tpId option[value="' + detailData.tpId + '"]').prop('selected', true);
+  $('#detail-merchantStatus').html(settlementCommon.optionsHTML(settlementCommon.merchantStatus, true));
+  $('#detail-merchantStatus option[value="' + detailData.merchantStatus + '"]').prop('selected', true);
+
 
   // 拨款模式不同, 相应控件显示隐藏
   var allocationType = detailData.allocationType;
@@ -460,7 +489,10 @@ $('.modal').on('change', ':checkbox[name="send-to"]', function(e) {
 
 $('.modal').on('click', '.download', function(e) {
   var fileUrl = $(this).data('fileurl');
+  // alert('文件路径为 ' + fileUrl + ', 本接口尚未实现.');
+  var rowIndex = $(this).closest('tr').prevAll().length;
+  var attachment = merchantAttachments[rowIndex];
+  window.location.href = common.API_HOST + 'settlement/merchantAttachment/downLoadById.json?id=' + attachment.id;
 
-  alert('文件路径为 ' + fileUrl + ', 本接口尚未实现.');
 });
 
