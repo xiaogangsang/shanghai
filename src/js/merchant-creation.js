@@ -32,7 +32,7 @@ $(function() {
   $(':radio[name="allocation-detail-input"][value="0"]').prop('checked', true).change();
 
   // 3. 发送对象
-  $(':checkbox[name="send-to"]').prop('checked', false).change();
+  $(':checkbox[name="send-to"]').prop('checked', true).change();
 
 	// 4. 配置商户级别和TP方数据源 
   $('#detail-merchantClass').html(settlementCommon.optionsHTML(settlementCommon.merchantLevel, true));

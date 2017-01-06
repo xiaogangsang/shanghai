@@ -105,7 +105,6 @@ $(function () {
     formData.append('imageFileName', fileName);
     var merchantId = $('#merchantNo').val();
     formData.append('merchantId',merchantId);
-     
      if (uploadFile) {
 
         $('#hud-overlay').show();
@@ -369,8 +368,13 @@ function setModal(data) {
 
   var detailData = data.merchantInfo;
   var attachments = data.merchantAttachments;
+  attachments.forEach(function (item) {
+    filepath = item.attachmentName;
+    var extStart = filepath.lastIndexOf(“.”);
+    var ext=filepath.substring(extStart,filepath.length).toUpperCase();
+    item.isShow = !(ext!=”.BMP”&&ext!=”.PNG”&&ext!=”.GIF”&&ext!=”.JPG”&&ext!=”.JPEG”);
+  });
   detailData.attachments = attachments;
-
   merchantAttachments = data.merchantAttachments;
 
   var template = $('#detail-template').html();
@@ -406,7 +410,6 @@ function formatPopupUI(detailData) {
       $(el).prop('checked', true).change();
     }
   });
-  
   // 发送对象
   var sendTo = '0';
   $('input[name="send-to"]').each(function(index, el) {
@@ -542,7 +545,6 @@ $('#dataTable').on('click', '.btn-detail', function(e) {
       setModal(res.data);
       $('#popup-merchant-detail').modal('show');
     }
-  
 });
 
 // 账户停用
@@ -655,7 +657,7 @@ $('body').on('click','.submit',function(e){
      // 是否发送拨款明细
      allocationDetail: allocationDetail,
      // 发送对象
-     allocationDetailReceiver: allocationDetailReceiver,  
+     allocationDetailReceiver: allocationDetailReceiver,
      // 商户E-mail
      email: $('#email').val(),
      // 卡部E-mail
@@ -734,6 +736,6 @@ $('.modal').on('click', '.download', function(e) {
   // alert('文件路径为 ' + fileUrl + ', 本接口尚未实现.');
   var rowIndex = $(this).closest('tr').prevAll().length;
   var attachment = merchantAttachments[rowIndex];
-  window.location.href = common.API_HOST + 'settlement/merchantAttachment/downLoadById.json?id=' + attachment.id;
+  window.location.href = common.API_HOST + 'settlement/merchantAttachment/downLoadById?id=' + attachment.id;
 
 });

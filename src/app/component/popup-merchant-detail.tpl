@@ -5,7 +5,7 @@
 
   <div class="container-fluid detail-area">
 
-  <form id="detail_formSearch">
+  <form id="detail_formSearch" class="container-fluid">
 
     <div class="container-fluid">
 
@@ -299,7 +299,11 @@
                   <td>{{attachmentName}}</td>
                   <td>{{createTime}}</td>
                   <td>
-                    <a class="download" data-fileurl="{{filePath}}">下载</button>
+                    <a type="button" class="download" data-fileurl="{{filePath}}">下载</button>
+                    {{#isShow}}
+                     <a type="button" class="lookMore" data-fileurl="{{filePath}}">查看</button>
+                      <!-- <button type="button" class="btn btn-xs btn-default btn-delete" data-merchantid="{{merchantId}}">删除</button> -->
+                    {{/isShow}}
                   </td>
                 </tr>
               {{/attachments}}
@@ -313,7 +317,7 @@
     </div>
   <!-- <div class="container-fluid" style="margin-top: 15px;"> -->
           <div class="row" style="margin-top: 15px;">
-            <div class="col-md-3 col-md-push-2" id="commitBtnDiv">
+            <div class="col-md-3 col-md-push-4" id="commitBtnDiv">
               <button type="button" class="btn btn-default submit form-control" id="commitBtn">提交审核</button>
             </div>
             <!-- <div class="col-md-3 col-md-push-4 save">
