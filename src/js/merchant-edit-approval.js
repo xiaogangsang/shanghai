@@ -191,7 +191,7 @@ $('.btn-reset').click(function(e) {
   $('#search_merchantNo').val('');
   $('#search_tp').val('');
   $('#search_merchantClass').val('');
-  selectGuy.clear();
+  // selectGuy.clear();
   selectBranch.clear();
 });
 
