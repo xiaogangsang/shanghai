@@ -107,6 +107,12 @@ $('#formSearch').on('submit', function (e) {
       pageSize: _pageSize,
       orderSource: $('#search_orderSource').val(),
       shipmentOrderType: $('#search_shipmentOrderType').val(),
+      settleDate: $('#search_settleDate').val(),
+      settlementPlan: $('#search_settlementPlan').val(),
+      appStatus: $('#search_appStatus').val(),
+      batchNo: $('#search_batchNo').val(),
+      waitBatchNo: $('#search_waitBatchNo').val(),
+      cityName: $('#search_cityName').val(),
     };
 
     searchCache = sendData;
@@ -299,6 +305,9 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     $('#shipmentStatus option[value="' + detail.shipmentStatus + '"]').prop('selected', true);
     $('#reconciliationStatus option[value="' + detail.reconciliationStatus + '"]').prop('selected', true);
 
+    $('#settlementPlan option[value="' + detail.settlementPlan + '"]').prop('selected', true);
+    $('#appStatus option[value="' + detail.appStatus + '"]').prop('selected', true);
+
     if (compare) {
 
       detail = detail.lastDetail;
@@ -391,7 +400,14 @@ $(document).on('submit', '#popup-detail form', function(e) {
     finalSettleAmount: $('#finalSettleAmount').val(),
     reconciliationStatus: $('#reconciliationStatus').val(),
     shipmentStatus: $('#shipmentStatus').val(),
-    remarks: $('#remarks').val()
+    remarks: $('#remarks').val(),
+
+    settleDate: $('#settleDate').val(),
+    settlementPlan: $('#settlementPlan').val(),
+    appStatus: $('#appStatus').val(),
+    batchNo: $('#batchNo').val(),
+    waitBatchNo: $('#waitBatchNo').val(),
+    cityName: $('#cityName').val(),
   };
 
   $.ajax({

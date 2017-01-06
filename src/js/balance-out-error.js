@@ -144,6 +144,7 @@ $('#btn-export').click(function(e) {
 });
 
 $('#dataTable').on('click', '.btn-edit', function (e) {
+
   e.preventDefault();
 
   var id = $(this).closest('tr').data('id');
@@ -163,11 +164,9 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     data.detail = data.onlyShipmentInfo;
     var detail = data.detail;
     detail.payTool = settlementCommon.parsePayTool(detail.payTool);
-    detail.payStatus = settlementCommon.parsePayStatus(detail.payStatus);
     detail.bizType = settlementCommon.parseBizType(detail.bizType);
     detail.chargeMerchant = settlementCommon.parseMerchant(detail.chargeMerchant);
     detail.discountType = settlementCommon.parseDiscountType(detail.discountType);
-    detail.acquiringReconciliationStatus = settlementCommon.parseReconciliationStatus(detail.acquiringReconciliationStatus);
     // detail.subsidyType = settlementCommon.parseSubsidyType(detail.subsidyType);
     detail.subsidyType = detail.subsidyType;
     detail.partner = settlementCommon.parsePartner(detail.partner);
@@ -181,7 +180,6 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
       // obj.partner = settlementCommon.parsePartner(obj.partner);
       obj.reconciliationStatus = settlementCommon.parseReconciliationStatus(obj.reconciliationStatus);
       obj.shipmentStatus = settlementCommon.parseShipmentStatus(obj.shipmentStatus);
-      obj.reason = settlementCommon.parseOutReason(obj.reason);
     });
 
     var template = $('#detail-template').html();
@@ -197,7 +195,8 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     $('#subsidyTypeTrd option[value="' + detail.subsidyTypeTrd + '"]').prop('selected', true);
     $('#shipmentStatus option[value="' + detail.shipmentStatus + '"]').prop('selected', true);
     $('#reconciliationStatus option[value="' + detail.reconciliationStatus + '"]').prop('selected', true);
-    $('#reason option[value="' + detail.reason + '"]').prop('selected', true);
+    $('#settlementPlan option[value="' + detail.settlementPlan + '"]').prop('selected', true);
+    $('#appStatus option[value="' + detail.appStatus + '"]').prop('selected', true);
 
     if (checkStatus == 2 || checkStatus == 3 || detail.reconciliationStatus == 4) { // 待审核/审核完成不能再修改, 出货对账状态为确认的也不能再修改
       $('.detail-area').addClass('read-only');
@@ -209,5 +208,75 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     }
 
     $('#popup-detail form').parsley().validate();
+  });
+});
+
+// 修改提交
+$(document).on('submit', '#popup-detail form', function(e) {
+  e.preventDefault();
+
+  if ($('#reconciliationStatus').val() == 1) {
+    alert('出货对账状态不能为 ＂未对账＂！');
+    return false;
+  }
+
+  if (!$('#popup-detail form').parsley().isValid()) {
+    return false;
+  }
+
+  var shipmentDate = $('#shipmentDate').val();
+
+  if (!settlementCommon.isValidTime(shipmentDate)) {
+    alert('支付时间内容有错误, 请重新修改');
+    return false;
+  }
+
+  $submitButton = $(this).find('button[type=submit]');
+
+  var param = {
+    id: $submitButton.data('id'),
+    oldVersion: $submitButton.data('version'),
+    shipmentDate: shipmentDate,
+    merchantName: $('#merchantName').val(),
+    merchantId: $('#merchantNo').val(),
+    settleAmount: $('#settleAmount').val(),
+    subsidyAmountO2o: $('#subsidyAmountO2o').val(),
+    subsidyType: $('#subsidyType').val(),
+    acceptanceAppropriation: $('#acceptanceAppropriation').val(),
+    // returnFee: $('#returnFee').val(),
+    // partner: $('#returnFee').val(),
+
+    // 支付活动补贴金额(元)
+    subsidyAmountTrd: $('#subsidyAmountTrd').val(),
+    // 支付活动补贴付款方式
+    subsidyTypeTrd: $('#subsidyTypeTrd').val(),
+
+
+    finalSettleAmount: $('#finalSettleAmount').val(),
+    reconciliationStatus: $('#reconciliationStatus').val(),
+    shipmentStatus: $('#shipmentStatus').val(),
+    reason: $('#reconciliationStatus').val() == 2 ? $('#reason').val() : '',// 对账不一致才有原因
+    remarks: $('#remarks').val(),
+
+    settleDate: $('#settleDate').val(),
+    settlementPlan: $('#settlementPlan').val(),
+    appStatus: $('#appStatus').val(),
+    batchNo: $('#batchNo').val(),
+    waitBatchNo: $('#waitBatchNo').val(),
+    cityName: $('#cityName').val(),
+  };
+
+  $.ajax({
+    url: common.API_HOST + 'settlement/shipmentInfo/updateOnlyShipmentInfo',
+    data: param,
+  }).done(function(res) {
+    if (!!~~res.meta.result) {
+      alert('提交成功');
+      $('#popup-detail').modal('hide');
+      $('#formSearch').trigger('submit');
+    } else {
+      alert(res.meta.msg);
+      return false;
+    }
   });
 });

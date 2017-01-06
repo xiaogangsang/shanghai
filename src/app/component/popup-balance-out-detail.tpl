@@ -287,6 +287,52 @@
           </div>
         </div>
 
+        <div class="form-group col-sm-6">
+          <div class="input-group">
+            <div class="input-group-addon">结算进度</div>
+            <select class="form-control" id="settlementPlan" value="{{settlementPlan}}">
+              <option value></option>
+              <option value="1">应结算</option>
+              <option value="2">待结算</option>
+              <option value="3">补结算</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group col-sm-6">
+          <div class="input-group">
+            <div class="input-group-addon">结算状态</div>
+            <select class="form-control" id="appStatus" value="{{appStatus}}">
+              <option value></option>
+              <option value="1">未生成拨款明细</option>
+              <option value="2">已生成拨款明细</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group col-sm-6">
+          <div class="input-group">
+            <div class="input-group-addon">结算日期</div>
+            <input type="text" class="form-control" id="settleDate" value="{{settleDate}}" data-parsley-pattern="[0-9]{4}?-[0-9]{2}?-[0-9]{2}?">
+          </div>
+        </div>
+        <div class="form-group col-sm-6">
+          <div class="input-group">
+            <div class="input-group-addon">实结批次号</div>
+            <input type="text" class="form-control" id="batchNo" value="{{batchNo}}">
+          </div>
+        </div>
+        <div class="form-group col-sm-6">
+          <div class="input-group">
+            <div class="input-group-addon">待结批次号</div>
+            <input type="text" class="form-control" id="waitBatchNo" value={{waitBatchNo}}>
+          </div>
+        </div>
+        <div class="form-group col-sm-6">
+          <div class="input-group">
+            <div class="input-group-addon">城市</div>
+            <input type="text" class="form-control" id="cityName" value="{{cityName}}">
+          </div>
+        </div>
+
       </div>
 
     </div>

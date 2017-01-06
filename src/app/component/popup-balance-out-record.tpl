@@ -41,13 +41,15 @@
                             <hr style="margin-left: 15px; margin-right: 15px; margin-top: 10px;">
 
                             <div class="form-group col-sm-6">
+                                <div class="input-group-addon">选择省</div>
                                 <select class="form-control" id="record-provinceId">
-                                    <option value="">选择省</option>
+                                    <option value></option>
                                 </select>
                             </div>
                             <div class="form-group col-sm-6">
+                                <div class="input-group-addon">选择城市</div>
                                 <select class="form-control" id="record-cityId">
-                                    <option value="">选择城市</option>
+                                    <option value></option>
                                 </select>
                             </div>
                         </div>

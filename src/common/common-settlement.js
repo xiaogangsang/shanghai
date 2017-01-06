@@ -389,7 +389,9 @@ settlementCommon.addStarMark = function() {
   var elements = $('[required]');
   elements.each(function(index, el) {
     var $element = $($(this).siblings('.input-group-addon')[0]);
-    $element.html($element.text() + '<span style="color: #D70F0F; font-size: 16px;"> *</span>');
+    if ($element.text().indexOf('*') < 0) {
+      $element.html($element.text() + '<span style="color: #D70F0F; font-size: 16px;"> *</span>');
+    }
   });
 }
 
@@ -443,41 +445,6 @@ settlementCommon.fetchBasicData = function (callback) {
     }
   })
 }
-
-/************************************************* 全局初始化处理 *****************************************************/
-
-// 点击隐藏/显示左侧菜单栏 的按钮
-$(function() {
-
-  $('<button class="glyphicon glyphicon-menu-left" style="position: absolute; top: -1px; left: 0px; width: 15px; height: 30px; padding: 0px; border-width: 0px; border-radius: 0px 6px 6px 0px; background-color: #E0E0E0; opacity: 0.6;" id="sidebar-switcher"></button>').prependTo('.main');
-
-  $('#sidebar-switcher').click(function(e) {
-    e.preventDefault();
-
-    var $sidebar = $('.sidebar');
-    var $content = $('.main');
-
-    if ($sidebar.is(':visible')) {
-      $sidebar.hide();
-      $content.addClass('col-xs-12').removeClass('col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2');
-      $(this).removeClass('glyphicon-menu-left').addClass('glyphicon-menu-right');
-    } else {
-      $sidebar.show();
-      $content.removeClass('col-xs-12').addClass('col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2');
-      $(this).removeClass('glyphicon-menu-right').addClass('glyphicon-menu-left');
-    }
-  });
-});
-
-// 必填项添加*号标识
-$(function() {
-  settlementCommon.addStarMark();
-});
-
-$(function() {
-  // 查询日期的跨度小于等于7天
-  settlementCommon.datetimepickerRegister($('#search_startTime'), $('#search_endTime'));
-});
 
 settlementCommon.datetimepickerRegister = function ($startTime, $endTime) {
 
@@ -539,3 +506,34 @@ settlementCommon.datetimepickerRegister = function ($startTime, $endTime) {
     });
   }
 }
+
+/************************************************* 全局初始化处理 *****************************************************/
+
+// 点击隐藏/显示左侧菜单栏 的按钮
+$(function() {
+
+  // 必填项添加*号标识
+  settlementCommon.addStarMark();
+
+  // 查询日期的跨度小于等于7天
+  settlementCommon.datetimepickerRegister($('#search_startTime'), $('#search_endTime'));
+
+  $('<button class="glyphicon glyphicon-menu-left" style="position: absolute; top: -1px; left: 0px; width: 15px; height: 30px; padding: 0px; border-width: 0px; border-radius: 0px 6px 6px 0px; background-color: #E0E0E0; opacity: 0.6;" id="sidebar-switcher"></button>').prependTo('.main');
+
+  $('#sidebar-switcher').click(function(e) {
+    e.preventDefault();
+
+    var $sidebar = $('.sidebar');
+    var $content = $('.main');
+
+    if ($sidebar.is(':visible')) {
+      $sidebar.hide();
+      $content.addClass('col-xs-12').removeClass('col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2');
+      $(this).removeClass('glyphicon-menu-left').addClass('glyphicon-menu-right');
+    } else {
+      $sidebar.show();
+      $content.removeClass('col-xs-12').addClass('col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2');
+      $(this).removeClass('glyphicon-menu-right').addClass('glyphicon-menu-left');
+    }
+  });
+});

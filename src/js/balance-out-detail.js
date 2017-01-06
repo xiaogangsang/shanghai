@@ -14,6 +14,7 @@ var _querying = false;
 var searchCache = {};
 var useCache = false;
 var _submitting = false;
+var _dateType = null;
 
 // 如果当前查询是从汇总页的选中记录查询
 var _queryingFromSelectedSummary = false;
@@ -32,6 +33,7 @@ $(function() {
   $('#search_payTool').html(settlementCommon.optionsHTML(settlementCommon.payTool, true));
   $('#formSearch').parsley();
   settlementCommon.datetimepickerRegister($('#search_settleDate'), null);
+  settlementCommon.datetimepickerRegister($('#sync_startTime'), $('#sync_endTime'));
 });
 
 
@@ -60,48 +62,10 @@ $('#formSearch').on('submit', function (e) {
 
   if (!useCache) {
 
-    // 输入 商品订单号 或者 二级商户订单号 或者 交易订单号 后, 无需输入日期
-    var bizOrderNo = $('#search_bizOrderNo').val();
-    var thdOrderNo = $('#search_thdOrderNo').val();
-    var orderNo = $('#search_orderNo').val();
-    var dateIsRequired = (bizOrderNo === '' && thdOrderNo === '' && orderNo === '');
-
-    $('#search_dateType').prop('required', dateIsRequired);
-    $('#search_startTime').prop('required', dateIsRequired);
-    $('#search_endTime').prop('required', dateIsRequired);
-
-    if (!$('#formSearch').parsley().isValid()) {
+    sendData = getParameters();
+    if (sendData === null) {
       return false;
     }
-
-    _pageSize = $('#search_pageSize').val() || 10;
-
-    sendData = {
-      dateType: dateIsRequired ? $('#search_dateType').val() : '',
-      startTime: dateIsRequired ? $('#search_startTime').val() : '',
-      endTime: dateIsRequired ? $('#search_endTime').val() : '',
-      merchantName: $('#search_merchantName').val(),
-      merchantNo: $('#search_merchantNo').val(),
-      shipmentStatus: $('#search_shipmentStatus').val(),
-      partner: $('#search_partner').val(),
-      reconciliationStatus: $('#search_reconciliationStatus').val(),
-      discountType: $('#search_discountType').val(),
-      discountName: $('#search_discountName').val(),
-      bizOrderNo: $('#search_bizOrderNo').val(),
-      thdOrderNo: $('#search_thdOrderNo').val(),
-      checkStatus: $('#search_checkStatus').val(),
-      payTool: $('#search_payTool').val(),
-      orderNo: $('#search_orderNo').val(),
-      pageSize: _pageSize,
-      orderSource: $('#search_orderSource').val(),
-      shipmentOrderType: $('#search_shipmentOrderType').val(),
-      settleDate: $('#search_settleDate').val(),
-      settlementPlan: $('#search_settlementPlan').val(),
-      appStatus: $('#search_appStatus').val(),
-      batchNo: $('#search_batchNo').val(),
-      waitBatchNo: $('#search_waitBatchNo').val(),
-      cityName: $('#search_cityName').val(),
-    };
 
     searchCache = sendData;
   } else {
@@ -109,6 +73,13 @@ $('#formSearch').on('submit', function (e) {
   }
 
   sendData.pageIndex = _pageIndex;
+
+  if (_dateType === 9) {
+    sendData.dateType = 9;
+    _dateType = null;
+  }
+
+  $('#hud-overlay').show();
 
   if (!_DEBUG) {
     $.ajax({
@@ -127,6 +98,53 @@ $('#formSearch').on('submit', function (e) {
 
   return false;
 });
+
+function getParameters() {
+  // 输入 商品订单号 或者 二级商户订单号 或者 交易订单号 后, 无需输入日期
+  var bizOrderNo = $('#search_bizOrderNo').val();
+  var thdOrderNo = $('#search_thdOrderNo').val();
+  var orderNo = $('#search_orderNo').val();
+  var dateIsRequired = (bizOrderNo === '' && thdOrderNo === '' && orderNo === '');
+
+  $('#search_dateType').prop('required', dateIsRequired);
+  $('#search_startTime').prop('required', dateIsRequired);
+  $('#search_endTime').prop('required', dateIsRequired);
+
+  if (!$('#formSearch').parsley().isValid()) {
+    return null;
+  }
+
+  _pageSize = $('#search_pageSize').val() || 10;
+
+  var param = {
+    dateType: dateIsRequired ? $('#search_dateType').val() : '',
+    startTime: dateIsRequired ? $('#search_startTime').val() : '',
+    endTime: dateIsRequired ? $('#search_endTime').val() : '',
+    merchantName: $('#search_merchantName').val(),
+    merchantNo: $('#search_merchantNo').val(),
+    shipmentStatus: $('#search_shipmentStatus').val(),
+    partner: $('#search_partner').val(),
+    reconciliationStatus: $('#search_reconciliationStatus').val(),
+    discountType: $('#search_discountType').val(),
+    discountName: $('#search_discountName').val(),
+    bizOrderNo: $('#search_bizOrderNo').val(),
+    thdOrderNo: $('#search_thdOrderNo').val(),
+    checkStatus: $('#search_checkStatus').val(),
+    payTool: $('#search_payTool').val(),
+    orderNo: $('#search_orderNo').val(),
+    pageSize: _pageSize,
+    orderSource: $('#search_orderSource').val(),
+    shipmentOrderType: $('#search_shipmentOrderType').val(),
+    settleDate: $('#search_settleDate').val(),
+    settlementPlan: $('#search_settlementPlan').val(),
+    appStatus: $('#search_appStatus').val(),
+    batchNo: $('#search_batchNo').val(),
+    waitBatchNo: $('#search_waitBatchNo').val(),
+    cityName: $('#search_cityName').val(),
+  };
+
+  return param;
+}
 
 function queryFromSelectedSummary() {
 
@@ -188,6 +206,7 @@ handlePresetQuery();
 
 function handleData(res) {
 	_querying = false;
+  $('#hud-overlay').hide();
 
   if (settlementCommon.prehandleData(res)) {
     var totalRecord = res.data.detail.count;
@@ -222,9 +241,16 @@ function handleData(res) {
     }
 
     if (res.data.detail.exceptionCount) {
-      $('.content-area .alert').show();
+      $('#exceptionAlert').show();
       $('#exceptionCount').html(res.data.detail.exceptionCount);
     }
+    if (res.data.detail.nullSettleDateCount) {
+      $('#nullSettleDateAlert').show();
+      $('#nullSettleDateCount').html(res.data.detail.nullSettleDateCount);
+    }
+  } else {
+    $('#exceptionAlert').hide();
+    $('#nullSettleDateAlert').hide();
   }
 }
 
@@ -368,36 +394,36 @@ $('.complete-commit').click(function(e) {
   var confirmMessage = confirm("确定要提交吗？");
   if (confirmMessage == true) {
     if (_queryingFromSelectedSummary) {
-    var param = {'shipmentInfoFormCollection' : _selectedSummary.shipmentInfoFormCollection};
-    $.ajax({
-      url: common.API_HOST + 'settlement/shipmentInfo/listSummaryDetailUpdate',
-      type: 'POST',
-      dataType: 'json',
-      data: param
-    })
-    .done(function(res) {
-      if (res.meta.result == 0) {
-        alert(res.meta.msg);
-      } else {
-        alert(res.meta.msg);
-      }
-    });
-  } else {
-    $.ajax({
-      url: common.API_HOST + 'settlement/shipmentInfo/updateInfoList',
-      type: 'POST',
-      dataType: 'json',
-      data: searchCache,
-    })
-    .done(function (res) {
-      if (res.meta.result == 0) {
-        alert(res.meta.msg);
-      } else {
-        alert(res.meta.msg);
-      }
-    });
+      var param = {'shipmentInfoFormCollection' : _selectedSummary.shipmentInfoFormCollection};
+      $.ajax({
+        url: common.API_HOST + 'settlement/shipmentInfo/listSummaryDetailUpdate',
+        type: 'POST',
+        dataType: 'json',
+        data: param
+      })
+      .done(function(res) {
+        if (res.meta.result == 0) {
+          alert(res.meta.msg);
+        } else {
+          alert(res.meta.msg);
+        }
+      });
+    } else {
+      $.ajax({
+        url: common.API_HOST + 'settlement/shipmentInfo/updateInfoList',
+        type: 'POST',
+        dataType: 'json',
+        data: searchCache,
+      })
+      .done(function (res) {
+        if (res.meta.result == 0) {
+          alert(res.meta.msg);
+        } else {
+          alert(res.meta.msg);
+        }
+      });
+    }
   }
-  } 
 });
 
 $('#dataTable').on('click', '.btn-edit', function (e) {
@@ -452,6 +478,8 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     $('#subsidyTypeTrd option[value="' + detail.subsidyTypeTrd + '"]').prop('selected', true);
     $('#shipmentStatus option[value="' + detail.shipmentStatus + '"]').prop('selected', true);
     $('#reconciliationStatus option[value="' + detail.reconciliationStatus + '"]').prop('selected', true);
+    $('#settlementPlan option[value="' + detail.settlementPlan + '"]').prop('selected', true);
+    $('#appStatus option[value="' + detail.appStatus + '"]').prop('selected', true);
 
     if (checkStatus == 2 || checkStatus == 3 || detail.reconciliationStatus == 4) { // 待审核/审核完成不能再修改, 出货对账状态为确认的也不能再修改
       $('.detail-area').addClass('read-only');
@@ -461,7 +489,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     } else {
       $('#reconciliationStatus option[value=4]').remove();      // 不能在明细的修改里将对账状态设为"确认"
     }
-    
+
     $('#popup-detail form').parsley().validate();
   });
 });
@@ -511,9 +539,16 @@ $(document).on('submit', '#popup-detail form', function(e) {
     reconciliationStatus: $('#reconciliationStatus').val(),
     shipmentStatus: $('#shipmentStatus').val(),
     reason: $('#reconciliationStatus').val() == 2 ? $('#reason').val() : '',// 对账不一致才有原因
-    remarks: $('#remarks').val()
+    remarks: $('#remarks').val(),
+
+    settleDate: $('#settleDate').val(),
+    settlementPlan: $('#settlementPlan').val(),
+    appStatus: $('#appStatus').val(),
+    batchNo: $('#batchNo').val(),
+    waitBatchNo: $('#waitBatchNo').val(),
+    cityName: $('#cityName').val(),
   };
-  
+
   $.ajax({
     url: common.API_HOST + 'settlement/shipmentInfo/updateOnlyShipmentInfo',
     data: param,
@@ -535,9 +570,114 @@ $('.btn-complement').click(function(e) {
   $('#popup-balance-out-record').modal('show');
 });
 
-$('.alert-warning a').click(function(e) {
+$('#exceptionAlert a').click(function(e) {
   e.preventDefault();
   window.location = 'balance-out-error.html?startTime=' + $('#search_startTime').val() + '&endTime=' + $('#search_endTime').val();
+});
+
+$('#nullSettleDateAlert a').click(function(e) {
+  e.preventDefault();
+  _dateType = 9;
+  $('#formSearch button[type=submit]').trigger('click');
+});
+
+$('.btn-sync').click(function(e) {
+  e.preventDefault();
+  $('#popup-sync-settle').modal('show');
+});
+
+$('#formSync').submit(function(e) {
+  e.preventDefault();
+
+  var param = {
+    startTime: $('#sync_startTime').val(),
+    endTime: $('#sync_endTime').val(),
+  };
+
+  $('#hud-overlay').show();
+
+  //同步接口，后台说一次批量操作至少15分钟，所以设置超时时间15分钟......
+  $.ajax({
+    url: common.API_HOST + 'settlement/shipmentInfo/synchronousSettleDate',
+    timeout: (15*60*1000),
+    type: 'GET',
+    dataType: 'json',
+    data: param,
+  })
+  .done(function(res) {
+    if (!!~~res.meta.result) {
+      $('#popup-sync-settle').modal('hide');
+    }
+    alert(res.meta.msg);
+  })
+  .always(function() {
+    $('#hud-overlay').show();
+  });
+});
+
+$('#formBatch').submit(function(e) {
+  e.preventDefault();
+
+  var batchSet = $('#batch_settingFunc').val();
+  var parameter = $('#batch_settingParam').val();
+  var range = $('#batch_settingRange').val();
+
+  if (batchSet.valueOf() > 3 && parameter.length === 0) {
+    alert('批量设置批次号，请在参数输入框中输入批次号');
+    return false;
+  }
+
+  if (!confirm("是否确定进行批量设置？")) {
+    return false;
+  }
+
+  // 按条件批量设置
+  if (range === '1') {
+    var param = getParameters();
+    if (param === null) {
+      alert('请填写查询条件的必填项');
+      return false;
+    }
+    param.batchSet = batchSet;
+    param.parameter = parameter;
+
+    $('#hud-overlay').show();
+    $.ajax({
+      url: common.API_HOST + 'settlement/shipmentInfo/batchUpdateShipmentInfo',
+      type: 'GET',
+      dataType: 'json',
+      data: param,
+    })
+    .done(function(res) {
+      alert('批量设置:' + res.meta.msg);
+    })
+    .always(function() {
+      $('#hud-overlay').hide();
+    });
+  } else {
+    var selectIds = selectedIds();
+    if (selectIds.length === 0) {
+      alert('请至少选择一条记录');
+      return false;
+    }
+    var param = {
+      batchSet: batchSet,
+      parameter: parameter,
+      ids: selectIds,
+    };
+    $('#hud-overlay').show();
+    $.ajax({
+      url: common.API_HOST + 'settlement/shipmentInfo/batchUpdateShipmentInfo?' + settlementCommon.serializeParam(param),
+      type: 'GET',
+      dataType: 'json',
+    })
+    .done(function(res) {
+      alert('批量设置:' + res.meta.msg);
+    })
+    .always(function() {
+      $('#hud-overlay').hide();
+    });
+  }
 });
 
 /************************************************* 批量操作 ***************************************************/
