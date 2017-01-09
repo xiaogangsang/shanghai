@@ -137,6 +137,24 @@ $(function () {
   });
 });
 
+//优惠券有效期类型
+$(":radio").click(function(){
+   setDateType($(this).val() == 'duration');
+});
+function setDateType(isDuration) {
+  if(isDuration){
+    $('#couponType_fixDate_begin').hide();
+    $('#beginDate').val('');
+    $('#couponType_fixDate_end').hide();
+    $('#endDate').val('');
+    $('#couponType_duration').show();
+  }else{
+    $('#couponType_fixDate_begin').show();
+    $('#couponType_fixDate_end').show();
+    $('#couponType_duration').hide();
+    $('#effectiveDays').val('');
+  }
+}
 //成本中心
 $(document).on('change click', '#level', function (event) {
   event.preventDefault();
@@ -529,8 +547,15 @@ $(document).on('submit', '#formEdit', function (event) {
     cinemas: [],
     timetables: _popupDataCache.timetables,
     remarks: $('#remark').val().trim(),
+    effectiveDays:$('#effectiveDays').val().trim(),
   };
 
+  if((sendData.beginDate == null || sendData.beginDate.length == 0) &&
+      (sendData.endDate == null || sendData.endDate.length == 0) &&
+      (sendData.effectiveDays == null || sendData.effectiveDays.length == 0)){
+    alert('优惠券有效期不能为空');
+    _submitting = false;
+  }
   switch ($('input[name=advancePayment]:checked').length) {
     case 0:
       sendData.advancePayment = 'NO';
@@ -978,10 +1003,24 @@ function setEdit(couponId) {
 
       $('#formEdit').prepend('<input type="hidden" id="id" value="' + coupon.id + '">');
 
-      $('#name').val(coupon.name).prop('disabled', true);;
+      $('#name').val(coupon.name).prop('disabled', true);
+      $('#inlineRadio1').prop('disabled', true);
+      $('#inlineRadio2').prop('disabled', true);
+      $('#beginDate').prop('disabled', true);
+      $('#beginDate').prop('readonly', false);
+      $('#endDate').prop('disabled', true);
+      $('#endDate').prop('readonly', false);
+      $('#effectiveDays').prop('disabled', true);
+
+      if(coupon.effectiveDays > 0){
+        $('#inlineRadio2').prop('checked', true);
+        $('#effectiveDays').val(coupon.effectiveDays);
+        setDateType(true)
+      }else{
+        $('#beginDate').val(coupon.beginDate.split(' ')[0]);
+        $('#endDate').val(coupon.endDate.split(' ')[0]);
+      }
       $('#signNo').val(coupon.signNo).prop('disabled', true);;
-      $('#beginDate').val(coupon.beginDate.split(' ')[0]);
-      $('#endDate').val(coupon.endDate.split(' ')[0]);
 
       $('input[name=advancePayment]').prop({ disabled: true, checked: false });
       $('input[name=advancePayment]').each(function (index, el) {
