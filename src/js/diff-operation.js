@@ -97,6 +97,7 @@ function handleData(res) {
 			item.matched = _matched[item.matched];
 			var today = new Date(item.settleDate);
 			item.settleDate = common.getDate(today);
+			item.channelId = settlementCommon.parseChannel(item.channelId);
 		});
 
 		var template = $('#table-template').html();
@@ -244,17 +245,4 @@ $('#btn-sync').click(function(e) {
 			}
 		}
 	})
-});
-
-$('#dataTable').on('click', '.btn-edit', function (e) {
-	e.preventDefault();
-
-	var id=$($(this).closest('tr').children('td')[0]).html();
-	var selectedItem = null;
-	_(_records).forEach(function (item) {
-		if (item.id === parseInt(id)) {
-			selectedItem = item;
-		}
-	});
-	$('#popup-edit-diff').modal('show');
 });
