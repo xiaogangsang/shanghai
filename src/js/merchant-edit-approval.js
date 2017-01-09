@@ -10,6 +10,7 @@
 
 'use strict;'
 var common = require('common');
+var settlementCommon = require('settlementCommon');
 var _channels = {};
 var _cities = [];
 var _choosed = [];

@@ -85,7 +85,11 @@ $(function () {
   // 查询银行网点
   $('body').on('click', '#bank_search', function(e) {
     e.preventDefault();
-      var sendData = {
+    requestBankData();
+  });
+
+  function requestBankData(){
+     var sendData = {
         bankName: $('#bank_Name').val(),
         networkName: $('#networkName').val(),
         cityName: $('#cityName').val(),
@@ -120,7 +124,7 @@ $(function () {
           alert('接口错误：' + res.meta.msg);
         }
      });
-  });
+  }
 
   function setBankTableData(rows) {
     var data = { rows: rows };
@@ -138,7 +142,7 @@ $(function () {
     $('#bank_pager').html(html);
   }
 
-  $('body').on('click', '.prev,.next', function (e) {
+  $('body').on('click', '#bank_pager .prev,.next', function (e) {
   e.preventDefault();
   if ($(this).hasClass('prev')) {
     if (_pageIndex <= 1) {
@@ -157,25 +161,25 @@ $(function () {
 
     _pageIndex++;
   }
-
-  $('#bank_formSearch').trigger('submit');
+  requestBankData();
   return false;
 });
 
-$('body').on('click', '#btn-pager', function (e) {
+$('body').on('click', '#bank_pager #btn-pager', function (e) {
   e.preventDefault();
-  if ('' == $('#pageNo').val()) {
+  if ('' == $('#bank_pager #pageNo').val()) {
     return false;
   }
 
-  var pageNo = parseInt($('#pageNo').val());
+  var pageNo = parseInt($('#bank_pager #pageNo').val());
   if (NaN == pageNo || pageNo < 1 || pageNo > _pageTotal) {
     alert('要跳转的页码超过了范围！');
     return false;
   }
 
   _pageIndex = pageNo;
-  $('#bank_formSearch').trigger('submit');
+  // $('#bank_formSearch').trigger('submit');
+  requestBankData();
   return false;
 });
 
