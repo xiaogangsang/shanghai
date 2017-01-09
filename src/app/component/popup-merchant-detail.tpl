@@ -121,7 +121,6 @@
 
       <div class="row">
         <span>拨款信息:</span>
-      
         <div class="form-group col-sm-6 col-md-4">
           <div class="input-group">
             <div class="input-group-addon">拨款模式</div>
@@ -300,10 +299,10 @@
                   <td>{{createTime}}</td>
                   <td>
                     <a type="button" class="download" data-fileurl="{{filePath}}">下载</button>
-                    {{#isShow}}
+                    <!-- {{#isShow}}
                      <a type="button" class="lookMore" data-fileurl="{{filePath}}">查看</button>
-                      <!-- <button type="button" class="btn btn-xs btn-default btn-delete" data-merchantid="{{merchantId}}">删除</button> -->
-                    {{/isShow}}
+                      <button type="button" class="btn btn-xs btn-default btn-delete" data-merchantid="{{merchantId}}">删除</button>
+                    {{/isShow}} -->
                   </td>
                 </tr>
               {{/attachments}}
