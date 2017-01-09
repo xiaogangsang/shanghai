@@ -9,6 +9,10 @@ var common = require('common');
 // require('fineUploader');
 var settlementCommon = require('settlementCommon');
 var fileIds = new Array();
+var dataCache;
+var _pageIndex = 1;
+var _pageSize = 10;
+var _pageTotal = 0;
 
 $(function() {
 
@@ -32,7 +36,7 @@ $(function() {
   $(':radio[name="allocation-detail-input"][value="0"]').prop('checked', true).change();
 
   // 3. 发送对象
-  $(':checkbox[name="send-to"]').prop('checked', false).change();
+  $(':checkbox[name="send-to"]').prop('checked', true).change();
 
 	// 4. 配置商户级别和TP方数据源 
   $('#detail-merchantClass').html(settlementCommon.optionsHTML(settlementCommon.merchantLevel, true));
@@ -100,11 +104,129 @@ $(function() {
 	  var html = Mustache.render(template, {});
 
 	  $('#popup-merchant-bank .modal-body').html(html);
+	  $('#bank_formSearch').on('submit', function (e) {
+		e.preventDefault();
+		var sendData = {
+	    bankName: $('#bank_Name').val(),
+	    networkName: $('#networkName').val(),
+	    cityName: $('#cityName').val(),
+	    pageSize: _pageSize,
+	    pageIndex: _pageIndex,
+	  };
+
+	  $.ajax({
+      url: common.API_HOST + 'common/bank/list',
+      type: 'POST',
+      dataType: 'json',
+      data: sendData,
+	  })
+	  .done(function (res) {
+	  	if (!!~~res.meta.result == true) {
+	  		if (res.data.bankList.rows.length < 1) {
+		      $('#back_dataTable tbody').html('<tr><td colspan="9" align="center">查不到相关数据，请修改查询条件！</td></tr>');
+		      $('#bank_pager').html('');
+		    } else {
+		      useCache = true;
+		      // _pageIndex = res.data.pageIndex;
+		      var totalRecord = res.data.bankList.total;
+		      var record = res.data.bankList.rows;
+
+		      _pageTotal = Math.ceil(totalRecord / _pageSize);
+		      setPager(totalRecord, _pageIndex, record.length, _pageTotal);
+
+		      dataCache = record;
+		      setTableData(dataCache);
+		    }
+		  } else {
+		  	alert('接口错误：' + res.meta.msg);
+		  }
+	 });
+	});
 
 	  $('#popup-merchant-bank').modal('show');
+
 	}
 
 	$(document).on('click', '#select-bank', showModal);
+	// 查询银行网点
+	// $('body').on('click', '#back_search', function(e) {
+
+	function setTableData(rows) {
+	  var data = { rows: rows };
+	  var template = $('#bank-table-template').html();
+	  Mustache.parse(template);
+	  var html = Mustache.render(template, data);
+	  $('#bank_dataTable tbody').html(html);
+	}
+
+	function setPager(total, pageIndex, rowsSize, pageTotal) {
+	  var data = { total: total, pageIndex: pageIndex, rowsSize: rowsSize, pageTotal: pageTotal };
+	  var template = $('#bank-pager-template').html();
+	  Mustache.parse(template);
+	  var html = Mustache.render(template, data);
+	  $('#bank_pager').html(html);
+	}
+
+	$('body').on('click', '.prev,.next', function (e) {
+  e.preventDefault();
+  if ($(this).hasClass('prev')) {
+    if (_pageIndex <= 1) {
+      _pageIndex = 1;
+      alert('已经是第一页！');
+      return false;
+    }
+
+    _pageIndex--;
+  } else {
+    if (_pageIndex >= _pageTotal) {
+      _pageIndex = _pageTotal;
+      alert('已经是最后一页！');
+      return false;
+    }
+
+    _pageIndex++;
+  }
+
+  $('#bank_formSearch').trigger('submit');
+  return false;
+});
+
+$('body').on('click', '#btn-pager', function (e) {
+  e.preventDefault();
+  if ('' == $('#pageNo').val()) {
+    return false;
+  }
+
+  var pageNo = parseInt($('#pageNo').val());
+  if (NaN == pageNo || pageNo < 1 || pageNo > _pageTotal) {
+    alert('要跳转的页码超过了范围！');
+    return false;
+  }
+
+  _pageIndex = pageNo;
+  $('#bank_formSearch').trigger('submit');
+  return false;
+});
+
+$('body').on('click', '#back_reset', function(e) {
+	e.preventDefault();
+  $('#bank_Name').val('');
+  $('#networkName').val('');
+  $('#cityName').val('');
+});
+
+$('body').on('click', '.btn-select', function(e) {
+	e.preventDefault();
+
+	var index = $(this).parents('tr')[0].sectionRowIndex;
+  var sectionData = dataCache[index];
+  $('#bankName').val(sectionData.name);
+  $('#bankCode').val(sectionData.code);
+
+  $('#popup-merchant-bank').modal('hide');
+  });
+
+
 
 
 	/***************************************** 选择文件 ******************************************/
@@ -157,7 +279,7 @@ $(function() {
 	   if (uploadFile) {
 	      $('#hud-overlay').show();
 	      $.ajax({
-	       url: common.API_HOST + 'settlement/merchantAttachment/uploadAttachment.json',
+	       url: common.API_HOST + 'settlement/merchantAttachment/uploadAttachment',
 	       type: 'POST',
 	       contentType: false,
 	       processData: false,
@@ -203,7 +325,7 @@ $(function() {
 		  };
 
 		  $.ajax({
-	      url: common.API_HOST + 'settlement/merchantAttachment/delete.json',
+	      url: common.API_HOST + 'settlement/merchantAttachment/delete',
 	      type: 'POST',
 	      dataType: 'json',
 	      data: sendData,
@@ -295,7 +417,7 @@ $(function() {
 	   // 是否发送拨款明细
 	   allocationDetail: allocationDetail,
 	   // 发送对象
-	   allocationDetailReceiver: allocationDetailReceiver,  
+	   allocationDetailReceiver: allocationDetailReceiver,
 	   // 商户E-mail
 	   email: $('#email').val(),
 	   // 卡部E-mail
@@ -314,7 +436,7 @@ $(function() {
 	  };
 
 	$.ajax({
-	   url: common.API_HOST + 'settlement/merchantinfo/addMerchant.json',
+	   url: common.API_HOST + 'settlement/merchantinfo/addMerchant',
 	   type: 'POST',
      traditional: true,
 	   data: sendData,

@@ -200,7 +200,7 @@ $('#formSearch').on('submit', function (e) {
 
   if (!_DEBUG) {
     $.ajax({
-      url: common.API_HOST + 'settlement/merchantinfo/merchantinfoList.json',
+      url: common.API_HOST + 'settlement/merchantinfo/merchantinfoList',
       type: 'GET',
       dataType: 'json',
       data: sendData,
@@ -356,7 +356,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
 
 if (!_DEBUG) {
     $.ajax({
-      url: common.API_HOST + 'settlement/merchantinfo/query.json',
+      url: common.API_HOST + 'settlement/merchantinfo/query',
       type: 'POST',
       dataType: 'json',
       data: {merchantId: merchantId},
@@ -432,7 +432,6 @@ function formatPopupUI(detailData) {
       $(el).prop('checked', true).change();
     }
   });
-  
   // 发送对象
   var sendTo = detailData.allocationDetailReceiver;
   $('input[name="send-to"]').each(function(index, el) {
@@ -492,7 +491,7 @@ $('.modal').on('click', '.download', function(e) {
   // alert('文件路径为 ' + fileUrl + ', 本接口尚未实现.');
   var rowIndex = $(this).closest('tr').prevAll().length;
   var attachment = merchantAttachments[rowIndex];
-  window.location.href = common.API_HOST + 'settlement/merchantAttachment/downLoadById.json?id=' + attachment.id;
+  window.location.href = common.API_HOST + 'settlement/merchantAttachment/downLoadById?id=' + attachment.id;
 
 });
 

@@ -102,10 +102,10 @@
     </div>
 
     <div class="container-fluid">
-      <div class="row">
 
-      <span style="display: block; margin-top: 10px;">结算信息:</span>
-      <hr style="margin-top: 3px;">
+      <div class="row">
+        <span style="display: block; margin-top: 10px;">结算信息:</span>
+        <hr style="margin-top: 3px;">
 
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
@@ -163,20 +163,6 @@
 
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
-            <div class="input-group-addon">用户支付金额(元)</div>
-            <input type="text" class="form-control" id="payAmount" value="{{payAmount}}" readonly>
-          </div>
-        </div>
-
-        <div class="form-group col-sm-6 col-md-6 editable">
-          <div class="input-group">
-            <div class="input-group-addon">用户支付积分</div>
-            <input type="text" class="form-control" id="payPoint" value="{{payPoint}}" readonly>
-          </div>
-        </div>
-
-        <div class="form-group col-sm-6 col-md-6 editable">
-          <div class="input-group">
             <div class="input-group-addon">结算金额(元)</div>
             <!-- <input type="text" class="form-control" id="settleAmount" value="{{settleAmount}}" readonly> -->
             <input type="text" class="form-control oldValue" id="settleAmount" value="{{settleAmount}}" data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?">
@@ -206,7 +192,7 @@
             </select>
 
           </div>
-          
+
         </div>
 
         <div class="form-group col-sm-6 col-md-6 editable">
@@ -227,7 +213,7 @@
         </div>
 
 
-<!-- 
+<!--
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
             <div class="input-group-addon">渠道方补贴金额(元)</div>
@@ -298,10 +284,49 @@
           </div>
         </div>
 
-        <div class="form-group col-sm-6 col-md-6">
+        <div class="form-group col-sm-6">
           <div class="input-group">
-            <div class="input-group-addon">O2O应收金额</div>
-            <input type="text" class="form-control" id="o2oReceivableAmount" value="{{o2oReceivableAmount}}" readonly>
+            <div class="input-group-addon">结算进度</div>
+            <select class="form-control" id="settlementPlan" value="{{settlementPlan}}">
+              <option value></option>
+              <option value="1">应结算</option>
+              <option value="2">待结算</option>
+              <option value="3">补结算</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group col-sm-6">
+          <div class="input-group">
+            <div class="input-group-addon">结算状态</div>
+            <select class="form-control" id="appStatus" value="{{appStatus}}">
+              <option value></option>
+              <option value="1">未生成拨款明细</option>
+              <option value="2">已生成拨款明细</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group col-sm-6">
+          <div class="input-group">
+            <div class="input-group-addon">结算日期</div>
+            <input type="text" class="form-control" id="settleDate" value="{{settleDate}}" data-parsley-pattern="[0-9]{4}?-[0-9]{2}?-[0-9]{2}?">
+          </div>
+        </div>
+        <div class="form-group col-sm-6">
+          <div class="input-group">
+            <div class="input-group-addon">实结批次号</div>
+            <input type="text" class="form-control" id="batchNo" value="{{batchNo}}">
+          </div>
+        </div>
+        <div class="form-group col-sm-6">
+          <div class="input-group">
+            <div class="input-group-addon">待结批次号</div>
+            <input type="text" class="form-control" id="waitBatchNo" value={{waitBatchNo}}>
+          </div>
+        </div>
+        <div class="form-group col-sm-6">
+          <div class="input-group">
+            <div class="input-group-addon">城市</div>
+            <input type="text" class="form-control" id="cityName" value="{{cityName}}">
           </div>
         </div>
 
@@ -311,7 +336,7 @@
 
     <div class="container-fluid">
 
-      <div class="row"> 
+      <div class="row">
         <span style="display: block; margin-top: 10px;">优惠信息:</span>
         <hr style="margin-top: 3px;">
 
@@ -370,7 +395,7 @@
             <input type="text" class="form-control" id="costCenterTrd" value="{{costCenterTrd}}" readonly>
           </div>
         </div>
-        
+
 
         <!-- <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
@@ -409,13 +434,6 @@
         <hr style="margin-top: 3px;">
 
         <div class="form-group col-sm-6 col-md-6">
-          <div class="input-group">
-            <div class="input-group-addon">支付流水状态</div>
-            <input type="text" class="form-control" id="payStatus" value="{{payStatus}}" readonly>
-          </div>
-        </div>
-
-        <div class="form-group col-sm-6 col-md-6">
             <div class="input-group">
               <div class="input-group-addon">出货状态</div>
               <select class="form-control oldValue" id="shipmentStatus" value="{{shipmentStatus}}">
@@ -436,13 +454,6 @@
               </select>
             </div>
           </div>
-
-        <div class="form-group col-sm-6 col-md-6">
-          <div class="input-group">
-            <div class="input-group-addon">收单对账状态</div>
-            <input type="text" class="form-control" id="acquiringReconciliationStatus" value="{{acquiringReconciliationStatus}}" readonly>
-          </div>
-        </div>
 
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
@@ -471,32 +482,6 @@
           </div>
         </div>
 
-        <div class="form-group col-sm-6 col-md-6">
-          <div class="input-group">
-            <div class="input-group-addon">对账不一致原因</div>
-            <select class="form-control oldValue" id="reason" value="{{reason}}">
-              <option value=""></option>
-              <option value="1">出货失败, 支付成功(未退款)</option>
-              <option value="2">退货失败, 退款成功(无承债方)</option>
-              <option value="3">退货成功, 退款失败(未退款)</option>
-              <option value="4">退货成功, 支付成功(未退款)</option>
-              <option value="5">金额不符</option>
-              <option value="6">票类错误</option>
-              <option value="7">出货成功, 支付失败(未扣款)</option>
-            </select>
-            <select class="form-control newValue" id="reasonNew" value="{{lastDetail.reason}}">
-              <option value=""></option>
-              <option value="1">出货失败, 支付成功(未退款)</option>
-              <option value="2">退货失败, 退款成功(无承债方)</option>
-              <option value="3">退货成功, 退款失败(未退款)</option>
-              <option value="4">退货成功, 支付成功(未退款)</option>
-              <option value="5">金额不符</option>
-              <option value="6">票类错误</option>
-              <option value="7">出货成功, 支付失败(未扣款)</option>
-            </select>
-          </div>
-        </div>
-
       </div>
     </div>
 
@@ -505,12 +490,12 @@
       <div class="row"> 
         <span style="display: block; margin-top: 10px;">备注信息:</span>
         <hr style="margin-top: 3px;">
-        
-        <div class="form-group col-sm-6 col-md-6 editable">
+
+        <div class="form-group col-sm-12 col-md-12 editable">
           <div class="input-group">
             <div class="input-group-addon">备注</div>
-            <textarea class="form-control oldValue" id="remarks">{{remarks}}</textarea>
-            <textarea class="form-control newValue" id="remarksNew">{{lastDetail.remarks}}</textarea>
+            <textarea class="form-control oldValue" style="resize: vertical;" id="remarks">{{remarks}}</textarea>
+            <textarea class="form-control newValue" style="resize: vertical;" id="remarksNew">{{lastDetail.remarks}}</textarea>
           </div>
         </div>
       </div>

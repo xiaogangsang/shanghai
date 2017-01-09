@@ -101,7 +101,7 @@ $('#formSearch').on('submit', function (e) {
 
   if (!_DEBUG) {
     $.ajax({
-      url: common.API_HOST + 'settlement/merchantinfo/listMerchantsNeedChecking.json',
+      url: common.API_HOST + 'settlement/merchantinfo/listMerchantsNeedChecking',
       type: 'POST',
       dataType: 'json',
       data: sendData,
@@ -191,7 +191,7 @@ $('.btn-reset').click(function(e) {
   $('#search_merchantNo').val('');
   $('#search_tp').val('');
   $('#search_merchantClass').val('');
-  selectGuy.clear();
+  // selectGuy.clear();
   selectBranch.clear();
 });
 
@@ -296,7 +296,7 @@ $('body').on('click', '#btn-reject', function (e) {
 function sendRejectRequest(merchantNo) {
   var param = {merchantId: merchantNo};
   $.ajax({
-    url: common.API_HOST + 'settlement/merchantinfo/disable.json',
+    url: common.API_HOST + 'settlement/merchantinfo/disable',
     type: 'GET',
     data: param,
   })
@@ -318,7 +318,7 @@ $('body').on('click', '#btn-egis', function (e) {
     var merchantNo = $('#merchantNo').val();
     var param = {merchantId: merchantNo};
     $.ajax({
-      url: common.API_HOST + 'settlement/merchantinfo/online.json',
+      url: common.API_HOST + 'settlement/merchantinfo/online',
       type: 'POST',
       data: param,
     })

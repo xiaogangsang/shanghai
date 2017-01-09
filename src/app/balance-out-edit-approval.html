@@ -84,36 +84,12 @@
 
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
-              <div class="input-group-addon">业务类别</div>
-              <select class="form-control" id="search_bizType">
-                <option value="">全部</option>
-                <option value="1">影票</option>
-                <option value="2">手续费</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-group col-sm-6 col-md-4">
-            <div class="input-group">
               <div class="input-group-addon">退款承债方</div>
               <select class="form-control" id="search_partner">
                 <option value="">全部</option>
                 <option value="1">O2O</option>
                 <option value="2">TP方</option>
                 <option value="3">渠道方</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-group col-sm-6 col-md-4">
-            <div class="input-group">
-              <div class="input-group-addon">收单对账状态</div>
-              <select class="form-control" id="search_acquiringReconciliationStatus">
-                <option value="">全部</option>
-                <option value="1">未对账</option>
-                <option value="2">对账不一致</option>
-                <option value="3">对账成功</option>
-                <option value="4">确认</option>
               </select>
             </div>
           </div>
@@ -127,22 +103,6 @@
                 <option value="2">对账不一致</option>
                 <option value="3">对账成功</option>
                 <option value="4">确认</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-group col-sm-6 col-md-4">
-            <div class="input-group">
-              <div class="input-group-addon">对账不一致原因</div>
-              <select class="form-control" id="search_reason">
-                <option value="">全部</option>
-                <option value="1">出货失败, 支付成功(未退款)</option>
-                <option value="2">退货失败, 退款成功(无承债方)</option>
-                <option value="3">退货成功, 退款失败(未退款)</option>
-                <option value="4">退货成功, 支付成功(未退款)</option>
-                <option value="5">金额不符</option>
-                <option value="6">票类错误</option>
-                <option value="7">出货成功, 支付失败(未扣款)</option>
               </select>
             </div>
           </div>
@@ -185,7 +145,7 @@
               <div class="input-group-addon">交易订单号</div>
               <input type="text" class="form-control" id="search_orderNo">
             </div>
-          </div>          
+          </div>
 
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
@@ -232,29 +192,70 @@
             </div>
           </div>
 
-          <div class="col-xs-8">
-            <div class="row">
-              <div class="col-xs-6">
-                <button type="submit" class="btn btn-block btn-primary">查询</button>
-              </div>
-              <div class="col-xs-6">
-                <button type="button" class="btn btn-block btn-default btn-reset">重置</button>
-              </div>
+          <div class="form-group col-sm-4">
+            <div class="input-group">
+              <div class="input-group-addon">结算进度</div>
+              <select class="form-control" id="search_settlementPlan">
+                <option value>全部</option>
+                <option value="1">应结算</option>
+                <option value="2">待结算</option>
+                <option value="3">补结算</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group col-sm-4">
+            <div class="input-group">
+              <div class="input-group-addon">结算状态</div>
+              <select class="form-control" id="search_appStatus">
+                <option value>全部</option>
+                <option value="1">未生成拨款明细</option>
+                <option value="2">已生成拨款明细</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group col-sm-4">
+            <div class="input-group">
+              <div class="input-group-addon">结算日期</div>
+              <input type="text" class="form-control" id="search_settleDate" data-parsley-pattern="[0-9]{4}?-[0-9]{2}?-[0-9]{2}?">
+            </div>
+          </div>
+          <div class="form-group col-sm-4">
+            <div class="input-group">
+              <div class="input-group-addon">实结批次号</div>
+              <input type="text" class="form-control" id="search_batchNo">
+            </div>
+          </div>
+          <div class="form-group col-sm-4">
+            <div class="input-group">
+              <div class="input-group-addon">待结批次号</div>
+              <input type="text" class="form-control" id="search_waitBatchNo">
+            </div>
+          </div>
+          <div class="form-group col-sm-4">
+            <div class="input-group">
+              <div class="input-group-addon">城市</div>
+              <input type="text" class="form-control" id="search_cityName">
             </div>
           </div>
 
-          <div class="col-xs-12 col-sm-12 col-md-12">
+          <div class="col-xs-12">
             <div class="row">
-              <div class="col-xs-3">
+              <div class="col-xs-2">
+                <button type="submit" class="btn btn-block btn-primary">查询</button>
+              </div>
+              <div class="col-xs-2">
+                <button type="button" class="btn btn-block btn-default btn-reset">重置</button>
+              </div>
+              <div class="col-xs-2">
                 <button type="button" class="btn btn-block btn-default btn-batch-approve">批量审核通过</button>
               </div>
-              <div class="col-xs-3">
+              <div class="col-xs-2">
                 <button type="button" class="btn btn-block btn-default btn-batch-reject">批量驳回</button>
               </div>
-              <div class="col-xs-3">
+              <div class="col-xs-2">
                 <button type="button" class="btn btn-block btn-default btn-all-approve">全部审核通过</button>
               </div>
-              <div class="col-xs-3">
+              <div class="col-xs-2">
                 <button type="button" class="btn btn-block btn-default btn-all-reject">全部驳回</button>
               </div>
             </div>
@@ -276,7 +277,6 @@
                   <th>交易订单号</th>
                   <th>出货订单类型</th>
                   <th>订单来源</th>
-                  <th>O2O应收金额</th>
                   <th>商品订单号</th>
                   <th>二级商户</th>
                   <th>二级商户号</th>
@@ -338,7 +338,6 @@
       <td>{{orderNo}}</td>
       <td>{{shipmentOrderType}}</td>
       <td>{{orderSource}}</td>
-      <td>{{o2oReceivableAmount}}</td>
       <td>{{bizOrderNo}}</td>
       <td>{{merchantName}}</td>
       <td>{{merchantNo}}</td>

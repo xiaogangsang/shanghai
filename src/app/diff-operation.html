@@ -87,14 +87,18 @@
 							<thead>
 								<tr>
 									<th>结算日期</th>
+									<th>订单渠道</th>
 									<th>交易订单号</th>
-									<th>销售结算价</th>
-									<th>实收销售款</th>
-									<th>退货结算价</th>
-									<th>实退销售额</th>
-									<th>常规活动</br>后付补贴金额</th>
-									<th>支付活动</br>后付补贴金额</th>
-									<th>服务费</th>
+									<th>销售结算净价</br>(银行清算金额)</th>
+									<th>用户支付金额</br>(不含服务费)</th>
+									<th>常态活动补贴金额(收单)</th>
+									<th>支付活动补贴金额(收单)</th>
+									<th>销售结算净价</br>(应付金额)</th>
+									<th>销售结算净价</br>(不含补贴)</th>
+									<th>常态活动补贴金额(出货)</th>
+									<th>支付活动补贴金额(出货)</th>
+									<th>常态活动补贴差额(收单-出货)</th>
+									<th>支付活动补贴差额(收单-出货)</th>
 									<th>差异计算值</th>
 									<th>差异拆分值</th>
 									<th>对账一致</th>
@@ -161,11 +165,11 @@
 					<h5 class="modal-title">新增/编辑差异</h5>
 				</div>
 				<div class="modal-body">
-					@@include('component/popup-diff-operation-edit.tpl')
 				</div>
 			</div>
 		</div>
 	</div>
+	@@include('component/popup-diff-operation-edit.tpl')
 	<script src="js/diff-operation-edit.js"></script>
 
 	<div id="hud-overlay" style="display: none">
@@ -176,25 +180,33 @@
 
 	<script id="table-template" type="text/x-tmpl-mustache">
 	  {{#rows}}
-	  <tr>
+	  <tr data-orderno={{orderNo}}>
 	    <!-- 结算日期 -->
 	    <td>{{settleDate}}</td>
+	    <!-- 订单渠道 -->
+	    <td>{{channelId}}</td>
 	    <!-- 交易订单号 -->
 	    <td>{{orderNo}}</td>
-	    <!-- 销售结算价 -->
+	    <!-- 销售结算净值(银行清算金额) -->
+	    <td>{{bankSettlePrice}}</td>
+	    <!-- 用户支付金额(不含服务费) -->
+	    <td>{{userAmountPay}}</td>
+	    <!-- 常规活动补贴金额(收单) -->
+	    <td>{{budgetAmountAcq}}</td>
+	    <!-- 支付活动补贴金额(收单) -->
+	    <td>{{budgetAmountTrdAcq}}</td>
+	    <!-- 销售结算净值(应付金额) -->
+	    <td>{{dueSettlePrice}}</td>
+	    <!-- 销售结算净值(不含补贴) -->
 	    <td>{{saleSettlePrice}}</td>
-	    <!-- 实收销售款 -->
-	    <td>{{bankAmountPay}}</td>
-	    <!-- 退货结算价 -->
-	    <td>{{refundSettlePrice}}</td>
-	    <!-- 实退销售款 -->
-	    <td>{{bankAmountRefund}}</td>
-	    <!-- 常规活动后付补贴金额 -->
-	    <td>{{budgetAmount}}</td>
-	    <!-- 支付活动后付补贴金额 -->
-	    <td>{{budgetAmountTrd}}</td>
-	    <!-- 服务费 -->
-	    <td>{{serviceFee}}</td>
+	    <!-- 常规活动补贴金额(出货) -->
+	    <td>{{budgetAmountShip}}</td>
+	    <!-- 支付活动补贴金额(出货) -->
+	    <td>{{budgetAmountShip}}</td>
+	    <!-- 常规活动补贴差额 -->
+	    <td>{{budgetAmountDiffer}}</td>
+	    <!-- 支付活动补贴差额 -->
+	    <td>{{budgetAmountTrdDiffer}}</td>
 	    <!-- 差异计算值 -->
 	    <td>{{differAmount}}</td>
 	    <!-- 差异拆分值 -->

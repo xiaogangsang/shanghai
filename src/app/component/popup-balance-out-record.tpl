@@ -41,13 +41,15 @@
                             <hr style="margin-left: 15px; margin-right: 15px; margin-top: 10px;">
 
                             <div class="form-group col-sm-6">
+                                <div class="input-group-addon">选择省</div>
                                 <select class="form-control" id="record-provinceId">
-                                    <option value="">选择省</option>
+                                    <option value></option>
                                 </select>
                             </div>
                             <div class="form-group col-sm-6">
+                                <div class="input-group-addon">选择城市</div>
                                 <select class="form-control" id="record-cityId">
-                                    <option value="">选择城市</option>
+                                    <option value></option>
                                 </select>
                             </div>
                         </div>
@@ -107,32 +109,16 @@
                                     <input type="text" id="record_merchantNo" class="form-control" required>
                                 </div>
                             </div>
-                            <div class="col-sm-12" style="padding-left: 0px; padding-right: 0px;">
-                                <div class="form-group col-sm-6">
-                                    <div class="input-group">
-                                        <div class="input-group-addon">二级商户订单号</div>
-                                        <input type="text" id="record_thdOrderNo" class="form-control">
-                                    </div>
+                            <div class="form-group col-sm-6">
+                                <div class="input-group">
+                                    <div class="input-group-addon">二级商户订单号</div>
+                                    <input type="text" id="record_thdOrderNo" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group col-sm-6">
                                 <div class="input-group">
-                                    <div class="input-group-addon">用户支付金额(元)</div>
-                                    <input type="text" id="record_payAmount" class="form-control" required data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?" data-parsley-validate-amount>
-                                </div>
-                            </div>
-                            <div class="form-group col-sm-6">
-                                <div class="input-group">
-                                    <div class="input-group-addon">用户支付积分</div>
-                                    <input type="text" id="record_receivablePoint" class="form-control" required data-parsley-pattern="(-)?[0-9]{0,6}" data-parsley-validate-amount>
-                                </div>
-                            </div>
-                            <div class="col-sm-12" style="padding-left :0px; padding-right: 0px;">
-                                <div class="form-group col-sm-6">
-                                    <div class="input-group">
-                                        <div class="input-group-addon">结算金额(元)</div>
-                                        <input type="text" id="record_settleAmount" class="form-control" required data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?" data-parsley-validate-amount>
-                                    </div>
+                                    <div class="input-group-addon">结算金额(元)</div>
+                                    <input type="text" id="record_settleAmount" class="form-control" required data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?" data-parsley-validate-amount>
                                 </div>
                             </div>
                             <div class="form-group col-sm-6">

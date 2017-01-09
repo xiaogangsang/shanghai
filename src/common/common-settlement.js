@@ -384,6 +384,17 @@ settlementCommon.resetInput = function(input) {
   input.replaceWith(input.val('').clone(true));
 }
 
+// 必填项加*号
+settlementCommon.addStarMark = function() {
+  var elements = $('[required]');
+  elements.each(function(index, el) {
+    var $element = $($(this).siblings('.input-group-addon')[0]);
+    if ($element.text().indexOf('*') < 0) {
+      $element.html($element.text() + '<span style="color: #D70F0F; font-size: 16px;"> *</span>');
+    }
+  });
+}
+
 settlementCommon.success = function (msg) {
   var alertHtml = '<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert">&times;</button><div class="alert-content">' + msg + '</div></div>';
   $('.breadcrumb').after(alertHtml);
@@ -435,10 +446,77 @@ settlementCommon.fetchBasicData = function (callback) {
   })
 }
 
+settlementCommon.datetimepickerRegister = function ($startTime, $endTime) {
+
+  if ($startTime && $endTime) {
+    $startTime.datetimepicker({
+      format: 'yyyy-mm-dd',
+      language: 'zh-CN',
+      minView: 2,
+      todayHighlight: true,
+      autoclose: true,
+    }).on('changeDate', function (ev) {
+      var startDate = new Date(ev.date.valueOf());
+      var endDate = new Date(startDate);
+      endDate.setDate(startDate.getDate() + 6);
+
+      var currentEndDate = $endTime.datetimepicker('getDate');
+      var correctEndDate = currentEndDate;
+
+      if (currentEndDate < startDate) {
+        correctEndDate = startDate;
+      } else if (currentEndDate > endDate) {
+        correctEndDate = endDate;
+      }
+
+      $endTime.datetimepicker('setDate', correctEndDate);
+    });
+
+    $endTime.datetimepicker({
+      format: 'yyyy-mm-dd',
+      language: 'zh-CN',
+      minView: 2,
+      todayHighlight: true,
+      autoclose: true,
+    }).on('changeDate', function (ev) {
+      var endDate = new Date(ev.date.valueOf());
+      var startDate = new Date(endDate);
+      startDate.setDate(endDate.getDate() - 6);
+
+      var currentStartDate = $startTime.datetimepicker('getDate');
+      var correctStartDate = currentStartDate;
+
+      if (currentStartDate < startDate) {
+        correctStartDate = startDate;
+      } else if (currentStartDate > endDate) {
+        correctStartDate = endDate;
+      }
+
+      $startTime.datetimepicker('setDate', correctStartDate);
+    });
+  }
+
+  if ($startTime && ($endTime === null)) {
+    $startTime.datetimepicker({
+      format: 'yyyy-mm-dd',
+      language: 'zh-CN',
+      minView: 2,
+      todayHighlight: true,
+      autoclose: true,
+    });
+  }
+}
+
 /************************************************* 全局初始化处理 *****************************************************/
 
 // 点击隐藏/显示左侧菜单栏 的按钮
 $(function() {
+
+  // 必填项添加*号标识
+  settlementCommon.addStarMark();
+
+  // 查询日期的跨度小于等于7天
+  settlementCommon.datetimepickerRegister($('#search_startTime'), $('#search_endTime'));
 
   $('<button class="glyphicon glyphicon-menu-left" style="position: absolute; top: -1px; left: 0px; width: 15px; height: 30px; padding: 0px; border-width: 0px; border-radius: 0px 6px 6px 0px; background-color: #E0E0E0; opacity: 0.6;" id="sidebar-switcher"></button>').prependTo('.main');
 
@@ -459,65 +537,3 @@ $(function() {
     }
   });
 });
-
-// 必填项添加*号标识
-$(function() {
-  var elements = $('[required]');
-  elements.each(function(index, el) {
-    var $element = $($(this).siblings('.input-group-addon')[0]);
-    $element.html($element.text() + '<span style="color: #D70F0F; font-size: 16px;"> *</span>');
-  });
-});
-
-$(function() {
-  // 查询日期的跨度小于等于7天
-  settlementCommon.datetimepickerRegister($('#search_startTime'), $('#search_endTime'));
-});
-
-settlementCommon.datetimepickerRegister = function ($startTime, $endTime) {
-  $startTime.datetimepicker({
-    format: 'yyyy-mm-dd',
-    language: 'zh-CN',
-    minView: 2,
-    todayHighlight: true,
-    autoclose: true,
-  }).on('changeDate', function (ev) {
-    var startDate = new Date(ev.date.valueOf());
-    var endDate = new Date(startDate);
-    endDate.setDate(startDate.getDate() + 6);
-
-    var currentEndDate = $endTime.datetimepicker('getDate');
-    var correctEndDate = currentEndDate;
-
-    if (currentEndDate < startDate) {
-      correctEndDate = startDate;
-    } else if (currentEndDate > endDate) {
-      correctEndDate = endDate;
-    }
-
-    $endTime.datetimepicker('setDate', correctEndDate);
-  });
-
-  $endTime.datetimepicker({
-    format: 'yyyy-mm-dd',
-    language: 'zh-CN',
-    minView: 2,
-    todayHighlight: true,
-    autoclose: true,
-  }).on('changeDate', function (ev) {
-    var endDate = new Date(ev.date.valueOf());
-    var startDate = new Date(endDate);
-    startDate.setDate(endDate.getDate() - 6);
-
-    var currentStartDate = $startTime.datetimepicker('getDate');
-    var correctStartDate = currentStartDate;
-
-    if (currentStartDate < startDate) {
-      correctStartDate = startDate;
-    } else if (currentStartDate > endDate) {
-      correctStartDate = endDate;
-    }
-
-    $startTime.datetimepicker('setDate', correctStartDate);
-  });
-}

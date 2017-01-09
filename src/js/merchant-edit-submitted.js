@@ -13,10 +13,16 @@ var settlementCommon = require('settlementCommon');
 var _pageIndex = 1;
 var _pageSize = 10;
 var _pageTotal = 0;
+
+// var _bankPageIndex = 1;
+// var _bankPageSize = 10;
+// var _bankPageTotal = 0;
+
 var _querying = false;
 var searchCache = {};
 var useCache = false;
 var dataCache;
+var bankDataCache;
 var merchantAttachments;
 var fileIds = new Array();
 
@@ -56,6 +62,142 @@ $(function () {
   });
 
 });
+
+/****************************************** 开户行 ******************************************/
+
+  function showModal(e) {
+
+    e.preventDefault();
+    var template = $('#select-bank-template').html();
+    Mustache.parse(template);
+    var html = Mustache.render(template, {});
+
+    $('#popup-merchant-bank .modal-body').html(html);
+    $('#popup-merchant-bank').modal('show');
+  }
+
+  $('#popup-merchant-bank').on('hidden.bs.modal', function (e) {
+    $('body').addClass('modal-open');
+  })
+
+  $(document).on('click', '#select-bank', showModal);
+
+  // 查询银行网点
+  $('body').on('click', '#bank_search', function(e) {
+    e.preventDefault();
+      var sendData = {
+        bankName: $('#bank_Name').val(),
+        networkName: $('#networkName').val(),
+        cityName: $('#cityName').val(),
+        pageSize: _pageSize,
+        pageIndex: _pageIndex,
+      };
+
+      $.ajax({
+        url: common.API_HOST + 'common/bank/list',
+        type: 'POST',
+        dataType: 'json',
+        data: sendData,
+      })
+      .done(function (res) {
+        if (!!~~res.meta.result == true) {
+          if (res.data.bankList.rows.length < 1) {
+            $('#bank_dataTable tbody').html('<tr><td colspan="9" align="center">查不到相关数据，请修改查询条件！</td></tr>');
+            $('#bank_pager').html('');
+          } else {
+            // useCache = true;
+            // _pageIndex = res.data.pageIndex;
+            var totalRecord = res.data.bankList.total;
+            var record = res.data.bankList.rows;
+
+            _pageTotal = Math.ceil(totalRecord / _pageSize);
+            setBankPager(totalRecord, _pageIndex, record.length, _pageTotal);
+
+            bankDataCache = record;
+            setBankTableData(bankDataCache);
+          }
+        } else {
+          alert('接口错误：' + res.meta.msg);
+        }
+     });
+  });
+
+  function setBankTableData(rows) {
+    var data = { rows: rows };
+    var template = $('#bank-table-template').html();
+    Mustache.parse(template);
+    var html = Mustache.render(template, data);
+    $('#bank_dataTable tbody').html(html);
+  }
+
+  function setBankPager(total, pageIndex, rowsSize, pageTotal) {
+    var data = { total: total, pageIndex: pageIndex, rowsSize: rowsSize, pageTotal: pageTotal };
+    var template = $('#bank-pager-template').html();
+    Mustache.parse(template);
+    var html = Mustache.render(template, data);
+    $('#bank_pager').html(html);
+  }
+
+  $('body').on('click', '.prev,.next', function (e) {
+  e.preventDefault();
+  if ($(this).hasClass('prev')) {
+    if (_pageIndex <= 1) {
+      _pageIndex = 1;
+      alert('已经是第一页！');
+      return false;
+    }
+
+    _pageIndex--;
+  } else {
+    if (_pageIndex >= _pageTotal) {
+      _pageIndex = _pageTotal;
+      alert('已经是最后一页！');
+      return false;
+    }
+
+    _pageIndex++;
+  }
+
+  $('#bank_formSearch').trigger('submit');
+  return false;
+});
+
+$('body').on('click', '#btn-pager', function (e) {
+  e.preventDefault();
+  if ('' == $('#pageNo').val()) {
+    return false;
+  }
+
+  var pageNo = parseInt($('#pageNo').val());
+  if (NaN == pageNo || pageNo < 1 || pageNo > _pageTotal) {
+    alert('要跳转的页码超过了范围！');
+    return false;
+  }
+
+  _pageIndex = pageNo;
+  $('#bank_formSearch').trigger('submit');
+  return false;
+});
+
+$('body').on('click', '#bank_reset', function(e) {
+  e.preventDefault();
+  $('#bank_Name').val('');
+  $('#networkName').val('');
+  $('#cityName').val('');
+});
+
+$('body').on('click', '.btn-select', function(e) {
+  e.preventDefault();
+
+  var index = $(this).parents('tr')[0].sectionRowIndex;
+  var sectionData = bankDataCache[index];
+  $('#bankName').val(sectionData.name);
+  $('#bankCode').val(sectionData.code);
+
+  $('#popup-merchant-bank').modal('hide');
+  });
+
+
 
   /***************************************** 选择文件 ******************************************/
 
@@ -105,7 +247,6 @@ $(function () {
     formData.append('imageFileName', fileName);
     var merchantId = $('#merchantNo').val();
     formData.append('merchantId',merchantId);
-     
      if (uploadFile) {
 
         $('#hud-overlay').show();
@@ -369,8 +510,13 @@ function setModal(data) {
 
   var detailData = data.merchantInfo;
   var attachments = data.merchantAttachments;
+  // attachments.forEach(function (item) {
+  //   filepath = item.attachmentName;
+  //   var extStart = filepath.lastIndexOf(".");
+  //   var ext=filepath.substring(extStart,filepath.length).toUpperCase();
+  //   item.isShow = !(ext!=".BMP"&&ext!=".PNG"&&ext!=".GIF"&&ext!=".JPG"&&ext!=".JPEG");
+  // });
   detailData.attachments = attachments;
-
   merchantAttachments = data.merchantAttachments;
 
   var template = $('#detail-template').html();
@@ -406,7 +552,6 @@ function formatPopupUI(detailData) {
       $(el).prop('checked', true).change();
     }
   });
-  
   // 发送对象
   var sendTo = '0';
   $('input[name="send-to"]').each(function(index, el) {
@@ -542,7 +687,6 @@ $('#dataTable').on('click', '.btn-detail', function(e) {
       setModal(res.data);
       $('#popup-merchant-detail').modal('show');
     }
-  
 });
 
 // 账户停用
@@ -655,7 +799,7 @@ $('body').on('click','.submit',function(e){
      // 是否发送拨款明细
      allocationDetail: allocationDetail,
      // 发送对象
-     allocationDetailReceiver: allocationDetailReceiver,  
+     allocationDetailReceiver: allocationDetailReceiver,
      // 商户E-mail
      email: $('#email').val(),
      // 卡部E-mail
@@ -734,6 +878,25 @@ $('.modal').on('click', '.download', function(e) {
   // alert('文件路径为 ' + fileUrl + ', 本接口尚未实现.');
   var rowIndex = $(this).closest('tr').prevAll().length;
   var attachment = merchantAttachments[rowIndex];
-  window.location.href = common.API_HOST + 'settlement/merchantAttachment/downLoadById.json?id=' + attachment.id;
+  window.location.href = common.API_HOST + 'settlement/merchantAttachment/downLoadById?id=' + attachment.id;
 
 });
+
+$('.modal').on('click', '.lookMore', function(e) {
+  var fileUrl = $(this).data('fileurl');
+
+  var rowIndex = $(this).closest('tr').prevAll().length;
+  var attachment = merchantAttachments[rowIndex];
+  $('#showImg').src = common.API_HOST + 'settlement/merchantAttachment/downLoadById?id=' + attachment.id;;
+  // src="http://www.xker.com/xkerfiles/allimg/1412/143420O50-5.jpg"
+  $('#checkImage').modal('show');
+});
+
+
+
+
+
+
+
+
+
