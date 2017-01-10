@@ -366,6 +366,8 @@ if (!_DEBUG) {
       if (!!~~res.meta.result) {
         setModal(res.data);
         $('#popup-merchant-detail').modal('show');
+        // 设置发送对象
+        setAllocationDetailReceiver(res.data.merchantInfo);
       } else {
         alert(res.meta.msg);
       }
@@ -441,6 +443,25 @@ function formatPopupUI(detailData) {
       $(el).prop('checked', false).change();
     }
   });
+}
+
+function setAllocationDetailReceiver(detailData){
+    if (detailData.allocationDetailReceiver == 3) {
+      $('#allocationDetailReceiver1').prop('checked', true);
+      $('#allocationDetailReceiver2').prop('checked', true);
+      $('.merchant-email').show();
+      $('.branch-email').show();
+
+    } else if (detailData.allocationDetailReceiver == 1) {
+      $('#allocationDetailReceiver1').prop('checked', true);
+      $('.merchant-email').show();
+      $('.branch-email').hide();
+
+    } else if (detailData.allocationDetailReceiver = 2) {
+      $('#allocationDetailReceiver2').prop('checked', true);
+      $('.branch-email').show();
+      $('.merchant-email').hide();
+    }
 }
 
 

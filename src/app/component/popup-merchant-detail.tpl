@@ -225,7 +225,7 @@
           <div class="form-group col-sm-6 col-md-4 merchant-email">
             <div class="input-group">
               <div class="input-group-addon">商户E-mail</div>
-              <input type="text" class="form-control" value="{{email}}" id="email" required data-parsley-pattern="/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/" data-parsley-error-message="邮箱格式不正确">
+              <input type="text" class="form-control" value="{{email}}" id="email" data-parsley-pattern="/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/" data-parsley-error-message="邮箱格式不正确">
             </div>
           </div>
 
