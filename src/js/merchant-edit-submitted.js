@@ -568,6 +568,25 @@ function formatPopupUI(detailData) {
   });
 }
 
+function setAllocationDetailReceiver(detailData){
+    if (detailData.allocationDetailReceiver == 3) {
+      $('#allocationDetailReceiver1').prop('checked', true);
+      $('#allocationDetailReceiver2').prop('checked', true);
+      $('.merchant-email').show();
+      $('.branch-email').show();
+
+    } else if (detailData.allocationDetailReceiver == 1) {
+      $('#allocationDetailReceiver1').prop('checked', true);
+      $('.merchant-email').show();
+      $('.branch-email').hide();
+
+    } else if (detailData.allocationDetailReceiver = 2) {
+      $('#allocationDetailReceiver2').prop('checked', true);
+      $('.branch-email').show();
+      $('.merchant-email').hide();
+    }
+}
+
 /****************************************** 账户和商户操作 **********************************************/
 // 编辑商户
 $('#dataTable').on('click', '.btn-edit', function (e) {
@@ -591,6 +610,8 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
           setModal(res.data);
           $('#edit-merchantNoTitle').prop('hidden', false);
           $('#popup-merchant-detail').modal('show');
+          // 设置发送对象
+          setAllocationDetailReceiver(res.data.merchantInfo);
           $('#edit-merchantNo').text(detailData.merchantId);
           $('#detail_formSearch').parsley();
           var template = $('#file-upload-template').html();
@@ -663,7 +684,7 @@ $('#dataTable').on('click', '.btn-detail', function(e) {
 
   if (!_DEBUG) {
       $.ajax({
-        url: common.API_HOST + 'settlement/merchantinfo/query.json',
+        url: common.API_HOST + 'settlement/merchantinfo/query',
         type: 'POST',
         dataType: 'json',
         data: {merchantId: merchantId},
@@ -682,6 +703,8 @@ $('#dataTable').on('click', '.btn-detail', function(e) {
           $("#uploadBtnDiv").prop('hidden', true);
           $("#commitBtnDiv").prop('hidden', true);
           $('#popup-merchant-detail').modal('show');
+          // 设置发送对象
+          setAllocationDetailReceiver(res.data.merchantInfo);
 
         } else {
           alert(res.meta.msg);

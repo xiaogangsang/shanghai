@@ -251,6 +251,8 @@ if (!_DEBUG) {
       if (!!~~res.meta.result) {
         setModal(res.data);
         $('#popup-merchant-detail').modal('show');
+        // 设置发送对象
+        setAllocationDetailReceiver(res.data.merchantInfo);
       } else {
         alert(res.meta.msg);
       }
@@ -296,6 +298,7 @@ function formatPopupUI(detailData) {
   $('#detail-merchantStatus').html(settlementCommon.optionsHTML(settlementCommon.merchantStatus, true));
   $('#detail-merchantStatus option[value="' + detailData.merchantStatus + '"]').prop('selected', true);
   $('#select-fixed-allocation-day option[value="' + detailData.fixedAllocationDay + '"]').prop('selected', true);
+
   // 拨款模式不同, 相应控件显示隐藏
   var allocationType = detailData.allocationType;
   if (typeof(allocationType) != 'undefined') {
@@ -320,6 +323,25 @@ function formatPopupUI(detailData) {
       $(el).prop('checked', false).change();
     }
   });
+}
+
+function setAllocationDetailReceiver(detailData){
+    if (detailData.allocationDetailReceiver == 3) {
+      $('#allocationDetailReceiver1').prop('checked', true);
+      $('#allocationDetailReceiver2').prop('checked', true);
+      $('.merchant-email').show();
+      $('.branch-email').show();
+
+    } else if (detailData.allocationDetailReceiver == 1) {
+      $('#allocationDetailReceiver1').prop('checked', true);
+      $('.merchant-email').show();
+      $('.branch-email').hide();
+
+    } else if (detailData.allocationDetailReceiver = 2) {
+      $('#allocationDetailReceiver2').prop('checked', true);
+      $('.branch-email').show();
+      $('.merchant-email').hide();
+    }
 }
 
 
