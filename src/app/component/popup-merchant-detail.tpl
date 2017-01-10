@@ -20,7 +20,7 @@
         <div class="form-group col-sm-6 col-md-4">
           <div class="input-group">
             <div class="input-group-addon">商户号</div>
-            <input required type="text" class="form-control" id="merchantNo" value="{{merchantId}}">
+            <input type="text" class="form-control" id="merchantNo" value="{{merchantId}}" required>
           </div>
         </div>
 
@@ -43,7 +43,7 @@
         <div class="form-group col-sm-6 col-md-4">
           <div class="input-group">
             <div class="input-group-addon">联系电话</div>
-            <input type="text" class="form-control" id="merchantPhone" value="{{merchantPhone}}" required>
+            <input type="text" class="form-control" id="merchantPhone" value="{{merchantPhone}}" data-parsley-pattern="^[\d-]*$" data-parsley-error-message="电话号码格式不正确" required>
           </div>
         </div>
 
@@ -65,9 +65,9 @@
           <div class="input-group">
             <div class="input-group-addon">商户级别</div>
             <select class="form-control" id="detail-merchantClass" value="{{merchantClass}}" required>
-               <option value=""></option>
+               <!-- <option value=""></option>
               <option value="1">预付</option>
-              <option value="2">后付</option>
+              <option value="2">后付</option> -->
             </select>
             <!-- <input type="text" class="form-control" id="" value="{{merchantClass}}"> -->
           </div>
@@ -107,7 +107,7 @@
 
     <div class="container-fluid">
 
-      <div class="row"> 
+      <div class="row">
         <div class="form-group col-md-12">
           <div class="input-group">
             <div class="input-group-addon">商户备注信息</div>
@@ -232,7 +232,7 @@
           <div class="form-group col-sm-6 col-md-4 branch-email" id="cardEmailDiv">
             <div class="input-group">
               <div class="input-group-addon">卡部E-mail</div>
-              <input type="text" class="form-control" value="{{departmentEmail}}" id="cardEmail" required data-parsley-pattern="/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/" data-parsley-error-message="邮箱格式不正确">
+              <input type="text" class="form-control" value="{{departmentEmail}}" id="cardEmail" data-parsley-pattern="/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/" data-parsley-error-message="邮箱格式不正确">
             </div>
           </div>
 
@@ -243,14 +243,14 @@
         <div class="form-group col-sm-6 col-md-4">
           <div class="input-group">
             <div class="input-group-addon">账户名</div>
-            <input type="text" class="form-control" id="accountName" value="{{bankAccount}}" required>
+            <input type="text" class="form-control" id="accountName" value="{{accountName}}" required>
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-4">
           <div class="input-group">
             <div class="input-group-addon">账号</div>
-            <input type="text" class="form-control" id="bankAccount" value="{{bankCode}}" required>
+            <input type="text" class="form-control" id="bankAccount" value="{{bankAccount}}" data-parsley-pattern="^[0-9]*$" data-parsley-error-message="账号格式不正确" required>
           </div>
         </div>
       </div>
@@ -259,7 +259,7 @@
         <div class="form-group col-sm-6 col-md-4">
           <div class="input-group">
             <div class="input-group-addon">开户行</div>
-            <input type="text" class="form-control" id="bankName" value="{{bankAccount}}" readonly>
+            <input type="text" class="form-control" id="bankName" value="{{branchName}}" readonly>
           </div>
         </div>
 
@@ -325,6 +325,25 @@
           <!-- </div> -->
         </div>
       </div>
+
+      <div class="row" id="reject-result-container" style="margin: 12px 0px;" hidden>
+      <div class="row" style="margin-top: 15px;">
+        <div class="form-group col-md-12">
+          <div class="input-group">
+            <div class="input-group-addon">审核意见</div>
+            <textarea class="form-control" id="rejectRemark" required></textarea>
+          </div>
+        </div>
+      </div>
+        <div class="row" style="margin-top: 15px;">
+          <div class="col-md-3 col-md-push-2">
+            <button type="button" class="btn btn-block btn-default" id="btn-egis">通过并上线</button>
+          </div>
+          <div class="col-md-3 col-md-push-2">
+            <button type="button" class="btn btn-block btn-default" id="check-btn-reject">驳回</button>
+          </div>
+      </div>
+    </div>
     </div>
   </div>
 

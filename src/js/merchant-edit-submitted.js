@@ -256,7 +256,7 @@ $('body').on('click', '.btn-select', function(e) {
         $('#hud-overlay').show();
 
         $.ajax({
-         url: common.API_HOST + 'settlement/merchantAttachment/uploadAttachment.json',
+         url: common.API_HOST + 'settlement/merchantAttachment/uploadAttachment',
          type: 'POST',
          contentType: false,
          processData: false,
@@ -302,7 +302,7 @@ $('body').on('click', '.btn-select', function(e) {
       };
 
       $.ajax({
-        url: common.API_HOST + 'settlement/merchantAttachment/delete.json',
+        url: common.API_HOST + 'settlement/merchantAttachment/delete',
         type: 'POST',
         dataType: 'json',
         data: sendData,
@@ -365,7 +365,7 @@ $('#formSearch').on('submit', function (e) {
 
   if (!_DEBUG) {
     $.ajax({
-      url: common.API_HOST + 'settlement/merchantinfo/merchantinfoListByLoginUser.json',
+      url: common.API_HOST + 'settlement/merchantinfo/merchantinfoList',
       type: 'GET',
       dataType: 'json',
       data: sendData,
@@ -386,21 +386,21 @@ function handleMerchantData(res) {
   _querying = false;
 
   if (!!~~res.meta.result) {
-    if (res.data.record.length < 1) {
+    if (res.data.result.record.length < 1) {
       $('#dataTable tbody').html('<tr><td colspan="9" align="center">查不到相关数据，请修改查询条件！</td></tr>');
       $('#pager').html('');
     } else {
       useCache = true;
       // _pageIndex = res.data.pageIndex;
-      var totalRecord = res.data.total;
-      var record = res.data.record;
+      var totalRecord = res.data.result.total;
+      var record = res.data.result.record;
 
       _pageTotal = Math.ceil(totalRecord / _pageSize);
       setPager(totalRecord, _pageIndex, record.length, _pageTotal);
 
       _(record).forEach(function (item) {
 
-        item.isOffline = (item.merchantStatus == 3);
+        item.isOffline = (item.merchantStatus == 3 || item.merchantStatus == 4);
         item.isOnline = (item.merchantStatus == 2);
 
         item.isDisabled = (item.accountStatus == 2);
@@ -477,7 +477,7 @@ $('.btn-export').click(function(e) {
   }
 
   $.ajax({
-    url: common.API_HOST + 'settlement/merchantinfo/myMerchantinfoListExport',
+    url: common.API_HOST + 'settlement/merchantinfo/merchantinfoListExport',
     type: 'POST',
     dataType: 'json',
     data: searchCache,
@@ -540,6 +540,7 @@ function formatPopupUI(detailData) {
   $('#detail-tpId option[value="' + detailData.tpId + '"]').prop('selected', true);
   $('#detail-merchantStatus').html(settlementCommon.optionsHTML(settlementCommon.merchantStatus, true));
   $('#detail-merchantStatus option[value="' + detailData.merchantStatus + '"]').prop('selected', true);
+  $('#select-fixed-allocation-day option[value="' + detailData.fixedAllocationDay + '"]').prop('selected', true);
 
   // 拨款模式不同, 相应控件显示隐藏
   var allocationType = detailData.allocationType;
@@ -579,7 +580,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
 
   if (!_DEBUG) {
       $.ajax({
-        url: common.API_HOST + 'settlement/merchantinfo/query.json',
+        url: common.API_HOST + 'settlement/merchantinfo/query',
         type: 'POST',
         dataType: 'json',
         data: {merchantId: merchantId},
@@ -829,6 +830,8 @@ $('body').on('click','.submit',function(e){
    .done(function (res) {
      if (res.meta.result == true) {
        alert('保存成功！');
+      $('#popup-merchant-detail').modal('hide');
+
      } else {
        alert('接口错误：' + res.meta.msg);
      }
