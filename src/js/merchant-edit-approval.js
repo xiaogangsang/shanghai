@@ -440,4 +440,13 @@ $('.modal').on('change', ':checkbox[name="send-to"]', function(e) {
   }
 });
 
+$('.modal').on('click', '.download', function(e) {
+  var fileUrl = $(this).data('fileurl');
+  // alert('文件路径为 ' + fileUrl + ', 本接口尚未实现.');
+  var rowIndex = $(this).closest('tr').prevAll().length;
+  var attachment = merchantAttachments[rowIndex];
+  window.location.href = common.API_HOST + 'settlement/merchantAttachment/downLoadById?id=' + attachment.id;
+
+});
+
 
