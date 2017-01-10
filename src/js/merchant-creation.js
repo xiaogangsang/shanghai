@@ -51,6 +51,8 @@ $(function() {
   $('#attachments-container').append(html);
 
   $('#detail_formSearch').parsley();
+  // tpl里requied 手动调用加星号
+  settlementCommon.addStarMark();
 
 	/****************************************** event handler **********************************************/
 	// 拨款模式
