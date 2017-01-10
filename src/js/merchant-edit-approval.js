@@ -218,24 +218,61 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
 
   e.preventDefault();
 
-  if (_firstShow) {
-    var template = $('#reject-result-template').html();
-    Mustache.parse(template);
-    var html = Mustache.render(template);
-    $('#detail-template').append(html);
-    _firstShow = false;
-  };
-  
+
+
+  // if (_firstShow) {
+    // var template = $('#reject-result-template').html();
+    // Mustache.parse(template);
+    // var html = Mustache.render(template);
+    // $('#detail-template').append("<b>Hello</b>");
+    // _firstShow = false;
+  // };
+
+  // var rowIndex = $(this).closest('tr').prevAll().length;
+  // var detailData = dataCache[rowIndex];
+
+  // setModal(detailData);
+  // $('#popup-merchant-detail').modal('show');
 
   var rowIndex = $(this).closest('tr').prevAll().length;
   var detailData = dataCache[rowIndex];
 
-  setModal(detailData);
-  $('#popup-merchant-detail').modal('show');
+  var merchantId = detailData.merchantId;
+
+if (!_DEBUG) {
+    $.ajax({
+      url: common.API_HOST + 'settlement/merchantinfo/query',
+      type: 'POST',
+      dataType: 'json',
+      data: {merchantId: merchantId},
+    })
+    .done(function (res) {
+
+      if (!!~~res.meta.result) {
+        setModal(res.data);
+        $('#popup-merchant-detail').modal('show');
+      } else {
+        alert(res.meta.msg);
+      }
+    });
+  } else {
+    var res = $.parseJSON('{ "meta" : { "result" : "1", "msg" : "操作成功" }, "data" : { "merchantName" : "商户名称", "merchantId" : "商户号", "merchantStatus" : "商户状态", "merchantContacter" : "商户联系人", "merchantPhone" : "商户联系电话", "userName" : "员工姓名", "userId" : "员工编号", "tpId":"1", "merchantClass":"1", "merchantType" : "商户类别", "merchantRemark" : "商户备注", "allocationType" : "2", "allocationPeriod" : "28", "allocationDelay" : "拨款延迟", "fixedAllocationDay" : "28", "allocationDetail" : "是否给拨款明细", "allocationRemark" : "拨款摘要", "allocationDetailReceiver":"1", "email":"商户邮箱", "departmentEmail":"卡部邮箱", "accountName" : "账户名", "accountStatus" : "账户状态", "bankAccount" : "银行账号", "bankCode" : "联行行号", "branchName":"开户行", "attachments":[ { "attachmentName":"附件名", "createTime":"上传时间", "fileUrl":"文件路径", "fileId":"文件id" } ] } }');
+    setModal(res.data);
+    $('#popup-merchant-detail').modal('show');
+  }
+
 });
 
-function setModal(detailData) {
+function setModal(data) {
 
+  var detailData = data.merchantInfo;
+  var attachments = data.merchantAttachments;
+  detailData.attachments = attachments;
+
+  merchantAttachments = data.merchantAttachments;
+
+  // detailData.merchantStatus = settlementCommon.parseMerchantStatus(detailData.merchantStatus);
+  // detailData.merchantClass = settlementCommon.parseMerchantLevel(detailData.merchant_class);
   var template = $('#detail-template').html();
   Mustache.parse(template);
   var html = Mustache.render(template, detailData);
@@ -246,11 +283,19 @@ function setModal(detailData) {
 }
 
 function formatPopupUI(detailData) {
-  // make all the input lable-like
   $('.detail-area :input').prop('readonly', true);
   $('.detail-area :input').prop('disabled', true);
   $('#commitBtn').hide();
+  $('#reject-result-container').show();
 
+  // 设置商户级别和TP方的的选择
+  $('#detail-merchantClass').html(settlementCommon.optionsHTML(settlementCommon.merchantLevel, true));
+  $('#detail-merchantClass option[value="' + detailData.merchantClass + '"]').prop('selected', true);
+  $('#detail-tpId').html(settlementCommon.optionsHTML(settlementCommon.TP, true));
+  $('#detail-tpId option[value="' + detailData.tpId + '"]').prop('selected', true);
+  $('#detail-merchantStatus').html(settlementCommon.optionsHTML(settlementCommon.merchantStatus, true));
+  $('#detail-merchantStatus option[value="' + detailData.merchantStatus + '"]').prop('selected', true);
+  $('#select-fixed-allocation-day option[value="' + detailData.fixedAllocationDay + '"]').prop('selected', true);
   // 拨款模式不同, 相应控件显示隐藏
   var allocationType = detailData.allocationType;
   if (typeof(allocationType) != 'undefined') {
@@ -266,7 +311,6 @@ function formatPopupUI(detailData) {
       $(el).prop('checked', true).change();
     }
   });
-  
   // 发送对象
   var sendTo = '0';
   $('input[name="send-to"]').each(function(index, el) {
@@ -287,7 +331,7 @@ $('#dataTable').on('click', '.btn-reject', function (e) {
   sendRejectRequest(detailData.merchantId);
 });
 
-$('body').on('click', '#btn-reject', function (e) {
+$('body').on('click', '#check-btn-reject', function (e) {
   e.preventDefault();
   var merchantNo = $('#merchantNo').val();
   sendRejectRequest(merchantNo);
@@ -304,7 +348,6 @@ function sendRejectRequest(merchantNo) {
   .done(function (res) {
     if (!!~~res.meta.result) {
       alert(res.meta.msg);
-      
       $('#formSearch').trigger('submit');
       $('#popup-merchant-detail').modal('hide');
     } else {
@@ -326,7 +369,6 @@ $('body').on('click', '#btn-egis', function (e) {
     .done(function (res) {
       if (!!~~res.meta.result) {
         alert(res.meta.msg);
-        
         $('#formSearch').trigger('submit');
         $('#popup-merchant-detail').modal('hide');
       } else {

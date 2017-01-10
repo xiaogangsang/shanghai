@@ -39,7 +39,7 @@ $(function() {
   $(':checkbox[name="send-to"]').prop('checked', true).change();
 
 	// 4. 配置商户级别和TP方数据源 
-  $('#detail-merchantClass').html(settlementCommon.optionsHTML(settlementCommon.merchantLevel, true));
+  $('#detail-merchantClass').html(settlementCommon.optionsHTML(settlementCommon.merchantLevel, false));
   $('#detail-tpId').html(settlementCommon.optionsHTML(settlementCommon.TP, true));
   $('#detail-merchantStatus').html(settlementCommon.optionsHTML(settlementCommon.merchantStatus, true));
 
@@ -93,6 +93,37 @@ $(function() {
 	    }
 	  }
 	});
+
+	$('#merchantPhone').blur(
+       function(){
+          $('#merchantPhone').parsley().validate();
+          if (!$('#merchantPhone').parsley().isValid()) {
+              return false;
+            }
+     });
+	$('#email').blur(
+	       function(){
+	          $('#email').parsley().validate();
+	          if (!$('#email').parsley().isValid()) {
+	              return false;
+	            }
+	      });
+
+	$('#cardEmail').blur(
+	       function(){
+	          $('#cardEmail').parsley().validate();
+	          if (!$('#cardEmail').parsley().isValid()) {
+	              return false;
+	            }
+	      });
+
+	$('#bankAccount').blur(
+	       function(){
+	          $('#bankAccount').parsley().validate();
+	          if (!$('#bankAccount').parsley().isValid()) {
+	              return false;
+	            }
+	      });
 
 	/****************************************** 开户行 ******************************************/
 
@@ -397,7 +428,7 @@ $('body').on('click', '.btn-select', function(e) {
 	   // 员工编号
 	   userId: $('#userId').val(),
 	   // 商户级别
-	   merchantClass: $('#merchantClass').val(),
+	   merchantClass: $('#detail-merchantClass').val(),
 	   // 商户类别
 	   merchantType: $('#merchantType').val(),
 	   // TP方
@@ -412,6 +443,8 @@ $('body').on('click', '.btn-select', function(e) {
 	   allocationPeriod: $('#allocationPeriod').val(),
 	   // 拨款延迟天数
 	   allocationDelay: $('#allocationDelay').val(),
+	   // 拨款日期
+	   fixedAllocationDay: $('#select-fixed-allocation-day').val(),
 	   // 拨款摘要
 	   allocationRemark: $('#allocationRemark').val(),
 	   // 是否发送拨款明细
