@@ -588,13 +588,13 @@ function setAllocationDetailReceiver(detailData){
       $('.merchant-email').show();
       $('.branch-email').hide();
       $('#email').attr('required', 'true');
-      $("#cardEmail").rules("remove",'required');
+      $("#cardEmail").removeAttr("required");
 
     } else if (detailData.allocationDetailReceiver = 2) {
       $('#allocationDetailReceiver2').prop('checked', true);
       $('.branch-email').show();
       $('.merchant-email').hide();
-      $("#email").rules("remove",'required');
+      $("#email").removeAttr("required");
       $('#cardEmail').attr('required', 'true');
     }
     settlementCommon.addStarMark();
@@ -634,7 +634,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
           var html = Mustache.render(template);
           $('#attachments-container').append(html);
           // tpl里requied 手动调用加星
-          settlementCommon.addStarMark();          
+          settlementCommon.addStarMark();
         } else {
           alert(res.meta.msg);
         }
