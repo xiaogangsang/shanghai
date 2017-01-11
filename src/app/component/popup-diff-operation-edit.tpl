@@ -3,7 +3,7 @@
 
 	<div class="container-fluid">
 		{{#detail.appendRecord}}
-		<form>
+		<form id="formDiff">
 			<div class="row" style="margin-bottom: 20px;">
 				<div class="col-sm-4 pull-right">
 					<button type="submit" class="form-control btn btn-default edit-submit">保存</button>
@@ -13,37 +13,32 @@
 				<div class="form-group col-sm-6">
 					<div class="input-group">
 						<div class="input-group-addon">结算日期</div>
-						<input type="text" class="form-control" id="diff_settleDate" value="{{settleDate}}">
+						<input type="text" class="form-control" id="diff_settleDate" value="{{settleDate}}" readonly>
 					</div>
 				</div>
 				<div class="form-group col-sm-6">
 					<div class="input-group">
 						<div class="input-group-addon">交易订单号</div>
-						<input type="text" class="form-control" id="diff_orderNo" value="{{orderNo}}" data-parsley-pattern="[0-9]+">
+						<input type="text" class="form-control" id="diff_orderNo" value="{{orderNo}}" data-parsley-pattern="[0-9]+" readonly>
 					</div>
 				</div>
 				<div class="form-group col-sm-6">
 					<div class="input-group">
 						<div class="input-group-addon">差异编号</div>
-						<input type="text" class="form-control" id="diff_number" value="{{number}}" data-parsley-pattern="[0-9]+">
+						<input type="text" class="form-control" id="diff_number" value="{{number}}" data-parsley-pattern="[0-9]+" readonly>
 					</div>
 				</div>
 				<div class="form-group col-sm-6">
 					<div class="input-group">
 						<div class="input-group-addon">差异类型</div>
-						<select class="form-control" id="diff_differType" value="{{differType}}">
-							<option value></option>
-							<option value="0">收入</option>
-							<option value="1">成本</option>
-							<option value="2">待退款</option>
+						<select class="form-control" id="diff_differType" value="{{differType}}" required>
 						</select>
 					</div>
 				</div>
 				<div class="form-group col-sm-6">
 					<div class="input-group">
 						<div class="input-group-addon">渠道</div>
-						<select class="form-control" id="diff_channelId" value="{{channelId}}">
-							<option value></option>
+						<select class="form-control" id="diff_channelId" value="{{channelId}}" required>
 							<option value="1">掌上生活</option>
 							<option value="2">手机银行</option>
 						</select>
@@ -53,10 +48,6 @@
 					<div class="input-group">
 						<div class="input-group-addon">处理标识</div>
 						<select class="form-control" id="diff_processType" value="{{processType}}">
-							<option value></option>
-							<option value="0">活动限购</option>
-							<option value="1">票类有误</option>
-							<option value="2">待退款</option>
 						</select>
 					</div>
 				</div>
@@ -69,17 +60,13 @@
 				<div class="form-group col-sm-6">
 					<div class="input-group">
 						<div class="input-group-addon">差异金额</div>
-						<input type="text" class="form-control" id="diff_amount" value="{{amount}}">
+						<input type="text" class="form-control" id="diff_amount" value="{{amount}}" required>
 					</div>
 				</div>
 				<div class="form-group col-sm-6">
 					<div class="input-group">
 						<div class="input-group-addon">处理状态</div>
-						<select class="form-control" id="diff_processStatus" value="{{processStatus}}">
-							<option value></option>
-							<option value="0">待处理</option>
-							<option value="1">已处理</option>
-							<option value="2">无需处理</option>
+						<select class="form-control" id="diff_processStatus" value="{{processStatus}}" required>
 						</select>
 					</div>
 				</div>
@@ -87,9 +74,6 @@
 					<div class="input-group">
 						<div class="input-group-addon">责任部门</div>
 						<select class="form-control" id="diff_departId" value="{{departId}}">
-							<option value="0">影票</option>
-							<option value="1">卡中心</option>
-							<option value="2">其他</option>
 						</select>
 					</div>
 				</div>
@@ -284,4 +268,38 @@
     <td>{{o2oReceivableAmount}}</td>
   </tr>
   {{/rows}}
+</script>
+<script id="append-table-template" type="text/x-tmpl-mustache">
+	{{#rows}}
+	<tr>
+		<!-- 差异编号 -->
+		<td>{{id}}</td>
+		<!-- 结算日期 -->
+		<td>{{settleDate}}</td>
+		<!-- 交易订单号 -->
+		<td>{{orderNo}}</td>
+		<!-- 差异类型 -->
+		<td>{{type}}</td>
+		<!-- 差异处理标识 -->
+		<td>{{processType}}</td>
+		<!-- 渠道 -->
+		<td>{{channelId}}</td>
+		<!-- 常规补贴付款方式 -->
+		<td>{{advanceType}}</td>
+		<!-- 支付补贴付款方式 -->
+		<td>{{advanceTypeTrd}}</td>
+		<!-- 常态活动补贴差额 -->
+		<td>{{budgetAmountDiffer}}</td>
+		<!-- 支付活动补贴差额 -->
+		<td>{{budgetAmountTrdDiffer}}</td>
+		<!-- 差异金额 -->
+		<td>{{amount}}</td>
+		<!-- 差异说明 -->
+		<td>{{describ}}</td>
+		<!-- 差异处理状态 -->
+		<td>{{processStatus}}</td>
+		<!-- 批次号 -->
+		<td>{{batchNo}}</td>
+	</tr>
+	{{/rows}}
 </script>
