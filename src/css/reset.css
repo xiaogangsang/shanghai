@@ -206,7 +206,7 @@ input[disabled],
 input[readonly],
 .form-control[disabled],
 .form-control[readonly] {
-  /*border: 0;*/
+  border: 0;
   box-shadow: none;
 }
 input[readonly],
@@ -874,4 +874,9 @@ input[readonly],
   cursor: pointer;
   width: 14px;
   height: 14px;
+}
+@media (min-width: 1024px) {
+  .modal-xl {
+    width: 90%;
+  }
 }
