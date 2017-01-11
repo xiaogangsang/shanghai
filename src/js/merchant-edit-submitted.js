@@ -405,8 +405,8 @@ function handleMerchantData(res) {
         item.isOffline = (item.merchantStatus == 3 || item.merchantStatus == 4);
         item.isOnline = (item.merchantStatus == 2);
 
-        item.isDisabled = (item.accountStatus == 2);
-        item.isEnabled = (item.accountStatus == 1);
+        item.isDisabled = (item.accountStatus == 2 && item.merchantStatus == 2);
+        item.isEnabled = (item.accountStatus == 1 && item.merchantStatus == 2);
 
         item.merchantStatus = settlementCommon.parseMerchantStatus(item.merchantStatus);
         item.accountStatus = settlementCommon.parseAccountStatus(item.accountStatus);
@@ -534,7 +534,7 @@ function setModal(data) {
 function formatPopupUI(detailData) {
 
   // 设置商户级别和TP方的的选择
-  $('#detail-merchantClass').html(settlementCommon.optionsHTML(settlementCommon.merchantLevel, true));
+  $('#detail-merchantClass').html(settlementCommon.optionsHTML(settlementCommon.merchantLevel, false));
   $('#detail-merchantClass option[value="' + detailData.merchantClass + '"]').prop('selected', true);
   $('#detail-tpId').html(settlementCommon.optionsHTML(settlementCommon.TP, true));
   $('#detail-tpId option[value="' + detailData.tpId + '"]').prop('selected', true);
