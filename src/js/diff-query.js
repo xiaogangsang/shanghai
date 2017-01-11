@@ -10,7 +10,7 @@ var _querying = false;
 
 var _signList = {};
 var _disposeList = {};
-var _typeList = {}
+var _typeList = {};
 
 $(function () {
 	common.init('diff-query');
@@ -38,7 +38,7 @@ $(function () {
   		typeHtml = settlementCommon.optionsHTML(res.type, true);
   		$('#search_diffType').html(typeHtml);
   	}
-  })
+  });
 })
 
 $('#formSearch').on('click', 'button[type=submit]', function(e) {

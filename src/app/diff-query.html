@@ -137,23 +137,23 @@
   <script src="js/diff-query.js"></script>
 
   <div class="modal fade" id="popup-edit-diff">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-lable="Close"><span aria-hidden="true">&times;</span></button>
           <h5 class="modal-title">新增/编辑差异</h5>
         </div>
         <div class="modal-body">
-          @@include('component/popup-diff-operation-edit.tpl')
         </div>
       </div>
     </div>
   </div>
+  @@include('component/popup-diff-operation-edit.tpl')
   <script src="js/diff-operation-edit.js"></script>
 
   <script id="table-template" type="text/x-tmpl-mustache">
     {{#rows}}
-    <tr data-orderno="{{orderNo}}" data-diffid="number">
+    <tr data-orderno="{{orderNo}}" data-diffid="{{number}}">
       <td><input type="checkbox" class="multi-check"></td>
       <!-- 差异编号 -->
       <td>{{number}}</td>

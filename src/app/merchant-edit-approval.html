@@ -29,9 +29,11 @@
           <li class="active">商户审核</li>
         </ol>
 
+
         <form id="formSearch" class="search-area clearfix">
 
         <div class="form-group col-sm-6 col-md-4">
+
             <div class="input-group">
               <div class="input-group-addon">开始时间</div>
               <input type="text" class="form-control" id="search_startTime" required>
@@ -126,13 +128,9 @@
               </tbody>
             </table>
           </div>
-
         </div>
-
       </div>
-
     </div>
-
   </div>
 
   <!-- pop up -->
@@ -188,28 +186,6 @@
     {{/rows}}
   </script>
 
- <!--  <script id="reject-result-template" type="text/x-tmpl-mustache">
-    <div class="row reject-result-container" style="margin: 12px 0px;">
-      <div class="row" style="margin-top: 15px;">
-        <div class="form-group col-md-12">
-          <div class="input-group">
-            <div class="input-group-addon">审核意见</div>
-            <textarea class="form-control" id="rejectRemark" required></textarea>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="row" style="margin-top: 15px;">
-      <div class="col-md-3 col-md-push-2">
-        <button type="button" class="btn btn-block btn-default" id="btn-egis">通过并上线</button>
-      </div>
-      <div class="col-md-3 col-md-push-2">
-        <button type="button" class="btn btn-block btn-default" id="check-btn-reject">驳回</button>
-      </div>
-    </div>
-  </script>
- -->
   @@include('component/popup-merchant-detail.tpl')
 </body>
 </html>

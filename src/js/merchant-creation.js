@@ -31,17 +31,20 @@ $(function() {
   // 设置输入项的默认值
   // 1. 周期拨款模式
   $('#select-allocation-type').change();
+	$('.allocation-type1-input').hide();
+	$('.allocation-type2-input').hide();
+	$('#merchantNoDiv').hide();
 
   // 2. 不发送拨款明细
-  $(':radio[name="allocation-detail-input"][value="0"]').prop('checked', true).change();
-
-  // 3. 发送对象
-  $(':checkbox[name="send-to"]').prop('checked', true).change();
+  // $(':radio[name="allocation-detail-input"][value="0"]').prop('checked', true).change();
 
 	// 4. 配置商户级别和TP方数据源 
   $('#detail-merchantClass').html(settlementCommon.optionsHTML(settlementCommon.merchantLevel, false));
   $('#detail-tpId').html(settlementCommon.optionsHTML(settlementCommon.TP, true));
-  $('#detail-merchantStatus').html(settlementCommon.optionsHTML(settlementCommon.merchantStatus, true));
+  $('#detail-merchantStatus').html(settlementCommon.optionsHTML(settlementCommon.merchantInfoStatus, false));
+  $('#detail-merchantStatus option[value="5"]').prop('selected', true);
+	$('#detail-merchantStatus').attr('disabled', 'true');
+	// $('#detail-merchantStatus').attr('required', 'false');
 
   $('#attachment-table').hide();
 
@@ -49,10 +52,6 @@ $(function() {
   Mustache.parse(template);
   var html = Mustache.render(template);
   $('#attachments-container').append(html);
-
-  $('#detail_formSearch').parsley();
-  // tpl里requied 手动调用加星号
-  settlementCommon.addStarMark();
 
 	/****************************************** event handler **********************************************/
 	// 拨款模式
@@ -65,18 +64,35 @@ $(function() {
 
 	  if (value == '1') {
 	    $('.allocation-type1-input').show();
+	    $('#allocationPeriod').attr('required', 'true');
+	    $('#allocationDelay').attr('required', 'true');
+	    $('#select-fixed-allocation-day').removeAttr("required");
 	  } else if (value == '2') {
 	    $('.allocation-type2-input').show();
+	    $('#select-fixed-allocation-day').attr('required', 'true');
+	    $('#allocationPeriod').removeAttr("required");
+	    $('#allocationDelay').removeAttr("required");
 	  }
+		// tpl里requied 手动调用加星
+		settlementCommon.addStarMark();
 	});
 
 	// 是否发送拨款明细
 	$('body').on('change', ':radio[name="allocation-detail-input"]', function(e) {
 	  if ($(this).val() == '1') {
 	    $('.send-allocation-detail-container').show();
+	    $('#allocationDetailReceiver1').attr('required', 'true');
+	    $('#allocationDetailReceiver2').attr('required', 'true');
+
 	  } else if ($(this).val() == '0') {
 	    $('.send-allocation-detail-container').hide();
+	    $('#allocationDetailReceiver1').removeAttr("required");
+	    $('#allocationDetailReceiver2').removeAttr("required");
 	  }
+	  $('.merchant-email').hide();
+	  $('.branch-email').hide();
+		// tpl里requied 手动调用加星
+		settlementCommon.addStarMark();
 	});
 
 	// 发送对象
@@ -84,17 +100,26 @@ $(function() {
 	  if ($(this).val() == '1') {
 	    if ($(this).prop('checked')) {
 	      $('.merchant-email').show();
+	    	$('#email').attr('required', 'true');
 	    } else {
+	    	$("#email").rules("remove",'required');
 	      $('.merchant-email').hide();
 	    }
 	  } else if ($(this).val() == '2') {
 	    if ($(this).prop('checked')) {
 	      $('.branch-email').show();
+	    	$('#cardEmail').attr('required', 'true');
 	    } else {
+	    	$("#cardEmail").rules("remove",'required');
 	      $('.branch-email').hide();
 	    }
 	  }
+	  settlementCommon.addStarMark();
 	});
+
+  // 2. 不发送拨款明细
+  $(':radio[name="allocation-detail-input"][value="0"]').prop('checked', true).change();
+
 
 	$('#merchantPhone').blur(
        function(){
@@ -126,6 +151,10 @@ $(function() {
 	              return false;
 	            }
 	      });
+  // tpl里requied 手动调用加星
+  settlementCommon.addStarMark();
+
+  $('#detail_formSearch').parsley();
 
 	/****************************************** 开户行 ******************************************/
 
