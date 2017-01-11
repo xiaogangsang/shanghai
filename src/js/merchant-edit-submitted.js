@@ -22,6 +22,7 @@ var _querying = false;
 var searchCache = {};
 var useCache = false;
 var dataCache;
+var merchantDataCache;
 var bankDataCache;
 var merchantAttachments;
 var fileIds = new Array();
@@ -35,7 +36,7 @@ $(function () {
   // 初始化涉及的select控件
   $('#search_TP').html(settlementCommon.optionsHTML(settlementCommon.TP, true));
   $('#search_merchantLevel').html(settlementCommon.optionsHTML(settlementCommon.merchantLevel, true));
-  $('#search_merchantStatus').html(settlementCommon.optionsHTML(settlementCommon.merchantStatus, true));
+  $('#search_merchantStatus').html(settlementCommon.optionsHTML(settlementCommon.merchantInfoStatus, true));
 
   $('#search_startTime').datetimepicker({
     format: 'yyyy-mm-dd',
@@ -394,6 +395,7 @@ function handleMerchantData(res) {
       // _pageIndex = res.data.pageIndex;
       var totalRecord = res.data.result.total;
       var record = res.data.result.record;
+      dataCache = res.data.result.record;
 
       _pageTotal = Math.ceil(totalRecord / _pageSize);
       setPager(totalRecord, _pageIndex, record.length, _pageTotal);
@@ -411,9 +413,7 @@ function handleMerchantData(res) {
         item.tpId = settlementCommon.parseTP(item.tpId);
         item.merchantClass = settlementCommon.parseMerchantLevel(item.merchantClass);
       });
-
-      dataCache = record;
-      setTableData(dataCache);
+      setTableData(record);
     }
   } else {
     alert('接口错误：' + res.meta.msg);
@@ -540,6 +540,7 @@ function formatPopupUI(detailData) {
   $('#detail-tpId option[value="' + detailData.tpId + '"]').prop('selected', true);
   $('#detail-merchantStatus').html(settlementCommon.optionsHTML(settlementCommon.merchantStatus, true));
   $('#detail-merchantStatus option[value="' + detailData.merchantStatus + '"]').prop('selected', true);
+  $('#detail-merchantStatus').attr('disabled', 'true');
   $('#select-fixed-allocation-day option[value="' + detailData.fixedAllocationDay + '"]').prop('selected', true);
 
   // 拨款模式不同, 相应控件显示隐藏
@@ -555,6 +556,11 @@ function formatPopupUI(detailData) {
   $(':radio[name="allocation-detail-input"]').each(function(index, el) {
     if ($(el).val() == allocationDetail) {
       $(el).prop('checked', true).change();
+    }
+    if (allocationDetail == '1') {
+      $('.send-allocation-detail-container').show();
+    } else if (allocationDetail == '0') {
+      $('.send-allocation-detail-container').hide();
     }
   });
   // 发送对象
@@ -574,17 +580,24 @@ function setAllocationDetailReceiver(detailData){
       $('#allocationDetailReceiver2').prop('checked', true);
       $('.merchant-email').show();
       $('.branch-email').show();
+      $('#email').attr('required', 'true');
+      $('#cardEmail').attr('required', 'true');
 
     } else if (detailData.allocationDetailReceiver == 1) {
       $('#allocationDetailReceiver1').prop('checked', true);
       $('.merchant-email').show();
       $('.branch-email').hide();
+      $('#email').attr('required', 'true');
+      $("#cardEmail").rules("remove",'required');
 
     } else if (detailData.allocationDetailReceiver = 2) {
       $('#allocationDetailReceiver2').prop('checked', true);
       $('.branch-email').show();
       $('.merchant-email').hide();
+      $("#email").rules("remove",'required');
+      $('#cardEmail').attr('required', 'true');
     }
+    settlementCommon.addStarMark();
 }
 
 /****************************************** 账户和商户操作 **********************************************/
@@ -608,6 +621,8 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
 
         if (!!~~res.meta.result) {
           setModal(res.data);
+          // tpl里requied 手动调用加星
+          settlementCommon.addStarMark();
           $('#edit-merchantNoTitle').prop('hidden', false);
           $('#popup-merchant-detail').modal('show');
           // 设置发送对象
@@ -618,6 +633,8 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
           Mustache.parse(template);
           var html = Mustache.render(template);
           $('#attachments-container').append(html);
+          // tpl里requied 手动调用加星
+          settlementCommon.addStarMark();          
         } else {
           alert(res.meta.msg);
         }
@@ -655,14 +672,32 @@ $('#dataTable').on('click', '.btn-delete', function(e) {
 // 下线商户
 $('#dataTable').on('click', '.btn-offline', function(e) {
   e.preventDefault();
-  var merchantId = $(this).data('merchantid');
 
-  var param = {merchantId: merchantId};
+  var rowIndex = $(this).closest('tr').prevAll().length;
+  var detailData = dataCache[rowIndex];
+
+  var merchantStatus;
+  if (detailData.merchantStatus == '待审核') {
+    merchantStatus = 5;
+  } else if (detailData.merchantStatus == '审核驳回') {
+    merchantStatus = 4;
+  } else if (detailData.merchantStatus == '已下线') {
+    merchantStatus = 3;
+  } else if (detailData.merchantStatus == '已删除') {
+    merchantStatus = 6;
+  } else if (detailData.merchantStatus == '已上线') {
+    merchantStatus = 2;
+  }
+
+  var sendData = {
+    merchantId: detailData.merchantId,
+    merchantStatus: merchantStatus,
+  };
 
   $.ajax({
     url: common.API_HOST + 'settlement/merchantinfo/offline.json',
     type: 'POST',
-    data: param,
+    data: sendData,
   })
   .done(function (res) {
     if (!!~~res.meta.result) {
@@ -761,12 +796,16 @@ $('#dataTable').on('click', '.btn-enable-account', function(e) {
   });
 });
 
+
 $('body').on('click','.submit',function(e){
   e.preventDefault();
 
-  // if (!$('#detail_formSearch').parsley().isValid()) {
-  //          return false;
-  //       }
+  // 手动调用parsley验证，如果把button写在form里面则会自动触发验证。
+      $('#detail_formSearch').parsley().validate();
+
+      if (!$('#detail_formSearch').parsley().isValid()) {
+        return false;
+      }
 
       var merchantType = '';
       if ($('#merchantTypeCheckbox').prop('checked')) {
@@ -867,41 +906,38 @@ $('body').on('click','.submit',function(e){
 $('.modal').on('change', '#select-allocation-type', function(e) {
   e.preventDefault();
   var value = $(this).val();
-
   if (value == '1') {
     $('.allocation-type1-input').show();
     $('.allocation-type2-input').hide();
+    $('#allocationPeriod').attr('required', 'true');
+    $('#allocationDelay').attr('required', 'true');
+    $("#select-fixed-allocation-day").removeAttr("required");
   } else if (value == '2') {
     $('.allocation-type1-input').hide();
     $('.allocation-type2-input').show();
+    $('#select-fixed-allocation-day').attr('required', 'true');
+    $("#allocationPeriod").removeAttr("required");
+    $("#allocationDelay").removeAttr("required");
   }
+  // tpl里requied 手动调用加星
+  settlementCommon.addStarMark();
 });
 
 // 是否发送拨款明细
 $('.modal').on('change', ':radio[name="allocation-detail-input"]', function(e) {
   if ($(this).val() == '1') {
     $('.send-allocation-detail-container').show();
+    $('#allocationDetailReceiver1').attr('required', 'true');
+    $('#allocationDetailReceiver2').attr('required', 'true');
   } else if ($(this).val() == '0') {
     $('.send-allocation-detail-container').hide();
+    $('#allocationDetailReceiver1').removeAttr("required");
+    $('#allocationDetailReceiver2').removeAttr("required");
   }
+    // tpl里requied 手动调用加星
+    settlementCommon.addStarMark
 });
 
-// 发送对象
-$('.modal').on('change', ':checkbox[name="send-to"]', function(e) {
-  if ($(this).val() == '1') {
-    if ($(this).prop('checked')) {
-      $('.merchant-email').show();
-    } else {
-      $('.merchant-email').hide();
-    }
-  } else if ($(this).val() == '2') {
-    if ($(this).prop('checked')) {
-      $('.branch-email').show();
-    } else {
-      $('.branch-email').hide();
-    }
-  }
-});
 
 $('.modal').on('click', '.download', function(e) {
   var fileUrl = $(this).data('fileurl');
@@ -921,6 +957,31 @@ $('.modal').on('click', '.lookMore', function(e) {
   // src="http://www.xker.com/xkerfiles/allimg/1412/143420O50-5.jpg"
   $('#checkImage').modal('show');
 });
+
+// 发送对象
+  $('body').on('change', ':checkbox[name="send-to"]', function(e) {
+    if ($(this).val() == '1') {
+      if ($(this).prop('checked')) {
+        $('.merchant-email').show();
+        $('#email').attr('required', 'true');
+      } else {
+        // $("#email").rules("remove",'required');
+        $("#email").removeAttr("required");
+        $('.merchant-email').hide();
+      }
+    } else if ($(this).val() == '2') {
+      if ($(this).prop('checked')) {
+        $('.branch-email').show();
+        $('#cardEmail').attr('required', 'true');
+      } else {
+        // $("#cardEmail").rules("remove",'required');
+        $("#cardEmail").removeAttr("required");
+        $('.branch-email').hide();
+      }
+    }
+    // tpl里requied 手动调用加星
+    settlementCommon.addStarMark();
+  });
 
 
 

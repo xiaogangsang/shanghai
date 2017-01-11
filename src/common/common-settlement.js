@@ -218,6 +218,14 @@ settlementCommon.parseMerchantStatus = function(status) {
   return this.merchantStatus[status];
 }
 
+// 商户状态
+settlementCommon.merchantInfoStatus = 
+  {'2' : '已上线', '3' : '已下线', '4' : '审核驳回', '5' : '待审核', '6' : '已删除'};
+
+settlementCommon.parseMerchantInfoStatus = function(status) {
+  return this.merchantInfoStatus[status];
+}
+
 // 账户状态
 settlementCommon.accountStatus = {'1' : '正常', '2' : '停用'};
 settlementCommon.parseAccountStatus = function(status) {

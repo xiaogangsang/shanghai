@@ -17,10 +17,10 @@
           </div>
         </div>
 
-        <div class="form-group col-sm-6 col-md-4">
+        <div class="form-group col-sm-6 col-md-4" id="merchantNoDiv">
           <div class="input-group">
             <div class="input-group-addon">商户号</div>
-            <input type="text" class="form-control" id="merchantNo" value="{{merchantId}}" required>
+            <input type="text" class="form-control" id="merchantNo" value="{{merchantId}}" readonly>
           </div>
         </div>
 
@@ -28,7 +28,7 @@
           <div class="input-group">
             <div class="input-group-addon">商户状态</div>
             <!-- <input type="text" class="form-control" id="merchanrStatus" value="{{merchantStatus}}"> -->
-            <select class="form-control" id="detail-merchantStatus" required>
+            <select class="form-control" id="detail-merchantStatus">
             </select>
           </div>
         </div>
@@ -136,14 +136,76 @@
           <div class="form-group col-sm-6">
             <div class="input-group">
               <div class="input-group-addon">拨款周期</div>
-              <input type="text" class="form-control" id="allocationPeriod" value="{{allocationPeriod}}">
+              <!-- <input type="text" class="form-control" id="allocationPeriod" value="{{allocationPeriod}}"> -->
+              <select class="form-control" id="allocationPeriod">
+                <option value="">请选择</option>
+                <option value= "1"> 1</option>
+                <option value= "2"> 2</option>
+                <option value= "3"> 3</option>
+                <option value= "4"> 4</option>
+                <option value= "5"> 5</option>
+                <option value= "6"> 6</option>
+                <option value= "7"> 7</option>
+                <option value= "8"> 8</option>
+                <option value= "9"> 9</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+                <option value="13">13</option>
+                <option value="14">14</option>
+                <option value="15">15</option>
+                <option value="16">16</option>
+                <option value="17">17</option>
+                <option value="18">18</option>
+                <option value="19">19</option>
+                <option value="20">20</option>
+                <option value="21">21</option>
+                <option value="22">22</option>
+                <option value="23">23</option>
+                <option value="24">24</option>
+                <option value="25">25</option>
+                <option value="26">26</option>
+                <option value="27">27</option>
+                <option value="28">28</option>
+              </select>
             </div>
           </div>
 
           <div class="form-group col-sm-6">
             <div class="input-group">
               <div class="input-group-addon">拨款延迟天数</div>
-              <input type="text" class="form-control" id="allocationDelay" value="{{allocationDelay}}">
+              <!-- <input type="text" class="form-control" id="allocationDelay" value="{{allocationDelay}}"> -->
+              <select class="form-control" id="allocationDelay">
+                <option value="">请选择</option>
+                <option value= "1"> 1</option>
+                <option value= "2"> 2</option>
+                <option value= "3"> 3</option>
+                <option value= "4"> 4</option>
+                <option value= "5"> 5</option>
+                <option value= "6"> 6</option>
+                <option value= "7"> 7</option>
+                <option value= "8"> 8</option>
+                <option value= "9"> 9</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+                <option value="13">13</option>
+                <option value="14">14</option>
+                <option value="15">15</option>
+                <option value="16">16</option>
+                <option value="17">17</option>
+                <option value="18">18</option>
+                <option value="19">19</option>
+                <option value="20">20</option>
+                <option value="21">21</option>
+                <option value="22">22</option>
+                <option value="23">23</option>
+                <option value="24">24</option>
+                <option value="25">25</option>
+                <option value="26">26</option>
+                <option value="27">27</option>
+                <option value="28">28</option>
+              </select>
             </div>
           </div>
 
@@ -202,8 +264,8 @@
         <div class="form-group col-sm-6">
           <div class="input-group">
             <div class="input-group-addon">是否发送拨款明细</div>
-            <div class="radio-inline"><label><input type="radio" name="allocation-detail-input" value="1" id="inlineCheckbox1"  data-parsley-errors-container="#error-allocation-detail-input" {{#allocationDetail}}checked{{/allocationDetail}}><span>是</span></label></div>
-            <div class="radio-inline"><label><input type="radio" name="allocation-detail-input" value="0" id="inlineCheckbox2" data-parsley-errors-container="#error-allocation-detail-input" {{^allocationDetail}}checked{{/allocationDetail}}><span>否</span></label></div>
+            <div class="radio-inline"><label><input type="radio" name="allocation-detail-input" value="1" id="inlineCheckbox1"  data-parsley-errors-container="#error-allocation-detail-input" {{#allocationDetail}}checked{{/allocationDetail}} required><span>是</span></label></div>
+            <div class="radio-inline"><label><input type="radio" name="allocation-detail-input" value="0" id="inlineCheckbox2" data-parsley-errors-container="#error-allocation-detail-input" {{^allocationDetail}}checked{{/allocationDetail}} required><span>否</span></label></div>
             <div id="error-allocation-detail-input"></div>
           </div>
         </div>
@@ -235,7 +297,6 @@
               <input type="text" class="form-control" value="{{departmentEmail}}" id="cardEmail" data-parsley-pattern="/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/" data-parsley-error-message="邮箱格式不正确">
             </div>
           </div>
-
         </div>
       </div>
 
@@ -259,14 +320,14 @@
         <div class="form-group col-sm-6 col-md-4">
           <div class="input-group">
             <div class="input-group-addon">开户行</div>
-            <input type="text" class="form-control" id="bankName" value="{{branchName}}" readonly>
+            <input type="text" class="form-control" id="bankName" value="{{branchName}}" readonly required>
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-4">
           <div class="input-group">
             <div class="input-group-addon">联行行号</div>
-            <input type="text" class="form-control" id="bankCode" value="{{bankCode}}" readonly>
+            <input type="text" class="form-control" id="bankCode" value="{{bankCode}}" readonly required>
           </div>
         </div>
 

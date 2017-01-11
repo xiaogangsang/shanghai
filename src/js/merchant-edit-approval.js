@@ -350,22 +350,29 @@ $('#dataTable').on('click', '.btn-reject', function (e) {
 
   var rowIndex = $(this).closest('tr').prevAll().length;
   var detailData = dataCache[rowIndex];
-  sendRejectRequest(detailData.merchantId);
+  sendRejectRequest(detailData.merchantId,detailData.merchantStatus);
 });
 
 $('body').on('click', '#check-btn-reject', function (e) {
   e.preventDefault();
   var merchantNo = $('#merchantNo').val();
+  var merchantStatus = $('#detail-merchantStatus').val();
   sendRejectRequest(merchantNo);
 
 });
 
-function sendRejectRequest(merchantNo) {
-  var param = {merchantId: merchantNo};
+function sendRejectRequest(merchantNo,merchantStatus) {
+  // var param = {merchantId: merchantNo};
+
+  var sendData = {
+    merchantId: merchantNo,
+    merchantStatus: merchantStatus,
+  };
+
   $.ajax({
     url: common.API_HOST + 'settlement/merchantinfo/disable',
     type: 'GET',
-    data: param,
+    data: sendData,
   })
   .done(function (res) {
     if (!!~~res.meta.result) {
@@ -381,12 +388,15 @@ function sendRejectRequest(merchantNo) {
 $('body').on('click', '#btn-egis', function (e) {
     e.preventDefault();
 
-    var merchantNo = $('#merchantNo').val();
-    var param = {merchantId: merchantNo};
+    var sendData = {
+      merchantId: $('#merchantNo').val(),
+      merchantStatus: $('#detail-merchantStatus').val(),
+    };
+
     $.ajax({
       url: common.API_HOST + 'settlement/merchantinfo/online',
       type: 'POST',
-      data: param,
+      data: sendData,
     })
     .done(function (res) {
       if (!!~~res.meta.result) {
