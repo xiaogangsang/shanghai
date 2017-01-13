@@ -901,8 +901,8 @@ $('body').on('click','.submit',function(e){
    })
    .done(function (res) {
      if (res.meta.result == true) {
-      $('#formSearch').trigger('submit');
        alert('保存成功！');
+      $('#formSearch').trigger('submit');
       $('#popup-merchant-detail').modal('hide');
 
      } else {
