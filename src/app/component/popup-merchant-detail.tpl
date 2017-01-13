@@ -357,7 +357,7 @@
               {{#attachments}}
                 <tr>
                   <td>{{attachmentName}}</td>
-                  <td>{{createTime}}</td>
+                  <td>{{uploadTime}}</td>
                   <td>
                     <a type="button" class="download" data-fileurl="{{filePath}}">下载</button>
                     <!-- {{#isShow}}
