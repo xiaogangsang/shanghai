@@ -132,9 +132,9 @@ function fileChangeHandler(e, el) {
 
 // 确定上传
 $('body').on('click', '.btn-upload', function(e) {
-  
+
   e.preventDefault();
-  
+
   var formData = new FormData();
 
 	var file = $('.file-upload').prop('files')[0];

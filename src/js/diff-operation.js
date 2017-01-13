@@ -183,7 +183,7 @@ $('#btn-batch').click(function(e) {
 	})
 });
 
-$('#formAutoDiff').submit(function(e) {
+$(document).on('submit', '#formAutoDiff', function(e) {
 	e.preventDefault();
 
 	$('#formAutoDiff').parsley().validate();
@@ -199,21 +199,25 @@ $('#formAutoDiff').submit(function(e) {
 	}
 	$.ajax({
 		url: common.API_HOST +  'settlement/differDetail/autoHandleDifferDetail',
+		timeout: (15*60*1000),
 		type: 'GET',
 		dataType: 'json',
 		data: param
 	})
 	.done(function(res) {
 		if (!!~~res.meta.result) {
-			settlementCommon.success('启动自动整理成功！');
 			$('#popup-auto-diff').modal('hide');
+			settlementCommon.success('自动整理完毕');
+			$('#search_startTime').val(param.startTime);
+			$('#search_endTime').val(param.endTime);
+			$('#formSearch').trigger('submit');
 		} else {
 			settlementCommon.warning(res.meta.msg);
 		}
 	})
 	.always(function () {
 		$('#hud-overlay').hide();
-	})
+	});
 
 });
 

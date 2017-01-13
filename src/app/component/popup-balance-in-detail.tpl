@@ -106,18 +106,24 @@
     </div>
 
     <div class="container-fluid">
-        <div class="row">
+      <div class="row">
 
         <span style="display: block; margin-top: 10px;">结算信息:</span>
         <hr style="margin-top: 3px;">
 
-          <div class="form-group col-sm-6 col-md-6">
-            <div class="input-group">
-              <div class="input-group-addon">业务类别</div>
-              <input type="text" class="form-control" id="bizType" value="{{bizType}}" readonly>
-            </div>
+        <div class="form-group col-sm-6 col-md-6">
+          <div class="input-group">
+            <div class="input-group-addon">业务类别</div>
+            <input type="text" class="form-control" id="bizType" value="{{bizType}}" readonly>
           </div>
         </div>
+        <div class="form-group col-sm-6">
+          <div class="input-group">
+            <div class="input-group-addon">银行收单日期</div>
+            <input type="text" class="form-control" id="settleDate" value="{{settleDate}}" readonly>
+          </div>
+        </div>
+      </div>
 
       <div class="row">
 
@@ -284,64 +290,68 @@
 
     <div class="container-fluid">
 
-      <div class="row"> 
+      <div class="row">
         <span style="display: block; margin-top: 10px;">优惠信息:</span>
         <hr style="margin-top: 3px;">
-        
 
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">常规活动优惠方式</div>
-            <input type="text" class="form-control" id="discountType" value="{{discountType}}" readonly>
+            <!-- <input type="text" class="form-control" id="discountType" value="{{discountType}}"> -->
+            <select class="form-control" id="discountType">
+              <option value="1">活动</option>
+              <option value="2">优惠券</option>
+              <option value="9">无优惠</option>
+            </select>
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">常规活动/优惠券名称</div>
-            <input type="text" class="form-control" id="discountName" value="{{discountName}}" readonly>
+            <input type="text" class="form-control" id="discountName" value="{{discountName}}">
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">常规活动补贴成本中心</div>
-            <input type="text" class="form-control" id="costCenter" value="{{costCenter}}" readonly>
+            <input type="text" class="form-control" id="costCenter" value="{{costCenter}}">
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">常规活动签报号</div>
-            <input type="text" class="form-control" id="signatureNo" value="{{signatureNo}}" readonly>
+            <input type="text" class="form-control" id="signatureNo" value="{{signatureNo}}">
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">常规活动/优惠券ID</div>
-            <input type="text" class="form-control" id="discountId" value="{{discountId}}" readonly>
+            <input type="text" class="form-control" id="discountId" value="{{discountId}}">
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">支付活动ID</div>
-            <input type="text" class="form-control" id="discountIdTrd" value="{{discountIdTrd}}" readonly>
+            <input type="text" class="form-control" id="discountIdTrd" value="{{discountIdTrd}}">
          </div>
 
         </div>
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">支付活动/优惠券名称</div>
-            <input type="text" class="form-control" id="discountNameTrd" value="{{discountNameTrd}}" readonly>
+            <input type="text" class="form-control" id="discountNameTrd" value="{{discountNameTrd}}">
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">支付活动补贴成本中心</div>
-            <input type="text" class="form-control" id="costCenterTrd" value="{{costCenterTrd}}" readonly>
+            <input type="text" class="form-control" id="costCenterTrd" value="{{costCenterTrd}}">
           </div>
         </div>
 

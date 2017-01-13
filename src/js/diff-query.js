@@ -194,11 +194,6 @@ $('#btn-export').click(function(e) {
 	});
 });
 
-$('#btn-add').click(function(e) {
-	e.preventDefault();
-	$('#popup-edit-diff').modal('show');
-});
-
 $('#dataTable').on('click', '.btn-delete', function (e) {
 	e.preventDefault();
 
@@ -208,14 +203,6 @@ $('#dataTable').on('click', '.btn-delete', function (e) {
 	var id = $(this).closest('tr').data('id');
   batchDeleteRec([id]);
 });
-
-$('#dataTable').on('click', '.btn-edit', function (e) {
-	e.preventDefault();
-
-	var id = $(this).closest('tr').data('id');
-	$('#popup-edit-diff').modal('show');
-});
-
 
 $('#dataTable').on('change', 'tr > th :checkbox', function(e) {
 	e.preventDefault();

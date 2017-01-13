@@ -5,37 +5,37 @@
 		{{#detail.appendRecord}}
 		<form id="formDiff">
 			<div class="row" style="margin-bottom: 20px;">
-				<div class="col-sm-4 pull-right">
+				<div class="col-sm-3 pull-right">
 					<button type="submit" class="form-control btn btn-default edit-submit">保存</button>
 				</div>
 			</div>
 			<div class="row">
-				<div class="form-group col-sm-6">
+				<div class="form-group col-sm-3">
 					<div class="input-group">
 						<div class="input-group-addon">结算日期</div>
 						<input type="text" class="form-control" id="diff_settleDate" value="{{settleDate}}" readonly>
 					</div>
 				</div>
-				<div class="form-group col-sm-6">
+				<div class="form-group col-sm-3">
 					<div class="input-group">
 						<div class="input-group-addon">交易订单号</div>
 						<input type="text" class="form-control" id="diff_orderNo" value="{{orderNo}}" data-parsley-pattern="[0-9]+" readonly>
 					</div>
 				</div>
-				<div class="form-group col-sm-6">
+				<div class="form-group col-sm-3">
 					<div class="input-group">
 						<div class="input-group-addon">差异编号</div>
 						<input type="text" class="form-control" id="diff_number" value="{{number}}" data-parsley-pattern="[0-9]+" readonly>
 					</div>
 				</div>
-				<div class="form-group col-sm-6">
+				<div class="form-group col-sm-3">
 					<div class="input-group">
 						<div class="input-group-addon">差异类型</div>
 						<select class="form-control" id="diff_differType" value="{{differType}}" required>
 						</select>
 					</div>
 				</div>
-				<div class="form-group col-sm-6">
+				<div class="form-group col-sm-3">
 					<div class="input-group">
 						<div class="input-group-addon">渠道</div>
 						<select class="form-control" id="diff_channelId" value="{{channelId}}" required>
@@ -44,67 +44,69 @@
 						</select>
 					</div>
 				</div>
-				<div class="form-group col-sm-6">
+				<div class="form-group col-sm-3">
 					<div class="input-group">
 						<div class="input-group-addon">处理标识</div>
 						<select class="form-control" id="diff_processType" value="{{processType}}">
 						</select>
 					</div>
 				</div>
-				<div class="form-group col-sm-6">
+				<div class="form-group col-sm-3">
 					<div class="input-group">
 						<div class="input-group-addon">批次号</div>
 						<input type="text" class="form-control" id="diff_batchNo" value="{{batchNo}}">
 					</div>
 				</div>
-				<div class="form-group col-sm-6">
+				<div class="form-group col-sm-3">
 					<div class="input-group">
 						<div class="input-group-addon">差异金额</div>
 						<input type="text" class="form-control" id="diff_amount" value="{{amount}}" required>
 					</div>
 				</div>
-				<div class="form-group col-sm-6">
+				<div class="form-group col-sm-3">
 					<div class="input-group">
 						<div class="input-group-addon">处理状态</div>
 						<select class="form-control" id="diff_processStatus" value="{{processStatus}}" required>
 						</select>
 					</div>
 				</div>
-				<div class="form-group col-sm-6">
+				<div class="form-group col-sm-3">
 					<div class="input-group">
 						<div class="input-group-addon">责任部门</div>
 						<select class="form-control" id="diff_departId" value="{{departId}}">
 						</select>
 					</div>
 				</div>
-				<div class="form-group col-sm-12">
-					<div class="input-group">
-						<div class="input-group-addon">差异说明</div>
-						<textarea class="form-control" style="resize: vertical;" id="diff_describ" value="{{describ}}"></textarea>
-					</div>
-				</div>
-				<div class="form-group col-sm-12">
-					<div class="input-group">
-						<div class="input-group-addon">差异备注</div>
-						<textarea class="form-control" style="resize: vertical;" id="diff_remarks" value="{{remarks}}"></textarea>
-					</div>
-				</div>
-				<div class="form-group col-sm-12">
-					<div class="input-group">
-						<div class="input-group-addon">处理备注</div>
-						<textarea class="form-control" style="resize: vertical;" id="diff_processRemarks" value="{{processRemarks}}"></textarea>
-					</div>
-				</div>
-				<div class="form-group col-sm-6">
+				<div class="form-group col-sm-3">
 					<div class="input-group">
 						<div class="input-group-addon">处理人</div>
 						<input type="text" class="form-control" id="diff_operatorName" value="{{operatorName}}" readonly>
 					</div>
 				</div>
-				<div class="form-group col-sm-6">
+				<div class="form-group col-sm-3">
 					<div class="input-group">
 						<div class="input-group-addon">处理时间</div>
 						<input type="text" class="form-control" id="diff_updateTime" value="{{updateTime}}" readonly>
+					</div>
+				</div>
+				<div class="col-sm-12" style="padding-right: 0px; padding-left: 0px;">
+					<div class="form-group col-sm-4">
+						<div class="input-group">
+							<div class="input-group-addon">差异说明</div>
+							<textarea class="form-control" style="resize: vertical;" id="diff_describ" value="{{describ}}"></textarea>
+						</div>
+					</div>
+					<div class="form-group col-sm-4">
+						<div class="input-group">
+							<div class="input-group-addon">差异备注</div>
+							<textarea class="form-control" style="resize: vertical;" id="diff_remarks" value="{{remarks}}"></textarea>
+						</div>
+					</div>
+					<div class="form-group col-sm-4">
+						<div class="input-group">
+							<div class="input-group-addon">处理备注</div>
+							<textarea class="form-control" style="resize: vertical;" id="diff_processRemarks" value="{{processRemarks}}"></textarea>
+						</div>
 					</div>
 				</div>
 			</div>
