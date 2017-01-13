@@ -102,15 +102,15 @@ $(function() {
 	      $('.merchant-email').show();
 	    	$('#email').attr('required', 'true');
 	    } else {
-	    	$("#email").rules("remove",'required');
+	    	$("#email").removeAttr("required");
 	      $('.merchant-email').hide();
 	    }
 	  } else if ($(this).val() == '2') {
 	    if ($(this).prop('checked')) {
 	      $('.branch-email').show();
-	    	$('#cardEmail').attr('required', 'true');
+      	$("#cardEmail").removeAttr("required");
 	    } else {
-	    	$("#cardEmail").rules("remove",'required');
+	    	$("#cardEmail").removeAttr("required");
 	      $('.branch-email').hide();
 	    }
 	  }
@@ -426,10 +426,15 @@ $('body').on('click', '.btn-select', function(e) {
 			    }
 
 	    var allocationDetail = '';
+			var departmentEmail = $('#cardEmail').val();
+			var email = $('#email').val();
 	   	if ($('#inlineCheckbox1').prop('checked')) {
 	      allocationDetail = 1;
 	    } else if ($('#inlineCheckbox2').prop('checked')) {
-	    allocationDetail = 0;
+		    allocationDetail = 0;
+				departmentEmail = '';
+				email = '';
+
 	    }
 
 	    var allocationDetailReceiver = '';
@@ -483,9 +488,9 @@ $('body').on('click', '.btn-select', function(e) {
 	   // 发送对象
 	   allocationDetailReceiver: allocationDetailReceiver,
 	   // 商户E-mail
-	   email: $('#email').val(),
+	   email: email,
 	   // 卡部E-mail
-	   departmentEmail: $('#cardEmail').val(),
+	   departmentEmail: departmentEmail,
 	   // 账户名
 	   accountName: $('#accountName').val(),
 	   // 账号

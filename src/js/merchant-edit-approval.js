@@ -23,7 +23,6 @@ var searchCache = {};
 var useCache = false;
 var dataCache;
 var _submitting = false;
-var _firstShow = true;
 
 var selectBranch;
 var selectGuy;
@@ -215,28 +214,10 @@ function setPager(total, pageIndex, rowsSize, pageTotal) {
 /****************************************** Merchant Approval **********************************************/
 
 $('#dataTable').on('click', '.btn-edit', function (e) {
-
   e.preventDefault();
-
-
-
-  // if (_firstShow) {
-    // var template = $('#reject-result-template').html();
-    // Mustache.parse(template);
-    // var html = Mustache.render(template);
-    // $('#detail-template').append("<b>Hello</b>");
-    // _firstShow = false;
-  // };
-
-  // var rowIndex = $(this).closest('tr').prevAll().length;
-  // var detailData = dataCache[rowIndex];
-
-  // setModal(detailData);
-  // $('#popup-merchant-detail').modal('show');
 
   var rowIndex = $(this).closest('tr').prevAll().length;
   var detailData = dataCache[rowIndex];
-
   var merchantId = detailData.merchantId;
 
 if (!_DEBUG) {
@@ -306,6 +287,8 @@ function formatPopupUI(detailData) {
   }
 
   $('#select-fixed-allocation-day').val(detailData.fixedAllocationDay);
+  $('#allocationPeriod').val(detailData.allocationPeriod);
+  $('#allocationDelay').val(detailData.allocationDelay);
 
   // 是否要发送拨款明细
   var allocationDetail = detailData.allocationDetail;
@@ -326,22 +309,22 @@ function formatPopupUI(detailData) {
 }
 
 function setAllocationDetailReceiver(detailData){
-    if (detailData.allocationDetailReceiver == 3) {
-      $('#allocationDetailReceiver1').prop('checked', true);
-      $('#allocationDetailReceiver2').prop('checked', true);
-      $('.merchant-email').show();
-      $('.branch-email').show();
+  if (detailData.allocationDetailReceiver == 3) {
+    $('#allocationDetailReceiver1').prop('checked', true);
+    $('#allocationDetailReceiver2').prop('checked', true);
+    $('.merchant-email').show();
+    $('.branch-email').show();
 
-    } else if (detailData.allocationDetailReceiver == 1) {
-      $('#allocationDetailReceiver1').prop('checked', true);
-      $('.merchant-email').show();
-      $('.branch-email').hide();
+  } else if (detailData.allocationDetailReceiver == 1) {
+    $('#allocationDetailReceiver1').prop('checked', true);
+    $('.merchant-email').show();
+    $('.branch-email').hide();
 
-    } else if (detailData.allocationDetailReceiver = 2) {
-      $('#allocationDetailReceiver2').prop('checked', true);
-      $('.branch-email').show();
-      $('.merchant-email').hide();
-    }
+  } else if (detailData.allocationDetailReceiver = 2) {
+    $('#allocationDetailReceiver2').prop('checked', true);
+    $('.branch-email').show();
+    $('.merchant-email').hide();
+  }
 }
 
 
@@ -362,8 +345,6 @@ $('body').on('click', '#check-btn-reject', function (e) {
 });
 
 function sendRejectRequest(merchantNo,merchantStatus) {
-  // var param = {merchantId: merchantNo};
-
   var sendData = {
     merchantId: merchantNo,
     merchantStatus: merchantStatus,
@@ -452,7 +433,6 @@ $('.modal').on('change', ':checkbox[name="send-to"]', function(e) {
 
 $('.modal').on('click', '.download', function(e) {
   var fileUrl = $(this).data('fileurl');
-  // alert('文件路径为 ' + fileUrl + ', 本接口尚未实现.');
   var rowIndex = $(this).closest('tr').prevAll().length;
   var attachment = merchantAttachments[rowIndex];
   window.location.href = common.API_HOST + 'settlement/merchantAttachment/downLoadById?id=' + attachment.id;
