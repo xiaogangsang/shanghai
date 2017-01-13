@@ -250,8 +250,12 @@ function setModal(data) {
 
   var detailData = data.merchantInfo;
   var attachments = data.merchantAttachments;
-  detailData.attachments = attachments;
+  attachments.forEach(function (item) {
+      updateTime = item.updateTime;
+      item.uploadTime = getMyDate(updateTime);
+    });
 
+  detailData.attachments = attachments;
   merchantAttachments = data.merchantAttachments;
 
   // detailData.merchantStatus = settlementCommon.parseMerchantStatus(detailData.merchantStatus);
@@ -264,6 +268,26 @@ function setModal(data) {
 
   formatPopupUI(detailData);
 }
+
+//获得年月日      得到日期oTime
+  function getMyDate(str){
+      var oDate = new Date(str),
+      oYear = oDate.getFullYear(),
+      oMonth = oDate.getMonth()+1,
+      oDay = oDate.getDate(),
+      oHour = oDate.getHours(),
+      oMin = oDate.getMinutes(),
+      oSen = oDate.getSeconds(),
+      oTime = oYear +'-'+ getzf(oMonth) +'-'+ getzf(oDay) +' '+ getzf(oHour) +':'+ getzf(oMin) +':'+getzf(oSen);//最后拼接时间  
+      return oTime;
+  };
+  //补0操作
+  function getzf(num){
+      if(parseInt(num) < 10){
+          num = '0'+num;
+      }
+      return num;
+  }
 
 function formatPopupUI(detailData) {
   $('.detail-area :input').prop('readonly', true);
