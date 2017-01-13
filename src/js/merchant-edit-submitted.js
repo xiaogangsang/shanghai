@@ -550,6 +550,8 @@ function formatPopupUI(detailData) {
   }
 
   $('#select-fixed-allocation-day').val(detailData.fixedAllocationDay);
+  $('#allocationPeriod').val(detailData.allocationPeriod);
+  $('#allocationDelay').val(detailData.allocationDelay);
 
   // 是否要发送拨款明细
   var allocationDetail = detailData.allocationDetail;
@@ -575,6 +577,7 @@ function formatPopupUI(detailData) {
 }
 
 function setAllocationDetailReceiver(detailData){
+
     if (detailData.allocationDetailReceiver == 3) {
       $('#allocationDetailReceiver1').prop('checked', true);
       $('#allocationDetailReceiver2').prop('checked', true);
@@ -799,12 +802,15 @@ $('#dataTable').on('click', '.btn-enable-account', function(e) {
 
 $('body').on('click','.submit',function(e){
   e.preventDefault();
+  if ($('#inlineCheckbox2').prop('checked')) {
+      $("#email").removeAttr("required");
+      $("#cardEmail").removeAttr("required");    
+  }
 
   // 手动调用parsley验证，如果把button写在form里面则会自动触发验证。
       $('#detail_formSearch').parsley().validate();
-
       if (!$('#detail_formSearch').parsley().isValid()) {
-        return false;
+          return false;
       }
 
       var merchantType = '';
@@ -813,10 +819,14 @@ $('body').on('click','.submit',function(e){
           }
 
       var allocationDetail = '';
+      var departmentEmail = $('#cardEmail').val();
+      var email = $('#email').val();
       if ($('#inlineCheckbox1').prop('checked')) {
         allocationDetail = 1;
       } else if ($('#inlineCheckbox2').prop('checked')) {
-      allocationDetail = 0;
+        allocationDetail = 0;
+        departmentEmail = '';
+        email = '';
       }
 
       var allocationDetailReceiver = '';
@@ -868,9 +878,9 @@ $('body').on('click','.submit',function(e){
      // 发送对象
      allocationDetailReceiver: allocationDetailReceiver,
      // 商户E-mail
-     email: $('#email').val(),
+     email: email,
      // 卡部E-mail
-     departmentEmail: $('#cardEmail').val(),
+     departmentEmail: departmentEmail,
      // 账户名
      accountName: $('#accountName').val(),
      // 账号
@@ -966,7 +976,6 @@ $('.modal').on('click', '.lookMore', function(e) {
         $('.merchant-email').show();
         $('#email').attr('required', 'true');
       } else {
-        // $("#email").rules("remove",'required');
         $("#email").removeAttr("required");
         $('.merchant-email').hide();
       }
@@ -975,7 +984,6 @@ $('.modal').on('click', '.lookMore', function(e) {
         $('.branch-email').show();
         $('#cardEmail').attr('required', 'true');
       } else {
-        // $("#cardEmail").rules("remove",'required');
         $("#cardEmail").removeAttr("required");
         $('.branch-email').hide();
       }

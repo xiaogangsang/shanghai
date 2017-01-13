@@ -426,6 +426,8 @@ function formatPopupUI(detailData) {
   }
 
   $('#select-fixed-allocation-day').val(detailData.fixedAllocationDay);
+  $('#allocationPeriod').val(detailData.allocationPeriod);
+  $('#allocationDelay').val(detailData.allocationDelay);
 
   // 是否要发送拨款明细
   var allocationDetail = detailData.allocationDetail;
