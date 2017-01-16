@@ -62,9 +62,11 @@ function fetchDataAndRenderHtml(orderNo, differAppendId) {
 					if (!differAppendId) {
 						$('#diff_operatorName').closest('.form-group').hide();
 						$('#diff_updateTime').closest('.form-group').hide();
+						$('#formDiff button[type=submit]').attr('data-id', '');
 					} else {
 						$('#diff_operatorName').closest('.form-group').show();
 						$('#diff_updateTime').closest('.form-group').show();
+						$('#formDiff button[type=submit]').attr('data-id', differAppendId);
 					}
 
 					// 相关收单明细
@@ -131,9 +133,11 @@ function fetchDataAndRenderHtml(orderNo, differAppendId) {
 			if (!differAppendId) {
 				$('#diff_operatorName').closest('.form-group').hide();
 				$('#diff_updateTime').closest('.form-group').hide();
+				$('#formDiff button[type=submit]').attr('data-id', '');
 			} else {
 				$('#diff_operatorName').closest('.form-group').show();
 				$('#diff_updateTime').closest('.form-group').show();
+				$('#formDiff button[type=submit]').attr('data-id', differAppendId);
 			}
 
 			$('#formDiff').parsley();
@@ -161,6 +165,7 @@ $(document).on('submit', '#formDiff', function(e) {
 	e.preventDefault();
 
 	var param = {
+		differAppendId: $('#formDiff button[type=submit]').data('id'),
 		settleDate: $('#diff_settleDate').val(),
 		orderNo: $('#diff_orderNo').val(),
 		number: $('#diff_number').val(),
@@ -171,7 +176,7 @@ $(document).on('submit', '#formDiff', function(e) {
 		amount: $('#diff_amount').val(),
 		processStatus: $('#diff_processStatus').val(),
 		departId: $('#diff_departId').val(),
-		describe: $('#diff_describ').val(),
+		describ: $('#diff_describ').val(),
 		remarks: $('#diff_remarks').val(),
 		processRemarks: $('#diff_processRemarks').val(),
 	};

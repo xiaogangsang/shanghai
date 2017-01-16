@@ -93,19 +93,19 @@
 					<div class="form-group col-sm-4">
 						<div class="input-group">
 							<div class="input-group-addon">差异说明</div>
-							<textarea class="form-control" style="resize: vertical;" id="diff_describ" value="{{describ}}"></textarea>
+							<textarea class="form-control" style="resize: vertical;" id="diff_describ">{{describ}}</textarea>
 						</div>
 					</div>
 					<div class="form-group col-sm-4">
 						<div class="input-group">
 							<div class="input-group-addon">差异备注</div>
-							<textarea class="form-control" style="resize: vertical;" id="diff_remarks" value="{{remarks}}"></textarea>
+							<textarea class="form-control" style="resize: vertical;" id="diff_remarks">{{remarks}}</textarea>
 						</div>
 					</div>
 					<div class="form-group col-sm-4">
 						<div class="input-group">
 							<div class="input-group-addon">处理备注</div>
-							<textarea class="form-control" style="resize: vertical;" id="diff_processRemarks" value="{{processRemarks}}"></textarea>
+							<textarea class="form-control" style="resize: vertical;" id="diff_processRemarks">{{processRemarks}}</textarea>
 						</div>
 					</div>
 				</div>
