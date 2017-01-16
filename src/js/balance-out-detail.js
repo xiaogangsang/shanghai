@@ -617,11 +617,12 @@ $('#formSync').submit(function(e) {
   .done(function(res) {
     if (!!~~res.meta.result) {
       $('#popup-sync-settle').modal('hide');
+      $('#formSearch').trigger('submit');
     }
     alert(res.meta.msg);
   })
   .always(function() {
-    $('#hud-overlay').show();
+    $('#hud-overlay').hide();
   });
 });
 
@@ -660,6 +661,7 @@ $('#formBatch').submit(function(e) {
     })
     .done(function(res) {
       alert('批量设置:' + res.meta.msg);
+      $('#formSearch').trigger('submit');
     })
     .always(function() {
       $('#hud-overlay').hide();
@@ -683,6 +685,7 @@ $('#formBatch').submit(function(e) {
     })
     .done(function(res) {
       alert('批量设置:' + res.meta.msg);
+      $('#formSearch').trigger('submit');
     })
     .always(function() {
       $('#hud-overlay').hide();
