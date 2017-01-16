@@ -19,12 +19,7 @@ function renderOptions() {
 	$('#diff_departId').html(departmentHtml)
 }
 
-$('#dataTable').on('click', '.btn-edit', function (e) {
-	e.preventDefault();
-
-	var orderNo = $(this).closest('tr').data('orderno');
-	var differAppendId = $(this).closest('tr').data('diffid');
-
+function fetchDataAndRenderHtml(orderNo, differAppendId) {
 	settlementCommon.fetchBasicData(function (data) {
 
 		(data.sign) ? (_signList = data.sign) : null;
@@ -32,101 +27,134 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
 		(data.type) ? (_typeList = data.type) : null;
 		(data.department) ? (_departmentList = data.department) : null;
 
-		var param = {
-			orderNo: orderNo,
-			differAppendId: differAppendId,
-		}
-		$.ajax({
-			url: common.API_HOST + 'settlement/differAppend/goEditDifferAppend',
-			type: 'POST',
-			dataType: 'json',
-			data: param,
-		})
-		.done(function(res) {
-			if (!!~~res.meta.result) {
-
-				var template = $('#detail-template').html();
-				Mustache.parse(template);
-				var html = Mustache.render(template, res.data);
-				$('#popup-edit-diff .modal-body').html(html);
-
-				var appendData = res.data.detail.appendRecord;
-				renderOptions();
-				$('#diff_processType option[value="' + appendData.processType + '"]').prop('selected', true);
-				$('#diff_processStatus option[value="' + appendData.processStatus + '"]').prop('selected', true);
-				$('#diff_differType option[value="' + appendData.differType + '"]').prop('selected', true);
-				$('#diff_departId option[value="' + appendData.departId + '"]').prop('selected', true);
-				$('#diff_channelId option[value="' + appendData.channelId + '"]').prop('selected', true);
-				if (appendData.settleDate) {
-					$('#diff_settleDate').val(common.getDate(new Date(appendData.settleDate)));
-				}
-				if (appendData.updateTime) {
-					$('#diff_updateTime').val(common.getDate(new Date(appendData.updateTime)));
-				}
-				if (!differAppendId) {
-					$('#diff_operatorName').closest('.form-group').hide();
-					$('#diff_updateTime').closest('.form-group').hide();
-				} else {
-					$('#diff_operatorName').closest('.form-group').show();
-					$('#diff_updateTime').closest('.form-group').show();
-				}
-
-
-				// 相关收单明细
-				var acquiringRecords = res.data.detail.acquiringRecords;
-				_(acquiringRecords).forEach(function(item) {
-					(item.settleDate) ? (item.settleDate = common.getDate(new Date(item.settleDate))) : null;
-					item.payTool = settlementCommon.parsePayTool(item.payTool);
-					item.acquiringOrderType = settlementCommon.parseAcquiringOrderType(item.acquiringOrderType);
-					item.subsidyType = settlementCommon.parseSubsidyType(item.subsidyType);
-					item.subsidyTypeTrd = settlementCommon.parseSubsidyType(item.subsidyTypeTrd);
-					item.partner = settlementCommon.parsePartner(item.partner);
-				});
-				var template = $('#acquiring-table-template').html();
-				Mustache.parse(template);
-				var html = Mustache.render(template, {rows: acquiringRecords});
-				$('#diff_acquiringRecords tbody').html(html);
-
-				// 相关出货明细
-				var shipmentRecords = res.data.detail.shipmentRecords;
-				_(shipmentRecords).forEach(function(item) {
-					(item.settleDate) ? (item.settleDate = common.getDate(new Date(item.settleDate))) : null;
-					item.payTool = settlementCommon.parsePayTool(item.payTool);
-					item.shipmentOrderType = settlementCommon.parseShipmentOrderType(item.shipmentOrderType);
-					item.subsidyType = settlementCommon.parseSubsidyType(item.subsidyType);
-					item.subsidyTypeTrd = settlementCommon.parseSubsidyType(item.subsidyTypeTrd);
-					item.partner = settlementCommon.parsePartner(item.partner);
-				});
-				var template = $('#shipment-table-template').html();
-				Mustache.parse(template);
-				var html = Mustache.render(template, {rows: shipmentRecords});
-				$('#diff_shipmentRecords tbody').html(html);
-
-				// 相关差异列表
-				var appendRecords = res.data.detail.appendRecords;
-				_(appendRecords).forEach(function(item) {
-					(item.settleDate) ? (item.settleDate = common.getDate(new Date(item.settleDate))) : null;
-					item.differType = _typeList[item.differType];
-					item.processType = _signList[item.processType];
-					item.processStatus = _disposeList[item.processStatus];
-					item.channelId = settlementCommon.parseChannel(item.channelId);
-					item.advanceType = settlementCommon.parseSubsidyType(item.advanceType);
-					item.advanceTypeTrd = settlementCommon.parseSubsidyType(item.advanceTypeTrd);
-				});
-				var template = $('#append-table-template').html();
-				Mustache.parse(template);
-				var html = Mustache.render(template, {rows: appendRecords});
-				$('#diff_apendRecords tbody').html(html);
-
-				$('#formDiff').parsley();
-				settlementCommon.addStarMark();
-				$('#popup-edit-diff').modal('show');
-
-			} else {
-				settlementCommon.warning(res.meta.msg);
+		if (orderNo || differAppendId) {
+			var param = {
+				orderNo: orderNo,
+				differAppendId: differAppendId,
 			}
-		});
+			$.ajax({
+				url: common.API_HOST + 'settlement/differAppend/goEditDifferAppend',
+				type: 'POST',
+				dataType: 'json',
+				data: param,
+			})
+			.done(function(res) {
+				if (!!~~res.meta.result) {
+
+					var template = $('#detail-template').html();
+					Mustache.parse(template);
+					var html = Mustache.render(template, res.data);
+					$('#popup-edit-diff .modal-body').html(html);
+
+					var appendData = res.data.detail.appendRecord;
+					renderOptions();
+					$('#diff_processType option[value="' + appendData.processType + '"]').prop('selected', true);
+					$('#diff_processStatus option[value="' + appendData.processStatus + '"]').prop('selected', true);
+					$('#diff_differType option[value="' + appendData.differType + '"]').prop('selected', true);
+					$('#diff_departId option[value="' + appendData.departId + '"]').prop('selected', true);
+					$('#diff_channelId option[value="' + appendData.channelId + '"]').prop('selected', true);
+					if (appendData.settleDate) {
+						$('#diff_settleDate').val(common.getDate(new Date(appendData.settleDate)));
+					}
+					if (appendData.updateTime) {
+						$('#diff_updateTime').val(common.getDate(new Date(appendData.updateTime)));
+					}
+					if (!differAppendId) {
+						$('#diff_operatorName').closest('.form-group').hide();
+						$('#diff_updateTime').closest('.form-group').hide();
+					} else {
+						$('#diff_operatorName').closest('.form-group').show();
+						$('#diff_updateTime').closest('.form-group').show();
+					}
+
+					// 相关收单明细
+					var acquiringRecords = res.data.detail.acquiringRecords;
+					_(acquiringRecords).forEach(function(item) {
+						(item.settleDate) ? (item.settleDate = common.getDate(new Date(item.settleDate))) : null;
+						item.payTool = settlementCommon.parsePayTool(item.payTool);
+						item.acquiringOrderType = settlementCommon.parseAcquiringOrderType(item.acquiringOrderType);
+						item.subsidyType = settlementCommon.parseSubsidyType(item.subsidyType);
+						item.subsidyTypeTrd = settlementCommon.parseSubsidyType(item.subsidyTypeTrd);
+						item.partner = settlementCommon.parsePartner(item.partner);
+					});
+					var template = $('#acquiring-table-template').html();
+					Mustache.parse(template);
+					var html = Mustache.render(template, {rows: acquiringRecords});
+					$('#diff_acquiringRecords tbody').html(html);
+
+					// 相关出货明细
+					var shipmentRecords = res.data.detail.shipmentRecords;
+					_(shipmentRecords).forEach(function(item) {
+						(item.settleDate) ? (item.settleDate = common.getDate(new Date(item.settleDate))) : null;
+						item.payTool = settlementCommon.parsePayTool(item.payTool);
+						item.shipmentOrderType = settlementCommon.parseShipmentOrderType(item.shipmentOrderType);
+						item.subsidyType = settlementCommon.parseSubsidyType(item.subsidyType);
+						item.subsidyTypeTrd = settlementCommon.parseSubsidyType(item.subsidyTypeTrd);
+						item.partner = settlementCommon.parsePartner(item.partner);
+					});
+					var template = $('#shipment-table-template').html();
+					Mustache.parse(template);
+					var html = Mustache.render(template, {rows: shipmentRecords});
+					$('#diff_shipmentRecords tbody').html(html);
+
+					// 相关差异列表
+					var appendRecords = res.data.detail.appendRecords;
+					_(appendRecords).forEach(function(item) {
+						(item.settleDate) ? (item.settleDate = common.getDate(new Date(item.settleDate))) : null;
+						item.differType = _typeList[item.differType];
+						item.processType = _signList[item.processType];
+						item.processStatus = _disposeList[item.processStatus];
+						item.channelId = settlementCommon.parseChannel(item.channelId);
+						item.advanceType = settlementCommon.parseSubsidyType(item.advanceType);
+						item.advanceTypeTrd = settlementCommon.parseSubsidyType(item.advanceTypeTrd);
+					});
+					var template = $('#append-table-template').html();
+					Mustache.parse(template);
+					var html = Mustache.render(template, {rows: appendRecords});
+					$('#diff_apendRecords tbody').html(html);
+
+					$('#formDiff').parsley();
+					settlementCommon.addStarMark();
+					$('#popup-edit-diff').modal('show');
+
+				} else {
+					settlementCommon.warning(res.meta.msg);
+				}
+			});
+		} else {
+			var template = $('#detail-template').html();
+			Mustache.parse(template);
+			var html = Mustache.render(template, {detail: {appendRecord: {}}});
+			$('#popup-edit-diff .modal-body').html(html);
+
+			renderOptions();
+			if (!differAppendId) {
+				$('#diff_operatorName').closest('.form-group').hide();
+				$('#diff_updateTime').closest('.form-group').hide();
+			} else {
+				$('#diff_operatorName').closest('.form-group').show();
+				$('#diff_updateTime').closest('.form-group').show();
+			}
+
+			$('#formDiff').parsley();
+			settlementCommon.addStarMark();
+			$('#popup-edit-diff').modal('show');
+		}
 	});
+}
+
+$('.btn-diff-add').click(function(e) {
+	e.preventDefault();
+	fetchDataAndRenderHtml();
+});
+
+$('#dataTable').on('click', '.btn-edit', function (e) {
+	e.preventDefault();
+
+	var orderNo = $(this).closest('tr').data('orderno');
+	var differAppendId = $(this).closest('tr').data('diffid');
+
+	fetchDataAndRenderHtml(orderNo, differAppendId);
 });
 
 $(document).on('submit', '#formDiff', function(e) {

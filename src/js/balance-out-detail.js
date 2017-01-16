@@ -449,7 +449,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     detail.payTool = settlementCommon.parsePayTool(detail.payTool);
     detail.bizType = settlementCommon.parseBizType(detail.bizType);
     detail.chargeMerchant = settlementCommon.parseMerchant(detail.chargeMerchant);
-    detail.discountType = settlementCommon.parseDiscountType(detail.discountType);
+    // detail.discountType = settlementCommon.parseDiscountType(detail.discountType);
     // detail.subsidyType = settlementCommon.parseSubsidyType(detail.subsidyType);
     detail.subsidyType = detail.subsidyType;
     detail.partner = settlementCommon.parsePartner(detail.partner);
@@ -480,6 +480,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     $('#reconciliationStatus option[value="' + detail.reconciliationStatus + '"]').prop('selected', true);
     $('#settlementPlan option[value="' + detail.settlementPlan + '"]').prop('selected', true);
     $('#appStatus option[value="' + detail.appStatus + '"]').prop('selected', true);
+    $('#discountType option[value="' + detail.discountType + '"]').prop('selected', true);
 
     if (checkStatus == 2 || checkStatus == 3 || detail.reconciliationStatus == 4) { // 待审核/审核完成不能再修改, 出货对账状态为确认的也不能再修改
       $('.detail-area').addClass('read-only');
@@ -526,8 +527,8 @@ $(document).on('submit', '#popup-detail form', function(e) {
     subsidyAmountO2o: $('#subsidyAmountO2o').val(),
     subsidyType: $('#subsidyType').val(),
     acceptanceAppropriation: $('#acceptanceAppropriation').val(),
-    // returnFee: $('#returnFee').val(),
-    // partner: $('#returnFee').val(),
+    returnFee: $('#returnFee').val(),
+    partner: $('#returnFee').val(),
 
     // 支付活动补贴金额(元)
     subsidyAmountTrd: $('#subsidyAmountTrd').val(),
@@ -547,6 +548,15 @@ $(document).on('submit', '#popup-detail form', function(e) {
     batchNo: $('#batchNo').val(),
     waitBatchNo: $('#waitBatchNo').val(),
     cityName: $('#cityName').val(),
+
+    discountType: $('#discountType').val(),
+    discountName: $('#discountName').val(),
+    costCenter: $('#costCenter').val(),
+    signNum: $('#signNum').val(),
+    discountId: $('#discountId').val(),
+    iscountIdTrd: $('#iscountIdTrd').val(),
+    discountNameTrd: $('#discountNameTrd').val(),
+    costCenterTrd: $('#costCenterTrd').val(),
   };
 
   $.ajax({
