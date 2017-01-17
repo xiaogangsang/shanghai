@@ -144,7 +144,7 @@ $('#btn-batch-delete').click(function(e) {
 
 	var deleteIds = [];
   $('#dataTable tbody :checkbox:checked').each(function(index) {
-    var id = $(this).closest('tr').data('id');
+    var id = $(this).closest('tr').data('diffid');
     deleteIds.push(id);
   });
 
@@ -180,10 +180,10 @@ $('#btn-export').click(function(e) {
 	})
 	.done(function(res) {
 		var fileUrl = null;
-		if (!!~~res.meta.result && res.data && res.data.detail) {
-			fileUrl = res.data.detail.fileUrl;
+		if (!!~~res.meta.result && res.data) {
+			fileUrl = res.data.fileUrl;
 			if (fileUrl && fileUrl.length > 0) {
-				window.location.href = comon.API_HOST + 'settlement/downloadFile/downloadByUrl?fileUrl=' + fileUrl;
+				window.location.href = common.API_HOST + 'settlement/downloadFile/downloadByUrl?fileUrl=' + fileUrl;
 			}
 		} else {
 			settlementCommon.warning('该时间段内无差异数据！');
@@ -200,7 +200,7 @@ $('#dataTable').on('click', '.btn-delete', function (e) {
 	if (!confirm('将删除选中的差异，是否确定？')) {
 		return;
 	}
-	var id = $(this).closest('tr').data('id');
+	var id = $(this).closest('tr').data('diffid');
   batchDeleteRec([id]);
 });
 

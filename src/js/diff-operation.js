@@ -142,10 +142,10 @@ $('#btn-export').click(function(e) {
 	})
 	.done(function(res) {
 		var fileUrl = null;
-		if (!!~~res.meta.result && res.data &&res.data.detail) {
-			fileUrl = res.data.detail.fileUrl;
+		if (!!~~res.meta.result && res.data) {
+			fileUrl = res.data.fileUrl;
 			if (fileUrl && fileUrl.length > 0) {
-				window.location.href = comon.API_HOST + 'settlement/downloadFile/downloadByUrl?fileUrl=' + fileUrl;
+				window.location.href = common.API_HOST + 'settlement/downloadFile/downloadByUrl?fileUrl=' + fileUrl;
 			}
 		} else {
 			settlementCommon.warning('该时间段内无差异数据！');

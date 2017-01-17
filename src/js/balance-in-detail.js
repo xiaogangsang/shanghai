@@ -1,5 +1,5 @@
 /*
-	ÊÕµ¥¶ÔÕËÃ÷Ï¸
+	æ”¶å•å¯¹è´¦æ˜ç»†
   Ge Liu
  */
 
@@ -14,12 +14,12 @@ var _querying = false;
 var searchCache = {};
 var useCache = false;
 
-// Èç¹ûµ±Ç°²éÑ¯ÊÇ´Ó»ã×ÜÒ³µÄÑ¡ÖĞ¼ÇÂ¼²éÑ¯
+// å¦‚æœå½“å‰æŸ¥è¯¢æ˜¯ä»æ±‡æ€»é¡µçš„é€‰ä¸­è®°å½•æŸ¥è¯¢
 var _queryingFromSelectedSummary = false;
 
 var _selectedSummary = {};
 
-// _DEBUG ±¾µØJSON×Ö·û´®, ²»Á¬·şÎñÆ÷±¾µØµ÷ÊÔÓÃ
+// _DEBUG æœ¬åœ°JSONå­—ç¬¦ä¸², ä¸è¿æœåŠ¡å™¨æœ¬åœ°è°ƒè¯•ç”¨
 var _DEBUG = false;
 
 $(function() {
@@ -55,7 +55,7 @@ $('#formSearch').on('submit', function (e) {
 
   if (!useCache) {
 
-    // ÊäÈë ½»Ò×¶©µ¥ºÅ »òÕß ÊÕµ¥·½Ö§¸¶¶©µ¥ºÅ ºó, ÎŞĞèÊäÈëÈÕÆÚ
+    // è¾“å…¥ äº¤æ˜“è®¢å•å· æˆ–è€… æ”¶å•æ–¹æ”¯ä»˜è®¢å•å· å, æ— éœ€è¾“å…¥æ—¥æœŸ
     var orderNo = $('#search_orderNo').val();
     var thdSerialNo = $('#search_thdSerialNo').val();
     var dateIsRequired = (orderNo === '' && thdSerialNo === '');
@@ -110,8 +110,8 @@ $('#formSearch').on('submit', function (e) {
       handleData(res);
     });
   } else {
-    // var res = $.parseJSON('{ "meta": { "result": "1", "msg": "²Ù×÷³É¹¦" }, "data": { "summary": { "count": "¶©µ¥×ÜÊı", "totalTicketCount": "³öÆ±ÕÅÊı", "totalTiketAmount": " Æ±¼Û ", "totalReturnFee":"ÍËÆ±ÊÖĞø·Ñ", "totalServiceAmount": "×Ü·şÎñ·Ñ", "totalSubsidyAmountO2o": "²¹Ìù×Ü½ğ¶î", "totalO2oReceivableAmount": "Ó¦ÊÕ×Ü½ğ¶î", "totalBankAmount": "Êµ¼ÊÊÕµ½×Ü½ğ¶î" }, "detail": { "recordCount": "42", "recordDetail": [ { "receivablePoint": "»ı·Ö", "bizType": "ÒµÎñÀàĞÍ", "orderNo": "¶©µ¥ºÅ", "countNum": "Æ±Êı", "reconciliationDate": "¶ÔÕËÈÕÆÚ", "thdSerialNo":"ÊÕµ¥·½¶©µ¥ºÅ", "costCenter": "³É±¾ÖĞĞÄ", "externalId": "Ö§¸¶Á÷Ë®", "o2oReceivableAmount": "Ó¦ÊÕ½ğ¶î", "subsidyType": "²¹Ìù·½Ê½", "chargeMerchant":"1", "subsidyAmountO2o": "²¹Ìù½ğ¶î", "discountName": "»î¶¯/ÓÅ»İ·½Ê½Ãû³Æ", "bankAmount":"ÊµÊÕ½ğ¶î", "returnFee":"ÍËÆ±ÊÖĞø·Ñ", "payAmount": "Ö§¸¶½ğ¶î", "serviceAmount": "·şÎñ·Ñ", "ticketAmount":"½»Ò×½ğ¶î", "reconciliationStatus":"1", "createTime": "Ö§¸¶Ê±¼ä(½»Ò×)", "discountType": "ÓÅ»İ·½Ê½", "id": 1934, "payStatus": "1", "chargeMerchantNo": "ÉÌ»§ºÅ", "partner":"ÍË¿î³ĞÕ®·½", "reason":"1" } ] } } }');
-    var res = $.parseJSON('{"meta" : {"result" : "1", "msg" : "²Ù×÷³É¹¦"}, "data" : {"summary" : {}, "detail":{"count" : 2, "records":[{"checkStatus" : "2"}, {"checkStatus" : "2"}]}}}');
+    // var res = $.parseJSON('{ "meta": { "result": "1", "msg": "æ“ä½œæˆåŠŸ" }, "data": { "summary": { "count": "è®¢å•æ€»æ•°", "totalTicketCount": "å‡ºç¥¨å¼ æ•°", "totalTiketAmount": " ç¥¨ä»· ", "totalReturnFee":"é€€ç¥¨æ‰‹ç»­è´¹", "totalServiceAmount": "æ€»æœåŠ¡è´¹", "totalSubsidyAmountO2o": "è¡¥è´´æ€»é‡‘é¢", "totalO2oReceivableAmount": "åº”æ”¶æ€»é‡‘é¢", "totalBankAmount": "å®é™…æ”¶åˆ°æ€»é‡‘é¢" }, "detail": { "recordCount": "42", "recordDetail": [ { "receivablePoint": "ç§¯åˆ†", "bizType": "ä¸šåŠ¡ç±»å‹", "orderNo": "è®¢å•å·", "countNum": "ç¥¨æ•°", "reconciliationDate": "å¯¹è´¦æ—¥æœŸ", "thdSerialNo":"æ”¶å•æ–¹è®¢å•å·", "costCenter": "æˆæœ¬ä¸­å¿ƒ", "externalId": "æ”¯ä»˜æµæ°´", "o2oReceivableAmount": "åº”æ”¶é‡‘é¢", "subsidyType": "è¡¥è´´æ–¹å¼", "chargeMerchant":"1", "subsidyAmountO2o": "è¡¥è´´é‡‘é¢", "discountName": "æ´»åŠ¨/ä¼˜æƒ æ–¹å¼åç§°", "bankAmount":"å®æ”¶é‡‘é¢", "returnFee":"é€€ç¥¨æ‰‹ç»­è´¹", "payAmount": "æ”¯ä»˜é‡‘é¢", "serviceAmount": "æœåŠ¡è´¹", "ticketAmount":"äº¤æ˜“é‡‘é¢", "reconciliationStatus":"1", "createTime": "æ”¯ä»˜æ—¶é—´(äº¤æ˜“)", "discountType": "ä¼˜æƒ æ–¹å¼", "id": 1934, "payStatus": "1", "chargeMerchantNo": "å•†æˆ·å·", "partner":"é€€æ¬¾æ‰¿å€ºæ–¹", "reason":"1" } ] } } }');
+    var res = $.parseJSON('{"meta" : {"result" : "1", "msg" : "æ“ä½œæˆåŠŸ"}, "data" : {"summary" : {}, "detail":{"count" : 2, "records":[{"checkStatus" : "2"}, {"checkStatus" : "2"}]}}}');
     handleData(res);
   }
 });
@@ -131,7 +131,7 @@ function queryFromSelectedSummary() {
       handleData(res);
     });
   } else {
-    var res = $.parseJSON('{ "meta": { "result": "1", "msg": "²Ù×÷³É¹¦" }, "data": { "summary": { "count": "¶©µ¥×ÜÊı", "totalTicketCount": "³öÆ±ÕÅÊı", "totalTiketAmount": " Æ±¼Û ", "totalReturnFee":"ÍËÆ±ÊÖĞø·Ñ", "totalServiceAmount": "×Ü·şÎñ·Ñ", "totalSubsidyAmountO2o": "²¹Ìù×Ü½ğ¶î", "totalO2oReceivableAmount": "Ó¦ÊÕ×Ü½ğ¶î", "totalBankAmount": "Êµ¼ÊÊÕµ½×Ü½ğ¶î" }, "detail": { "recordCount": "42", "recordDetail": [ { "receivablePoint": "»ı·Ö", "bizType": "ÒµÎñÀàĞÍ", "orderNo": "¶©µ¥ºÅ", "countNum": "Æ±Êı", "reconciliationDate": "¶ÔÕËÈÕÆÚ", "thdSerialNo":"ÊÕµ¥·½¶©µ¥ºÅ", "costCenter": "³É±¾ÖĞĞÄ", "externalId": "Ö§¸¶Á÷Ë®", "o2oReceivableAmount": "Ó¦ÊÕ½ğ¶î", "subsidyType": "²¹Ìù·½Ê½", "chargeMerchant":"1", "subsidyAmountO2o": "²¹Ìù½ğ¶î", "discountName": "»î¶¯/ÓÅ»İ·½Ê½Ãû³Æ", "bankAmount":"ÊµÊÕ½ğ¶î", "returnFee":"ÍËÆ±ÊÖĞø·Ñ", "payAmount": "Ö§¸¶½ğ¶î", "serviceAmount": "·şÎñ·Ñ", "ticketAmount":"½»Ò×½ğ¶î", "reconciliationStatus":"1", "createTime": "Ö§¸¶Ê±¼ä(½»Ò×)", "discountType": "ÓÅ»İ·½Ê½", "id": 1934, "payStatus": "1", "chargeMerchantNo": "ÉÌ»§ºÅ", "partner":"ÍË¿î³ĞÕ®·½", "reason":"1" } ] } } }');
+    var res = $.parseJSON('{ "meta": { "result": "1", "msg": "æ“ä½œæˆåŠŸ" }, "data": { "summary": { "count": "è®¢å•æ€»æ•°", "totalTicketCount": "å‡ºç¥¨å¼ æ•°", "totalTiketAmount": " ç¥¨ä»· ", "totalReturnFee":"é€€ç¥¨æ‰‹ç»­è´¹", "totalServiceAmount": "æ€»æœåŠ¡è´¹", "totalSubsidyAmountO2o": "è¡¥è´´æ€»é‡‘é¢", "totalO2oReceivableAmount": "åº”æ”¶æ€»é‡‘é¢", "totalBankAmount": "å®é™…æ”¶åˆ°æ€»é‡‘é¢" }, "detail": { "recordCount": "42", "recordDetail": [ { "receivablePoint": "ç§¯åˆ†", "bizType": "ä¸šåŠ¡ç±»å‹", "orderNo": "è®¢å•å·", "countNum": "ç¥¨æ•°", "reconciliationDate": "å¯¹è´¦æ—¥æœŸ", "thdSerialNo":"æ”¶å•æ–¹è®¢å•å·", "costCenter": "æˆæœ¬ä¸­å¿ƒ", "externalId": "æ”¯ä»˜æµæ°´", "o2oReceivableAmount": "åº”æ”¶é‡‘é¢", "subsidyType": "è¡¥è´´æ–¹å¼", "chargeMerchant":"1", "subsidyAmountO2o": "è¡¥è´´é‡‘é¢", "discountName": "æ´»åŠ¨/ä¼˜æƒ æ–¹å¼åç§°", "bankAmount":"å®æ”¶é‡‘é¢", "returnFee":"é€€ç¥¨æ‰‹ç»­è´¹", "payAmount": "æ”¯ä»˜é‡‘é¢", "serviceAmount": "æœåŠ¡è´¹", "ticketAmount":"äº¤æ˜“é‡‘é¢", "reconciliationStatus":"1", "createTime": "æ”¯ä»˜æ—¶é—´(äº¤æ˜“)", "discountType": "ä¼˜æƒ æ–¹å¼", "id": 1934, "payStatus": "1", "chargeMerchantNo": "å•†æˆ·å·", "partner":"é€€æ¬¾æ‰¿å€ºæ–¹", "reason":"1" } ] } } }');
     handleData(res);
   }
 }
@@ -143,7 +143,7 @@ function handlePresetQuery() {
     var passedParam = JSON.parse(sessionParam);
 
     if (passedParam) {
-      // ´Ó»ã×ÜÒ³  ²é¿´Ñ¡ÖĞÃ÷Ï¸
+      // ä»æ±‡æ€»é¡µ  æŸ¥çœ‹é€‰ä¸­æ˜ç»†
       if (passedParam.type == 1) {
         var parameters = passedParam.param;
 
@@ -153,7 +153,7 @@ function handlePresetQuery() {
         _queryingFromSelectedSummary = true;
         queryFromSelectedSummary();
 
-      } else if (passedParam.type == 0) { // ´Ó»ã×ÜÒ³  ²é¿´ËùÓĞÃ÷Ï¸
+      } else if (passedParam.type == 0) { // ä»æ±‡æ€»é¡µ  æŸ¥çœ‹æ‰€æœ‰æ˜ç»†
         var parameters = passedParam.param;
 
         $('#search_dateType').val(parameters.dateType);
@@ -172,7 +172,7 @@ function handlePresetQuery() {
   }
 }
 
-// ÓĞ¿ÉÄÜ±¾Ò³µÄ²éÑ¯ÊÇ´Ó»ã×ÜÒ³´ø×Å²éÑ¯Ìõ¼şÌø¹ıÀ´µÄ
+// æœ‰å¯èƒ½æœ¬é¡µçš„æŸ¥è¯¢æ˜¯ä»æ±‡æ€»é¡µå¸¦ç€æŸ¥è¯¢æ¡ä»¶è·³è¿‡æ¥çš„
 handlePresetQuery();
 
 function handleData(res) {
@@ -207,7 +207,7 @@ function handleData(res) {
 
     setTableData(record);
 
-    // ´Ó»ã×ÜÒ³µã»÷²é¿´Ñ¡ÖĞÃ÷Ï¸, ÊÇÃ»ÓĞsummary·µ»ØµÄ
+    // ä»æ±‡æ€»é¡µç‚¹å‡»æŸ¥çœ‹é€‰ä¸­æ˜ç»†, æ˜¯æ²¡æœ‰summaryè¿”å›çš„
     var summary = res.data.summary;
     if (summary) {
       _(summary).forEach(function(item) {
@@ -249,7 +249,7 @@ $('#pager').on('click', '.prev,.next', function (e) {
   if ($(this).hasClass('prev')) {
     if (_pageIndex <= 1) {
       _pageIndex = 1;
-      alert('ÒÑ¾­ÊÇµÚÒ»Ò³£¡');
+      alert('å·²ç»æ˜¯ç¬¬ä¸€é¡µï¼');
       return false;
     }
 
@@ -257,7 +257,7 @@ $('#pager').on('click', '.prev,.next', function (e) {
   } else {
     if (_pageIndex >= _pageTotal) {
       _pageIndex = _pageTotal;
-      alert('ÒÑ¾­ÊÇ×îºóÒ»Ò³£¡');
+      alert('å·²ç»æ˜¯æœ€åä¸€é¡µï¼');
       return false;
     }
 
@@ -280,7 +280,7 @@ $('#pager').on('click', '#btn-pager', function (e) {
 
   var pageNo = parseInt($('#pageNo').val());
   if (NaN == pageNo || pageNo < 1 || pageNo > _pageTotal) {
-    alert('ÒªÌø×ªµÄÒ³Âë³¬¹ıÁË·¶Î§£¡');
+    alert('è¦è·³è½¬çš„é¡µç è¶…è¿‡äº†èŒƒå›´ï¼');
     return false;
   }
 
@@ -300,13 +300,13 @@ $('.btn-reset').click(function(e) {
  $('#formSearch :input:not(:button)').val('');
 });
 
-// µ¼³öÈ«²¿export(ÉêÇëµ¼³ö)
+// å¯¼å‡ºå…¨éƒ¨export(ç”³è¯·å¯¼å‡º)
 $('.btn-export-all').click(function(e) {
 
   e.preventDefault();
 
   if ($('#dataTable tr td').length < 2) {
-    alert('ÇëÏÈ²éÑ¯ÔÙµ¼³ö!');
+    alert('è¯·å…ˆæŸ¥è¯¢å†å¯¼å‡º!');
     return false;
   }
 
@@ -321,7 +321,7 @@ $('.btn-export-all').click(function(e) {
     .done(function(res) {
       if (!!~~res.meta.result) {
         // window.location.href = common.API_HOST + 'settlement/merchantAttachment/downLoad?fileUrl=' + res.data.fileUrl;
-        alert('ÄúµÄÉêÇëÒÑÌá½»£¬ÏµÍ³ÕıÔÚÎªÄúµ¼³öÊı¾İ£¬ĞèÒªÔ¼15·ÖÖÓ£¬\nÇëÖÁÏÂÔØÁĞ±í²é¿´²¢ÏÂÔØµ¼³ö½á¹û¡£\nµ¼³öµÄÊı¾İ½ö±£Áô3Ìì£¬Çë¼°Ê±²é¿´²¢ÏÂÔØ¡£');
+        alert('æ‚¨çš„ç”³è¯·å·²æäº¤ï¼Œç³»ç»Ÿæ­£åœ¨ä¸ºæ‚¨å¯¼å‡ºæ•°æ®ï¼Œéœ€è¦çº¦15åˆ†é’Ÿï¼Œ\nè¯·è‡³ä¸‹è½½åˆ—è¡¨æŸ¥çœ‹å¹¶ä¸‹è½½å¯¼å‡ºç»“æœã€‚\nå¯¼å‡ºçš„æ•°æ®ä»…ä¿ç•™3å¤©ï¼Œè¯·åŠæ—¶æŸ¥çœ‹å¹¶ä¸‹è½½ã€‚');
       } else {
         alert(res.meta.msg);
       }
@@ -336,7 +336,7 @@ $('.btn-export-all').click(function(e) {
     .done(function (res) {
       if (!!~~res.meta.result) {
         // window.location.href = common.API_HOST + 'settlement/merchantAttachment/downLoad?fileUrl=' + res.data.fileUrl;
-        alert('ÄúµÄÉêÇëÒÑÌá½»£¬ÏµÍ³ÕıÔÚÎªÄúµ¼³öÊı¾İ£¬ĞèÒªÔ¼15·ÖÖÓ£¬\nÇëÖÁÏÂÔØÁĞ±í²é¿´²¢ÏÂÔØµ¼³ö½á¹û¡£\nµ¼³öµÄÊı¾İ½ö±£Áô3Ìì£¬Çë¼°Ê±²é¿´²¢ÏÂÔØ¡£');
+        alert('æ‚¨çš„ç”³è¯·å·²æäº¤ï¼Œç³»ç»Ÿæ­£åœ¨ä¸ºæ‚¨å¯¼å‡ºæ•°æ®ï¼Œéœ€è¦çº¦15åˆ†é’Ÿï¼Œ\nè¯·è‡³ä¸‹è½½åˆ—è¡¨æŸ¥çœ‹å¹¶ä¸‹è½½å¯¼å‡ºç»“æœã€‚\nå¯¼å‡ºçš„æ•°æ®ä»…ä¿ç•™3å¤©ï¼Œè¯·åŠæ—¶æŸ¥çœ‹å¹¶ä¸‹è½½ã€‚');
       } else {
         alert(res.meta.msg);
       }
@@ -344,17 +344,17 @@ $('.btn-export-all').click(function(e) {
   }
 });
 
-// ¶ÔÕËÍê³ÉÌá½»
+// å¯¹è´¦å®Œæˆæäº¤
 $('.complete-commit').click(function(e) {
 
   e.preventDefault();
 
   if ($('#dataTable tr td').length < 2) {
-    alert('ÇëÏÈ²éÑ¯ÔÙ½øĞĞ´Ë²Ù×÷!');
+    alert('è¯·å…ˆæŸ¥è¯¢å†è¿›è¡Œæ­¤æ“ä½œ!');
     return false;
   }
 
-  var result =  confirm("È·¶¨Ìá½»?");
+  var result =  confirm("ç¡®å®šæäº¤?");
   if(result == false){
     return;
   }
@@ -444,25 +444,25 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     $('#payStatus option[value="' + detail.payStatus + '"]').prop('selected', true);
     $('#discountType option[value="' + detail.discountType + '"]').prop('selected', true);
 
-    if (checkStatus == 2 || checkStatus == 3 || detail.reconciliationStatus == 4) { // ´ıÉóºË/ÉóºËÍê³É²»ÄÜÔÙĞŞ¸Ä, ³ö»õ¶ÔÕË×´Ì¬ÎªÈ·ÈÏµÄÒ²²»ÄÜÔÙĞŞ¸Ä
+    if (checkStatus == 2 || checkStatus == 3 || detail.reconciliationStatus == 4) { // å¾…å®¡æ ¸/å®¡æ ¸å®Œæˆä¸èƒ½å†ä¿®æ”¹, å‡ºè´§å¯¹è´¦çŠ¶æ€ä¸ºç¡®è®¤çš„ä¹Ÿä¸èƒ½å†ä¿®æ”¹
       $('.detail-area').addClass('read-only');
       $('.detail-area :input').prop('readonly', true);
-      // Òş²ØÌá½»°´Å¥
+      // éšè—æäº¤æŒ‰é’®
       $('.edit-submit').hide();
     } else {
-      $('#reconciliationStatus option[value=4]').remove();      // ²»ÄÜÔÚÃ÷Ï¸µÄĞŞ¸ÄÀï½«¶ÔÕË×´Ì¬ÉèÎª"È·ÈÏ"
+      $('#reconciliationStatus option[value=4]').remove();      // ä¸èƒ½åœ¨æ˜ç»†çš„ä¿®æ”¹é‡Œå°†å¯¹è´¦çŠ¶æ€è®¾ä¸º"ç¡®è®¤"
     }
   });
 
   $('#popup-detail form').parsley().validate();
 });
 
-// ĞŞ¸ÄÏêÇé "Ìá½»"
+// ä¿®æ”¹è¯¦æƒ… "æäº¤"
 $(document).on('submit', '#popup-detail form', function(e) {
   e.preventDefault();
 
   if ($('#reconciliationStatus').val() == 1) {
-    alert('ÊÕµ¥¶ÔÕË×´Ì¬²»ÄÜÎª £¢Î´¶ÔÕË£¢£¡');
+    alert('æ”¶å•å¯¹è´¦çŠ¶æ€ä¸èƒ½ä¸º ï¼‚æœªå¯¹è´¦ï¼‚ï¼');
     return false;
   }
   
@@ -473,7 +473,7 @@ $(document).on('submit', '#popup-detail form', function(e) {
   var createTime = $('#createTime').val();
 
   if (!settlementCommon.isValidTime(createTime)) {
-    alert('Ö§¸¶Ê±¼äÄÚÈİÓĞ´íÎó, ÇëÖØĞÂĞŞ¸Ä');
+    alert('æ”¯ä»˜æ—¶é—´å†…å®¹æœ‰é”™è¯¯, è¯·é‡æ–°ä¿®æ”¹');
     return false;
   }
 
@@ -495,7 +495,7 @@ $(document).on('submit', '#popup-detail form', function(e) {
     o2oReceivableAmount: $('#o2oReceivableAmount').val(),
     reconciliationStatus: $('#reconciliationStatus').val(),
     payStatus: $('#payStatus').val(),
-    reason: ($('#reconciliationStatus').val() == 2 ? $('#reason').val() : ''),// ¶ÔÕË²»Ò»ÖÂ²ÅÓĞÔ­Òò
+    reason: ($('#reconciliationStatus').val() == 2 ? $('#reason').val() : ''),// å¯¹è´¦ä¸ä¸€è‡´æ‰æœ‰åŸå› 
     merchantName: $('#merchantName').val(),
     remarks: $('#remarks').val(),
     subsidyAmountTrd:$('#subsidyAmountTrd').val(),
@@ -518,7 +518,7 @@ $(document).on('submit', '#popup-detail form', function(e) {
   })
   .done(function(res) {
     if (!!~~res.meta.result) {
-      alert('Ìá½»³É¹¦!');
+      alert('æäº¤æˆåŠŸ!');
       $('#popup-detail').modal('hide');
       $('#formSearch').trigger('submit');
     } else {
@@ -529,7 +529,7 @@ $(document).on('submit', '#popup-detail form', function(e) {
 });
 
 
-/************************************************* ÅúÁ¿²Ù×÷ ***************************************************/
+/************************************************* æ‰¹é‡æ“ä½œ ***************************************************/
 $('.multi-check-all').change(function(e) {
   e.preventDefault();
   var isChecked = $(this).is(':checked');
@@ -552,14 +552,14 @@ $('body').on('change', 'tr > td :checkbox', function(e) {
   }
 });
 
-// ÅúÁ¿ĞŞ¸Ä¶ÔÕË×´Ì¬
+// æ‰¹é‡ä¿®æ”¹å¯¹è´¦çŠ¶æ€
 $('body').on('click', '.btn-confirm-status-update', function(e) {
   e.preventDefault();
 
   var ids = selectedIds();
 
   if (ids.length === 0) {
-    alert('ÇëÖÁÉÙÑ¡ÔñÒ»Ìõ¼ÇÂ¼!');
+    alert('è¯·è‡³å°‘é€‰æ‹©ä¸€æ¡è®°å½•!');
     return false;
   }
 
@@ -573,7 +573,7 @@ $('body').on('click', '.btn-confirm-status-update', function(e) {
   })
   .done(function(res) {
     if (!!~~res.meta.result) {
-      alert('²Ù×÷³É¹¦!');
+      alert('æ“ä½œæˆåŠŸ!');
       $('#popup-status-choose').modal('hide');
       $('#formSearch').trigger('submit');
     } else {
@@ -589,7 +589,7 @@ $('body').on('click', '.batch-status-update', function(e) {
   var ids = selectedIds();
 
   if (ids.length === 0) {
-    alert('ÇëÖÁÉÙÑ¡ÔñÒ»Ìõ¼ÇÂ¼!');
+    alert('è¯·è‡³å°‘é€‰æ‹©ä¸€æ¡è®°å½•!');
     return false;
   }
 
