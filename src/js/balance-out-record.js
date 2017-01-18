@@ -101,7 +101,8 @@ $('#record_merchantNo').on('blur', function(e) {
   if (!merchantNo) return false;
   $.ajax({
     url: common.API_HOST + "settlement/merchantinfo/query",
-    type: 'GET',
+    type: 'POST',
+    dataType: 'json',
     data: { merchantId: merchantNo }
   })
     .done(function(res) {

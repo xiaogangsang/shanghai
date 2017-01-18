@@ -271,8 +271,8 @@
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">二级商户</div>
-            <input type="text" class="form-control oldValue" id="merchantName" value="{{merchantName}}">
-            <input type="text" class="form-control newValue" id="merchantNameNew" value="{{lastDetail.merchantName}}">
+            <input type="text" class="form-control oldValue" id="merchantName" value="{{merchantName}}" readonly>
+            <input type="text" class="form-control newValue" id="merchantNameNew" value="{{lastDetail.merchantName}}" readonly>
           </div>
         </div>
 

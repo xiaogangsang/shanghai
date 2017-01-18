@@ -457,6 +457,24 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
   $('#popup-detail form').parsley().validate();
 });
 
+$(document).on('blur', '#merchantNo', function(e) {
+  e.preventDefault();
+
+  var merchantNo = $('#merchantNo').val().trim();
+  if (!merchantNo) return false;
+  $.ajax({
+    url: common.API_HOST + "settlement/merchantinfo/query",
+    type: 'POST',
+    dataType: 'json',
+    data: { merchantId: merchantNo }
+  })
+    .done(function(res) {
+      if (!!~~res.meta.result) {
+        $('#merchantName').val(res.data.merchantName);
+      }
+    })
+});
+
 // 修改详情 "提交"
 $(document).on('submit', '#popup-detail form', function(e) {
   e.preventDefault();
@@ -465,7 +483,7 @@ $(document).on('submit', '#popup-detail form', function(e) {
     alert('收单对账状态不能为 ＂未对账＂！');
     return false;
   }
-  
+
   if (!$('#popup-detail form').parsley().isValid()) {
     return false;
   }
@@ -496,7 +514,7 @@ $(document).on('submit', '#popup-detail form', function(e) {
     reconciliationStatus: $('#reconciliationStatus').val(),
     payStatus: $('#payStatus').val(),
     reason: ($('#reconciliationStatus').val() == 2 ? $('#reason').val() : ''),// 对账不一致才有原因
-    merchantName: $('#merchantName').val(),
+    merchantNo: $('#merchantNo').val(),
     remarks: $('#remarks').val(),
     subsidyAmountTrd:$('#subsidyAmountTrd').val(),
     subsidyTypeTrd:$('#subsidyTypeTrd').val(),
