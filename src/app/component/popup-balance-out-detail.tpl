@@ -385,7 +385,7 @@
          <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">支付活动ID</div>
-            <input type="text" class="form-control" id="iscountIdTrd" value="{{iscountIdTrd}}">
+            <input type="text" class="form-control" id="discountIdTrd" value="{{discountIdTrd}}">
           </div>
         </div>
 

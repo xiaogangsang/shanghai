@@ -554,7 +554,7 @@ $(document).on('submit', '#popup-detail form', function(e) {
     costCenter: $('#costCenter').val(),
     signNum: $('#signNum').val(),
     discountId: $('#discountId').val(),
-    iscountIdTrd: $('#iscountIdTrd').val(),
+    discountIdTrd: $('#discountIdTrd').val(),
     discountNameTrd: $('#discountNameTrd').val(),
     costCenterTrd: $('#costCenterTrd').val(),
   };
