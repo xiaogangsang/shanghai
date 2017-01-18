@@ -107,7 +107,7 @@ $('#record_merchantNo').on('blur', function(e) {
   })
     .done(function(res) {
       if (!!~~res.meta.result) {
-        $('#record_merchantName').val(res.data.merchantName);
+        $('#record_merchantName').val(res.data.merchantInfo.merchantName);
       }
     })
 });
