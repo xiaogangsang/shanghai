@@ -470,7 +470,7 @@ $(document).on('blur', '#merchantNo', function(e) {
   })
     .done(function(res) {
       if (!!~~res.meta.result) {
-        $('#merchantName').val(res.data.merchantName);
+        $('#merchantName').val(res.data.merchantInfo.merchantName);
       }
     })
 });
@@ -522,9 +522,9 @@ $(document).on('submit', '#popup-detail form', function(e) {
     discountType: $('#discountType').val(),
     discountName: $('#discountName').val(),
     costCenter: $('#costCenter').val(),
-    signNum: $('#signNum').val(),
+    signatureNo: $('#signatureNo').val(), 
     discountId: $('#discountId').val(),
-    iscountIdTrd: $('#iscountIdTrd').val(),
+    discountIdTrd: $('#discountIdTrd').val(),
     discountNameTrd: $('#discountNameTrd').val(),
     costCenterTrd: $('#costCenterTrd').val(),
   };
