@@ -522,7 +522,7 @@ $(document).on('submit', '#popup-detail form', function(e) {
     discountType: $('#discountType').val(),
     discountName: $('#discountName').val(),
     costCenter: $('#costCenter').val(),
-    signatureNo: $('#signatureNo').val(),
+    signatureNo: $('#signatureNo').val(), 
     discountId: $('#discountId').val(),
     discountIdTrd: $('#discountIdTrd').val(),
     discountNameTrd: $('#discountNameTrd').val(),
