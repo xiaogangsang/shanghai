@@ -170,7 +170,7 @@ $('#btn-batch').click(function(e) {
 		url: common.API_HOST + 'settlement/differAppend/autoHandleDifferAppend',
 		type: 'GET',
 		dataType: 'json',
-		param: {
+		data: {
 			startTime: $('#search_startTime').val(),
 			endTime: $('#search_endTime').val(),
 		}
