@@ -235,7 +235,7 @@ $('#btn-sync').click(function(e) {
 	})
 	.done(function(res) {
 		if (!!~~res.meta.result) {
-			if (res.data.detail.checkStatus === 'true') {
+			if (res.data.detail.checkStatus) {
 				$.ajax({
 					url: common.API_HOST + 'settlement/differDetail/syncShipmentInfoStatus',
 					type: 'GET',
