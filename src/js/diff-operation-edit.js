@@ -212,7 +212,7 @@ $(document).on('submit', '#formDiff', function(e) {
 		remarks: $('#diff_remarks').val(),
 		processRemarks: $('#diff_processRemarks').val(),
 		advanceType: _appendData.advanceType,
-		advanceTypeTrd: _appendData.advanceTypeTrd;,
+		advanceTypeTrd: _appendData.advanceTypeTrd,
 		budgetAmountDiffer: _appendData.budgetAmountDiffer,
 		budgetAmountTrdDiffer: _appendData.budgetAmountTrdDiffer,
 	};
