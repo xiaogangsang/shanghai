@@ -13,7 +13,7 @@
 				<div class="form-group col-sm-3">
 					<div class="input-group">
 						<div class="input-group-addon">结算日期</div>
-						<input type="text" class="form-control" id="diff_settleDate" value="{{settleDate}}" readonly>
+						<input type="text" class="form-control" id="diff_settleDate" value="{{settleDate}}" data-parsley-pattern="[0-9]{4}?-[0-9]{2}?-[0-9]{2}?" readonly>
 					</div>
 				</div>
 				<div class="form-group col-sm-3">
