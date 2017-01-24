@@ -173,6 +173,7 @@ $('#popup-edit-diff').on('blur', '#diff_orderNo', function (e) {
 		})
 		.done(function(res) {
 			if (!!~~res.meta.result) {
+				_appendData = res.data.detail.appendRecord;
 				renderTable(res);
 			}
 		});
