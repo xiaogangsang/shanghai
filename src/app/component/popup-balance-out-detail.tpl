@@ -69,7 +69,7 @@
           </div>
         </div>
 
-        <div class="form-group col-sm-6 col-md-6 editable">
+<!--         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
             <div class="input-group-addon">影厅</div>
             <input type="text" class="form-control" id="hallName" value="{{productInfo.hallName}}" readonly>
@@ -88,7 +88,7 @@
             <div class="input-group-addon">座位</div>
             <input type="text" class="form-control" id="seatNames" value="{{productInfo.seatNames}}" readonly>
           </div>
-        </div>
+        </div> -->
 
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
