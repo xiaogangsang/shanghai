@@ -132,6 +132,7 @@ $('#formSearch').on('submit', function (e) {
     cinemaName: $('#search_cinemaName').val(),
     onlineStatus: $('#search_onlineStatus').val(),
     associationStatus: $('#search_associationStatus').val(),
+    seatTicketFlag: $('#search_seatTicketFlag').val(),
     pageSize: _pageSize,
   };
   if (!!_querying) {
@@ -264,6 +265,14 @@ $('#dataTable').on('click', '.btn-status', function (e) {
   });
 });
 
+$('#dataTable').on('click', '.btn-flag', function (e) {
+  e.preventDefault();
+  var $tr = $(this).closest('tr');
+  var $btn = $(this);
+
+  batchSuspend([$tr.data('id')], 1 - $btn.data('seatticketflag'));
+});
+
 $('#dataTable').on('click', '.btn-detail', function (e) {
   e.preventDefault();
   $.ajax({
@@ -390,6 +399,48 @@ $(document).on('click', '#btn-online-multi,#btn-offline-multi', function (e) {
 
   return false;
 });
+
+
+$(document).on('click', '.btn-suspend-multi', function (e) {
+  e.preventDefault();
+  if ($('.multi-check:checked').length < 1) {
+    alert('请至少选中一个！');
+    return false;
+  }
+
+  var statusName = $(this).data('value') == 1 ? '解除停售' : '停售';
+
+  if (window.confirm('确定要' + statusName + '选中的影院吗？')) {
+
+    var ids = [];
+    var $checkedItems = $('.multi-check:checked');
+    $checkedItems.each(function () {
+      ids.push($(this).closest('tr').data('id'));
+    });
+
+    batchSuspend(ids, $(this).data('value'));
+  }
+
+  return false;
+});
+
+function batchSuspend(ids, value) {
+  $.ajax({
+    url: common.API_HOST + 'cinema/standard/updateSeatTicketFlag',
+    type: 'POST',
+    dataType: 'json',
+    contentType: 'application/json; charset=utf-8',
+    data: JSON.stringify({ids: ids, seatTicketFlag: value}),
+  })
+  .done(function (res) {
+    if (!!~~res.meta.result) {
+      $('#formSearch').trigger('submit');
+      alert('操作成功!');
+    } else {
+      alert('接口错误：' + res.meta.msg);
+    }
+  });
+}
 
 $(document).on('submit', '#popup-cinema-form form', function (e) {
   e.preventDefault();
