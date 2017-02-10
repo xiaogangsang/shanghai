@@ -857,7 +857,8 @@ function setModal(bannerData, type) {
       case 3:
         template = $('#create-sale-template').html();
         uploadButton = '#fine-upload';
-      break;
+        _cacheCinemas = [];
+        break;
       case 4:
         template = $('#create-seat-template').html();
         uploadButton = '.fine-upload';
