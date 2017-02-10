@@ -880,6 +880,7 @@ function setModal(bannerData, type) {
         break;
       case 3:
         template = $('#create-sale-template').html();
+        _cacheCinemas = [];
         break;
       case 4:
         template = $('#create-seat-template').html();
