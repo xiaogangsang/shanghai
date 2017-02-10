@@ -1,4 +1,5 @@
 <div class="modal fade" id="popup-banner-upload" data-keyboard="false" data-backdrop="static">
+
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -14,4 +15,5 @@
       </div>
     </div>
   </div>
+
 </div>
