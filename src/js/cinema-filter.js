@@ -60,7 +60,7 @@ $(function () {
 
       $('input[name=points][value=' + res.data.points.selected +  ']').prop('checked', true);
 
-      // $('form').parsley();
+      $('form').parsley();
     } else {
       alert('接口错误：' + res.meta.msg);
     }
