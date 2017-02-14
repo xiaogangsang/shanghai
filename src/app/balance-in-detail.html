@@ -258,9 +258,9 @@
             <table class="table table-hover" id="summaryTable">
               <thead>
                 <tr>
+                  <th>收单订单类型</th>
                   <th>渠道</th>
                   <th>记录数</th>
-                  <th>收单订单类型</th>
                   <th>用户支付金额</th>
                   <th>常规活动后付款补贴金额</th>
                   <th>支付活动后付款补贴金额</th>
@@ -391,9 +391,9 @@
   <script id="summary-table-template" type="text/x-tmpl-mustache">
     {{#rows}}
     <tr>
+      <td>{{acquiringOrderType}}</td>
       <td>{{payTool}}</td>
       <td>{{totalOrderCount}}</td>
-      <td>{{acquiringOrderType}}</td>
       <td>{{totalPayAmount}}</td>
       <td>{{totalSubsidyAmountO2o}}</td>
       <td>{{totalSubsidyAmountTrd}}</td>
