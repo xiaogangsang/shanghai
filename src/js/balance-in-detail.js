@@ -25,7 +25,7 @@ var _DEBUG = false;
 $(function() {
 
 	common.init('balance-in-detail');
-  
+
   $('#formSearch').parsley();
 });
 
@@ -79,7 +79,7 @@ $('#formSearch').on('submit', function (e) {
       partner: $('#search_partner').val(),
       discountType: $('#search_discountType').val(),
       discountName: $('#search_discountName').val(),
-      bizType: $('#search_bizType').val(),
+      // bizType: $('#search_bizType').val(),
       payStatus: $('#search_payStatus').val(),
       reconciliationStatus: $('#search_reconciliationStatus').val(),
       reason: $('#search_reason').val(),
@@ -413,7 +413,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     var detail = data.detail;
     detail.payTool = settlementCommon.parsePayTool(detail.payTool);
     detail.bizType = settlementCommon.parseBizType(detail.bizType);
-    detail.discountType = settlementCommon.parseDiscountType(detail.discountType);
+    // detail.discountType = settlementCommon.parseDiscountType(detail.discountType);
     detail.chargeMerchant = settlementCommon.parseChargeMerchant(detail.chargeMerchant);
 
     var operateRecords = data.operateRecords;
@@ -442,6 +442,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     $('#reconciliationStatus option[value="' + detail.reconciliationStatus + '"]').prop('selected', true);
     $('#reason option[value="' + detail.reason + '"]').prop('selected', true);
     $('#payStatus option[value="' + detail.payStatus + '"]').prop('selected', true);
+    $('#discountType option[value="' + detail.discountType + '"]').prop('selected', true);
 
     if (checkStatus == 2 || checkStatus == 3 || detail.reconciliationStatus == 4) { // 待审核/审核完成不能再修改, 出货对账状态为确认的也不能再修改
       $('.detail-area').addClass('read-only');
@@ -456,6 +457,24 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
   $('#popup-detail form').parsley().validate();
 });
 
+$(document).on('blur', '#merchantNo', function(e) {
+  e.preventDefault();
+
+  var merchantNo = $('#merchantNo').val().trim();
+  if (!merchantNo) return false;
+  $.ajax({
+    url: common.API_HOST + "settlement/merchantinfo/query",
+    type: 'POST',
+    dataType: 'json',
+    data: { merchantId: merchantNo }
+  })
+    .done(function(res) {
+      if (!!~~res.meta.result) {
+        $('#merchantName').val(res.data.merchantInfo.merchantName);
+      }
+    })
+});
+
 // 修改详情 "提交"
 $(document).on('submit', '#popup-detail form', function(e) {
   e.preventDefault();
@@ -464,7 +483,7 @@ $(document).on('submit', '#popup-detail form', function(e) {
     alert('收单对账状态不能为 ＂未对账＂！');
     return false;
   }
-  
+
   if (!$('#popup-detail form').parsley().isValid()) {
     return false;
   }
@@ -495,10 +514,19 @@ $(document).on('submit', '#popup-detail form', function(e) {
     reconciliationStatus: $('#reconciliationStatus').val(),
     payStatus: $('#payStatus').val(),
     reason: ($('#reconciliationStatus').val() == 2 ? $('#reason').val() : ''),// 对账不一致才有原因
-    merchantName: $('#merchantName').val(),
+    merchantNo: $('#merchantNo').val(),
     remarks: $('#remarks').val(),
     subsidyAmountTrd:$('#subsidyAmountTrd').val(),
-    subsidyTypeTrd:$('#subsidyTypeTrd').val()
+    subsidyTypeTrd:$('#subsidyTypeTrd').val(),
+
+    discountType: $('#discountType').val(),
+    discountName: $('#discountName').val(),
+    costCenter: $('#costCenter').val(),
+    signatureNo: $('#signatureNo').val(), 
+    discountId: $('#discountId').val(),
+    discountIdTrd: $('#discountIdTrd').val(),
+    discountNameTrd: $('#discountNameTrd').val(),
+    costCenterTrd: $('#costCenterTrd').val(),
   };
 
   $.ajax({

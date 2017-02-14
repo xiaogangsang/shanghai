@@ -202,6 +202,11 @@ settlementCommon.parseBalanceFileStatus = function(status) {
   return this.balanceFileStatus[status];
 }
 
+settlementCommon.reconciliationStatus = {'1' : '未对账', '2' : '对账不一致', '3' : '对账成功', '4' : '确认'};
+settlementCommon.parseReconciliationStatus = function(status) {
+  return this.reconciliationStatus[status];
+}
+
 
 /***************************************** 商户相关编码 **********************************************/
 
@@ -211,6 +216,14 @@ settlementCommon.merchantStatus =
 
 settlementCommon.parseMerchantStatus = function(status) {
   return this.merchantStatus[status];
+}
+
+// 商户状态
+settlementCommon.merchantInfoStatus = 
+  {'2' : '已上线', '3' : '已下线', '4' : '审核驳回', '5' : '待审核', '6' : '已删除'};
+
+settlementCommon.parseMerchantInfoStatus = function(status) {
+  return this.merchantInfoStatus[status];
 }
 
 // 账户状态
@@ -230,6 +243,13 @@ settlementCommon.merchantLevel = {'1' : '总部', '2' : '区域'};
 settlementCommon.parseMerchantLevel = function(status) {
   return this.merchantLevel[status];
 }
+
+// 责任部门使用状态
+settlementCommon.departmentUseStatus = {'1' : '启用', '2' : '停用', '3' : '删除'};
+settlementCommon.parseDepartmentUseStatus = function(status) {
+  return this.departmentUseStatus[status];
+}
+
 
 
 /**
@@ -319,9 +339,9 @@ settlementCommon.prehandleData = function(res) {
   // 接口错误, 弹alert
   // 内容错误(语义错误), 错误message显示在table里
   if (!!~~res.meta.result) {
-    if (res.data == null || res.data.detail == null || res.data.detail.count < 1) {
+    if (res.data == null || res.data.detail == null || res.data.detail.records == null || res.data.detail.records.length < 1) {
       // var errorMsg = res.meta.msg;
-      var errorMsg = '无满足条件记录';
+      var errorMsg = '查询成功，无满足条件记录';
       $('#dataTable tbody').html('<tr><td colspan="30" align="center">' + errorMsg + '</td></tr>');
       $('#summaryTable tbody').html('<tr><td colspan="30" align="center">' + errorMsg + '</td></tr>');
       $('#pager').html('');
@@ -329,9 +349,10 @@ settlementCommon.prehandleData = function(res) {
       return true;
     }
   } else {
-    alert(res.meta.msg);
-    $('#dataTable tbody').html('');
-    $('#summaryTable tbody').html('');
+    // alert(res.meta.msg);
+    var info = '<tr><td colspan="30" align="center">' + res.meta.msg + '</td></tr>';
+    $('#dataTable tbody').html(info);
+    $('#summaryTable tbody').html(info);
     $('#pager').html('');
   }
   return false;
@@ -344,7 +365,7 @@ settlementCommon.clone = function(objectToBeCloned) {
   }
 
   var objectClone;
-  
+
   // Filter out special objects.
   var Constructor = objectToBeCloned.constructor;
   switch (Constructor) {
@@ -358,12 +379,12 @@ settlementCommon.clone = function(objectToBeCloned) {
     default:
       objectClone = new Constructor();
   }
-  
+
   // Clone each property.
   for (var prop in objectToBeCloned) {
     objectClone[prop] = this.clone(objectToBeCloned[prop]);
   }
-  
+
   return objectClone;
 }
 
@@ -371,11 +392,139 @@ settlementCommon.resetInput = function(input) {
   input.replaceWith(input.val('').clone(true));
 }
 
+// 必填项加*号
+settlementCommon.addStarMark = function() {
+  var elements = $('[required]');
+  elements.each(function(index, el) {
+    var $element = $($(this).siblings('.input-group-addon')[0]);
+    if ($element.text().indexOf('*') < 0) {
+      $element.html($element.text() + '<span style="color: #D70F0F; font-size: 16px;"> *</span>');
+    }
+  });
+}
+
+settlementCommon.success = function (msg) {
+  var alertHtml = '<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert">&times;</button><div class="alert-content">' + msg + '</div></div>';
+  $('.breadcrumb').after(alertHtml);
+}
+
+settlementCommon.warning = function (msg) {
+  var alertHtml = '<div class="alert alert-warning alert-dismissible"><button type="button" class="close" data-dismiss="alert">&times;</button><div class="alert-content">' + msg + '</div></div>';
+  $('.breadcrumb').after(alertHtml);
+}
+
+settlementCommon.fetchBasicData = function (callback) {
+  $.ajax({
+    url: window.location.protocol + '//' + window.location.host + '/MovieOps/' + 'settlement/sign/allList',
+    type: 'GET',
+    dataType: 'json',
+  })
+  .done(function(res) {
+    if (!!~~res.meta.result) {
+
+      // 处理标识
+      var signObj = {};
+      _(res.data.detail.sign).each(function(item) {
+        signObj[item.id] = item.signName;
+      });
+
+      // 处理状态
+      var disposeObj = {};
+      _(res.data.detail.dispose).each(function(item) {
+        disposeObj[item.id] = item.disposeName;
+      });
+
+      // 责任部门
+      var departmentObj = {};
+      _(res.data.detail.department).each(function(item) {
+        departmentObj[item.id] = item.departmentName;
+      });
+
+      // 差异类型
+      var typeObj = {};
+      _(res.data.detail.type).each(function(item) {
+        typeObj[item.id] = item.differenceName;
+      });
+
+      callback({"sign" : signObj, "dispose" : disposeObj, "department" : departmentObj, "type" : typeObj});
+
+    } else {
+      callback(null);
+    }
+  })
+}
+
+settlementCommon.datetimepickerRegister = function ($startTime, $endTime) {
+
+  if ($startTime && $endTime) {
+    $startTime.datetimepicker({
+      format: 'yyyy-mm-dd',
+      language: 'zh-CN',
+      minView: 2,
+      todayHighlight: true,
+      autoclose: true,
+    }).on('changeDate', function (ev) {
+      var startDate = new Date(ev.date.valueOf());
+      var endDate = new Date(startDate);
+      endDate.setDate(startDate.getDate() + 6);
+
+      var currentEndDate = $endTime.datetimepicker('getDate');
+      var correctEndDate = currentEndDate;
+
+      if (currentEndDate < startDate) {
+        correctEndDate = startDate;
+      } else if (currentEndDate > endDate) {
+        correctEndDate = endDate;
+      }
+
+      $endTime.datetimepicker('setDate', correctEndDate);
+    });
+
+    $endTime.datetimepicker({
+      format: 'yyyy-mm-dd',
+      language: 'zh-CN',
+      minView: 2,
+      todayHighlight: true,
+      autoclose: true,
+    }).on('changeDate', function (ev) {
+      var endDate = new Date(ev.date.valueOf());
+      var startDate = new Date(endDate);
+      startDate.setDate(endDate.getDate() - 6);
+
+      var currentStartDate = $startTime.datetimepicker('getDate');
+      var correctStartDate = currentStartDate;
+
+      if (currentStartDate < startDate) {
+        correctStartDate = startDate;
+      } else if (currentStartDate > endDate) {
+        correctStartDate = endDate;
+      }
+
+      $startTime.datetimepicker('setDate', correctStartDate);
+    });
+  }
+
+  if ($startTime && ($endTime === null)) {
+    $startTime.datetimepicker({
+      format: 'yyyy-mm-dd',
+      language: 'zh-CN',
+      minView: 2,
+      todayHighlight: true,
+      autoclose: true,
+    });
+  }
+}
 
 /************************************************* 全局初始化处理 *****************************************************/
 
 // 点击隐藏/显示左侧菜单栏 的按钮
 $(function() {
+
+  // 必填项添加*号标识
+  settlementCommon.addStarMark();
+
+  // 查询日期的跨度小于等于7天
+  settlementCommon.datetimepickerRegister($('#search_startTime'), $('#search_endTime'));
 
   $('<button class="glyphicon glyphicon-menu-left" style="position: absolute; top: -1px; left: 0px; width: 15px; height: 30px; padding: 0px; border-width: 0px; border-radius: 0px 6px 6px 0px; background-color: #E0E0E0; opacity: 0.6;" id="sidebar-switcher"></button>').prependTo('.main');
 
@@ -396,59 +545,3 @@ $(function() {
     }
   });
 });
-
-
-// 查询日期的跨度小于等于7天
-$(function() {
-  $('#search_startTime').datetimepicker({
-    format: 'yyyy-mm-dd',
-    language: 'zh-CN',
-    minView: 2,
-    todayHighlight: true,
-    autoclose: true,
-  }).on('changeDate', function (ev) {
-    var $endTime = $('#search_endTime');
-
-    var startDate = new Date(ev.date.valueOf());
-    var endDate = new Date(startDate);
-    endDate.setDate(startDate.getDate() + 6);
-
-    var currentEndDate = $endTime.datetimepicker('getDate');
-    var correctEndDate = currentEndDate;
-
-    if (currentEndDate < startDate) {
-      correctEndDate = startDate;
-    } else if (currentEndDate > endDate) {
-      correctEndDate = endDate;
-    }
-
-    $endTime.datetimepicker('setDate', correctEndDate);
-  });
-
-  $('#search_endTime').datetimepicker({
-    format: 'yyyy-mm-dd',
-    language: 'zh-CN',
-    minView: 2,
-    todayHighlight: true,
-    autoclose: true,
-  }).on('changeDate', function (ev) {
-    var $startTime = $('#search_startTime');
-
-    var endDate = new Date(ev.date.valueOf());
-    var startDate = new Date(endDate);
-    startDate.setDate(endDate.getDate() - 6);
-
-    var currentStartDate = $startTime.datetimepicker('getDate');
-    var correctStartDate = currentStartDate;
-
-    if (currentStartDate < startDate) {
-      correctStartDate = startDate;
-    } else if (currentStartDate > endDate) {
-      correctStartDate = endDate;
-    }
-
-    $startTime.datetimepicker('setDate', correctStartDate);
-  });
-});
-
-

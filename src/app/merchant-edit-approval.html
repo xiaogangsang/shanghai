@@ -29,19 +29,21 @@
           <li class="active">商户审核</li>
         </ol>
 
+
         <form id="formSearch" class="search-area clearfix">
 
         <div class="form-group col-sm-6 col-md-4">
+
             <div class="input-group">
               <div class="input-group-addon">开始时间</div>
-              <input type="text" class="form-control" id="search_startTime">
+              <input type="text" class="form-control" id="search_startTime" required>
             </div>
           </div>
 
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">结束时间</div>
-              <input type="text" class="form-control" id="search_endTime">
+              <input type="text" class="form-control" id="search_endTime" required>
             </div>
           </div>
 
@@ -81,13 +83,13 @@
               </select>
             </div>
           </div>
-          
-          <div class="form-group col-sm-6 col-md-4">
+
+          <!-- <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">提报人</div>
               <input type="text" class="form-control" id="search_merchantSubscribeGuy">
             </div>
-          </div>
+          </div> -->
 
           <div class="col-xs-12 col-sm-12 col-md-8 pull-right">
             <div class="row">
@@ -115,7 +117,7 @@
                   <th>TP方</th>
                   <th>商户级别</th>
                   <th>创建时间</th>
-                  <th>提报人</th>
+                  <!-- <th>提报人</th> -->
                   <th width="100">操作</th>
                 </tr>
               </thead>
@@ -126,13 +128,9 @@
               </tbody>
             </table>
           </div>
-
         </div>
-
       </div>
-
     </div>
-
   </div>
 
   <!-- pop up -->
@@ -179,10 +177,10 @@
       <td>{{tpId}}</td>
       <td>{{merchantClass}}</td>
       <td>{{createTime}}</td>
-      <td>{{userName}}</td>　
+      <!-- <td>{{userName}}</td>　 -->
       <td>
         <button type="button" class="btn btn-xs btn-default btn-edit">审核</button>
-        <button type="button" class="btn btn-xs btn-default">驳回</button>
+        <button type="button" class="btn btn-xs btn-default btn-reject">驳回</button>
       </td>
     </tr>
     {{/rows}}

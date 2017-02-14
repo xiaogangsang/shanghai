@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<link rel="icon" href="images/favicon.ico">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<title>差异处理</title>
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/reset.css">
+	<link rel="stylesheet" href="css/css-hud.css">
+</head>
+<body>
+
+	@@include('component/header.tpl')
+
+	<div class="container-fluid">
+
+		<div class="row">
+
+			@@include('component/sidebar.tpl')
+
+			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+				<ol class="breadcrumb">
+					<li>差异管理</li>
+					<li class="active">差异处理</li>
+				</ol>
+
+				<form id="formSearch" class="search-area clearfix">
+					<div class="form-group col-sm-3">
+						<div class="input-group">
+							<div class="input-group-addon">结算日期</div>
+							<input type="text" class="form-control" id="search_startTime" readonly data-parsley-pattern="[0-9]{4}?-[0-9]{2}?-[0-9]{2}?">
+						</div>
+					</div>
+					<div class="form-group col-sm-3">
+						<div class="input-group">
+							<div class="input-group-addon">至</div>
+							<input type="text" class="form-control" id="search_endTime" readonly data-parsley-pattern="[0-9]{4}?-[0-9]{2}?-[0-9]{2}?">
+						</div>
+					</div>
+					<div class="form-group col-sm-3">
+						<div class="input-group">
+							<div class="input-group-addon">交易订单号</div>
+							<input type="text" class="form-control" id="search_orderNo" data-parsley-pattern="[0-9]+" data-parsley-error-message="格式不正确，请输入数字">
+						</div>
+					</div>
+					<div class="form-group col-sm-3">
+						<div class="input-group">
+							<div class="input-group-addon">对账一致</div>
+							<select class="form-control" id="search_matched">
+								<option>全部</option>
+								<option value="1">是</option>
+								<option value="2">否</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-sm-3">
+						<button type="submit" class="btn btn-block btn-primary">查询</button>
+					</div>
+					<div class="col-sm-2">
+						<button type="button" class="btn btn-block btn-default" id="btn-export">导出</button>
+					</div>
+					<div class="col-sm-2">
+						<button type="button" class="btn btn-block btn-default" id="btn-batch">批量生成差异</button>
+					</div>
+ 					<div class="col-sm-2">
+						<button type="button" class="btn btn-block btn-default" id="btn-sync">同步出货对账状态</button>
+					</div>
+					<div class="col-sm-2">
+						<button type="button" class="btn btn-block btn-default" data-toggle="modal" data-target="#popup-auto-diff">自动整理</button>
+					</div>
+				</form>
+
+				<div class="content-area">
+					<div class="row" id="pager"></div>
+					@@include('component/pager.tpl')
+
+					<div class="table-responsive">
+						<table class="table table-hover" id="dataTable">
+							<thead>
+								<tr>
+									<th>结算日期</th>
+									<th>订单渠道</th>
+									<th>交易订单号</th>
+									<th>销售结算净价</br>(银行清算金额)</th>
+									<th>用户支付金额</br>(不含服务费)</th>
+									<th>常态活动补贴金额(收单)</th>
+									<th>支付活动补贴金额(收单)</th>
+									<th>销售结算净价</br>(应付金额)</th>
+									<th>销售结算净价</br>(不含补贴)</th>
+									<th>常态活动补贴金额(出货)</th>
+									<th>支付活动补贴金额(出货)</th>
+									<th>常态活动补贴差额(收单-出货)</th>
+									<th>支付活动补贴差额(收单-出货)</th>
+									<th>差异计算值</th>
+									<th>差异拆分值</th>
+									<th>对账一致</th>
+									<th>操作</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+								  <td colspan="30" align="center">请点击“查询”按钮！</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<script src="js/vendor.js"></script>
+	<script src="js/diff-operation.js"></script>
+
+	<div class="modal fade" id="popup-auto-diff">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-lable="Close"><span aria-hidden="true">&times;</span></button>
+					<h5 class="modal-title">启动自动整理</h5>
+				</div>
+				<div class="modal-body">
+					<div class="container-fluid">
+						<form id="formAutoDiff">
+							<div class="row">
+								<div class="form-group col-sm-6">
+									<div class="input-group">
+										<div class="input-group-addon">结算日期</div>
+										<input type="text" class="form-control" id="auto_startTime" required data-parsley-pattern="[0-9]{4}?-[0-9]{2}?-[0-9]{2}?">
+									</div>
+								</div>
+								<div class="form-group col-sm-6">
+									<div class="input-group">
+										<div class="input-group-addon">至</div>
+										<input type="text" class="form-control" id="auto_endTime" required data-parsley-pattern="[0-9]{4}?-[0-9]{2}?-[0-9]{2}?">
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-4 col-sm-offset-4">
+									<button type="submit" class="form-control btn btn-primary">启动</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="popup-edit-diff">
+		<div class="modal-dialog modal-xl">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-lable="Close"><span aria-hidden="true">&times;</span></button>
+					<h5 class="modal-title">新增/编辑差异</h5>
+				</div>
+				<div class="modal-body">
+				</div>
+			</div>
+		</div>
+	</div>
+	@@include('component/popup-diff-operation-edit.tpl')
+	<script src="js/diff-operation-edit.js"></script>
+
+	<div id="hud-overlay" style="display: none">
+	  <div class="hud"><img src="images/loader.gif">
+	    <p>计算中...</p>
+	  </div>
+	</div>
+
+	<script id="table-template" type="text/x-tmpl-mustache">
+	  {{#rows}}
+	  <tr data-orderno={{orderNo}}>
+	    <!-- 结算日期 -->
+	    <td>{{settleDate}}</td>
+	    <!-- 订单渠道 -->
+	    <td>{{channelId}}</td>
+	    <!-- 交易订单号 -->
+	    <td>{{orderNo}}</td>
+	    <!-- 销售结算净值(银行清算金额) -->
+	    <td>{{bankSettlePrice}}</td>
+	    <!-- 用户支付金额(不含服务费) -->
+	    <td>{{userAmountPay}}</td>
+	    <!-- 常规活动补贴金额(收单) -->
+	    <td>{{budgetAmountAcq}}</td>
+	    <!-- 支付活动补贴金额(收单) -->
+	    <td>{{budgetAmountTrdAcq}}</td>
+	    <!-- 销售结算净值(应付金额) -->
+	    <td>{{dueSettlePrice}}</td>
+	    <!-- 销售结算净值(不含补贴) -->
+	    <td>{{saleSettlePrice}}</td>
+	    <!-- 常规活动补贴金额(出货) -->
+	    <td>{{budgetAmountShip}}</td>
+	    <!-- 支付活动补贴金额(出货) -->
+	    <td>{{budgetAmountShip}}</td>
+	    <!-- 常规活动补贴差额 -->
+	    <td>{{budgetAmountDiffer}}</td>
+	    <!-- 支付活动补贴差额 -->
+	    <td>{{budgetAmountTrdDiffer}}</td>
+	    <!-- 差异计算值 -->
+	    <td>{{differAmount}}</td>
+	    <!-- 差异拆分值 -->
+	    <td>{{differSplitAmount}}</td>
+	    <!-- 对账一致 -->
+	    <td>{{matched}}</td>
+	    <td><button class="btn btn-xs btn-default btn-edit">创建差异</button></td>
+	  </tr>
+	  {{/rows}}
+	</script>
+</body>
+</html>

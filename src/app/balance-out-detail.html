@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <link rel="stylesheet" href="css/reset.css">
   <link rel="stylesheet" type="text/css" href="css/balance-detail.css">
+  <link rel="stylesheet" type="text/css" href="css/css-hud.css">
   <!-- <link rel="stylesheet" href="css/banner.css"> -->
 </head>
 <body>
@@ -30,7 +31,7 @@
 
         <form id="formSearch" class="search-area clearfix">
 
-        <div class="form-group col-sm-6 col-md-4">
+          <div class="form-group col-sm-6 col-md-3">
             <div class="input-group">
               <div class="input-group-addon">日期类型</div>
               <select class="form-control" id="search_dateType" required>
@@ -40,35 +41,35 @@
             </div>
           </div>
 
-        <div class="form-group col-sm-6 col-md-4">
+          <div class="form-group col-sm-6 col-md-3">
             <div class="input-group">
               <div class="input-group-addon">开始日期</div>
               <input type="text" class="form-control" id="search_startTime" required data-parsley-pattern="[0-9]{4}?-[0-9]{2}?-[0-9]{2}?">
             </div>
           </div>
 
-          <div class="form-group col-sm-6 col-md-4">
+          <div class="form-group col-sm-6 col-md-3">
             <div class="input-group">
               <div class="input-group-addon">结束日期</div>
               <input type="text" class="form-control" id="search_endTime" required data-parsley-pattern="[0-9]{4}?-[0-9]{2}?-[0-9]{2}?">
             </div>
           </div>
 
-          <div class="form-group col-sm-6 col-md-4">
+          <div class="form-group col-sm-6 col-md-3">
             <div class="input-group">
               <div class="input-group-addon">二级商户名</div>
               <input type="text" class="form-control" id="search_merchantName">
             </div>
           </div>
 
-          <div class="form-group col-sm-6 col-md-4">
+          <div class="form-group col-sm-6 col-md-3">
             <div class="input-group">
               <div class="input-group-addon">二级商户号</div>
               <input type="text" class="form-control" id="search_merchantNo">
             </div>
           </div>
 
-          <div class="form-group col-sm-6 col-md-4">
+          <div class="form-group col-sm-6 col-md-3">
             <div class="input-group">
               <div class="input-group-addon">出货状态</div>
               <select class="form-control" id="search_shipmentStatus">
@@ -82,18 +83,7 @@
             </div>
           </div>
 
-          <div class="form-group col-sm-6 col-md-4">
-            <div class="input-group">
-              <div class="input-group-addon">业务类别</div>
-              <select class="form-control" id="search_bizType">
-                <option value="">全部</option>
-                <option value="1">影票</option>
-                <option value="2">手续费</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-group col-sm-6 col-md-4">
+          <div class="form-group col-sm-6 col-md-3">
             <div class="input-group">
               <div class="input-group-addon">退款承债方</div>
               <select class="form-control" id="search_partner">
@@ -105,20 +95,7 @@
             </div>
           </div>
 
-          <div class="form-group col-sm-6 col-md-4">
-            <div class="input-group">
-              <div class="input-group-addon">收单对账状态</div>
-              <select class="form-control" id="search_acquiringReconciliationStatus">
-                <option value="">全部</option>
-                <option value="1">未对账</option>
-                <option value="2">对账不一致</option>
-                <option value="3">对账成功</option>
-                <option value="4">确认</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-group col-sm-6 col-md-4">
+          <div class="form-group col-sm-6 col-md-3">
             <div class="input-group">
               <div class="input-group-addon">出货对账状态</div>
               <select class="form-control" id="search_reconciliationStatus">
@@ -131,23 +108,7 @@
             </div>
           </div>
 
-          <div class="form-group col-sm-6 col-md-4">
-            <div class="input-group">
-              <div class="input-group-addon">对账不一致原因</div>
-              <select class="form-control" id="search_reason">
-                <option value="">全部</option>
-                <option value="1">出货失败, 支付成功(未退款)</option>
-                <option value="2">退货失败, 退款成功(无承债方)</option>
-                <option value="3">退货成功, 退款失败(未退款)</option>
-                <option value="4">退货成功, 支付成功(未退款)</option>
-                <option value="5">金额不符</option>
-                <option value="6">票类错误</option>
-                <option value="7">出货成功, 支付失败(未扣款)</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-group col-sm-6 col-md-4">
+          <div class="form-group col-sm-6 col-md-3">
             <div class="input-group">
               <div class="input-group-addon">常规优惠方式</div>
               <select class="form-control" id="search_discountType">
@@ -159,28 +120,28 @@
             </div>
           </div>
 
-          <div class="form-group col-sm-6 col-md-4">
+          <div class="form-group col-sm-6 col-md-3">
             <div class="input-group">
               <div class="input-group-addon">常规活动/优惠券名称</div>
               <input type="text" class="form-control" id="search_discountName">
             </div>
           </div>
 
-          <div class="form-group col-sm-6 col-md-4">
+          <div class="form-group col-sm-6 col-md-3">
             <div class="input-group">
               <div class="input-group-addon">商品订单号</div>
               <input type="text" class="form-control" id="search_bizOrderNo">
             </div>
           </div>
 
-          <div class="form-group col-sm-6 col-md-4">
+          <div class="form-group col-sm-6 col-md-3">
             <div class="input-group">
               <div class="input-group-addon">二级商户订单号</div>
               <input type="text" class="form-control" id="search_thdOrderNo">
             </div>
           </div>
 
-          <div class="form-group col-sm-6 col-md-4">
+          <div class="form-group col-sm-6 col-md-3">
             <div class="input-group">
               <div class="input-group-addon">修改/审核状态</div>
               <select class="form-control" id="search_checkStatus">
@@ -194,14 +155,14 @@
             </div>
           </div>
 
-          <div class="form-group col-sm-6 col-md-4">
+          <div class="form-group col-sm-6 col-md-3">
             <div class="input-group">
               <div class="input-group-addon">交易订单号</div>
               <input type="text" class="form-control" id="search_orderNo">
             </div>
-          </div>          
+          </div>
 
-          <div class="form-group col-sm-6 col-md-4">
+          <div class="form-group col-sm-6 col-md-3">
             <div class="input-group">
               <div class="input-group-addon">渠道</div>
               <select class="form-control" id="search_payTool">
@@ -209,7 +170,7 @@
             </div>
           </div>
 
-          <div class="form-group col-sm-6 col-md-4">
+          <div class="form-group col-sm-6 col-md-3">
             <div class="input-group">
               <div class="input-group-addon">分页条数</div>
               <select class="form-control" id="search_pageSize">
@@ -222,7 +183,7 @@
             </div>
           </div>
 
-          <div class="form-group col-sm-6 col-md-4">
+          <div class="form-group col-sm-6 col-md-3">
             <div class="input-group">
               <div class="input-group-addon">出货订单类型</div>
               <select class="form-control" id="search_shipmentOrderType">
@@ -235,7 +196,7 @@
             </div>
           </div>
 
-          <div class="form-group col-sm-6 col-md-4">
+          <div class="form-group col-sm-6 col-md-3">
             <div class="input-group">
               <div class="input-group-addon">订单来源</div>
               <select class="form-control" id="search_orderSource">
@@ -246,9 +207,55 @@
             </div>
           </div>
 
+          <div class="form-group col-sm-3">
+            <div class="input-group">
+              <div class="input-group-addon">结算进度</div>
+              <select class="form-control" id="search_settlementPlan">
+                <option value>全部</option>
+                <option value="1">应结算</option>
+                <option value="2">待结算</option>
+                <option value="3">补结算</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group col-sm-3">
+            <div class="input-group">
+              <div class="input-group-addon">结算状态</div>
+              <select class="form-control" id="search_appStatus">
+                <option value>全部</option>
+                <option value="1">未生成拨款明细</option>
+                <option value="2">已生成拨款明细</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group col-sm-3">
+            <div class="input-group">
+              <div class="input-group-addon">结算日期</div>
+              <input type="text" class="form-control" id="search_settleDate" data-parsley-pattern="[0-9]{4}?-[0-9]{2}?-[0-9]{2}?">
+            </div>
+          </div>
+          <div class="form-group col-sm-3">
+            <div class="input-group">
+              <div class="input-group-addon">实结批次号</div>
+              <input type="text" class="form-control" id="search_batchNo">
+            </div>
+          </div>
+          <div class="form-group col-sm-3">
+            <div class="input-group">
+              <div class="input-group-addon">待结批次号</div>
+              <input type="text" class="form-control" id="search_waitBatchNo">
+            </div>
+          </div>
+          <div class="form-group col-sm-3">
+            <div class="input-group">
+              <div class="input-group-addon">城市</div>
+              <input type="text" class="form-control" id="search_cityName">
+            </div>
+          </div>
+
           <div class="col-xs-12 col-sm-12 col-md-12 pull-right">
             <div class="row">
-              <div class="col-xs-2">
+              <div class="col-xs-4">
                 <button type="submit" class="btn btn-block btn-primary">查询</button>
               </div>
               <div class="col-xs-2">
@@ -261,19 +268,66 @@
                 <button type="button" class="btn btn-block btn-default batch-status-update">批量修改对账状态</button>
               </div>
               <div class="col-xs-2">
+                <button type="button" class="btn btn-block btn-default complete-commit">对账完成提交</button>
+              </div>
+              <div class="col-xs-2">
                 <button type="button" class="btn btn-block btn-default btn-complement">补订单记录</button>
               </div>
               <div class="col-xs-2">
-                <button type="button" class="btn btn-block btn-default complete-commit">对账完成提交</button>
+                <button type="button" class="btn btn-block btn-default btn-sync">同步结算日期</button>
               </div>
             </div>
           </div>
 
         </form>
 
+        <form id="formBatch" class="clearfix">
+          <div class="col-sm-10 col-sm-offset-1">
+            <div class="form-group col-sm-3">
+              <div class="input-group">
+                <div class="input-group-addon">批量设置</div>
+                <select class="form-control" id="batch_settingFunc" required="">
+                  <option value></option>
+                  <option value="1">结算日期为出退货日期</option>
+                  <option value="2">待结算</option>
+                  <option value="3">补结算</option>
+                  <option value="4">实结批次号</option>
+                  <option value="5">待结批次号</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group col-sm-3">
+              <div class="input-group">
+                <div class="input-group-addon">参数</div>
+                <input type="text" class="form-control" id="batch_settingParam">
+              </div>
+            </div>
+            <div class="form-group col-sm-3">
+              <div class="input-group">
+                <div class="input-group-addon">设置范围</div>
+                <select class="form-control" id="batch_settingRange" required>
+                  <option value></option>
+                  <option value="1">查询条件</option>
+                  <option value="2">勾选记录</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <button type="submit" class="btn btn-block btn-default">确定</button>
+            </div>
+          </div>
+        </form>
+
         <div class="content-area">
 
-        <div class="table-responsive" style="margin-bottom: 20px;">
+          <div class="alert alert-warning" id="exceptionAlert" style="display: none; margin-bottom: 10px;">
+            <p class="text-center"><a>有 <span id="exceptionCount"></span> 条异常数据，点击此处查看</a></p>
+          </div>
+          <div class="alert alert-warning" id="nullSettleDateAlert" style="display: none; margin-bottom: 10px;">
+            <p class="text-center"><a>有 <span id="nullSettleDateCount"></span> 条结算日期为空，点击此处进行筛选</a></p>
+          </div>
+
+          <div class="table-responsive" style="margin-bottom: 20px;">
             <table class="table table-hover" id="summaryTable">
               <thead>
                 <tr>
@@ -302,6 +356,7 @@
                   <!-- 参照activity-unit.html -->
                   <th><input type="checkbox" class="multi-check-all"></th>
                   <th>出/退货时间</th>
+                  <th>结算日期</th>
                   <th>出货订单类型</th>
                   <th>订单来源</th>
                   <th>交易订单号</th>
@@ -313,11 +368,10 @@
                   <!-- <th>退票手续费</th> -->
                   <!-- <th>二级商户订单号</th> -->
                   <th>应付金额</th>
-                  <th>实付金额</th>
+                  <th>实收金额</th>
                   <th>支付活动补贴金额</th>
                   <th>支付活动补贴付款方式</th>
                   <th>出货状态</th>
-                  <th>支付流水状态</th>
                   <th>出货对账状态</th>
                   <th>审核状态</th>
                   <th>操作时间</th>
@@ -364,6 +418,8 @@
       <td><input type="checkbox" class="multi-check"></td>
        <!-- 出/退货时间 -->
       <td>{{shipmentDate}}</td>
+      <!-- 结算日期 -->
+      <td>{{settleDate}}</td>
       <!-- 出货订单类型 -->
       <td>{{shipmentOrderType}}</td>
       <!-- 订单来源 -->
@@ -388,8 +444,6 @@
       <td>{{subsidyTypeTrd}}</td>
       <!-- 出货状态 -->
       <td>{{shipmentStatus}}</td>
-      <!-- 支付流水状态 -->
-      <td>{{payStatus}}</td>
       <!-- 出货对账状态 -->
       <td>{{reconciliationStatus}}</td>
       <!-- 审批状态 -->
@@ -422,11 +476,6 @@
     </tr>
   </script>
 
-  <script src="js/vendor.js"></script>
-  <script src="js/balance-out-detail.js"></script>
-
-  @@include('component/popup-balance-out-detail.tpl')
-
   <!-- pop up -->
   <div class="modal fade" id="popup-detail" data-keyboard="false" data-backdrop="static">
     <div class="modal-dialog modal-lg">
@@ -442,8 +491,54 @@
     </div>
   </div>
 
+  <div class="modal fade" id="popup-sync-settle">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-lable="Close"><span aria-hidden="true">&times;</span></button>
+          <h5 class="modal-title">同步结算日期</h5>
+        </div>
+        <div class="modal-body">
+          <div class="container-fluid">
+            <form id="formSync">
+              <div class="row">
+                <div class="form-group col-sm-6">
+                  <div class="input-group">
+                    <div class="input-group-addon">开始日期</div>
+                    <input type="text" class="form-control" id="sync_startTime" required data-parsley-pattern="[0-9]{4}?-[0-9]{2}?-[0-9]{2}?">
+                  </div>
+                </div>
+                <div class="form-group col-sm-6">
+                  <div class="input-group">
+                    <div class="input-group-addon">结束日期</div>
+                    <input type="text" class="form-control" id="sync_endTime" required data-parsley-pattern="[0-9]{4}?-[0-9]{2}?-[0-9]{2}?">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-4 col-sm-offset-4">
+                  <button type="submit" class="btn btn-block btn-primary">确定</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="hud-overlay" style="display: none">
+    <div class="hud"><img src="images/loader.gif">
+      <p>working...</p>
+    </div>
+  </div>
+
   @@include('component/popup-balance-status-choose.tpl')
-  
+  @@include('component/popup-balance-out-detail.tpl')
+
+  <script src="js/vendor.js"></script>
+  <script src="js/balance-out-detail.js"></script>
+
   @@include('component/popup-balance-out-record.tpl')
   <script src="js/balance-out-record.js"></script>
 

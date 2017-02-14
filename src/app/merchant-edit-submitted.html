@@ -34,14 +34,14 @@
         <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">创建时间</div>
-              <input type="text" class="form-control" id="search_startTime">
+              <input type="text" class="form-control" id="search_startTime" required>
             </div>
           </div>
 
           <div class="form-group col-sm-6 col-md-4">
             <div class="input-group">
               <div class="input-group-addon">至</div>
-              <input type="text" class="form-control" id="search_endTime">
+              <input type="text" class="form-control" id="search_endTime" required>
             </div>
           </div>
 
@@ -96,7 +96,6 @@
               </div>
             </div>
           </div>
-
         </form>
 
         <div class="content-area">
@@ -109,7 +108,7 @@
                 <tr>
                   <th>商户号</th>
                   <th>商户名称</th>
-                  <th>进件时间</th>
+                  <th>创建时间</th>
                   <th>tp方</th>
                   <th>商户级别</th>
                   <th>商户状态</th>
@@ -125,32 +124,23 @@
               </tbody>
             </table>
           </div>
-
         </div>
-
       </div>
-
     </div>
-
   </div>
 
   <!-- pop up -->
   <div class="modal fade" id="popup-merchant-detail" data-keyboard="false" data-backdrop="static">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
-      <form>
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           <h4 class="modal-title">商户详情</h4>
         </div>
         <div class="modal-body"></div>
-      </form>
     </div>
   </div>
 </div>
-
-  <script src="js/vendor.js"></script>
-  <script src="js/merchant-edit-submitted.js"></script>
 
   <script id="pager-template" type="text/x-tmpl-mustache">
     <div class="col xs-12 col-sm-6 rowStatics">共 <span id="total">{{total}}</span> 条数据，当前显示 <span id="rowsSize">{{rowsSize}}</span> 条</div>
@@ -202,5 +192,53 @@
   </script>
 
   @@include('component/popup-merchant-detail.tpl')
+  <script id="file-upload-template" type="text/x-tmpl-mustache">
+    <div class="row file-upload-container" style="margin: 12px 0px;">
+      <div class="input-group">
+        <input type="text" class="form-control" readonly>
+        <span class="input-group-btn">
+          <span class="btn btn-default btn-file">
+            <span>上传文件</span>
+            <input class="file-upload" type="file" name="file">
+          </span>
+        </span>
+      </div>
+    </div>
+  </script>
+
+  <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">Large modal</button>
+
+  <div class="modal fade" id="checkImage">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        </div>
+        <div class="modal-body">
+          <img id="showImg" />
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+ </div>
+
+ <div class="modal fade" id="popup-merchant-bank" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <!-- <form> -->
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">选择开户行</h4>
+        </div>
+        <div class="modal-body">
+        </div>
+      <!-- </form> -->
+    </div>
+  </div>
+</div>
+
+ @@include('component/popup-merchant-bank.tpl')
+
+  <script src="js/vendor.js"></script>
+  <script src="js/merchant-edit-submitted.js"></script>
 </body>
 </html>

@@ -41,6 +41,9 @@ gulp.task('build-css', ['copy'], function (done) {
 gulp.task('build-js', ['fileinclude'], function () {
   devCompiler.run(function (err, stats) {
     if (err) throw new gutil.PluginError('webpack:build-js', err);
+      gutil.log('[webpack:build-js]', stats.toString({
+      colors: true,
+    }));
   });
 });
 

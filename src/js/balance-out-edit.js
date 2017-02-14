@@ -95,11 +95,8 @@ $('#formSearch').on('submit', function (e) {
       merchantName: $('#search_merchantName').val(),
       merchantNo: $('#search_merchantNo').val(),
       shipmentStatus: $('#search_shipmentStatus').val(),
-      bizType: $('#search_bizType').val(),
       partner: $('#search_partner').val(),
-      acquiringReconciliationStatus: $('#search_acquiringReconciliationStatus').val(),
       reconciliationStatus: $('#search_reconciliationStatus').val(),
-      reason: $('#search_reason').val(),
       discountType: $('#search_discountType').val(),
       discountName: $('#search_discountName').val(),
       bizOrderNo: $('#search_bizOrderNo').val(),
@@ -110,6 +107,12 @@ $('#formSearch').on('submit', function (e) {
       pageSize: _pageSize,
       orderSource: $('#search_orderSource').val(),
       shipmentOrderType: $('#search_shipmentOrderType').val(),
+      settleDate: $('#search_settleDate').val(),
+      settlementPlan: $('#search_settlementPlan').val(),
+      appStatus: $('#search_appStatus').val(),
+      batchNo: $('#search_batchNo').val(),
+      waitBatchNo: $('#search_waitBatchNo').val(),
+      cityName: $('#search_cityName').val(),
     };
 
     searchCache = sendData;
@@ -146,12 +149,9 @@ function handleData(res) {
       item.canEdit = (item.checkStatus != 2 && item.checkStatus != 3 && item.reconciliationStatus != 4); // 待审核/审核完成状态不能再修改, 对账状态为确认的也不能修改
       item.canReverse = (item.checkStatus == 3);
       item.bizType = settlementCommon.parseBizType(item.bizType);
-      item.payStatus = settlementCommon.parsePayStatus(item.payStatus);
       item.partner = settlementCommon.parsePartner(item.partner);
-      item.acquiringReconciliationStatus = settlementCommon.parseReconciliationStatus(item.acquiringReconciliationStatus);
       item.subsidyType = settlementCommon.parseSubsidyType(item.subsidyType);
       item.reconciliationStatus = settlementCommon.parseReconciliationStatus(item.reconciliationStatus);
-      item.reason = settlementCommon.parseOutReason(item.reason);
       item.discountType = settlementCommon.parseDiscountType(item.discountType);
       item.checkStatus = settlementCommon.parseCheckStatus(item.checkStatus);
       item.shipmentStatus = settlementCommon.parseShipmentStatus(item.shipmentStatus);
@@ -277,11 +277,9 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
 
     var detail = data.detail;
     detail.payTool = settlementCommon.parsePayTool(detail.payTool);
-    detail.payStatus = settlementCommon.parsePayStatus(detail.payStatus);
     detail.bizType = settlementCommon.parseBizType(detail.bizType);
     detail.chargeMerchant = settlementCommon.parseMerchant(detail.chargeMerchant);
     detail.discountType = settlementCommon.parseDiscountType(detail.discountType);
-    detail.acquiringReconciliationStatus = settlementCommon.parseReconciliationStatus(detail.acquiringReconciliationStatus);
     detail.subsidyType = settlementCommon.parseSubsidyType(detail.subsidyType);
     detail.partner = settlementCommon.parsePartner(detail.partner);
 
@@ -306,7 +304,9 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     // $('#partner option[value="' + detail.partner + '"]').prop('selected', true);
     $('#shipmentStatus option[value="' + detail.shipmentStatus + '"]').prop('selected', true);
     $('#reconciliationStatus option[value="' + detail.reconciliationStatus + '"]').prop('selected', true);
-    $('#reason option[value="' + detail.reason + '"]').prop('selected', true);
+
+    $('#settlementPlan option[value="' + detail.settlementPlan + '"]').prop('selected', true);
+    $('#appStatus option[value="' + detail.appStatus + '"]').prop('selected', true);
 
     if (compare) {
 
@@ -317,8 +317,6 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
       $('#shipmentStatusNew option[value="' + detail.shipmentStatus + '"]').prop('selected', true);
       $('#reconciliationStatusNew').val([]);
       $('#reconciliationStatusNew option[value="' + detail.reconciliationStatus + '"]').prop('selected', true);
-      $('#reasonNew').val([]);
-      $('#reasonNew option[value="' + detail.reason + '"]').prop('selected', true);
 
       // 如果没有原备注的话, 隐藏原备注textarea
       if (!detail.remarks) {
@@ -336,7 +334,6 @@ function formatEditHistory(operate) {
     // obj.partner = settlementCommon.parsePartner(obj.partner);
     obj.reconciliationStatus = settlementCommon.parseReconciliationStatus(obj.reconciliationStatus);
     obj.shipmentStatus = settlementCommon.parseShipmentStatus(obj.shipmentStatus);
-    obj.reason = settlementCommon.parseOutReason(obj.reason);
   });
 }
 
@@ -403,8 +400,14 @@ $(document).on('submit', '#popup-detail form', function(e) {
     finalSettleAmount: $('#finalSettleAmount').val(),
     reconciliationStatus: $('#reconciliationStatus').val(),
     shipmentStatus: $('#shipmentStatus').val(),
-    reason: $('#reconciliationStatus').val() == 2 ? $('#reason').val() : '',// 对账不一致才有原因
-    remarks: $('#remarks').val()
+    remarks: $('#remarks').val(),
+
+    settleDate: $('#settleDate').val(),
+    settlementPlan: $('#settlementPlan').val(),
+    appStatus: $('#appStatus').val(),
+    batchNo: $('#batchNo').val(),
+    waitBatchNo: $('#waitBatchNo').val(),
+    cityName: $('#cityName').val(),
   };
 
   $.ajax({

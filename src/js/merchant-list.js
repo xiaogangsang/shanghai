@@ -16,11 +16,12 @@ var _pageSize = 10;
 var _pageTotal = 0;
 var _querying = false;
 var searchCache = {};
+var merchantAttachments;
 var useCache = false;
 var dataCache;
 
 var selectBranch;
-var selectGuy;
+// var selectGuy;
 
 var _DEBUG = false;
 
@@ -39,58 +40,60 @@ $(function () {
   // 商户状态
   $('#search_merchantStatus').html(settlementCommon.optionsHTML(settlementCommon.merchantStatus, true));
 
+  // settlementCommon.datetimepickerRegister($('#search_startTime'), $('#search_endTime'));
+
   // var selectBranch = $('#search_merchantBranch').selectize()[0].selectize;
-  selectGuy = $('#search_merchantSubscribeGuy').selectize()[0].selectize;
-  selectGuy.disable();
-  selectGuy.clearOptions();
+  // selectGuy = $('#search_merchantSubscribeGuy').selectize()[0].selectize;
+  // selectGuy.disable();
+  // selectGuy.clearOptions();
 
   // 提报卡部数据源
-  selectBranch = $('#search_merchantBranch').selectize({
-    onChange: function(value) {
-      // -1: 全部
-      if (value === '' || value === '-1') {
-        selectGuy.disable();
-        selectGuy.clearOptions();
-      } else {
-        selectGuy.enable();
-        selectGuy.clearOptions();
+  // selectBranch = $('#search_merchantBranch').selectize({
+  //   onChange: function(value) {
+  //     // -1: 全部
+  //     if (value === '' || value === '-1') {
+  //       selectGuy.disable();
+  //       selectGuy.clearOptions();
+  //     } else {
+  //       selectGuy.enable();
+  //       selectGuy.clearOptions();
 
-        var guysInBranch = guys[value];
+  //       var guysInBranch = guys[value];
 
-        selectGuy.load(function(callback) {
-          callback(guysInBranch);
-        });
+  //       selectGuy.load(function(callback) {
+  //         callback(guysInBranch);
+  //       });
 
-        selectGuy.setValue(guysInBranch[0].value);
-      }
-    }, // end onChange
-    onFocus: function() {
-      // we only get provinces once
-      if (branches) {
-          return false;
-      }
+  //       selectGuy.setValue(guysInBranch[0].value);
+  //     }
+  //   }, // end onChange
+  //   onFocus: function() {
+  //     // we only get provinces once
+  //     if (branches) {
+  //         return false;
+  //     }
 
-      this.clearOptions();
-      this.load(function(callback) {
-        if (!_DEBUG) {
-          $.ajax({
-            url: common.API_HOST + 'security/user/departmentUserAll',
-            success: function(dataWeGot) {
-                handleDepartmentData(dataWeGot, callback);
-            },
-            error: function(xhr, status, errorThrown) {
-                alert('服务器连接错误!');
-            },
-            complete: function() {
-            }
-          }); // end ajax
-        } else {
-          var dataWeGot = $.parseJSON('{ "meta" : { "result" : "1", "msg" : "操作成功" }, "data" : [ { "departmentUserAll" : [ { "realName" : "纪蓓琳", "mobile" : null, "userId" : "661920" }, { "realName" : "王璐", "mobile" : null, "userId" : "663997" }, { "realName" : "刘越", "mobile" : null, "userId" : "666479" }, { "realName" : "崔莹", "mobile" : null, "userId" : "664931" }, { "realName" : "王婷", "mobile" : null, "userId" : "661664" }, { "realName" : "卢依吉", "mobile" : null, "userId" : "662331" }, { "realName" : "洪雨", "mobile" : null, "userId" : "662383" }, { "realName" : "王胜男", "mobile" : null, "userId" : "661552" }, { "realName" : "徐艳", "mobile" : null, "userId" : "661387" }, { "realName" : "陈中亚", "mobile" : null, "userId" : "665352" }, { "realName" : "周杨", "mobile" : null, "userId" : "672067" }, { "realName" : "张霖", "mobile" : null, "userId" : "671508" }, { "realName" : "董婷", "mobile" : null, "userId" : "661318" }, { "realName" : "黄壮", "mobile" : null, "userId" : "664385" } ], "department" : "上海客服_业务培训室" }, { "departmentUserAll" : [ { "realName" : "周凌烨", "mobile" : null, "userId" : "660663" }, { "realName" : "梁梦远", "mobile" : null, "userId" : "672324" }, { "realName" : "洪士敏", "mobile" : null, "userId" : "671267" }, { "realName" : "苏靖", "mobile" : null, "userId" : "662737" }, { "realName" : "何好", "mobile" : null, "userId" : "661968" }, { "realName" : "王惠", "mobile" : null, "userId" : "662017" }, { "realName" : "顾文莉", "mobile" : null, "userId" : "664867" }, { "realName" : "刘琪", "mobile" : null, "userId" : "661271" }, { "realName" : "潘若昕", "mobile" : null, "userId" : "672340" }, { "realName" : "李海燕", "mobile" : null, "userId" : "671850" }, { "realName" : "王琳琳", "mobile" : null, "userId" : "663573" }, { "realName" : "胡杨", "mobile" : null, "userId" : "661816" }, { "realName" : "郑超", "mobile" : null, "userId" : "666380" }, { "realName" : "陈君铎", "mobile" : null, "userId" : "663982" }, { "realName" : "高杰", "mobile" : null, "userId" : "664146" }, { "realName" : "王开捷", "mobile" : null, "userId" : "663441" }, { "realName" : "王瑶", "mobile" : null, "userId" : "662037" }, { "realName" : "袁琤琤", "mobile" : null, "userId" : "660874" }, { "realName" : "齐小慧", "mobile" : null, "userId" : "662213" }, { "realName" : "王汇文", "mobile" : null, "userId" : "666838" }, { "realName" : "黄莺", "mobile" : null, "userId" : "671187" }, { "realName" : "徐晨", "mobile" : null, "userId" : "666949" }, { "realName" : "董琦", "mobile" : null, "userId" : "665236" }, { "realName" : "陈珏", "mobile" : null, "userId" : "665517" }, { "realName" : "袁伟良", "mobile" : null, "userId" : "664006" }, { "realName" : "王潇", "mobile" : null, "userId" : "661156" }, { "realName" : "杜丹", "mobile" : null, "userId" : "660453" }, { "realName" : "胡蓉", "mobile" : null, "userId" : "661257" }, { "realName" : "李凌宇", "mobile" : null, "userId" : "671501" } ], "department" : "上海客服_业务管理室" } ] }');
-          handleDepartmentData(dataWeGot, callback);
-        }
-      });// end load
-    }// end onFocus
-  })[0].selectize;
+  //     this.clearOptions();
+  //     this.load(function(callback) {
+  //       if (!_DEBUG) {
+  //         $.ajax({
+  //           url: common.API_HOST + 'security/user/departmentUserAll',
+  //           success: function(dataWeGot) {
+  //               handleDepartmentData(dataWeGot, callback);
+  //           },
+  //           error: function(xhr, status, errorThrown) {
+  //               alert('服务器连接错误!');
+  //           },
+  //           complete: function() {
+  //           }
+  //         }); // end ajax
+  //       } else {
+  //         var dataWeGot = $.parseJSON('{ "meta" : { "result" : "1", "msg" : "操作成功" }, "data" : [ { "departmentUserAll" : [ { "realName" : "纪蓓琳", "mobile" : null, "userId" : "661920" }, { "realName" : "王璐", "mobile" : null, "userId" : "663997" }, { "realName" : "刘越", "mobile" : null, "userId" : "666479" }, { "realName" : "崔莹", "mobile" : null, "userId" : "664931" }, { "realName" : "王婷", "mobile" : null, "userId" : "661664" }, { "realName" : "卢依吉", "mobile" : null, "userId" : "662331" }, { "realName" : "洪雨", "mobile" : null, "userId" : "662383" }, { "realName" : "王胜男", "mobile" : null, "userId" : "661552" }, { "realName" : "徐艳", "mobile" : null, "userId" : "661387" }, { "realName" : "陈中亚", "mobile" : null, "userId" : "665352" }, { "realName" : "周杨", "mobile" : null, "userId" : "672067" }, { "realName" : "张霖", "mobile" : null, "userId" : "671508" }, { "realName" : "董婷", "mobile" : null, "userId" : "661318" }, { "realName" : "黄壮", "mobile" : null, "userId" : "664385" } ], "department" : "上海客服_业务培训室" }, { "departmentUserAll" : [ { "realName" : "周凌烨", "mobile" : null, "userId" : "660663" }, { "realName" : "梁梦远", "mobile" : null, "userId" : "672324" }, { "realName" : "洪士敏", "mobile" : null, "userId" : "671267" }, { "realName" : "苏靖", "mobile" : null, "userId" : "662737" }, { "realName" : "何好", "mobile" : null, "userId" : "661968" }, { "realName" : "王惠", "mobile" : null, "userId" : "662017" }, { "realName" : "顾文莉", "mobile" : null, "userId" : "664867" }, { "realName" : "刘琪", "mobile" : null, "userId" : "661271" }, { "realName" : "潘若昕", "mobile" : null, "userId" : "672340" }, { "realName" : "李海燕", "mobile" : null, "userId" : "671850" }, { "realName" : "王琳琳", "mobile" : null, "userId" : "663573" }, { "realName" : "胡杨", "mobile" : null, "userId" : "661816" }, { "realName" : "郑超", "mobile" : null, "userId" : "666380" }, { "realName" : "陈君铎", "mobile" : null, "userId" : "663982" }, { "realName" : "高杰", "mobile" : null, "userId" : "664146" }, { "realName" : "王开捷", "mobile" : null, "userId" : "663441" }, { "realName" : "王瑶", "mobile" : null, "userId" : "662037" }, { "realName" : "袁琤琤", "mobile" : null, "userId" : "660874" }, { "realName" : "齐小慧", "mobile" : null, "userId" : "662213" }, { "realName" : "王汇文", "mobile" : null, "userId" : "666838" }, { "realName" : "黄莺", "mobile" : null, "userId" : "671187" }, { "realName" : "徐晨", "mobile" : null, "userId" : "666949" }, { "realName" : "董琦", "mobile" : null, "userId" : "665236" }, { "realName" : "陈珏", "mobile" : null, "userId" : "665517" }, { "realName" : "袁伟良", "mobile" : null, "userId" : "664006" }, { "realName" : "王潇", "mobile" : null, "userId" : "661156" }, { "realName" : "杜丹", "mobile" : null, "userId" : "660453" }, { "realName" : "胡蓉", "mobile" : null, "userId" : "661257" }, { "realName" : "李凌宇", "mobile" : null, "userId" : "671501" } ], "department" : "上海客服_业务管理室" } ] }');
+  //         handleDepartmentData(dataWeGot, callback);
+  //       }
+  //     });// end load
+  //   }// end onFocus
+  // })[0].selectize;
 
 function handleDepartmentData(dataWeGot, callback) {
   var resCode = dataWeGot.meta.result;
@@ -127,6 +130,7 @@ function handleDepartmentData(dataWeGot, callback) {
   }
 }
 
+
   $('#search_startTime').datetimepicker({
     format: 'yyyy-mm-dd',
     language: 'zh-CN',
@@ -162,6 +166,13 @@ $('#formSearch').on('click', 'button[type=submit]', function (event) {
 
 $('#formSearch').on('submit', function (e) {
   e.preventDefault();
+
+  if (!useCache) {
+    if (!$('#formSearch').parsley().isValid()) {
+      return false;
+    }
+  }
+
   var sendData = {
     startTime: $('#search_startTime').val(),
     endTime: $('#search_endTime').val(),
@@ -185,15 +196,17 @@ $('#formSearch').on('submit', function (e) {
   }
 
   sendData.pageIndex = _pageIndex;
+  $('#hud-overlay').show();
 
   if (!_DEBUG) {
     $.ajax({
-      url: common.API_HOST + 'settlement/merchantinfo/merchantinfoList.json',
+      url: common.API_HOST + 'settlement/merchantinfo/merchantinfoList',
       type: 'GET',
       dataType: 'json',
       data: sendData,
     })
     .done(function (res) {
+      $('#hud-overlay').hide();
       handleMerchantData(res);
     });
   } else {
@@ -209,20 +222,21 @@ function handleMerchantData(res) {
   _querying = false;
 
   if (!!~~res.meta.result) {
-    if (res.data.record.length < 1) {
+    if (res.data.result.record.length < 1) {
       $('#dataTable tbody').html('<tr><td colspan="9" align="center">查不到相关数据，请修改查询条件！</td></tr>');
       $('#pager').html('');
     } else {
       useCache = true;
       // _pageIndex = res.data.pageIndex;
-      var totalRecord = res.data.total;
-      var record = res.data.record;
+      var totalRecord = res.data.result.total;
+      var record = res.data.result.record;
 
       _pageTotal = Math.ceil(totalRecord / _pageSize);
       setPager(totalRecord, _pageIndex, record.length, _pageTotal);
 
       _(record).forEach(function (item) {
-
+        item.tpId = settlementCommon.parseTP(item.tpId);
+        item.merchantClass = settlementCommon.parseMerchantLevel(item.merchantClass);
         item.merchantStatus = settlementCommon.parseMerchantStatus(item.merchantStatus);
         item.accountStatus = settlementCommon.parseAccountStatus(item.accountStatus);
       });
@@ -282,7 +296,7 @@ $('.btn-reset').click(function(e) {
   $('#search_merchantStatus').val('');
   $('#search_merchantName').val('');
   $('#search_merchantNo').val('');
-  selectGuy.clear();
+  // selectGuy.clear();
   selectBranch.clear();
 });
 
@@ -342,8 +356,8 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
 
 if (!_DEBUG) {
     $.ajax({
-      url: common.API_HOST + 'settlement/merchantinfo/query.json',
-      type: 'GET',
+      url: common.API_HOST + 'settlement/merchantinfo/query',
+      type: 'POST',
       dataType: 'json',
       data: {merchantId: merchantId},
     })
@@ -352,6 +366,8 @@ if (!_DEBUG) {
       if (!!~~res.meta.result) {
         setModal(res.data);
         $('#popup-merchant-detail').modal('show');
+        // 设置发送对象
+        setAllocationDetailReceiver(res.data.merchantInfo);
       } else {
         alert(res.meta.msg);
       }
@@ -363,8 +379,21 @@ if (!_DEBUG) {
   }
 });
 
-function setModal(detailData) {
+function setModal(data) {
 
+  var detailData = data.merchantInfo;
+  var attachments = data.merchantAttachments;
+
+  attachments.forEach(function (item) {
+    updateTime = item.updateTime;
+    item.uploadTime = getMyDate(updateTime);
+  });
+
+  detailData.attachments = attachments;
+  merchantAttachments = data.merchantAttachments;
+
+  // detailData.merchantStatus = settlementCommon.parseMerchantStatus(detailData.merchantStatus);
+  // detailData.merchantClass = settlementCommon.parseMerchantLevel(detailData.merchant_class);
   var template = $('#detail-template').html();
   Mustache.parse(template);
   var html = Mustache.render(template, detailData);
@@ -374,6 +403,26 @@ function setModal(detailData) {
   formatPopupUI(detailData);
 }
 
+//获得年月日      得到日期oTime
+  function getMyDate(str){
+      var oDate = new Date(str),
+      oYear = oDate.getFullYear(),
+      oMonth = oDate.getMonth()+1,
+      oDay = oDate.getDate(),
+      oHour = oDate.getHours(),
+      oMin = oDate.getMinutes(),
+      oSen = oDate.getSeconds(),
+      oTime = oYear +'-'+ getzf(oMonth) +'-'+ getzf(oDay) +' '+ getzf(oHour) +':'+ getzf(oMin) +':'+getzf(oSen);//最后拼接时间  
+      return oTime;
+  };
+  //补0操作
+  function getzf(num){
+      if(parseInt(num) < 10){
+          num = '0'+num;
+      }
+      return num;
+  }
+
 function formatPopupUI(detailData) {
   // make all the input lable-like
   $('.detail-area :input').prop('readonly', true);
@@ -382,11 +431,18 @@ function formatPopupUI(detailData) {
   // 隐藏所有的button
   $('.detail-area :button').hide();
 
+  $('#file-upload-container').hide();
+
+  $('#commitBtn').hide();
+
   // 设置商户级别和TP方的的选择
   $('#detail-merchantClass').html(settlementCommon.optionsHTML(settlementCommon.merchantLevel, true));
   $('#detail-merchantClass option[value="' + detailData.merchantClass + '"]').prop('selected', true);
   $('#detail-tpId').html(settlementCommon.optionsHTML(settlementCommon.TP, true));
   $('#detail-tpId option[value="' + detailData.tpId + '"]').prop('selected', true);
+  $('#detail-merchantStatus').html(settlementCommon.optionsHTML(settlementCommon.merchantStatus, true));
+  $('#detail-merchantStatus option[value="' + detailData.merchantStatus + '"]').prop('selected', true);
+  $('#select-fixed-allocation-day option[value="' + detailData.fixedAllocationDay + '"]').prop('selected', true);
 
   // 拨款模式不同, 相应控件显示隐藏
   var allocationType = detailData.allocationType;
@@ -395,6 +451,8 @@ function formatPopupUI(detailData) {
   }
 
   $('#select-fixed-allocation-day').val(detailData.fixedAllocationDay);
+  $('#allocationPeriod').val(detailData.allocationPeriod);
+  $('#allocationDelay').val(detailData.allocationDelay);
 
   // 是否要发送拨款明细
   var allocationDetail = detailData.allocationDetail;
@@ -403,7 +461,6 @@ function formatPopupUI(detailData) {
       $(el).prop('checked', true).change();
     }
   });
-  
   // 发送对象
   var sendTo = detailData.allocationDetailReceiver;
   $('input[name="send-to"]').each(function(index, el) {
@@ -413,6 +470,25 @@ function formatPopupUI(detailData) {
       $(el).prop('checked', false).change();
     }
   });
+}
+
+function setAllocationDetailReceiver(detailData){
+    if (detailData.allocationDetailReceiver == 3) {
+      $('#allocationDetailReceiver1').prop('checked', true);
+      $('#allocationDetailReceiver2').prop('checked', true);
+      $('.merchant-email').show();
+      $('.branch-email').show();
+
+    } else if (detailData.allocationDetailReceiver == 1) {
+      $('#allocationDetailReceiver1').prop('checked', true);
+      $('.merchant-email').show();
+      $('.branch-email').hide();
+
+    } else if (detailData.allocationDetailReceiver = 2) {
+      $('#allocationDetailReceiver2').prop('checked', true);
+      $('.branch-email').show();
+      $('.merchant-email').hide();
+    }
 }
 
 
@@ -460,7 +536,10 @@ $('.modal').on('change', ':checkbox[name="send-to"]', function(e) {
 
 $('.modal').on('click', '.download', function(e) {
   var fileUrl = $(this).data('fileurl');
+  // alert('文件路径为 ' + fileUrl + ', 本接口尚未实现.');
+  var rowIndex = $(this).closest('tr').prevAll().length;
+  var attachment = merchantAttachments[rowIndex];
+  window.location.href = common.API_HOST + 'settlement/merchantAttachment/downLoadById?id=' + attachment.id;
 
-  alert('文件路径为 ' + fileUrl + ', 本接口尚未实现.');
 });
 
