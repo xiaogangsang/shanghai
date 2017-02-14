@@ -1295,7 +1295,7 @@ function setEdit(unitId) {
           _popupDataCache.channels.push(~~channelId);
         });
       }
-      _popupDataCache.films = unit.films != null ? unit.filmsfilms : [];
+      _popupDataCache.films = unit.films != null ? unit.films : [];
       _popupDataCache.configType = unit.configType != null ? unit.configType : [];
       _popupDataCache.qualification = unit.qualification != undefined ? unit.qualification[0] : '';
       _popupDataCache.advancePayment = unit.advancePayment;
