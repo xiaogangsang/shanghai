@@ -22,6 +22,9 @@ $(function () {
   $('#search_endTime').val(todayDate);
   $('#auto_startTime').val(todayDate);
   $('#auto_endTime').val(todayDate);
+
+  $('#btn-export').prop('disabled', true);
+  $('#btn-batch').prop('disabled', true);
 })
 
 $('#formSearch').on('click', 'button[type=submit]', function(e) {
@@ -104,6 +107,13 @@ function handleData(res) {
 		Mustache.parse(template);
 		var html = Mustache.render(template, {rows: records});
 		$('#dataTable tbody').html(html);
+
+	  $('#btn-export').prop('disabled', false);
+	  $('#btn-batch').prop('disabled', false);
+
+	} else {
+	  $('#btn-export').prop('disabled', true);
+  	$('#btn-batch').prop('disabled', true);
 	}
 }
 
