@@ -265,6 +265,26 @@
 
         <div class="content-area">
 
+          <div class="table-responsive" style="margin-bottom: 20px;">
+            <table class="table table-hover" id="summaryTable">
+              <thead>
+                <tr>
+                  <th>订单数</th>
+                  <th>张数</th>
+                  <th>结算金额(元)</th>
+                  <th>常规活动后付补贴金额(元)</th>
+                  <th>支付活动后付补贴金额(元)</th>
+                  <th>应付金额(元)</th>
+                  <th>实付金额(元)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
           <div class="row" id="pager"></div>
 
           <div class="table-responsive">
@@ -360,6 +380,25 @@
       </td>
     </tr>
     {{/rows}}
+  </script>
+
+  <script id="summary-table-template" type="text/x-tmpl-mustache">
+    <tr data-id="{{id}}" data-bannertype="{{bannerType}}">
+      <!-- 订单数 -->
+      <td>{{count}}</td>
+      <!-- 张数 -->
+      <td>{{totalTicketCount}}</td>
+      <!-- 结算金额 -->
+      <td>{{totalSettleAmount}}</td>
+      <!-- 常规活动后付补贴金额(元) -->
+      <td>{{totalSubsidyAmountO2o}}</td>
+      <!-- 支付活动后付补贴金额(元) -->
+      <td>{{totalSubsidyAmountTrd}}</td>
+      <!-- 应付金额 -->
+      <td>{{totalAcceptanceAppropriationAmount}}</td>
+      <!-- 实付金额 -->
+      <td>{{totalFinalSettleAmount}}</td>
+    </tr>
   </script>
 
   <script src="js/vendor.js"></script>

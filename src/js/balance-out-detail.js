@@ -32,7 +32,6 @@ $(function() {
   // TP方
   $('#search_payTool').html(settlementCommon.optionsHTML(settlementCommon.payTool, true));
   $('#formSearch').parsley();
-  settlementCommon.datetimepickerRegister($('#search_settleDate'), null);
   settlementCommon.datetimepickerRegister($('#sync_startTime'), $('#sync_endTime'));
 });
 
@@ -135,7 +134,6 @@ function getParameters() {
     pageSize: _pageSize,
     orderSource: $('#search_orderSource').val(),
     shipmentOrderType: $('#search_shipmentOrderType').val(),
-    settleDate: $('#search_settleDate').val(),
     settlementPlan: $('#search_settlementPlan').val(),
     appStatus: $('#search_appStatus').val(),
     batchNo: $('#search_batchNo').val(),
