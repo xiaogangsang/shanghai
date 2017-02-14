@@ -42,7 +42,7 @@ $(function() {
   // 初始化涉及的select控件
   // TP方
   $('#search_payTool').html(settlementCommon.optionsHTML(settlementCommon.payTool, true));
-  
+
   $('#formSearch').parsley();
 });
 
@@ -162,6 +162,11 @@ function handleData(res) {
     }
 
     setTableData(record);
+
+    // 从汇总页点击查看选中明细, 是没有summary返回的
+    if (res.data.summary) {
+      setSummaryTableData(res.data.summary);
+    }
   }
 }
 
@@ -171,6 +176,13 @@ function setTableData(rows) {
   Mustache.parse(template);
   var html = Mustache.render(template, data);
   $('#dataTable tbody').html(html);
+}
+
+function setSummaryTableData(data) {
+  var template = $('#summary-table-template').html();
+  Mustache.parse(template);
+  var html = Mustache.render(template, data);
+  $('#summaryTable tbody').html(html);
 }
 
 function setPager(total, pageIndex, rowsSize, pageTotal) {

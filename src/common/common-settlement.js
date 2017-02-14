@@ -84,7 +84,11 @@ settlementCommon.parsePayTool = function(status) {
 settlementCommon.acquiringPayTool = {'1' : 'O2O-卡中心', '2' : 'O2O-分行'};
 
 settlementCommon.parseAcquiringPayTool = function(status) {
-  return this.acquiringPayTool[status];
+  if (status == undefined) {
+    return '合计';
+  } else {
+    return this.acquiringPayTool[status];
+  }
 }
 
 
