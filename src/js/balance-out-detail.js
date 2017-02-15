@@ -677,7 +677,7 @@ $('#formBatch').submit(function(e) {
     };
     $('#hud-overlay').show();
     $.ajax({
-      url: common.API_HOST + 'settlement/shipmentInfo/batchUpdateShipmentInfo?' + settlementCommon.serializeParam(param),
+      url: common.API_HOST + 'settlement/shipmentInfo/batchUpdateShipmentInfoByIds?' + settlementCommon.serializeParam(param),
       type: 'GET',
       dataType: 'json',
     })
