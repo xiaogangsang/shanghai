@@ -73,10 +73,10 @@ $('#formSearch').on('submit', function (e) {
 
   sendData.pageIndex = _pageIndex;
 
-  if (_dateType === 9) {
-    sendData.dateType = 9;
-    _dateType = null;
-  }
+  // if (_dateType === 9) {
+  //   sendData.dateType = 9;
+  //   _dateType = null;
+  // }
 
   $('#hud-overlay').show();
 
@@ -585,25 +585,36 @@ $('#exceptionAlert a').click(function(e) {
 
 $('#nullSettleDateAlert a').click(function(e) {
   e.preventDefault();
-  _dateType = 9;
-  $('#formSearch button[type=submit]').trigger('click');
+  // _dateType = 9;
+  // $('#formSearch button[type=submit]').trigger('click');
+
+  $('#hud-overlay').show();
+
+  searchCache = {
+    dateType: 9,
+    pageSize: $('#search_pageSize').val() || 10,
+    pageIndex: 1,
+  };
+
+  $.ajax({
+    url: common.API_HOST + 'settlement/shipmentInfo/infoList',
+    type: 'GET',
+    dataType: 'json',
+    data: searchCache,
+  })
+  .done(function (res) {
+    handleData(res);
+  });
 });
 
 $('.btn-sync').click(function(e) {
   e.preventDefault();
-  $('#popup-sync-settle').modal('show');
-});
 
-$('#formSync').submit(function(e) {
-  e.preventDefault();
-
-  var param = {
-    startTime: $('#sync_startTime').val(),
-    endTime: $('#sync_endTime').val(),
-  };
+  if (!confirm('确定开始同步结算日期？')) {
+    return false;
+  }
 
   $('#hud-overlay').show();
-
   //同步接口，后台说一次批量操作至少15分钟，所以设置超时时间15分钟......
   $.ajax({
     url: common.API_HOST + 'settlement/shipmentInfo/synchronousSettleDate',
@@ -614,7 +625,6 @@ $('#formSync').submit(function(e) {
   })
   .done(function(res) {
     if (!!~~res.meta.result) {
-      $('#popup-sync-settle').modal('hide');
       $('#formSearch').trigger('submit');
     }
     alert(res.meta.msg);
