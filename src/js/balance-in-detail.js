@@ -451,6 +451,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
       $('.edit-submit').hide();
     } else {
       $('#reconciliationStatus option[value=4]').remove();      // 不能在明细的修改里将对账状态设为"确认"
+      $('#orderNo').prop('readonly', (typeof detail.orderNo !== 'undefined' && detail.orderNo.length > 0));
     }
   });
 
@@ -516,8 +517,9 @@ $(document).on('submit', '#popup-detail form', function(e) {
     reason: ($('#reconciliationStatus').val() == 2 ? $('#reason').val() : ''),// 对账不一致才有原因
     merchantNo: $('#merchantNo').val(),
     remarks: $('#remarks').val(),
-    subsidyAmountTrd:$('#subsidyAmountTrd').val(),
-    subsidyTypeTrd:$('#subsidyTypeTrd').val(),
+    subsidyAmountTrd: $('#subsidyAmountTrd').val(),
+    subsidyTypeTrd: $('#subsidyTypeTrd').val(),
+    orderNo: $('#orderNo').val(),
 
     discountType: $('#discountType').val(),
     discountName: $('#discountName').val(),

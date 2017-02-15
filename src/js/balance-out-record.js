@@ -54,17 +54,17 @@ function setupDefaultValue () {
   $('#record_subsidyTypeTrd').val(1);
 }
 
-Parsley.addValidator('validateAmount', {
-  messages: { 'zh-cn': '出货调整时，金额应该为0或正值。退货调整时，金额应该为0或负值。' },
-  validate: function(value, requirement) {
-    var shipmentOrderType = $('#record_shipmentOrderType').val();
-    if (~~shipmentOrderType === 3) { // 出货
-      return (~~value < 0) ? false : true;
-    } else if (~~shipmentOrderType === 4) { // 退货
-      return (~~value > 0) ? false : true;
-    }
-  }
-});
+// Parsley.addValidator('validateAmount', {
+//   messages: { 'zh-cn': '出货调整时，金额应该为0或正值。退货调整时，金额应该为0或负值。' },
+//   validate: function(value, requirement) {
+//     var shipmentOrderType = $('#record_shipmentOrderType').val();
+//     if (~~shipmentOrderType === 3) { // 出货
+//       return (~~value < 0) ? false : true;
+//     } else if (~~shipmentOrderType === 4) { // 退货
+//       return (~~value > 0) ? false : true;
+//     }
+//   }
+// });
 
 $('#record_shipmentDate').datetimepicker({
   format: 'yyyy-mm-dd',

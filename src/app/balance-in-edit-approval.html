@@ -236,6 +236,28 @@
 
         <div class="content-area">
 
+          <div class="table-responsive" style="margin-bottom: 20px;">
+            <table class="table table-hover" id="summaryTable">
+              <thead>
+                <tr>
+                  <th>收单订单类型</th>
+                  <th>渠道</th>
+                  <th>记录数</th>
+                  <th>用户支付金额</th>
+                  <th>常规活动后付款补贴金额</th>
+                  <th>支付活动后付款补贴金额</th>
+                  <th>O2O应收金额</th>
+                  <th>实收金额</th>
+                  <th>服务费</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
           <div class="row" id="pager"></div>
 
           <div class="table-responsive">
@@ -329,6 +351,22 @@
       <button class="btn btn-xs btn-default btn-approval" data-checkstatus="3" data-id="{{id}}" data-version="{{version}}">审核通过</button>
       <button class="btn btn-xs btn-default btn-approval" data-checkstatus="4" data-id="{{id}}" data-version="{{version}}">驳回</button>
       </td>
+    </tr>
+    {{/rows}}
+  </script>
+
+  <script id="summary-table-template" type="text/x-tmpl-mustache">
+    {{#rows}}
+    <tr>
+      <td>{{acquiringOrderType}}</td>
+      <td>{{payTool}}</td>
+      <td>{{totalOrderCount}}</td>
+      <td>{{totalPayAmount}}</td>
+      <td>{{totalSubsidyAmountO2o}}</td>
+      <td>{{totalSubsidyAmountTrd}}</td>
+      <td>{{totalO2oReceivableAmount}}</td>
+      <td>{{totalBankAmount}}</td>
+      <td>{{totalServiceAmount}}</td>
     </tr>
     {{/rows}}
   </script>

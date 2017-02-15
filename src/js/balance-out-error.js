@@ -10,6 +10,7 @@ var _records = {};
 
 $(function () {
 	common.init('balance-out-error');
+  pager.init($('#pager'));
 
 	var urlParam = common.getUrlParam();
 	if (urlParam['startTime'] && urlParam['endTime']) {
