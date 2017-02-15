@@ -168,6 +168,7 @@ $('#formSearch').on('submit', function (e) {
         _(res.data.rows).forEach(function (item) {
           item.onlineStatusName = item.onlineStatus == 1 ? '已上线' : '已下线';
           item.associationStatusName = item.associationStatus == 1 ? '已关联' : '未关联';
+          item.seatTicketFlag = (item.seatTicketFlag == '0' ? false : true);
         });
 
         setTableData(res.data.rows);
