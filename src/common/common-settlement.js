@@ -417,7 +417,7 @@ settlementCommon.warning = function (msg) {
   $('.breadcrumb').after(alertHtml);
 }
 
-settlementCommon.fetchBasicData = function (callback) {
+settlementCommon.fetchBasicData = function (callback, param) {
   $.ajax({
     url: window.location.protocol + '//' + window.location.host + '/MovieOps/' + 'settlement/sign/allList',
     type: 'GET',
@@ -447,7 +447,17 @@ settlementCommon.fetchBasicData = function (callback) {
       // 差异类型
       var typeObj = {};
       _(res.data.detail.type).each(function(item) {
-        typeObj[item.id] = item.differenceName;
+        if (param === 'diff-operation') {
+          if (item.addStatus === 1) {
+            typeObj[item.id] = item.differenceName;
+          }
+        } else if (param === 'diff-query') {
+          if (item.addStatus === 2) {
+            typeObj[item.id] = item.differenceName; 
+          }
+        } else {
+          typeObj[item.id] = item.differenceName;
+        }
       });
 
       callback({"sign" : signObj, "dispose" : disposeObj, "department" : departmentObj, "type" : typeObj});

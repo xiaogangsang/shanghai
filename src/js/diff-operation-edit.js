@@ -69,6 +69,14 @@ function renderTable(res) {
 }
 
 function fetchDataAndRenderHtml(orderNo, differAppendId) {
+
+	var param = '';
+	if (window.location.pathname.indexOf('diff-operation.html') > 0) {
+		param = 'diff-operation';
+	} else if (window.location.pathname.indexOf('diff-query.html') > 0) {
+		param = 'diff-query';
+	}
+
 	settlementCommon.fetchBasicData(function (data) {
 
 		(data.sign) ? (_signList = data.sign) : null;
@@ -158,7 +166,7 @@ function fetchDataAndRenderHtml(orderNo, differAppendId) {
 			settlementCommon.datetimepickerRegister($('#diff_settleDate'), null);
 			$('#popup-edit-diff').modal('show');
 		}
-	});
+	}, param);
 }
 
 $('#popup-edit-diff').on('blur', '#diff_orderNo', function (e) {
