@@ -448,11 +448,11 @@ settlementCommon.fetchBasicData = function (callback, param) {
       var typeObj = {};
       _(res.data.detail.type).each(function(item) {
         if (param === 'diff-operation') {
-          if (item.addStatus === 1) {
+          if (item.addStatus === 2) {
             typeObj[item.id] = item.differenceName;
           }
         } else if (param === 'diff-query') {
-          if (item.addStatus === 2) {
+          if (item.addStatus === 1) {
             typeObj[item.id] = item.differenceName; 
           }
         } else {
