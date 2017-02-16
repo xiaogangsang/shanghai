@@ -621,12 +621,8 @@ $('.btn-sync').click(function(e) {
     timeout: (15*60*1000),
     type: 'GET',
     dataType: 'json',
-    data: param,
   })
   .done(function(res) {
-    if (!!~~res.meta.result) {
-      $('#formSearch').trigger('submit');
-    }
     alert(res.meta.msg);
   })
   .always(function() {
