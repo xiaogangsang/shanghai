@@ -89,6 +89,7 @@
                 <tr>
                   <th>计划ID</th>
                   <th>计划名称</th>
+                  <th>成本中心</th>
                   <th>计划状态</th>
                   <th>预算状态</th>
                   <th>总金额预算</th>
@@ -138,6 +139,8 @@
     <tr data-id="{{id}}">
       <td>{{id}}</td>
       <td><a href="activity-unit.html?planId={{id}}" class="btn-link">{{name}}</a></td>
+      <!-- TODO: -->
+      <td>{{budgetSource}}</td>
       <td>{{statusName}}</td>
       <td>{{budgetStatusName}}</td>
       <td>{{usedTotalAmount}}/{{totalAmount}}</td>
