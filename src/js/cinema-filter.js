@@ -8,8 +8,8 @@ $(function () {
   common.init('cinema-filter');
 
   $.ajax({
-    url: common.API_HOST + 'filter/queryOptions',
-    type: 'GET',
+    url: common.API_HOST + 'filter/getFilterSettings',
+    type: 'POST',
     dataType: 'json'
   })
   .done(function (res) {
@@ -91,7 +91,7 @@ $(document).on('submit', 'form', function (event) {
   if (points) ids.push(points);
 
   $.ajax({
-    url: 'filter/saveOrUpdate',
+    url: common.API_HOST + 'filter/updateFilterSettings.json',
     type: 'POST',
     dataType: 'json',
     contentType: 'application/json; charset=utf-8',
