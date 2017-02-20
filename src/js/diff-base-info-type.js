@@ -100,7 +100,7 @@ function queryData (callback) {
 	})
 	.done(function(departmentRes) {
 		if (!!~~departmentRes.meta.result) {
-			var departmentHtml = '';
+			var departmentHtml = '<option value></option>';
 			_(departmentRes.data.detail.records).forEach(function (item) {
 					departmentHtml += '<option value="' + item.id + '">' + item.departmentName + '</option>';
 			});

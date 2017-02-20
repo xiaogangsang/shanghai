@@ -155,6 +155,9 @@ function handleData(res) {
       item.discountType = settlementCommon.parseDiscountType(item.discountType);
       item.checkStatus = settlementCommon.parseCheckStatus(item.checkStatus);
       item.shipmentStatus = settlementCommon.parseShipmentStatus(item.shipmentStatus);
+      item.shipmentOrderType = settlementCommon.parseShipmentOrderType(item.shipmentOrderType);
+      item.orderSource = settlementCommon.parseOrderSource(item.orderSource);
+
     });
 
     if (!_queryingFromSelectedSummary) {
@@ -402,7 +405,7 @@ $(document).on('submit', '#popup-detail form', function(e) {
     oldVersion: $submitButton.data('version'),
     shipmentDate: shipmentDate,
     merchantName: $('#merchantName').val(),
-    merchantId: $('#merchantNo').val(),
+    merchantNo: $('#merchantNo').val(),
     settleAmount: $('#settleAmount').val(),
     // subsidyAmountO2o: $('#subsidyAmountO2o').val(),
     // subsidyType: $('#subsidyType').val(),

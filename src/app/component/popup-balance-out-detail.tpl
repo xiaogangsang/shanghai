@@ -262,7 +262,6 @@
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
             <div class="input-group-addon">退款承债方</div>
-            <input type="text" class="form-control" id="partner" value="{{partner}}" readonly>
               <select class="form-control oldValue" id="partner" value="{{partner}}">
                 <option value=""></option>
                 <option value="1">O2O</option>
