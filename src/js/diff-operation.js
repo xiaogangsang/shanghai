@@ -26,8 +26,9 @@ $(function () {
   $('#btn-export').prop('disabled', true);
   $('#btn-batch').prop('disabled', true);
 
-  checkForAutoDiff();
-  checkForBatchCreateDiff();
+  // checkForAutoDiff();
+  // checkForBatchCreateDiff();
+  checkForBalanceStateSync();
 });
 
 
@@ -81,6 +82,30 @@ function checkForBatchCreateDiff() {
   });
 }
 
+function checkForBalanceStateSync() {
+  if ($('#hud-overlay')[0].style.display === 'none') {
+    $('#hud-overlay').show();
+  }
+  $.ajax({
+    url: common.API_HOST +  'settlement/differDetail/syncShipmentInfoStatus/thread_check',
+    type: 'GET',
+    dataType: 'json',
+  })
+  .done(function(res) {
+    if (!!~~res.meta.result) {
+      var status = res.data.syncShipmentInfoStatusCheck.detail.finish;
+      if (!status) {
+        $('#hud-overlay p').html('正在同步出货对账状态，请稍后...');
+        setTimeout(function () {
+          checkForBalanceStateSync();
+        }, 20000);
+      } else {
+        $('#hud-overlay').hide();
+        $('#hud-overlay p').html('working...');
+      }
+    }
+  });
+}
 
 $('#formSearch').on('click', 'button[type=submit]', function(e) {
 	e.preventDefault();
@@ -309,7 +334,8 @@ $('#btn-sync').click(function(e) {
 				})
 				.done(function() {
 					if (!!~~res.meta.result) {
-						settlementCommon.success('同步出货对账状态成功！');
+						// settlementCommon.success('同步出货对账状态成功！');
+						checkForBalanceStateSync();
 					} else {
 						settlementCommon.warning(res.meta.msg);
 					}
