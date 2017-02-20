@@ -33,7 +33,34 @@ $(function() {
   $('#search_payTool').html(settlementCommon.optionsHTML(settlementCommon.payTool, true));
   $('#formSearch').parsley();
   settlementCommon.datetimepickerRegister($('#sync_startTime'), $('#sync_endTime'));
+
+  checkForSettlementDateSync();
 });
+
+function checkForSettlementDateSync() {
+  if ($('#hud-overlay')[0].style.display === 'none') {
+    $('#hud-overlay').show();
+  }
+  $.ajax({
+    url: common.API_HOST + 'settlement/shipmentInfo/synchronousSettleDate/check',
+    type: 'GET',
+    dataType: 'json',
+  })
+  .done(function(res) {
+    if (!!~~res.meta.result) {
+      var status = res.data.synchronousSettleDateCheck.detail.finish;
+      if (!status) {
+        $('#hud-overlay p').html('正在同步结算日期，请稍后...');
+        setTimeout(function () {
+          checkForSettlementDateSync();
+        }, 20000);
+      } else {
+        $('#hud-overlay').hide();
+        $('#hud-overlay p').html('working...');
+      }
+    }
+  });
+}
 
 
 // handle search form
@@ -447,12 +474,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     detail.payTool = settlementCommon.parsePayTool(detail.payTool);
     detail.bizType = settlementCommon.parseBizType(detail.bizType);
     detail.chargeMerchant = settlementCommon.parseMerchant(detail.chargeMerchant);
-    // detail.discountType = settlementCommon.parseDiscountType(detail.discountType);
-    // detail.subsidyType = settlementCommon.parseSubsidyType(detail.subsidyType);
-    detail.subsidyType = detail.subsidyType;
     detail.partner = settlementCommon.parsePartner(detail.partner);
-    // detail.subsidyTypeTrd = settlementCommon.parseSubsidyType(detail.subsidyTypeTrd);
-    detail.subsidyTypeTrd = detail.subsidyTypeTrd;
 
     var operate = data.operate;
 
@@ -470,8 +492,6 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
 
     $('#popup-detail').modal('show');
 
-    // $('#subsidyType option[value="' + detail.subsidyType + '"]').prop('selected', true);
-    // $('#partner option[value="' + detail.partner + '"]').prop('selected', true);
     $('#subsidyType option[value="' + detail.subsidyType + '"]').prop('selected', true);
     $('#subsidyTypeTrd option[value="' + detail.subsidyTypeTrd + '"]').prop('selected', true);
     $('#shipmentStatus option[value="' + detail.shipmentStatus + '"]').prop('selected', true);
@@ -520,7 +540,7 @@ $(document).on('submit', '#popup-detail form', function(e) {
     oldVersion: $submitButton.data('version'),
     shipmentDate: shipmentDate,
     merchantName: $('#merchantName').val(),
-    merchantId: $('#merchantNo').val(),
+    merchantNo: $('#merchantNo').val(),
     settleAmount: $('#settleAmount').val(),
     subsidyAmountO2o: $('#subsidyAmountO2o').val(),
     subsidyType: $('#subsidyType').val(),
@@ -618,14 +638,18 @@ $('.btn-sync').click(function(e) {
   //同步接口，后台说一次批量操作至少15分钟，所以设置超时时间15分钟......
   $.ajax({
     url: common.API_HOST + 'settlement/shipmentInfo/synchronousSettleDate',
-    timeout: (15*60*1000),
     type: 'GET',
     dataType: 'json',
   })
   .done(function(res) {
-    alert(res.meta.msg);
+    $('#hud-overlay').hide();
+    if (!!~~res.meta.result) {
+      checkForSettlementDateSync();
+    } else {
+      alert(res.meta.msg);
+    }
   })
-  .always(function() {
+  .fail(function () {
     $('#hud-overlay').hide();
   });
 });

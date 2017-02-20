@@ -298,7 +298,12 @@
           <div class="input-group">
             <div class="input-group-addon">常规活动优惠方式</div>
             <!-- <input type="text" class="form-control" id="discountType" value="{{discountType}}"> -->
-            <select class="form-control" id="discountType">
+            <select class="form-control oldValue" id="discountType">
+              <option value="1">活动</option>
+              <option value="2">优惠券</option>
+              <option value="9">无优惠</option>
+            </select>
+            <select class="form-control newValue" id="discountTypeNew">
               <option value="1">活动</option>
               <option value="2">优惠券</option>
               <option value="9">无优惠</option>
@@ -309,21 +314,24 @@
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">常规活动/优惠券名称</div>
-            <input type="text" class="form-control" id="discountName" value="{{discountName}}">
+            <input type="text" class="form-control oldValue" id="discountName" value="{{discountName}}">
+            <input type="text" class="form-control newValue" id="discountNameNew" value="{{lastDetail.discountName}}">
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">常规活动补贴成本中心</div>
-            <input type="text" class="form-control" id="costCenter" value="{{costCenter}}">
+            <input type="text" class="form-control oldValue" id="costCenter" value="{{costCenter}}">
+            <input type="text" class="form-control newValue" id="costCenterNew" value="{{lastDetail.costCenter}}">
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">常规活动签报号</div>
-            <input type="text" class="form-control" id="signatureNo" value="{{signatureNo}}">
+            <input type="text" class="form-control oldValue" id="signatureNo" value="{{signatureNo}}">
+            <input type="text" class="form-control newValue" id="signatureNoNew" value="{{lastDetail.signatureNo}}">
           </div>
         </div>
 

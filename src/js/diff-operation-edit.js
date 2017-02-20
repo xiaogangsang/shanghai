@@ -55,7 +55,7 @@ function renderTable(res) {
 	var appendRecords = res.data.detail.appendRecords;
 	_(appendRecords).forEach(function(item) {
 		(item.settleDate) ? (item.settleDate = common.getDate(new Date(item.settleDate))) : null;
-		item.differType = _typeList[item.differType];
+		item.type = _typeList[item.type];
 		item.processType = _signList[item.processType];
 		item.processStatus = _disposeList[item.processStatus];
 		item.channelId = settlementCommon.parseChannel(item.channelId);
@@ -68,13 +68,13 @@ function renderTable(res) {
 	$('#diff_apendRecords tbody').html(html);
 }
 
-function fetchDataAndRenderHtml(orderNo, differAppendId) {
+function fetchDataAndRenderHtml(orderNo, differAppendId, editFlag) {
 
-	var param = '';
+	var fetchFilter = '';
 	if (window.location.pathname.indexOf('diff-operation.html') > 0) {
-		param = 'diff-operation';
-	} else if (window.location.pathname.indexOf('diff-query.html') > 0) {
-		param = 'diff-query';
+		fetchFilter = 'diff-operation';
+	} else if (window.location.pathname.indexOf('diff-query.html') > 0 && !editFlag) {
+		fetchFilter = 'diff-query';
 	}
 
 	settlementCommon.fetchBasicData(function (data) {
@@ -107,7 +107,7 @@ function fetchDataAndRenderHtml(orderNo, differAppendId) {
 					renderOptions();
 					$('#diff_processType option[value="' + _appendData.processType + '"]').prop('selected', true);
 					$('#diff_processStatus option[value="' + _appendData.processStatus + '"]').prop('selected', true);
-					$('#diff_differType option[value="' + _appendData.differType + '"]').prop('selected', true);
+					$('#diff_differType option[value="' + _appendData.type + '"]').prop('selected', true);
 					$('#diff_departId option[value="' + _appendData.departId + '"]').prop('selected', true);
 					$('#diff_channelId option[value="' + _appendData.channelId + '"]').prop('selected', true);
 					if (_appendData.settleDate) {
@@ -166,7 +166,7 @@ function fetchDataAndRenderHtml(orderNo, differAppendId) {
 			settlementCommon.datetimepickerRegister($('#diff_settleDate'), null);
 			$('#popup-edit-diff').modal('show');
 		}
-	}, param);
+	}, fetchFilter);
 }
 
 $('#popup-edit-diff').on('blur', '#diff_orderNo', function (e) {
@@ -199,7 +199,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
 	var orderNo = $(this).closest('tr').data('orderno');
 	var differAppendId = $(this).closest('tr').data('diffid');
 
-	fetchDataAndRenderHtml(orderNo, differAppendId);
+	fetchDataAndRenderHtml(orderNo, differAppendId, true);
 });
 
 $(document).on('submit', '#formDiff', function(e) {

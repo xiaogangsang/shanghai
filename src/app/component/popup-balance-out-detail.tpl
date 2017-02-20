@@ -190,7 +190,11 @@
               <option value="1">预付</option>
               <option value="2">后付</option>
             </select>
-
+            <select class="form-control newValue" id="subsidyTypeNew" value="{{lastDetail.subsidyType}}">
+              <option value=""></option>
+              <option value="1">预付</option>
+              <option value="2">后付</option>
+            </select>
           </div>
 
         </div>
@@ -198,8 +202,8 @@
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
             <div class="input-group-addon">支付活动补贴金额(元)</div>
-            <input type="text" class="form-control" id="subsidyAmountTrd" value="{{subsidyAmountTrd}}" data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?">
-
+            <input type="text" class="form-control oldValue" id="subsidyAmountTrd" value="{{subsidyAmountTrd}}" data-parsley-pattern="(-)?[0-9]{0,6}(\.[0-9]{0,2})?">
+            <input type="text" class="form-control newValue" id="subsidyAmountTrdNew" value="{{lastDetail.subsidyAmountTrd}}">
           </div>
         </div>
 
@@ -208,6 +212,11 @@
             <div class="input-group-addon">支付活动补贴付款方式</div>
             <!-- <input type="text" class="form-control" id="subsidyTypeTrd" value="{{subsidyTypeTrd}}" readonly> -->
             <select class="form-control oldValue" id="subsidyTypeTrd">
+              <option value=""></option>
+              <option value="1">预付</option>
+              <option value="2">后付</option>
+            </select>
+            <select class="form-control newValue" id="subsidyTypeTrdNew" value="{{lastDetail.subsidyTypeTrd}}">
               <option value=""></option>
               <option value="1">预付</option>
               <option value="2">后付</option>
@@ -262,19 +271,18 @@
         <div class="form-group col-sm-6 col-md-6 editable">
           <div class="input-group">
             <div class="input-group-addon">退款承债方</div>
-            <input type="text" class="form-control" id="partner" value="{{partner}}" readonly>
-              <select class="form-control oldValue" id="partner" value="{{partner}}">
-                <option value=""></option>
-                <option value="1">O2O</option>
-                <option value="2">TP方</option>
-                <option value="3">渠道方</option>
-              </select>
-              <select class="form-control newValue" id="partnerNew" value="{{lastDetail.partner}}">
-                <option value=""></option>
-                <option value="1">O2O</option>
-                <option value="2">TP方</option>
-                <option value="3">渠道方</option>
-              </select>
+            <select class="form-control oldValue" id="partner" value="{{partner}}">
+              <option value=""></option>
+              <option value="1">O2O</option>
+              <option value="2">TP方</option>
+              <option value="3">渠道方</option>
+            </select>
+            <select class="form-control newValue" id="partnerNew" value="{{lastDetail.partner}}">
+              <option value=""></option>
+              <option value="1">O2O</option>
+              <option value="2">TP方</option>
+              <option value="3">渠道方</option>
+            </select>
           </div>
         </div>
 
@@ -289,7 +297,7 @@
         <div class="form-group col-sm-6">
           <div class="input-group">
             <div class="input-group-addon">结算进度</div>
-            <select class="form-control" id="settlementPlan" value="{{settlementPlan}}">
+            <select class="form-control oldValue" id="settlementPlan" value="{{settlementPlan}}">
               <option value></option>
               <option value="1">应结算</option>
               <option value="2">待结算</option>
@@ -346,7 +354,14 @@
           <div class="input-group">
             <div class="input-group-addon">常规活动优惠方式</div>
             <!-- <input type="text" class="form-control" id="discountType" value="{{discountType}}"> -->
-            <select class="form-control" id="discountType">
+            <select class="form-control oldValue" id="discountType" value="{{discountType}}">
+              <option value="0"></option>
+              <option value="1">活动</option>
+              <option value="2">优惠券</option>
+              <option value="9">无优惠</option>
+            </select>
+            <select class="form-control newValue" id="discountTypeNew" value="{{lastDetail.discountType}}">
+              <option value="0"></option>
               <option value="1">活动</option>
               <option value="2">优惠券</option>
               <option value="9">无优惠</option>
@@ -357,49 +372,56 @@
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">常规活动/优惠券名称</div>
-            <input type="text" class="form-control" id="discountName" value="{{discountName}}">
+            <input type="text" class="form-control oldValue" id="discountName" value="{{discountName}}">
+            <input type="text" class="form-control newValue" id="discountNameNew" value="{{lastDetail.discountName}}">
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">常规活动补贴成本中心</div>
-            <input type="text" class="form-control" id="costCenter" value="{{costCenter}}">
+            <input type="text" class="form-control oldValue" id="costCenter" value="{{costCenter}}">
+            <input type="text" class="form-control newValue" id="costCenterNew" value="{{lastDetail.costCenter}}">
           </div>
         </div>
 
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">常规活动签报号</div>
-            <input type="text" class="form-control" id="signNum" value="{{signNum}}">
+            <input type="text" class="form-control oldValue" id="signNum" value="{{signNum}}">
+            <input type="text" class="form-control newValue" id="signNumNew" value="{{lastDetail.signNum}}">
           </div>
         </div>
 
          <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">常规活动/优惠券ID</div>
-            <input type="text" class="form-control" id="discountId" value="{{discountId}}">
+            <input type="text" class="form-control oldValue" id="discountId" value="{{discountId}}">
+            <input type="text" class="form-control newValue" id="discountIdNew" value="{{lastDetail.discountId}}">
           </div>
         </div>
 
          <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">支付活动ID</div>
-            <input type="text" class="form-control" id="discountIdTrd" value="{{discountIdTrd}}">
+            <input type="text" class="form-control oldValue" id="discountIdTrd" value="{{discountIdTrd}}">
+            <input type="text" class="form-control newValue" id="discountIdTrdNew" value="{{lastDetail.discountIdTrd}}">
           </div>
         </div>
 
          <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">支付活动名称</div>
-            <input type="text" class="form-control" id="discountNameTrd" value="{{discountNameTrd}}">
+            <input type="text" class="form-control oldValue" id="discountNameTrd" value="{{discountNameTrd}}">
+            <input type="text" class="form-control newValue" id="discountNameTrdNew" value="{{lastDetail.discountNameTrd}}">
           </div>
         </div>
 
          <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">支付活动补贴成本中心</div>
-            <input type="text" class="form-control" id="costCenterTrd" value="{{costCenterTrd}}">
+            <input type="text" class="form-control oldValue" id="costCenterTrd" value="{{costCenterTrd}}">
+            <input type="text" class="form-control newValue" id="costCenterTrdNew" value="{{lastDetail.costCenterTrd}}">
           </div>
         </div>
 
@@ -473,7 +495,7 @@
               <option value="4">确认</option>
             </select>
             <select class="form-control newValue" id="reconciliationStatusNew" value="{{lastDetail.reconciliationStatus}}">
-              <!-- <option value=""></option> -->
+              <option value=""></option>
               <option value="1">未对账</option>
               <option value="2">对账不一致</option>
               <option value="3">对账成功</option>

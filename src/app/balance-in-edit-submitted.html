@@ -36,6 +36,7 @@
               <select class="form-control" id="search_dateType" required>
                 <option value="1">交易日期</option>
                 <option value="2">操作日期</option>
+                <option value="3">银行收单日期</option>
               </select>
             </div>
           </div>
@@ -248,6 +249,28 @@
 
         <div class="content-area">
 
+          <div class="table-responsive" style="margin-bottom: 20px;">
+            <table class="table table-hover" id="summaryTable">
+              <thead>
+                <tr>
+                  <th>收单订单类型</th>
+                  <th>渠道</th>
+                  <th>记录数</th>
+                  <th>用户支付金额</th>
+                  <th>常规活动后付款补贴金额</th>
+                  <th>支付活动后付款补贴金额</th>
+                  <th>O2O应收金额</th>
+                  <th>实收金额</th>
+                  <th>服务费</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
           <div class="row" id="pager"></div>
 
           <div class="table-responsive">
@@ -347,6 +370,22 @@
       <button class="btn btn-xs btn-default btn-reverse" data-id="{{id}}" data-version="{{version}}">反审核</button>
       {{/canReverse}}
       </td>
+    </tr>
+    {{/rows}}
+  </script>
+
+  <script id="summary-table-template" type="text/x-tmpl-mustache">
+    {{#rows}}
+    <tr>
+      <td>{{acquiringOrderType}}</td>
+      <td>{{payTool}}</td>
+      <td>{{totalOrderCount}}</td>
+      <td>{{totalPayAmount}}</td>
+      <td>{{totalSubsidyAmountO2o}}</td>
+      <td>{{totalSubsidyAmountTrd}}</td>
+      <td>{{totalO2oReceivableAmount}}</td>
+      <td>{{totalBankAmount}}</td>
+      <td>{{totalServiceAmount}}</td>
     </tr>
     {{/rows}}
   </script>
