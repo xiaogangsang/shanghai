@@ -294,8 +294,6 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     detail.payTool = settlementCommon.parsePayTool(detail.payTool);
     detail.bizType = settlementCommon.parseBizType(detail.bizType);
     detail.chargeMerchant = settlementCommon.parseMerchant(detail.chargeMerchant);
-    detail.discountType = settlementCommon.parseDiscountType(detail.discountType);
-    detail.subsidyType = settlementCommon.parseSubsidyType(detail.subsidyType);
     detail.partner = settlementCommon.parsePartner(detail.partner);
 
     if (data.operate) {
@@ -315,23 +313,27 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
       $('.detail-history').hide();// 对比时不显示历史修改记录
     }
 
-    // $('#subsidyType option[value="' + detail.subsidyType + '"]').prop('selected', true);
+    $('#subsidyType option[value="' + detail.subsidyType + '"]').prop('selected', true);
+    $('#subsidyTypeTrd option[value="' + detail.subsidyTypeTrd + '"]').prop('selected', true);
     // $('#partner option[value="' + detail.partner + '"]').prop('selected', true);
     $('#shipmentStatus option[value="' + detail.shipmentStatus + '"]').prop('selected', true);
     $('#reconciliationStatus option[value="' + detail.reconciliationStatus + '"]').prop('selected', true);
 
     $('#settlementPlan option[value="' + detail.settlementPlan + '"]').prop('selected', true);
     $('#appStatus option[value="' + detail.appStatus + '"]').prop('selected', true);
+    $('#discountType option[value="' + detail.discountType + '"]').prop('selected', true);
 
     if (compare) {
 
       detail = detail.lastDetail;
-      // $('#subsidyTypeNew option[value="' + detail.subsidyType + '"]').prop('selected', true);
+      $('#subsidyTypeNew option[value="' + detail.subsidyType + '"]').prop('selected', true);
+      $('#subsidyTypeTrdNew option[value="' + detail.subsidyTypeTrd + '"]').prop('selected', true);
       // $('#partnerNew option[value="' + detail.partner + '"]').prop('selected', true);
       $('#shipmentStatusNew').val([]);
       $('#shipmentStatusNew option[value="' + detail.shipmentStatus + '"]').prop('selected', true);
       $('#reconciliationStatusNew').val([]);
       $('#reconciliationStatusNew option[value="' + detail.reconciliationStatus + '"]').prop('selected', true);
+      $('#discountTypeNew option[value="' + detail.discountType + '"]').prop('selected', true);
 
       // 如果没有原备注的话, 隐藏原备注textarea
       if (!detail.remarks) {
