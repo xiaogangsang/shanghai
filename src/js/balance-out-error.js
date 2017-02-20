@@ -35,6 +35,11 @@ $('#formSearch').submit(function(e) {
 	    return false;
 	}
 
+  if (!(($('#search_startTime').val() &&  $('#search_endTime').val()) || $('#search_orderNo').val())) {
+    settlementCommon.warning('请选择退货时间或填写交易订单号');
+    return false;
+  }
+
 	if (_querying) return false;
 	_querying = true;
 
@@ -85,7 +90,7 @@ function handleData(res) {
 			item.shipmentDate = common.getDate(today);
 			item.orderSource = settlementCommon.parseOrderSource(item.orderSource);
 			item.subsidyType = settlementCommon.parseSubsidyType(item.subsidyType);
-			item.subsidytypeTrd = settlementCommon.parseSubsidyType(item.subsidytypeTrd);
+			item.subsidyTypeTrd = settlementCommon.parseSubsidyType(item.subsidyTypeTrd);
 			item.shipmentStatus = settlementCommon.parseShipmentStatus(item.shipmentStatus);
 			item.payStatus = settlementCommon.parsePayStatus(item.payStatus);
 			item.reconciliationStatus = settlementCommon.parseReconciliationStatus(item.reconciliationStatus);
@@ -239,7 +244,7 @@ $(document).on('submit', '#popup-detail form', function(e) {
     oldVersion: $submitButton.data('version'),
     shipmentDate: shipmentDate,
     merchantName: $('#merchantName').val(),
-    merchantId: $('#merchantNo').val(),
+    merchantNo: $('#merchantNo').val(),
     settleAmount: $('#settleAmount').val(),
     subsidyAmountO2o: $('#subsidyAmountO2o').val(),
     subsidyType: $('#subsidyType').val(),

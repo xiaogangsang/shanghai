@@ -520,7 +520,7 @@ $(document).on('submit', '#popup-detail form', function(e) {
     oldVersion: $submitButton.data('version'),
     shipmentDate: shipmentDate,
     merchantName: $('#merchantName').val(),
-    merchantId: $('#merchantNo').val(),
+    merchantNo: $('#merchantNo').val(),
     settleAmount: $('#settleAmount').val(),
     subsidyAmountO2o: $('#subsidyAmountO2o').val(),
     subsidyType: $('#subsidyType').val(),
