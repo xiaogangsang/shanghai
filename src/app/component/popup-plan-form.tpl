@@ -8,8 +8,7 @@
         </div>
         <div class="modal-body"></div>
         <div class="modal-footer">
-          <button type="submit" class="btn btn-primary btn-approval">提交审核</button>
-          <button type="submit" class="btn btn-primary btn-save">保存</button>
+          <button type="submit" class="btn btn-primary">保存</button>
           <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
         </div>
       </form>
@@ -56,42 +55,6 @@
       </div>
     </div>
   </div>
-
-  <div class="edit-section">
-    <div class="form-group">
-      <div class="input-group">
-        <div class="input-group-addon">成本中心类别</div>
-        <select class="form-control" id="level">
-          <option></option>
-          <option value="0">总行</option>
-          <option value="1">支行</option>
-          <option value="2">卡中心</option>
-          <option value="3">卡部</option>
-          <option value="4">O2O项目组</option>
-        </select>
-      </div>
-    </div>
-    <div class="form-group">
-      <div class="input-group">
-        <div class="input-group-addon">成本中心</div>
-        <select class="form-control" id="budgetSource" required data-parsley-errors-container="#error-budgetSource">
-          <option></option>
-        </select>
-        <div id="error-budgetSource"></div>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <div class="input-group">
-        <div class="input-group-addon">审核人</div>
-        <select class="form-control" id="assessor" required data-parsley-errors-container="#error-assessor">
-          <option></option>
-        </select>
-        <div id="error-assessor"></div>
-      </div>
-    </div>
-  </div>
-
   {{/plan}}
 </script>
 
@@ -129,41 +92,6 @@
       <div class="input-group">
         <div class="input-group-addon">总出票预算</div>
         <input type="text" class="form-control" id="totalTicket" placeholder="不限" data-parsley-pattern="^[1-9]{1}\d*$">
-      </div>
-    </div>
-  </div>
-
-  <div class="edit-section">
-    <div class="form-group">
-      <div class="input-group">
-        <div class="input-group-addon">成本中心类别</div>
-        <select class="form-control" id="level">
-          <option></option>
-          <option value="0">总行</option>
-          <option value="1">支行</option>
-          <option value="2">卡中心</option>
-          <option value="3">卡部</option>
-          <option value="4">O2O项目组</option>
-        </select>
-      </div>
-    </div>
-    <div class="form-group">
-      <div class="input-group">
-        <div class="input-group-addon">成本中心</div>
-        <select class="form-control" id="budgetSource" required data-parsley-errors-container="#error-budgetSource">
-          <option></option>
-        </select>
-        <div id="error-budgetSource"></div>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <div class="input-group">
-        <div class="input-group-addon">审核人</div>
-        <select class="form-control" id="assessor" required data-parsley-errors-container="#error-assessor">
-          <option></option>
-        </select>
-        <div id="error-assessor"></div>
       </div>
     </div>
   </div>
