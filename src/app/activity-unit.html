@@ -91,11 +91,12 @@
           </div>
           <div class="col-xs-12 col-sm-6 col-lg-4 pull-right">
             <div class="row">
+              <!-- 新增按钮删除 -->
+              <!-- <div class="col-sm-6">
+                <a href="activity-unit-edit.html" class="btn btn-block btn-default" id="btn-create" target="_blank">新增</a>
+              </div> -->
               <div class="col-sm-6">
                 <button type="submit" class="btn btn-block btn-primary">查询</button>
-              </div>
-              <div class="col-sm-6">
-                <a href="activity-unit-edit.html" class="btn btn-block btn-default" id="btn-create" target="_blank">新增</a>
               </div>
             </div>
           </div>
@@ -185,6 +186,7 @@
       <td>
         <button type="button" class="btn btn-xs btn-default btn-status" data-status="{{status}}">{{#status}}下线{{/status}}{{^status}}上线{{/status}}</button>
         <a href="activity-unit-edit.html?unitId={{id}}" class="btn btn-xs btn-default" target="_blank">编辑</a>
+        <a href="activity-unit-view.html?unitId={{id}}" class="btn btn-xs btn-default" target="_blank">查看</a>
         <button type="button" class="btn btn-xs btn-default btn-delete">删除</button>
       </td>
     </tr>

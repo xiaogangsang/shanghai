@@ -34,7 +34,16 @@ $(function () {
   var urlParam = common.getUrlParam();
   if (urlParam.couponId != undefined && urlParam.couponId != '') {
     setEdit(urlParam.couponId);
+    if (location.pathname.indexOf('view.html') > -1) {
+      var timer = setTimeout(function() {
+        $('#formEdit :input').prop('disabled', true);
+        clearTimeout(timer);
+      }, 1500);
+    }
+    $('h3').text($('h3').text() + urlParam.couponId);
   } else {
+    $('.breadcrumb li:last-child').text('新增');
+    $('h3').text('新增优惠券');
     setWandaTicket(false);
     setBudgetSource(false);
     setMovie(false);
@@ -182,6 +191,8 @@ $(document).on('change click', '#level', function (event) {
       $('#budgetSource').closest('.form-group').show();
     }
   }
+
+  $('#budgetSource').trigger('change');
 });
 
 //渠道
@@ -548,6 +559,7 @@ $(document).on('submit', '#formEdit', function (event) {
     timetables: _popupDataCache.timetables,
     remarks: $('#remark').val().trim(),
     effectiveDays:$('#effectiveDays').val().trim(),
+    operator: $('#assessor').val()
   };
 
   if((sendData.beginDate == null || sendData.beginDate.length == 0) &&
@@ -555,6 +567,7 @@ $(document).on('submit', '#formEdit', function (event) {
       (sendData.effectiveDays == null || sendData.effectiveDays.length == 0)){
     alert('优惠券有效期不能为空');
     _submitting = false;
+    return;
   }
   switch ($('input[name=advancePayment]:checked').length) {
     case 0:
@@ -573,9 +586,11 @@ $(document).on('submit', '#formEdit', function (event) {
     sendData.cinemas.push(cinema.cinemaId);
   });
 
-  var ajaxUrl = 'coupon/couponSave';
+  var ajaxUrl = (($('#formEdit button[type=submit][clicked=true]').hasClass('btn-approval')) ? 'coupon/saveAndSubmitVerification' : 'coupon/saveVerification');
+
+  // var ajaxUrl = 'coupon/couponSave';
   if ($('#id').size() > 0) {
-    ajaxUrl = 'coupon/couponUpdate';
+    // ajaxUrl = 'coupon/couponUpdate';
     sendData.id = $('#id').val();
   }
 
@@ -589,18 +604,19 @@ $(document).on('submit', '#formEdit', function (event) {
   .done(function (res) {
     _submitting = false;
     if (!!~~res.meta.result) {
-      if (ajaxUrl == 'coupon/couponUpdate') {
-        alert('更新成功！');
-        document.location.reload(true);
-      } else {
-        alert('保存成功！');
-        document.location = 'coupon-rule.html';
-      }
+      alert('提交成功');
+      // if (ajaxUrl == 'coupon/couponUpdate') {
+      //   alert('更新成功！');
+      //   document.location.reload(true);
+      // } else {
+      //   alert('保存成功！');
+      //   document.location = 'coupon-rule.html';
+      // }
     } else {
       alert('接口错误：' + res.meta.msg);
     }
 
-    $('#formEdit button[type=submit]').prop('disabled', false).text('保存');
+    $('#formEdit button[type=submit]').prop('disabled', false);
   });
 
   return false;
@@ -637,6 +653,7 @@ function setBudgetSource(budgetSourceId) {
         });
 
         $('#budgetSource').html(html);
+        $('#budgetSource').trigger('change');
       }
     } else {
       alert('接口错误：' + res.meta.msg);
@@ -954,7 +971,7 @@ function resetTimeTable() {
 }
 
 function setEdit(couponId) {
-  $('h3').text('编辑优惠券:' + couponId);
+  // $('h3').text('编辑优惠券:' + couponId);
   $.ajax({
     url: common.API_HOST + 'coupon/couponDetail',
     type: 'POST',
@@ -1089,3 +1106,40 @@ function setEdit(couponId) {
     }
   });
 }
+
+
+
+$(document).on('click', "#formEdit button[type=submit]", function() {
+  $("button[type=submit]", $(this).parents("form")).removeAttr("clicked");
+  $(this).attr("clicked", "true");
+});
+
+
+// 选择成本中心
+$(document).on('change', '#budgetSource', function (event, assessor) {
+  event.preventDefault();
+  var budgetSource = $(this).val();
+
+  // TODO:
+  // $.ajax({
+  //   url: common.API_HOST + 'vertification/getAssessor',
+  //   type: 'GET',
+  //   dataType: 'json',
+  //   data:{budgetSourceId: budgetSource}
+  // })
+  // .done(function (res) {
+    console.log(budgetSource);
+    var res = JSON.parse('{  "meta": {    "result": "1",    "msg": "操作成功"  },  "data": [    {      "id": 19552,      "createdBy": "admin",      "createdDate": null,      "updatedBy": null,      "updatedDate": null,      "loginId": null,      "password": null,      "enabled": "1",      "realName": "樊坤",      "city": null,      "department": "o2o",      "mobile": null,      "email": null,      "roles": null    }  ]}');
+    if (!!~~res.meta.result) {
+      var html = '';
+      _(res.data).forEach(function(obj) {
+        var selected = obj.id == assessor ? 'selected' : '';
+        html += '<option value="' + obj.id + '"' + selected + '>' + obj.realName + '</option>';
+      });
+      $('#assessor').html(html);
+    } else {
+      alert('接口错误：' + res.meta.msg);
+    }
+  // });
+});
+

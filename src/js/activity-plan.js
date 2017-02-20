@@ -226,10 +226,10 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
   .done(function (res) {
     if (!!~~res.meta.result) {
       setModal(res.data);
-      $('#popup-plan-form .btn-save').hide();// 隐藏"保存"按钮
       // TODO: 
       res.data.budgetSourceId = 176;
-      res.data.assessor = 19552;
+      // 编辑里不需要
+      // res.data.assessor = 19552;
       $('#popup-plan-form #level').trigger('change', res.data.budgetSourceId, res.data.assessor);
       $('#popup-plan-form').modal('show');
       $('#popup-plan-form form').parsley();
@@ -260,6 +260,11 @@ function setModal(planData) {
   $('#popup-plan-form .modal-body').html(html);
 }
 
+$(document).on('click', "#popup-plan-form button[type=submit]", function() {
+    $("button[type=submit]", $(this).parents("form")).removeAttr("clicked");
+    $(this).attr("clicked", "true");
+});
+
 $(document).on('submit', '#popup-plan-form form', function (e) {
   e.preventDefault();
   if (_submitting) {
@@ -279,7 +284,7 @@ $(document).on('submit', '#popup-plan-form form', function (e) {
   };
 
   // TODO:
-  var ajaxUrl = common.API_HOST +  $(this).hasClass('btn-approval') ? 'plan/saveAndSubmitVerification' : 'plan/saveVerification';
+  var ajaxUrl = common.API_HOST +  (($('#popup-plan-form button[type=submit][clicked=true]').hasClass('btn-approval')) ? 'plan/saveAndSubmitVerification' : 'plan/saveVerification');
   var ajaxUrl = common.API_HOST + 'plan/savePlan';
 
   var isUpdate = ($('#popup-plan-form #id').size() > 0);

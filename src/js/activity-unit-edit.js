@@ -54,8 +54,20 @@ $(function () {
 
   var urlParam = common.getUrlParam();
   if (urlParam.unitId != undefined && urlParam.unitId != '') {
+    // 编辑
     setEdit(urlParam.unitId);
+    // 查看
+    if (location.pathname.indexOf('activity-unit-view.html') > -1) {
+      var timer = setTimeout(function() {
+        $('#formUnit :input').prop('disabled', true);
+        clearTimeout(timer);
+      }, 1500);
+    }
+    $('h3').text($('h3').text() + urlParam.unitId);
   } else {
+    // 新增
+    $('.breadcrumb li:last-child').text('新增');
+    $('h3').text('新增活动单元');
     if (urlParam.planId != undefined && urlParam.planId != '') {
       setPlan(urlParam.planId);
     } else {
@@ -1014,6 +1026,7 @@ function setPlan(planId) {
         });
 
         $('#planId').append(html);
+        $('#planId').prop('disabled', true);
       }
     } else {
       alert('接口错误：' + res.meta.msg);
@@ -1269,8 +1282,6 @@ function resetTimeTable() {
 }
 
 function setEdit(unitId) {
-  $('.breadcrumb li:last-child').text('编辑');
-  $('h3').text('编辑活动单元:' + unitId);
   $.ajax({
     url: common.API_HOST + 'activity/activityDetail',
     type: 'POST',
