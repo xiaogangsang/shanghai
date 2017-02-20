@@ -18,6 +18,7 @@
         <div class="list-group">
           <a href="cinema.html" class="list-group-item" id="menu-cinema" data-id="7" style="display:none">标准影院库</a>
           <a href="cinema-tp.html" class="list-group-item" id="menu-cinema-tp" data-id="8" style="display:none">合作方影院库</a>
+          <a href="cinema-filter.html" class="list-group-item" id="menu-cinema-filter" data-id="309" style="display:none">影院筛选管理</a>
         </div>
       </div>
     </div>
