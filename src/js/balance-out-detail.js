@@ -33,7 +33,34 @@ $(function() {
   $('#search_payTool').html(settlementCommon.optionsHTML(settlementCommon.payTool, true));
   $('#formSearch').parsley();
   settlementCommon.datetimepickerRegister($('#sync_startTime'), $('#sync_endTime'));
+
+  checkForSettlementDateSync();
 });
+
+function checkForSettlementDateSync() {
+  if ($('#hud-overlay')[0].style.display === 'none') {
+    $('#hud-overlay').show();
+  }
+  $.ajax({
+    url: common.API_HOST + 'settlement/shipmentInfo/synchronousSettleDate/check',
+    type: 'GET',
+    dataType: 'json',
+  })
+  .done(function(res) {
+    if (!!~~res.meta.result) {
+      var status = res.data.synchronousSettleDateCheck.detail.finish;
+      if (!status) {
+        $('#hud-overlay p').html('正在同步结算日期，请稍后...');
+        setTimeout(function () {
+          checkForSettlementDateSync();
+        }, 20000);
+      } else {
+        $('#hud-overlay').hide();
+        $('#hud-overlay p').html('working...');
+      }
+    }
+  });
+}
 
 
 // handle search form
@@ -611,14 +638,18 @@ $('.btn-sync').click(function(e) {
   //同步接口，后台说一次批量操作至少15分钟，所以设置超时时间15分钟......
   $.ajax({
     url: common.API_HOST + 'settlement/shipmentInfo/synchronousSettleDate',
-    timeout: (15*60*1000),
     type: 'GET',
     dataType: 'json',
   })
   .done(function(res) {
-    alert(res.meta.msg);
+    $('#hud-overlay').hide();
+    if (!!~~res.meta.result) {
+      checkForSettlementDateSync();
+    } else {
+      alert(res.meta.msg);
+    }
   })
-  .always(function() {
+  .fail(function () {
     $('#hud-overlay').hide();
   });
 });
