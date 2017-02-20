@@ -262,13 +262,12 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     detail.payTool = settlementCommon.parsePayTool(detail.payTool);
     // detail.payStatus = settlementCommon.parsePayStatus(detail.payStatus);
     detail.bizType = settlementCommon.parseBizType(detail.bizType);
-    detail.discountType = settlementCommon.parseDiscountType(detail.discountType);
     detail.chargeMerchant = settlementCommon.parseChargeMerchant(detail.chargeMerchant);
 
     if (data.operateRecords) {
       formatEditHistory(data.operateRecords);
     }
-    
+
     var template = $('#detail-template').html();
     Mustache.parse(template);
     var html = Mustache.render(template, data);
@@ -278,9 +277,11 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
 
     $('#payStatus option[value="' + detail.payStatus + '"]').prop('selected', true);
     $('#subsidyType option[value="' + detail.subsidyType + '"]').prop('selected', true);
+    $('#subsidyTypeTrd option[value="' + detail.subsidyTypeTrd + '"]').prop('selected', true);
     $('#partner option[value="' + detail.partner + '"]').prop('selected', true);
     $('#reconciliationStatus option[value="' + detail.reconciliationStatus + '"]').prop('selected', true);
     $('#reason option[value="' + detail.reason + '"]').prop('selected', true);
+    $('#discountType option[value="' + detail.discountType + '"]').prop('selected', true);
   });
 
   $('#popup-detail form').parsley().validate();
@@ -307,7 +308,6 @@ $('#dataTable').on('click', '.btn-detail', function (e) {
     var detail = data.detail;
     detail.payTool = settlementCommon.parsePayTool(detail.payTool);
     detail.bizType = settlementCommon.parseBizType(detail.bizType);
-    detail.discountType = settlementCommon.parseDiscountType(detail.discountType);
     detail.chargeMerchant = settlementCommon.parseChargeMerchant(detail.chargeMerchant);
 
     // 如果原值, 未被修改, 不用显示. 这里的实现方式是删掉原值中和现值相同的字段
@@ -334,19 +334,23 @@ $('#dataTable').on('click', '.btn-detail', function (e) {
     $('.detail-area').addClass('compare');
     $('.detail-area.compare :input').prop('readonly', true);
     $('.detail-history').hide(); // 对比时不显示历史修改记录
-    
+
 
     $('#subsidyType option[value="' + detail.subsidyType + '"]').prop('selected', true);
+    $('#subsidyTypeTrd option[value="' + detail.subsidyTypeTrd + '"]').prop('selected', true);
     $('#partner option[value="' + detail.partner + '"]').prop('selected', true);
     $('#shipmentStatus option[value="' + detail.shipmentStatus + '"]').prop('selected', true);
     $('#reconciliationStatus option[value="' + detail.reconciliationStatus + '"]').prop('selected', true);
     $('#reason option[value="' + detail.reason + '"]').prop('selected', true);
     $('#payStatus option[value="' + detail.payStatus + '"]').prop('selected', true);
+    $('#discountType option[value="' + detail.discountType + '"]').prop('selected', true);
 
     detail = detail.lastDetail;
     // 先清空掉已选的值(select会默认选择第一个)
     $('#subsidyTypeNew').val([]);
     $('#subsidyTypeNew option[value="' + detail.subsidyType + '"]').prop('selected', true);
+    $('#subsidyTypeTrdNew').val([]);
+    $('#subsidyTypeTrdNew option[value="' + detail.subsidyTypeTrd + '"]').prop('selected', true);
     $('#partnerNew').val([]);
     $('#partnerNew option[value="' + detail.partner + '"]').prop('selected', true);
     $('#shipmentStatusNew').val([]);
@@ -357,6 +361,8 @@ $('#dataTable').on('click', '.btn-detail', function (e) {
     $('#reasonNew option[value="' + detail.reason + '"]').prop('selected', true);
     $('#payStatusNew').val([]);
     $('#payStatusNew option[value="' + detail.payStatus + '"]').prop('selected', true);
+    $('#discountTypeNew').val([]);
+    $('#discountTypeNew option[value="' + detail.discountType + '"]').prop('selected', true);
 
     // 如果没有原备注的话, 隐藏原备注textarea
     if (!detail.remarks) {
@@ -439,6 +445,7 @@ $(document).on('submit', '#popup-detail form', function(e) {
     serviceAmount: $('#serviceAmount').val(),
     subsidyAmountO2o: $('#subsidyAmountO2o').val(),
     subsidyType: $('#subsidyType').val(),
+    subsidyTypeTrd: $('#subsidyTypeTrd').val(),
     returnFee: $('#returnFee').val(),
     partner: $('#partner').val(),
     o2oReceivableAmount: $('#o2oReceivableAmount').val(),

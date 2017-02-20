@@ -447,12 +447,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     detail.payTool = settlementCommon.parsePayTool(detail.payTool);
     detail.bizType = settlementCommon.parseBizType(detail.bizType);
     detail.chargeMerchant = settlementCommon.parseMerchant(detail.chargeMerchant);
-    // detail.discountType = settlementCommon.parseDiscountType(detail.discountType);
-    // detail.subsidyType = settlementCommon.parseSubsidyType(detail.subsidyType);
-    detail.subsidyType = detail.subsidyType;
     detail.partner = settlementCommon.parsePartner(detail.partner);
-    // detail.subsidyTypeTrd = settlementCommon.parseSubsidyType(detail.subsidyTypeTrd);
-    detail.subsidyTypeTrd = detail.subsidyTypeTrd;
 
     var operate = data.operate;
 
@@ -470,8 +465,6 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
 
     $('#popup-detail').modal('show');
 
-    // $('#subsidyType option[value="' + detail.subsidyType + '"]').prop('selected', true);
-    // $('#partner option[value="' + detail.partner + '"]').prop('selected', true);
     $('#subsidyType option[value="' + detail.subsidyType + '"]').prop('selected', true);
     $('#subsidyTypeTrd option[value="' + detail.subsidyTypeTrd + '"]').prop('selected', true);
     $('#shipmentStatus option[value="' + detail.shipmentStatus + '"]').prop('selected', true);
