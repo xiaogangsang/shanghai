@@ -99,6 +99,8 @@ $('#formSearch').on('submit', function (e) {
 
   sendData.pageIndex = _pageIndex;
 
+  $('#hud-overlay').show();
+
   if (!_DEBUG) {
     $.ajax({
       url: common.API_HOST + 'settlement/acquiring/queryDetailByMultiMsg',
@@ -177,6 +179,7 @@ handlePresetQuery();
 
 function handleData(res) {
 	_querying = false;
+  $('#hud-overlay').hide();
 
   if (settlementCommon.prehandleData(res)) {
     var totalRecord = res.data.detail.count;
