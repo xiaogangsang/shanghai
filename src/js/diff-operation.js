@@ -218,7 +218,7 @@ $('#btn-export').click(function(e) {
 	$('#hud-overlay').show();
 
 	var param = {
-		beginTime: beginTime,
+		startTime: beginTime,
 		endTime: endTime,
 		orderNo: orderNo,
 		matched: matched,
