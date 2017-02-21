@@ -10,13 +10,13 @@ var _departmentList = {};
 var _appendData = {};
 
 function renderOptions() {
-	signHtml = settlementCommon.optionsHTML(_signList, false);
+	signHtml = '<option value=""></option>' + settlementCommon.optionsHTML(_signList, false);
 	$('#diff_processType').html(signHtml);
 	disposeHtml = settlementCommon.optionsHTML(_disposeList, false);
 	$('#diff_processStatus').html(disposeHtml);
 	typeHtml = settlementCommon.optionsHTML(_typeList, false);
 	$('#diff_differType').html(typeHtml);
-	departmentHtml = settlementCommon.optionsHTML(_departmentList, false);
+	departmentHtml = '<option value=""></option>' + settlementCommon.optionsHTML(_departmentList, false);
 	$('#diff_departId').html(departmentHtml)
 }
 

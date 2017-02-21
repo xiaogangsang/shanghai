@@ -110,6 +110,7 @@ function handleData(res) {
 			item.processStatus = _disposeList[item.processStatus];
 			item.processType = _signList[item.processType];
 			item.type = _typeList[item.type];
+			item.channelId = settlementCommon.parseChannel(item.channelId);
 		});
 
 		var template = $('#table-template').html();
