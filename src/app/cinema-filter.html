@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="images/favicon.ico" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>影院管理</title>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/user.css">
+</head>
+<body>
+
+  @@include('component/header.tpl')
+
+  <div class="container-fluid">
+
+    <div class="row">
+
+      @@include('component/sidebar.tpl')
+
+      <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+        <ol class="breadcrumb">
+          <li>影院管理</li>
+          <li class="active">影院筛选管理</li>
+        </ol>
+
+        <div id="container-content">
+          
+        </div>
+
+        <script id="content-template" type="text/x-tmpl-mustache">
+          <form>
+            <h4>品牌筛选</h4>
+            <div class="edit-section">
+
+              <h5>配置品牌</h5>
+              <div class="table-responsive multi-selection">
+                <table class="table">
+                  <tbody>
+                    <tr>
+                      <td>
+                        <select name="from[]" id="brandSelect" class="form-control" size="8" multiple="multiple">
+                          {{#brand}}
+                          {{^selected}}
+                          <option value="{{id}}">{{name}}</option>
+                          {{/selected}}
+                          {{/brand}}
+                        </select>
+                      </td>
+                      <td width="60">
+                        <button type="button" id="brandSelect_all" class="btn btn-block btn-default">全选</button>
+                        <button type="button" id="brandSelect_right" class="btn btn-block btn-default">添加</button>
+                        <button type="button" id="brandSelect_left" class="btn btn-block btn-default">移除</button>
+                        <button type="button" id="brandSelect_none" class="btn btn-block btn-default">反选</button>
+                      </td>
+                      <td>
+                        <select name="to[]" id="brandSelect_to" class="form-control" size="8" multiple="multiple" data-parsley-required data-parsley-errors-container="#error-brand">
+                          {{#brand}}
+                          {{#selected}}
+                          <option selected value="{{id}}">{{name}}</option>
+                          {{/selected}}
+                          {{/brand}}
+                        </select>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div id="error-brand"></div>
+              </div>
+
+            </div>
+
+            <br>
+            <h4>特色筛选</h4>
+
+            <div class="edit-section">
+
+              <h5>积分筛选</h5>
+
+              <div>
+                <span>是否展示：</span>
+                <label class="radio-inline"><input type="radio" name="points" value="true" data-id="{{points.id}}"><span>是</span></label>
+                <label class="radio-inline"><input type="radio" name="points" value="false"><span>否</span></label>
+              </div>
+
+              <br>
+
+              <h5>特效厅筛选</h5>
+
+              <div class="table-responsive multi-selection">
+                <table class="table">
+                  <tbody>
+                    <tr>
+                      <td>
+                        <select name="from[]" id="effectSelect" class="form-control" size="8" multiple="multiple">
+                          {{#effect}}
+                          {{^selected}}
+                          <option value="{{id}}">{{name}}</option>
+                          {{/selected}}
+                          {{/effect}}
+                        </select>
+                      </td>
+                      <td width="60">
+                        <button type="button" id="effectSelect_all" class="btn btn-block btn-default">全选</button>
+                        <button type="button" id="effectSelect_right" class="btn btn-block btn-default">添加</button>
+                        <button type="button" id="effectSelect_left" class="btn btn-block btn-default">移除</button>
+                        <button type="button" id="effectSelect_none" class="btn btn-block btn-default">反选</button>
+                      </td>
+                      <td>
+                        <select name="to[]" id="effectSelect_to" class="form-control" size="8" multiple="multiple" data-parsley-required data-parsley-errors-container="#error-effect">
+                          {{#effect}}
+                          {{#selected}}
+                          <option selected value="{{id}}">{{name}}</option>
+                          {{/selected}}
+                          {{/effect}}
+                        </select>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div id="error-effect"></div>
+              </div>
+
+              <br>
+              <h5>服务筛选</h5>
+
+              <div class="table-responsive multi-selection">
+                <table class="table">
+                  <tbody>
+                    <tr>
+                      <td>
+                        <select name="from[]" id="serviceSelect" class="form-control" size="8" multiple="multiple">
+                          {{#service}}
+                          {{^selected}}
+                          <option value="{{id}}">{{name}}</option>
+                          {{/selected}}
+                          {{/service}}
+                        </select>
+                      </td>
+                      <td width="60">
+                        <button type="button" id="serviceSelect_all" class="btn btn-block btn-default">全选</button>
+                        <button type="button" id="serviceSelect_right" class="btn btn-block btn-default">添加</button>
+                        <button type="button" id="serviceSelect_left" class="btn btn-block btn-default">移除</button>
+                        <button type="button" id="serviceSelect_none" class="btn btn-block btn-default">反选</button>
+                      </td>
+                      <td>
+                        <select name="to[]" id="serviceSelect_to" class="form-control" size="8" multiple="multiple" data-parsley-required data-parsley-errors-container="#error-service">
+                          {{#service}}
+                          {{#selected}}
+                          <option selected value="{{id}}">{{name}}</option>
+                          {{/selected}}
+                          {{/service}}
+                        </select>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div id="error-service"></div>
+              </div>
+            </div>
+
+            <br>
+            <button type="submit" class="btn btn-primary col-xs-6 col-xs-push-3">保存</button>
+          </form>
+        </script>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="js/vendor.js"></script>
+  <script src="js/cinema-filter.js"></script>
+</body>
+</html>
