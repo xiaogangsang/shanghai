@@ -68,7 +68,7 @@ function renderTable(res) {
 	$('#diff_apendRecords tbody').html(html);
 }
 
-function fetchDataAndRenderHtml(orderNo, differAppendId, editFlag) {
+function fetchDataAndRenderHtml(orderNo, differAppendId, differDetailId, editFlag) {
 
 	var fetchFilter = '';
 	if (window.location.pathname.indexOf('diff-operation.html') > 0) {
@@ -87,6 +87,7 @@ function fetchDataAndRenderHtml(orderNo, differAppendId, editFlag) {
 		if (orderNo || differAppendId) {
 			var param = {
 				orderNo: orderNo,
+				differDetailId: differDetailId,
 				differAppendId: differAppendId,
 			}
 			$.ajax({
@@ -198,8 +199,9 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
 
 	var orderNo = $(this).closest('tr').data('orderno');
 	var differAppendId = $(this).closest('tr').data('diffid');
+	var differDetailId = $(this).closest('tr').data('differdetailid');
 
-	fetchDataAndRenderHtml(orderNo, differAppendId, true);
+	fetchDataAndRenderHtml(orderNo, differAppendId, differDetailId, true);
 });
 
 $(document).on('submit', '#formDiff', function(e) {
