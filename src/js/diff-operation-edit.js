@@ -317,7 +317,7 @@ $(document).on('submit', '#formDiff', function(e) {
 	})
 	.done(function(res) {
 		alert(res.meta.msg);
-		if (!!res.meta.result) {
+		if (!!~~res.meta.result) {
 			$('#popup-edit-diff').modal('hide');
 			$('#formSearch').trigger('submit');
 		}
