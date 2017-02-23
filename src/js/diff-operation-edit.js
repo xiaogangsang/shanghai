@@ -3,20 +3,41 @@
 var common = require('common');
 var settlementCommon = require('settlementCommon');
 
-var _signList = {};
-var _disposeList = {};
-var _typeList = {};
-var _departmentList = {};
+var _signData = [], _disposeData = [], _typeData = [], _departmentData = [];
+var _signList = [], _disposeList = [], _typeList = [], _departmentList = [];
 var _appendData = {};
 
 function renderOptions() {
-	signHtml = '<option value=""></option>' + settlementCommon.optionsHTML(_signList, false);
+
+	// 处理标识
+  _(_signData).each(function(item) {
+    _signList[item.id] = item.signName;
+  });
+
+  // 处理状态
+  _(_disposeData).each(function(item) {
+    _disposeList[item.id] = item.disposeName;
+  });
+
+  // 责任部门
+  var _departmentList = {};
+  _(_departmentData).each(function(item) {
+    _departmentList[item.id] = item.departmentName;
+  });
+
+  // 差异类型
+  var _typeList = {};
+  _(_typeData).each(function(item) {
+    _typeList[item.id] = item.differenceName;
+  });
+
+	var signHtml = '<option value=""></option>' + settlementCommon.optionsHTML(_signList, false);
 	$('#diff_processType').html(signHtml);
-	disposeHtml = settlementCommon.optionsHTML(_disposeList, false);
+	var disposeHtml = settlementCommon.optionsHTML(_disposeList, false);
 	$('#diff_processStatus').html(disposeHtml);
-	typeHtml = settlementCommon.optionsHTML(_typeList, false);
+	var typeHtml = settlementCommon.optionsHTML(_typeList, false);
 	$('#diff_differType').html(typeHtml);
-	departmentHtml = '<option value=""></option>' + settlementCommon.optionsHTML(_departmentList, false);
+	var departmentHtml = '<option value=""></option>' + settlementCommon.optionsHTML(_departmentList, false);
 	$('#diff_departId').html(departmentHtml)
 }
 
@@ -68,6 +89,39 @@ function renderTable(res) {
 	$('#diff_apendRecords tbody').html(html);
 }
 
+function fetchBasicData(callback, fetchFilter) {
+	$.ajax({
+	  url: window.location.protocol + '//' + window.location.host + '/MovieOps/' + 'settlement/sign/allList',
+	  type: 'GET',
+	  dataType: 'json',
+	})
+	.done(function(res) {
+	  if (!!~~res.meta.result) {
+	    // 处理标识
+	    _signData = res.data.detail.sign;
+	    // 处理状态
+	    _disposeData = res.data.detail.dispose;
+	    // 责任部门
+	    _departmentData = res.data.detail.department;
+	    // 差异类型
+	    _(res.data.detail.type).each(function(item) {
+	      if (fetchFilter === 'diff-operation') {
+	        if (item.addStatus === 2) {
+	          _typeData.push(item);
+	        }
+	      } else if (fetchFilter === 'diff-query') {
+	        if (item.addStatus === 1) {
+	          _typeData.push(item);
+	        }
+	      } else {
+	      	_typeData.push(item);
+	      }
+	    });
+	    callback ? callback() : null;
+	  }
+	})
+}
+
 function fetchDataAndRenderHtml(orderNo, differAppendId, differDetailId, editFlag) {
 
 	var fetchFilter = '';
@@ -77,12 +131,7 @@ function fetchDataAndRenderHtml(orderNo, differAppendId, differDetailId, editFla
 		fetchFilter = 'diff-query';
 	}
 
-	settlementCommon.fetchBasicData(function (data) {
-
-		(data.sign) ? (_signList = data.sign) : null;
-		(data.dispose) ? (_disposeList = data.dispose) : null;
-		(data.type) ? (_typeList = data.type) : null;
-		(data.department) ? (_departmentList = data.department) : null;
+	fetchBasicData(function () {
 
 		if (orderNo || differAppendId) {
 			var param = {
@@ -131,6 +180,7 @@ function fetchDataAndRenderHtml(orderNo, differAppendId, differDetailId, editFla
 					$('#formDiff').parsley();
 					settlementCommon.addStarMark();
 					$('#popup-edit-diff').modal('show');
+					changeValueWithDifferType();
 
 				} else {
 					settlementCommon.warning(res.meta.msg);
@@ -166,8 +216,40 @@ function fetchDataAndRenderHtml(orderNo, differAppendId, differDetailId, editFla
 			settlementCommon.addStarMark();
 			settlementCommon.datetimepickerRegister($('#diff_settleDate'), null);
 			$('#popup-edit-diff').modal('show');
+			changeValueWithDifferType();
 		}
 	}, fetchFilter);
+}
+
+$('#popup-edit-diff').on('blur', '#diff_differType', function(e) {
+	e.preventDefault();
+	changeValueWithDifferType();
+});
+
+function changeValueWithDifferType() {
+	var typeId = $('#diff_differType').val();
+	var flag = false;
+	$.each(_typeData, function(index, item) {
+		if (item.id == parseInt(typeId)) {
+			$('#diff_processStatus option[value="' + item.disposeId + '"]').prop('selected', true);
+			$('#diff_departId option[value="' + item.departmentId + '"]').prop('selected', true);
+			if (item.departmentId) {
+				flag = true;
+			}
+		}
+	});
+	if (!flag) {
+		$('#diff_departId option[value=""]').prop('selected', true);
+	}
+
+	var availableSignList = {};
+	$.each(_signData, function(index, item) {
+		 if (item.differenceId == parseInt(typeId)) {
+			availableSignList[item.id] = item.signName;
+		 }
+	});
+	var signHtml = '<option value=""></option>' + settlementCommon.optionsHTML(availableSignList, false);
+	$('#diff_processType').html(signHtml);
 }
 
 $('#popup-edit-diff').on('blur', '#diff_orderNo', function (e) {
