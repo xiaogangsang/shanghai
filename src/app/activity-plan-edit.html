@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="images/favicon.ico" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>活动中心</title>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/activity.css">
+</head>
+<body>
+
+  @@include('component/header.tpl')
+
+  <div class="container-fluid">
+
+    <div class="row">
+
+      @@include('component/sidebar.tpl')
+
+      <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+        <ol class="breadcrumb">
+          <li>活动中心</li>
+          <li>活动计划管理</li>
+          <li class="active">编辑</li>
+        </ol>
+
+        <section class="activity-unit-edit" id="popup-plan-form">
+          <h3>编辑计划单元:</h3>
+
+          <form>
+
+            <div class="modal-body"></div>
+
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary btn-approval">提交审核</button>
+              <button type="submit" class="btn btn-primary btn-save">保存</button>
+            </div>
+
+          </form>
+
+        </section>
+
+        <script id="edit-template" type="text/x-tmpl-mustache">
+          {{#plan}}
+          <input type="hidden" id="id" value="{{id}}">
+          <div class="edit-section">
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-addon">计划名称</div>
+                <input type="text" class="form-control" id="name" value="{{name}}" required placeholder="必填">
+              </div>
+            </div>
+          </div>
+          <div class="edit-section">
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-addon">日金额预算</div>
+                <input type="text" class="form-control" id="dailyAmount" value="{{dailyAmount}}" placeholder="不限" data-parsley-pattern="^[1-9]{1}\d*$">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-addon">日出票预算</div>
+                <input type="text" class="form-control" id="dailyTicket" value="{{dailyTicket}}" placeholder="不限" data-parsley-pattern="^[1-9]{1}\d*$">
+              </div>
+            </div>
+          </div>
+          <div class="edit-section">
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-addon">总金额预算</div>
+                <input type="text" class="form-control" id="totalAmount" value="{{totalAmount}}" placeholder="不限" data-parsley-pattern="^[1-9]{1}\d*$">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-addon">总出票预算</div>
+                <input type="text" class="form-control" id="totalTicket" value="{{totalTicket}}" placeholder="不限" data-parsley-pattern="^[1-9]{1}\d*$">
+              </div>
+            </div>
+          </div>
+
+          <div class="edit-section">
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-addon">成本中心类别</div>
+                <select class="form-control" id="level">
+                  <option></option>
+                  <option value="0">总行</option>
+                  <option value="1">支行</option>
+                  <option value="2">卡中心</option>
+                  <option value="3">卡部</option>
+                  <option value="4">O2O项目组</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-addon">成本中心</div>
+                <select class="form-control" id="budgetSource" required data-parsley-errors-container="#error-budgetSource">
+                  <option></option>
+                </select>
+                <div id="error-budgetSource"></div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-addon">审核人</div>
+                <select class="form-control" id="assessor" required data-parsley-errors-container="#error-assessor">
+                  <option></option>
+                </select>
+                <div id="error-assessor"></div>
+              </div>
+            </div>
+          </div>
+
+          {{/plan}}
+        </script>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="js/vendor.js"></script>
+  <script src="lib/jquery.quicksearch.min.js"></script>
+  <script src="js/activity-plan-edit.js"></script>
+</body>
+</html>

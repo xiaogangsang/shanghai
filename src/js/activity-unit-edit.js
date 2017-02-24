@@ -57,7 +57,7 @@ $(function () {
     // 编辑
     setEdit(urlParam.unitId);
     // 查看
-    if (location.pathname.indexOf('activity-unit-view.html') > -1) {
+    if (location.pathname.indexOf('view.html') > -1) {
       var timer = setTimeout(function() {
         $('#formUnit :input').prop('disabled', true);
         clearTimeout(timer);

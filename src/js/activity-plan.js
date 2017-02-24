@@ -209,6 +209,7 @@ $('#pager').on('click', '#btn-pager', function (e) {
 
 // 新增
 $(document).on('click', '#btn-create', function (e) {
+  return;
   e.preventDefault();
   setModal(false);
   $('#popup-plan-form').modal('show');
@@ -216,6 +217,7 @@ $(document).on('click', '#btn-create', function (e) {
 });
 
 $('#dataTable').on('click', '.btn-edit', function (e) {
+  return;
   e.preventDefault();
   $.ajax({
     url: common.API_HOST + 'plan/planDetail',
