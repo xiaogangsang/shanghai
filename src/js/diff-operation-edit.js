@@ -8,29 +8,6 @@ var _signList = [], _disposeList = [], _typeList = [], _departmentList = [];
 var _appendData = {};
 
 function renderOptions() {
-
-	// 处理标识
-  _(_signData).each(function(item) {
-    _signList[item.id] = item.signName;
-  });
-
-  // 处理状态
-  _(_disposeData).each(function(item) {
-    _disposeList[item.id] = item.disposeName;
-  });
-
-  // 责任部门
-  var _departmentList = {};
-  _(_departmentData).each(function(item) {
-    _departmentList[item.id] = item.departmentName;
-  });
-
-  // 差异类型
-  var _typeList = {};
-  _(_typeData).each(function(item) {
-    _typeList[item.id] = item.differenceName;
-  });
-
 	var signHtml = '<option value=""></option>' + settlementCommon.optionsHTML(_signList, false);
 	$('#diff_processType').html(signHtml);
 	var disposeHtml = settlementCommon.optionsHTML(_disposeList, false);
@@ -116,6 +93,26 @@ function fetchBasicData(callback, fetchFilter) {
 	      } else {
 	      	_typeData.push(item);
 	      }
+
+      	// 处理标识
+        _(_signData).each(function(item) {
+          _signList[item.id] = item.signName;
+        });
+
+        // 处理状态
+        _(_disposeData).each(function(item) {
+          _disposeList[item.id] = item.disposeName;
+        });
+
+        // 责任部门
+        _(_departmentData).each(function(item) {
+          _departmentList[item.id] = item.departmentName;
+        });
+
+        // 差异类型
+        _(_typeData).each(function(item) {
+          _typeList[item.id] = item.differenceName;
+        });
 	    });
 	    callback ? callback() : null;
 	  }
