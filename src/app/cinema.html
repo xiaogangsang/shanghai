@@ -76,6 +76,17 @@
             </div>
           </div>
 
+          <div class="form-group col-sm-6 col-md-4">
+            <div class="input-group">
+              <div class="input-group-addon">停售状态</div>
+              <select class="form-control" id="search_seatTicketFlag">
+                <option value="">全部</option>
+                <option value="1">正常</option>
+                <option value="0">已停售</option>
+              </select>
+            </div>
+          </div>
+
           <div class="col-xs-12 col-sm-6 col-md-4 pull-right">
             <div class="row">
               <div class="col-sm-6">
@@ -95,6 +106,8 @@
             <div class="col-xs-12 extra-btns">
               <button type="button" class="btn btn-default" id="btn-online-multi">批量上线</button>
               <button type="button" class="btn btn-default" id="btn-offline-multi">批量下线</button>
+              <button type="button" class="btn btn-default btn-suspend-multi" data-value="1">批量解除停售</button>
+              <button type="button" class="btn btn-default btn-suspend-multi" data-value="0">批量停售</button>
             </div>
           </div>
 
@@ -167,6 +180,7 @@
         <button type="button" class="btn btn-xs btn-default btn-status" data-onlineStatus="{{onlineStatus}}">{{#onlineStatus}}下线{{/onlineStatus}}{{^onlineStatus}}上线{{/onlineStatus}}</button>
         <button type="button" class="btn btn-xs btn-default btn-edit">编辑</button>
         <button type="button" class="btn btn-xs btn-default btn-delete">删除</button>
+        <button type="button" class="btn btn-xs btn-default btn-flag" data-seatTicketFlag="{{seatTicketFlag}}">{{#seatTicketFlag}}停售{{/seatTicketFlag}}{{^seatTicketFlag}}解除停售{{/seatTicketFlag}}</button>
       </td>
     </tr>
     {{/rows}}
