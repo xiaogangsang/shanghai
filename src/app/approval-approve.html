@@ -43,8 +43,8 @@
               <div class="input-group-addon">进件类型</div>
               <select class="form-control" id="search_type">
                 <option value="">全部</option>
-                <option value="0">活动计划</option>
-                <option value="1">活动单元</option>
+                <option value="0">活动单元</option>
+                <option value="1">活动计划</option>
                 <option value="2">优惠券</option>
               </select>
             </div>
@@ -127,8 +127,8 @@
       <td>{{updateTime}}</td>
       <td>{{promotorName}}</td>
       <td>
-        <a href="coupon-rule-edit.html?couponId={{id}}" class="btn btn-xs btn-default">审核</a>
-        <a href="coupon-rule-view.html?couponId={{id}}" class="btn btn-xs btn-default">驳回</a>
+        <a href="javascript:;" class="btn btn-xs btn-default check" data-accept="1" data-id="{{id}}">审核</a>
+        <a href="javascript:;" class="btn btn-xs btn-default check" data-accept="0" data-id="{{id}}">驳回</a>
       </td>
     </tr>
     {{/rows}}

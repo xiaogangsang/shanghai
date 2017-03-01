@@ -141,7 +141,7 @@
       <td>{{id}}</td>
       <td><a href="activity-unit.html?planId={{id}}" class="btn-link">{{name}}</a></td>
       <!-- TODO: -->
-      <td>{{budgetSource}}</td>
+      <td>{{budgetSourceName}}</td>
       <td>{{statusName}}</td>
       <td>{{budgetStatusName}}</td>
       <td>{{usedTotalAmount}}/{{totalAmount}}</td>
@@ -152,7 +152,7 @@
         <button type="button" class="btn btn-xs btn-default btn-status" data-status="{{status}}">{{#status}}下线{{/status}}{{^status}}上线{{/status}}</button>
         <a type="button" class="btn btn-xs btn-default btn-edit" href="activity-plan-edit.html?id={{id}}" target="_blank">编辑</a>
         <button type="button" class="btn btn-xs btn-default btn-delete">删除</button>
-        <a type="button" class="btn btn-xs btn-default btn-create-unit" href="activity-unit-edit.html?planId={{id}}" target="_blank">新增活动</a>
+        <a type="button" class="btn btn-xs btn-default btn-create-unit" href="activity-unit-edit.html?planId={{id}}&budgetSourceId={{budgetSourceId}}" target="_blank">新增活动</a>
       </td>
     </tr>
     {{/rows}}

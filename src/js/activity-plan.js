@@ -286,18 +286,18 @@ $(document).on('submit', '#popup-plan-form form', function (e) {
   };
 
   // TODO:
-  var ajaxUrl = common.API_HOST +  (($('#popup-plan-form button[type=submit][clicked=true]').hasClass('btn-approval')) ? 'plan/saveAndSubmitVerification' : 'plan/saveVerification');
-  var ajaxUrl = common.API_HOST + 'plan/savePlan';
+  var ajaxUrl = (($('#popup-plan-form button[type=submit][clicked=true]').hasClass('btn-approval')) ? 'plan/saveAndSubmitVerification' : 'plan/saveVerification');
+  // var ajaxUrl = 'plan/savePlan';
 
   var isUpdate = ($('#popup-plan-form #id').size() > 0);
 
   if (isUpdate) {
     sendData.id = $('#popup-plan-form #id').val();
-    ajaxUrl = common.API_HOST + 'plan/updatePlan';
+    // ajaxUrl = 'plan/updatePlan';
   }
 
   $.ajax({
-    url: ajaxUrl,
+    url: common.API_HOST + ajaxUrl,
     type: 'POST',
     dataType: 'json',
     data: sendData,
@@ -374,18 +374,20 @@ $(document).on('change', '#level', function (event, budgetSourceId, assessor) {
 // 选择成本中心
 $(document).on('change', '#budgetSource', function (event, assessor) {
   event.preventDefault();
-  var budgetSource = $(this).val();
+  var budgetSourceId = $(this).val();
+
+  if (!budgetSourceId) return;
 
   // TODO:
-  // $.ajax({
-  //   url: common.API_HOST + 'vertification/getAssessor',
-  //   type: 'GET',
-  //   dataType: 'json',
-  //   data:{budgetSourceId: budgetSource}
-  // })
-  // .done(function (res) {
-    console.log(budgetSource);
-    var res = JSON.parse('{  "meta": {    "result": "1",    "msg": "操作成功"  },  "data": [    {      "id": 19552,      "createdBy": "admin",      "createdDate": null,      "updatedBy": null,      "updatedDate": null,      "loginId": null,      "password": null,      "enabled": "1",      "realName": "樊坤",      "city": null,      "department": "o2o",      "mobile": null,      "email": null,      "roles": null    }  ]}');
+  $.ajax({
+    url: common.API_HOST + 'verification/getAssessor',
+    type: 'GET',
+    dataType: 'json',
+    data:{budgetSourceId: budgetSourceId}
+  })
+  .done(function (res) {
+    console.log(budgetSourceId);
+    // var res = JSON.parse('{  "meta": {    "result": "1",    "msg": "操作成功"  },  "data": [    {      "id": 19552,      "createdBy": "admin",      "createdDate": null,      "updatedBy": null,      "updatedDate": null,      "loginId": null,      "password": null,      "enabled": "1",      "realName": "樊坤",      "city": null,      "department": "o2o",      "mobile": null,      "email": null,      "roles": null    }  ]}');
     if (!!~~res.meta.result) {
       var html = '';
       _(res.data).forEach(function(obj) {
@@ -396,7 +398,7 @@ $(document).on('change', '#budgetSource', function (event, assessor) {
     } else {
       alert('接口错误：' + res.meta.msg);
     }
-  // });
+  });
 });
 
 function getBudgetSource(budgetSourceId) {

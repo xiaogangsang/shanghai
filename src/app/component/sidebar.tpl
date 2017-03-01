@@ -82,7 +82,7 @@
       <div id="approval" class="panel-collapse collapse" role="tabpanel">
         <div class="list-group">
           <a href="approval-submitted.html" class="list-group-item" id="menu-approval-submitted" data-id="12" style="display:none">我的进件列表</a>
-          <a href="approval-approve.html" class="list-group-item" id="menu-approval-approve" data-id="22" style="display:none">进件审核</a>
+          <a href="approval-approve.html" class="list-group-item" id="menu-approval-approve" data-id="12" style="display:none">进件审核</a>
         </div>
       </div>
     </div>

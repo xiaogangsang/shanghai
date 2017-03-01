@@ -43,16 +43,16 @@ $('#formSearch').on('submit', function (e) {
 
   sendData.pageIndex = _pageIndex;
 
-  // $.ajax({
-  //   url: common.API_HOST + 'vertification/myOutbox',
-  //   type: 'POST',
-  //   dataType: 'json',
-  //   data: sendData,
-  // })
-  // .done(function (res) {
+  $.ajax({
+    url: common.API_HOST + 'verification/myInBox',
+    type: 'POST',
+    dataType: 'json',
+    data: sendData,
+  })
+  .done(function (res) {
 
     // LIUGE_TODO: data下面的key改为rows
-    var res = JSON.parse('{  "meta": {    "result": "1",    "msg": "操作成功"  },  "data": {    "rows": [      {        "id": 11,        "typeCode": 0,        "type": null,        "name": "审核测试活动2",        "pid": 0,        "promotor": "1",        "promotorName": "超级管理员",        "operator": "19552",        "operatorName": null,        "content": null,        "statusCode": 1,        "status": null,        "updateTime": "2017-02-09 16:41:12.0"      }    ],    "pageIndex": 1,    "total": 6,    "pageSize": 9999  }}');
+    // var res = JSON.parse('{  "meta": {    "result": "1",    "msg": "操作成功"  },  "data": {    "rows": [      {        "id": 11,        "typeCode": 0,        "type": null,        "name": "审核测试活动2",        "pid": 0,        "promotor": "1",        "promotorName": "超级管理员",        "operator": "19552",        "operatorName": null,        "content": null,        "statusCode": 1,        "status": null,        "updateTime": "2017-02-09 16:41:12.0"      }    ],    "pageIndex": 1,    "total": 6,    "pageSize": 9999  }}');
     _querying = false;
     if (!!~~res.meta.result) {
       if (res.data == null || res.data.rows.length < 1) {
@@ -73,7 +73,7 @@ $('#formSearch').on('submit', function (e) {
     } else {
       alert('接口错误：' + res.meta.msg);
     }
-  // });
+  });
 
   return false;
 });
@@ -135,3 +135,34 @@ function setPager(total, pageIndex, rowsSize, pageTotal) {
   var html = Mustache.render(template, data);
   $('#pager').html(html);
 }
+
+
+/***************************************** 审核 / 驳回 *****************************************/
+$('body').on('click', '.check', function(e) {
+  e.preventDefault();
+
+  if (!!_querying) {
+    return false;
+  }
+
+  _querying = true;
+
+  var id = $(this).data('id');
+  var accept = $(this).data('accept');
+
+  $.ajax({
+    url: common.API_HOST + 'verification/doCheck',
+    type: 'POST',
+    dataType: 'json',
+    data: {id: id, accept: accept}
+  })
+  .done(function (res) {
+
+    _querying = false;
+    if (!!~~res.meta.result) {
+      alert('操作成功!');
+    } else {
+      alert('接口错误：' + res.meta.msg);
+    }
+  });
+});

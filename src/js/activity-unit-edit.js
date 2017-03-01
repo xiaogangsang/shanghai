@@ -29,10 +29,11 @@ var _popupDataCache = {
   timetables: [],
 };
 
+var urlParam = common.getUrlParam();
+
 // var _loginTypes = [CL:'掌上生活登录', UD: '一网通登录', UA: '一卡通登录', UC: '信用卡登录'];
 
 $(function () {
-  common.init('activity-unit');
 
   Number.prototype.between = function (a, b, flag) {
     var min = Math.min.apply(Math, [a, b]);
@@ -52,9 +53,9 @@ $(function () {
   setProvince();
   setBrand();
 
-  var urlParam = common.getUrlParam();
   if (urlParam.unitId != undefined && urlParam.unitId != '') {
     // 编辑
+    common.init('activity-unit');
     setEdit(urlParam.unitId);
     // 查看
     if (location.pathname.indexOf('view.html') > -1) {
@@ -64,8 +65,19 @@ $(function () {
       }, 1500);
     }
     $('h3').text($('h3').text() + urlParam.unitId);
+  } else if (urlParam.vid) {
+    // 审核的编辑
+    common.init('approval-submitted');
+    $('.btn-save').hide();
+
+    setEdit(urlParam.vid, true);
+
+    $('h3').text($('h3').text() + urlParam.vid);
+
+    $('.breadcrumb').html('<li>审核中心</li><li>我的进件列表</li><li class="active">编辑</li>');
   } else {
     // 新增
+    common.init('activity-unit');
     $('.breadcrumb li:last-child').text('新增');
     $('h3').text('新增活动单元');
     if (urlParam.planId != undefined && urlParam.planId != '') {
@@ -80,6 +92,7 @@ $(function () {
     setChannel(false);
     setPattern(1);
     setPriority(false);
+    setupAssessor(urlParam.budgetSourceId);
 
     $('#formUnit button[type=submit]').prop('disabled', false);
   }
@@ -789,7 +802,7 @@ $(document).on('submit', '#formUnit', function (event) {
   }
 
   _submitting = true;
-  $('#formUnit button[type=submit]').prop('disabled', true).text('更新中...');
+  $('#formUnit button[type=submit]').prop('disabled', true);
   var sendData = {
     name: $.trim($('#name').val()),
     signNo: $('#signNo').val(),
@@ -820,6 +833,8 @@ $(document).on('submit', '#formUnit', function (event) {
     cinemas: [],
     timetables: _popupDataCache.timetables,
     remarks: $('#remark').val().trim(),
+    operator: $('#assessor').val(),
+    vid: urlParam.vid
   };
 
   switch ($('input[name=advancePayment]:checked').length) {
@@ -886,9 +901,22 @@ $(document).on('submit', '#formUnit', function (event) {
     sendData.cinemas.push(cinema.cinemaId);
   });
 
-  var ajaxUrl = 'activity/saveActivity';
+  var ajaxUrl;
+
+  if ($('#formUnit button[type=submit][clicked=true]').hasClass('btn-approval')) {
+    if (urlParam.vid) {
+      ajaxUrl = 'activity/updateAndSubmitVerification';
+    } else {
+      ajaxUrl = 'activity/saveAndSubmitVerification';
+    }
+  } else {
+    // 
+    ajaxUrl = 'activity/saveVerification';
+  }
+
+  // var ajaxUrl = 'activity/saveActivity';
   if ($('#id').size() > 0) {
-    ajaxUrl = 'activity/updateActivity';
+    // ajaxUrl = 'activity/updateActivity';
     sendData.id = $('#id').val();
   }
 
@@ -901,15 +929,16 @@ $(document).on('submit', '#formUnit', function (event) {
   })
   .done(function (res) {
     _submitting = false;
-    $('#formUnit button[type=submit]').prop('disabled', false).text('保存');
+    $('#formUnit button[type=submit]').prop('disabled', false);
     if (!!~~res.meta.result) {
-      if (ajaxUrl == 'activity/updateActivity') {
-        alert('更新成功！');
-        document.location.reload(true);
-      } else {
-        alert('新建成功！');
-        document.location = 'activity-unit.html';
-      }
+      // if (ajaxUrl == 'activity/updateActivity') {
+      //   alert('更新成功！');
+      //   document.location.reload(true);
+      // } else {
+      //   alert('新建成功！');
+      //   document.location = 'activity-unit.html';
+      // }
+      alert('提交成功!');
     } else {
       alert('接口错误：' + res.meta.msg);
     }
@@ -918,8 +947,10 @@ $(document).on('submit', '#formUnit', function (event) {
   return false;
 });
 
-//数据缓存
+// 数据缓存
+// 成本中心不再与活动单元关联, 而是与活动计划关联, 该函数不再需要
 function setBudgetSource(budgetSourceId) {
+  return;
   $.ajax({
     url: common.API_HOST + 'common/budgetSourceList',
     type: 'POST',
@@ -1281,16 +1312,19 @@ function resetTimeTable() {
   });
 }
 
-function setEdit(unitId) {
+function setEdit(unitId, isApproval) {
+
+  var url = isApproval ? 'verification/detail' : 'activity/activityDetail';
+  
   $.ajax({
-    url: common.API_HOST + 'activity/activityDetail',
+    url: common.API_HOST + url,
     type: 'POST',
     dataType: 'json',
     data: { id: unitId },
   })
   .done(function (res) {
     if (!!~~res.meta.result) {
-      var unit = res.data;
+      var unit = isApproval ? res.data.data : res.data;
       if (unit == null || unit == undefined) {
         alert('无法获取要编辑的活动单元信息，这个不太正常，让[猿们]来查一查！');
         return false;
@@ -1491,6 +1525,41 @@ function setEdit(unitId) {
 
       //场次
       setTimeTable(unit.timetables);
+
+
+      // 审核人
+      setupAssessor(res.data.budgetSourceId);
+    } else {
+      alert('接口错误：' + res.meta.msg);
+    }
+  });
+}
+
+
+
+
+$(document).on('click', "#formUnit button[type=submit]", function() {
+    $("button[type=submit]", $(this).parents("form")).removeAttr("clicked");
+    $(this).attr("clicked", "true");
+});
+
+function setupAssessor(budgetSourceId) {
+  // TODO:
+  $.ajax({
+    url: common.API_HOST + 'verification/getAssessor',
+    type: 'GET',
+    dataType: 'json',
+    data:{budgetSourceId: budgetSourceId}
+  })
+  .done(function (res) {
+    // var res = JSON.parse('{  "meta": {    "result": "1",    "msg": "操作成功"  },  "data": [    {      "id": 19552,      "createdBy": "admin",      "createdDate": null,      "updatedBy": null,      "updatedDate": null,      "loginId": null,      "password": null,      "enabled": "1",      "realName": "樊坤",      "city": null,      "department": "o2o",      "mobile": null,      "email": null,      "roles": null    }  ]}');
+    if (!!~~res.meta.result) {
+      var html = '';
+      _(res.data.rows).forEach(function(obj) {
+        var selected = obj.id == assessor ? 'selected' : '';
+        html += '<option value="' + obj.id + '"' + selected + '>' + obj.realName + '</option>';
+      });
+      $('#assessor').html(html);
     } else {
       alert('接口错误：' + res.meta.msg);
     }

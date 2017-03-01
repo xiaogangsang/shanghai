@@ -43,8 +43,8 @@
               <div class="input-group-addon">进件类型</div>
               <select class="form-control" id="search_type">
                 <option value="">全部</option>
-                <option value="0">活动计划</option>
-                <option value="1">活动单元</option>
+                <option value="0">活动单元</option>
+                <option value="1">活动计划</option>
                 <option value="2">优惠券</option>
               </select>
             </div>
@@ -131,8 +131,12 @@
       <td>{{type}}</td>
       <td>{{status}}</td>
       <td>
-        <a href="coupon-rule-edit.html?couponId={{id}}" class="btn btn-xs btn-default">编辑</a>
-        <a href="coupon-rule-view.html?couponId={{id}}" class="btn btn-xs btn-default">查看</a>
+        {{#canEdit}}
+        <a href="{{editUrl}}?vid={{id}}" class="btn btn-xs btn-default" target="_blank">编辑</a>
+        {{/canEdit}}
+        {{^canEdit}}
+        <a href="{{editUrl}}?vid={{id}}" class="btn btn-xs btn-default" target="_blank">查看</a>
+        {{/canEdit}}
       </td>
     </tr>
     {{/rows}}

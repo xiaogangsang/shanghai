@@ -25,14 +25,18 @@ var _popupDataCache = {
   timetables: [],
 };
 
+var urlParam = common.getUrlParam();
+
 $(function () {
-  common.init('coupon-rule');
 
   setProvince();
   setBrand();
 
   var urlParam = common.getUrlParam();
   if (urlParam.couponId != undefined && urlParam.couponId != '') {
+    // 编辑
+    common.init('coupon-rule');
+
     setEdit(urlParam.couponId);
     if (location.pathname.indexOf('view.html') > -1) {
       var timer = setTimeout(function() {
@@ -41,7 +45,14 @@ $(function () {
       }, 1500);
     }
     $('h3').text($('h3').text() + urlParam.couponId);
+  } else if (urlParam.vid) {
+    // 审核的编辑
+    common.init('approval-submitted');
+    setEdit(urlParam.vid, true);
+    $('h3').text($('h3').text() + urlParam.vid);
   } else {
+    // 新增
+    common.init('coupon-rule');
     $('.breadcrumb li:last-child').text('新增');
     $('h3').text('新增优惠券');
     setWandaTicket(false);
@@ -538,7 +549,7 @@ $(document).on('submit', '#formEdit', function (event) {
     return false;
   }
   _submitting = true;
-  $('#formEdit button[type=submit]').prop('disabled', true).text('更新中...');
+  $('#formEdit button[type=submit]').prop('disabled', true);
   var sendData = {
     name: $.trim($('#name').val()),
     signNo: $.trim($('#signNo').val()),
@@ -559,7 +570,8 @@ $(document).on('submit', '#formEdit', function (event) {
     timetables: _popupDataCache.timetables,
     remarks: $('#remark').val().trim(),
     effectiveDays:$('#effectiveDays').val().trim(),
-    operator: $('#assessor').val()
+    operator: $('#assessor').val(),
+    vid: urlParam.vid
   };
 
   if((sendData.beginDate == null || sendData.beginDate.length == 0) &&
@@ -586,7 +598,18 @@ $(document).on('submit', '#formEdit', function (event) {
     sendData.cinemas.push(cinema.cinemaId);
   });
 
-  var ajaxUrl = (($('#formEdit button[type=submit][clicked=true]').hasClass('btn-approval')) ? 'coupon/saveAndSubmitVerification' : 'coupon/saveVerification');
+  var ajaxUrl;
+
+  if ($('#formEdit button[type=submit][clicked=true]').hasClass('btn-approval')) {
+    if (urlParam.vid) {
+      ajaxUrl = 'coupon/updateAndSubmitVerification';
+    } else {
+      ajaxUrl = 'coupon/saveAndSubmitVerification';
+    }
+  } else {
+    // 
+    ajaxUrl = 'coupon/saveVerification';
+  }
 
   // var ajaxUrl = 'coupon/couponSave';
   if ($('#id').size() > 0) {
@@ -970,17 +993,20 @@ function resetTimeTable() {
   });
 }
 
-function setEdit(couponId) {
+function setEdit(couponId, isApproval) {
   // $('h3').text('编辑优惠券:' + couponId);
+
+  var url = isApproval ? 'verification/detail' : 'coupon/couponDetail';
+
   $.ajax({
-    url: common.API_HOST + 'coupon/couponDetail',
+    url: common.API_HOST + url,
     type: 'POST',
     dataType: 'json',
     data: { id: couponId },
   })
   .done(function (res) {
     if (!!~~res.meta.result) {
-      var coupon = res.data;
+      var coupon = isApproval? res.data.data : res.data;
       _popupDataCache.channels = coupon.channels != null ? coupon.channels : [];
       _popupDataCache.films = coupon.films != null ? coupon.films : [];
       _popupDataCache.configType = coupon.configType != null ? coupon.configType : [];
@@ -1118,21 +1144,23 @@ $(document).on('click', "#formEdit button[type=submit]", function() {
 // 选择成本中心
 $(document).on('change', '#budgetSource', function (event, assessor) {
   event.preventDefault();
-  var budgetSource = $(this).val();
+  var budgetSourceId = $(this).val();
+
+  if (!budgetSourceId) return;
 
   // TODO:
-  // $.ajax({
-  //   url: common.API_HOST + 'vertification/getAssessor',
-  //   type: 'GET',
-  //   dataType: 'json',
-  //   data:{budgetSourceId: budgetSource}
-  // })
-  // .done(function (res) {
-    console.log(budgetSource);
-    var res = JSON.parse('{  "meta": {    "result": "1",    "msg": "操作成功"  },  "data": [    {      "id": 19552,      "createdBy": "admin",      "createdDate": null,      "updatedBy": null,      "updatedDate": null,      "loginId": null,      "password": null,      "enabled": "1",      "realName": "樊坤",      "city": null,      "department": "o2o",      "mobile": null,      "email": null,      "roles": null    }  ]}');
+  $.ajax({
+    url: common.API_HOST + 'verification/getAssessor',
+    type: 'GET',
+    dataType: 'json',
+    data:{budgetSourceId: budgetSourceId}
+  })
+  .done(function (res) {
+    console.log(budgetSourceId);
+    // var res = JSON.parse('{  "meta": {    "result": "1",    "msg": "操作成功"  },  "data": [    {      "id": 19552,      "createdBy": "admin",      "createdDate": null,      "updatedBy": null,      "updatedDate": null,      "loginId": null,      "password": null,      "enabled": "1",      "realName": "樊坤",      "city": null,      "department": "o2o",      "mobile": null,      "email": null,      "roles": null    }  ]}');
     if (!!~~res.meta.result) {
       var html = '';
-      _(res.data).forEach(function(obj) {
+      _(res.data.rows).forEach(function(obj) {
         var selected = obj.id == assessor ? 'selected' : '';
         html += '<option value="' + obj.id + '"' + selected + '>' + obj.realName + '</option>';
       });
@@ -1140,6 +1168,6 @@ $(document).on('change', '#budgetSource', function (event, assessor) {
     } else {
       alert('接口错误：' + res.meta.msg);
     }
-  // });
+  });
 });
 

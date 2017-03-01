@@ -1,16 +1,25 @@
+/**
+ * 该文件承载了四个职能
+ * 1. 编辑活动计划
+ * 2. 新增活动计划
+ * 3. 编辑已提交审核的审核项
+ * 4. 查看已提交的审核项
+ */
+
+
 'use strict;'
 
 var common = require('common');
 var _querying = false;
 var _submitting = false;
 var _budgetSource = null;
+var urlParam = common.getUrlParam();
 
 $(function () {
-  common.init('activity-plan');
 
-  var urlParam = common.getUrlParam();
   if (urlParam.id != undefined && urlParam.id != '') {
     // 编辑
+    common.init('activity-plan');
     $.ajax({
       url: common.API_HOST + 'plan/planDetail',
       type: 'POST',
@@ -32,8 +41,37 @@ $(function () {
     });
 
     $('h3').text($('h3').text() + urlParam.id);
+  } else if (urlParam.vid) {
+    // 审核
+    common.init('approval-submitted');
+    $('.btn-save').hide();
+
+    $.ajax({
+      url: common.API_HOST + 'verification/detail',
+      type: 'POST',
+      dataType: 'json',
+      data: { id: urlParam.vid },
+    })
+    .done(function (res) {
+      if (!!~~res.meta.result) {
+        setModal(res.data.data);
+        // TODO: 
+        // res.data.budgetSourceId = 176;
+        // 编辑里不需要
+        // res.data.assessor = 19552;
+        $('#popup-plan-form #level').trigger('change', res.data.budgetSourceId, res.data.assessor);
+
+      } else {
+        alert('接口错误：' + res.meta.msg);
+      }
+    });
+
+    $('h3').text($('h3').text() + urlParam.vid);
+
+    $('.breadcrumb').html('<li>审核中心</li><li>我的进件列表</li><li class="active">编辑</li>');
   } else {
     // 新增
+    common.init('activity-plan');
     $('.breadcrumb li:last-child').text('新增');
     $('h3').text('新增活动计划');
 
@@ -65,6 +103,11 @@ function setModal(planData) {
   $('#popup-plan-form form').parsley();
 }
 
+$(document).on('click', "#popup-plan-form button[type=submit]", function() {
+    $("button[type=submit]", $(this).parents("form")).removeAttr("clicked");
+    $(this).attr("clicked", "true");
+});
+
 $(document).on('submit', '#popup-plan-form form', function (e) {
   e.preventDefault();
   if (_submitting) {
@@ -80,22 +123,34 @@ $(document).on('submit', '#popup-plan-form form', function (e) {
     totalAmount: $('#popup-plan-form #totalAmount').val(),
     totalTicket: $('#popup-plan-form #totalTicket').val(),
     budgetSourceType: $('#popup-plan-form #budgetSource').val(),
-    operator: $('#assessor').val()
+    operator: $('#assessor').val(),
+    vid: urlParam.vid
   };
 
   // TODO:
-  var ajaxUrl = common.API_HOST +  (($('#popup-plan-form button[type=submit][clicked=true]').hasClass('btn-approval')) ? 'plan/saveAndSubmitVerification' : 'plan/saveVerification');
-  var ajaxUrl = common.API_HOST + 'plan/savePlan';
+  var ajaxUrl;
+
+  if ($('#popup-plan-form button[type=submit][clicked=true]').hasClass('btn-approval')) {
+    if (urlParam.vid) {
+      ajaxUrl = 'plan/updateAndSubmitVerification';
+    } else {
+      ajaxUrl = 'plan/saveAndSubmitVerification';
+    }
+  } else {
+    // 
+    ajaxUrl = 'plan/saveVerification';
+  }
+  // var ajaxUrl = 'plan/savePlan';
 
   var isUpdate = ($('#popup-plan-form #id').val().length > 0);
 
   if (isUpdate) {
     sendData.id = $('#popup-plan-form #id').val();
-    ajaxUrl = common.API_HOST + 'plan/updatePlan';
+    // ajaxUrl = 'plan/updatePlan';
   }
 
   $.ajax({
-    url: ajaxUrl,
+    url: common.API_HOST + ajaxUrl,
     type: 'POST',
     dataType: 'json',
     data: sendData,
@@ -179,21 +234,23 @@ $(document).on('change', '#level', function (event, budgetSourceId, assessor) {
 // 选择成本中心
 $(document).on('change', '#budgetSource', function (event, assessor) {
   event.preventDefault();
-  var budgetSource = $(this).val();
+  var budgetSourceId = $(this).val();
+
+  if (!budgetSourceId) return;
 
   // TODO:
-  // $.ajax({
-  //   url: common.API_HOST + 'vertification/getAssessor',
-  //   type: 'GET',
-  //   dataType: 'json',
-  //   data:{budgetSourceId: budgetSource}
-  // })
-  // .done(function (res) {
-    console.log(budgetSource);
-    var res = JSON.parse('{  "meta": {    "result": "1",    "msg": "操作成功"  },  "data": [    {      "id": 19552,      "createdBy": "admin",      "createdDate": null,      "updatedBy": null,      "updatedDate": null,      "loginId": null,      "password": null,      "enabled": "1",      "realName": "樊坤",      "city": null,      "department": "o2o",      "mobile": null,      "email": null,      "roles": null    }  ]}');
+  $.ajax({
+    url: common.API_HOST + 'verification/getAssessor',
+    type: 'GET',
+    dataType: 'json',
+    data:{budgetSourceId: budgetSourceId}
+  })
+  .done(function (res) {
+    console.log(budgetSourceId);
+    // var res = JSON.parse('{  "meta": {    "result": "1",    "msg": "操作成功"  },  "data": [    {      "id": 19552,      "createdBy": "admin",      "createdDate": null,      "updatedBy": null,      "updatedDate": null,      "loginId": null,      "password": null,      "enabled": "1",      "realName": "樊坤",      "city": null,      "department": "o2o",      "mobile": null,      "email": null,      "roles": null    }  ]}');
     if (!!~~res.meta.result) {
       var html = '';
-      _(res.data).forEach(function(obj) {
+      _(res.data.rows).forEach(function(obj) {
         var selected = obj.id == assessor ? 'selected' : '';
         html += '<option value="' + obj.id + '"' + selected + '>' + obj.realName + '</option>';
       });
@@ -201,7 +258,7 @@ $(document).on('change', '#budgetSource', function (event, assessor) {
     } else {
       alert('接口错误：' + res.meta.msg);
     }
-  // });
+  });
 });
 
 function getBudgetSource(callback) {
