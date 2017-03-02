@@ -1324,7 +1324,11 @@ function setEdit(unitId, isApproval) {
   })
   .done(function (res) {
     if (!!~~res.meta.result) {
-      var unit = isApproval ? res.data.data : res.data;
+      if (isApproval) {
+        res.data = res.data.data;
+      }
+
+      var unit = res.data;
       if (unit == null || unit == undefined) {
         alert('无法获取要编辑的活动单元信息，这个不太正常，让[猿们]来查一查！');
         return false;

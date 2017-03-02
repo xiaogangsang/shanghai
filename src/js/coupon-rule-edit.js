@@ -48,6 +48,7 @@ $(function () {
   } else if (urlParam.vid) {
     // 审核的编辑
     common.init('approval-submitted');
+    $('.btn-save').hide();
     setEdit(urlParam.vid, true);
     $('h3').text($('h3').text() + urlParam.vid);
   } else {
@@ -1006,7 +1007,10 @@ function setEdit(couponId, isApproval) {
   })
   .done(function (res) {
     if (!!~~res.meta.result) {
-      var coupon = isApproval? res.data.data : res.data;
+      if (isApproval) {
+        res.data = res.data.data;
+      }
+      var coupon = res.data;
       _popupDataCache.channels = coupon.channels != null ? coupon.channels : [];
       _popupDataCache.films = coupon.films != null ? coupon.films : [];
       _popupDataCache.configType = coupon.configType != null ? coupon.configType : [];
