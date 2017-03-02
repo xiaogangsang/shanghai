@@ -38,12 +38,6 @@ $(function () {
     common.init('coupon-rule');
 
     setEdit(urlParam.couponId);
-    if (location.pathname.indexOf('view.html') > -1) {
-      var timer = setTimeout(function() {
-        $('#formEdit :input').prop('disabled', true);
-        clearTimeout(timer);
-      }, 1500);
-    }
     $('h3').text($('h3').text() + urlParam.couponId);
   } else if (urlParam.vid) {
     // 审核的编辑
@@ -62,6 +56,13 @@ $(function () {
     setChannel(false);
 
     $('#formEdit button[type=submit]').prop('disabled', false);
+  }
+
+  if (location.pathname.indexOf('view.html') > -1) {
+    var timer = setTimeout(function() {
+      $('#formEdit :input').prop('disabled', true);
+      clearTimeout(timer);
+    }, 1500);
   }
 
   $('#beginDate').datetimepicker({

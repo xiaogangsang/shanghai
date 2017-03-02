@@ -57,13 +57,7 @@ $(function () {
     // 编辑
     common.init('activity-unit');
     setEdit(urlParam.unitId);
-    // 查看
-    if (location.pathname.indexOf('view.html') > -1) {
-      var timer = setTimeout(function() {
-        $('#formUnit :input').prop('disabled', true);
-        clearTimeout(timer);
-      }, 1500);
-    }
+
     $('h3').text($('h3').text() + urlParam.unitId);
   } else if (urlParam.vid) {
     // 审核的编辑
@@ -95,6 +89,14 @@ $(function () {
     setupAssessor(urlParam.budgetSourceId);
 
     $('#formUnit button[type=submit]').prop('disabled', false);
+  }
+
+  // 查看
+  if (location.pathname.indexOf('view.html') > -1) {
+    var timer = setTimeout(function() {
+      $('#formUnit :input').prop('disabled', true);
+      clearTimeout(timer);
+    }, 1500);
   }
 
   //upper of range
@@ -1532,7 +1534,9 @@ function setEdit(unitId, isApproval) {
 
 
       // 审核人
-      setupAssessor(res.data.budgetSourceId);
+      if ($('#assessor').length) {
+        setupAssessor(res.data.budgetSourceId);
+      }
     } else {
       alert('接口错误：' + res.meta.msg);
     }
@@ -1560,8 +1564,7 @@ function setupAssessor(budgetSourceId) {
     if (!!~~res.meta.result) {
       var html = '';
       _(res.data.rows).forEach(function(obj) {
-        var selected = obj.id == assessor ? 'selected' : '';
-        html += '<option value="' + obj.id + '"' + selected + '>' + obj.realName + '</option>';
+        html += '<option value="' + obj.id + '">' + obj.realName + '</option>';
       });
       $('#assessor').html(html);
     } else {

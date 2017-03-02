@@ -54,7 +54,8 @@ $(function () {
     })
     .done(function (res) {
       if (!!~~res.meta.result) {
-        setModal(res.data.data);
+        res.data = res.data.data;
+        setModal(res.data);
         // TODO: 
         // res.data.budgetSourceId = 176;
         // 编辑里不需要
@@ -76,8 +77,14 @@ $(function () {
     $('h3').text('新增活动计划');
 
     $('form button[type=submit]').prop('disabled', false);
+  }
 
-
+  // 查看
+  if (location.pathname.indexOf('view.html') > -1) {
+    var timer = setTimeout(function() {
+      $('form :input').prop('disabled', true);
+      clearTimeout(timer);
+    }, 1500);
   }
 
   setModal();
@@ -233,10 +240,11 @@ $(document).on('change', '#level', function (event, budgetSourceId, assessor) {
 
 // 选择成本中心
 $(document).on('change', '#budgetSource', function (event, assessor) {
+
   event.preventDefault();
   var budgetSourceId = $(this).val();
 
-  if (!budgetSourceId) return;
+  if (!budgetSourceId || !$('#assessor').length) return;
 
   // TODO:
   $.ajax({

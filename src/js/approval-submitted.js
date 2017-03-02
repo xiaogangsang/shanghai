@@ -12,6 +12,7 @@ var useCache = false;
 var typeMap = {'0': '活动单元', '1': '活动计划', '2': '优惠券'};
 var statusMap = {'0': '未审核', '1': '审核中', '2': '审核驳回', '3': '已审核'};
 var editUrlMap = {'0': 'activity-unit-edit.html', '1': 'activity-plan-edit.html', '2': 'coupon-rule-edit.html'};
+var viewUrlMap = {'0': 'activity-unit-view.html', '1': 'activity-plan-view.html', '2': 'coupon-rule-view.html'};
 
 $(function () {
   common.init('approval-submitted');
@@ -69,6 +70,7 @@ $('#formSearch').on('submit', function (e) {
         _(res.data.rows).forEach(function (item, key) {
           item.canEdit = (item.statusCode != 1);
           item.editUrl = editUrlMap[item.typeCode];
+          item.viewUrl = viewUrlMap[item.typeCode];
           item.status = statusMap[item.statusCode];
           item.type = typeMap[item.typeCode];
 
