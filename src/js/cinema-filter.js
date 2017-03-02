@@ -81,9 +81,9 @@ $(document).on('submit', 'form', function (event) {
   var ids = [];
 
   $('#brandSelect_to option, #effectSelect_to option, #serviceSelect_to option').each(function (index, el) {
-    if (!$(el).hasClass('hidden')) {
+    // if (!$(el).hasClass('hidden')) {
       ids.push($(el).val());
-    }
+    // }
   });
 
   var points = $('input[name=points]:checked').data("id");
