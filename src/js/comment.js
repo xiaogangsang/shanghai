@@ -1,6 +1,7 @@
 'use strict;'
 
 var common = require('common');
+var util = require('util');
 var _channels = {};
 var _pageIndex = 1;
 var _pageSize = 10;
@@ -11,6 +12,7 @@ var useCache = false;
 
 $(function () {
   common.init('comment');
+  util.init($);
 
   //set search form
   setChannel();
