@@ -132,10 +132,10 @@
       <td>{{status}}</td>
       <td>
         {{#canEdit}}
-        <a href="{{editUrl}}?vid={{id}}" class="btn btn-xs btn-default" target="_blank">编辑</a>
+        <a href="{{editUrl}}?vid={{id}}&id={{pid}}&typeCode={{typeCode}}&ref=approval-submitted" class="btn btn-xs btn-default" target="_blank">编辑</a>
         {{/canEdit}}
         {{^canEdit}}
-        <a href="{{viewUrl}}?vid={{id}}" class="btn btn-xs btn-default" target="_blank">查看</a>
+        <a href="{{viewUrl}}?vid={{id}}&id={{pid}}&typeCode={{typeCode}}&ref=approval-submitted" class="btn btn-xs btn-default" target="_blank">查看</a>
         {{/canEdit}}
       </td>
     </tr>

@@ -51,7 +51,7 @@
             <div class="form-group">
               <div class="input-group">
                 <div class="input-group-addon">计划名称</div>
-                <input type="text" class="form-control" id="name" value="{{name}}" required placeholder="必填">
+                <input type="text" id="name" value="{{name}}" class="form-control {{#data.name.edited}}highlight{{/data.name.edited}}" required placeholder="必填">
               </div>
             </div>
           </div>
@@ -59,13 +59,13 @@
             <div class="form-group">
               <div class="input-group">
                 <div class="input-group-addon">日金额预算</div>
-                <input type="text" class="form-control" id="dailyAmount" value="{{dailyAmount}}" placeholder="不限" data-parsley-pattern="^[1-9]{1}\d*$">
+                <input type="text" id="dailyAmount" value="{{dailyAmount}}" class="form-control {{#data.dailyAmount.edited}}highlight{{/data.dailyAmount.edited}}" placeholder="不限" data-parsley-pattern="^[1-9]{1}\d*$">
               </div>
             </div>
             <div class="form-group">
               <div class="input-group">
                 <div class="input-group-addon">日出票预算</div>
-                <input type="text" class="form-control" id="dailyTicket" value="{{dailyTicket}}" placeholder="不限" data-parsley-pattern="^[1-9]{1}\d*$">
+                <input type="text" id="dailyTicket" value="{{dailyTicket}}" class="form-control {{#data.dailyTicket.edited}}highlight{{/data.dailyTicket.edited}}" placeholder="不限" data-parsley-pattern="^[1-9]{1}\d*$">
               </div>
             </div>
           </div>
@@ -73,13 +73,13 @@
             <div class="form-group">
               <div class="input-group">
                 <div class="input-group-addon">总金额预算</div>
-                <input type="text" class="form-control" id="totalAmount" value="{{totalAmount}}" placeholder="不限" data-parsley-pattern="^[1-9]{1}\d*$">
+                <input type="text" id="totalAmount" value="{{totalAmount}}" class="form-control {{#data.totalAmount.edited}}highlight{{/data.totalAmount.edited}}" placeholder="不限" data-parsley-pattern="^[1-9]{1}\d*$">
               </div>
             </div>
             <div class="form-group">
               <div class="input-group">
                 <div class="input-group-addon">总出票预算</div>
-                <input type="text" class="form-control" id="totalTicket" value="{{totalTicket}}" placeholder="不限" data-parsley-pattern="^[1-9]{1}\d*$">
+                <input type="text" id="totalTicket" value="{{totalTicket}}" class="form-control {{#data.totalTicket.edited}}highlight{{/data.totalTicket.edited}}" placeholder="不限" data-parsley-pattern="^[1-9]{1}\d*$">
               </div>
             </div>
           </div>
@@ -101,7 +101,7 @@
             <div class="form-group">
               <div class="input-group">
                 <div class="input-group-addon">成本中心</div>
-                <select class="form-control" id="budgetSource" required data-parsley-errors-container="#error-budgetSource">
+                <select class="form-control {{#data.budgetSourceId.edited}}highlight{{/data.budgetSourceId.edited}}" id="budgetSource" required data-parsley-errors-container="#error-budgetSource">
                   <option></option>
                 </select>
                 <div id="error-budgetSource"></div>
@@ -131,5 +131,7 @@
   <script src="js/vendor.js"></script>
   <script src="lib/jquery.quicksearch.min.js"></script>
   <script src="js/activity-plan-edit.js"></script>
+
+  @@include('component/approval-history.tpl')
 </body>
 </html>

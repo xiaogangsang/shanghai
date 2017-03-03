@@ -10,6 +10,7 @@ var searchCache = {};
 var useCache = false;
 
 var typeMap = {'0': '活动单元', '1': '活动计划', '2': '优惠券'};
+var viewUrlMap = {'0': 'activity-unit-view.html', '1': 'activity-plan-view.html', '2': 'coupon-rule-view.html'};
 
 $(function () {
   common.init('approval-approve');
@@ -66,6 +67,7 @@ $('#formSearch').on('submit', function (e) {
 
         _(res.data.rows).forEach(function (item, key) {
           item.type = typeMap[item.typeCode];
+          item.viewUrl = viewUrlMap[item.typeCode];
         });
 
         setTableData(res.data.rows);

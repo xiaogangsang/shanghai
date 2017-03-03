@@ -212,6 +212,24 @@
 
           </form>
 
+          <form id="formRemark" style="display: none;">
+            <div class="edit-section">
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-addon">审核备注</div>
+                  <textarea id="remark-input" class="form-control"></textarea>
+                </div>
+              </div>
+            </div>
+
+            <div class="row" style="text-align: center;">
+              <button type="submit" class="btn btn-primary btn-approval" style="padding: 5px 60px;">审核</button>
+              <button type="submit" class="btn btn-primary btn-reject" style="padding: 5px 60px; margin-left: 6px;">驳回</button>
+              <!-- <button type="submit" class="btn btn-block btn-primary" disabled>保存</button> -->
+            </div>
+          </form>
+
+
         </section>
 
       </div>
@@ -228,5 +246,6 @@
   @@include('component/popup-unit-dimen.tpl')
   @@include('component/popup-unit-cinema.tpl')
   @@include('component/popup-unit-timetable.tpl')
+  @@include('component/approval-history.tpl')
 </body>
 </html>

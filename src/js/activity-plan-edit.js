@@ -14,81 +14,121 @@ var _querying = false;
 var _submitting = false;
 var _budgetSource = null;
 var urlParam = common.getUrlParam();
+var ref = urlParam.ref ? urlParam.ref : 'activity-plan';
 
 $(function () {
 
-  if (urlParam.id != undefined && urlParam.id != '') {
-    // 编辑
-    common.init('activity-plan');
-    $.ajax({
-      url: common.API_HOST + 'plan/planDetail',
-      type: 'POST',
-      dataType: 'json',
-      data: { id: urlParam.id },
-    })
-    .done(function (res) {
-      if (!!~~res.meta.result) {
-        setModal(res.data);
-        // TODO: 
-        // res.data.budgetSourceId = 176;
-        // 编辑里不需要
-        // res.data.assessor = 19552;
-        $('#popup-plan-form #level').trigger('change', res.data.budgetSourceId, res.data.assessor);
+  var isViewing = location.pathname.indexOf('view.html') > -1;
 
-      } else {
-        alert('接口错误：' + res.meta.msg);
+  if (urlParam.hid) {
+    // 历史
+    setEdit(urlParam.hid, false, true);
+    $('h3').text($('h3').text() + urlParam.hid);
+    // $('li.active').text('查看');
+    // 在"进件审核"中的查看和"我的进件列表"中的查看并无区别, 只是标题不同
+    if (ref === 'approval-approve') {
+      $('.breadcrumb').html('<li>审核中心</li><li>进件审核</li><li class="active">查看历史</li>');
+    } else if (ref === 'approval-submitted') {
+      $('.breadcrumb').html('<li>审核中心</li><li>我的进件列表</li><li class="active">查看历史</li>');
+    }
+  } else if (urlParam.vid) {
+    if (isViewing) {
+      if (ref === 'approval-approve') {
+        // 查看(为了审核)
+        $('.breadcrumb').html('<li>审核中心</li><li>进件审核</li><li class="active">审核</li>');
+        $('h3').text('审核活动计划: ' + urlParam.vid);
+        $('#formRemark').show();
+      } else if (ref === 'approval-submitted') {
+        // 查看(我的进件列表(当状态为审核中时不可编辑))
+        $('.breadcrumb').html('<li>审核中心</li><li>我的进件列表</li><li class="active">查看</li>');
+        $('h3').text('查看活动计划: ' + urlParam.vid);
       }
-    });
+    } else {
+      // 审核的编辑
+      ref = 'approval-submitted';
+      $('.btn-save').hide();
+      $('h3').text($('h3').text() + urlParam.vid);
+      $('.breadcrumb').html('<li>审核中心</li><li>我的进件列表</li><li class="active">编辑</li>');
+    }
+
+    setEdit(urlParam.vid, true);
+  } else if (urlParam.id != undefined && urlParam.id != '') {
+    // 编辑
+    setEdit(urlParam.id);
+    urlParam.typeCode = 1;
 
     $('h3').text($('h3').text() + urlParam.id);
-  } else if (urlParam.vid) {
-    // 审核
-    common.init('approval-submitted');
-    $('.btn-save').hide();
-
-    $.ajax({
-      url: common.API_HOST + 'verification/detail',
-      type: 'POST',
-      dataType: 'json',
-      data: { id: urlParam.vid },
-    })
-    .done(function (res) {
-      if (!!~~res.meta.result) {
-        res.data = res.data.data;
-        setModal(res.data);
-        // TODO: 
-        // res.data.budgetSourceId = 176;
-        // 编辑里不需要
-        // res.data.assessor = 19552;
-        $('#popup-plan-form #level').trigger('change', res.data.budgetSourceId, res.data.assessor);
-
-      } else {
-        alert('接口错误：' + res.meta.msg);
-      }
-    });
-
-    $('h3').text($('h3').text() + urlParam.vid);
-
-    $('.breadcrumb').html('<li>审核中心</li><li>我的进件列表</li><li class="active">编辑</li>');
   } else {
     // 新增
-    common.init('activity-plan');
     $('.breadcrumb li:last-child').text('新增');
     $('h3').text('新增活动计划');
 
     $('form button[type=submit]').prop('disabled', false);
   }
 
+  common.init(ref);
+
   // 查看
-  if (location.pathname.indexOf('view.html') > -1) {
+  if (isViewing) {
     var timer = setTimeout(function() {
-      $('form :input').prop('disabled', true);
+      $('#popup-plan-form :input').prop('disabled', true);
       clearTimeout(timer);
     }, 1500);
   }
 
   setModal();
 });
+
+function setEdit(id, isApproval, isHistory) {
+  var url;
+  if (isHistory) {
+    url = 'verification/historyDetail';
+  } else if (isApproval) {
+    url = 'verification/detail';
+  } else {
+    url = 'plan/planDetail';
+  }
+
+  $.ajax({
+    url: common.API_HOST + url,
+    type: 'POST',
+    dataType: 'json',
+    data: { id: id },
+  })
+  .done(function (res) {
+    if (!!~~res.meta.result) {
+      if (isApproval) {
+        for (var key in res.data.data) {
+          if (res.data.data.hasOwnProperty(key)) {
+            res.data[key] = res.data.data[key].val;
+            // res.data.data[key].edited = true;
+          }
+        }
+      } else if (isHistory) {
+        res.data = res.data.data;
+        res.data.data = common.clone(res.data);
+      } else {
+        res.data.data = common.clone(res.data);
+      }
+
+      // 为了代码方便, 不再判断要不要进行高亮操作, 这里把不需要判断的情况的edited全是undefined, 这样就不会高亮
+      for (var key in res.data.data) {
+        if (res.data.data.hasOwnProperty(key) && res.data.data[key] == null) {
+          res.data.data[key] = {};
+        }
+      }
+
+      setModal(res.data);
+
+      $('#popup-plan-form #level').trigger('change', res.data.budgetSourceId, res.data.assessor);
+
+      getHistory();
+
+    } else {
+      alert('接口错误：' + res.meta.msg);
+    }
+  });
+}
 
 function setModal(planData) {
   var template;
@@ -110,10 +150,41 @@ function setModal(planData) {
   $('#popup-plan-form form').parsley();
 }
 
-$(document).on('click', "#popup-plan-form button[type=submit]", function() {
+$(document).on('click', "form button[type=submit]", function() {
     $("button[type=submit]", $(this).parents("form")).removeAttr("clicked");
     $(this).attr("clicked", "true");
 });
+
+// 审核/驳回
+$(document).on('submit', '#formRemark', function(event) {
+  event.preventDefault();
+
+  if (_submitting) {
+    return false;
+  }
+
+  _submitting = true;
+
+  var id = urlParam.vid;
+  var accept = $('#formRemark button[type=submit][clicked=true]').hasClass('btn-approval') ? 1 : 0;
+
+  $.ajax({
+    url: common.API_HOST + 'verification/doCheck',
+    type: 'POST',
+    dataType: 'json',
+    data: {id: id, accept: accept, remark: $('#remark-input').val()}
+  })
+  .done(function (res) {
+
+    _submitting = false;
+    if (!!~~res.meta.result) {
+      alert('操作成功!');
+    } else {
+      alert('接口错误：' + res.meta.msg);
+    }
+  });
+});
+
 
 $(document).on('submit', '#popup-plan-form form', function (e) {
   e.preventDefault();
@@ -286,3 +357,31 @@ function getBudgetSource(callback) {
     }
   });
 }
+
+// 历史记录
+var getHistory = function() {
+  if (urlParam.id !== undefined && urlParam.typeCode !== undefined) {
+
+    var url = 'verification/history';
+    
+    $.ajax({
+      url: common.API_HOST + url,
+      type: 'POST',
+      dataType: 'json',
+      data: { id: urlParam.id, typeCode: urlParam.typeCode },
+    })
+    .done(function (res) {
+      if (!!~~res.meta.result) {
+        var template = $('#history-template').html();
+        Mustache.parse(template);
+        res.data.url = 'activity-plan-view.html';
+        res.data.ref = ref;
+        var html = Mustache.render(template, res.data);
+        $('section').after(html);
+      } else {
+        alert('获取编辑历史失败: ' + res.meta.msg);
+      }
+    });
+  }
+};
+
