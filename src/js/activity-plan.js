@@ -279,13 +279,8 @@ $(document).on('submit', '#popup-plan-form form', function (e) {
     totalTicket: $('#popup-plan-form #totalTicket').val(),
   };
 
-<<<<<<< HEAD
-  var ajaxUrl = common.API_HOST + 'plan/savePlan';
-=======
   // TODO:
   var ajaxUrl = (($('#popup-plan-form button[type=submit][clicked=true]').hasClass('btn-approval')) ? 'plan/saveAndSubmitVerification' : 'plan/saveVerification');
-  // var ajaxUrl = 'plan/savePlan';
->>>>>>> feature/approval
 
   var isUpdate = ($('#popup-plan-form #id').size() > 0);
 
@@ -319,8 +314,6 @@ $(document).on('submit', '#popup-plan-form form', function (e) {
 
   return false;
 });
-<<<<<<< HEAD
-=======
 
 /******************************************** detail ********************************************/
 
@@ -419,4 +412,3 @@ function getBudgetSource(budgetSourceId) {
     }
   });
 }
->>>>>>> feature/approval
