@@ -81,8 +81,8 @@
       <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#approval"><span class="glyphicon glyphicon-barcode" aria-hidden="true"></span> 审核中心</a>
       <div id="approval" class="panel-collapse collapse" role="tabpanel">
         <div class="list-group">
-          <a href="approval-submitted.html" class="list-group-item" id="menu-approval-submitted" data-id="12" style="display:none">我的进件列表</a>
-          <a href="approval-approve.html" class="list-group-item" id="menu-approval-approve" data-id="12" style="display:none">进件审核</a>
+          <a href="approval-submitted.html" class="list-group-item" id="menu-approval-submitted" data-id="358" style="display:none">我的进件列表</a>
+          <a href="approval-approve.html" class="list-group-item" id="menu-approval-approve" data-id="357" style="display:none">进件审核</a>
         </div>
       </div>
     </div>

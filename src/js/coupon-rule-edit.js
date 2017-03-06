@@ -59,7 +59,6 @@ $(function () {
     } else {
       // 审核的编辑
       ref = 'approval-submitted';
-      $('.btn-save').hide();
 
       $('.breadcrumb').html('<li>审核中心</li><li>我的进件列表</li><li class="active">编辑</li>');
       $('h3').text($('h3').text() + urlParam.vid);
@@ -76,6 +75,7 @@ $(function () {
     // 新增
     $('.breadcrumb li:last-child').text('新增');
     $('h3').text('新增优惠券');
+    $('.btn-save').show();
     setWandaTicket(false);
     setBudgetSource(false);
     setMovie(false);
