@@ -72,7 +72,8 @@
                 <button type="submit" class="btn btn-block btn-primary">查询</button>
               </div>
               <div class="col-sm-6">
-                <button type="button" class="btn btn-block btn-default" id="btn-create">新增</button>
+                <a href="activity-plan-edit.html" type="button" class="btn btn-block btn-default" id="btn-create" target="_blank">新增</a>
+                <!-- <button type="button" class="btn btn-block btn-default" id="btn-create">新增</button> -->
               </div>
             </div>
           </div>
@@ -100,7 +101,7 @@
               </thead>
               <tbody>
                 <tr>
-                  <td colspan="9" align="center">请点击“查询”按钮！</td>
+                  <td colspan="10" align="center">请点击“查询”按钮！</td>
                 </tr>
               </tbody>
             </table>
@@ -138,6 +139,7 @@
     <tr data-id="{{id}}">
       <td>{{id}}</td>
       <td><a href="activity-unit.html?planId={{id}}" class="btn-link">{{name}}</a></td>
+      <td>{{budgetSourceName}}</td>
       <td>{{statusName}}</td>
       <td>{{budgetStatusName}}</td>
       <td>{{usedTotalAmount}}/{{totalAmount}}</td>
@@ -146,8 +148,9 @@
       <td>{{usedDailyTicket}}/{{dailyTicket}}</td>
       <td>
         <button type="button" class="btn btn-xs btn-default btn-status" data-status="{{status}}">{{#status}}下线{{/status}}{{^status}}上线{{/status}}</button>
-        <button type="button" class="btn btn-xs btn-default btn-edit">编辑</button>
+        <a type="button" class="btn btn-xs btn-default btn-edit" href="activity-plan-edit.html?id={{id}}" target="_blank">编辑</a>
         <button type="button" class="btn btn-xs btn-default btn-delete">删除</button>
+        <a type="button" class="btn btn-xs btn-default btn-create-unit" href="activity-unit-edit.html?planId={{id}}&budgetSourceId={{budgetSourceId}}" target="_blank">新增活动</a>
       </td>
     </tr>
     {{/rows}}
