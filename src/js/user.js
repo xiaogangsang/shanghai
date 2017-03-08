@@ -9,6 +9,7 @@ var _pageTotal = 0;
 var _channels = {};
 var _roles = {};
 var _cities = [];
+var _budgetSource = [];
 var _querying = false;
 var searchCache = {};
 var useCache = false;
@@ -50,6 +51,7 @@ $(function () {
   //cache data
   getChannels();
   getCities();
+  getBudgetSource();
 
   $('#formSearch').trigger('submit');
 });
@@ -288,13 +290,16 @@ $(document).on('click', '#btn-delete-multi', function (e) {
 });
 
 $(document).on('click', '#popup-user-form button[type=submit]', function (event) {
+  // 这里不要preventDefalt, 要不然会截住submit和parsley
+  $('.multi-selection option').prop('selected', true);
+});
+$(document).on('submit', '#popup-user-form form', function(event) {
   event.preventDefault();
   if (_submitting) {
     return false;
   }
 
   _submitting = true;
-  $('.multi-selection option').prop('selected', true);
   var sendData = {
     realName: $.trim($('#popup-user-form #realName').val()),
     city: $.trim($('#popup-user-form #city').val()),
@@ -316,6 +321,11 @@ $(document).on('click', '#popup-user-form button[type=submit]', function (event)
     if (!$(el).hasClass('hidden')) {
       sendData.roles.push($(el).val());
     }
+  });
+
+  sendData.budgetIds = [];
+  $('#budgetSourceSelect_to option').each(function(index, el) {
+    sendData.budgetIds.push($(el).val());
   });
 
   var checkedChannels = [];
@@ -380,11 +390,17 @@ function setModal(userData) {
     });
 
     delete userData.cityAuthority;
-    data = { user: userData, channels: _channels, roles: _roles, cities: _cities };
+
+    _(_budgetSource).forEach(function(value, key) {
+      value.selected = (userData.budgetAuthority.indexOf(value.id) > -1);
+    });
+    delete userData.budgetAuthority;
+
+    data = { user: userData, channels: _channels, roles: _roles, cities: _cities, budgetSources: _budgetSource };
     template = $('#edit-template').html();
     $('#popup-user-form .modal-title').html('编辑用户');
   } else {
-    data = { channels: _channels, roles: _roles, cities: _cities };
+    data = { channels: _channels, roles: _roles, cities: _cities, budgetSources: _budgetSource };
     template = $('#create-template').html();
     $('#popup-user-form .modal-title').html('新增用户');
   }
@@ -405,6 +421,7 @@ function setModal(userData) {
     leftSelected: '#roleSelect_left',
     leftAll: '#roleSelect_none',
   });
+
   $('#citySelect').multiselect({
     search: {
       left: '<input type="text" name="q" class="form-control" placeholder="候选..." />',
@@ -415,6 +432,18 @@ function setModal(userData) {
     rightSelected: '#citySelect_right',
     leftSelected: '#citySelect_left',
     leftAll: '#citySelect_none',
+  });
+
+  $('#budgetSourceSelect').multiselect({
+    search: {
+      left: '<input type="text" name="q" class="form-control" placeholder="候选..." />',
+      right: '<input type="text" name="q" class="form-control" placeholder="已选..." />',
+    },
+    right: 'budgetSourceSelect_to',
+    rightAll: '#budgetSourceSelect_all',
+    rightSelected: '#budgetSourceSelect_right',
+    leftSelected: '#budgetSourceSelect_left',
+    leftAll: '#budgetSourceSelect_none',
   });
 }
 
@@ -491,3 +520,22 @@ function getCities() {
     }
   });
 }
+
+
+function getBudgetSource() {
+  $.ajax({
+    url: common.API_HOST + 'common/budgetSourceList',
+    type: 'POST',
+    dataType: 'json',
+  })
+  .done(function (res) {
+    if (!!~~res.meta.result) {
+      _(res.data).forEach(function(group, key) {
+        _budgetSource = _budgetSource.concat(group);
+      })
+    } else {
+      alert('接口错误：' + res.meta.msg);
+    }
+  });
+}
+

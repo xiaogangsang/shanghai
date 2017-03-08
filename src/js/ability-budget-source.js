@@ -3,7 +3,6 @@
 var common = require('common');
 var util = require('util');
 var _users = [];
-var _channels = [];
 var _budgetSource = [];
 var _submitting = false;
 
