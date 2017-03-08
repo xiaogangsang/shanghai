@@ -134,6 +134,7 @@
           <a href="ability-resource.html" class="list-group-item" id="menu-ability-resource" data-id="4" style="display:none">功能权限管理</a>
           <a href="ability-channel.html" class="list-group-item" id="menu-ability-channel" data-id="3" style="display:none">渠道权限管理</a>
           <a href="ability-city.html" class="list-group-item" id="menu-ability-city" data-id="3" style="display:none">城市权限管理</a>
+          <a href="ability-budget-source.html" class="list-group-item" id="menu-ability-budget-source" data-id="392" style="display:none">成本中心权限管理</a>
         </div>
       </div>
     </div>
