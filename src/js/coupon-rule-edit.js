@@ -658,7 +658,8 @@ $(document).on('submit', '#formEdit', function (event) {
     _submitting = false;
     if (!!~~res.meta.result) {
       alert('提交成功, 审核进度可到 "我的进件列表" 查看. \n点击 "确定" 关闭本页面');
-      close();
+      window.open(document.URL,'_self','resizable=no,top=-245,width=250,height=250,scrollbars=no');
+      window.close();
       // if (ajaxUrl == 'coupon/couponUpdate') {
       //   alert('更新成功！');
       //   document.location.reload(true);

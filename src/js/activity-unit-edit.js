@@ -969,7 +969,8 @@ $(document).on('submit', '#formUnit', function (event) {
       //   document.location = 'activity-unit.html';
       // }
       alert('提交成功, 审核进度可到 "我的进件列表" 查看. \n点击 "确定" 关闭本页面');
-      close();
+      window.open(document.URL,'_self','resizable=no,top=-245,width=250,height=250,scrollbars=no');
+      window.close();
     } else {
       alert('接口错误：' + res.meta.msg);
     }

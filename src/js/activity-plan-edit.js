@@ -236,7 +236,9 @@ $(document).on('submit', '#popup-plan-form form', function (e) {
     _submitting = false;
     if (!!~~res.meta.result) {
       alert('提交成功, 审核进度可到 "我的进件列表" 查看. \n点击 "确定" 关闭本页面');
-      close();
+      window.open(document.URL,'_self','resizable=no,top=-245,width=250,height=250,scrollbars=no');
+      window.close();
+      // close();
 
       // $('#popup-plan-form').modal('hide');
       // $('#formSearch').trigger('submit');
