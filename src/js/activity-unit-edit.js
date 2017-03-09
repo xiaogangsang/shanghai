@@ -1103,6 +1103,7 @@ function setWandaTicket(wandaTicketId) {
     data: {
       pageIndex: 1,
       pageSize: 9999,
+      budgetSource: urlParam.budgetSourceId
     },
   })
   .done(function (res) {

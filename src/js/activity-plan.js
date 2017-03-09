@@ -319,7 +319,7 @@ $(document).on('submit', '#popup-plan-form form', function (e) {
 
 // 选择成本中心类别
 // 
-$(document).on('change', '#level', function (event, budgetSourceId, assessor) {
+$(document).on('change mouseup', '#level', function (event, budgetSourceId, assessor) {
   event.preventDefault();
 
   var budgetSourceTypeId;
@@ -369,7 +369,7 @@ $(document).on('change', '#level', function (event, budgetSourceId, assessor) {
 });
 
 // 选择成本中心
-$(document).on('change', '#budgetSource', function (event, assessor) {
+$(document).on('change mouseup', '#budgetSource', function (event, assessor) {
   event.preventDefault();
   var budgetSourceId = $(this).val();
 

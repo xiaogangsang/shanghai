@@ -739,6 +739,7 @@ function setWandaTicket(wandaTicketId) {
     data: {
       pageIndex: 1,
       pageSize: 9999,
+      budgetSource: urlParam.budgetSourceId
     },
   })
   .done(function (res) {
@@ -1239,7 +1240,7 @@ $(document).on('submit', '#formRemark', function(event) {
 
 
 // 选择成本中心
-$(document).on('change', '#budgetSource', function (event, assessor) {
+$(document).on('change mouseup', '#budgetSource', function (event, assessor) {
   event.preventDefault();
   var budgetSourceId = $(this).val();
 
