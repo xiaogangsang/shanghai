@@ -930,7 +930,7 @@ $(document).on('submit', '#formUnit', function (event) {
     sendData.cinemas.push(cinema.cinemaId);
   });
 
-  var ajaxUrl;
+  var ajaxUrl, tips;
 
   if ($('#formUnit button[type=submit][clicked=true]').hasClass('btn-approval')) {
     if (urlParam.vid) {
@@ -938,9 +938,11 @@ $(document).on('submit', '#formUnit', function (event) {
     } else {
       ajaxUrl = 'activity/saveAndSubmitVerification';
     }
+    tips = '提交成功, 审核进度可到 "我的进件列表" 查看. \n点击 "确定" 关闭本页面';
   } else {
     // 
     ajaxUrl = 'activity/saveVerification';
+    tips = '保存成功, 可到 "我的进件列表" 查看或编辑. \n点击 "确定" 关闭本页面';
   }
 
   // var ajaxUrl = 'activity/saveActivity';
@@ -967,7 +969,7 @@ $(document).on('submit', '#formUnit', function (event) {
       //   alert('新建成功！');
       //   document.location = 'activity-unit.html';
       // }
-      alert('提交成功, 审核进度可到 "我的进件列表" 查看. \n点击 "确定" 关闭本页面');
+      alert(tips);
       window.open(document.URL,'_self','resizable=no,top=-245,width=250,height=250,scrollbars=no');
       window.close();
     } else {

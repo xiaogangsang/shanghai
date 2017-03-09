@@ -204,7 +204,7 @@ $(document).on('submit', '#popup-plan-form form', function (e) {
   };
 
   // TODO:
-  var ajaxUrl;
+  var ajaxUrl, tips;
 
   if ($('#popup-plan-form button[type=submit][clicked=true]').hasClass('btn-approval')) {
     if (urlParam.vid) {
@@ -212,9 +212,11 @@ $(document).on('submit', '#popup-plan-form form', function (e) {
     } else {
       ajaxUrl = 'plan/saveAndSubmitVerification';
     }
+    tips = '提交成功, 审核进度可到 "我的进件列表" 查看. \n点击 "确定" 关闭本页面';
   } else {
     // 
     ajaxUrl = 'plan/saveVerification';
+    tips = '保存成功, 可到 "我的进件列表" 查看或编辑. \n点击 "确定" 关闭本页面';
   }
   // var ajaxUrl = 'plan/savePlan';
 
@@ -234,7 +236,7 @@ $(document).on('submit', '#popup-plan-form form', function (e) {
   .done(function (res) {
     _submitting = false;
     if (!!~~res.meta.result) {
-      alert('提交成功, 审核进度可到 "我的进件列表" 查看. \n点击 "确定" 关闭本页面');
+      alert(tips);
       window.open(document.URL,'_self','resizable=no,top=-245,width=250,height=250,scrollbars=no');
       window.close();
       // close();
