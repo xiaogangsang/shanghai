@@ -72,7 +72,7 @@ $(function () {
   // 查看
   if (isViewing) {
     var timer = setTimeout(function() {
-      $('#popup-plan-form :input').prop('disabled', true);
+      $('#contentForm :input').prop('disabled', true);
       clearTimeout(timer);
     }, 1500);
   }
