@@ -86,11 +86,11 @@ $(function () {
 
   common.init(ref);
 
+  // 是的, 就是这么粗暴, 来咬我啊
   if (isViewing) {
-    var timer = setTimeout(function() {
+    setInterval(function(){
       $('#formEdit :input').prop('disabled', true);
-      clearTimeout(timer);
-    }, 1500);
+    }, 100);
   }
 
   $('#beginDate').datetimepicker({
