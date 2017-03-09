@@ -235,10 +235,11 @@ $(document).on('submit', '#popup-plan-form form', function (e) {
   .done(function (res) {
     _submitting = false;
     if (!!~~res.meta.result) {
-      alert('提交成功！');
+      alert('提交成功, 审核进度可到 "我的进件列表" 查看. \n点击 "确定" 关闭本页面');
+      close();
 
-      $('#popup-plan-form').modal('hide');
-      $('#formSearch').trigger('submit');
+      // $('#popup-plan-form').modal('hide');
+      // $('#formSearch').trigger('submit');
       $('#popup-plan-form button[type=submit]').prop('disabled', false);
     } else {
       alert('接口错误：' + res.meta.msg);

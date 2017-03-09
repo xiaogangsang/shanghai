@@ -968,7 +968,8 @@ $(document).on('submit', '#formUnit', function (event) {
       //   alert('新建成功！');
       //   document.location = 'activity-unit.html';
       // }
-      alert('提交成功!');
+      alert('提交成功, 审核进度可到 "我的进件列表" 查看. \n点击 "确定" 关闭本页面');
+      close();
     } else {
       alert('接口错误：' + res.meta.msg);
     }

@@ -657,7 +657,8 @@ $(document).on('submit', '#formEdit', function (event) {
   .done(function (res) {
     _submitting = false;
     if (!!~~res.meta.result) {
-      alert('提交成功');
+      alert('提交成功, 审核进度可到 "我的进件列表" 查看. \n点击 "确定" 关闭本页面');
+      close();
       // if (ajaxUrl == 'coupon/couponUpdate') {
       //   alert('更新成功！');
       //   document.location.reload(true);
