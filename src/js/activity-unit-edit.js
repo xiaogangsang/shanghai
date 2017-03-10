@@ -1,6 +1,7 @@
 'use strict;'
 
 var common = require('common');
+var util = require('util');
 var _budgetSource = [];
 var _plans = [];
 var _wandaTicket = [];
@@ -1647,7 +1648,8 @@ $(document).on('submit', '#formRemark', function(event) {
 
     _submitting = false;
     if (!!~~res.meta.result) {
-      alert('操作成功!');
+      alert('操作成功! 点击 "确定" 关闭本页面');
+      util.close();
     } else {
       alert('接口错误：' + res.meta.msg);
     }

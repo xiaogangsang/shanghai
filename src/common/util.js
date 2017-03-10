@@ -79,3 +79,15 @@ util.commentType = new Codec({'1' : '评论', '2' : '回复'});
 // 成本中心类别
 util.budgetSourceLevel = new Codec({'0': '总行', '1': '支行', '2': '卡中心', '3': '卡部', '4': 'O2O项目组'});
 
+
+
+/**
+ * Normally just call `close()`, but that doesn't work in Firefox
+ * Details see: http://stackoverflow.com/questions/19302387/close-firefox-tab-from-javascript
+ */
+
+util.close = function() {
+ 	window.open(document.URL,'_self','resizable=no,top=-245,width=250,height=250,scrollbars=no');
+	window.close();
+}
+

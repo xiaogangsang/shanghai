@@ -10,6 +10,7 @@
 'use strict;'
 
 var common = require('common');
+var util = require('util');
 var _querying = false;
 var _submitting = false;
 var _budgetSource = null;
@@ -176,7 +177,8 @@ $(document).on('submit', '#formRemark', function(event) {
 
     _submitting = false;
     if (!!~~res.meta.result) {
-      alert('操作成功!');
+      alert('操作成功! 点击 "确定" 关闭本页面');
+      util.close();
     } else {
       alert('接口错误：' + res.meta.msg);
     }
@@ -338,7 +340,8 @@ $(document).on('change mouseup', '#budgetSource', function (event, assessor) {
       });
       $('#assessor').html(html);
     } else {
-      alert('接口错误：' + res.meta.msg);
+      console.log('getAssessor出错');
+      // alert('接口错误：' + res.meta.msg);
     }
   });
 });

@@ -162,6 +162,7 @@ $('body').on('click', '.check', function(e) {
 
     _querying = false;
     if (!!~~res.meta.result) {
+      $('#formSearch').trigger('submit');
       alert('操作成功!');
     } else {
       alert('接口错误：' + res.meta.msg);

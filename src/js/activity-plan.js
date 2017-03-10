@@ -393,7 +393,8 @@ $(document).on('change mouseup', '#budgetSource', function (event, assessor) {
       });
       $('#assessor').html(html);
     } else {
-      alert('接口错误：' + res.meta.msg);
+      console.log('getAssessor出错');
+      // alert('接口错误：' + res.meta.msg);
     }
   });
 });
