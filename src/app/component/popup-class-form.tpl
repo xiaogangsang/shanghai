@@ -120,7 +120,7 @@
                 <select id="budgetSource" class="form-control" data-placeholder="选择一个..." required data-parsley-errors-container="#error-budgetSource">
                   <option value=""></option>
                   {{#budgetSource}}
-                  <option value="{{id}}"></option>
+                  <option value="{{id}}">{{sourceName}}</option>
                   {{/budgetSource}}
                 </select>
                 <div id="error-budgetSource"></div>
