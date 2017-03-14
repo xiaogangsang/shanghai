@@ -1272,6 +1272,7 @@ $(document).on('change mouseup', '#budgetSource', function (event, assessor) {
     } else {
       console.log('getAssessor出错');
       // alert('接口错误：' + res.meta.msg);
+      $('#assessor').html('<option value=""></option>');
     }
   });
 });

@@ -1675,6 +1675,7 @@ function setupAssessor(budgetSourceId) {
       $('#assessor').html(html);
     } else {
       alert('接口错误：' + res.meta.msg);
+      $('#assessor').html('<option value=""></option>');
     }
   });
 }
