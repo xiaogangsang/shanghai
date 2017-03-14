@@ -241,8 +241,8 @@ $(document).on('change click', '#level', function (event) {
       }
     });
 
-    if (sources.length < 1) {
-      $('#budgetSource').html('<option value=""></option>');
+    if (!sources || sources.length < 1) {
+      $('#budgetSource, #assessor').html('<option value=""></option>');
       alert('所选成本中心类别下无成本中心，这个情况不正常，需要注意哦！');
     } else {
       var html = '';
