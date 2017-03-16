@@ -131,7 +131,7 @@ $(function () {
           //   }
           // });
 
-          element.status = _shipInfoStatus[parseInt(element.status];
+          element.status = _shipInfoStatus[parseInt(element.status)];
         });
 
         res.data.payOrder.transDetailList = res.data.transDetailList;
