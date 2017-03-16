@@ -737,6 +737,7 @@ function setBrand() {
 }
 
 function setWandaTicket(wandaTicketId) {
+  if (!wandaTicketId) return;
   $.ajax({
     url: common.API_HOST + 'activity/wandaActivityTicketList',
     type: 'POST',
@@ -744,7 +745,7 @@ function setWandaTicket(wandaTicketId) {
     data: {
       pageIndex: 1,
       pageSize: 9999,
-      budgetSource: urlParam.budgetSourceId
+      budgetSource: wandaTicketId
     },
   })
   .done(function (res) {
@@ -765,7 +766,7 @@ function setWandaTicket(wandaTicketId) {
         $('#wandaTicketId').append(html);
       }
     } else {
-      alert('接口错误：' + res.meta.msg);
+      // alert('接口错误：' + res.meta.msg);
     }
   });
 }
@@ -1252,6 +1253,8 @@ $(document).on('change mouseup', '#budgetSource', function (event, assessor) {
 
   if (!budgetSourceId) return;
 
+  $('input[type=checkbox][name=advancePayment][value!=WANDA]').prop('checked', false).prop('disabled', (budgetSourceId != 3));
+
   // TODO:
   $.ajax({
     url: common.API_HOST + 'verification/getAssessor',
@@ -1275,6 +1278,8 @@ $(document).on('change mouseup', '#budgetSource', function (event, assessor) {
       $('#assessor').html('<option value=""></option>');
     }
   });
+
+  setWandaTicket(budgetSourceId);
 });
 
 
