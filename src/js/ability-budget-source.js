@@ -93,7 +93,7 @@ function setUser(budgetId) {
       var htmlChoosed = '';
       var htmlUnchoosed = '';
       _(_users).forEach(function (value, key) {
-        if (res.data.indexOf(value.id.toString()) > -1) {
+        if (res.data.indexOf(value) > -1) {
           htmlChoosed += '<option value="' + value.id + '">' + value.id + ':' + value.realName + '</option>';
         } else {
           htmlUnchoosed += '<option value="' + value.id + '">' + value.id + ':' + value.realName + '</option>';
