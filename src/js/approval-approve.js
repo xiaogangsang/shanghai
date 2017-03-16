@@ -143,6 +143,8 @@ function setPager(total, pageIndex, rowsSize, pageTotal) {
 $('body').on('click', '.check', function(e) {
   e.preventDefault();
 
+  if (!confirm('是否确认' + $(this).text() + '?')) return;
+
   if (!!_querying) {
     return false;
   }
