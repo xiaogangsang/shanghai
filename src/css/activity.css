@@ -154,3 +154,8 @@
 #priorityTable>tbody>tr>th {
   text-align: left;
 }
+
+.highlight {
+  border: solid #ff8903 1px !important;
+}
+

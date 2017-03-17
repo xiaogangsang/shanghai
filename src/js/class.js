@@ -5,6 +5,7 @@ var _cities = [];
 var _channels = {};
 var _cinemas = {};
 var _provinces = [];
+var _budgetSource = [];
 var _pageIndex = 1;
 var _pageSize = 10;
 var _pageTotal = 0;
@@ -22,6 +23,7 @@ $(function () {
 
   getCity();
   getCinema();
+  getBudgetSource();
 
   $('#formSearch').trigger('submit');
 });
@@ -414,6 +416,7 @@ $(document).on('click', '#popup-class-form button[type=submit]', function (event
 });
 
 $(document).on('submit', '#popup-class-form form', function (event) {
+  debugger;
   event.preventDefault();
   if (_submitting) {
     return false;
@@ -428,6 +431,7 @@ $(document).on('submit', '#popup-class-form form', function (event) {
     ticketRule: $.trim($('#popup-class-form #ticketRule').val()),
     beginTime: $.trim($('#popup-class-form #beginTime').val()),
     endTime: $.trim($('#popup-class-form #endTime').val()),
+    budgetSourceId: $('#budgetSource').val()
   };
   sendData.channelId = [];
   $('#popup-class-form input[name=channelId]:checked').each(function (index, el) {
@@ -438,6 +442,7 @@ $(document).on('submit', '#popup-class-form form', function (event) {
   sendData.cinema = [];
   if ($('#search-cinema-choosed tbody tr').size() < 1) {
     $('#preview-cinema').html('<ul class="parsley-errors-list filled"><li>没有选择影院</li></ul>');
+    _submitting = false;
     return false;
   }
 
@@ -582,10 +587,14 @@ function setModal(classData) {
   var template;
 
   if (classData) {
-    data = { class: classData, channels: _channels, cinemas: _cinemas };
+    _(_budgetSource).forEach(function(value) {
+      value.selected = (value.id == classData.budgetSourceId);
+    });
+
+    data = { class: classData, channels: _channels, cinemas: _cinemas, budgetSource: _budgetSource };
     template = $('#edit-template').html();
   } else {
-    data = { channels: _channels, cinemas: _cinemas };
+    data = { channels: _channels, cinemas: _cinemas, budgetSource: _budgetSource };
     template = $('#create-template').html();
     $('#popup-class-form .modal-title').html('新增票类');
   }
@@ -593,6 +602,8 @@ function setModal(classData) {
   Mustache.parse(template);
   var html = Mustache.render(template, data);
   $('#popup-class-form .modal-body').html(html);
+
+  $('#budgetSource').chosen();
 }
 
 function getCity() {
@@ -703,4 +714,21 @@ function setPager(total, pageIndex, rowsSize, pageTotal) {
   Mustache.parse(template);
   var html = Mustache.render(template, data);
   $('#pager').html(html);
+}
+
+function getBudgetSource() {
+  $.ajax({
+    url: common.API_HOST + 'common/budgetSourceList',
+    type: 'POST',
+    dataType: 'json',
+  })
+  .done(function (res) {
+    if (res.meta.result) {
+      _(res.data).forEach(function(group, key) {
+        _budgetSource = _budgetSource.concat(group);
+      })
+    } else {
+      alert('接口错误：' + res.meta.msg);
+    }
+  });
 }

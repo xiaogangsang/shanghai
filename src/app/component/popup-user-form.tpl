@@ -139,6 +139,43 @@
 
   </div>
 
+  <div class="edit-section">
+    <h5>配置成本中心</h5>
+    <div class="table-responsive multi-selection">
+      <table class="table">
+        <tbody>
+          <tr>
+            <td>
+              <select name="from[]" id="budgetSourceSelect" class="form-control" size="8" multiple="multiple">
+                {{#budgetSources}}
+                {{^selected}}
+                <option value="{{id}}">{{sourceName}}</option>
+                {{/selected}}
+                {{/budgetSources}}
+              </select>
+            </td>
+            <td width="60">
+              <button type="button" id="budgetSourceSelect_all" class="btn btn-block btn-default">全选</button>
+              <button type="button" id="budgetSourceSelect_right" class="btn btn-block btn-default">添加</button>
+              <button type="button" id="budgetSourceSelect_left" class="btn btn-block btn-default">移除</button>
+              <button type="button" id="budgetSourceSelect_none" class="btn btn-block btn-default">反选</button>
+            </td>
+            <td>
+              <select name="to[]" id="budgetSourceSelect_to" class="form-control" size="8" multiple="multiple" data-parsley-required data-parsley-errors-container="#error-budgetSource">
+                {{#budgetSources}}
+                {{#selected}}
+                <option value="{{id}}">{{sourceName}}</option>
+                {{/selected}}
+                {{/budgetSources}}
+              </select>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div id="error-budgetSource"></div>
+    </div>
+  </div>
+
 </script>
 
 <script id="create-template" type="text/x-tmpl-mustache">
@@ -245,6 +282,35 @@
         </tbody>
       </table>
       <div id="error-city"></div>
+    </div>
+  </div>
+
+  <div class="edit-section">
+    <h5>配置成本中心</h5>
+    <div class="table-responsive multi-selection">
+      <table class="table">
+        <tbody>
+          <tr>
+            <td>
+              <select name="from[]" id="budgetSourceSelect" class="form-control" size="8" multiple="multiple">
+                {{#budgetSources}}
+                <option value="{{id}}">{{sourceName}}</option>
+                {{/budgetSources}}
+              </select>
+            </td>
+            <td width="60">
+              <button type="button" id="budgetSourceSelect_all" class="btn btn-block btn-default">全选</button>
+              <button type="button" id="budgetSourceSelect_right" class="btn btn-block btn-default">添加</button>
+              <button type="button" id="budgetSourceSelect_left" class="btn btn-block btn-default">移除</button>
+              <button type="button" id="budgetSourceSelect_none" class="btn btn-block btn-default">反选</button>
+            </td>
+            <td>
+              <select name="to[]" id="budgetSourceSelect_to" class="form-control" size="8" multiple="multiple" data-parsley-required data-parsley-errors-container="#error-budgetSource"></select>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div id="error-budgetSource"></div>
     </div>
   </div>
 </script>

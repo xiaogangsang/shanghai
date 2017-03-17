@@ -207,6 +207,7 @@ $('#pager').on('click', '#btn-pager', function (e) {
 
 // 新增
 $(document).on('click', '#btn-create', function (e) {
+  return;
   e.preventDefault();
   setModal(false);
   $('#popup-plan-form').modal('show');
@@ -214,6 +215,7 @@ $(document).on('click', '#btn-create', function (e) {
 });
 
 $('#dataTable').on('click', '.btn-edit', function (e) {
+  return;
   e.preventDefault();
   $.ajax({
     url: common.API_HOST + 'plan/planDetail',
@@ -224,6 +226,11 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
   .done(function (res) {
     if (!!~~res.meta.result) {
       setModal(res.data);
+      // TODO: 
+      // res.data.budgetSourceId = 176;
+      // 编辑里不需要
+      // res.data.assessor = 19552;
+      $('#popup-plan-form #level').trigger('change', res.data.budgetSourceId, res.data.assessor);
       $('#popup-plan-form').modal('show');
       $('#popup-plan-form form').parsley();
     } else {
@@ -252,6 +259,11 @@ function setModal(planData) {
   $('#popup-plan-form .modal-body').html(html);
 }
 
+$(document).on('click', "#popup-plan-form button[type=submit]", function() {
+    $("button[type=submit]", $(this).parents("form")).removeAttr("clicked");
+    $(this).attr("clicked", "true");
+});
+
 $(document).on('submit', '#popup-plan-form form', function (e) {
   e.preventDefault();
   if (_submitting) {
@@ -267,17 +279,18 @@ $(document).on('submit', '#popup-plan-form form', function (e) {
     totalTicket: $('#popup-plan-form #totalTicket').val(),
   };
 
-  var ajaxUrl = common.API_HOST + 'plan/savePlan';
+  // TODO:
+  var ajaxUrl = (($('#popup-plan-form button[type=submit][clicked=true]').hasClass('btn-approval')) ? 'plan/saveAndSubmitVerification' : 'plan/saveVerification');
 
   var isUpdate = ($('#popup-plan-form #id').size() > 0);
 
   if (isUpdate) {
     sendData.id = $('#popup-plan-form #id').val();
-    ajaxUrl = common.API_HOST + 'plan/updatePlan';
+    // ajaxUrl = 'plan/updatePlan';
   }
 
   $.ajax({
-    url: ajaxUrl,
+    url: common.API_HOST + ajaxUrl,
     type: 'POST',
     dataType: 'json',
     data: sendData,
@@ -301,3 +314,102 @@ $(document).on('submit', '#popup-plan-form form', function (e) {
 
   return false;
 });
+
+/******************************************** detail ********************************************/
+
+// 选择成本中心类别
+// 
+$(document).on('change mouseup', '#level', function (event, budgetSourceId, assessor) {
+  event.preventDefault();
+
+  var budgetSourceTypeId;
+
+  if (budgetSourceId) {
+    _(_budgetSource).forEach(function(group, key) {
+      var found = false;
+
+      _(group).forEach(function(obj) {
+        if (obj.id == budgetSourceId) {
+          found = true;
+          return;
+        }
+      });
+
+      if (found) {
+        budgetSourceTypeId = key;
+        return;
+      }
+    });
+
+    $('#level option[value=' + budgetSourceTypeId + ']').prop('selected', true);
+  }
+
+  var level = budgetSourceTypeId ? budgetSourceTypeId : $(this).val();
+
+  if (level == undefined || level == '') {
+    $('#budgetSource').html('<option value=""></option>');
+  } else {
+    var sources = _budgetSource[level];
+
+    if (sources.length < 1) {
+      $('#budgetSource').html('<option value=""></option>');
+      alert('所选成本中心类别下无成本中心，这个情况不正常，需要注意哦！');
+    } else {
+      var html = '';
+      _(sources).forEach(function (source) {
+        var selected = source.id == budgetSourceId ? 'selected' : '';
+        html += '<option value="' + source.id + '"' + selected + '>' + source.sourceName + '</option>';
+      });
+
+      $('#budgetSource').html(html);
+      $('#budgetSource').closest('.form-group').show();
+      $('#budgetSource').trigger('change', assessor);
+    }
+  }
+});
+
+// 选择成本中心
+$(document).on('change mouseup', '#budgetSource', function (event, assessor) {
+  event.preventDefault();
+  var budgetSourceId = $(this).val();
+
+  if (!budgetSourceId) return;
+
+  // TODO:
+  $.ajax({
+    url: common.API_HOST + 'verification/getAssessor',
+    type: 'GET',
+    dataType: 'json',
+    data:{budgetSourceId: budgetSourceId}
+  })
+  .done(function (res) {
+    console.log(budgetSourceId);
+    // var res = JSON.parse('{  "meta": {    "result": "1",    "msg": "操作成功"  },  "data": [    {      "id": 19552,      "createdBy": "admin",      "createdDate": null,      "updatedBy": null,      "updatedDate": null,      "loginId": null,      "password": null,      "enabled": "1",      "realName": "樊坤",      "city": null,      "department": "o2o",      "mobile": null,      "email": null,      "roles": null    }  ]}');
+    if (!!~~res.meta.result) {
+      var html = '';
+      _(res.data).forEach(function(obj) {
+        var selected = obj.id == assessor ? 'selected' : '';
+        html += '<option value="' + obj.id + '"' + selected + '>' + obj.realName + '</option>';
+      });
+      $('#assessor').html(html);
+    } else {
+      console.log('getAssessor出错');
+      // alert('接口错误：' + res.meta.msg);
+    }
+  });
+});
+
+function getBudgetSource(budgetSourceId) {
+  $.ajax({
+    url: common.API_HOST + 'common/budgetSourceList',
+    type: 'POST',
+    dataType: 'json',
+  })
+  .done(function (res) {
+    if (!!~~res.meta.result) {
+      _budgetSource = res.data;
+    } else {
+      alert('接口错误：' + res.meta.msg);
+    }
+  });
+}

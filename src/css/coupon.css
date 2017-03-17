@@ -35,3 +35,7 @@
   margin-left: 10px;
   min-width: 10%;
 }
+
+.highlight {
+  border: solid #ff8903 1px !important;
+}

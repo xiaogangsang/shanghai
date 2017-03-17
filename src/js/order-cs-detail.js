@@ -130,7 +130,8 @@ $(function () {
           //     element.status = shipStatus.name;
           //   }
           // });
-          element.status = _shipInfoStatus[element.status];
+
+          element.status = _shipInfoStatus[parseInt(element.status)];
         });
 
         res.data.payOrder.transDetailList = res.data.transDetailList;
