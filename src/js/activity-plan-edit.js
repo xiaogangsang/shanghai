@@ -382,7 +382,7 @@ var getHistory = function() {
       url: common.API_HOST + url,
       type: 'POST',
       dataType: 'json',
-      data: { id: urlParam.id, typeCode: urlParam.typeCode },
+      data: { id: urlParam.vid, typeCode: urlParam.typeCode },
     })
     .done(function (res) {
       if (!!~~res.meta.result) {
