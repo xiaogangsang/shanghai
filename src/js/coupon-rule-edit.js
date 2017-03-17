@@ -1253,7 +1253,7 @@ $(document).on('change mouseup', '#budgetSource', function (event, assessor) {
 
   if (!budgetSourceId) return;
 
-  $('input[type=checkbox][name=advancePayment][value!=WANDA]').prop('checked', false).prop('disabled', (budgetSourceId != 3));
+  $('input[type=checkbox][name=advancePayment][value!=WANDA]').prop('checked', false).prop('disabled', (budgetSourceId != 44));
 
   // TODO:
   $.ajax({
