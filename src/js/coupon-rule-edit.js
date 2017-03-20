@@ -738,6 +738,9 @@ function setBrand() {
 
 function setWandaTicket(wandaTicketId, budgetSourceId) {
   
+  var html = '<option value="">不选</option>';
+  $('#wandaTicketId').html(html);
+
   $.ajax({
     url: common.API_HOST + 'activity/wandaActivityTicketList',
     type: 'POST',
@@ -754,7 +757,7 @@ function setWandaTicket(wandaTicketId, budgetSourceId) {
         return false;
       } else {
         _wandaTicket = res.data.wandaTicketList;
-        var html = '<option value=""></option>';
+        var html = '';
         _(_wandaTicket).forEach(function (ticket) {
           if (wandaTicketId == ticket.id) {
             html += '<option value="' + ticket.id + '" selected>' + ticket.ticketId + '</option>';
