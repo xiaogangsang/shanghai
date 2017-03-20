@@ -1610,11 +1610,18 @@ $(function() {
 
     var url = 'verification/history';
     
+    var data = {typeCode: urlParam.typeCode};
+    if (urlParam.vid) {
+        data.id = urlParam.vid;
+    } else {
+        data.pid = urlParam.id;
+    }
+    
     $.ajax({
       url: common.API_HOST + url,
       type: 'POST',
       dataType: 'json',
-      data: { id: urlParam.vid, typeCode: urlParam.typeCode },
+      data: data
     })
     .done(function (res) {
       if (!!~~res.meta.result) {
