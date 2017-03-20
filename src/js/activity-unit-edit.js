@@ -2,7 +2,6 @@
 
 var common = require('common');
 var util = require('util');
-var _budgetSource = [];
 var _plans = [];
 var _wandaTicket = [];
 var _movies = [];
@@ -107,8 +106,7 @@ $(function () {
       setPlan(false);
     }
 
-    setWandaTicket(false);
-    setBudgetSource(false);
+    setWandaTicket(false, urlParam.budgetSourceId);
     setMovie(false);
     setChannel(false);
     setPattern(1);
@@ -228,35 +226,6 @@ $(document).on('submit', '#popup-unit-priority form', function (event) {
   $('#priority').val(priority);
   $('#popup-unit-priority').modal('hide');
   return false;
-});
-
-//成本中心
-$(document).on('change click', '#level', function (event) {
-  event.preventDefault();
-  var level = $(this).val();
-  if (level == undefined || level == '') {
-    $('#budgetSource').html('<option value=""></option>');
-  } else {
-    var sources = [];
-    _(_budgetSource).forEach(function (group, key) {
-      if (level == key) {
-        sources = group;
-      }
-    });
-
-    if (!sources || sources.length < 1) {
-      $('#budgetSource, #assessor').html('<option value=""></option>');
-      // alert('所选成本中心类别下无成本中心，这个情况不正常，需要注意哦！');
-    } else {
-      var html = '';
-      _(sources).forEach(function (source) {
-        html += '<option value="' + source.id + '">' + source.sourceName + '</option>';
-      });
-
-      $('#budgetSource').html(html);
-      $('#budgetSource').closest('.form-group').show();
-    }
-  }
 });
 
 //活动形式
@@ -840,7 +809,6 @@ $(document).on('submit', '#formUnit', function (event) {
     name: $.trim($('#name').val()),
     signNo: $('#signNo').val(),
     planId: $('#planId').val(),
-    budgetSource: $('#budgetSource').val(),
     wandaTicketId: $('#wandaTicketId').val(),
     beginDate: $('#beginDate').val(),
     endDate: $('#endDate').val(),
@@ -986,44 +954,6 @@ $(document).on('submit', '#formUnit', function (event) {
 
 // 数据缓存
 // 成本中心不再与活动单元关联, 而是与活动计划关联, 该函数不再需要
-function setBudgetSource(budgetSourceId) {
-  return;
-  $.ajax({
-    url: common.API_HOST + 'common/budgetSourceList',
-    type: 'POST',
-    dataType: 'json',
-  })
-  .done(function (res) {
-    if (!!~~res.meta.result) {
-      _budgetSource = res.data;
-      if (!!~~budgetSourceId) {
-        var html = '';
-        var levelId = 0;
-        _(_budgetSource).forEach(function (group, key) {
-          _(group).forEach(function (source) {
-            if (budgetSourceId == source.id) {
-              levelId = parseInt(key);
-            }
-          });
-        });
-
-        $('#level option').eq(1 + levelId).prop('selected', true);
-        _(_budgetSource[levelId]).forEach(function (source) {
-          if (budgetSourceId == source.id) {
-            html += '<option value="' + source.id + '" selected>' + source.sourceName + '</option>';
-          } else {
-            html += '<option value="' + source.id + '">' + source.sourceName + '</option>';
-          }
-        });
-
-        $('#budgetSource').html(html);
-      }
-    } else {
-      alert('接口错误：' + res.meta.msg);
-    }
-  });
-}
-
 function setBrand() {
   $.ajax({
     url: common.API_HOST + 'common/brandList',
@@ -1102,10 +1032,8 @@ function setPlan(planId) {
   });
 }
 
-function setWandaTicket(wandaTicketId) {
+function setWandaTicket(wandaTicketId, budgetSourceId) {
 
-  if (!wandaTicketId) return;
-  
   $.ajax({
     url: common.API_HOST + 'activity/wandaActivityTicketList',
     type: 'POST',
@@ -1113,7 +1041,7 @@ function setWandaTicket(wandaTicketId) {
     data: {
       pageIndex: 1,
       pageSize: 9999,
-      budgetSource: urlParam.budgetSourceId
+      budgetSource: budgetSourceId
     },
   })
   .done(function (res) {
@@ -1122,7 +1050,7 @@ function setWandaTicket(wandaTicketId) {
         return false;
       } else {
         _wandaTicket = res.data.wandaTicketList;
-        var html = '';
+        var html = '<option value=""></option>';
         _(_wandaTicket).forEach(function (ticket) {
           if (wandaTicketId == ticket.id) {
             html += '<option value="' + ticket.id + '" selected>' + ticket.ticketId + '</option>';
@@ -1517,20 +1445,8 @@ function setEdit(unitId, isApproval, isHistory) {
         $('#planId').prop('disabled', true);
       }
 
-      //成本中心
-      if (unit.budgetSourceId != '' && unit.budgetSourceId != null && unit.budgetSourceId != undefined) {
-        setBudgetSource(unit.budgetSourceId);
-        $('#level,#budgetSource').prop('disabled', true);
-      } else {
-        setBudgetSource(false);
-      }
-
       //万达票类
-      if (unit.wandaTicketId != '' && unit.wandaTicketId != null && unit.wandaTicketId != undefined) {
-        setWandaTicket(unit.wandaTicketId);
-      } else {
-        setWandaTicket(false);
-      }
+      setWandaTicket(unit.wandaTicketId, unit.budgetSourceId);
 
       if (unitId) {
         $('#wandaTicketId').prop('disabled', true);
@@ -1618,7 +1534,7 @@ function setEdit(unitId, isApproval, isHistory) {
 
       // 审核人
       if ($('#assessor').length) {
-        setupAssessor(res.data.budgetSourceId);
+        setupAssessor(res.data.budgetSourceId, unit.assessor);
       }
     } else {
       alert('接口错误：' + res.meta.msg);
@@ -1663,7 +1579,7 @@ $(document).on('submit', '#formRemark', function(event) {
 
 });
 
-function setupAssessor(budgetSourceId) {
+function setupAssessor(budgetSourceId, assessor) {
   // TODO:
   $.ajax({
     url: common.API_HOST + 'verification/getAssessor',
@@ -1676,7 +1592,8 @@ function setupAssessor(budgetSourceId) {
     if (!!~~res.meta.result) {
       var html = '';
       _(res.data.rows).forEach(function(obj) {
-        html += '<option value="' + obj.id + '">' + obj.realName + '</option>';
+        var selected = obj.id == assessor ? 'selected' : '';
+        html += '<option value="' + obj.id + '" ' + selected + '>' + obj.realName + '</option>';
       });
       $('#assessor').html(html);
     } else {

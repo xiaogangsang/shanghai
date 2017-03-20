@@ -77,7 +77,7 @@ $(function () {
     $('.breadcrumb li:last-child').text('新增');
     $('h3').text('新增优惠券');
     $('.btn-save').show();
-    setWandaTicket(false);
+    // setWandaTicket(false);
     setBudgetSource(false);
     setMovie(false);
     setChannel(false);
@@ -681,7 +681,7 @@ $(document).on('submit', '#formEdit', function (event) {
 });
 
 //数据缓存
-function setBudgetSource(budgetSourceId, assessor) {
+function setBudgetSource(budgetSourceId, assessor, wandaTicketId) {
   $.ajax({
     url: common.API_HOST + 'common/budgetSourceList',
     type: 'POST',
@@ -711,7 +711,7 @@ function setBudgetSource(budgetSourceId, assessor) {
         });
 
         $('#budgetSource').html(html);
-        $('#budgetSource').trigger('change', assessor);
+        $('#budgetSource').trigger('change', [assessor, wandaTicketId]);
       }
     } else {
       alert('接口错误：' + res.meta.msg);
@@ -736,8 +736,7 @@ function setBrand() {
   });
 }
 
-function setWandaTicket(wandaTicketId) {
-  if (!wandaTicketId) return;
+function setWandaTicket(wandaTicketId, budgetSourceId) {
   
   $.ajax({
     url: common.API_HOST + 'activity/wandaActivityTicketList',
@@ -746,7 +745,7 @@ function setWandaTicket(wandaTicketId) {
     data: {
       pageIndex: 1,
       pageSize: 9999,
-      budgetSource: wandaTicketId
+      budgetSource: budgetSourceId
     },
   })
   .done(function (res) {
@@ -755,7 +754,7 @@ function setWandaTicket(wandaTicketId) {
         return false;
       } else {
         _wandaTicket = res.data.wandaTicketList;
-        var html = '';
+        var html = '<option value=""></option>';
         _(_wandaTicket).forEach(function (ticket) {
           if (wandaTicketId == ticket.id) {
             html += '<option value="' + ticket.id + '" selected>' + ticket.ticketId + '</option>';
@@ -1142,21 +1141,9 @@ function setEdit(couponId, isApproval, isHistory) {
       $('#remark').val(coupon.remarks).addClass(coupon.data.remarks.edited ? 'highlight' : '');
 
       //成本中心
-      if (coupon.budgetSource != '' && coupon.budgetSource != null && coupon.budgetSource != undefined) {
-        debugger;
-        setBudgetSource(coupon.budgetSource, coupon.assessor);
-      } else {
-        setBudgetSource(false, coupon.assessor);
-      }
+      setBudgetSource(coupon.budgetSource, coupon.assessor, coupon.wandaTicketId);
 
       $('#level,#budgetSource').prop('disabled', true);
-
-      //万达票类
-      if (coupon.wandaTicketId != '' && coupon.wandaTicketId != null && coupon.wandaTicketId != undefined) {
-        setWandaTicket(coupon.wandaTicketId);
-      } else {
-        setWandaTicket(false);
-      }
 
       $('#wandaTicketId').prop('disabled', true);
 
@@ -1249,7 +1236,7 @@ $(document).on('submit', '#formRemark', function(event) {
 
 
 // 选择成本中心
-$(document).on('change mouseup', '#budgetSource', function (event, assessor) {
+$(document).on('change mouseup', '#budgetSource', function (event, assessor, wandaTicketId) {
   event.preventDefault();
   var budgetSourceId = $(this).val();
 
@@ -1281,7 +1268,7 @@ $(document).on('change mouseup', '#budgetSource', function (event, assessor) {
     }
   });
 
-  setWandaTicket(budgetSourceId);
+  setWandaTicket(wandaTicketId, budgetSourceId);
 });
 
 

@@ -119,7 +119,7 @@ function setEdit(id, isApproval, isHistory) {
 
       setModal(res.data);
 
-      $('#popup-plan-form #level').trigger('change', res.data.budgetSourceId, res.data.assessor);
+      $('#popup-plan-form #level').trigger('change', [res.data.budgetSourceId, res.data.assessor]);
 
       getHistory();
 
