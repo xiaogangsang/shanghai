@@ -738,6 +738,7 @@ function setBrand() {
 
 function setWandaTicket(wandaTicketId) {
   if (!wandaTicketId) return;
+  
   $.ajax({
     url: common.API_HOST + 'activity/wandaActivityTicketList',
     type: 'POST',

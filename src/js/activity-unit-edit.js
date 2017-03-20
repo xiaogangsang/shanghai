@@ -108,6 +108,7 @@ $(function () {
     }
 
     setWandaTicket(false);
+    setBudgetSource(false);
     setMovie(false);
     setChannel(false);
     setPattern(1);
@@ -227,6 +228,35 @@ $(document).on('submit', '#popup-unit-priority form', function (event) {
   $('#priority').val(priority);
   $('#popup-unit-priority').modal('hide');
   return false;
+});
+
+//成本中心
+$(document).on('change click', '#level', function (event) {
+  event.preventDefault();
+  var level = $(this).val();
+  if (level == undefined || level == '') {
+    $('#budgetSource').html('<option value=""></option>');
+  } else {
+    var sources = [];
+    _(_budgetSource).forEach(function (group, key) {
+      if (level == key) {
+        sources = group;
+      }
+    });
+
+    if (!sources || sources.length < 1) {
+      $('#budgetSource, #assessor').html('<option value=""></option>');
+      // alert('所选成本中心类别下无成本中心，这个情况不正常，需要注意哦！');
+    } else {
+      var html = '';
+      _(sources).forEach(function (source) {
+        html += '<option value="' + source.id + '">' + source.sourceName + '</option>';
+      });
+
+      $('#budgetSource').html(html);
+      $('#budgetSource').closest('.form-group').show();
+    }
+  }
 });
 
 //活动形式
@@ -954,6 +984,46 @@ $(document).on('submit', '#formUnit', function (event) {
   return false;
 });
 
+// 数据缓存
+// 成本中心不再与活动单元关联, 而是与活动计划关联, 该函数不再需要
+function setBudgetSource(budgetSourceId) {
+  return;
+  $.ajax({
+    url: common.API_HOST + 'common/budgetSourceList',
+    type: 'POST',
+    dataType: 'json',
+  })
+  .done(function (res) {
+    if (!!~~res.meta.result) {
+      _budgetSource = res.data;
+      if (!!~~budgetSourceId) {
+        var html = '';
+        var levelId = 0;
+        _(_budgetSource).forEach(function (group, key) {
+          _(group).forEach(function (source) {
+            if (budgetSourceId == source.id) {
+              levelId = parseInt(key);
+            }
+          });
+        });
+
+        $('#level option').eq(1 + levelId).prop('selected', true);
+        _(_budgetSource[levelId]).forEach(function (source) {
+          if (budgetSourceId == source.id) {
+            html += '<option value="' + source.id + '" selected>' + source.sourceName + '</option>';
+          } else {
+            html += '<option value="' + source.id + '">' + source.sourceName + '</option>';
+          }
+        });
+
+        $('#budgetSource').html(html);
+      }
+    } else {
+      alert('接口错误：' + res.meta.msg);
+    }
+  });
+}
+
 function setBrand() {
   $.ajax({
     url: common.API_HOST + 'common/brandList',
@@ -1033,7 +1103,9 @@ function setPlan(planId) {
 }
 
 function setWandaTicket(wandaTicketId) {
+
   if (!wandaTicketId) return;
+  
   $.ajax({
     url: common.API_HOST + 'activity/wandaActivityTicketList',
     type: 'POST',
@@ -1381,7 +1453,7 @@ function setEdit(unitId, isApproval, isHistory) {
 
       setPriority(unit.priority);
 
-      if (unit.id) $('#formUnit').prepend('<input type="hidden" id="id" value="' + unit.id + '">');
+      $('#formUnit').prepend('<input type="hidden" id="id" value="' + unit.id + '">');
 
       $('#name').val(unit.name).prop('disabled', true);     // 活动名称
 
@@ -1443,6 +1515,14 @@ function setEdit(unitId, isApproval, isHistory) {
 
       if (unitId) {
         $('#planId').prop('disabled', true);
+      }
+
+      //成本中心
+      if (unit.budgetSourceId != '' && unit.budgetSourceId != null && unit.budgetSourceId != undefined) {
+        setBudgetSource(unit.budgetSourceId);
+        $('#level,#budgetSource').prop('disabled', true);
+      } else {
+        setBudgetSource(false);
       }
 
       //万达票类
@@ -1538,7 +1618,7 @@ function setEdit(unitId, isApproval, isHistory) {
 
       // 审核人
       if ($('#assessor').length) {
-        setupAssessor(res.data.budgetSourceId, unit.assessor);
+        setupAssessor(res.data.budgetSourceId);
       }
     } else {
       alert('接口错误：' + res.meta.msg);
@@ -1583,7 +1663,7 @@ $(document).on('submit', '#formRemark', function(event) {
 
 });
 
-function setupAssessor(budgetSourceId, assessorId) {
+function setupAssessor(budgetSourceId) {
   // TODO:
   $.ajax({
     url: common.API_HOST + 'verification/getAssessor',
@@ -1596,8 +1676,7 @@ function setupAssessor(budgetSourceId, assessorId) {
     if (!!~~res.meta.result) {
       var html = '';
       _(res.data.rows).forEach(function(obj) {
-        var selected = (obj.id == assessorId) ? 'selected' : '';
-        html += '<option value="' + obj.id + '" ' + selected + '>' + obj.realName + '</option>';
+        html += '<option value="' + obj.id + '">' + obj.realName + '</option>';
       });
       $('#assessor').html(html);
     } else {
@@ -1618,7 +1697,7 @@ $(function() {
       url: common.API_HOST + url,
       type: 'POST',
       dataType: 'json',
-      data: { id: urlParam.vid ? urlParam.vid : urlParam.id, typeCode: urlParam.typeCode },
+      data: { id: urlParam.vid, typeCode: urlParam.typeCode },
     })
     .done(function (res) {
       if (!!~~res.meta.result) {

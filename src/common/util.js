@@ -74,7 +74,8 @@ Codec.prototype.checkboxesHTML = function(name) {
 }
 
 // 评论类型
-util.commentType = new Codec({'1' : '评论', '2' : '回复'});
+util.commentType = new Codec({'1' : '评论', '3' : '回复'});
+
 
 // 成本中心类别
 util.budgetSourceLevel = new Codec({'0': '总行', '1': '支行', '2': '卡中心', '3': '卡部', '4': 'O2O项目组'});

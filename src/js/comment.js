@@ -1,6 +1,7 @@
 'use strict;'
 
 var common = require('common');
+var util = require('util');
 var _channels = {};
 var _pageIndex = 1;
 var _pageSize = 10;
@@ -11,6 +12,7 @@ var useCache = false;
 
 $(function () {
   common.init('comment');
+  util.init($);
 
   //set search form
   setChannel();
@@ -65,6 +67,7 @@ $('#formSearch').on('submit', function (e) {
     content: $.trim($('#search_content').val()),
     beginDate: $.trim($('#search_beginDate').val()),
     endDate: $.trim($('#search_endDate').val()),
+    type: $('#search_commentType').val(),
     pageSize: _pageSize,
   };
   if (!!_querying) {
@@ -166,23 +169,7 @@ $('#dataTable').on('click', '.btn-delete', function (e) {
   e.preventDefault();
   var that = $(this).parents('tr');
   if (window.confirm('确定要删除此评论吗？')) {
-    $.ajax({
-      url: common.API_HOST + 'comment/commentDelete',
-      type: 'POST',
-      dataType: 'json',
-      contentType: 'application/json; charset=utf-8',
-      data: JSON.stringify([that.data('id')]),
-    })
-    .done(function (res) {
-      if (!!~~res.meta.result) {
-        alert('删除成功！');
-        that.fadeOut(500, function () {
-          that.remove();
-        });
-      } else {
-        alert('接口错误：' + res.meta.msg);
-      }
-    });
+    deleteComments([that.data('id')]);
   }
 
   return false;
@@ -202,29 +189,37 @@ $(document).on('click', '#btn-delete-multi', function (e) {
       commentIds.push($(this).closest('tr').data('id'));
     });
 
-    $.ajax({
-      url: common.API_HOST + 'comment/commentDelete',
-      type: 'POST',
-      dataType: 'json',
-      contentType: 'application/json; charset=utf-8',
-      data: JSON.stringify(commentIds),
-    })
-    .done(function (res) {
-      if (!!~~res.meta.result) {
-        alert('删除成功');
-        $checkedItems.each(function (index, el) {
-          $(this).closest('tr').fadeOut(1000, function () {
-            $(this).remove();
-          });
-        });
-      } else {
-        alert('接口错误：' + res.meta.msg);
-      }
-    });
+    deleteComments(commentIds);
   }
 
   return false;
 });
+
+
+function deleteComments(ids) {
+
+  var param = {
+    ids: ids, 
+    type: $('#search_commentType').val(), 
+    channelId: $('#search_channelId').val()
+  };
+
+  $.ajax({
+    url: common.API_HOST + 'comment/commentDelete',
+    type: 'POST',
+    dataType: 'json',
+    contentType: 'application/json; charset=utf-8',
+    data: JSON.stringify(param),
+  })
+  .done(function (res) {
+    if (!!~~res.meta.result) {
+      $('#formSearch').trigger('submit');
+      alert('删除成功');
+    } else {
+      alert('接口错误：' + res.meta.msg);
+    }
+  });
+}
 
 $(document).on('click', '.multi-check-all', function () {
   var items = $(this).closest('table').find('.multi-check');
