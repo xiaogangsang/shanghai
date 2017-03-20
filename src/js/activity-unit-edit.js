@@ -1381,7 +1381,7 @@ function setEdit(unitId, isApproval, isHistory) {
 
       setPriority(unit.priority);
 
-      $('#formUnit').prepend('<input type="hidden" id="id" value="' + unit.id + '">');
+      if (unit.id) $('#formUnit').prepend('<input type="hidden" id="id" value="' + unit.id + '">');
 
       $('#name').val(unit.name).prop('disabled', true);     // 活动名称
 
