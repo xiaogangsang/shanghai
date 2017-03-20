@@ -681,7 +681,7 @@ $(document).on('submit', '#formEdit', function (event) {
 });
 
 //数据缓存
-function setBudgetSource(budgetSourceId) {
+function setBudgetSource(budgetSourceId, assessor) {
   $.ajax({
     url: common.API_HOST + 'common/budgetSourceList',
     type: 'POST',
@@ -711,7 +711,7 @@ function setBudgetSource(budgetSourceId) {
         });
 
         $('#budgetSource').html(html);
-        $('#budgetSource').trigger('change');
+        $('#budgetSource').trigger('change', assessor);
       }
     } else {
       alert('接口错误：' + res.meta.msg);
@@ -1109,7 +1109,7 @@ function setEdit(couponId, isApproval, isHistory) {
         return false;
       }
 
-      $('#formEdit').prepend('<input type="hidden" id="id" value="' + coupon.id + '">');
+      if (coupon.id) $('#formEdit').prepend('<input type="hidden" id="id" value="' + coupon.id + '">');
 
       $('#name').val(coupon.name).prop('disabled', true);
       $('#inlineRadio1').prop('disabled', true);
@@ -1142,9 +1142,10 @@ function setEdit(couponId, isApproval, isHistory) {
 
       //成本中心
       if (coupon.budgetSource != '' && coupon.budgetSource != null && coupon.budgetSource != undefined) {
-        setBudgetSource(coupon.budgetSource);
+        debugger;
+        setBudgetSource(coupon.budgetSource, coupon.assessor);
       } else {
-        setBudgetSource(false);
+        setBudgetSource(false, coupon.assessor);
       }
 
       $('#level,#budgetSource').prop('disabled', true);
