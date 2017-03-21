@@ -205,6 +205,11 @@ function setDateType(isDuration) {
     $('#couponType_duration').hide();
     $('#effectiveDays').val('');
   }
+
+  $('#beginDate').prop('required', !isDuration);
+  $('#endDate').prop('required', !isDuration);
+  $('#effectiveDays').prop('required', isDuration);
+
 }
 //成本中心
 $(document).on('change click', '#level', function (event) {
@@ -1115,13 +1120,11 @@ function setEdit(couponId, isApproval, isHistory) {
       if (coupon.id) $('#formEdit').prepend('<input type="hidden" id="id" value="' + coupon.id + '">');
 
       $('#name').val(coupon.name).prop('disabled', true);
-      $('#inlineRadio1').prop('disabled', true);
-      $('#inlineRadio2').prop('disabled', true);
-      $('#beginDate').prop('disabled', true);
-      $('#beginDate').prop('readonly', false);
-      $('#endDate').prop('disabled', true);
-      $('#endDate').prop('readonly', false);
-      $('#effectiveDays').prop('disabled', true);
+      // $('#inlineRadio1').prop('disabled', true);
+      // $('#inlineRadio2').prop('disabled', true);
+      // $('#beginDate').prop('disabled', true).prop('readonly', false);
+      // $('#endDate').prop('disabled', true).prop('readonly', false);
+      // $('#effectiveDays').prop('disabled', true);
 
       if(coupon.effectiveDays > 0){
         $('#inlineRadio2').prop('checked', true);
