@@ -1,7 +1,7 @@
 'use strict;'
 
 var common = require('common');
-var _budgetSource = [];
+var util = require('util');
 var _plans = [];
 var _wandaTicket = [];
 var _movies = [];
@@ -29,10 +29,12 @@ var _popupDataCache = {
   timetables: [],
 };
 
+var urlParam = common.getUrlParam();
+var ref = urlParam.ref ? urlParam.ref : 'activity-unit';
+
 // var _loginTypes = [CL:'掌上生活登录', UD: '一网通登录', UA: '一卡通登录', UC: '信用卡登录'];
 
 $(function () {
-  common.init('activity-unit');
 
   Number.prototype.between = function (a, b, flag) {
     var min = Math.min.apply(Math, [a, b]);
@@ -52,24 +54,78 @@ $(function () {
   setProvince();
   setBrand();
 
-  var urlParam = common.getUrlParam();
-  if (urlParam.unitId != undefined && urlParam.unitId != '') {
+  var isViewing = location.pathname.indexOf('view.html') > -1;
+
+  if (urlParam.hid) {
+    // 历史
+    setEdit(urlParam.hid, false, true);
+    $('h3').text($('h3').text() + urlParam.hid);
+    // $('li.active').text('查看');
+    // 在"进件审核"中的查看和"我的进件列表"中的查看并无区别, 只是标题不同
+    if (ref === 'approval-approve') {
+      $('.breadcrumb').html('<li>审核中心</li><li>进件审核</li><li class="active">查看历史</li>');
+    } else if (ref === 'approval-submitted') {
+      $('.breadcrumb').html('<li>审核中心</li><li>我的进件列表</li><li class="active">查看历史</li>');
+    }
+  } else if (urlParam.vid) {
+    if (isViewing) {
+      if (ref === 'approval-approve') {
+        // 查看(为了审核)
+        $('.breadcrumb').html('<li>审核中心</li><li>进件审核</li><li class="active">审核</li>');
+        $('h3').text('审核活动单元: ' + urlParam.vid);
+        $('#formRemark').show();
+      } else if (ref === 'approval-submitted') {
+        // 查看(我的进件列表(当状态为审核中时不可编辑))
+        $('.breadcrumb').html('<li>审核中心</li><li>我的进件列表</li><li class="active">查看</li>');
+        $('h3').text('查看活动单元: ' + urlParam.vid);
+      }
+    } else {
+      // 审核的编辑
+      ref = 'approval-submitted';
+
+      $('.breadcrumb').html('<li>审核中心</li><li>我的进件列表</li><li class="active">编辑</li>');
+      $('h3').text($('h3').text() + urlParam.vid);
+    }
+
+    setEdit(urlParam.vid, true);
+  } else if (urlParam.unitId != undefined && urlParam.unitId != '') {
+    // 编辑
     setEdit(urlParam.unitId);
+    urlParam.id = urlParam.unitId;
+    urlParam.typeCode = 0;
+
+    $('h3').text($('h3').text() + urlParam.unitId);
   } else {
+    // 新增
+    $('.breadcrumb li:last-child').text('新增');
+    $('h3').text('新增活动单元');
+    $('.btn-save').show();
     if (urlParam.planId != undefined && urlParam.planId != '') {
       setPlan(urlParam.planId);
     } else {
       setPlan(false);
     }
 
-    setWandaTicket(false);
-    setBudgetSource(false);
+    setWandaTicket(false, urlParam.budgetSourceId);
     setMovie(false);
     setChannel(false);
     setPattern(1);
     setPriority(false);
+    setupAssessor(urlParam.budgetSourceId);
 
     $('#formUnit button[type=submit]').prop('disabled', false);
+
+    // 只有O2O项目组的预付款才能选择百度和微票
+    $('input[type=checkbox][name=advancePayment][value!=WANDA]').prop('checked', false).prop('disabled', (urlParam.budgetSourceId != 44));
+  }
+
+  common.init(ref);
+
+  // 是的, 就是这么粗暴, 来咬我啊
+  if (isViewing) {
+    setInterval(function(){
+      $('#formUnit :input').prop('disabled', true);
+    }, 100);
   }
 
   //upper of range
@@ -170,35 +226,6 @@ $(document).on('submit', '#popup-unit-priority form', function (event) {
   $('#priority').val(priority);
   $('#popup-unit-priority').modal('hide');
   return false;
-});
-
-//成本中心
-$(document).on('change click', '#level', function (event) {
-  event.preventDefault();
-  var level = $(this).val();
-  if (level == undefined || level == '') {
-    $('#budgetSource').html('<option value=""></option>');
-  } else {
-    var sources = [];
-    _(_budgetSource).forEach(function (group, key) {
-      if (level == key) {
-        sources = group;
-      }
-    });
-
-    if (sources.length < 1) {
-      $('#budgetSource').html('<option value=""></option>');
-      alert('所选成本中心类别下无成本中心，这个情况不正常，需要注意哦！');
-    } else {
-      var html = '';
-      _(sources).forEach(function (source) {
-        html += '<option value="' + source.id + '">' + source.sourceName + '</option>';
-      });
-
-      $('#budgetSource').html(html);
-      $('#budgetSource').closest('.form-group').show();
-    }
-  }
 });
 
 //活动形式
@@ -777,12 +804,11 @@ $(document).on('submit', '#formUnit', function (event) {
   }
 
   _submitting = true;
-  $('#formUnit button[type=submit]').prop('disabled', true).text('更新中...');
+  $('#formUnit button[type=submit]').prop('disabled', true);
   var sendData = {
     name: $.trim($('#name').val()),
     signNo: $('#signNo').val(),
     planId: $('#planId').val(),
-    budgetSource: $('#budgetSource').val(),
     wandaTicketId: $('#wandaTicketId').val(),
     beginDate: $('#beginDate').val(),
     endDate: $('#endDate').val(),
@@ -808,6 +834,8 @@ $(document).on('submit', '#formUnit', function (event) {
     cinemas: [],
     timetables: _popupDataCache.timetables,
     remarks: $('#remark').val().trim(),
+    operator: $('#assessor').val(),
+    vid: urlParam.vid
   };
 
   switch ($('input[name=advancePayment]:checked').length) {
@@ -874,9 +902,24 @@ $(document).on('submit', '#formUnit', function (event) {
     sendData.cinemas.push(cinema.cinemaId);
   });
 
-  var ajaxUrl = 'activity/saveActivity';
-  if ($('#id').size() > 0) {
-    ajaxUrl = 'activity/updateActivity';
+  var ajaxUrl, tips;
+
+  if ($('#formUnit button[type=submit][clicked=true]').hasClass('btn-approval')) {
+    if (urlParam.vid) {
+      ajaxUrl = 'activity/updateAndSubmitVerification';
+    } else {
+      ajaxUrl = 'activity/saveAndSubmitVerification';
+    }
+    tips = '提交成功, 审核进度可到 "我的进件列表" 查看. \n点击 "确定" 关闭本页面';
+  } else {
+    // 
+    ajaxUrl = 'activity/saveVerification';
+    tips = '保存成功, 可到 "我的进件列表" 查看或编辑. \n点击 "确定" 关闭本页面';
+  }
+
+  // var ajaxUrl = 'activity/saveActivity';
+  if ($('#id').size() > 0 && $('#id').val()) {
+    // ajaxUrl = 'activity/updateActivity';
     sendData.id = $('#id').val();
   }
 
@@ -889,15 +932,18 @@ $(document).on('submit', '#formUnit', function (event) {
   })
   .done(function (res) {
     _submitting = false;
-    $('#formUnit button[type=submit]').prop('disabled', false).text('保存');
+    $('#formUnit button[type=submit]').prop('disabled', false);
     if (!!~~res.meta.result) {
-      if (ajaxUrl == 'activity/updateActivity') {
-        alert('更新成功！');
-        document.location.reload(true);
-      } else {
-        alert('新建成功！');
-        document.location = 'activity-unit.html';
-      }
+      // if (ajaxUrl == 'activity/updateActivity') {
+      //   alert('更新成功！');
+      //   document.location.reload(true);
+      // } else {
+      //   alert('新建成功！');
+      //   document.location = 'activity-unit.html';
+      // }
+      alert(tips);
+      window.open(document.URL,'_self','resizable=no,top=-245,width=250,height=250,scrollbars=no');
+      window.close();
     } else {
       alert('接口错误：' + res.meta.msg);
     }
@@ -906,44 +952,8 @@ $(document).on('submit', '#formUnit', function (event) {
   return false;
 });
 
-//数据缓存
-function setBudgetSource(budgetSourceId) {
-  $.ajax({
-    url: common.API_HOST + 'common/budgetSourceList',
-    type: 'POST',
-    dataType: 'json',
-  })
-  .done(function (res) {
-    if (!!~~res.meta.result) {
-      _budgetSource = res.data;
-      if (!!~~budgetSourceId) {
-        var html = '';
-        var levelId = 0;
-        _(_budgetSource).forEach(function (group, key) {
-          _(group).forEach(function (source) {
-            if (budgetSourceId == source.id) {
-              levelId = parseInt(key);
-            }
-          });
-        });
-
-        $('#level option').eq(1 + levelId).prop('selected', true);
-        _(_budgetSource[levelId]).forEach(function (source) {
-          if (budgetSourceId == source.id) {
-            html += '<option value="' + source.id + '" selected>' + source.sourceName + '</option>';
-          } else {
-            html += '<option value="' + source.id + '">' + source.sourceName + '</option>';
-          }
-        });
-
-        $('#budgetSource').html(html);
-      }
-    } else {
-      alert('接口错误：' + res.meta.msg);
-    }
-  });
-}
-
+// 数据缓存
+// 成本中心不再与活动单元关联, 而是与活动计划关联, 该函数不再需要
 function setBrand() {
   $.ajax({
     url: common.API_HOST + 'common/brandList',
@@ -1014,6 +1024,7 @@ function setPlan(planId) {
         });
 
         $('#planId').append(html);
+        $('#planId').prop('disabled', true);
       }
     } else {
       alert('接口错误：' + res.meta.msg);
@@ -1021,7 +1032,11 @@ function setPlan(planId) {
   });
 }
 
-function setWandaTicket(wandaTicketId) {
+function setWandaTicket(wandaTicketId, budgetSourceId) {
+
+  var html = '<option value="">不选</option>';
+  $('#wandaTicketId').html(html);
+
   $.ajax({
     url: common.API_HOST + 'activity/wandaActivityTicketList',
     type: 'POST',
@@ -1029,6 +1044,7 @@ function setWandaTicket(wandaTicketId) {
     data: {
       pageIndex: 1,
       pageSize: 9999,
+      budgetSource: budgetSourceId
     },
   })
   .done(function (res) {
@@ -1268,17 +1284,46 @@ function resetTimeTable() {
   });
 }
 
-function setEdit(unitId) {
-  $('.breadcrumb li:last-child').text('编辑');
-  $('h3').text('编辑活动单元:' + unitId);
+function setEdit(unitId, isApproval, isHistory) {
+
+  var url;
+  if (isHistory) {
+    url = 'verification/historyDetail';
+  } else if (isApproval) {
+    url = 'verification/detail';
+  } else {
+    url = 'activity/activityDetail';
+  }
+  
   $.ajax({
-    url: common.API_HOST + 'activity/activityDetail',
+    url: common.API_HOST + url,
     type: 'POST',
     dataType: 'json',
     data: { id: unitId },
   })
   .done(function (res) {
     if (!!~~res.meta.result) {
+      if (isApproval) {
+        for (var key in res.data.data) {
+          if (res.data.data.hasOwnProperty(key)) {
+            res.data[key] = res.data.data[key].val;
+            // res.data.data[key].edited = true;
+          }
+        }
+      } else if (isHistory) {
+        res.data = res.data.data;
+        res.data.data = common.clone(res.data);
+      } else {
+        res.data.data = common.clone(res.data);
+      }
+
+      // 为了代码方便, 不再判断要不要进行高亮操作, 这里把不需要判断的情况的edited全是undefined, 这样就不会高亮
+      for (var key in res.data.data) {
+        if (res.data.data.hasOwnProperty(key) && res.data.data[key] == null) {
+          res.data.data[key] = {};
+        }
+      }
+
       var unit = res.data;
       if (unit == null || unit == undefined) {
         alert('无法获取要编辑的活动单元信息，这个不太正常，让[猿们]来查一查！');
@@ -1339,21 +1384,29 @@ function setEdit(unitId) {
 
       setPriority(unit.priority);
 
-      $('#formUnit').prepend('<input type="hidden" id="id" value="' + unit.id + '">');
+      if (unit.id) $('#formUnit').prepend('<input type="hidden" id="id" value="' + unit.id + '">');
 
-      $('#name').val(unit.name).prop('disabled', true);
-      $('#signNo').val(unit.signNo).prop('disabled', true);
+      $('#name').val(unit.name).prop('disabled', true);     // 活动名称
 
-      $('#beginDate').val(unit.beginDate.split(' ')[0]);
-      $('#endDate').val(unit.endDate.split(' ')[0]);
+      $('#signNo').val(unit.signNo).prop('disabled', true); // 签报号
+
+      // 开始日期
+      $('#beginDate').val(unit.beginDate.split(' ')[0]).addClass(unit.data.beginDate.edited ? 'highlight' : '');
+      // 结束日期
+      $('#endDate').val(unit.endDate.split(' ')[0]).addClass(unit.data.endDate.edited ? 'highlight' : '');
+
+      // 每日生效时间
       var dailyEffectBeginTime = unit.dailyEffectBeginTime.split(':');
-      $('#beginHH').val(dailyEffectBeginTime[0]);
+      $('#beginHH').val(dailyEffectBeginTime[0]).closest('div.input-group').addClass(unit.data.dailyEffectBeginTime.edited ? 'highlight' : '');
       $('#beginMM').val(dailyEffectBeginTime[1]);
       $('#beginSS').val(dailyEffectBeginTime[2]);
+
       var dailyEffectEndTime = unit.dailyEffectEndTime.split(':');
-      $('#endHH').val(dailyEffectEndTime[0]);
+      $('#endHH').val(dailyEffectEndTime[0]).closest('div.input-group').addClass(unit.data.dailyEffectEndTime.edited ? 'highlight' : '');
       $('#endMM').val(dailyEffectEndTime[1]);
       $('#endSS').val(dailyEffectEndTime[2]);
+
+      // 周期重复选择
       var repeatedDay = unit.repeatedDay.split(',');
       _(repeatedDay).forEach(function (day) {
         $('input[name=repeatedDay]').eq(day - 1).prop('checked', true);
@@ -1362,21 +1415,27 @@ function setEdit(unitId) {
       if (repeatedDay.length == 7) {
         $('#repeatedDayAll').prop('checked', true);
       }
+      $('#repeatedDayAll').closest('div.input-group').addClass(unit.data.repeatedDay.edited ? 'highlight' : '');
 
-      $('#priority').val(unit.priority);
+      // 活动优先级
+      $('#priority').val(unit.priority).addClass(unit.data.priority.edited ? 'highlight' : '');
 
+      // 使用预付款
       $('input[name=advancePayment]').prop({ disabled: true, checked: false });
       $('input[name=advancePayment]').each(function (index, el) {
         $(el).prop('checked', _popupDataCache.advancePayment == 'ALL' || _popupDataCache.advancePayment.indexOf($(el).val()) > -1 ? true : false);
       });
 
-      $('#remark').val(unit.remarks);
-      $('#cinemaPageDesc').val(unit.cinemaPageDesc);
-      $('#activityIcon').val(unit.activityIcon);
-      $('#timetablePageDesc').val(unit.timetablePageDesc);
-      $('#activityDesc').val(unit.activityDesc);
-      $('#activityLink').val(unit.activityLink);
-      $('#activityRuleDesc').val(unit.activityRuleDesc);
+      // 活动备注
+      $('#remark').val(unit.remarks).addClass(unit.data.remarks.edited ? 'highlight' : '');
+
+      // 活动标记
+      $('#cinemaPageDesc').val(unit.cinemaPageDesc).addClass(unit.data.cinemaPageDesc.edited ? 'highlight' : '');  // 影院页
+      $('#activityIcon').val(unit.activityIcon).addClass(unit.data.activityIcon.edited ? 'highlight' : ''); // 活动别表icon
+      $('#timetablePageDesc').val(unit.timetablePageDesc).addClass(unit.data.timetablePageDesc.edited ? 'highlight' : ''); // 场次页
+      $('#activityDesc').val(unit.activityDesc).addClass(unit.data.activityDesc.edited ? 'highlight' : ''); // 活动列表描述
+      $('#activityLink').val(unit.activityLink).addClass(unit.data.activityLink.edited ? 'highlight' : ''); // 跳转链接
+      $('#activityRuleDesc').val(unit.activityRuleDesc).addClass(unit.data.activityRuleDesc.edited ? 'highlight' : ''); // 规则描述
 
       //计划
       if (unit.planId != '' && unit.planId != null && unit.planId != undefined) {
@@ -1389,27 +1448,15 @@ function setEdit(unitId) {
         $('#planId').prop('disabled', true);
       }
 
-      //成本中心
-      if (unit.budgetSourceId != '' && unit.budgetSourceId != null && unit.budgetSourceId != undefined) {
-        setBudgetSource(unit.budgetSourceId);
-        $('#level,#budgetSource').prop('disabled', true);
-      } else {
-        setBudgetSource(false);
-      }
-
       //万达票类
-      if (unit.wandaTicketId != '' && unit.wandaTicketId != null && unit.wandaTicketId != undefined) {
-        setWandaTicket(unit.wandaTicketId);
-      } else {
-        setWandaTicket(false);
-      }
+      setWandaTicket(unit.wandaTicketId, unit.budgetSourceId);
 
       if (unitId) {
         $('#wandaTicketId').prop('disabled', true);
       }
 
       //活动形式
-      $('#activityPattern option').eq(unit.activityPattern - 1).prop('selected', true);
+      $('#activityPattern option').eq(unit.activityPattern - 1).prop('selected', true).closest('div.edit-section').addClass(unit.data.activityPattern.edited ? 'highlight' : '');
       var html = '';
       var index = 0;
       _(unit.activityPatternList).forEach(function (pattern) {
@@ -1434,7 +1481,8 @@ function setEdit(unitId) {
         previewHtml += '<p>' + daily.startDate + ' ~ ' + daily.endDate + '，日金额预算：' + (daily.dailyAmount == '' ? '不限' : daily.dailyAmount) + '，日出票预算：' + (daily.dailyTicket == '' ? '不限' : daily.dailyTicket) + '；</p>';
       });
 
-      $('#preview-budget').html(previewHtml);
+      var edited = unit.data.totalAmount.edited || unit.data.totalTicket.edited;
+      $('#preview-budget').html(previewHtml).closest('tr').addClass(edited ? 'highlight' : '');
 
       //客群
       if (unit.cusTypes != null) {
@@ -1447,10 +1495,11 @@ function setEdit(unitId) {
 
         $('#preview-custypes').html(previewHtml);
       }
+      $('#preview-custypes').closest('tr').addClass(unit.data.cusTypes.edited ? 'highlight' : '');
 
       //特殊资格
       previewHtml = unit.qualification != null && unit.qualification[0] == 'UD' ? '手机银行一网通登录用户' : '不限';
-      $('#preview-special').html(previewHtml);
+      $('#preview-special').html(previewHtml).closest('tr').addClass(unit.data.qualification.edited ? 'highlight' : '');
 
       //单户限购
       previewHtml = '';
@@ -1463,25 +1512,133 @@ function setEdit(unitId) {
         previewHtml = '不限';
       }
 
-      $('#preview-restriction').html(previewHtml);
+      $('#preview-restriction').html(previewHtml).closest('tr').addClass(unit.data.saleLimit.edited ? 'highlight' : '');;
 
       //渠道
       unit.channels != null && unit.channels.length > 0 ? setChannel(unit.channels) : setChannel(false);
+      $('#preview-channel').closest('tr').addClass(unit.data.channels.edited ? 'highlight' : '');
 
       //影片
       unit.films != null && unit.films.length > 0 ? setMovie(unit.films) : setMovie(false);
+      $('#preview-movie').closest('tr').addClass(unit.data.films.edited ? 'highlight' : '');
 
       //制式
       var previewHtmlConfigType = unit.configType == null || unit.configType.length == 0 ? '不限' : '[' + unit.configType.join('] [') + ']';
-      $('#preview-dimen').html(previewHtmlConfigType);
+      $('#preview-dimen').html(previewHtmlConfigType).closest('tr').addClass(unit.data.configType.edited ? 'highlight' : '');
 
       //影院
-      $('#preview-cinema').html(unit.cinemas != null && unit.cinemas.length > 0 ? '选择了 ' + unit.cinemas.length + ' 个影院' : '不限');
+      $('#preview-cinema').html(unit.cinemas != null && unit.cinemas.length > 0 ? '选择了 ' + unit.cinemas.length + ' 个影院' : '不限')
+      .closest('tr').addClass(unit.data.cinemas.edited ? 'highlight' : '');;
 
       //场次
       setTimeTable(unit.timetables);
+      $('#preview-timetable').closest('tr').addClass(unit.data.timetables.edited ? 'highlight' : '');
+
+
+      // 审核人
+      if ($('#assessor').length) {
+        setupAssessor(res.data.budgetSourceId, unit.assessor);
+      }
     } else {
       alert('接口错误：' + res.meta.msg);
     }
   });
 }
+
+$(document).on('click', "form button[type=submit]", function() {
+    $("button[type=submit]", $(this).parents("form")).removeAttr("clicked");
+    $(this).attr("clicked", "true");
+});
+
+// 审核/驳回
+$(document).on('submit', '#formRemark', function(event) {
+  event.preventDefault();
+
+  if (_submitting) {
+    return false;
+  }
+
+  _submitting = true;
+
+  var id = urlParam.vid;
+  var accept = $('#formRemark button[type=submit][clicked=true]').hasClass('btn-approval') ? 1 : 0;
+
+  $.ajax({
+    url: common.API_HOST + 'verification/doCheck',
+    type: 'POST',
+    dataType: 'json',
+    data: {id: id, accept: accept, remark: $('#remark-input').val()}
+  })
+  .done(function (res) {
+
+    _submitting = false;
+    if (!!~~res.meta.result) {
+      alert('操作成功! 点击 "确定" 关闭本页面');
+      util.close();
+    } else {
+      alert('接口错误：' + res.meta.msg);
+    }
+  });
+
+});
+
+function setupAssessor(budgetSourceId, assessor) {
+  // TODO:
+  $.ajax({
+    url: common.API_HOST + 'verification/getAssessor',
+    type: 'GET',
+    dataType: 'json',
+    data:{budgetSourceId: budgetSourceId}
+  })
+  .done(function (res) {
+    // var res = JSON.parse('{  "meta": {    "result": "1",    "msg": "操作成功"  },  "data": [    {      "id": 19552,      "createdBy": "admin",      "createdDate": null,      "updatedBy": null,      "updatedDate": null,      "loginId": null,      "password": null,      "enabled": "1",      "realName": "樊坤",      "city": null,      "department": "o2o",      "mobile": null,      "email": null,      "roles": null    }  ]}');
+    if (!!~~res.meta.result) {
+      var html = '';
+      _(res.data.rows).forEach(function(obj) {
+        var selected = obj.id == assessor ? 'selected' : '';
+        html += '<option value="' + obj.id + '" ' + selected + '>' + obj.realName + '</option>';
+      });
+      $('#assessor').html(html);
+    } else {
+      alert('接口错误：' + res.meta.msg);
+      $('#assessor').html('<option value=""></option>');
+    }
+  });
+}
+
+
+// 历史记录
+$(function() {
+  if (urlParam.id !== undefined && urlParam.typeCode !== undefined) {
+
+    var url = 'verification/history';
+    
+    var data = {typeCode: urlParam.typeCode};
+    if (urlParam.vid) {
+        data.id = urlParam.vid;
+    } else {
+        data.pid = urlParam.id;
+    }
+    
+    $.ajax({
+      url: common.API_HOST + url,
+      type: 'POST',
+      dataType: 'json',
+      data: data
+    })
+    .done(function (res) {
+      if (!!~~res.meta.result) {
+        var template = $('#history-template').html();
+        Mustache.parse(template);
+        res.data.url = 'activity-unit-view.html';
+        res.data.ref = ref;
+        var html = Mustache.render(template, res.data);
+        $('section').after(html);
+      } else {
+        alert('获取编辑历史失败: ' + res.meta.msg);
+      }
+    });
+  }
+});
+
+

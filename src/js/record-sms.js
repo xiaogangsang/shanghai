@@ -64,7 +64,6 @@ $('#formSearch').on('submit', function (e) {
 	e.preventDefault();
 	var sendData = {
 		mobile: $.trim($('#search_mobile').val()),
-		channelId: '1',
 		beginDate: $('#search_smsStartTime').val(),
 		endDate: $('#search_smsEndTime').val(),
 		pageSize: _pageSize,

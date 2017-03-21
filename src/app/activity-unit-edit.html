@@ -25,11 +25,11 @@
         <ol class="breadcrumb">
           <li>活动中心</li>
           <li>活动单元管理</li>
-          <li class="active">新建</li>
+          <li class="active">编辑</li>
         </ol>
 
         <section class="activity-unit-edit">
-          <h3>新建活动单元</h3>
+          <h3>编辑活动单元:</h3>
           <form id="formUnit">
 
             <div class="edit-section">
@@ -88,7 +88,7 @@
                   <div id="error-repeatedDay"></div>
                 </div>
               </div>
-              <div class="form-group col-sm-6">
+<!--               <div class="form-group col-sm-6">
                 <div class="input-group">
                   <div class="input-group-addon">成本中心类别</div>
                   <select class="form-control" id="level">
@@ -109,7 +109,7 @@
                   </select>
                   <div id="error-budgetSource"></div>
                 </div>
-              </div>
+              </div> -->
               <div class="form-group col-sm-6">
                 <div class="input-group">
                   <div class="input-group-addon">万达活动票类</div>
@@ -264,10 +264,22 @@
               </div>
             </div>
 
-            <div class="row">
-              <div class="col-sm-4">
-                <button type="submit" class="btn btn-block btn-primary" disabled>保存</button>
+            <div class="edit-section">
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-addon">审核人</div>
+                  <select class="form-control" id="assessor" required data-parsley-errors-container="#error-assessor">
+                    <option></option>
+                  </select>
+                  <div id="error-assessor"></div>
+                </div>
               </div>
+            </div>
+
+            <div class="row" style="text-align: center;">
+              <button type="submit" class="btn btn-primary btn-approval" style="padding: 5px 60px;">提交审核</button>
+              <button type="submit" class="btn btn-primary btn-save" style="padding: 5px 60px; margin-left: 6px; display: none;">保存</button>
+              <!-- <button type="submit" class="btn btn-block btn-primary" disabled>保存</button> -->
             </div>
 
           </form>
@@ -301,5 +313,6 @@
   @@include('component/popup-unit-cinema.tpl')
   @@include('component/popup-unit-timetable.tpl')
   @@include('component/popup-unit-priority.tpl')
+  @@include('component/approval-history.tpl')
 </body>
 </html>

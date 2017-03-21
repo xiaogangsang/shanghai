@@ -78,6 +78,16 @@
     </div>
 
     <div class="panel" style="display:none">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#approval"><span class="glyphicon glyphicon-barcode" aria-hidden="true"></span> 审核中心</a>
+      <div id="approval" class="panel-collapse collapse" role="tabpanel">
+        <div class="list-group">
+          <a href="approval-submitted.html" class="list-group-item" id="menu-approval-submitted" data-id="358" style="display:none">我的进件列表</a>
+          <a href="approval-approve.html" class="list-group-item" id="menu-approval-approve" data-id="357" style="display:none">进件审核</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="display:none">
       <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu7"><span class="glyphicon glyphicon-picture" aria-hidden="true"></span> 前端配置平台</a>
       <div id="menu7" class="panel-collapse collapse" role="tabpanel">
         <div class="list-group">
@@ -124,6 +134,7 @@
           <a href="ability-resource.html" class="list-group-item" id="menu-ability-resource" data-id="4" style="display:none">功能权限管理</a>
           <a href="ability-channel.html" class="list-group-item" id="menu-ability-channel" data-id="3" style="display:none">渠道权限管理</a>
           <a href="ability-city.html" class="list-group-item" id="menu-ability-city" data-id="3" style="display:none">城市权限管理</a>
+          <a href="ability-budget-source.html" class="list-group-item" id="menu-ability-budget-source" data-id="392" style="display:none">成本中心权限管理</a>
         </div>
       </div>
     </div>

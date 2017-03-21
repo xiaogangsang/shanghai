@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="images/favicon.ico" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>用户权限管理</title>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/reset.css">
+</head>
+<body>
+
+  @@include('component/header.tpl')
+
+  <div class="container-fluid">
+
+    <div class="row">
+
+      @@include('component/sidebar.tpl')
+
+      <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+        <ol class="breadcrumb">
+          <li>用户权限管理</li>
+          <li class="active">成本中心权限管理</li>
+        </ol>
+
+        <section class="content-area-xs">
+          <form id="formChannel">
+
+            <div class="edit-section clearfix">
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-addon">选择成本中心</div>
+                  <select id="channelSelect" class="form-control" data-placeholder="选择一个..." required data-parsley-errors-container="#error-channel">
+                    <option value=""></option>
+                  </select>
+                  <div id="error-channel"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="edit-section">
+              <h5>分配用户</h5>
+              <div class="multi-selection table-responsive">
+                <table class="table">
+                  <tbody>
+                    <tr>
+                      <td>
+                        <select name="from[]" id="userSelect" class="form-control" size="8" multiple="multiple">
+                        </select>
+                      </td>
+                      <td width="60">
+                        <button type="button" id="userSelect_all" class="btn btn-block btn-default">全选</button>
+                        <button type="button" id="userSelect_right" class="btn btn-block btn-default">添加</button>
+                        <button type="button" id="userSelect_left" class="btn btn-block btn-default">移除</button>
+                        <button type="button" id="userSelect_none" class="btn btn-block btn-default">反选</button>
+                      </td>
+                      <td>
+                        <select name="to[]" id="userSelect_to" class="form-control" size="8" multiple="multiple" required data-parsley-errors-container="#error-user"></select>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div id="error-user"></div>
+              </div>
+            </div>
+
+            <div class="row" style="margin-top: 15px;">
+              <div class="col-sm-4 col-md-3">
+                <button type="submit" class="btn btn-block btn-primary" disabled>保存</button>
+              </div>
+            </div>
+
+          </form>
+        </section>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="js/vendor.js"></script>
+  <script src="js/ability-budget-source.js"></script>
+
+</body>
+</html>

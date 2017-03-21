@@ -36,6 +36,21 @@
             </td>
           </tr>
           <tr>
+            <th>成本中心</th>
+            <td>
+              <div>
+                <select id="budgetSource" class="form-control" data-placeholder="选择一个..." required data-parsley-errors-container="#error-budgetSource">
+                  <option value=""></option>
+                  {{#budgetSource}}
+                  <option value="{{id}}" {{#selected}}selected{{/selected}}>{{sourceName}}</option>
+                  {{/budgetSource}}
+                </select>
+                <div id="error-budgetSource"></div>
+              </div>
+            </td>
+          </tr>
+
+          <tr>
             <th><button type="button" class="btn btn-default" id="btn-set-cinema">影院</button></th>
             <td id="preview-cinema"></td>
           </tr>
@@ -87,6 +102,7 @@
             <th width="80">名称</th>
             <td><input type="text" class="form-control" id="ticketName" required></td>
           </tr>
+
           <tr>
             <th>渠道</th>
             <td>
@@ -96,6 +112,22 @@
               <div id="error-channel"></div>
             </td>
           </tr>
+
+          <tr>
+            <th>成本中心</th>
+            <td>
+              <div>
+                <select id="budgetSource" class="form-control" data-placeholder="选择一个..." required data-parsley-errors-container="#error-budgetSource">
+                  <option value=""></option>
+                  {{#budgetSource}}
+                  <option value="{{id}}">{{sourceName}}</option>
+                  {{/budgetSource}}
+                </select>
+                <div id="error-budgetSource"></div>
+              </div>
+            </td>
+          </tr>
+
           <tr>
             <th><button type="button" class="btn btn-default" id="btn-set-cinema">影院</button></th>
             <td id="preview-cinema"></td>

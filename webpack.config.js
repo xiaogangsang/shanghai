@@ -54,6 +54,7 @@ module.exports = {
       datetimepicker: srcDir + '/lib/bootstrap-datetimepicker.min.js',
       'datetimepicker-cn': srcDir + '/lib/bootstrap-datetimepicker.zh-CN.js',
       common: srcDir + '/common/common.js',
+      util: srcDir + '/common/util.js',
       settlementCommon: srcDir + '/common/common-settlement.js',
       pager: srcDir + '/common/pager.js',
     },
