@@ -138,7 +138,8 @@ common.logout = function () {
   Cookies.remove('authCity');
   Cookies.remove('authChannel');
   Cookies.remove('authMenu');
-  Cookies.remove('authFunction');
+  // Cookies.remove('authFunction');
+  localStorage.removeItem('authFunction');
 };
 
 common.getDate = function (date) {
@@ -174,7 +175,7 @@ common.getUrlParam = function () {
 };
 
 common.getAssignedFuncions = function () {
-  var allowMenus = JSON.parse(Cookies.get('authFunction'));
+  var allowMenus = JSON.parse(localStorage.getItem('authFunction'));
   var assignedFunctions = [];
   var pageId = +$('#menu a.active').data('id');
   _(allowMenus).forEach(function (page) {
