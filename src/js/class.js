@@ -416,7 +416,6 @@ $(document).on('click', '#popup-class-form button[type=submit]', function (event
 });
 
 $(document).on('submit', '#popup-class-form form', function (event) {
-  debugger;
   event.preventDefault();
   if (_submitting) {
     return false;
