@@ -815,7 +815,7 @@ function setSource() {
   .done(function (res) {
     if (!!~~res.meta.result) {
       _sources = res.data;
-      var html = '<option value="">全部</option>';
+      var html = '';
       _(_sources).forEach(function (source) {
         html += '<option value="' + source.sourceId + '">' + source.sourceName + '</option>';
       });
