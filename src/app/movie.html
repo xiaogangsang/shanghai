@@ -161,7 +161,7 @@
       <td>{{statusName}}</td>
       <td>{{dimen}}</td>
       <td>{{produceCorp}}</td>
-      <td>{{associationStatus}}</td>
+      <td>{{#associated}}<a href="movie-tp.html?name={{name}}" target="_blank">{{associationStatus}}</a>{{/associated}}{{^associated}}{{associationStatus}}{{/associated}}</td>
       <td>
         <a href="movie-bind.html?movieId={{id}}" class="btn btn-xs btn-default" target="_blank">关联设置</a>
         <button type="button" class="btn btn-xs btn-default btn-edit">编辑</button>

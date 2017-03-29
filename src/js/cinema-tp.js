@@ -34,6 +34,13 @@ $(function () {
   $('#search_beginDate').datetimepicker('setEndDate', endDate);
   $('#search_endDate').datetimepicker('setStartDate', beginDate).datetimepicker('setEndDate', endDate);
 
+
+  var urlParam = common.getUrlParam();
+  if (urlParam.name) {
+    $('#search_cinemaName').val(urlParam.name);
+    $('#search_associationStatus').val(1).change();
+  }
+
   $('#formSearch').trigger('submit');
 });
 
@@ -371,7 +378,7 @@ function setSource() {
   .done(function (res) {
     if (!!~~res.meta.result) {
       _sources = res.data;
-      var html = '';
+      var html = '<option value="">全部</option>';
       _(_sources).forEach(function (source) {
         html += '<option value="' + source.sourceId + '">' + source.sourceName + '</option>';
       });
