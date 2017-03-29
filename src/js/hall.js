@@ -80,7 +80,8 @@ $('#formSearch').on('submit', function (e) {
         _pageTotal = Math.ceil(res.data.total / _pageSize);
         setPager(res.data.total, _pageIndex, res.data.data.length, _pageTotal);
         _(res.data.data).forEach(function (item) {
-          item.relationText = item.relation == 1 ? '已关联' : '未关联';
+          item.associated = item.relation == 1;
+          item.relationText = item.associated ? '已关联' : '未关联';
           item.onlineTime = item.onlineTime != undefined && item.onlineTime != null ? common.getDate(new Date(item.onlineTime)) : '';
         });
 

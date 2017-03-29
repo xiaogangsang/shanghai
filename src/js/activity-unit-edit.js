@@ -1456,7 +1456,7 @@ function setEdit(unitId, isApproval, isHistory) {
       }
 
       //活动形式
-      $('#activityPattern option').eq(unit.activityPattern - 1).prop('selected', true).closest('div.edit-section').addClass(unit.data.activityPattern.edited ? 'highlight' : '');
+      $('#activityPattern option').eq(unit.activityPattern - 1).prop('selected', true).closest('div.edit-section').addClass((unit.data.activityPatternList.edited || unit.data.activityPattern.edited) ? 'highlight' : '');
       var html = '';
       var index = 0;
       _(unit.activityPatternList).forEach(function (pattern) {

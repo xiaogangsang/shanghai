@@ -101,7 +101,8 @@ $('#formSearch').on('submit', function (e) {
 
           // item.showDate = item.showDate.split(' ')[0];
           // item.dimenName = item.dimenNames.join(',');
-          item.associationStatus = item.associationStatus == 1 ? '已关联' : '未关联';
+          item.associated = item.associationStatus == 1;
+          item.associationStatus = item.associated ? '已关联' : '未关联';
         });
 
         setTableData(res.data.rows);
