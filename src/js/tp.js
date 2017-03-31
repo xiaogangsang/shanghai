@@ -77,6 +77,46 @@ $('#dataTable').on('click', '.btn-edit', function (event) {
   $('#popup-tp-form').modal('show');
 });
 
+$('#formSearch').on('submit', function (e) {
+  e.preventDefault();
+  $('#popup-addTp-form').modal('show');
+});
+
+$(document).on('submit','#popup-addTp-form', function(e) {
+    event.preventDefault();
+  if (_submitting) {
+    return false;
+  }
+  _submitting = true;
+  $('#popup-addTp-form input[type=submit]').prop('disabled', true).text('提交中...');
+  var sendData = {
+    id: $('#sourceId').val(),
+    name: $('#sourceName').val().trim(),
+    sort: $('#sort').val().trim(),
+    status: $('input[name=status]:checked').val(),
+  };
+
+  var ajaxUrl = common.API_HOST + 'tp/updateTpInfo';
+  $.ajax({
+    url: ajaxUrl,
+    type: 'POST',
+    dataType: 'json',
+    data: sendData,
+  })
+  .done(function (res) {
+    _submitting = false;
+    if (!!~~res.meta.result) {
+      alert('更新成功！');
+      $('#popup-addTp-form').modal('hide');
+      loadData();
+    } else {
+      alert('接口错误：' + res.meta.msg);
+      $('#popup-addTp-form input[type=submit]').prop('disabled', false).text('再试一次');
+    }
+  });
+  return false;
+});
+
 $(document).on('submit', '#popup-tp-form form', function (event) {
   event.preventDefault();
   if (_submitting) {
