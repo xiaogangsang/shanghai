@@ -76,7 +76,7 @@ Codec.prototype.checkboxesHTML = function(name) {
 // 评论类型
 util.commentType = new Codec({'1' : '评论', '3' : '回复'});
 
-util.commentType = new Codec({'1' : '掌上生活', '2' : '手机银行'});
+util.channel = new Codec({'1' : '掌上生活', '2' : '手机银行'});
 
 util.searchTermType = new Codec({'1' : '搜索词', '2' : '热搜词'});
 
