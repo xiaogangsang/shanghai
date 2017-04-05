@@ -174,7 +174,7 @@
       <td>{{cityName}}</td>
       <td>{{#onlineStatus}}已上线{{/onlineStatus}}{{^onlineStatus}}已下线{{/onlineStatus}}</td>
       <td>{{onlineDate}}</td>
-      <td>{{#associationStatus}}已关联{{/associationStatus}}{{^associationStatus}}未关联{{/associationStatus}}</td>
+      <td>{{#associationStatus}}<a href="cinema-tp.html?name={{name}}" target="_blank">已关联</a>{{/associationStatus}}{{^associationStatus}}未关联{{/associationStatus}}</td>
       <td><a href="#" class="btn-link btn-merchant">编辑</a></td>
       <td>
         <button type="button" class="btn btn-xs btn-default btn-status" data-onlineStatus="{{onlineStatus}}">{{#onlineStatus}}下线{{/onlineStatus}}{{^onlineStatus}}上线{{/onlineStatus}}</button>

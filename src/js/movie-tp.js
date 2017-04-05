@@ -45,6 +45,12 @@ $(function () {
   endDate = common.getDate(endDate);
   //$('#search_beginDate').datetimepicker('setEndDate', endDate);
   //$('#search_endDate').datetimepicker('setStartDate', beginDate).datetimepicker('setEndDate', endDate);
+  
+  var urlParam = common.getUrlParam();
+  if (urlParam.name) {
+    $('#search_associationStatus').val(1).change();
+    $('#search_name').val(urlParam.name);
+  }
 
   $('#formSearch').trigger('submit');
 });

@@ -160,7 +160,7 @@
       <td>{{cityName}}</td>
       <td>{{onlineTime}}</td>
       <td>{{#status}}已上线{{/status}}{{^status}}已下线{{/status}}</td>
-      <td>{{relationText}}</td>
+      <td>{{#associated}}<a href="hall-tp.html?name={{hallName}}&cinemaName={{storeName}}" target="_blank">{{relationText}}</a>{{/associated}}{{^associated}}{{relationText}}{{/associated}}</td>
       <td>
         <button type="button" class="btn btn-xs btn-default btn-status" data-status="{{status}}">{{#status}}下线{{/status}}{{^status}}上线{{/status}}</button>
         <button type="button" class="btn btn-xs btn-default btn-edit">编辑</button>

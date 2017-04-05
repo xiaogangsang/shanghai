@@ -10,15 +10,15 @@ var searchCache = {};
 var useCache = false;
 var _submitting = false;
 var _screenType = [
-  { id: 4, name: '普通' },
-  { id: 1, name: 'IMAX' },
-  { id: 2, name: 'DMAX' },
-  { id: 3, name: '巨幕' }
+{ id: 4, name: '普通' },
+{ id: 1, name: 'IMAX' },
+{ id: 2, name: 'DMAX' },
+{ id: 3, name: '巨幕' }
 ];
 var _hallType = [
-  { id: 3, name: '普通' },
-  { id: 1, name: '4D' },
-  { id: 2, name: '5D' }
+{ id: 3, name: '普通' },
+{ id: 1, name: '4D' },
+{ id: 2, name: '5D' }
 ];
 var _bindCinemaName = '';
 
@@ -80,8 +80,9 @@ $('#formSearch').on('submit', function (e) {
         _pageTotal = Math.ceil(res.data.total / _pageSize);
         setPager(res.data.total, _pageIndex, res.data.data.length, _pageTotal);
         _(res.data.data).forEach(function (item) {
-          item.relationText = +item.relation === 1 ? '已关联' : '未关联';
-          item.onlineTime = typeof item.onlineTime !== 'undefined' && item.onlineTime !== null && item.onlineTime !== '' ? common.getDate(new Date(item.onlineTime)) : '';
+          item.associated = item.relation == 1;
+          item.relationText = item.associated ? '已关联' : '未关联';
+          item.onlineTime = item.onlineTime != undefined && item.onlineTime != null ? common.getDate(new Date(item.onlineTime)) : '';
         });
 
         setTableData(res.data.data);

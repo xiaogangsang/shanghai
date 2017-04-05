@@ -40,7 +40,13 @@ $(function () {
   $('#search_startTime').datetimepicker('setEndDate', endDate);
   $('#search_endTime').datetimepicker('setStartDate', beginDate).datetimepicker('setEndDate', endDate);
 
-  // $('#formSearch').trigger('submit');
+  var urlParam = common.getUrlParam();
+  if (urlParam.name && urlParam.cinemaName) {
+    $('#search_relation').val(1).change();
+    $('#search_hallName').val(urlParam.name);
+    $('#search_cinemaName').val(urlParam.cinemaName);
+  }
+  $('#formSearch').trigger('submit');
 });
 
 //handle search form

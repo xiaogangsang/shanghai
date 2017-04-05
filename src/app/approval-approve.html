@@ -127,7 +127,8 @@
       <td>{{updateTime}}</td>
       <td>{{promotorName}}</td>
       <td>
-        <a href="javascript:;" class="btn btn-xs btn-default check" data-accept="1" data-id="{{id}}">审核</a>
+        <a href="{{viewUrl}}?vid={{id}}&id={{pid}}&typeCode={{typeCode}}&ref=approval-approve" class="btn btn-xs btn-default" target="_blank">审核</a>
+        <!-- <a href="javascript:;" class="btn btn-xs btn-default check" data-accept="1" data-id="{{id}}">审核</a> -->
         <a href="javascript:;" class="btn btn-xs btn-default check" data-accept="0" data-id="{{id}}">驳回</a>
       </td>
     </tr>
