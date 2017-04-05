@@ -239,6 +239,9 @@ $(document).on('change click', '#level', function (event) {
     }
   }
 
+  // 卡部预付款只能选择万达
+  $('input[type=checkbox][name=advancePayment][value!=WANDA]').prop('checked', false).prop('disabled', (level == 3));
+
   $('#budgetSource').trigger('change');
 });
 
@@ -1248,7 +1251,6 @@ $(document).on('change mouseup', '#budgetSource', function (event, assessor, wan
 
   if (!budgetSourceId) return;
 
-  $('input[type=checkbox][name=advancePayment][value!=WANDA]').prop('checked', false).prop('disabled', (budgetSourceId != 44));
 
   // TODO:
   $.ajax({
