@@ -58,6 +58,18 @@ $(function () {
         leftAll: '#serviceSelect_none',
       });
 
+      $('#durationSelect').multiselect({
+        search: {
+          left: '<input type="text" name="q" class="form-control" placeholder="候选..." />',
+          right: '<input type="text" name="q" class="form-control" placeholder="已选..." />',
+        },
+        right: '#durationSelect_to',
+        rightAll: '#durationSelect_all',
+        rightSelected: '#durationSelect_right',
+        leftSelected: '#durationSelect_left',
+        leftAll: '#durationSelect_none',
+      });
+
       $('input[name=points][value=' + res.data.points.selected +  ']').prop('checked', true);
 
       $('form').parsley();
@@ -80,7 +92,7 @@ $(document).on('submit', 'form', function (event) {
 
   var ids = [];
 
-  $('#brandSelect_to option, #effectSelect_to option, #serviceSelect_to option').each(function (index, el) {
+  $('#brandSelect_to option, #effectSelect_to option, #serviceSelect_to option, #durationSelect_to option').each(function (index, el) {
     // if (!$(el).hasClass('hidden')) {
       ids.push($(el).val());
     // }
