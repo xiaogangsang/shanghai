@@ -160,6 +160,42 @@
                 </table>
                 <div id="error-service"></div>
               </div>
+
+            <br>
+            <h5>开场时间</h5>            
+            <div class="table-responsive multi-selection">
+                <table class="table">
+                  <tbody>
+                    <tr>
+                      <td>
+                        <select name="from[]" id="durationSelect" class="form-control" size="8" multiple="multiple">
+                          {{#duration}}
+                          {{^selected}}
+                          <option value="{{id}}">{{name}}</option>
+                          {{/selected}}
+                          {{/duration}}
+                        </select>
+                      </td>
+                      <td width="60">
+                        <button type="button" id="durationSelect_all" class="btn btn-block btn-default">全选</button>
+                        <button type="button" id="durationSelect_right" class="btn btn-block btn-default">添加</button>
+                        <button type="button" id="durationSelect_left" class="btn btn-block btn-default">移除</button>
+                        <button type="button" id="durationSelect_none" class="btn btn-block btn-default">反选</button>
+                      </td>
+                      <td>
+                        <select name="to[]" id="durationSelect_to" class="form-control" size="8" multiple="multiple" data-parsley-required data-parsley-errors-container="#error-duration">
+                          {{#duration}}
+                          {{#selected}}
+                          <option selected value="{{id}}">{{name}}</option>
+                          {{/selected}}
+                          {{/duration}}
+                        </select>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div id="error-duration"></div>
+              </div>
             </div>
 
             <br>
@@ -172,6 +208,7 @@
     </div>
 
   </div>
+
 
   <script src="js/vendor.js"></script>
   <script src="js/cinema-filter.js"></script>
