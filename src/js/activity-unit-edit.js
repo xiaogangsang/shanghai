@@ -116,7 +116,7 @@ $(function () {
     $('#formUnit button[type=submit]').prop('disabled', false);
 
     // 只有O2O项目组的预付款才能选择百度和微票
-    $('input[type=checkbox][name=advancePayment][value!=WANDA]').prop('checked', false).prop('disabled', (urlParam.budgetSourceId != 44));
+    // $('input[type=checkbox][name=advancePayment][value!=WANDA]').prop('checked', false).prop('disabled', (urlParam.budgetSourceId != 44));
   }
 
   common.init(ref);
