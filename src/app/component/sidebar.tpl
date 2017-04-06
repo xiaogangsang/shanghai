@@ -98,6 +98,15 @@
     </div>
 
     <div class="panel" style="display:none">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu19"><span class="glyphicon glyphicon-picture" aria-hidden="true"></span> 搜索热词管理</a>
+      <div id="menu19" class="panel-collapse collapse" role="tabpanel">
+        <div class="list-group">
+          <a href="search.html" class="list-group-item" id="menu-search" data-id="13" style="display:none">搜索热词管理</a>
+        </div>
+      </div>
+    </div>    
+
+    <div class="panel" style="display:none">
       <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu8"><span class="glyphicon glyphicon-file" aria-hidden="true"></span> 订单管理</a>
       <div id="menu8" class="panel-collapse collapse" role="tabpanel">
         <div class="list-group">
