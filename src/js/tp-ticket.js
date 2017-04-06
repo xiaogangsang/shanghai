@@ -39,7 +39,7 @@ $('#dataTable').on('click', '.btn-edit', function (event) {
   var $tr = $(this).closest('tr');
   $('#sourceId').val($tr.data('id'));
   $('#sourceName').val($tr.find('td:nth-child(2)').text().trim());
-  $('#ticketPriority').val($tr.find('td:nth-child(3)').text().trim());
+  $('#sort').val($tr.find('td:nth-child(3)').text().trim());
   $('input[type=radio]').prop('checked', false);
   $('input[type=radio][value=' + $tr.data('status') + ']').prop('checked', true);
   $('#popup-tpTickt-form').modal('show');
@@ -55,7 +55,9 @@ $(document).on('submit', '#popup-tpTickt-form form', function (event) {
   $('#popup-tpTickt-form input[type=submit]').prop('disabled', true).text('处理中...');
   var sendData = {
     id: $('#sourceId').val(),
-    ticketPriority: $('#ticketPriority').val(),
+    name: $('#sourceName').val().trim(),
+    sort: $('#sort').val().trim(),
+    status: $('input[name=status]:checked').val(),
   };
 
   var ajaxUrl = common.API_HOST + 'tp/updateTpInfo';
