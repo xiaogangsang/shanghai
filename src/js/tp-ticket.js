@@ -72,7 +72,11 @@ $(document).on('submit', '#popup-tpTickt-form form', function (event) {
       $('#popup-tpTickt-form').modal('hide');
       loadData();
     } else {
-      alert('接口错误：' + res.meta.msg);
+      if (res.meta.msg.indexOf("不能相同") >= 0) {
+        alert('不能出现重复优先级');
+      } else {
+        alert('接口错误：' + res.meta.msg);
+      }
       $('#popup-tpTickt-form input[type=submit]').prop('disabled', false).text('再试一次');
     }
   });
