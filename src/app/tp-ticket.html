@@ -70,7 +70,7 @@
   <div class="modal fade" id="popup-tpTickt-form" data-keyboard="false" data-backdrop="static">
     <div class="modal-dialog">
       <div class="modal-content">
-        <form>
+        <form  data-parsley-validate>
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <h4 class="modal-title">编辑出票优先级</h4>
@@ -87,7 +87,7 @@
                     </tr>
                     <tr>
                       <th>优先级</th>
-                      <td><input type="text" class="form-control" id="ticketPriority" value="" required></td>
+                      <td><input type="text" class="form-control" id="ticketPriority" value="" data-parsley-pattern="^[0-9]*[0-9][0-9]*$" data-parsley-trigger="blur" data-parsley-error-message="优先级只能为正整数" required></td>
                     </tr>
                     <tr>
                     </tr>
