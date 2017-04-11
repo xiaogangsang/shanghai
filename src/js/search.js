@@ -133,7 +133,6 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
 
   var data = {term: term};
   _choosed = (term.city ? term.city.split(',') : []);
-  _choosed.push(71);
   popupEditWithData(data);
 });
 
@@ -230,6 +229,7 @@ $(document).on('submit', '#popup-banner-form form', function (event) {
 
   var sendData = {
     id: id, 
+    searchTerm: $('#searchTerm').val().trim(),
     type: $('input[name=type]:checked').val(),
     link: $('#link').val().trim(),
     order: $('#order').val(),

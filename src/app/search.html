@@ -139,7 +139,7 @@
   </script>
   <script id="table-template" type="text/x-tmpl-mustache">
     {{#rows}}
-    <tr data-id="{{id}}" data-bannertype="{{bannerType}}">
+    <tr data-id="{{id}}">
       <td>{{id}}</td>
       <td>{{searchTerm}}</td>
       <td>{{searchCount}}</td>
@@ -166,7 +166,7 @@
           <tr>
             <th>类型</th>
             <td>
-            {{util.searchTermType.radiosHTML('type', term.type == undefined ? 2 : term.type)}}
+            {{util.searchTermType.radiosHTML('type', term.type == undefined ? 2 : term.type, term.type == undefined ? 'disabled' : '')}}
             </td>
           </tr>
 
@@ -185,7 +185,7 @@
           <tr class="hide-if-not-popular">
             <th>渠道</th>
             <td>
-            {{util.channel.radiosHTML('channel', term.channel ? term.channel : 1)}}
+            {{util.channel.radiosHTML('channel', term.channel ? term.channel : 1, term.channel ? 'disabled' : '')}}
             </td>
           </tr>
           
