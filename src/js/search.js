@@ -232,7 +232,7 @@ $(document).on('submit', '#popup-banner-form form', function (event) {
     searchTerm: $('#searchTerm').val().trim(),
     type: $('input[name=type]:checked').val(),
     link: $('#link').val().trim(),
-    order: $('#order').val(),
+    orderNo: $('#orderNo').val(),
     city: ($('input[name=areaType]:checked').val() == 1 ? ['9999'] : (_choosed.length == 0 ? ['9999'] : _choosed)),
     channel: $('input[name=channel]:checked').val(),
     startTime: $('#popup-banner-form #startTime').val().trim(),
