@@ -219,6 +219,12 @@ function setPager(total, pageIndex, rowsSize, pageTotal) {
 
 $(document).on('submit', '#popup-banner-form form', function (event) {
   event.preventDefault();
+
+  if ($('input[name=areaType]:checked').val() == 2 && _choosed[0] == 9999) {
+    alert('请选择区域下的城市!');
+    return;
+  }
+
   if (_submitting) {
     return false;
   }
@@ -233,7 +239,7 @@ $(document).on('submit', '#popup-banner-form form', function (event) {
     type: $('input[name=type]:checked').val(),
     link: $('#link').val().trim(),
     orderNo: $('#orderNo').val(),
-    city: ($('input[name=areaType]:checked').val() == 1 ? ['9999'] : (_choosed.length == 0 ? ['9999'] : _choosed)),
+    city: ($('input[name=areaType]:checked').val() == 2 ? _choosed : ['9999'] ),
     channel: $('input[name=channel]:checked').val(),
     startTime: $('#popup-banner-form #startTime').val().trim(),
     endTime: $('#popup-banner-form #endTime').val().trim(),
