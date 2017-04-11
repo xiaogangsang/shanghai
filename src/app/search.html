@@ -145,7 +145,7 @@
       <td>{{searchCount}}</td>
       <td>{{util.searchTermType.parse(type)}}</td>
       <td>{{util.channel.parse(channel)}}</td>
-      <td>{{order}}</td>>
+      <td>{{orderNo}}</td>>
       <td>{{startTime}} - {{endTime}}</td>
       <td>
         <button type="button" class="btn btn-xs btn-default btn-edit">编辑</button>
@@ -173,7 +173,7 @@
           <tr class="hide-if-not-popular">
             <th>区域类型</th>
             <td>
-            {{util.areaType.radiosHTML('areaType', (term.city && term.city.length > 0 && term.city[0] != 9999 ? 2 : 1))}}
+            {{util.areaType.radiosHTML('areaType', (term.city && term.city != 9999 ? 2 : 1))}}
             </td>
           </tr>
 
@@ -198,7 +198,7 @@
             <th>显示顺序</th>
             <td>
               <select class="form-control" id="order">
-                {{var dict = {}; for (var i = 1; i <= 6; ++i) {dict[i] = i;} (new Codec(dict)).optionsHTML(false, term.order);}}
+                {{var dict = {}; for (var i = 1; i <= 6; ++i) {dict[i] = i;} (new Codec(dict)).optionsHTML(false, term.orderNo);}}
               </select>
             </td>
           </tr>

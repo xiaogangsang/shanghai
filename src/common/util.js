@@ -73,13 +73,14 @@ Codec.prototype.checkboxesHTML = function(name) {
 	return html;
 }
 
-Codec.prototype.radiosHTML = function(name, selectedKey) {
+Codec.prototype.radiosHTML = function(name, selectedKey, disabledKeys) {
   var html = '';
 	var nameSnippet = name ? ('name="' + name + '"') : '';
   for (var key in this) {
     if (this.hasOwnProperty(key)) {
       var value = this[key];
-      html += '<div class="radio-inline"><label><input type="radio" ' + nameSnippet + ' value="' + key + '" ' + (selectedKey == key ? 'checked' : '') + '><span>' + value + '</span></label></div>';
+      var disabled = (disabledKeys && disabledKeys.indexOf(key) >= 0) ? ' disabled' : '';
+      html += '<div class="radio-inline"><label><input type="radio" ' + nameSnippet + ' value="' + key + '" ' + (selectedKey == key ? 'checked' : '') + disabled + '><span>' + value + '</span></label></div>';
     }
   }
 

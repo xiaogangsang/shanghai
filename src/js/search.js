@@ -116,6 +116,7 @@ $('#formSearch').on('submit', function (e) {
 $(document).on('click', '.btn-create', function (e) {
   e.preventDefault();
   console.log("点击新增");
+  _choosed = [];
   popupEditWithData({term: {}});
 
 });
@@ -131,6 +132,8 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
   });
 
   var data = {term: term};
+  _choosed = (term.city ? term.city.split(',') : []);
+  _choosed.push(71);
   popupEditWithData(data);
 });
 
@@ -164,6 +167,7 @@ function popupEditWithData(data) {
     $('#startTime').datetimepicker('setEndDate', FromEndDate);
   });
   $('#popup-banner-form form').parsley();
+  $('input[name=areaType]').trigger('change');
 }
 
 function setCity() {
@@ -229,7 +233,7 @@ $(document).on('submit', '#popup-banner-form form', function (event) {
     type: $('input[name=type]:checked').val(),
     link: $('#link').val().trim(),
     order: $('#order').val(),
-    city: ($('input[name=areaType]:checked').val() == 1 ? ['9999'] : _choosed),
+    city: ($('input[name=areaType]:checked').val() == 1 ? ['9999'] : (_choosed.length == 0 ? ['9999'] : _choosed)),
     channel: $('input[name=channel]:checked').val(),
     startTime: $('#popup-banner-form #startTime').val().trim(),
     endTime: $('#popup-banner-form #endTime').val().trim(),
@@ -272,7 +276,7 @@ $(document).on('submit', '#popup-banner-form form', function (event) {
 
 $(document).on('change', 'input[name=areaType]', function (e) {
   e.preventDefault();
-  if (!!~~$('input[name=areaType]:checked').val()) {
+  if ($('input[name=areaType]:checked').val() != 1) {
     $('#btn-city').closest('tr').show();
   } else {
     $('#btn-city').closest('tr').hide();
