@@ -21,9 +21,10 @@
       @@include('component/sidebar.tpl')
 
       <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
         <ol class="breadcrumb">
           <li>合作方管理</li>
-          <li class="active">TP方管理</li>
+          <li class="active">出票管理</li>
         </ol>
 
         <div class="content-area">
@@ -34,52 +35,45 @@
                 <tr>
                   <th>ID</th>
                   <th>名称</th>
-                  <th>优先级</th>
-                  <th>状态</th>
+                  <th>出票优先级</th>
                   <th width="100">操作</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td colspan="5" align="center">加载中...</td>
+                  <td colspan="4" align="center">加载中...</td>
                 </tr>
               </tbody>
             </table>
           </div>
-
         </div>
-
       </div>
-
     </div>
-
   </div>
 
   <script src="js/vendor.js"></script>
-  <script src="js/tp.js"></script>
+  <script src="js/tp-ticket.js"></script>
 
   <script id="table-template" type="text/x-tmpl-mustache">
     {{#rows}}
     <tr data-id="{{sourceId}}" data-status="{{status}}">
       <td>{{sourceId}}</td>
       <td>{{sourceName}}</td>
-      <td>{{sort}}</td>
-      <td>{{statusName}}</td>
+      <td>{{ticketPriority}}</td>
       <td>
-        <button type="button" class="btn btn-xs btn-default btn-status" data-status="{{status}}">{{#status}}下线{{/status}}{{^status}}上线{{/status}}</button>
         <button type="button" class="btn btn-xs btn-default btn-edit">编辑</button>
       </td>
     </tr>
     {{/rows}}
   </script>
 
-  <div class="modal fade" id="popup-tp-form" data-keyboard="false" data-backdrop="static">
+  <div class="modal fade" id="popup-tpTickt-form" data-keyboard="false" data-backdrop="static">
     <div class="modal-dialog">
       <div class="modal-content">
-        <form>
+        <form  data-parsley-validate>
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title">编辑TP方</h4>
+            <h4 class="modal-title">编辑出票优先级</h4>
           </div>
           <div class="modal-body">
             <input type="hidden" id="sourceId" value="">
@@ -89,18 +83,13 @@
                   <tbody>
                     <tr>
                       <th width="80">名称</th>
-                      <td><input type="text" class="form-control" id="sourceName" value="" required></td>
+                      <td><input type="text" class="form-control" id="sourceName" value=""  readonly="true"></td>
                     </tr>
                     <tr>
                       <th>优先级</th>
-                      <td><input type="text" class="form-control" id="sort" value="" required></td>
+                      <td><input type="text" class="form-control" id="ticketPriority" value="" data-parsley-pattern="^[0-9]*[0-9][0-9]*$" data-parsley-trigger="blur" data-parsley-error-message="优先级只能为正整数" required></td>
                     </tr>
                     <tr>
-                      <th>状态</th>
-                      <td>
-                        <label class="radio-inline"><input type="radio" name="status" value="1" required><span>上线</span></label>
-                        <label class="radio-inline"><input type="radio" name="status" value="0" required><span>下线</span></label>
-                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -115,42 +104,6 @@
       </div>
     </div>
   </div>
-
-  <div class="modal fade" id="popup-addTp-form" data-keyboard="false" data-backdrop="static">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <form>
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              <h4 class="modal-title">添加TP方</h4>
-            </div>
-            <div class="modal-body">
-              <input type="hidden" id="sourceId" value="">
-              <div class="edit-section">
-                <div class="table-responsive">
-                  <table class="table">
-                    <tbody>
-                      <tr>
-                        <th width="80">名称</th>
-                        <td><input type="text" class="form-control" id="sourceName" value="" required></td>
-                      </tr>
-                      <tr>
-                        <th>优先级</th>
-                        <td><input type="text" class="form-control" id="sort" value="" required></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="submit" class="btn btn-primary">保存</button>
-              <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>  
 
 </body>
 </html>

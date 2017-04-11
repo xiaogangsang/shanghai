@@ -16,7 +16,7 @@ var _useCache = false;
 var _dataCache;
 var _submitting = false;
 var _provinces = [];
-var _bannerType = ['', '首页', '热门影片', '交叉销售位', '选座页配置'];
+var _bannerType = ['', '首页', '热门影片', '交叉销售位', '选座页配置', '影院页Banner'];
 var _cacheCinemas = [];
 
 $(function () {
@@ -575,8 +575,24 @@ $(document).on('submit', '#popup-banner-form form', function (event) {
         }).get();
         sendData.picUrl = sendData.picUrl.join(',');
       }
-
-    break;
+      break;
+    case 5:
+      sendData.bannerType = ~~$('#popup-banner-form #bannerType').val();
+      sendData.bannerName = $('#popup-banner-form #bannerName').val().trim();
+      sendData.channelId = ~~$('#popup-banner-form input[name=channelId]:checked').val();
+      sendData.position = ~~$.trim($('#popup-banner-form #position').val());
+      sendData.areaType = ~~$('input[name=areaType]:checked').val();
+      sendData.cityList = [];
+      if (sendData.areaType == 1) {
+        sendData.cityList = _choosed;
+        if (sendData.cityList.length < 1) {
+          alert('区域类型的banenr，必须选择城市！');
+          return false;
+        }
+      }
+      sendData.imageUrl = $('#popup-banner-form #imageUrl').val();
+      sendData.link = $('#popup-banner-form #link').val();
+      break;
     default:
       alert('配置类型不存在！');
       return false;
@@ -791,7 +807,7 @@ function setModal(bannerData, type) {
       case 1:
         template = $('#edit-home-template').html();
         uploadButton = '#fine-upload';
-      break;
+        break;
       case 2:
         template = $('#edit-hot-template').html();
         data.movies = _movies;
@@ -800,8 +816,7 @@ function setModal(bannerData, type) {
             data.banner.filmName = movie.filmName;
           }
         });
-
-      break;
+        break;
       case 3:
         template = $('#edit-sale-template').html();
         data.banner.cinemaType = 0;
@@ -838,8 +853,11 @@ function setModal(bannerData, type) {
         $.each(bannerData.picUrls, function (index, url) {
           bannerData.pic += '<img src="' + url + '" title="' + url + '" width="32" height="32"> ';
         });
-
-      break;
+        break;
+      case 5:
+        template = $('#edit-cinema-template').html();
+        uploadButton = '#fine-upload';
+        break;
     }
 
     $('#popup-banner-form .modal-title').html('编辑[' + _bannerType[bannerData.bannerType] + ']');
@@ -862,6 +880,10 @@ function setModal(bannerData, type) {
         template = $('#create-seat-template').html();
         uploadButton = '.fine-upload';
         data.movies = _movies;
+      break;
+      case 5:
+        template = $('#create-cinema-template').html();
+        uploadButton = '#fine-upload';
       break;
     }
 
