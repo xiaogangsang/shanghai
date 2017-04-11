@@ -220,7 +220,7 @@ function setPager(total, pageIndex, rowsSize, pageTotal) {
 $(document).on('submit', '#popup-banner-form form', function (event) {
   event.preventDefault();
 
-  if ($('input[name=areaType]:checked').val() == 2 && _choosed.length ==0) {
+  if ($('input[name=areaType]:checked').val() == 2 && _choosed[0] == 9999) {
     alert('请选择区域下的城市!');
     return;
   }
