@@ -1156,7 +1156,7 @@ function setEdit(couponId, isApproval, isHistory) {
 
       $('#wandaTicketId').prop('disabled', true);
 
-      //活动形式
+      // 优惠券规则
       $('#couponPattern option')
         .eq(coupon.couponPattern - 1)
         .prop('selected', true)
@@ -1174,6 +1174,7 @@ function setEdit(couponId, isApproval, isHistory) {
         $('#typeTable tbody').html(htmlPattern);
         $('#couponPattern').trigger('change');
       }
+      $('.pane-activity-type').addClass((coupon.data.couponPattern.edited || coupon.data.patternList.edited) ? 'highlight' : '');
 
       //渠道
       if (coupon.channels != null && coupon.channels.length > 0) {
