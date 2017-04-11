@@ -89,12 +89,6 @@
 
         <div class="content-area">
 
-          <div class="row">
-            <div class="col-xs-12">
-              <button type="button" class="btn btn-default btn-export">导出搜索词列表</button>
-            </div>
-          </div>
-
           <div class="row" id="pager"></div>
 
           <div class="table-responsive" id="dataTable">
@@ -104,9 +98,8 @@
                   <th>ID</th>
                   <th>搜索词</th>
                   <th>搜索次数</th>
-                  <th>是否为热搜词</th>
+                  <th>类型</th>
                   <th>渠道</th>
-                  <th>城市</th>
                   <th>展示顺序</th>
                   <th>生效时间</th>
                   <th width="100">操作</th>
@@ -150,9 +143,8 @@
       <td>{{id}}</td>
       <td>{{searchTerm}}</td>
       <td>{{searchCount}}</td>
-      <td>{{type}}</td>
-      <td>{{channel}}</td>
-      <td>{{city}}</td>
+      <td>{{util.searchTermType.parse(type)}}</td>
+      <td>{{util.channel.parse(channel)}}</td>
       <td>{{order}}</td>>
       <td>{{startTime}} - {{endTime}}</td>
       <td>
@@ -162,5 +154,84 @@
     {{/rows}}
   </script>
 
+  <script id="edit-template" type="text/x-tmpl-mustache">
+    <input type="hidden" id="id" value="{{term.id}}">
+    <div class="table-responsive">
+      <table class="table">
+        <tbody>
+          <tr>
+            <th>搜索词</th>
+            <td><input type="text" class="form-control" id="searchTerm" value="{{term.searchTerm}}" {{term.id ? 'disabled': ''}} required></td>
+          </tr>
+          <tr>
+            <th>类型</th>
+            <td>
+            {{util.searchTermType.radiosHTML('type', term.type == undefined ? 2 : term.type)}}
+            </td>
+          </tr>
+
+          <tr class="hide-if-not-popular">
+            <th>区域类型</th>
+            <td>
+            {{util.areaType.radiosHTML('areaType', (term.city && term.city.length > 0 && term.city[0] != 9999 ? 2 : 1))}}
+            </td>
+          </tr>
+
+          <tr style="display:none;" class="hide-if-not-popular">
+            <th><button type="button" class="btn btn-default" id="btn-city">选择城市</button></th>
+            <td>点击左侧按钮查看/选择城市</td>
+          </tr>
+
+          <tr class="hide-if-not-popular">
+            <th>渠道</th>
+            <td>
+            {{util.channel.radiosHTML('channel', term.channel ? term.channel : 1)}}
+            </td>
+          </tr>
+          
+          <tr class="hide-if-not-popular">
+            <th>跳转链接</th>
+            <td><input type="text" class="form-control" id="link" value="{{term.link}}" ></td>
+          </tr>
+
+          <tr class="hide-if-not-popular">
+            <th>显示顺序</th>
+            <td>
+              <select class="form-control" id="order">
+                {{var dict = {}; for (var i = 1; i <= 6; ++i) {dict[i] = i;} (new Codec(dict)).optionsHTML(false, term.order);}}
+              </select>
+            </td>
+          </tr>
+          
+          <tr class="hide-if-not-popular">
+            <th>生效日期</th>
+            <td>
+              <input type="text" class="form-control" style="display:inline-block;width:auto;" id="startTime" value="{{term.startTime}}" size="10" required data-parsley-errors-container="#error-date" readonly> - <input type="text" class="form-control" style="display:inline-block;width:auto;" id="endTime" value="{{term.endTime}}" size="10" required data-parsley-errors-container="#error-date" readonly>
+              <div id="error-date"></div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </script>
+
+  <div class="modal fade" id="popup-banner-form" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form>
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">编辑</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">保存</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  @@include('component/popup-city.tpl')
 </body>
 </html>
