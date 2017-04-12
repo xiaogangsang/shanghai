@@ -45,7 +45,19 @@ $(function () {
     $('#search_startTime').datetimepicker('setEndDate', FromEndDate);
   });
 
+  $('#search_type').val(2);
+
   $('#formSearch').trigger('submit');
+});
+
+$('#search_type').on('change', function(e) {
+  e.preventDefault();
+  if ($(this).val() == 1) {
+    // $('.hide-if-not-popular :input').val('');
+    $('.hide-if-not-popular').hide();
+  } else {
+    $('.hide-if-not-popular').show();
+  }
 });
 
 //handle search form
@@ -124,13 +136,9 @@ $(document).on('click', '.btn-create', function (e) {
 
 $('#dataTable').on('click', '.btn-edit', function (e) {
   e.preventDefault();
-  var id = $(this).closest('tr').data('id');
-  var term;
-  _(_dataCache).forEach(function (item) {
-    if (item.id == id) {
-      term = item;
-    }
-  });
+
+  var index = $(this).closest('td').parent()[0].sectionRowIndex;
+  var term = _dataCache[index];
 
   var data = {term: term};
   _choosed = (term && term.city ? term.city.split(',') : []);
