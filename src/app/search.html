@@ -37,6 +37,23 @@
 
           <div class="form-group col-sm-6 col-md-4 col-lg-4">
             <div class="input-group">
+              <div class="input-group-addon">是否为热搜词</div>
+              <select class="form-control" id="search_type" source-map-key="searchTermType">
+              </select>
+            </div>
+          </div>
+
+
+          <div class="form-group col-sm-6 col-md-4 col-lg-4">
+            <div class="input-group">
+              <div class="input-group-addon">渠道</div>
+              <select class="form-control" id="search_channel" source-map-key="channel" value='2'>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group col-sm-6 col-md-4 col-lg-4 hide-if-not-popular">
+            <div class="input-group">
               <div class="input-group-addon">城市</div>
               <select class="form-control" id="search_cityId">
                 <option value="">全部</option>
@@ -44,31 +61,14 @@
             </div>
           </div>
 
-          <div class="form-group col-sm-6 col-md-4 col-lg-4">
-            <div class="input-group">
-              <div class="input-group-addon">渠道</div>
-              <select class="form-control" id="search_channel" source-map-key="channel">
-
-              </select>
-            </div>
-          </div>
-
-          <div class="form-group col-sm-6 col-md-4 col-lg-4">
-            <div class="input-group">
-              <div class="input-group-addon">是否为热搜词</div>
-              <select class="form-control" id="search_type" source-map-key="searchTermType">
-              </select>
-            </div>
-          </div>
-
-          <div class="form-group col-sm-6 col-md-4 col-lg-4">
+          <div class="form-group col-sm-6 col-md-4 col-lg-4 hide-if-not-popular">
             <div class="input-group">
               <div class="input-group-addon">生效时间</div>
               <input type="text" class="form-control" id="search_startTime">
             </div>
           </div>
 
-          <div class="form-group col-sm-6 col-md-4 col-lg-4">
+          <div class="form-group col-sm-6 col-md-4 col-lg-4 hide-if-not-popular">
             <div class="input-group">
               <div class="input-group-addon">至</div>
               <input type="text" class="form-control" id="search_endTime">

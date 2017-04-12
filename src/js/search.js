@@ -45,7 +45,19 @@ $(function () {
     $('#search_startTime').datetimepicker('setEndDate', FromEndDate);
   });
 
+  $('#search_type').val(2);
+
   $('#formSearch').trigger('submit');
+});
+
+$('#search_type').on('change', function(e) {
+  e.preventDefault();
+  if ($(this).val() == 1) {
+    // $('.hide-if-not-popular :input').val('');
+    $('.hide-if-not-popular').hide();
+  } else {
+    $('.hide-if-not-popular').show();
+  }
 });
 
 //handle search form
@@ -133,7 +145,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
   });
 
   var data = {term: term};
-  _choosed = (term.city ? term.city.split(',') : []);
+  _choosed = (term && term.city ? term.city.split(',') : []);
   popupEditWithData(data);
 });
 
