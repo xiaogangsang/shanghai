@@ -8,7 +8,7 @@
         <div class="list-group">
           <a href="class.html" class="list-group-item" id="menu-class" data-id="16" style="display:none">万达票类管理</a>
           <a href="tp.html" class="list-group-item" id="menu-tp" data-id="296" style="display:none">TP方管理</a>
-          <a href="tp-ticket.html" class="list-group-item" id="menu-tp-ticket" data-id="296" style="display:none">出票管理</a>
+          <a href="tp-ticket.html" class="list-group-item" id="menu-tp-ticket" data-id="396" style="display:none">出票管理</a>
         </div>
       </div>
     </div>
@@ -101,7 +101,7 @@
       <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#menu19"><span class="glyphicon glyphicon-picture" aria-hidden="true"></span> 搜索热词管理</a>
       <div id="menu19" class="panel-collapse collapse" role="tabpanel">
         <div class="list-group">
-          <a href="search.html" class="list-group-item" id="menu-search" data-id="13" style="display:none">搜索热词管理</a>
+          <a href="search.html" class="list-group-item" id="menu-search" data-id="399" style="display:none">搜索热词管理</a>
         </div>
       </div>
     </div>    
