@@ -14,6 +14,7 @@ var _useCache = false;
 var _dataCache;
 var _submitting = false;
 var _cacheCinemas = [];
+var _wholeCountryId = '9999';
 
 $(function () {
   common.init('search');
@@ -184,6 +185,8 @@ function setCity() {
         });
       });
 
+      cities.push({cityId: _wholeCountryId, cityName: '全国'});
+
       var html = '';
       $.each(cities, function (index, item) {
         html += '<option value="' + item.cityId + '">' + item.cityName + '</option>';
@@ -220,7 +223,7 @@ function setPager(total, pageIndex, rowsSize, pageTotal) {
 $(document).on('submit', '#popup-banner-form form', function (event) {
   event.preventDefault();
 
-  if ($('input[name=areaType]:checked').val() == 2 && _choosed[0] == 9999) {
+  if ($('input[name=areaType]:checked').val() == 2 && _choosed[0] == _wholeCountryId) {
     alert('请选择区域下的城市!');
     return;
   }
@@ -239,7 +242,7 @@ $(document).on('submit', '#popup-banner-form form', function (event) {
     type: $('input[name=type]:checked').val(),
     link: $('#link').val().trim(),
     orderNo: $('#orderNo').val(),
-    city: ($('input[name=areaType]:checked').val() == 2 ? _choosed : ['9999'] ),
+    city: ($('input[name=areaType]:checked').val() == 2 ? _choosed : [_wholeCountryId] ),
     channel: $('input[name=channel]:checked').val(),
     startTime: $('#popup-banner-form #startTime').val().trim(),
     endTime: $('#popup-banner-form #endTime').val().trim(),
