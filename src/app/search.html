@@ -170,14 +170,14 @@
           <tr>
             <th>类型</th>
             <td>
-            {{util.searchTermType.radiosHTML('type', term.type == undefined ? 2 : term.type, term.type == undefined ? 'disabled' : '')}}
+            {{{util.searchTermType.radiosHTML('type', term.type == undefined ? 2 : term.type, term.type == undefined ? 'disabled' : '')}}}
             </td>
           </tr>
 
           <tr class="hide-if-not-popular">
             <th>区域类型</th>
             <td>
-            {{util.areaType.radiosHTML('areaType', (term.city && term.city != 9999 ? 2 : 1))}}
+            {{{util.areaType.radiosHTML('areaType', (term.city && term.city != 9999 ? 2 : 1))}}}
             </td>
           </tr>
 
@@ -189,7 +189,7 @@
           <tr class="hide-if-not-popular">
             <th>渠道</th>
             <td>
-            {{util.channel.radiosHTML('channel', term.channel ? term.channel : 1, term.channel ? 'disabled' : '')}}
+            {{{util.channel.radiosHTML('channel', term.channel ? term.channel : 1, term.channel ? 'disabled' : '')}}}
             </td>
           </tr>
           
@@ -202,7 +202,7 @@
             <th>显示顺序</th>
             <td>
               <select class="form-control" id="orderNo">
-                {{var dict = {}; for (var i = 1; i <= 6; ++i) {dict[i] = i;} (new Codec(dict)).optionsHTML(false, term.orderNo);}}
+                {{{var dict = {}; for (var i = 1; i <= 6; ++i) {dict[i] = i;} (new Codec(dict)).optionsHTML(false, term.orderNo);}}}
               </select>
             </td>
           </tr>
