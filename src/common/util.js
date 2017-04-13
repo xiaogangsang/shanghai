@@ -154,40 +154,6 @@ function render(template, data) {
   return result;
 }
 
-function renderSection(template, data) {
-  var closeSet = "}}";
-  var closeIndex = template.indexOf(closeSet);
-  if (closeIndex < 0) {
-    return template;
-  }
-
-  var tmp = template.substring(0, closeIndex);
-
-  var openSet = "{{";
-  var openIndex = tmp.lastIndexOf(openSet);
-  if (openIndex < 0) {
-    return template;
-  }
-
-  var innerJS = tmp.substring(openIndex + openSet.length);
-  var value = evalInContext(data, innerJS);
-  if (value === null || value === undefined) {
-    value = '';
-  }
-  var before = tmp.substring(0, openIndex); 
-  var after = template.substring(closeIndex + closeSet.length);
-
-  var next;
-  // 通过 if 判断说明, 它已经不是js一部分了, 而是结果的一部分
-  if (before.indexOf(openSet) > -1) {
-    next = before + '"' + value + '"' + after;
-  } else {
-    next = before + value + after;
-  }
-
-  return renderSection(next, data);
-}
-
 function renderSingleSection(template, data) {
   var regExp = /{{{\s*(.+?)\s*}}}|{{&\s*(.+?)\s*}}|{{\s*(.+?)\s*}}/g;
   var lastIndex = regExp.lastIndex = 0;
@@ -216,9 +182,16 @@ function renderSingleSection(template, data) {
 }
 
 function evalInContext(context, js) {
-  if ((js = js.trim()) === '.') return context;
-  if (isPureNestedProp(js)) return evalNestedProp(context, js);
-  return eval('try { with(context) { ' + js + ' } } catch (e) {}');
+  var value = context;
+  if ((js = js.trim()) !== '.')  {
+    if (isPureNestedProp(js)) {
+      value = evalNestedProp(context, js);
+    } else {
+      value = eval('try { with(context) { ' + js + ' } } catch (e) {}');
+    }
+  }
+
+  return (typeof(value) === 'function' ? value() : value);
 }
 
 function isPureNestedProp(js) {
@@ -236,7 +209,7 @@ function evalNestedProp(obj, nestedProp) {
     }
   }
 
-  return (typeof(value) === 'function' ? value() : value);
+  return value;
 }
 
 var entityMap = {
