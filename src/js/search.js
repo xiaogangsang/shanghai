@@ -45,8 +45,6 @@ $(function () {
     $('#search_startTime').datetimepicker('setEndDate', FromEndDate);
   });
 
-  $('#search_type').val(2);
-
   $('#formSearch').trigger('submit');
 });
 

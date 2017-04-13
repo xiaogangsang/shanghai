@@ -26,7 +26,7 @@ util.init = function($) {
 		var key = $(this).attr(sourceMapKey);
 
 		if (tagName == 'select') {
-			$(this).html(util[key].optionsHTML(false));
+			$(this).html(util[key].optionsHTML(false, $(this).attr('value') || $(this).prop('value')));
 		} else if (tagName == '') {
 			$(this).html(util[key].checkboxesHTML());
 		}
@@ -214,24 +214,26 @@ function renderSingleSection(template, data) {
 }
 
 function evalInContext(context, js) {
-
   if ((js = js.trim()) === '.') return context;
+  if (isPureNestedProp(js)) return evalNestedProp(context, js);
+  return eval('with(context) { ' + js + ' }');
+}
 
-  var value;
+function isPureNestedProp(js) {
+  var regex = /^\s*[a-zA-Z_\$][\w\$]*\s*(\.\s*[a-zA-Z_$][\w\$]*\s*)*$/;
+  return regex.test(js);
+}
 
-  try {
-    // for expressions
-    value = eval('with(context) { ' + js + '  }');
-  } catch (e) {
-    if (e instanceof SyntaxError) {
-      try {
-        // for statements
-        value = (new Function('with(this) { ' + js + '  }')).call(context);
-      } catch (e) {}
+function evalNestedProp(obj, nestedProp) {
+  var nestedProps = nestedProp.split('.'), value = obj;
+  for (var i = 0; i < nestedProps.length; ++i) {
+    var prop = nestedProps[i].trim();
+    value = value[prop];
+    if (value === undefined || value === null) {
+      break;
     }
   }
 
-  return value;
-
+  return (typeof(value) === 'function' ? value() : value);
 }
 

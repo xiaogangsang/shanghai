@@ -38,7 +38,7 @@
           <div class="form-group col-sm-6 col-md-4 col-lg-4">
             <div class="input-group">
               <div class="input-group-addon">是否为热搜词</div>
-              <select class="form-control" id="search_type" source-map-key="searchTermType">
+              <select class="form-control" id="search_type" source-map-key="searchTermType" value='2'>
               </select>
             </div>
           </div>
@@ -47,7 +47,7 @@
           <div class="form-group col-sm-6 col-md-4 col-lg-4">
             <div class="input-group">
               <div class="input-group-addon">渠道</div>
-              <select class="form-control" id="search_channel" source-map-key="channel" value='2'>
+              <select class="form-control" id="search_channel" source-map-key="channel">
               </select>
             </div>
           </div>
@@ -143,8 +143,8 @@
       <td>{{id}}</td>
       <td>{{searchTerm}}</td>
       <td>{{searchCount}}</td>
-      <td>{{util.searchTermType.parse(type)}}</td>
-      <td>{{util.channel.parse(channel)}}</td>
+      <td>{{util.searchTermType.parse(this.type)}}</td>
+      <td>{{util.channel.parse(this.channel)}}</td>
       <td>{{orderNo}}</td>
       <td>{{startTime}} - {{endTime}}</td>
       <td>
@@ -161,7 +161,11 @@
         <tbody>
           <tr>
             <th>搜索词</th>
-            <td><input type="text" class="form-control" id="searchTerm" value="{{term.searchTerm}}" {{term.id ? 'disabled': ''}} required></td>
+            <td><input type="text" class="form-control" id="searchTerm" value="{{term.searchTerm}}" {{term.id ? 'disabled': 'data-parsley-maxlength="10"'}} required >
+            {{^term.id}}
+            <p style="margin-top: 5px; font-size: 12px; color: red;">*为了显示效果, 每个热搜词以不超过5个汉字宽度为宜, 请谨慎配置.</p>
+            {{/term.id}}
+            </td>
           </tr>
           <tr>
             <th>类型</th>
