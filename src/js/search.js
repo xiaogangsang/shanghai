@@ -130,6 +130,7 @@ $(document).on('click', '.btn-create', function (e) {
   _choosed = [];
   popupEditWithData({term: {}});
 
+  $('.modal-title').text('新增');
 });
 
 $('#dataTable').on('click', '.btn-edit', function (e) {
@@ -141,6 +142,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
   var data = {term: term};
   _choosed = (term && term.city ? term.city.split(',') : []);
   popupEditWithData(data);
+  $('.modal-title').text('编辑');
 });
 
 function popupEditWithData(data) {
