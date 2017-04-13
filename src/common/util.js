@@ -216,7 +216,13 @@ function renderSingleSection(template, data) {
 function evalInContext(context, js) {
   if ((js = js.trim()) === '.') return context;
   if (isPureNestedProp(js)) return evalNestedProp(context, js);
-  return eval('with(context) { ' + js + ' }');
+  var value;
+  try {
+    value = eval('with(context) { ' + js + ' }');
+  } catch (e) {
+  }
+
+  return value;
 }
 
 function isPureNestedProp(js) {
