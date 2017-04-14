@@ -141,6 +141,10 @@ function render(template, data) {
         });
       } else if (dataType === '[object Object]') {
         result += render(innerTmpl, sectionData);
+      } else if (dataType === '[object Function]') {
+        result += sectionData.call(data, innerTmpl, function(template) {
+          return renderSingleSection(template, data);
+        });
       } else {
         result += render(innerTmpl, data);
       }
@@ -191,7 +195,7 @@ function evalInContext(context, js) {
     }
   }
 
-  return (typeof(value) === 'function' ? value() : value);
+  return (typeof(value) === 'function' ? value.call(context) : value);
 }
 
 function isPureNestedProp(js) {
