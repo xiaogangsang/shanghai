@@ -107,6 +107,8 @@ settlementCommon.parseSubsidyType = function(status) {
   return this.subsidyType[status];
 }
 
+// 支付活动补贴付款方式
+settlementCommon.subsidyTypeTrd = {'0' : '无', '1' : '预付', '2' : '后付'};
 
 // 优惠方式
 settlementCommon.discountType = {'1' : '活动', '2' : '优惠券', '9' : '无优惠'};
@@ -255,7 +257,9 @@ settlementCommon.parseDepartmentUseStatus = function(status) {
 }
 
 
-settlementCommon.formatTableWithKeyMapAndData = function ($table, keyMap, data) {
+settlementCommon.formatTableWithData = function (table, data) {
+
+  var $table = table.table, keyMap = table.keyMap, rowAttrs = table.rowAttrs;
 
   var html = '';
   html += '<thead><tr>';
@@ -274,17 +278,30 @@ settlementCommon.formatTableWithKeyMapAndData = function ($table, keyMap, data) 
     html += '<tr><td colspan="' + keyMap.length + '" align="center">' + data + '</td></tr>';
   } else {
     data.forEach(function(item) {
-      html += '<tr>';
+
+      if (rowAttrs) {
+        html += '<tr ' + rowAttrs(item) + '>'
+      } else {
+        html += '<tr>';
+      }
 
       keyMap.forEach(function(map) {
-        var value = item[map.key];
-        if (map.parseKey === '.') {
-          map.parseKey = map.key;
+
+        var value = map.key ? item[map.key] : '';
+
+        var parseKey = map.parseKey;
+        if (parseKey) {
+          if (typeof parseKey === 'function') {
+            value = parseKey(item);
+          } else {
+            if (parseKey === '.') {
+              parseKey = map.key;
+            }
+            value = settlementCommon[parseKey][value];
+          }
         }
-        if (map.parseKey) {
-          value = settlementCommon[map.parseKey][value];
-        }
-        html += '<td>' + value + '</td>';
+
+        html += '<td>' + (value == null ? '' : value) + '</td>';
       });
 
       html += '</tr>';
