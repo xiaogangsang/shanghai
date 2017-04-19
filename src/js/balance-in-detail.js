@@ -22,11 +22,22 @@ var _selectedSummary = {};
 // _DEBUG 本地JSON字符串, 不连服务器本地调试用
 var _DEBUG = false;
 
+var summaryTableKeyMap = [
+  {label: '收单订单类型', key: 'acquiringOrderType', parseKey: '.'}, 
+  {label: '渠道', key: 'payTool', parseKey: '.'},
+  {label: '记录数', key: 'totalOrderCount'},
+  {label: '用户支付金额', key: 'totalPayAmount'},
+  {label: '常规活动后付款补贴金额', key: 'totalSubsidyAmountO2o'},
+  {label: '支付活动后付款补贴金额', key: 'totalSubsidyAmountTrd'},
+  {label: 'O2O应收金额', key: 'totalO2oReceivableAmount'},
+  {label: '实收金额', key: 'totalBankAmount'}, 
+  {label: '服务费', key: 'totalServiceAmount'}
+];
+
 $(function() {
-
 	common.init('balance-in-detail');
-
   $('#formSearch').parsley();
+  settlementCommon.formatTableWithKeyMapAndData($('#summaryTable'), summaryTableKeyMap);
 });
 
 
@@ -212,13 +223,7 @@ function handleData(res) {
 
     // 从汇总页点击查看选中明细, 是没有summary返回的
     var summary = res.data.summary;
-    if (summary) {
-      _(summary).forEach(function(item) {
-        item.payTool = settlementCommon.parseAcquiringPayTool(item.payTool);
-        item.acquiringOrderType = settlementCommon.parseAcquiringOrderType(item.acquiringOrderType);
-      });
-      setSummaryTableData(summary);
-    }
+    settlementCommon.formatTableWithKeyMapAndData($('#summaryTable'), summaryTableKeyMap, summary);
   }
 }
 
@@ -228,14 +233,6 @@ function setTableData(rows) {
   Mustache.parse(template);
   var html = Mustache.render(template, data);
   $('#dataTable tbody').html(html);
-}
-
-function setSummaryTableData(data) {
-  var data = { rows: data };
-  var template = $('#summary-table-template').html();
-	Mustache.parse(template);
-	var html = Mustache.render(template, data);
-	$('#summaryTable tbody').html(html);
 }
 
 

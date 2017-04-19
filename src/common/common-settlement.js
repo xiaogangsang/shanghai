@@ -255,6 +255,48 @@ settlementCommon.parseDepartmentUseStatus = function(status) {
 }
 
 
+settlementCommon.formatTableWithKeyMapAndData = function ($table, keyMap, data) {
+
+  var html = '';
+  html += '<thead><tr>';
+
+  keyMap.forEach(function(map) {
+    html += '<th>' + map.label + '</th>';
+  });
+
+  html += '</tr></thead>';
+  html += '<tbody>'
+
+  if (!data) data = '请点击“查询”按钮！';
+  if (data.length === 0) data = '无满足条件的记录';
+
+  if (typeof data === 'string') {
+    html += '<tr><td colspan="' + keyMap.length + '" align="center">' + data + '</td></tr>';
+  } else {
+    data.forEach(function(item) {
+      html += '<tr>';
+
+      keyMap.forEach(function(map) {
+        var value = item[map.key];
+        if (map.parseKey === '.') {
+          map.parseKey = map.key;
+        }
+        if (map.parseKey) {
+          value = settlementCommon[map.parseKey][value];
+        }
+        html += '<td>' + value + '</td>';
+      });
+
+      html += '</tr>';
+    });
+  }
+
+  html += '</tbody>';
+
+  $table.html(html);
+}
+
+
 
 /**
  * 根据选项自动生成<option> html
