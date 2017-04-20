@@ -9,7 +9,6 @@ var webpack = require('webpack');
 var webpackConfig = require('./webpack.config.js');
 var runSequence = require('run-sequence');
 var myDevConfig = Object.create(webpackConfig);
-var devCompiler = webpack(myDevConfig);
 
 //将资源拷贝到目标目录
 gulp.task('copy', function (done) {
@@ -39,6 +38,8 @@ gulp.task('build-css', ['copy'], function (done) {
 
 //引用webpack对js进行操作
 gulp.task('build-js', ['fileinclude'], function () {
+  webpackConfig.refreshEntry();
+  var devCompiler = webpack(myDevConfig);
   devCompiler.run(function (err, stats) {
     if (err) throw new gutil.PluginError('webpack:build-js', err);
       gutil.log('[webpack:build-js]', stats.toString({
