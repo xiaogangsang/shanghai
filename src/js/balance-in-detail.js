@@ -62,7 +62,7 @@ var detailTable = {
     {label: 'O2O应收金额(元)', key: 'o2oReceivableAmount'},
     {label: '实收金额', key: 'bankAmount'},
     {label: '支付活动补贴金额', key: 'subsidyAmountTrd'},
-    {label: '支付活动补贴付款方式', key: 'subsidyTypeTrd', parseKey: '.'},
+    {label: '支付活动补贴付款方式', key: 'subsidyTypeTrd', parseKey: 'subsidyType'},
     {label: '承债方', key: 'partner', parseKey: '.'},
     {label: '收单对账状态', key: 'reconciliationStatus', parseKey: '.'},
     {label: '对账不一致原因', key: 'reason', parseKey: '.'},

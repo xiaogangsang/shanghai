@@ -99,16 +99,12 @@ settlementCommon.parseBizType = function(status) {
   return this.bizType[status];
 }
 
-
 // 补贴付款方式
 settlementCommon.subsidyType = {'0' : '无', '1' : '预付', '2' : '后付'};
 
 settlementCommon.parseSubsidyType = function(status) {
   return this.subsidyType[status];
 }
-
-// 支付活动补贴付款方式
-settlementCommon.subsidyTypeTrd = {'0' : '无', '1' : '预付', '2' : '后付'};
 
 // 优惠方式
 settlementCommon.discountType = {'1' : '活动', '2' : '优惠券', '9' : '无优惠'};
