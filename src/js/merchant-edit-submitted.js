@@ -628,7 +628,6 @@ function setAllocationDetailReceiver(detailData){
       $("#email").removeAttr("required");
       $('#cardEmail').attr('required', 'true');
     }
-    settlementCommon.addStarMark();
 }
 
 /****************************************** 账户和商户操作 **********************************************/
@@ -652,8 +651,6 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
 
         if (!!~~res.meta.result) {
           setModal(res.data);
-          // tpl里requied 手动调用加星
-          settlementCommon.addStarMark();
           $('#edit-merchantNoTitle').prop('hidden', false);
           $('#popup-merchant-detail').modal('show');
           // 设置发送对象
@@ -664,8 +661,6 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
           Mustache.parse(template);
           var html = Mustache.render(template);
           $('#attachments-container').append(html);
-          // tpl里requied 手动调用加星
-          settlementCommon.addStarMark();
         } else {
           alert(res.meta.msg);
         }
@@ -958,8 +953,6 @@ $('.modal').on('change', '#select-allocation-type', function(e) {
     $("#allocationPeriod").removeAttr("required");
     $("#allocationDelay").removeAttr("required");
   }
-  // tpl里requied 手动调用加星
-  settlementCommon.addStarMark();
 });
 
 // 是否发送拨款明细
@@ -973,8 +966,6 @@ $('.modal').on('change', ':radio[name="allocation-detail-input"]', function(e) {
     $('#allocationDetailReceiver1').removeAttr("required");
     $('#allocationDetailReceiver2').removeAttr("required");
   }
-    // tpl里requied 手动调用加星
-    settlementCommon.addStarMark
 });
 
 
@@ -1016,8 +1007,6 @@ $('.modal').on('click', '.lookMore', function(e) {
         $('.branch-email').hide();
       }
     }
-    // tpl里requied 手动调用加星
-    settlementCommon.addStarMark();
   });
 
 

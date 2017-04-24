@@ -119,7 +119,7 @@ common.showMenu = function (pageName) {
 };
 
 common.checkLogin = function () {
-  if (Cookies.get('authMenu').length < 1 || Cookies.get('Xtoken') == undefined) {
+  if (!Cookies.get('authMenu') || Cookies.get('authMenu').length < 1 || Cookies.get('Xtoken') == undefined) {
     common.logout();
     window.location.href = 'login.html';
   }

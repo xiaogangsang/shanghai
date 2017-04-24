@@ -451,17 +451,6 @@ settlementCommon.resetInput = function(input) {
   input.replaceWith(input.val('').clone(true));
 }
 
-// 必填项加*号
-settlementCommon.addStarMark = function() {
-  var elements = $('[required]');
-  elements.each(function(index, el) {
-    var $element = $($(this).siblings('.input-group-addon')[0]);
-    if ($element.text().indexOf('*') < 0) {
-      $element.html($element.text() + '<span style="color: #D70F0F; font-size: 16px;"> *</span>');
-    }
-  });
-}
-
 settlementCommon.success = function (msg) {
   var alertHtml = '<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert">&times;</button><div class="alert-content">' + msg + '</div></div>';
   $('.breadcrumb').after(alertHtml);
@@ -584,13 +573,70 @@ settlementCommon.datetimepickerRegister = function ($startTime, $endTime) {
   }
 }
 
+settlementCommon.addAsteriskToRequiredInputs = function() {
+
+  var existingRequiredInputs = $(':input[required]:not(:button)');
+
+  settlementCommon.toggleAsteriskToInputs(existingRequiredInputs);
+
+  var isInput = function(node) {
+    var tagName = node.tagName && node.tagName.toLowerCase();
+    var inputs = ['input', 'select', 'textarea'];
+    return (inputs.indexOf(tagName) >= 0);
+  }
+
+  var MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
+  if (MutationObserver) {
+    new MutationObserver(function(mutationRecords) {
+      var $mutatedInputs = [];
+      mutationRecords.forEach(function(record, index) {
+        if (record.type === 'childList') {
+          // node added
+          if (record.addedNodes && record.addedNodes.length) {
+            record.addedNodes.forEach(function(node, index) {
+              if (node.nodeType === 1) {
+                if (isInput(node)) {
+                  $mutatedInputs.push(node);
+                } else {
+                  $mutatedInputs = $mutatedInputs.concat(Array.prototype.slice.call(node.querySelectorAll('input, select, textarea')));
+                }
+              }
+            });
+          }
+        } else if (record.type === 'attributes') {
+          // attributes changed
+          if (isInput(record.target)) {
+            $mutatedInputs.push(record.target);
+          }
+        }
+      });
+      settlementCommon.toggleAsteriskToInputs($mutatedInputs);
+    }).observe(document.querySelector('body'), {childList: true, attributes: true, subtree: true, attributeFilter: ['required']});
+  }
+}
+
+settlementCommon.toggleAsteriskToInputs = function(elements) {
+  for (var i = 0; i < elements.length; ++i) {
+    var $el = $(elements[i]);
+    var $addon = $el.prevAll('.input-group-addon:first');
+    var isRequired = $el.prop('required');
+    var $asterisks = $addon.find('.required-asterisk');
+    var hasAnAsterisk = $asterisks.length > 0;
+    if (isRequired && !hasAnAsterisk) {
+      $addon.append('<span class="required-asterisk" style="color: #D70F0F; font-size: 16px;"> *</span>');
+    } else if (!isRequired && hasAnAsterisk) {
+      $asterisks.remove();
+    }
+  }
+}
+
 /************************************************* 全局初始化处理 *****************************************************/
 
 // 点击隐藏/显示左侧菜单栏 的按钮
 $(function() {
 
   // 必填项添加*号标识
-  settlementCommon.addStarMark();
+  settlementCommon.addAsteriskToRequiredInputs();
 
   // 查询日期的跨度小于等于7天
   settlementCommon.datetimepickerRegister($('#search_startTime'), $('#search_endTime'));
