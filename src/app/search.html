@@ -163,7 +163,7 @@
             <th>搜索词</th>
             <td><input type="text" class="form-control" id="searchTerm" value="{{term.searchTerm}}" {{term.id ? 'disabled': 'data-parsley-maxlength="10"'}} required >
             {{^term.id}}
-            <p style="margin-top: 5px; font-size: 12px; color: red;">*为了显示效果, 每个热搜词以不超过5个汉字宽度为宜, 请谨慎配置.</p>
+            <p style="margin-top: 5px; font-size: 12px; color: red;">*为了显示效果, 每个热搜词以不超过5-7个汉字宽度为宜, 请谨慎配置.</p>
             {{/term.id}}
             </td>
           </tr>
