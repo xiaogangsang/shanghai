@@ -6,6 +6,7 @@ var settlementCommon = require('settlementCommon');
 var _tpList = [];
 var _channelList = [];
 var _channelId;
+var _submitting = false;
 
 $(function () {
   common.init('channel');
@@ -31,7 +32,7 @@ function queryData () {
 	    Mustache.parse(template);
 	    var html = Mustache.render(template, result);
 
-	    $('#container-content').append(html);
+	    $('#container-content').html(html);
 
 	    $('#tpSelect').multiselect({
 	      search: {
@@ -84,8 +85,14 @@ function queryChannelList () {
 	})
 }
 
-$(document).on('submit', 'form', function (event) {
-  event.preventDefault();
+$(document).on('change', '#channelId', function(e) {
+	e.preventDefault();
+	_channelId = $('#channelId').val();
+	queryData()
+});
+
+$(document).on('submit', 'form', function (e) {
+  e.preventDefault();
   if (_submitting) {
     return false;
   }
@@ -95,23 +102,19 @@ $(document).on('submit', 'form', function (event) {
   $('.multi-selection option').prop('selected', true);
 
   var ids = [];
-
-  $('#brandSelect_to option, #effectSelect_to option, #serviceSelect_to option, #durationSelect_to option').each(function (index, el) {
-    // if (!$(el).hasClass('hidden')) {
-      ids.push($(el).val());
-    // }
+  $('#tpSelect_to option').each(function (index, el) {
+    ids.push($(el).val());
   });
 
-  var points = $('input[name=points]:checked').data("id");
-
-  if (points) ids.push(points);
-
   $.ajax({
-    url: common.API_HOST + 'filter/updateFilterSettings.json',
+    url: common.API_HOST + 'channelRelSource/saveChannelRelSource',
     type: 'POST',
     dataType: 'json',
     contentType: 'application/json; charset=utf-8',
-    data: JSON.stringify({selected: ids}),
+    data: JSON.stringify({
+    	channelId: _channelId,
+    	sourceIdList: ids,
+    }),
   })
   .done(function (res) {
     _submitting = false;
