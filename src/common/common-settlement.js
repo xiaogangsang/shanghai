@@ -273,6 +273,10 @@ settlementCommon.formatTableWithData = function (table, data) {
   if (typeof data === 'string') {
     html += '<tr><td colspan="' + keyMap.length + '" align="center">' + data + '</td></tr>';
   } else {
+    if (Object.prototype.toString.call(data) !== '[object Array]') {
+      data = [data];
+    }
+
     data.forEach(function(item) {
 
       if (rowAttrs) {
@@ -536,6 +540,9 @@ settlementCommon.datetimepickerRegister = function ($startTime, $endTime) {
       }
 
       $endTime.datetimepicker('setDate', correctEndDate);
+      // parsley 交互更友好
+      $startTime.trigger('input');
+      $endTime.trigger('input');
     });
 
     $endTime.datetimepicker({
@@ -559,6 +566,9 @@ settlementCommon.datetimepickerRegister = function ($startTime, $endTime) {
       }
 
       $startTime.datetimepicker('setDate', correctStartDate);
+      // parsley 交互更友好
+      $endTime.trigger('input');
+      $startTime.trigger('input');
     });
   }
 
