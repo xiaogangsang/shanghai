@@ -115,13 +115,17 @@ $(document).on('submit', 'form', function (e) {
     	channelId: _channelId,
     	sourceIdList: ids,
     }),
+    // data: {
+    //   channelId: _channelId,
+    //   sourceIdList: ids,
+    // },
   })
   .done(function (res) {
     _submitting = false;
     if (!!~~res.meta.result) {
-      alert('提交成功!');
+      alert('保存成功!');
     } else {
-      alert('操作失败：' + res.meta.msg);
+      alert('保存失败：' + res.meta.msg);
     }
   });
 
