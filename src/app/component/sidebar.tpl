@@ -9,7 +9,7 @@
           <a href="class.html" class="list-group-item" id="menu-class" data-id="16" style="display:none">万达票类管理</a>
           <a href="tp.html" class="list-group-item" id="menu-tp" data-id="296" style="display:none">TP方管理</a>
           <a href="tp-ticket.html" class="list-group-item" id="menu-tp-ticket" data-id="396" style="display:none">出票管理</a>
-          <a href="channel.html" class="list-group-item" id="menu-channel" data-id="396" style="display:none">渠道管理</a>
+          <a href="channel.html" class="list-group-item" id="menu-channel" data-id="403" style="display:none">渠道管理</a>
         </div>
       </div>
     </div>
