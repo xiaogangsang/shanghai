@@ -252,7 +252,7 @@ settlementCommon.parseDepartmentUseStatus = function(status) {
   return this.departmentUseStatus[status];
 }
 
-
+/************************************************ Form Table 的自动组装 ************************************************/
 settlementCommon.formatTableWithData = function (table, data) {
 
   var $table = table.table, keyMap = table.keyMap, rowAttrs = table.rowAttrs;
@@ -293,11 +293,13 @@ settlementCommon.formatTableWithData = function (table, data) {
         if (parseKey) {
           if (typeof parseKey === 'function') {
             value = parseKey(item);
-          } else {
+          } else if (typeof parseKey === 'string') {
             if (parseKey === '.') {
               parseKey = map.key;
             }
             value = settlementCommon[parseKey][value];
+          } else {
+            value = parseKey[value];
           }
         }
 
@@ -313,6 +315,41 @@ settlementCommon.formatTableWithData = function (table, data) {
   $table.html(html);
 }
 
+settlementCommon.formatForm = function (form) {
+  var $form = form.form, fields = form.fields;
+
+  var html = '';
+
+  fields.forEach(function (field, index) {
+    var inputHTML = '';
+    switch (field.type) {
+      case 'input': 
+        inputHTML  += '<input type="text" class="form-control" name="' + field.name + '">';
+        break;
+      case 'select':
+        inputHTML += '<select class="form-control" name="' + field.name + '">';
+        var options;
+        if (typeof field.options === 'string') {
+          options = settlementCommon[field.options];
+        } else {
+          options = field.options;
+        }
+        inputHTML += settlementCommon.optionsHTML(options, true);
+        inputHTML += '</select>';
+        break;
+      default:
+        throw new TypeError('Unknow input type: ' + field.type + '!');
+        break;
+    }
+
+    var before = '<div class="form-group col-sm-6 col-md-3"><div class="input-group"><div class="input-group-addon">' + field.label + '</div>';
+    var after = '</div></div>';
+
+    html += before + inputHTML + after;
+  });
+
+  $form.prepend(html);
+}
 
 
 /**
@@ -337,6 +374,35 @@ settlementCommon.optionsHTML = function(options, withAll) {
 
   return html;
 }
+
+// 自动生成表单提交参数
+// Caution: this function is not fully tested. IT'S ERROR PRONE.
+$.fn.queryParam = function() {
+
+  var $inputs = this.find(':input:not(:button)');
+
+  var param = {};
+
+  $inputs.each(function() {
+    var key = $(this).attr('name');
+    var value = $(this).val();
+
+    if (key && (!$(this).is(':checkbox') || ($(this).is(':checked') && value)))  {
+      var storedValue = param[key];
+      if (!storedValue) {
+        storedValue = value;
+      } else if ($.isArray(storedValue)) {
+        storedValue.push(value);
+      } else {
+        storedValue = [storedValue, value];
+      }
+
+      param[key] = storedValue;
+    }
+  });
+
+  return param;
+};
 
 
 /**
