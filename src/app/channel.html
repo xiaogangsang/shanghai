@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="images/favicon.ico" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>渠道管理</title>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/reset.css">
+</head>
+<body>
+
+  @@include('component/header.tpl')
+
+  <div class="container-fluid">
+
+    <div class="row">
+
+      @@include('component/sidebar.tpl')
+
+      <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+        <ol class="breadcrumb">
+          <li>合作方管理</li>
+          <li class="active">渠道管理</li>
+        </ol>
+
+        <br/>
+        <div class="col-sm-12 col-xs-12 col-md-12">
+          <div class="form-group col-sm-3 col-md-3 col-xs-3">
+            <div class="input-group">
+              <div class="input-group-addon">渠道</div>
+              <select class="form-control" id="channelId">
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div id="container-content" class="col-sm-12 col-xs-12 col-md-12">
+        </div>
+
+        <script id="content-template" type="text/x-tmpl-mustache">
+          <form>
+            <div class="edit-section">
+              <h5>TP方管理</h5>
+              <div class="table-responsive multi-selection">
+                <table class="table">
+                  <tbody>
+                    <tr>
+                      <td>
+                        <select name="from[]" id="tpSelect" class="form-control" size="8" multiple="multiple">
+                          {{#tp}}
+                          <option value="{{sourceId}}">{{sourceName}}</option>
+                          {{/tp}}
+                        </select>
+                      </td>
+                      <td width="60">
+                        <button type="button" id="tpSelect_all" class="btn btn-block btn-default">全选</button>
+                        <button type="button" id="tpSelect_right" class="btn btn-block btn-default">添加</button>
+                        <button type="button" id="tpSelect_left" class="btn btn-block btn-default">移除</button>
+                        <button type="button" id="tpSelect_none" class="btn btn-block btn-default">反选</button>
+                      </td>
+                      <td>
+                        <select name="to[]" id="tpSelect_to" class="form-control" size="8" multiple="multiple" data-parsley-required data-parsley-errors-container="#error-tp">
+                          {{#selectedTp}}
+                          <option selected value="{{id}}">{{name}}</option>
+                          {{/selectedTp}}
+                        </select>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div id="error-tp"></div>
+              </div>
+            </div>
+
+            <br>
+            <button type="submit" class="btn btn-primary col-xs-4 col-xs-push-4">保存</button>
+          </form>
+        </script>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <script src="js/vendor.js"></script>
+  <script src="js/channel.js"></script>
+</body>
+</html>
