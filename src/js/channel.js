@@ -35,10 +35,6 @@ function queryData () {
 	    $('#container-content').html(html);
 
 	    $('#tpSelect').multiselect({
-	      search: {
-	        left: '<input type="text" name="q" class="form-control" placeholder="可选TP方..." />',
-	        right: '<input type="text" name="q" class="form-control" placeholder="已选TP方..." />',
-	      },
 	      right: '#tpSelect_to',
 	      rightAll: '#tpSelect_all',
 	      rightSelected: '#tpSelect_right',
