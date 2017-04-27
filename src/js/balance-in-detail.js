@@ -539,6 +539,8 @@ $(document).on('submit', '#popup-detail form', function(e) {
     subsidyAmountTrd: $('#subsidyAmountTrd').val(),
     subsidyTypeTrd: $('#subsidyTypeTrd').val(),
     orderNo: $('#orderNo').val(),
+    settleDate: $('#settleDate').val(),
+    bankAmount: $('#bankAmount').val(),
 
     discountType: $('#discountType').val(),
     discountName: $('#discountName').val(),
