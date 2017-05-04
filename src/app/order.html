@@ -107,7 +107,7 @@
               <thead>
                 <tr>
                   <th>交易订单号</th>
-                  <th>手机号</th>
+                  <!-- <th>手机号</th> -->
                   <th>下单时间</th>
                   <th>交易订单状态</th>
                   <th>商品订单状态</th>
@@ -159,7 +159,7 @@
       {{#rows}}
       <tr data-id="{{transOrdrNo}}">
         <td><a href="order-detail.html?orderId={{transOrdrNo}}" class="btn-link" title="点击查看订单详情" target="_blank">{{transOrdrNo}}</a></td>
-        <td>{{mobile}}</td>
+        <!-- <td>{{mobile}}</td> -->
         <td>{{placeOrderTime}}</td>
         <td>{{transOrderStatus}}</td>
         <td>{{productOrderStatus}}</td>
@@ -176,7 +176,7 @@
       {{#rows}}
       <tr>
         <td>{{transOrdrNo}}</td>
-        <td>{{mobile}}</td>
+        <!-- <td>{{mobile}}</td> -->
         <td>{{placeOrderTime}}</td>
         <td>{{transOrderStatus}}</td>
         <td>{{productOrderStatus}}</td>

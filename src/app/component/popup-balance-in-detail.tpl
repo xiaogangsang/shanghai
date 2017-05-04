@@ -120,7 +120,7 @@
         <div class="form-group col-sm-6">
           <div class="input-group">
             <div class="input-group-addon">银行收单日期</div>
-            <input type="text" class="form-control" id="settleDate" value="{{settleDate}}" readonly>
+            <input type="text" class="form-control" id="settleDate" value="{{settleDate}}">
           </div>
         </div>
       </div>
@@ -257,7 +257,7 @@
         <div class="form-group col-sm-6 col-md-6">
           <div class="input-group">
             <div class="input-group-addon">实收金额(元)</div>
-            <input type="text" class="form-control" id="bankAmount" value="{{bankAmount}}" readonly>
+            <input type="text" class="form-control" id="bankAmount" value="{{bankAmount}}">
           </div>
         </div>
 
