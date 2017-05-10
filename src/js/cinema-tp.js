@@ -1,6 +1,8 @@
 'use strict;'
 
 var common = require('common');
+var util = require('util');
+
 var _sources = {};
 var _brands = {};
 var _cities = [];
@@ -13,6 +15,7 @@ var useCache = false;
 
 $(function () {
   common.init('cinema-tp');
+  util.init($);
 
   //set search form
   setSource();
@@ -68,6 +71,7 @@ $('#formSearch').on('submit', function (e) {
     associationStatus: $('#search_associationStatus').val(),
     sourceId: sourceId,
     thirdPartyCinemaName: $.trim($('#search_thirdPartyCinemaName').val()),
+    isWanDa: $('#search_isWanDa').val(),
     pageSize: _pageSize,
   };
   if ($('#search_associationStatus').val() == 1) {

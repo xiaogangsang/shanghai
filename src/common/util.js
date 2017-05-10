@@ -26,7 +26,9 @@ util.init = function($) {
 		var key = $(this).attr(sourceMapKey);
 
 		if (tagName == 'select') {
-			$(this).html(util[key].optionsHTML(false, $(this).attr('value') || $(this).prop('value')));
+
+      var withAll = $(this).attr('with-all') != null && $(this).attr('with-all') !== false;
+			$(this).html(util[key].optionsHTML(withAll, $(this).attr('value') || $(this).prop('value')));
 		} else if (tagName == '') {
 			$(this).html(util[key].checkboxesHTML());
 		}
@@ -106,6 +108,8 @@ util.areaType = new Codec({'1': '全国', '2': '区域'});
 
 // 成本中心类别
 util.budgetSourceLevel = new Codec({'0': '总行', '1': '支行', '2': '卡中心', '3': '卡部', '4': 'O2O项目组'});
+
+util.isWanDa = new Codec({'0': '非万达', '1': '万达'});
 
 
 
