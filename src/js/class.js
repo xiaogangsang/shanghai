@@ -292,7 +292,7 @@ $(document).on('change click', '#search-cinema-provinceId', function (e) {
       options += '<option value="' + value.cityId + '">' + value.cityName + '</option>';
     });
 
-    $('#search-cinema-cityId').html(options);
+    $('#search-cinema-cityId').html(options).chosen();
   }
 
   return false;
