@@ -50,6 +50,7 @@ $('#formSearch').on('submit', function (e) {
     status: $('#search_status').val(),
     budgetStatus: $('#search_budgetStatus').val(),
     budgetSource: $('#search_budgetSource').val(),
+    budgetSourceGroup: $('#search_level').val(),
     pageSize: _pageSize,
   };
   if (!!_querying) {
@@ -147,7 +148,7 @@ $(document).on('change click', '#search_level', function (event) {
       $('#search_budgetSource').closest('.form-group').hide();
       alert('所选成本中心类别下无成本中心，这个情况不正常，需要注意哦！');
     } else {
-      var html = '';
+      var html = '<option value="">全部</option>';
       _(sources).forEach(function (source) {
         html += '<option value="' + source.id + '">' + source.sourceName + '</option>';
       });
