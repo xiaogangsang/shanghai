@@ -126,6 +126,10 @@ util.close = function() {
 /************************************* Template ********************************************/
 util.render = render; 
 
+var Tmpl = module.exports = {};
+
+Tmpl.render = render; 
+
 function render(template, data) {
   var regExp = /{{\s*(\^|#)\s*(.+?)\s*}}([^]+?){{\s*\/\s*\2\s*}}/g;
   var lastIndex = regExp.lastIndex = 0;
@@ -177,7 +181,7 @@ function renderSingleSection(template, data) {
     var escape = match[3];
 
     var value = evalInContext(data, matched);
-    if (value !== null && value !== undefined) {
+    if (value !== void 0 && value !== null) {
       result += escape ? escapeHtml('' + value) : value;
     }
 
@@ -212,7 +216,7 @@ function evalNestedProp(obj, nestedProp) {
   for (var i = 0; i < nestedProps.length; ++i) {
     var prop = nestedProps[i].trim();
     value = value[prop];
-    if (value === undefined || value === null) {
+    if (value === void 0 || value === null) {
       break;
     }
   }
@@ -236,3 +240,4 @@ function escapeHtml (string) {
     return entityMap[s];
   });
 }
+

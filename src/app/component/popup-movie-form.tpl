@@ -79,8 +79,32 @@
           <th>海报</th>
           <td colspan="3">
             <img class="poster-preview" src="{{movie.preview}}" width="150">
-            <input type="text" class="form-control" id="poster" value="{{movie.poster}}">
-            <div class="btn btn-default" id="fileupload">上传海报图</div>
+            <input type="text" class="form-control poster" id="poster" value="{{movie.poster}}">
+            <div class="btn btn-default fileupload">上传海报图</div>
+          </td>
+        </tr>
+        <tr>
+          <th>购票后分享1</th>
+          <td colspan="3">
+            <img class="poster-preview" src="{{movie.previewAfterBought[0]}}" width="150">
+            <input type="text" class="form-control poster" name="poster-after-bought" value="{{movie.posterAfterBought[0]}}">
+            <div class="btn btn-default fileupload">上传海报图</div>
+          </td>
+        </tr>
+        <tr>
+          <th>购票后分享2</th>
+          <td colspan="3">
+            <img class="poster-preview" src="{{movie.previewAfterBought[1]}}" width="150">
+            <input type="text" class="form-control poster" name="poster-after-bought" value="{{movie.posterAfterBought[1]}}">
+            <div class="btn btn-default fileupload">上传海报图</div>
+          </td>
+        </tr>
+        <tr>
+          <th>购票后分享3</th>
+          <td colspan="3">
+            <img class="poster-preview" src="{{movie.previewAfterBought[2]}}" width="150">
+            <input type="text" class="form-control poster" name="poster-after-bought" value="{{movie.posterAfterBought[2]}}">
+            <div class="btn btn-default fileupload">上传海报图</div>
           </td>
         </tr>
       </tbody>
