@@ -86,28 +86,71 @@
         <tr>
           <th>购票后分享1</th>
           <td colspan="3">
-            <img class="poster-preview" src="{{movie.previewAfterBought[0]}}" width="150">
-            <input type="text" class="form-control poster" name="poster-after-bought" value="{{movie.posterAfterBought[0]}}">
-            <div class="btn btn-default fileupload">上传海报图</div>
+            <div class="form-group">
+              <img class="poster-preview" src="{{movie.previewAfterBought[0]}}" width="150">
+              <div class="input-group">
+                <div class="input-group-addon fileupload">上传海报图</div>
+                <input type="text" class="form-control poster" name="poster-after-bought" value="{{movie.posterAfterBought[0]}}" readonly>
+                <div class="input-group-addon">删除</div>
+              </div>
+            </div>
           </td>
         </tr>
         <tr>
           <th>购票后分享2</th>
           <td colspan="3">
-            <img class="poster-preview" src="{{movie.previewAfterBought[1]}}" width="150">
-            <input type="text" class="form-control poster" name="poster-after-bought" value="{{movie.posterAfterBought[1]}}">
-            <div class="btn btn-default fileupload">上传海报图</div>
+            <div class="form-group">
+              <img class="poster-preview" src="{{movie.previewAfterBought[1]}}" width="150">
+              <div class="input-group">
+                <div class="input-group-addon fileupload">上传海报图</div>
+                <input type="text" class="form-control poster" name="poster-after-bought" value="{{movie.posterAfterBought[1]}}" readonly>
+                <div class="input-group-addon">删除</div>
+              </div>
+            </div>
           </td>
         </tr>
         <tr>
           <th>购票后分享3</th>
           <td colspan="3">
-            <img class="poster-preview" src="{{movie.previewAfterBought[2]}}" width="150">
-            <input type="text" class="form-control poster" name="poster-after-bought" value="{{movie.posterAfterBought[2]}}">
-            <div class="btn btn-default fileupload">上传海报图</div>
+            <div class="form-group">
+              <img class="poster-preview" src="{{movie.previewAfterBought[2]}}" width="150">
+              <div class="input-group">
+                <div class="input-group-addon fileupload">上传海报图</div>
+                <input type="text" class="form-control poster" name="poster-after-bought" value="{{movie.posterAfterBought[2]}}" readonly>
+                <div class="input-group-addon">删除</div>
+              </div>
+            </div>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
+
+  <style type="text/css">
+    #popup-movie-form .input-group-addon {
+      border: 1px solid #ff8903;
+      color: #ff8903;
+      border-radius: 4px;
+      padding: 6px 12px;
+    }
+
+    #popup-movie-form .input-group {
+      width: 100%;
+    }
+
+    #popup-movie-form .input-group-addon:first-child {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    #popup-movie-form .input-group-addon:last-child {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+
+    #popup-movie-form input[readonly] {
+      border: 1px solid #dedede;
+      box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    }
+  </style>
 </script>
