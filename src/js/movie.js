@@ -410,7 +410,7 @@ function setupFileUploader() {
         onComplete: function (id, fileName, responseJSON) {
           if (!!~~responseJSON.meta.result) {
             $(button).parent().find('.poster').val(responseJSON.data.savePath);
-            $(button).parent().find('.poster-preview').attr('src', responseJSON.data.savePath);
+            $(button).parent().parent().find('.poster-preview').attr('src', responseJSON.data.savePath);
             alert('上传成功！');
           } else {
             alert('接口错误：' + responseJSON.meta.msg);
@@ -418,6 +418,11 @@ function setupFileUploader() {
         },
       },
     });
+  });
+
+  $('.input-group-addon:last-child').on('click', function(e) {
+    e.preventDefault();
+    $(this).parent().find('input').val('');
   });
 }
 
