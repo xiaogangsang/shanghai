@@ -126,10 +126,6 @@ util.close = function() {
 /************************************* Template ********************************************/
 util.render = render; 
 
-var Tmpl = module.exports = {};
-
-Tmpl.render = render; 
-
 function render(template, data) {
   var regExp = /{{\s*(\^|#)\s*(.+?)\s*}}([^]+?){{\s*\/\s*\2\s*}}/g;
   var lastIndex = regExp.lastIndex = 0;
