@@ -39,12 +39,12 @@ $(document).on('change click', '#popup-cinema-form #provinceId', function (e) {
   if (~~provinceId != 0) {
     var province = _.find(_provinces, { provinceId: provinceId.toString() });
     var cityList = province.cityList;
-    var options = '<option value=""></option>';
+    var options = '';
     _(cityList).forEach(function (value, key) {
       options += '<option value="' + value.cityId + '">' + value.cityName + '</option>';
     });
 
-    $('#cityId').html(options);
+    $('#cityId').html(options).chosen();
     $('#areaId,#districtId').html('<option value=""></option>');
   }
 
@@ -309,6 +309,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     if (!!~~res.meta.result) {
       setModal(res.data);
       $('#popup-cinema-form').modal('show');
+      $('#cityId').chosen();
       $('#popup-cinema-form form').parsley();
     } else {
       alert('接口错误：' + res.meta.msg);
@@ -750,6 +751,7 @@ function setModal(cinemaData) {
     var service = _.find(_services, { id: serviceId });
     $('#btn-service').append($('<option></option>').attr('value', service.id).text(service.name));
     $parent.remove();
+
     return false;
   });
 }
