@@ -30,10 +30,49 @@ util.init = function($) {
 
       var withAll = $(this).attr('with-all') != null && $(this).attr('with-all') !== false;
 			$(this).html(util[key].optionsHTML(withAll, $(this).attr('value') || $(this).prop('value')));
-		} else if (tagName == '') {
+		} else if (tagName == 'ul') {
+      $(this).html(util[key].dropdownMenuHTML($(this).attr('class-name')));
+    } else if (tagName == '') {
 			$(this).html(util[key].checkboxesHTML());
 		}
 	});
+
+  /**
+   *  Assemble form parameters
+   */
+  $.fn.queryParam = function() {
+
+    // chosen.js 会把原先的 selet 隐藏, 所以要额外处理
+    var $inputs = this.find(':input:not(:button):visible:not([skipsubmit])')
+      .add($('.chosen-container').closest('.form-group').filter(':visible').find('select'));
+
+    var param = {};
+
+    $inputs.each(function() {
+      var keys = $(this).attr('name');
+      var value = $(this).val();
+
+      if (keys && (!$(this).is(':checkbox') || ($(this).is(':checked') && value))) {
+        keys = keys.split(',');
+        keys.forEach(function(key) {
+          if (key = key.trim()) {
+            var storedValue = param[key];
+            if (!storedValue) {
+              storedValue = value;
+            } else if ($.isArray(storedValue)) {
+              storedValue.push(value);
+            } else {
+              storedValue = [storedValue, value];
+            }
+
+            param[key] = storedValue;
+          }
+        });
+      }
+    });
+
+    return param;
+  };
 }
 
 var Codec = function(dict) {
@@ -92,6 +131,18 @@ Codec.prototype.radiosHTML = function(name, selectedKey, customizedProps) {
       }
 
       html += '<div class="radio-inline"><label><input type="radio" ' + nameSnippet + ' value="' + key + '" ' + (selectedKey == key ? 'checked ' : ' ') + customizedProp + '><span>' + value + '</span></label></div>';
+    }
+  }
+
+  return html;
+}
+
+Codec.prototype.dropdownMenuHTML = function(className) {
+  var html = '';
+  for (var key  in this) {
+    if (this.hasOwnProperty(key)) {
+      var value = this[key];
+      html += '<li><a href="#" class="' + className +'" data-type="' + key + '">' + value + '</a></li>'
     }
   }
 

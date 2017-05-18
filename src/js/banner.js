@@ -54,17 +54,9 @@ $('#formSearch').on('click', 'button[type=submit]', function (event) {
 
 $('#formSearch').on('submit', function (e) {
   e.preventDefault();
-  var sendData = {
-    bannerName: $('#search_bannerName').val().trim(),
-    iconName: $('#search_bannerName').val().trim(),
-    bannerType: $('#search_bannerType').val(),
-    channelId: $('#search_channelId').val(),
-    channel: $('#search_channelId').val(),
-    startTime: $('#search_startTime').val(),
-    endTime: $('#search_endTime').val(),
-    cityId: $('#search_cityId').val(),
-    pageSize: pager.pageSize,
-  };
+  var sendData = $(this).queryParam();
+  sendData.pageSize = pager.pageSize;
+
   if (!!_querying) {
     return false;
   }
@@ -97,7 +89,7 @@ $('#formSearch').on('submit', function (e) {
         _useCache = true;
         pager.pageIndex = res.data.pageIndex;
         pager.pageTotal = Math.ceil(res.data.total / pager.pageSize);
-        setPager(res.data.total, pager.pageIndex, data.length, pager.pageTotal);
+        pager.setPager(res.data.total, pager.pageIndex, data.length, pager.pageTotal);
         _(data).forEach(function (item) {
           _(_channels).forEach(function (channel, key) {
             if (channel.channelId == item.channelId || channel.channelId == item.channel) {
@@ -688,7 +680,7 @@ $(document).on('click', '#popup-city .choosed-city>.label>.close', function (eve
 
 $('#formSearch').on('click', 'button[type=submit]', function (event) {
   event.preventDefault();
-  page.pageIndex = 1;
+  pager.pageIndex = 1;
   _useCache = false;
   $('#formSearch').trigger('submit');
 });
@@ -704,7 +696,7 @@ function setModal(bannerData, type) {
     switch (+bannerData.bannerType) {
       case 1:
         template = $('#edit-home-template').html();
-        uploadButton = '#fine-upload';
+        uploadButton = '#file-upload';
         break;
       case 2:
         template = $('#edit-hot-template').html();
@@ -754,7 +746,7 @@ function setModal(bannerData, type) {
         break;
       case 5:
         template = $('#edit-cinema-template').html();
-        uploadButton = '#fine-upload';
+        uploadButton = '#file-upload';
         break;
     }
 
@@ -764,7 +756,7 @@ function setModal(bannerData, type) {
     switch (+type) {
       case 1:
         template = $('#create-home-template').html();
-        uploadButton = '#fine-upload';
+        uploadButton = '#file-upload';
       break;
       case 2:
         template = $('#create-hot-template').html();
@@ -776,20 +768,23 @@ function setModal(bannerData, type) {
         break;
       case 4:
         template = $('#create-seat-template').html();
-        uploadButton = '.fine-upload';
+        uploadButton = '.file-upload';
         data.movies = _movies;
       break;
       case 5:
         template = $('#create-cinema-template').html();
-        uploadButton = '#fine-upload';
+        uploadButton = '#file-upload';
+      break;
+      case 6: 
+        template = $('#promotion-template').html();
+        uploadButton = '#file-upload';
       break;
     }
 
     $('#popup-banner-form .modal-title').html('新建[' + util.bannerType[type] + ']');
   }
 
-  Mustache.parse(template);
-  html = Mustache.render(template, data);
+  html = util.render(template, data);
   $('#popup-banner-form .modal-body').html(html);
   $('#popup-banner-form').modal('show');
   $('#popup-banner-form').on('shown.bs.modal', function (event) {
@@ -927,14 +922,6 @@ function setTableData(rows) {
   Mustache.parse(template);
   var html = Mustache.render(template, data);
   $('#dataTable tbody').html(html);
-}
-
-function setPager(total, pageIndex, rowsSize, pageTotal) {
-  var data = { total: total, pageIndex: pageIndex, rowsSize: rowsSize, pageTotal: pageTotal };
-  var template = $('#pager-template').html();
-  Mustache.parse(template);
-  var html = Mustache.render(template, data);
-  $('#pager').html(html);
 }
 
 function setBrand() {
