@@ -44,7 +44,7 @@ $(document).on('change click', '#popup-cinema-form #provinceId', function (e) {
       options += '<option value="' + value.cityId + '">' + value.cityName + '</option>';
     });
 
-    $('#cityId').html(options).chosen();
+    $('#cityId').html(options).chosen('destroy').chosen();
     $('#areaId,#districtId').html('<option value=""></option>');
   }
 

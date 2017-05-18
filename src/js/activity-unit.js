@@ -338,6 +338,18 @@ function getBudgetSource() {
   .done(function (res) {
     if (res.meta.result == true) {
       _budgetSource = res.data;
+
+      var keys = [];
+      _(_budgetSource).forEach(function (group, key) {
+        keys.push(key);
+      });
+
+      $('#search_level').find('option').each(function() {
+        var optionKey = $(this).val();
+        if (optionKey && keys.indexOf(optionKey) < 0) {
+          $(this).remove();
+        }
+      });
     } else {
       alert('接口错误：' + res.meta.msg);
     }

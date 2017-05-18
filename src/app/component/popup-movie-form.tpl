@@ -23,33 +23,33 @@
       <tbody>
         <tr>
           <th width="100">影片名称</th>
-          <td><input type="text" class="form-control" id="name" value="{{movie.name}}" required></td>
+          <td><input type="text" class="form-control" id="name" value="{{movie.name}}" required readonly></td>
           <th>上映日期</th>
-          <td class="release-date"><input type="text" class="form-control" id="releaseYear" value="{{movie.releaseYear}}" size="4" maxlength="4"> 年 <input type="text" class="form-control" id="releaseMonth" value="{{movie.releaseMonth}}" size="2" maxlength="2"> 月 <input type="text" class="form-control" id="releaseDay" value="{{movie.releaseDay}}"  size="2" maxlength="2"> 日 </td>
+          <td class="release-date"><input type="text" class="form-control" id="releaseYear" value="{{movie.releaseYear}}" size="4" maxlength="4" readonly> 年 <input type="text" class="form-control" id="releaseMonth" value="{{movie.releaseMonth}}" size="2" maxlength="2" readonly> 月 <input type="text" class="form-control" id="releaseDay" value="{{movie.releaseDay}}"  size="2" maxlength="2" readonly> 日 </td>
         </tr>
         <tr>
           <th>上映状态</th>
           <td>
-            <select class="form-control" id="status" required>
+            <select class="form-control" id="status" required readonly>
               {{#status}}
               <option value="{{id}}"{{#selected}} selected{{/selected}}>{{name}}</option>
               {{/status}}
             </select>
           </td>
           <th>制片方</th>
-          <td><input type="text" class="form-control" id="produceCorp" value="{{movie.produceCorp}}"></td>
+          <td><input type="text" class="form-control" id="produceCorp" value="{{movie.produceCorp}}" readonly></td>
         </tr>
         <tr>
           <th>时长</th>
-          <td><input type="text" class="form-control" id="duration" value="{{movie.duration}}" required></td>
+          <td><input type="text" class="form-control" id="duration" value="{{movie.duration}}" required readonly></td>
           <th>国家</th>
-          <td><input type="text" class="form-control" id="area" value="{{movie.area}}" required></td>
+          <td><input type="text" class="form-control" id="area" value="{{movie.area}}" required readonly></td>
         </tr>
         <tr>
           <th>题材</th>
           <td>{{movie.theme}}</td>
           <th>导演</th>
-          <td><input type="text" class="form-control" id="director" value="{{movie.director}}" required></td>
+          <td><input type="text" class="form-control" id="director" value="{{movie.director}}" required readonly></td>
         </tr>
         <tr>
           <th>评分</th>
@@ -57,23 +57,23 @@
         </tr>
         <tr>
           <th>主演</th>
-          <td colspan="3"><input type="text" class="form-control" id="actor" value="{{movie.actor}}" required></td>
+          <td colspan="3"><input type="text" class="form-control" id="actor" value="{{movie.actor}}" required readonly></td>
         </tr>
         <tr>
           <th>影片制式</th>
           <td colspan="3">
             {{#dimens}}
-            <div class="checkbox-inline"><label><input type="checkbox" name="dimen" value="{{name}}"{{#selected}} checked{{/selected}}><span>{{name}}</span></label></div>
+            <div class="checkbox-inline"><label><input type="checkbox" name="dimen" value="{{name}}"{{#selected}} checked{{/selected}} readonly><span>{{name}}</span></label></div>
             {{/dimens}}
           </td>
         </tr>
         <tr>
           <th>一句话影评</th>
-          <td colspan="3"><input type="text" class="form-control" maxlength="20" id="summary" value="{{movie.summary}}" required></td>
+          <td colspan="3"><input type="text" class="form-control" maxlength="20" id="summary" value="{{movie.summary}}"></td>
         </tr>
         <tr>
           <th>剧情介绍</th>
-          <td colspan="3"><textarea class="form-control" id="description" required>{{movie.description}}</textarea></td>
+          <td colspan="3"><textarea class="form-control" id="description" required readonly>{{movie.description}}</textarea></td>
         </tr>
         <tr>
           <th>海报</th>
