@@ -60,6 +60,7 @@ var common = {};
 common.API_HOST = window.location.protocol + '//' + window.location.host + '/MovieOps/';
 
 common.init = function (pageName) {
+  pageName = pageName || location.pathname.split('/').pop().split('.').shift();
   common.checkLogin();
   common.setLoginName();
   common.showMenu(pageName);

@@ -16,13 +16,13 @@ var _useCache = false;
 var _dataCache;
 var _submitting = false;
 var _provinces = [];
-var _bannerType = ['', '首页', '热门影片', '交叉销售位', '选座页配置', '影院页Banner'];
 var _cacheCinemas = [];
 
 $(function () {
-  common.init('banner');
+  common.init();
   util.init($);
   pager.init($('#pager'));
+
   setChannel();
   setProvince();
   setBrand();
@@ -108,7 +108,7 @@ $('#formSearch').on('submit', function (e) {
           item.bannerType = item.bannerType == undefined ? 4 : item.bannerType;
           item.noDel = item.bannerType == 4 ? true : false;
           item.bannerName = item.bannerType == 4 ? item.iconName : item.bannerName;
-          item.bannerTypeName = _bannerType[item.bannerType];
+          item.bannerTypeName = util.bannerType[item.bannerType];
           item.status = item.iconStatus != undefined ? item.iconStatus : item.status;
           item.statusName = item.status == 1 ? '是' : '否';
           item.startTime = item.startTime.split(' ')[0];
@@ -758,7 +758,7 @@ function setModal(bannerData, type) {
         break;
     }
 
-    $('#popup-banner-form .modal-title').html('编辑[' + _bannerType[bannerData.bannerType] + ']');
+    $('#popup-banner-form .modal-title').html('编辑[' + util.bannerType[bannerData.bannerType] + ']');
   } else {
     data = { channels: _channels };
     switch (+type) {
@@ -785,7 +785,7 @@ function setModal(bannerData, type) {
       break;
     }
 
-    $('#popup-banner-form .modal-title').html('新建[' + _bannerType[type] + ']');
+    $('#popup-banner-form .modal-title').html('新建[' + util.bannerType[type] + ']');
   }
 
   Mustache.parse(template);
