@@ -149,8 +149,8 @@
     }
 
     #popup-movie-form input[readonly] {
-      border: 1px solid #dedede;
-      box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+      /*border: 1px solid #dedede;*/
+      /*box-shadow: inset 0 1px 1px rgba(0,0,0,.075);*/
     }
   </style>
 </script>
