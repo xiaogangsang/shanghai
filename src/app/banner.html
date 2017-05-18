@@ -32,13 +32,7 @@
           <div class="form-group col-sm-6 col-md-4 col-lg-3">
             <div class="input-group">
               <div class="input-group-addon">类型</div>
-              <select class="form-control" id="search_bannerType">
-                <option value="1">首页</option>
-                <option value="2">热门影片</option>
-                <option value="3">交叉销售位</option>
-                <option value="4">选座页配置</option>
-                <option value="5">影院页Banner</option>
-                <option value="6">首页浮窗</option>
+              <select class="form-control" id="search_bannerType" source-map-key="bannerType">
               </select>
             </div>
           </div>
@@ -155,22 +149,8 @@
   <script src="lib/jquery.quicksearch.min.js"></script>
   <script src="js/banner.js"></script>
 
-  <script id="pager-template" type="text/x-tmpl-mustache">
-    <div class="col xs-12 col-sm-6 rowStatics">共 <span id="total">{{total}}</span> 条数据，当前显示 <span id="rowsSize">{{rowsSize}}</span> 条</div>
-    {{#pageTotal}}
-    <div class="col xs-12 col-sm-6">
-      <nav>
-        <ul class="pagination pagination-sm">
-          <li><a href="#" class="prev"><span>&lt;</span></a></li>
-          <li><span id="pageIndex">{{pageIndex}}</span> / <span id="pageTotal">{{pageTotal}}</span></li>
-          <li><a href="#" class="next"><span>&gt;</span></a></li>
-          <li><input type="number" name="pageNo" id="pageNo" pattern="[0-9]+"></li>
-          <li><button type="button" class="btn" id="btn-pager">跳转</button></li>
-        </ul>
-      </nav>
-    </div>
-    {{/pageTotal}}
-  </script>
+  @@include('component/pager.tpl')
+
   <script id="table-template" type="text/x-tmpl-mustache">
     {{#rows}}
     <tr data-id="{{id}}" data-bannertype="{{bannerType}}">

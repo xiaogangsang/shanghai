@@ -3,6 +3,7 @@
  *
  *  工具类
  *	1. 根据编码组装 <optino> & <checkbox> 以及 解析编码为文字
+ *  2. 可以写代码逻辑的 Template (准备全面替换 Mustache.js)
  *	
  */
 
@@ -100,18 +101,55 @@ Codec.prototype.radiosHTML = function(name, selectedKey, customizedProps) {
 // 评论类型
 util.commentType = new Codec({'1' : '评论', '3' : '回复'});
 
+// 渠道
 util.channel = new Codec({'1' : '掌上生活', '2' : '手机银行'});
 
+// 搜索词类型
 util.searchTermType = new Codec({'1' : '搜索词', '2' : '热搜词'});
 
+// 区域
 util.areaType = new Codec({'1': '全国', '2': '区域'});
 
 // 成本中心类别
 util.budgetSourceLevel = new Codec({'0': '总行', '1': '支行', '2': '卡中心', '3': '卡部', '4': 'O2O项目组'});
 
+// 万达非万达(查询条件)
 util.isWanDa = new Codec({'0': '非万达', '1': '万达'});
 
+// 前端配置类型
+util.bannerType = new Codec({'1': '首页', '2': '热门影片', '3': '交叉销售位', '4': '选座页配置', '5': '影院页Banner', '6': '首页浮窗'});
 
+
+
+
+/**
+ *  Set up date range
+ */
+util.setupDateRange = function($startTime, $endTime) {
+  $startTime.datetimepicker({
+    format: 'yyyy-mm-dd',
+    language: 'zh-CN',
+    minView: 2,
+    todayHighlight: true,
+    autoclose: true,
+  }).on('changeDate', function (ev) {
+    var startDate = new Date(ev.date.valueOf());
+    startDate.setDate(startDate.getDate(new Date(ev.date.valueOf())));
+    $endTime.datetimepicker('setStartDate', startDate);
+  });
+
+  $endTime.datetimepicker({
+    format: 'yyyy-mm-dd',
+    language: 'zh-CN',
+    minView: 2,
+    todayHighlight: true,
+    autoclose: true,
+  }).on('changeDate', function (ev) {
+    var FromEndDate = new Date(ev.date.valueOf());
+    FromEndDate.setDate(FromEndDate.getDate(new Date(ev.date.valueOf())));
+    $startTime.datetimepicker('setEndDate', FromEndDate);
+  });
+}
 
 /**
  * Normally just call `close()`, but that doesn't work in Firefox

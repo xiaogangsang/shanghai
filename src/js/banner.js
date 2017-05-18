@@ -1,15 +1,15 @@
 'use strict;'
 
 var common = require('common');
+var util = require('util');
+var pager = require('pager');
+
 require('fineUploader');
 
 var _channels = {};
 var _cities = [];
 var _choosed = [];
 var _movies = {};
-var _pageIndex = 1;
-var _pageSize = 10;
-var _pageTotal = 0;
 var _querying = false;
 var _searchCache = {};
 var _useCache = false;
@@ -21,33 +21,13 @@ var _cacheCinemas = [];
 
 $(function () {
   common.init('banner');
+  util.init($);
+  pager.init($('#pager'));
   setChannel();
   setProvince();
   setBrand();
 
-  $('#search_startTime').datetimepicker({
-    format: 'yyyy-mm-dd',
-    language: 'zh-CN',
-    minView: 2,
-    todayHighlight: true,
-    autoclose: true,
-  }).on('changeDate', function (ev) {
-    var startDate = new Date(ev.date.valueOf());
-    startDate.setDate(startDate.getDate(new Date(ev.date.valueOf())));
-    $('#search_endTime').datetimepicker('setStartDate', startDate);
-  });
-
-  $('#search_endTime').datetimepicker({
-    format: 'yyyy-mm-dd',
-    language: 'zh-CN',
-    minView: 2,
-    todayHighlight: true,
-    autoclose: true,
-  }).on('changeDate', function (ev) {
-    var FromEndDate = new Date(ev.date.valueOf());
-    FromEndDate.setDate(FromEndDate.getDate(new Date(ev.date.valueOf())));
-    $('#search_startTime').datetimepicker('setEndDate', FromEndDate);
-  });
+  util.setupDateRange($('#search_startTime'), $('#search_endTime'));
 
   var beginDate = new Date();
   var endDate = new Date();
@@ -67,7 +47,7 @@ $(function () {
 //handle search form
 $('#formSearch').on('click', 'button[type=submit]', function (event) {
   event.preventDefault();
-  _pageIndex = 1;
+  pager.pageIndex = 1;
   _useCache = false;
   $('#formSearch').trigger('submit');
 });
@@ -83,7 +63,7 @@ $('#formSearch').on('submit', function (e) {
     startTime: $('#search_startTime').val(),
     endTime: $('#search_endTime').val(),
     cityId: $('#search_cityId').val(),
-    pageSize: _pageSize,
+    pageSize: pager.pageSize,
   };
   if (!!_querying) {
     return false;
@@ -96,7 +76,7 @@ $('#formSearch').on('submit', function (e) {
     _searchCache = sendData;
   }
 
-  sendData.pageIndex = _pageIndex;
+  sendData.pageIndex = pager.pageIndex;
 
   var ajaxUrl = sendData.bannerType == 4 ? common.API_HOST + 'front/seatIcon/query' : common.API_HOST + 'banner/bannerList';
 
@@ -115,9 +95,9 @@ $('#formSearch').on('submit', function (e) {
         $('#pager').html('');
       } else {
         _useCache = true;
-        _pageIndex = res.data.pageIndex;
-        _pageTotal = Math.ceil(res.data.total / _pageSize);
-        setPager(res.data.total, _pageIndex, data.length, _pageTotal);
+        pager.pageIndex = res.data.pageIndex;
+        pager.pageTotal = Math.ceil(res.data.total / pager.pageSize);
+        setPager(res.data.total, pager.pageIndex, data.length, pager.pageTotal);
         _(data).forEach(function (item) {
           _(_channels).forEach(function (channel, key) {
             if (channel.channelId == item.channelId || channel.channelId == item.channel) {
@@ -149,29 +129,8 @@ $('#formSearch').on('submit', function (e) {
 $(document).on('click', '.btn-create', function (e) {
   _choosed = [];
   setModal(false, $(this).data('type'));
-  $('#startTime').datetimepicker({
-    format: 'yyyy-mm-dd',
-    language: 'zh-CN',
-    minView: 2,
-    todayHighlight: true,
-    autoclose: true,
-  }).on('changeDate', function (ev) {
-    var startDate = new Date(ev.date.valueOf());
-    startDate.setDate(startDate.getDate(new Date(ev.date.valueOf())));
-    $('#endTime').datetimepicker('setStartDate', startDate);
-  });
 
-  $('#endTime').datetimepicker({
-    format: 'yyyy-mm-dd',
-    language: 'zh-CN',
-    minView: 2,
-    todayHighlight: true,
-    autoclose: true,
-  }).on('changeDate', function (ev) {
-    var FromEndDate = new Date(ev.date.valueOf());
-    FromEndDate.setDate(FromEndDate.getDate(new Date(ev.date.valueOf())));
-    $('#startTime').datetimepicker('setEndDate', FromEndDate);
-  });
+  util.setupDateRange($('#startTime'), $('#endTime'));
 
   $('#popup-banner-form form').parsley();
   $('#popup-banner-form #filmId').chosen();
@@ -390,29 +349,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
   _choosed = banner.cityList != null ? banner.cityList : [];
   setModal(banner);
   $('#popup-banner-form').modal('show');
-  $('#startTime').datetimepicker({
-    format: 'yyyy-mm-dd',
-    language: 'zh-CN',
-    minView: 2,
-    todayHighlight: true,
-    autoclose: true,
-  }).on('changeDate', function (ev) {
-    var startDate = new Date(ev.date.valueOf());
-    startDate.setDate(startDate.getDate(new Date(ev.date.valueOf())));
-    $('#endTime').datetimepicker('setStartDate', startDate);
-  });
-
-  $('#endTime').datetimepicker({
-    format: 'yyyy-mm-dd',
-    language: 'zh-CN',
-    minView: 2,
-    todayHighlight: true,
-    autoclose: true,
-  }).on('changeDate', function (ev) {
-    var FromEndDate = new Date(ev.date.valueOf());
-    FromEndDate.setDate(FromEndDate.getDate(new Date(ev.date.valueOf())));
-    $('#startTime').datetimepicker('setEndDate', FromEndDate);
-  });
+  util.setupDateRange($('#startTime'), $('#endTime'));
 
   $('#popup-banner-form form').parsley();
   $('#popup-banner-form #filmId').chosen();
@@ -748,53 +685,14 @@ $(document).on('click', '#popup-city .choosed-city>.label>.close', function (eve
   // }
 });
 
-$('#pager').on('click', '.prev,.next', function (e) {
-  e.preventDefault();
-  if ($(this).hasClass('prev')) {
-    if (_pageIndex <= 1) {
-      _pageIndex = 1;
-      alert('已经是第一页！');
-      return false;
-    }
-
-    _pageIndex--;
-  } else {
-    if (_pageIndex >= _pageTotal) {
-      _pageIndex = _pageTotal;
-      alert('已经是最后一页！');
-      return false;
-    }
-
-    _pageIndex++;
-  }
-
-  $('#formSearch').trigger('submit');
-  return false;
-});
 
 $('#formSearch').on('click', 'button[type=submit]', function (event) {
   event.preventDefault();
-  _pageIndex = 1;
+  page.pageIndex = 1;
   _useCache = false;
   $('#formSearch').trigger('submit');
 });
 
-$('#pager').on('click', '#btn-pager', function (e) {
-  e.preventDefault();
-  if (!!~~$('#pageNo').val()) {
-    return false;
-  }
-
-  var pageNo = parseInt($('#pageNo').val());
-  if (NaN == pageNo || pageNo < 1 || pageNo > _pageTotal) {
-    alert('要跳转的页码超过了范围！');
-    return false;
-  }
-
-  _pageIndex = pageNo;
-  $('#formSearch').trigger('submit');
-  return false;
-});
 
 function setModal(bannerData, type) {
   var data;
