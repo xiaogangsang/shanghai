@@ -42,8 +42,9 @@ util.init = function($) {
    */
   $.fn.queryParam = function() {
 
+    // qq-button-id 是一个文件上传库会自动添加的 input
     // chosen.js 会把原先的 selet 隐藏, 所以要额外处理
-    var $inputs = this.find(':input:not(:button):visible:not([skipsubmit])')
+    var $inputs = this.find(':input:not(:button):visible:not([skipsubmit]):not([qq-button-id])')
       .add($('.chosen-container').closest('.form-group').filter(':visible').find('select'));
 
     var param = {};
@@ -52,7 +53,7 @@ util.init = function($) {
       var keys = $(this).attr('name');
       var value = $(this).val();
 
-      if (keys && (!$(this).is(':checkbox') || ($(this).is(':checked') && value))) {
+      if (keys && ((!$(this).is(':checkbox') && !$(this).is(':radio')) || ($(this).is(':checked') && value))) {
         keys = keys.split(',');
         keys.forEach(function(key) {
           if (key = key.trim()) {
@@ -187,6 +188,7 @@ util.setupDateRange = function($startTime, $endTime) {
     var startDate = new Date(ev.date.valueOf());
     startDate.setDate(startDate.getDate(new Date(ev.date.valueOf())));
     $endTime.datetimepicker('setStartDate', startDate);
+    $startTime.trigger('input');
   });
 
   $endTime.datetimepicker({
@@ -199,6 +201,7 @@ util.setupDateRange = function($startTime, $endTime) {
     var FromEndDate = new Date(ev.date.valueOf());
     FromEndDate.setDate(FromEndDate.getDate(new Date(ev.date.valueOf())));
     $startTime.datetimepicker('setEndDate', FromEndDate);
+    $endTime.trigger('input');
   });
 }
 

@@ -29,13 +29,13 @@ $(function () {
 
   util.setupDateRange($('#search_startTime'), $('#search_endTime'));
 
-  var beginDate = new Date();
-  var endDate = new Date();
-  beginDate.setDate(beginDate.getDate() - 7);
-  beginDate = common.getDate(beginDate);
-  endDate = common.getDate(endDate);
-  $('#search_startTime').val(beginDate).datetimepicker('setEndDate', endDate);
-  $('#search_endTime').val(endDate).datetimepicker('setStartDate', beginDate);
+  // var beginDate = new Date();
+  // var endDate = new Date();
+  // beginDate.setDate(beginDate.getDate() - 7);
+  // beginDate = common.getDate(beginDate);
+  // endDate = common.getDate(endDate);
+  // $('#search_startTime').val(beginDate).datetimepicker('setEndDate', endDate);
+  // $('#search_endTime').val(endDate).datetimepicker('setStartDate', beginDate);
 
   $('#formSearch').trigger('submit');
 
@@ -142,7 +142,7 @@ $(document).on('change click', '#search_provinceId', function (e) {
     options = '<option value="">全国</option>';
   }
 
-  $('#search_cityId').html(options);
+  $('#search_cityId').html(options).chosen('destroy').chosen();
   return false;
 });
 
@@ -523,23 +523,47 @@ $(document).on('submit', '#popup-banner-form form', function (event) {
       sendData.imageUrl = $('#popup-banner-form #imageUrl').val();
       sendData.link = $('#popup-banner-form #link').val();
       break;
+      case 6:
+      sendData = $(this).queryParam();
+      sendData.bannerType = $(this).find('#bannerType').val();
+      break;
     default:
       alert('配置类型不存在！');
       return false;
     break;
   }
 
-  var ajaxUrl = sendData.bannerType == undefined ? common.API_HOST + 'front/seatIcon/add' : common.API_HOST + 'banner/saveBanner';
-  if ($('#popup-banner-form #id').length > 0) {
+  var ajaxUrl = 'banner/saveBanner';
+  if (sendData.bannerType == undefined) {
+    ajaxUrl = 'front/seatIcon/add';
+  } else if (sendData.bannerType == 6) {
+    ajaxUrl = 'floatingInfo/create';
+  }
+
+  if ($('#popup-banner-form #id').val()) {
     sendData.id = $('#popup-banner-form #id').val();
-    ajaxUrl = sendData.bannerType == undefined ? common.API_HOST + 'front/seatIcon/update' : common.API_HOST + 'banner/updateBanner';
+    ajaxUrl = 'banner/updateBanner';
+    if (sendData.bannerType == undefined) {
+      ajaxUrl = 'front/seatIcon/update';
+    } else if (sendData.bannerType == 6) {
+      ajaxUrl = 'floatingInfo/update';
+    }
   }
 
   var ajaxContentType = sendData.bannerType == undefined ? 'application/x-www-form-urlencoded; charset=UTF-8' : 'application/json; charset=UTF-8';
-  var sendData = sendData.bannerType == undefined ? sendData : JSON.stringify(sendData);
+
+  if (sendData.bannerType != undefined) {
+    if (sendData.bannerType == 6) {
+      delete(sendData.bannerType);
+    }
+    sendData = JSON.stringify(sendData);
+  }
+
+  // var sendData = sendData.bannerType == undefined ? sendData : JSON.stringify(sendData);
+
 
   $.ajax({
-    url: ajaxUrl,
+    url: common.API_HOST + ajaxUrl,
     type: 'POST',
     dataType: 'json',
     contentType: ajaxContentType,
@@ -749,6 +773,9 @@ function setModal(bannerData, type) {
         template = $('#edit-cinema-template').html();
         uploadButton = '#file-upload';
         break;
+      case 6:
+        template = $('#promotion-template').html();
+        uploadButton = '#file-upload';
     }
 
     $('#popup-banner-form .modal-title').html('编辑[' + util.bannerType[bannerData.bannerType] + ']');

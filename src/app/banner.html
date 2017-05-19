@@ -778,35 +778,37 @@
   </script>
 
   <script id="promotion-template" type="text/x-tmpl-mustache">
+    {{#banner.id}}
     <input type="hidden" id="id" value="{{banner.id}}">
+    {{/banner.id}}
     <input type="hidden" id="bannerType" value="6">
     <div class="table-responsive">
       <table class="table">
         <tbody>
           <tr>
             <th>配置名称</th>
-            <td><input type="text" class="form-control" id="bannerName" value="{{banner.bannerName}}" required></td>
+            <td><input type="text" class="form-control" name="name" id="bannerName" value="{{banner.bannerName}}" required></td>
           </tr>
           <tr>
             <th>关联活动</th>
-            <td><input type="text" class="form-control" id="activityId" value="{{banner.activityId}}" required></td>
+            <td><input type="text" class="form-control" name="activityId" id="activityId" value="{{banner.activityId}}"></td>
           </tr>
           <tr>
             <th><div class="btn btn-default" id="file-upload">广告大图</div></th>
-            <td><input type="text" class="form-control" id="poster" value="{{banner.poster}}" required></td>
+            <td><input type="text" class="form-control" name="poster" id="poster" value="{{banner.imageUrl}}" required></td>
           </tr>
           <tr>
             <th><div class="btn btn-default" id="file-upload">按钮小图</div></th>
-            <td><input type="text" class="form-control" id="buttonIcon" value="{{banner.buttonIcon}}" required></td>
+            <td><input type="text" class="form-control" name="buttonIcon" id="buttonIcon" value="{{banner.imageUrlSmall}}" required></td>
           </tr>
           <tr>
             <th>跳转链接</th>
-            <td><input type="text" class="form-control" id="link" value="{{banner.link}}" required></td>
+            <td><input type="text" class="form-control" name="link" id="link" value="{{banner.link}}" required></td>
           </tr>
           <tr>
             <th>生效日期</th>
             <td>
-              <input type="text" class="form-control" style="display:inline-block;width:auto;" id="startTime" value="{{banner.startTime}}" size="10" required data-parsley-errors-container="#error-date" readonly> - <input type="text" class="form-control" style="display:inline-block;width:auto;" id="endTime" value="{{banner.endTime}}" size="10" required data-parsley-errors-container="#error-date" readonly>
+              <input type="text" class="form-control" style="display:inline-block;width:auto;" name="startTime" id="startTime" value="{{banner.startTime}}" size="10" required data-parsley-errors-container="#error-date" readonly> - <input type="text" class="form-control" style="display:inline-block;width:auto;" name="endTime" id="endTime" value="{{banner.endTime}}" size="10" required data-parsley-errors-container="#error-date" readonly>
               <div id="error-date"></div>
             </td>
           </tr>
@@ -814,16 +816,9 @@
             <th>渠道</th>
             <td>
               {{#channels}}
-              <div class="radio-inline"><label><input type="radio" name="channelId" value="{{channelId}}" required data-parsley-errors-container="#error-channel"{{#selected}} checked{{/selected}}><span>{{channelName}}</span></label></div>
+              <div class="radio-inline"><label><input type="radio" name="channel" value="{{channelId}}" required data-parsley-errors-container="#error-channel"{{#selected}} checked{{/selected}}><span>{{channelName}}</span></label></div>
               {{/channels}}
               <div id="error-channel"></div>
-            </td>
-          </tr>
-          <tr>
-            <th>是否显示</th>
-            <td>
-              <label class="radio-inline"><input type="radio" name="status" value="1"{{#banner.status}} checked{{/banner.status}}>是</label>
-              <label class="radio-inline"><input type="radio" name="status" value="0"{{^banner.status}} checked{{/banner.status}}>否</label>
             </td>
           </tr>
         </tbody>
