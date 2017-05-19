@@ -338,7 +338,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     detail.payTool = settlementCommon.parsePayTool(detail.payTool);
     detail.bizType = settlementCommon.parseBizType(detail.bizType);
     detail.chargeMerchant = settlementCommon.parseMerchant(detail.chargeMerchant);
-    detail.partner = settlementCommon.parsePartner(detail.partner);
+    // detail.partner = settlementCommon.parsePartner(detail.partner);
 
     if (data.operate) {
       formatEditHistory(data.operate);
@@ -366,6 +366,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     $('#settlementPlan option[value="' + detail.settlementPlan + '"]').prop('selected', true);
     $('#appStatus option[value="' + detail.appStatus + '"]').prop('selected', true);
     $('#discountType option[value="' + detail.discountType + '"]').prop('selected', true);
+    $('#partner option[value="' + detail.partner + '"]').prop('selected', true);
 
     if (compare) {
 
@@ -378,6 +379,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
       $('#reconciliationStatusNew').val([]);
       $('#reconciliationStatusNew option[value="' + detail.reconciliationStatus + '"]').prop('selected', true);
       $('#discountTypeNew option[value="' + detail.discountType + '"]').prop('selected', true);
+      $('#partnerNew option[value="' + detail.partner + '"]').prop('selected', true);
 
       // 如果没有原备注的话, 隐藏原备注textarea
       if (!detail.remarks) {
