@@ -775,7 +775,7 @@ function setModal(bannerData, type) {
         break;
       case 6:
         template = $('#promotion-template').html();
-        uploadButton = '#file-upload';
+        uploadButton = '.file-upload';
     }
 
     $('#popup-banner-form .modal-title').html('编辑[' + util.bannerType[bannerData.bannerType] + ']');
@@ -805,7 +805,7 @@ function setModal(bannerData, type) {
       break;
       case 6: 
         template = $('#promotion-template').html();
-        uploadButton = '#file-upload';
+        uploadButton = '.file-upload';
       break;
     }
 
@@ -846,30 +846,34 @@ function setModal(bannerData, type) {
           });
         }
       } else {
-        var uploader = new qq.FineUploaderBasic({
-          button: $(uploadButton)[0],
-          request: {
-            endpoint: common.API_HOST + 'banner/uploadPic',
-            inputName: 'file',
-            filenameParam: 'file',
-          },
-          callbacks: {
-            onError: function (id, fileName, errorReason) {
-              if (errorReason != 'Upload failure reason unknown') {
-                alert('上传失败' + errorReason);
-              }
+        $(uploadButton).each(function() {
+          var button = this;
+          var uploader = new qq.FineUploaderBasic({
+            button: button,
+            request: {
+              endpoint: common.API_HOST + 'banner/uploadPic',
+              inputName: 'file',
+              filenameParam: 'file',
             },
+            callbacks: {
+              onError: function (id, fileName, errorReason) {
+                if (errorReason != 'Upload failure reason unknown') {
+                  alert('上传失败' + errorReason);
+                }
+              },
 
-            onComplete: function (id, fileName, responseJSON) {
-              if (!!~~responseJSON.meta.result) {
-                $(uploadButton).closest('tr').find('input[type=text]').val(responseJSON.data.savePath);
-                alert('上传成功！');
-              } else {
-                alert('上传失败：' + responseJSON.meta.msg);
-              }
+              onComplete: function (id, fileName, responseJSON) {
+                if (!!~~responseJSON.meta.result) {
+                  $(button).closest('tr').find('input[type=text]').val(responseJSON.data.savePath);
+                  alert('上传成功！');
+                } else {
+                  alert('上传失败：' + responseJSON.meta.msg);
+                }
+              },
             },
-          },
+          });
         });
+        
       }
     }
   });;
