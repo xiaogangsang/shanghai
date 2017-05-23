@@ -30,7 +30,7 @@
         <tr>
           <th>上映状态</th>
           <td>
-            <select class="form-control" id="status" required readonly>
+            <select class="form-control" id="status" required readonly disabled>
               {{#status}}
               <option value="{{id}}"{{#selected}} selected{{/selected}}>{{name}}</option>
               {{/status}}
