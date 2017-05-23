@@ -30,6 +30,7 @@ $('#formSearch').on('submit', function (e) {
     couponId: $.trim($('#search_couponId').val()),
     name: $.trim($('#search_name').val()),
     budgetSource: $('#search_budgetSource').val(),
+    budgetSourceGroup: $('#search_level').val(),
     pageSize: _pageSize,
   };
   if (!!_querying) {
@@ -104,7 +105,7 @@ $(document).on('change click', '#search_level', function (event) {
       $('#search_budgetSource').closest('.form-group').hide();
       alert('所选成本中心类别下无成本中心，这个情况不正常，需要注意哦！');
     } else {
-      var html = '';
+      var html = '<option value="">全部</option>';
       _(sources).forEach(function (source) {
         html += '<option value="' + source.id + '">' + source.sourceName + '</option>';
       });
@@ -240,7 +241,20 @@ function getBudgetSource() {
   .done(function (res) {
     if (!!~~res.meta.result) {
       _budgetSource = res.data;
-      $('#formSearch').trigger('submit');
+
+      var keys = [];
+      _(_budgetSource).forEach(function (group, key) {
+        keys.push(key);
+      });
+
+      $('#search_level').find('option').each(function() {
+        var optionKey = $(this).val();
+        if (optionKey && keys.indexOf(optionKey) < 0) {
+          $(this).remove();
+        }
+      });
+
+      // $('#formSearch').trigger('submit');
     } else {
       alert('接口错误：' + res.meta.msg);
     }

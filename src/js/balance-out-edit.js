@@ -20,18 +20,77 @@ var _queryingFromSelectedSummary = false;
 
 var _selectedSummary = {};
 
-var approval = false;
+var location = window.location.href;
+var parts = location.split('/');
+var html = parts[parts.length - 1];
+var approval = (html.indexOf('approval') > -1);
+
+var summaryTable = {
+  table: $('#summaryTable'), 
+  keyMap : [
+    {label: '订单数', key: 'count'}, 
+    {label: '张数', key: 'totalTicketCount'},
+    {label: '结算金额(元)', key: 'totalSettleAmount'},
+    {label: '常规活动后付补贴金额(元)', key: 'totalSubsidyAmountO2o'},
+    {label: '支付活动后付补贴金额(元)', key: 'totalSubsidyAmountTrd'},
+    {label: '应付金额(元)', key: 'totalAcceptanceAppropriationAmount'},
+    {label: '实付金额(元)', key: 'totalFinalSettleAmount'}
+  ]
+};
+
+var detailTable = {
+  table: $('#dataTable'),
+  keyMap: [
+    {label: '<input type="checkbox" class="multi-check-all"></th>', parseKey: function(item) {
+      return '<input type="checkbox" class="multi-check">';
+    }},
+    {label: '操作时间', key: 'updateTime'},
+    {label: '交易订单号', key: 'orderNo'},
+    {label: '出货订单类型', key: 'shipmentOrderType', parseKey: '.'},
+    {label: '订单来源', key: 'orderSource', parseKey: '.'},
+    {label: '商品订单号', key: 'bizOrderNo'},
+    {label: '二级商户', key: 'merchantName'},
+    {label: '二级商户号', key: 'merchantNo'},
+    {label: '业务类别', key: 'bizType', parseKey: '.'},
+    {label: '出货状态', key: 'shipmentStatus', parseKey: '.'},
+    {label: '交易金额(元)', key: 'settleAmount'},
+    {label: '渠道方补贴金额(元)', key: 'subsidyAmountO2o'},
+    {label: '补贴付款方式', key: 'subsidyType', parseKey: '.'},
+    {label: '退票手续费(元)', key: 'returnFee'},
+    {label: '应付金额(元)', key: 'acceptanceAppropriation'},
+    {label: '实付金额(元)', key: 'finalSettleAmount'},
+    {label: '退款承债方', key: 'partner', parseKey: '.'},
+    {label: '常规优惠方式', key: 'discountType', parsekey: '.'},
+    {label: '常规活动/优惠券名称', key: 'discountName'},
+    {label: '出货对账状态', key: 'reconciliationStatus', parseKey: '.'},
+    {label: '修改状态', key: 'checkStatus', parseKey: '.'},
+    {label: '操作', parseKey: function(item) {
+
+      var html = '';
+      if (approval) {
+        html += '<button class="btn btn-xs btn-default btn-edit" data-compare="1" data-id="' + item.id + '">查看详情</button>';
+        html += '<button class="btn btn-xs btn-default btn-approval" data-checkstatus="3" data-id="' + item.id + '" data-version="' + item.version + '">审核通过</button>';
+        html += '<button class="btn btn-xs btn-default btn-approval" data-checkstatus="4" data-id="' + item.id + '" data-version="' + item.version + '">驳回</button>';
+      } else {
+        html += '<button class="btn btn-xs btn-default btn-edit" data-compare="1" data-id="' + item.id + '">查看详情</button>';
+        // 可编辑
+        if (item.checkStatus != 2 && item.checkStatus != 3 && item.reconciliationStatus != 4) {
+          html += '<button class="btn btn-xs btn-default btn-edit" data-compare="0" data-id="' + item.id + '">重新修改</button>';
+        }
+        // 可reverse
+        if (item.checkStatus == 3) {
+          html += '<button class="btn btn-xs btn-default btn-reverse" data-id="' + item.id + '">反审核</button>';
+        }
+      }
+      return html;
+    }}
+  ],
+  rowAttrs: function(item) {
+    return 'data-id="' + item.id + '"';
+  }
+};
 
 $(function() {
-
-  var location = window.location.href;
-
-  var parts = location.split('/');
-
-  var html = parts[parts.length - 1];
-
-  approval = (html.indexOf('approval') > -1);
-
 
   if (approval) {
     common.init('balance-out-edit-approval');
@@ -44,6 +103,9 @@ $(function() {
   $('#search_payTool').html(settlementCommon.optionsHTML(settlementCommon.payTool, true));
 
   $('#formSearch').parsley();
+
+  settlementCommon.formatTableWithData(summaryTable);
+  settlementCommon.formatTableWithData(detailTable);
 });
 
 
@@ -145,31 +207,13 @@ function handleData(res) {
     _pageTotal = Math.ceil(totalRecord / _pageSize);
     setPager(totalRecord, _pageIndex, record.length, _pageTotal);
 
-    _(record).forEach(function(item) {
-      item.canEdit = (item.checkStatus != 2 && item.checkStatus != 3 && item.reconciliationStatus != 4); // 待审核/审核完成状态不能再修改, 对账状态为确认的也不能修改
-      item.canReverse = (item.checkStatus == 3);
-      item.bizType = settlementCommon.parseBizType(item.bizType);
-      item.partner = settlementCommon.parsePartner(item.partner);
-      item.subsidyType = settlementCommon.parseSubsidyType(item.subsidyType);
-      item.reconciliationStatus = settlementCommon.parseReconciliationStatus(item.reconciliationStatus);
-      item.discountType = settlementCommon.parseDiscountType(item.discountType);
-      item.checkStatus = settlementCommon.parseCheckStatus(item.checkStatus);
-      item.shipmentStatus = settlementCommon.parseShipmentStatus(item.shipmentStatus);
-      item.shipmentOrderType = settlementCommon.parseShipmentOrderType(item.shipmentOrderType);
-      item.orderSource = settlementCommon.parseOrderSource(item.orderSource);
-
-    });
-
     if (!_queryingFromSelectedSummary) {
       useCache = true;
     }
-
-    setTableData(record);
-
-    // 从汇总页点击查看选中明细, 是没有summary返回的
-    if (res.data.summary) {
-      setSummaryTableData(res.data.summary);
-    }
+    
+    var summary = res.data.summary;
+    settlementCommon.formatTableWithData(summaryTable, summary);
+    settlementCommon.formatTableWithData(detailTable, record);
   }
 }
 
@@ -294,7 +338,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     detail.payTool = settlementCommon.parsePayTool(detail.payTool);
     detail.bizType = settlementCommon.parseBizType(detail.bizType);
     detail.chargeMerchant = settlementCommon.parseMerchant(detail.chargeMerchant);
-    detail.partner = settlementCommon.parsePartner(detail.partner);
+    // detail.partner = settlementCommon.parsePartner(detail.partner);
 
     if (data.operate) {
       formatEditHistory(data.operate);
@@ -322,6 +366,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     $('#settlementPlan option[value="' + detail.settlementPlan + '"]').prop('selected', true);
     $('#appStatus option[value="' + detail.appStatus + '"]').prop('selected', true);
     $('#discountType option[value="' + detail.discountType + '"]').prop('selected', true);
+    $('#partner option[value="' + detail.partner + '"]').prop('selected', true);
 
     if (compare) {
 
@@ -334,6 +379,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
       $('#reconciliationStatusNew').val([]);
       $('#reconciliationStatusNew option[value="' + detail.reconciliationStatus + '"]').prop('selected', true);
       $('#discountTypeNew option[value="' + detail.discountType + '"]').prop('selected', true);
+      $('#partnerNew option[value="' + detail.partner + '"]').prop('selected', true);
 
       // 如果没有原备注的话, 隐藏原备注textarea
       if (!detail.remarks) {

@@ -23,13 +23,13 @@ function getEntry() {
     }
   });
 
-  return files;
+  this.entry = files;
 }
 
 module.exports = {
   cache: true,
   devtool: 'source-map',
-  entry: getEntry(),
+  refreshEntry: getEntry,
   output: {
     path: path.join(__dirname, 'dist/js/'),
     publicPath: path.join(__dirname, 'dist/js/'),

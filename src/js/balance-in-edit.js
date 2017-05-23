@@ -23,6 +23,77 @@ var _selectedSummary = {};
 // 是查看提交的修改(false)还是审核(true)
 var approval = false;
 
+var summaryTable = {
+  table: $('#summaryTable'),
+  keyMap : [
+    {label: '收单订单类型', key: 'acquiringOrderType', parseKey: '.'},
+    {label: '渠道', key: 'payTool', parseKey: function(item) {
+      return settlementCommon.parseAcquiringPayTool(item.payTool);
+    }},
+    {label: '记录数', key: 'totalOrderCount'},
+    {label: '用户支付金额', key: 'totalPayAmount'},
+    {label: '常规活动后付款补贴金额', key: 'totalSubsidyAmountO2o'},
+    {label: '支付活动后付款补贴金额', key: 'totalSubsidyAmountTrd'},
+    {label: 'O2O应收金额', key: 'totalO2oReceivableAmount'},
+    {label: '实收金额', key: 'totalBankAmount'},
+    {label: '服务费', key: 'totalServiceAmount'}
+  ]
+};
+
+var detailTable = {
+  table: $('#dataTable'),
+  keyMap: [
+    {label: '<input type="checkbox" class="multi-check-all"></th>', parseKey: function() {
+      return '<input type="checkbox" class="multi-check">';
+    }},
+    {label: '操作时间', key: 'operateTime'},
+    {label: '银行收单日期', key: 'settleDate'},
+    {label: '交易订单号', key: 'orderNo'},
+    {label: '收单订单类型', key: 'acquiringOrderType', parseKey: '.'},
+    {label: '订单来源', key: 'orderSource', parseKey: '.'},
+    {label: '收单商户', key: 'chargeMerchant'},
+    {label: '收单商户号', key: 'chargeMerchantNo'},
+    {label: '业务类别', key: 'bizType', parseKey: '.'},
+    {label: '支付流水状态', key: 'payStatus', parseKey: '.'},
+    {label: '票价', key: 'ticketAmount'},
+    {label: '退票手续费', key: 'returnFee'},
+    {label: '服务费', key: 'serviceAmount'},
+    {label: '渠道方补贴金额', key: 'subsidyAmountO2o'},
+    {label: 'O2O应收金额', key: 'payAmount'},
+    {label: '实收金额', key: 'bankAmount'},
+    {label: '承债方', key: 'partner', parseKey: '.'},
+    {label: '常规优惠方式', key: 'discountType', parseKey: '.'},
+    {label: '常规活动/优惠券名称', key: 'discountName'},
+    {label: '收单对账状态', key: 'reconciliationStatus', parseKey: '.'},
+    {label: '对账不一致原因', key: 'reason', parseKey: '.'},
+    {label: '修改状态', key: 'checkStatus', parseKey: '.'},
+    {label: '操作', parseKey: function(item) {
+
+      var html = '';
+      if (approval) {
+        html += '<button class="btn btn-xs btn-default btn-edit" data-compare="1" data-id="' + item.id + '">查看详情</button>';
+        html += '<button class="btn btn-xs btn-default btn-approval" data-checkstatus="3" data-id="' + item.id + '" data-version="' + item.version + '">审核通过</button>';
+        html += '<button class="btn btn-xs btn-default btn-approval" data-checkstatus="4" data-id="' + item.id + '" data-version="' + item.version + '">驳回</button>';
+      } else {
+        html += '<button class="btn btn-xs btn-default btn-edit" data-compare="1" data-id="' + item.id + '">查看详情</button>';
+        // 可编辑
+        if (item.checkStatus != 2 && item.checkStatus != 3 && item.reconciliationStatus != 4) {
+          html += '<button class="btn btn-xs btn-default btn-edit" data-compare="0" data-id="' + item.id + '">重新修改</button>';
+        }
+        // 可reverse
+        if (item.checkStatus == 3) {
+          html += '<button class="btn btn-xs btn-default btn-reverse" data-id="' + item.id + '">反审核</button>';
+        }
+      }
+      return html;
+    }}
+  ],
+  rowAttrs: function(item) {
+    return 'data-id="' + item.id + '"';
+  }
+};
+
+
 $(function() {
 
   var parts = window.location.href.split('/');
@@ -34,8 +105,9 @@ $(function() {
   } else {
     common.init('balance-in-edit-submitted');
   }
-  
   $('#formSearch').parsley();
+  settlementCommon.formatTableWithData(summaryTable);
+  settlementCommon.formatTableWithData(detailTable);
 });
 
 
@@ -123,6 +195,7 @@ $('#formSearch').on('submit', function (e) {
 
 function handleData(res) {
 	_querying = false;
+  $('#hud-overlay').hide();
 
   if (settlementCommon.prehandleData(res)) {
     var totalRecord = res.data.detail.count;
@@ -131,54 +204,17 @@ function handleData(res) {
     _pageTotal = Math.ceil(totalRecord / _pageSize);
     setPager(totalRecord, _pageIndex, record.length, _pageTotal);
 
-    _(record).forEach(function(item) {
-      item.canEdit = (item.checkStatus != 2 && item.checkStatus != 3 && item.reconciliationStatus != 4); // 待审核/审核完成状态不能再修改, 对账状态为确认的也不能修改
-      item.canReverse = (item.checkStatus == 3);
-      item.chargeMerchant = settlementCommon.parseChargeMerchant(item.chargeMerchant);
-      item.payStatus = settlementCommon.parsePayStatus(item.payStatus);
-      item.reconciliationStatus = settlementCommon.parseReconciliationStatus(item.reconciliationStatus);
-      item.reason = settlementCommon.parseReason(item.reason);
-      item.bizType = settlementCommon.parseBizType(item.bizType);
-      item.discountType = settlementCommon.parseDiscountType(item.discountType);
-      item.partner = settlementCommon.parsePartner(item.partner);
-      item.checkStatus = settlementCommon.parseCheckStatus(item.checkStatus);
-      item.acquiringOrderType = settlementCommon.parseAcquiringOrderType(item.acquiringOrderType);
-      item.orderSource = settlementCommon.parseOrderSource(item.orderSource);
-    });
-
     if (!_queryingFromSelectedSummary) {
       useCache = true;
     }
 
-    setTableData(record);
-
-    // 从汇总页点击查看选中明细, 是没有summary返回的
     var summary = res.data.summary;
-    if (summary) {
-      _(summary).forEach(function(item) {
-        item.payTool = settlementCommon.parseAcquiringPayTool(item.payTool);
-        item.acquiringOrderType = settlementCommon.parseAcquiringOrderType(item.acquiringOrderType);
-      });
-      setSummaryTableData(summary);
-    }
+
+    settlementCommon.formatTableWithData(summaryTable, summary);
+    settlementCommon.formatTableWithData(detailTable, record);
   }
 }
 
-function setTableData(rows) {
-  var data = { rows: rows };
-  var template = $('#table-template').html();
-  Mustache.parse(template);
-  var html = Mustache.render(template, data);
-  $('#dataTable tbody').html(html);
-}
-
-function setSummaryTableData(data) {
-  var data = { rows: data };
-  var template = $('#summary-table-template').html();
-  Mustache.parse(template);
-  var html = Mustache.render(template, data);
-  $('#summaryTable tbody').html(html);
-}
 
 function setPager(total, pageIndex, rowsSize, pageTotal) {
   var data = { total: total, pageIndex: pageIndex, rowsSize: rowsSize, pageTotal: pageTotal };
@@ -246,6 +282,8 @@ $('.btn-reset').click(function(e) {
 $('#dataTable').on('click', '.btn-edit', function (e) {
 
   e.preventDefault();
+
+  var compare = $(this).data('compare');
 
   $.ajax({
     url: common.API_HOST + 'settlement/acquiring/queryAcquiringInfo',

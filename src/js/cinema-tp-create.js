@@ -91,6 +91,7 @@ $(document).on('click change', '#provinceId', function (e) {
     });
 
     $('#cityId').html(html);
+    $('#cityId').chosen();
     $('#areaId,#districtId').html('<option value=""></option>');
   }
 

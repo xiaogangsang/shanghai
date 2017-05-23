@@ -1,11 +1,11 @@
 /**
-	清算
-	1. 状态码的转换全部统一放在这个文件里负责
-	2. 一些工具函数也放在了这里
+  清算
+  1. 状态码的转换全部统一放在这个文件里负责
+  2. 一些工具函数也放在了这里
   3. 一些通用配置, 包括
       为每个页面增加 隐藏/显示 菜单栏 按钮
       查询的时间跨度限制
-	Ge Liu created at 2016-07-27 17:51:15
+  Ge Liu created at 2016-07-27 17:51:15
 
   Modified history:
   2016-08-11 12:25:44 Ge Liu
@@ -21,7 +21,7 @@ var settlementCommon = module.exports = {};
 settlementCommon.merchant = {'1' : '卡中心', '2' : '总行'};
 
 settlementCommon.parseMerchant = function(status) {
-	return this.merchant[status];
+  return this.merchant[status];
 }
 
 settlementCommon.chargeMerchat = {'1' : 'O2O-卡中心', '2' : 'O2O-分行'};
@@ -34,7 +34,7 @@ settlementCommon.parseChargeMerchant = function(status) {
 settlementCommon.acquiringOrderType = {'1' : '支付', '2' : '退款'};
 
 settlementCommon.parseAcquiringOrderType = function(status) {
-	return this.acquiringOrderType[status];
+  return this.acquiringOrderType[status];
 }
 
 
@@ -84,7 +84,7 @@ settlementCommon.parsePayTool = function(status) {
 settlementCommon.acquiringPayTool = {'1' : 'O2O-卡中心', '2' : 'O2O-分行'};
 
 settlementCommon.parseAcquiringPayTool = function(status) {
-  if (status == undefined) {
+  if (status == void 0) {
     return '合计';
   } else {
     return this.acquiringPayTool[status];
@@ -99,14 +99,12 @@ settlementCommon.parseBizType = function(status) {
   return this.bizType[status];
 }
 
-
 // 补贴付款方式
 settlementCommon.subsidyType = {'0' : '无', '1' : '预付', '2' : '后付'};
 
 settlementCommon.parseSubsidyType = function(status) {
   return this.subsidyType[status];
 }
-
 
 // 优惠方式
 settlementCommon.discountType = {'1' : '活动', '2' : '优惠券', '9' : '无优惠'};
@@ -120,7 +118,7 @@ settlementCommon.parseDiscountType = function(status) {
 settlementCommon.partner = {'1' : 'O2O', '2' : 'TP方', '3' : '渠道方'};
 
 settlementCommon.parsePartner = function(status) {
-	return this.partner[status];
+  return this.partner[status];
 }
 
 
@@ -163,7 +161,7 @@ settlementCommon.moneyOutStatus =
   {'1' : '待拨款', '3' : '正常拨款成功', '4' : '暂停拨款', '6' : '银行退票', '5' : '待重拨', '2' : '拨款失败', '7' : '重拨成功'};
 
 settlementCommon.parseMoneyOutStatus = function(status) {
-	return this.moneyOutStatus[status];
+  return this.moneyOutStatus[status];
 }
 
 
@@ -171,7 +169,7 @@ settlementCommon.parseMoneyOutStatus = function(status) {
 settlementCommon.channel = {'1' : '掌上生活', '2' : '手机银行'};
 
 settlementCommon.parseChannel = function(status) {
-	return this.channel[status];
+  return this.channel[status];
 }
 
 
@@ -179,7 +177,7 @@ settlementCommon.parseChannel = function(status) {
 settlementCommon.operation = {'1' : '银行退票', '2' : '重拨'};
 
 settlementCommon.parseOperation = function(status) {
-	return this.operation[status];
+  return this.operation[status];
 }
 
 // 下载 -> 文件类型
@@ -254,6 +252,275 @@ settlementCommon.parseDepartmentUseStatus = function(status) {
   return this.departmentUseStatus[status];
 }
 
+/************************************************ Form / Table 的自动组装 ************************************************/
+settlementCommon.formatTableWithData = function (table, data) {
+
+  var $table = table.table, keyMap = table.keyMap, rowAttrs = table.rowAttrs;
+
+  var html = '';
+  html += '<thead><tr>';
+
+  keyMap.forEach(function(map) {
+    html += '<th>' + map.label + '</th>';
+  });
+
+  html += '</tr></thead>';
+  html += '<tbody>'
+
+  if (!data) data = '请点击“查询”按钮！';
+  if (data.length === 0) data = '无满足条件的记录';
+
+  if (typeof data === 'string') {
+    html += '<tr><td colspan="' + keyMap.length + '" align="center">' + data + '</td></tr>';
+  } else {
+    if (Object.prototype.toString.call(data) !== '[object Array]') {
+      data = [data];
+    }
+
+    data.forEach(function(item) {
+
+      if (rowAttrs) {
+        html += '<tr ' + rowAttrs(item) + '>'
+      } else {
+        html += '<tr>';
+      }
+
+      keyMap.forEach(function(map) {
+
+        var value = map.key ? item[map.key] : '';
+
+        var parseKey = map.parseKey;
+        if (parseKey) {
+          if (typeof parseKey === 'function') {
+            value = parseKey(item);
+          } else if (typeof parseKey === 'string') {
+            if (parseKey === '.') {
+              parseKey = map.key;
+            }
+            value = settlementCommon[parseKey][value];
+          } else {
+            value = parseKey[value];
+          }
+        }
+
+        html += '<td>' + (value == null ? '' : value) + '</td>';
+      });
+
+      html += '</tr>';
+    });
+  }
+
+  html += '</tbody>';
+
+  $table.html(html);
+}
+
+settlementCommon.formatSearchForm = function (form, data) {
+  var $container = form.container || form.form, fields = form.fields;
+  form.data = form.data || {};
+
+  // 和 detail 不同, 不用嵌套 row
+  var html = '';
+  var callbacks = [];
+  var binds = [];
+  var watchAndHandlers = [];
+
+  fields.forEach(function (field, index) {
+    var inputHTML = '';
+    var value = (data && data[field.key || field.name]) || '';
+    var customizedProp = ((typeof field.customizedProp === 'function') ? field.customizedProp(data) : field.customizedProp) || '';
+    switch (field.type) {
+      case 'input': 
+        inputHTML += '<input type="text" class="form-control" name="' + field.name + '" value="' + value + '" ' + customizedProp + ' >';
+        break;
+      case 'select':
+        inputHTML += '<select class="form-control" name="' + field.name + '" ' + (field.customizedProp || '') + ' >';
+        var options;
+        if (typeof field.options === 'string') {
+          options = settlementCommon[field.options];
+        } else {
+          options = field.options;
+        }
+        inputHTML += settlementCommon.optionsHTML(options, true, value); // 这里和detail form不同, searchForm默认是true, options中带"全部"
+        inputHTML += '</select>';
+        break;
+      default:
+        throw new TypeError('Unknow input type: ' + field.type + '!');
+        break;
+    }
+
+    // 和 detail 不同的地方, search form 一行 4 条, detail form 一行 2 条
+    var before = '<div class="form-group col-sm-6 col-md-3"><div class="input-group"><div class="input-group-addon">' + field.label + '</div>';
+    var after = '</div></div>';
+
+    html += before + inputHTML + after;
+
+    
+    if (field.completion) {
+      callbacks.push({name: field.name, func: field.completion});
+    }
+
+    if (field.bind = field.bind && field.bind.trim()) {
+      binds.push({name: field.name, bindKey: field.bind});
+    }
+
+    if (field.watch) {
+      field.watch.split(',').forEach(function(key) {
+        if (key = key.trim()) {
+          watchAndHandlers[key] = watchAndHandlers[key] || [];
+          watchAndHandlers[key].push({name: field.name, handler: field.handler});
+        }
+      }); 
+    }
+  });
+
+  // search form 是一次性渲染, 和 detail 不同
+  $container.prepend(html);
+
+  setTimeout(function() {
+    // completion callback
+    callbacks.forEach(function(callback) {
+      callback.func.call($container.find(':input[name=' + callback.name + ']'), data);
+    });
+
+    // binding and watching
+    binds.forEach(function(item, index) {
+      var $input = $container.find(':input[name=' + item.name + ']');
+
+      var handler = function(e) {
+        form.data[item.bindKey] = $input.val();
+
+        // notify all the watchers
+        var watchers = watchAndHandlers[item.bindKey] || [];
+        watchers.forEach(function(watcher) {
+          var $input = $container.find(':input[name=' + watcher.name + ']');
+          watcher.handler.call($input, form.data);
+        });
+      };
+
+      handler();
+      $input.on('change', handler);
+    });
+  }, 0);
+};
+
+settlementCommon.formatDetailForm = function (form, data) {
+  var $container = form.container || form.form, fields = form.fields;
+  form.data = form.data || {};
+
+  var html = '<div class="row">';
+  var callbacks = [];
+  var binds = [];
+  var watchAndHandlers = [];
+
+  fields.forEach(function (field, index) {
+    var inputHTML = '';
+    var value = (data && data[field.key || field.name]) || '';
+    var customizedProp = ((typeof field.customizedProp === 'function') ? field.customizedProp(data) : field.customizedProp) || '';
+    switch (field.type) {
+      case 'input': 
+        inputHTML += '<input type="text" class="form-control" name="' + field.name + '" value="' + value + '" ' + customizedProp + ' >';
+        break;
+      case 'textarea':
+        inputHTML  += '<textarea type="text" class="form-control" name="' + field.name + '" ' + customizedProp + ' >' + value + '</textarea>';
+        break;
+      case 'select':
+        inputHTML += '<select class="form-control" name="' + field.name + '" ' + (field.customizedProp || '') + ' >';
+        var options;
+        if (typeof field.options === 'string') {
+          options = settlementCommon[field.options];
+        } else {
+          options = field.options;
+        }
+        inputHTML += settlementCommon.optionsHTML(options, false, value);// 这里和searchForm不同, searchForm默认是true, options中带"全部"
+        inputHTML += '</select>';
+        break;
+      default:
+        throw new TypeError('Unknow input type: ' + field.type + '!');
+        break;
+    }
+
+    var before = '<div class="form-group col-sm-6 col-md-6"><div class="input-group"><div class="input-group-addon">' + field.label + '</div>';
+    var after = '</div></div>';
+
+    html += before + inputHTML + after;
+
+    
+    if (field.completion) {
+      callbacks.push({name: field.name, func: field.completion});
+    }
+
+    if (field.bind = field.bind && field.bind.trim()) {
+      binds.push({name: field.name, bindKey: field.bind});
+    }
+
+    if (field.watch) {
+      field.watch.split(',').forEach(function(key) {
+        if (key = key.trim()) {
+          watchAndHandlers[key] = watchAndHandlers[key] || [];
+          watchAndHandlers[key].push({name: field.name, handler: field.handler});
+        }
+      }); 
+    }
+  });
+
+  html += '</div>';
+
+  $container.html(html);
+
+  setTimeout(function() {
+    // completion callback
+    callbacks.forEach(function(callback) {
+      callback.func.call($container.find(':input[name=' + callback.name + ']'), data);
+    });
+
+    // binding and watching
+    binds.forEach(function(item, index) {
+      var $input = $container.find(':input[name=' + item.name + ']');
+
+      var handler = function(e) {
+        form.data[item.bindKey] = $input.val();
+
+        // notify all the watchers
+        var watchers = watchAndHandlers[item.bindKey] || [];
+        watchers.forEach(function(watcher) {
+          var $input = $container.find(':input[name=' + watcher.name + ']');
+          watcher.handler.call($input, form.data);
+        });
+      };
+
+      handler();
+      $input.on('change', handler);
+    });
+  }, 0);
+
+  // search form 没有 auto submit
+  // 防止重复绑定
+  if (form.autoSubmit && !form.__autoSubmit) {
+    form.__autoSubmit = function(e) {
+      e.preventDefault();
+      var data = $(this).queryParam();
+      var modal = form.modal || $(this).closest('.modal');
+
+      $.ajax({
+        url: form.url,
+        type: 'POST',
+        dataType: 'json',
+        data: data,
+      })
+      .done(function (res) {
+        if (!!~~res.meta.result) {
+          alert('提交成功');
+          modal.modal('hide');
+        } else {
+          alert('接口错误：' + res.meta.msg);
+        }
+      });
+    }
+    // 奇怪的现象: 如果不动态绑定submit的话, 即使parsley表单验证失败还是会提交表单
+    form.form.parent().on('submit', 'form', form.__autoSubmit);
+  }
+};
 
 
 /**
@@ -265,19 +532,51 @@ settlementCommon.parseDepartmentUseStatus = function(status) {
  * 
  * @returns {String}
  */
-settlementCommon.optionsHTML = function(options, withAll) {
-  // 
+settlementCommon.optionsHTML = function(options, withAll, selectedKey) {
+
+  if (!options) return '';
+
   var html = withAll ? '<option value="">全部</option>' : '';
 
   for (var key in options) {
     if (options.hasOwnProperty(key)) {
       var value = options[key];
-      html += '<option value="' + key + '">' + value + '</option>';
+      html += '<option value="' + key + '" ' + (key == selectedKey ? 'selected' : '') + '>' + value + '</option>';
     }
   }
 
   return html;
 }
+
+// 自动生成表单提交参数
+// Caution: this function is not fully tested. IT'S ERROR PRONE.
+$.fn.queryParam = function() {
+
+  // chosen.js 会把原先的 selet 隐藏, 所以要额外处理
+  var $inputs = this.find(':input:not(:button):visible:not([skipsubmit])').add($('.chosen-container').closest('.form-group').filter(':visible').find('select'));
+
+  var param = {};
+
+  $inputs.each(function() {
+    var key = $(this).attr('name');
+    var value = $(this).val();
+
+    if (key && (!$(this).is(':checkbox') || ($(this).is(':checked') && value)))  {
+      var storedValue = param[key];
+      if (!storedValue) {
+        storedValue = value;
+      } else if ($.isArray(storedValue)) {
+        storedValue.push(value);
+      } else {
+        storedValue = [storedValue, value];
+      }
+
+      param[key] = storedValue;
+    }
+  });
+
+  return param;
+};
 
 
 /**
@@ -328,7 +627,7 @@ settlementCommon.serializeParam = function(param) {
 
 // 下面是对字符串数组的自定义序列化, 以逗号(%2C)分隔
 settlementCommon.toString = function(array) {
-	var str = '';
+  var str = '';
 
   array.forEach(function(ele, index) {
     str += ele + (index === array.length - 1 ? '' : ',');
@@ -396,17 +695,6 @@ settlementCommon.resetInput = function(input) {
   input.replaceWith(input.val('').clone(true));
 }
 
-// 必填项加*号
-settlementCommon.addStarMark = function() {
-  var elements = $('[required]');
-  elements.each(function(index, el) {
-    var $element = $($(this).siblings('.input-group-addon')[0]);
-    if ($element.text().indexOf('*') < 0) {
-      $element.html($element.text() + '<span style="color: #D70F0F; font-size: 16px;"> *</span>');
-    }
-  });
-}
-
 settlementCommon.success = function (msg) {
   var alertHtml = '<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert">&times;</button><div class="alert-content">' + msg + '</div></div>';
   $('.breadcrumb').after(alertHtml);
@@ -468,6 +756,18 @@ settlementCommon.fetchBasicData = function (callback, fetchFilter) {
   })
 }
 
+settlementCommon.setupDatetimePicker = function($datetimepicker) {
+  $datetimepicker.datetimepicker({
+      format: 'yyyy-mm-dd',
+      language: 'zh-CN',
+      minView: 2,
+      todayHighlight: true,
+      autoclose: true,
+    }).on('changeDate', function (ev) {
+      $datetimepicker.trigger('input');
+    });
+}
+
 settlementCommon.datetimepickerRegister = function ($startTime, $endTime) {
 
   if ($startTime && $endTime) {
@@ -492,6 +792,9 @@ settlementCommon.datetimepickerRegister = function ($startTime, $endTime) {
       }
 
       $endTime.datetimepicker('setDate', correctEndDate);
+      // parsley 交互更友好
+      $startTime.trigger('input');
+      $endTime.trigger('input');
     });
 
     $endTime.datetimepicker({
@@ -515,6 +818,9 @@ settlementCommon.datetimepickerRegister = function ($startTime, $endTime) {
       }
 
       $startTime.datetimepicker('setDate', correctStartDate);
+      // parsley 交互更友好
+      $endTime.trigger('input');
+      $startTime.trigger('input');
     });
   }
 
@@ -529,13 +835,70 @@ settlementCommon.datetimepickerRegister = function ($startTime, $endTime) {
   }
 }
 
+settlementCommon.addAsteriskToRequiredInputs = function() {
+
+  var existingRequiredInputs = $(':input[required]:not(:button)');
+
+  settlementCommon.toggleAsteriskToInputs(existingRequiredInputs);
+
+  var isInput = function(node) {
+    var tagName = node.tagName && node.tagName.toLowerCase();
+    var inputs = ['input', 'select', 'textarea'];
+    return (inputs.indexOf(tagName) >= 0);
+  }
+
+  var MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
+  if (MutationObserver) {
+    new MutationObserver(function(mutationRecords) {
+      var $mutatedInputs = [];
+      mutationRecords.forEach(function(record, index) {
+        if (record.type === 'childList') {
+          // node added
+          if (record.addedNodes && record.addedNodes.length) {
+            record.addedNodes.forEach(function(node, index) {
+              if (node.nodeType === 1) {
+                if (isInput(node)) {
+                  $mutatedInputs.push(node);
+                } else {
+                  $mutatedInputs = $mutatedInputs.concat(Array.prototype.slice.call(node.querySelectorAll('input, select, textarea')));
+                }
+              }
+            });
+          }
+        } else if (record.type === 'attributes') {
+          // attributes changed
+          if (isInput(record.target)) {
+            $mutatedInputs.push(record.target);
+          }
+        }
+      });
+      settlementCommon.toggleAsteriskToInputs($mutatedInputs);
+    }).observe(document.querySelector('body'), {childList: true, attributes: true, subtree: true, attributeFilter: ['required']});
+  }
+}
+
+settlementCommon.toggleAsteriskToInputs = function(elements) {
+  for (var i = 0; i < elements.length; ++i) {
+    var $el = $(elements[i]);
+    var $addon = $el.prevAll('.input-group-addon:first');
+    var isRequired = $el.prop('required');
+    var $asterisks = $addon.find('.required-asterisk');
+    var hasAnAsterisk = $asterisks.length > 0;
+    if (isRequired && !hasAnAsterisk) {
+      $addon.append('<span class="required-asterisk" style="color: #D70F0F; font-size: 16px;"> *</span>');
+    } else if (!isRequired && hasAnAsterisk) {
+      $asterisks.remove();
+    }
+  }
+}
+
 /************************************************* 全局初始化处理 *****************************************************/
 
 // 点击隐藏/显示左侧菜单栏 的按钮
 $(function() {
 
   // 必填项添加*号标识
-  settlementCommon.addStarMark();
+  settlementCommon.addAsteriskToRequiredInputs();
 
   // 查询日期的跨度小于等于7天
   settlementCommon.datetimepickerRegister($('#search_startTime'), $('#search_endTime'));

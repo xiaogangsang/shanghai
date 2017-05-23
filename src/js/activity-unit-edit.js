@@ -595,7 +595,7 @@ $(document).on('change click', '#search-cinema-provinceId', function (e) {
     options = '<option value="">城市</option>';
   }
 
-  $('#search-cinema-cityId').html(options);
+  $('#search-cinema-cityId').html(options).chosen('destroy').chosen();
   return false;
 });
 
@@ -1453,6 +1453,8 @@ function setEdit(unitId, isApproval, isHistory) {
 
       if (unitId) {
         $('#wandaTicketId').prop('disabled', true);
+      } else {
+        $('#wandaTicketId').chosen();
       }
 
       //活动形式

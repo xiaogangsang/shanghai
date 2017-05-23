@@ -24,6 +24,51 @@ var _selectedSummary = {};
 // _DEBUG 本地JSON字符串, 不连服务器本地调试用
 var _DEBUG = false;
 
+var summaryTable = {
+  table: $('#summaryTable'), 
+  keyMap : [
+    {label: '订单数', key: 'count'}, 
+    {label: '张数', key: 'totalTicketCount'},
+    {label: '结算金额(元)', key: 'totalSettleAmount'},
+    {label: '常规活动后付补贴金额(元)', key: 'totalSubsidyAmountO2o'},
+    {label: '支付活动后付补贴金额(元)', key: 'totalSubsidyAmountTrd'},
+    {label: '应付金额(元)', key: 'totalAcceptanceAppropriationAmount'},
+    {label: '实付金额(元)', key: 'totalFinalSettleAmount'}
+  ]
+};
+
+var detailTable = {
+  table: $('#dataTable'),
+  keyMap: [
+    {label: '<input type="checkbox" class="multi-check-all"></th>', parseKey: function() {
+      return '<input type="checkbox" class="multi-check">'; 
+    }},
+    {label: '出/退货时间', key: 'shipmentDate'},
+    {label: '结算日期', key: 'settleDate'},
+    {label: '出货订单类型', key: 'shipmentOrderType', parseKey: '.'},
+    {label: '订单来源', key: 'orderSource', parseKey: '.'},
+    {label: '交易订单号', key: 'orderNo'},
+    {label: '张数', key: 'countNum'},
+    {label: '结算金额', key: 'settleAmount'},
+    {label: '常规活动渠道方补贴金额', key: 'subsidyAmountO2o'},
+    {label: '常规活动补贴付款方式', key: 'subsidyType', parseKey: '.'},
+    {label: '应付金额', key: 'acceptanceAppropriation'},
+    {label: '实付金额', key: 'finalSettleAmount'},
+    {label: '支付活动补贴金额', key: 'subsidyAmountTrd'},
+    {label: '支付活动补贴付款方式', key: 'subsidyTypeTrd', parseKey: 'subsidyType'},
+    {label: '出货状态', key: 'shipmentStatus', parseKey: '.'},
+    {label: '出货对账状态', key: 'reconciliationStatus', parseKey: '.'},
+    {label: '审核状态', key: 'checkStatus', parseKey: '.'},
+    {label: '操作时间', key: 'updateTime'},
+    {label: '操作', parseKey: function(item) {
+      return '<button class="btn btn-xs btn-default btn-edit" data-checkstatus="' + item.checkStatus + '">修改</button>';
+    }}
+  ],
+  rowAttrs: function(item) {
+    return 'data-id="' + item.id + '"';
+  }
+};
+
 $(function() {
 
 	common.init('balance-out-detail');
@@ -35,6 +80,8 @@ $(function() {
   settlementCommon.datetimepickerRegister($('#sync_startTime'), $('#sync_endTime'));
 
   checkForSettlementDateSync();
+  settlementCommon.formatTableWithData(summaryTable);
+  settlementCommon.formatTableWithData(detailTable);
 });
 
 function checkForSettlementDateSync() {
@@ -240,30 +287,14 @@ function handleData(res) {
     _pageTotal = Math.ceil(totalRecord / _pageSize);
     setPager(totalRecord, _pageIndex, record.length, _pageTotal);
 
-    _(record).forEach(function(item) {
-      item.bizType = settlementCommon.parseBizType(item.bizType);
-      item.partner = settlementCommon.parsePartner(item.partner);
-      item.subsidyType = settlementCommon.parseSubsidyType(item.subsidyType);
-      item.reconciliationStatus = settlementCommon.parseReconciliationStatus(item.reconciliationStatus);
-      item.discountType = settlementCommon.parseDiscountType(item.discountType);
-      item.shipmentStatus = settlementCommon.parseShipmentStatus(item.shipmentStatus);
-      item.checkStatusNo = item.checkStatus;
-      item.checkStatus = settlementCommon.parseCheckStatus(item.checkStatus);
-      item.shipmentOrderType = settlementCommon.parseShipmentOrderType(item.shipmentOrderType);
-      item.orderSource = settlementCommon.parseOrderSource(item.orderSource);
-      item.subsidyTypeTrd = settlementCommon.parseSubsidyType(item.subsidyTypeTrd);
-    });
-
     if (!_queryingFromSelectedSummary) {
       useCache = true;
     }
 
-    setTableData(record);
-
-    // 从汇总页点击查看选中明细, 是没有summary返回的
-    if (res.data.summary) {
-      setSummaryTableData(res.data.summary);
-    }
+    var summary = res.data.summary;
+    
+    settlementCommon.formatTableWithData(summaryTable, summary);
+    settlementCommon.formatTableWithData(detailTable, record);
 
     if (res.data.detail.exceptionCount) {
       $('#exceptionAlert').show();
@@ -277,21 +308,6 @@ function handleData(res) {
     $('#exceptionAlert').hide();
     $('#nullSettleDateAlert').hide();
   }
-}
-
-function setTableData(rows) {
-  var data = { rows: rows };
-  var template = $('#table-template').html();
-  Mustache.parse(template);
-  var html = Mustache.render(template, data);
-  $('#dataTable tbody').html(html);
-}
-
-function setSummaryTableData(data) {
-	var template = $('#summary-table-template').html();
-	Mustache.parse(template);
-	var html = Mustache.render(template, data);
-	$('#summaryTable tbody').html(html);
 }
 
 
@@ -474,7 +490,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     detail.payTool = settlementCommon.parsePayTool(detail.payTool);
     detail.bizType = settlementCommon.parseBizType(detail.bizType);
     detail.chargeMerchant = settlementCommon.parseMerchant(detail.chargeMerchant);
-    detail.partner = settlementCommon.parsePartner(detail.partner);
+    // detail.partner = settlementCommon.parsePartner(detail.partner);
 
     var operate = data.operate;
 
@@ -499,6 +515,7 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
     $('#settlementPlan option[value="' + detail.settlementPlan + '"]').prop('selected', true);
     $('#appStatus option[value="' + detail.appStatus + '"]').prop('selected', true);
     $('#discountType option[value="' + detail.discountType + '"]').prop('selected', true);
+    $('#partner option[value="' + detail.partner + '"]').prop('selected', true);
 
     if (checkStatus == 2 || checkStatus == 3 || detail.reconciliationStatus == 4) { // 待审核/审核完成不能再修改, 出货对账状态为确认的也不能再修改
       $('.detail-area').addClass('read-only');

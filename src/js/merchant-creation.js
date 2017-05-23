@@ -73,8 +73,6 @@ $(function() {
 	    $('#allocationPeriod').removeAttr("required");
 	    $('#allocationDelay').removeAttr("required");
 	  }
-		// tpl里requied 手动调用加星
-		settlementCommon.addStarMark();
 	});
 
 	// 是否发送拨款明细
@@ -91,8 +89,6 @@ $(function() {
 	  }
 	  $('.merchant-email').hide();
 	  $('.branch-email').hide();
-		// tpl里requied 手动调用加星
-		settlementCommon.addStarMark();
 	});
 
 	// 发送对象
@@ -114,7 +110,6 @@ $(function() {
 	      $('.branch-email').hide();
 	    }
 	  }
-	  settlementCommon.addStarMark();
 	});
 
   // 2. 不发送拨款明细
@@ -151,8 +146,6 @@ $(function() {
 	              return false;
 	            }
 	      });
-  // tpl里requied 手动调用加星
-  settlementCommon.addStarMark();
 
   $('#detail_formSearch').parsley();
 

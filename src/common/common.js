@@ -60,6 +60,7 @@ var common = {};
 common.API_HOST = window.location.protocol + '//' + window.location.host + '/MovieOps/';
 
 common.init = function (pageName) {
+  pageName = pageName || location.pathname.split('/').pop().split('.').shift();
   common.checkLogin();
   common.setLoginName();
   common.showMenu(pageName);
@@ -90,7 +91,7 @@ common.init = function (pageName) {
           errorMsg = jqXHR.status + '：貌似断网了！';
         break;
       }
-      $('<div class="modal fade" data-keyboard="false" data-backdrop="static"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><h4 class="modal-title">错误提示</h4></div><div class="modal-body"><p style="text-align:center;">' + errorMsg + '</p></div><div class="modal-footer"><a href="' + redirectUrl + '" class="btn btn-primary">确定</a></div></div></div></div>').appendTo('body').modal('show');
+      $('<div class="modal fade" style="z-index: 9999;" data-keyboard="false" data-backdrop="static"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><h4 class="modal-title">错误提示</h4></div><div class="modal-body"><p style="text-align:center;">' + errorMsg + '</p></div><div class="modal-footer"><a href="' + redirectUrl + '" class="btn btn-primary">确定</a></div></div></div></div>').appendTo('body').modal('show');
       throw new Error('Abort, error ' + jqXHR.status);
     },
   });
@@ -119,7 +120,7 @@ common.showMenu = function (pageName) {
 };
 
 common.checkLogin = function () {
-  if (Cookies.get('authMenu').length < 1 || Cookies.get('Xtoken') == undefined) {
+  if (!Cookies.get('authMenu') || Cookies.get('authMenu').length < 1 || Cookies.get('Xtoken') == undefined) {
     common.logout();
     window.location.href = 'login.html';
   }

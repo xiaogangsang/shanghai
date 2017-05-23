@@ -281,38 +281,6 @@
 
           <div class="table-responsive">
             <table class="table table-hover" id="dataTable">
-              <thead>
-                <tr>
-                  <th><input type="checkbox" class="multi-check-all"></th>
-                  <th>操作时间</th>
-                  <!-- <th>二级商户订单号</th> -->
-                  <th>交易订单号</th>
-                  <th>出货订单类型</th>
-                  <th>订单来源</th>
-                  <th>商品订单号</th>
-                  <th>二级商户</th>
-                  <th>二级商户号</th>
-                  <th>业务类别</th>
-                  <th>出货状态</th>
-                  <th>交易金额(元)</th>
-                  <th>渠道方补贴金额(元)</th>
-                  <th>补贴付款方式</th>
-                  <th>退票手续费(元)</th>
-                  <th>应付金额(元)</th>
-                  <th>实付金额(元)</th>
-                  <th>退款承债方</th>
-                  <th>常规优惠方式</th>
-                  <th>常规活动/优惠券名称</th>
-                  <th>出货对账状态</th>
-                  <th>修改状态</th>
-                  <th>操作</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td colspan="20" align="center">请点击“查询”按钮！</td>
-                </tr>
-              </tbody>
             </table>
             <p style="font-size: 13px;">* 注: 当输入&nbsp;<em>商品订单号</em>&nbsp;或者&nbsp;<em>二级商户订单号</em>&nbsp;或者&nbsp;<em>交易订单号</em>&nbsp;查询时, 已经输入的日期信息会被忽略</p>
           </div>
@@ -340,46 +308,6 @@
       </nav>
     </div>
     {{/pageTotal}}
-  </script>
-
-  <script id="table-template" type="text/x-tmpl-mustache">
-    {{#rows}}
-    <tr data-id="{{id}}" data-bannertype="{{bannerType}}">
-      <td>{{#canReverse}}<input type="checkbox" class="multi-check">{{/canReverse}}</td>
-      <td>{{updateTime}}</td>
-      <!-- <td>{{thdOrderNo}}</td> -->
-      <td>{{orderNo}}</td>
-      <td>{{shipmentOrderType}}</td>
-      <td>{{orderSource}}</td>
-      <td>{{bizOrderNo}}</td>
-      <td>{{merchantName}}</td>
-      <td>{{merchantNo}}</td>
-      <td>{{bizType}}</td>
-      <td>{{shipmentStatus}}</td>
-      <td>{{settleAmount}}</td>
-      <td>{{subsidyAmountO2o}}</td>
-      <td>{{subsidyType}}</td>
-      <td>{{returnFee}}</td>
-      <td>{{acceptanceAppropriation}}</td>
-      <td>{{finalSettleAmount}}</td>
-      <!-- 补贴付款方式 -->
-      <td>{{partner}}</td>
-      <td>{{discountType}}</td>
-      <td>{{discountName}}</td>
-      <td>{{reconciliationStatus}}</td>
-      <!-- 出货对账状态 -->
-      <td>{{checkStatus}}</td>
-      <td>
-        <button class="btn btn-xs btn-default btn-edit" data-compare="1" data-id="{{id}}">查看详情</button>
-        {{#canEdit}}
-        <button class="btn btn-xs btn-default btn-edit" data-compare="0" data-id="{{id}}">重新修改</button>
-        {{/canEdit}}
-        {{#canReverse}}
-        <button class="btn btn-xs btn-default btn-reverse" data-id="{{id}}">反审核</button>
-        {{/canReverse}}
-      </td>
-    </tr>
-    {{/rows}}
   </script>
 
   <script src="js/vendor.js"></script>

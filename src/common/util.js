@@ -3,6 +3,7 @@
  *
  *  工具类
  *	1. 根据编码组装 <optino> & <checkbox> 以及 解析编码为文字
+ *  2. 可以写代码逻辑的 Template (准备全面替换 Mustache.js)
  *	
  */
 
@@ -26,11 +27,53 @@ util.init = function($) {
 		var key = $(this).attr(sourceMapKey);
 
 		if (tagName == 'select') {
-			$(this).html(util[key].optionsHTML(false, $(this).attr('value') || $(this).prop('value')));
-		} else if (tagName == '') {
+
+      var withAll = $(this).attr('with-all') != null && $(this).attr('with-all') !== false;
+			$(this).html(util[key].optionsHTML(withAll, $(this).attr('value') || $(this).prop('value')));
+		} else if (tagName == 'ul') {
+      $(this).html(util[key].dropdownMenuHTML($(this).attr('class-name')));
+    } else if (tagName == '') {
 			$(this).html(util[key].checkboxesHTML());
 		}
 	});
+
+  /**
+   *  Assemble form parameters
+   */
+  $.fn.queryParam = function() {
+
+    // qq-button-id 是一个文件上传库会自动添加的 input
+    // chosen.js 会把原先的 selet 隐藏, 所以要额外处理
+    var $inputs = this.find(':input:not(:button):visible:not([skipsubmit]):not([qq-button-id])')
+      .add($('.chosen-container').closest('.form-group').filter(':visible').find('select'));
+
+    var param = {};
+
+    $inputs.each(function() {
+      var keys = $(this).attr('name');
+      var value = $(this).val();
+
+      if (keys && ((!$(this).is(':checkbox') && !$(this).is(':radio')) || ($(this).is(':checked') && value))) {
+        keys = keys.split(',');
+        keys.forEach(function(key) {
+          if (key = key.trim()) {
+            var storedValue = param[key];
+            if (!storedValue) {
+              storedValue = value;
+            } else if ($.isArray(storedValue)) {
+              storedValue.push(value);
+            } else {
+              storedValue = [storedValue, value];
+            }
+
+            param[key] = storedValue;
+          }
+        });
+      }
+    });
+
+    return param;
+  };
 }
 
 var Codec = function(dict) {
@@ -95,19 +138,72 @@ Codec.prototype.radiosHTML = function(name, selectedKey, customizedProps) {
   return html;
 }
 
+Codec.prototype.dropdownMenuHTML = function(className) {
+  var html = '';
+  for (var key  in this) {
+    if (this.hasOwnProperty(key)) {
+      var value = this[key];
+      html += '<li><a href="#" class="' + className +'" data-type="' + key + '">' + value + '</a></li>'
+    }
+  }
+
+  return html;
+}
+
 // 评论类型
 util.commentType = new Codec({'1' : '评论', '3' : '回复'});
 
+// 渠道
 util.channel = new Codec({'1' : '掌上生活', '2' : '手机银行'});
 
+// 搜索词类型
 util.searchTermType = new Codec({'1' : '搜索词', '2' : '热搜词'});
 
+// 区域
 util.areaType = new Codec({'1': '全国', '2': '区域'});
 
 // 成本中心类别
 util.budgetSourceLevel = new Codec({'0': '总行', '1': '支行', '2': '卡中心', '3': '卡部', '4': 'O2O项目组'});
 
+// 万达非万达(查询条件)
+util.isWanDa = new Codec({'0': '非万达', '1': '万达'});
 
+// 前端配置类型
+util.bannerType = new Codec({'1': '首页', '2': '热门影片', '3': '交叉销售位', '4': '选座页配置', '5': '影院页Banner', '6': '首页浮窗'});
+
+
+
+
+/**
+ *  Set up date range
+ */
+util.setupDateRange = function($startTime, $endTime) {
+  $startTime.datetimepicker({
+    format: 'yyyy-mm-dd',
+    language: 'zh-CN',
+    minView: 2,
+    todayHighlight: true,
+    autoclose: true,
+  }).on('changeDate', function (ev) {
+    var startDate = new Date(ev.date.valueOf());
+    startDate.setDate(startDate.getDate(new Date(ev.date.valueOf())));
+    $endTime.datetimepicker('setStartDate', startDate);
+    $startTime.trigger('input');
+  });
+
+  $endTime.datetimepicker({
+    format: 'yyyy-mm-dd',
+    language: 'zh-CN',
+    minView: 2,
+    todayHighlight: true,
+    autoclose: true,
+  }).on('changeDate', function (ev) {
+    var FromEndDate = new Date(ev.date.valueOf());
+    FromEndDate.setDate(FromEndDate.getDate(new Date(ev.date.valueOf())));
+    $startTime.datetimepicker('setEndDate', FromEndDate);
+    $endTime.trigger('input');
+  });
+}
 
 /**
  * Normally just call `close()`, but that doesn't work in Firefox
@@ -141,6 +237,10 @@ function render(template, data) {
         });
       } else if (dataType === '[object Object]') {
         result += render(innerTmpl, sectionData);
+      } else if (dataType === '[object Function]') {
+        result += sectionData.call(data, innerTmpl, function(template) {
+          return renderSingleSection(template, data);
+        });
       } else {
         result += render(innerTmpl, data);
       }
@@ -169,7 +269,7 @@ function renderSingleSection(template, data) {
     var escape = match[3];
 
     var value = evalInContext(data, matched);
-    if (value !== null && value !== undefined) {
+    if (value !== void 0 && value !== null) {
       result += escape ? escapeHtml('' + value) : value;
     }
 
@@ -191,7 +291,7 @@ function evalInContext(context, js) {
     }
   }
 
-  return (typeof(value) === 'function' ? value() : value);
+  return (typeof(value) === 'function' ? value.call(context) : value);
 }
 
 function isPureNestedProp(js) {
@@ -204,7 +304,7 @@ function evalNestedProp(obj, nestedProp) {
   for (var i = 0; i < nestedProps.length; ++i) {
     var prop = nestedProps[i].trim();
     value = value[prop];
-    if (value === undefined || value === null) {
+    if (value === void 0 || value === null) {
       break;
     }
   }
@@ -228,3 +328,4 @@ function escapeHtml (string) {
     return entityMap[s];
   });
 }
+

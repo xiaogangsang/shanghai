@@ -239,23 +239,6 @@
 
           <div class="table-responsive" style="margin-bottom: 20px;">
             <table class="table table-hover" id="summaryTable">
-              <thead>
-                <tr>
-                  <th>收单订单类型</th>
-                  <th>渠道</th>
-                  <th>记录数</th>
-                  <th>用户支付金额</th>
-                  <th>常规活动后付款补贴金额</th>
-                  <th>支付活动后付款补贴金额</th>
-                  <th>O2O应收金额</th>
-                  <th>实收金额</th>
-                  <th>服务费</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                </tr>
-              </tbody>
             </table>
           </div>
 
@@ -263,37 +246,6 @@
 
           <div class="table-responsive">
             <table class="table table-hover" id="dataTable">
-              <thead>
-                <tr>
-                  <th><input type="checkbox" class="multi-check-all"></th>
-                  <th>操作时间</th>
-                  <th>银行收单日期</th>
-                  <th>交易订单号</th>
-                  <th>收单订单类型</th>
-                  <th>订单来源</th>
-                  <th>收单商户</th>
-                  <th>收单商户号</th>
-                  <th>业务类别</th>
-                  <th>支付流水状态</th>
-                  <th>票价(元)</th>
-                  <th>退票手续费(元)</th>
-                  <th>服务费(元)</th>
-                  <th>渠道方补贴金额(元)</th>
-                  <th>O2O应收金额(元)</th>
-                  <th>实收金额</th>
-                  <th>承债方</th>
-                  <th>常规优惠方式</th>
-                  <th>常规活动/优惠券名称</th>
-                  <th>收单对账状态</th>
-                  <th>对账不一致原因</th>
-                  <th>操作</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td colspan="30" align="center">请点击“查询”按钮！</td>
-                </tr>
-              </tbody>
             </table>
             <p style="font-size: 13px;">* 注: 当输入&nbsp;<em>交易订单号</em>&nbsp;或者&nbsp;<em>收单方支付订单号</em>&nbsp;查询时, 已经输入的日期信息会被忽略</p>
           </div>
@@ -322,56 +274,7 @@
     </div>
     {{/pageTotal}}
   </script>
-
-  <script id="table-template" type="text/x-tmpl-mustache">
-    {{#rows}}
-    <tr data-id="{{id}}" data-bannertype="{{bannerType}}">
-      <td><input type="checkbox" class="multi-check"></td>
-      <td>{{operateTime}}</td>
-      <td>{{settleDate}}</td>
-      <td>{{orderNo}}</td>
-      <td>{{acquiringOrderType}}</td>
-      <td>{{orderSource}}</td>
-      <td>{{chargeMerchant}}</td>
-      <td>{{chargeMerchantNo}}</td>
-      <td>{{bizType}}</td>
-      <td>{{payStatus}}</td>
-      <td>{{ticketAmount}}</td>
-      <td>{{returnFee}}</td>
-      <td>{{serviceAmount}}</td>
-      <td>{{subsidyAmountO2o}}</td>
-      <td>{{payAmount}}</td>
-      <td>{{bankAmount}}</td>
-      <td>{{partner}}</td>
-      <td>{{discountType}}</td>
-      <td>{{discountName}}</td>
-      <td>{{reconciliationStatus}}</td>
-      <td>{{reason}}</td>
-      <td>
-      <button class="btn btn-xs btn-default btn-detail" data-id="{{id}}">查看详情</button>
-      <button class="btn btn-xs btn-default btn-approval" data-checkstatus="3" data-id="{{id}}" data-version="{{version}}">审核通过</button>
-      <button class="btn btn-xs btn-default btn-approval" data-checkstatus="4" data-id="{{id}}" data-version="{{version}}">驳回</button>
-      </td>
-    </tr>
-    {{/rows}}
-  </script>
-
-  <script id="summary-table-template" type="text/x-tmpl-mustache">
-    {{#rows}}
-    <tr>
-      <td>{{acquiringOrderType}}</td>
-      <td>{{payTool}}</td>
-      <td>{{totalOrderCount}}</td>
-      <td>{{totalPayAmount}}</td>
-      <td>{{totalSubsidyAmountO2o}}</td>
-      <td>{{totalSubsidyAmountTrd}}</td>
-      <td>{{totalO2oReceivableAmount}}</td>
-      <td>{{totalBankAmount}}</td>
-      <td>{{totalServiceAmount}}</td>
-    </tr>
-    {{/rows}}
-  </script>
-
+  
   <script src="js/vendor.js"></script>
   <script src="js/balance-in-edit.js"></script>
 

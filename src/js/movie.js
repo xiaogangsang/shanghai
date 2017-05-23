@@ -1,6 +1,7 @@
 'use strict;'
 
 var common = require('common');
+var util = require('util');
 require('fineUploader');
 
 var _status = [
@@ -123,6 +124,16 @@ $(document).on('submit', '#popup-movie-form form', function (e) {
   }
 
   _submitting = true;
+
+
+  var posterAfterBought = [];
+
+  $('#popup-movie-form [name=poster-after-bought]').each(function() {
+    if ($(this).val()) {
+      posterAfterBought.push($(this).val());
+    }
+  });
+
   var sendData = {
     id: $('#popup-movie-form #id').val(),
     name: $('#popup-movie-form #name').val().trim(),
@@ -136,6 +147,7 @@ $(document).on('submit', '#popup-movie-form form', function (e) {
     score: $('#popup-movie-form #score').val().trim(),
     poster: $('#popup-movie-form #poster').val().trim(),
     status: $('#popup-movie-form #status').val(),
+    posterAfterBought: posterAfterBought,
   };
 
   sendData.showDate = [];
@@ -161,6 +173,7 @@ $(document).on('submit', '#popup-movie-form form', function (e) {
     type: 'POST',
     dataType: 'json',
     data: sendData,
+    traditional: true
   })
   .done(function (res) {
     _submitting = false;
@@ -190,33 +203,10 @@ $('#dataTable').on('click', '.btn-edit', function (e) {
       res.data.score = parseFloat(res.data.score).toFixed(1);
       setModal(res.data);
       $('#popup-movie-form').modal('show');
-      $('#popup-movie-form').on('shown.bs.modal', function () {
-        var uploader = new qq.FineUploaderBasic({
-          button: $('#fileupload')[0],
-          request: {
-            endpoint: common.API_HOST + 'film/standardFilm/uploadPoster',
-            inputName: 'file',
-            filenameParam: 'file',
-          },
-          callbacks: {
-            onError: function (id, fileName, errorReason) {
-              if (errorReason != 'Upload failure reason unknown') {
-                console.log(errorReason);
-                alert('上传失败');
-              }
-            },
 
-            onComplete: function (id, fileName, responseJSON) {
-              if (!!~~responseJSON.meta.result) {
-                $('#poster').val(responseJSON.data.savePath);
-                $('.poster-preview').attr('src', responseJSON.data.savePath);
-                alert('上传成功！');
-              } else {
-                alert('接口错误：' + responseJSON.meta.msg);
-              }
-            },
-          },
-        });
+      $('#popup-movie-form').on('shown.bs.modal', function () {
+
+        setupFileUploader();
 
         $('#showDate').datetimepicker({
           format: 'yyyy-mm-dd',
@@ -376,17 +366,64 @@ function setModal(movieData) {
     movieData.releaseMonth = movieData.showDate != null && movieData.showDate.split('-')[1] != undefined ? movieData.showDate.split('-')[1] : '';
     movieData.releaseDay = movieData.showDate != null && movieData.showDate.split('-')[2] != undefined ? movieData.showDate.split('-')[2] : '';
 
+    movieData.preview = previewURL(movieData.poster);
 
-    movieData.preview = movieData.poster.indexOf('hiphotos.baidu.com') > -1 ? 'https://map.baidu.com/maps/services/thumbnails?width=150&src=' + encodeURI(movieData.poster) + '&quality=100' : movieData.poster;
+    movieData.previewAfterBought = [];
+    movieData.posterAfterBought = movieData.posterAfterBought || [];
+    movieData.posterAfterBought.forEach(function(poster) {
+      movieData.previewAfterBought.push(previewURL(poster));
+    });
 
     data = { movie: movieData, dimens: _dimens, status: _status };
     template = $('#edit-template').html();
-    Mustache.parse(template);
-    var html = Mustache.render(template, data);
+    var html = util.render(template, data);
     $('#popup-movie-form .modal-body').html(html);
   }
 
   return false;
+}
+
+function previewURL(originURL) {
+  return originURL.indexOf('hiphotos.baidu.com') > -1 ? 'https://map.baidu.com/maps/services/thumbnails?width=150&src=' + encodeURI(originURL) + '&quality=100' : originURL;
+}
+
+
+function setupFileUploader() {
+
+  $(".fileupload").each(function() {
+    var button = this;
+    var uploader = new qq.FineUploaderBasic({
+      button: button,
+      request: {
+        endpoint: common.API_HOST + 'film/standardFilm/uploadPoster',
+        inputName: 'file',
+        filenameParam: 'file',
+      },
+      callbacks: {
+        onError: function (id, fileName, errorReason) {
+          if (errorReason != 'Upload failure reason unknown') {
+            console.log(errorReason);
+            alert('上传失败');
+          }
+        },
+
+        onComplete: function (id, fileName, responseJSON) {
+          if (!!~~responseJSON.meta.result) {
+            $(button).parent().find('.poster').val(responseJSON.data.savePath);
+            $(button).parent().parent().find('.poster-preview').attr('src', responseJSON.data.savePath);
+            alert('上传成功！');
+          } else {
+            alert('接口错误：' + responseJSON.meta.msg);
+          }
+        },
+      },
+    });
+  });
+
+  $('.input-group-addon:last-child').on('click', function(e) {
+    e.preventDefault();
+    $(this).parent().find('input').val('');
+  });
 }
 
 function setDimen() {

@@ -175,7 +175,6 @@ function fetchDataAndRenderHtml(orderNo, differAppendId, differDetailId, editFla
 					renderTable(res);
 
 					$('#formDiff').parsley();
-					settlementCommon.addStarMark();
 					$('#popup-edit-diff').modal('show');
 					changeValueWithDifferType();
 
@@ -210,7 +209,6 @@ function fetchDataAndRenderHtml(orderNo, differAppendId, differDetailId, editFla
 			}
 
 			$('#formDiff').parsley();
-			settlementCommon.addStarMark();
 			settlementCommon.datetimepickerRegister($('#diff_settleDate'), null);
 			$('#popup-edit-diff').modal('show');
 			changeValueWithDifferType();

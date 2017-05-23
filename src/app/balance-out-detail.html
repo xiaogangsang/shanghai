@@ -324,21 +324,6 @@
 
           <div class="table-responsive" style="margin-bottom: 20px;">
             <table class="table table-hover" id="summaryTable">
-              <thead>
-                <tr>
-                  <th>订单数</th>
-                  <th>张数</th>
-                  <th>结算金额(元)</th>
-                  <th>常规活动后付补贴金额(元)</th>
-                  <th>支付活动后付补贴金额(元)</th>
-                  <th>应付金额(元)</th>
-                  <th>实付金额(元)</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                </tr>
-              </tbody>
             </table>
           </div>
 
@@ -346,38 +331,6 @@
 
           <div class="table-responsive">
             <table class="table table-hover" id="dataTable">
-              <thead>
-                <tr>
-                  <!-- 参照activity-unit.html -->
-                  <th><input type="checkbox" class="multi-check-all"></th>
-                  <th>出/退货时间</th>
-                  <th>结算日期</th>
-                  <th>出货订单类型</th>
-                  <th>订单来源</th>
-                  <th>交易订单号</th>
-                  <th>张数</th>
-                  <th>结算金额</th>
-                  <!-- <th>对应影票订单号</th> -->
-                  <th>常规活动渠道方补贴金额</th>
-                  <th>常规活动补贴付款方式</th>
-                  <!-- <th>退票手续费</th> -->
-                  <!-- <th>二级商户订单号</th> -->
-                  <th>应付金额</th>
-                  <th>实付金额</th>
-                  <th>支付活动补贴金额</th>
-                  <th>支付活动补贴付款方式</th>
-                  <th>出货状态</th>
-                  <th>出货对账状态</th>
-                  <th>审核状态</th>
-                  <th>操作时间</th>
-                  <th>操作</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td colspan="26" align="center">请点击“查询”按钮！</td>
-                </tr>
-              </tbody>
             </table>
             <p style="font-size: 13px;">* 注: 当输入&nbsp;<em>商品订单号</em>&nbsp;或者&nbsp;<em>二级商户订单号</em>&nbsp;或者&nbsp;<em>交易订单号</em>&nbsp;查询时, 已经输入的日期信息会被忽略</p>
           </div>
@@ -405,70 +358,6 @@
       </nav>
     </div>
     {{/pageTotal}}
-  </script>
-
-  <script id="table-template" type="text/x-tmpl-mustache">
-    {{#rows}}
-    <tr data-id="{{id}}" data-bannertype="{{bannerType}}">
-      <td><input type="checkbox" class="multi-check"></td>
-       <!-- 出/退货时间 -->
-      <td>{{shipmentDate}}</td>
-      <!-- 结算日期 -->
-      <td>{{settleDate}}</td>
-      <!-- 出货订单类型 -->
-      <td>{{shipmentOrderType}}</td>
-      <!-- 订单来源 -->
-      <td>{{orderSource}}</td>
-      <!-- 交易订单号 -->
-      <td>{{orderNo}}</td>
-      <!-- 张数 -->
-      <td>{{countNum}}</td>
-      <!-- 结算金额 -->
-      <td>{{settleAmount}}</td>
-      <!-- 常规活动渠道方补贴金额 -->
-      <td>{{subsidyAmountO2o}}</td>
-      <!-- 常规活动补贴付款方式 -->
-      <td>{{subsidyType}}</td>
-      <!-- 应付金额 -->
-      <td>{{acceptanceAppropriation}}</td>
-      <!-- 实付金额 -->
-      <td>{{finalSettleAmount}}</td>
-      <!-- 支付活动补贴金额 -->
-      <td>{{subsidyAmountTrd}}</td>
-      <!-- 支付活动补贴付款方式 -->
-      <td>{{subsidyTypeTrd}}</td>
-      <!-- 出货状态 -->
-      <td>{{shipmentStatus}}</td>
-      <!-- 出货对账状态 -->
-      <td>{{reconciliationStatus}}</td>
-      <!-- 审批状态 -->
-      <td>{{checkStatus}}</td>
-      <!-- 操作时间 -->
-      <td>{{updateTime}}</td>
-      <td>
-      <button class="btn btn-xs btn-default btn-edit" data-checkstatus="{{checkStatusNo}}">详情</button>
-      </td>
-    </tr>
-    {{/rows}}
-  </script>
-
-  <script id="summary-table-template" type="text/x-tmpl-mustache">
-    <tr data-id="{{id}}" data-bannertype="{{bannerType}}">
-      <!-- 订单数 -->
-      <td>{{count}}</td>
-      <!-- 张数 -->
-      <td>{{totalTicketCount}}</td>
-      <!-- 结算金额 -->
-      <td>{{totalSettleAmount}}</td>
-      <!-- 常规活动后付补贴金额(元) -->
-      <td>{{totalSubsidyAmountO2o}}</td>
-      <!-- 支付活动后付补贴金额(元) -->
-      <td>{{totalSubsidyAmountTrd}}</td>
-      <!-- 应付金额 -->
-      <td>{{totalAcceptanceAppropriationAmount}}</td>
-      <!-- 实付金额 -->
-      <td>{{totalFinalSettleAmount}}</td>
-    </tr>
   </script>
 
   <!-- pop up -->

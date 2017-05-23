@@ -257,23 +257,6 @@
 
           <div class="table-responsive" style="margin-bottom: 20px;">
             <table class="table table-hover" id="summaryTable">
-              <thead>
-                <tr>
-                  <th>收单订单类型</th>
-                  <th>渠道</th>
-                  <th>记录数</th>
-                  <th>用户支付金额</th>
-                  <th>常规活动后付款补贴金额</th>
-                  <th>支付活动后付款补贴金额</th>
-                  <th>O2O应收金额</th>
-                  <th>实收金额</th>
-                  <th>服务费</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                </tr>
-              </tbody>
             </table>
           </div>
 
@@ -281,41 +264,6 @@
 
           <div class="table-responsive">
             <table class="table table-hover" id="dataTable">
-              <thead>
-                <tr>
-                  <!-- 参照activity-unit.html -->
-                  <th><input type="checkbox" class="multi-check-all"></th>
-                  <th>交易时间</th>
-                  <th>银行收单日期</th>
-                  <th>收单订单类型</th>
-                  <th>订单来源</th>
-                  <th>支付流水状态</th>
-                  <th>交易订单号</th>
-                  <th>收单方支付订单号</th>
-                  <th>票价(元)</th>
-                  <th>退票手续费(元)</th>
-                  <th>服务费(元)</th>
-                  <th>用户支付金额(元)</th>
-                  <th>用户支付积分</th>
-                  <th>常规活动渠道方补贴金额(元)</th>
-                  <th>常规活动补贴付款方式</th>
-                  <th>O2O应收金额(元)</th>
-                  <th>实收金额</th>
-                  <th>支付活动补贴金额</th>
-                  <th>支付活动补贴付款方式</th>
-                  <th>承债方</th>
-                  <th>收单对账状态</th>
-                  <th>对账不一致原因</th>
-                  <th>审核状态</th>
-                  <th>操作时间</th>
-                  <th>操作</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td colspan="24" align="center">请点击“查询”按钮！</td>
-                </tr>
-              </tbody>
             </table>
             <p style="font-size: 13px;">* 注: 当输入&nbsp;<em>交易订单号</em>&nbsp;或者&nbsp;<em>收单方支付订单号</em>&nbsp;查询时, 已经输入的日期信息会被忽略</p>
           </div>
@@ -345,65 +293,6 @@
     {{/pageTotal}}
   </script>
 
-  <script id="table-template" type="text/x-tmpl-mustache">
-    {{#rows}}
-    <tr data-id="{{id}}" data-bannertype="{{bannerType}}">
-      <td><input type="checkbox" class="multi-check"></td>
-      <td>{{createTime}}</td>
-      <td>{{settleDate}}</td>
-      <td>{{acquiringOrderType}}</td>
-      <td>{{orderSource}}</td>
-      <td>{{payStatus}}</td>
-      <td>{{orderNo}}</td>
-      <td>{{thdSerialNo}}</td>
-      <td>{{ticketAmount}}</td>
-      <!-- 退票手续费 -->
-      <td>{{returnFee}}</td>
-      <td>{{serviceAmount}}</td>
-      <!--用户支付金额，积分-->
-      <td>{{payAmount}}</td>
-      <td>{{receivablePoint}}</td>
-
-      <!--常规补贴-->
-      <td>{{subsidyAmountO2o}}</td>
-      <td>{{subsidyType}}</td>
-
-      <td>{{o2oReceivableAmount}}</td>
-      <td>{{bankAmount}}</td>
-
-      <!--支付活动补贴-->
-      <td>{{subsidyAmountTrd}}</td>
-      <td>{{subsidyTypeTrd}}</td>
-
-      <!-- 实收金额 -->
-      <td>{{partner}}</td>
-      <td>{{reconciliationStatus}}</td>
-      <td>{{reason}}</td>
-      <td>{{checkStatus}}</td>
-      <td>{{operateTime}}</td>
-
-      <td>
-      <button class="btn btn-xs btn-default btn-edit" data-checkstatus="{{checkStatusNo}}">修改</button>
-      </td>
-    </tr>
-    {{/rows}}
-  </script>
-
-  <script id="summary-table-template" type="text/x-tmpl-mustache">
-    {{#rows}}
-    <tr>
-      <td>{{acquiringOrderType}}</td>
-      <td>{{payTool}}</td>
-      <td>{{totalOrderCount}}</td>
-      <td>{{totalPayAmount}}</td>
-      <td>{{totalSubsidyAmountO2o}}</td>
-      <td>{{totalSubsidyAmountTrd}}</td>
-      <td>{{totalO2oReceivableAmount}}</td>
-      <td>{{totalBankAmount}}</td>
-      <td>{{totalServiceAmount}}</td>
-    </tr>
-    {{/rows}}
-  </script>
 
   <script src="js/vendor.js"></script>
   <script src="js/balance-in-detail.js"></script>
