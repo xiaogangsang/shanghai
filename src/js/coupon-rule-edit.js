@@ -367,7 +367,7 @@ $(document).on('change click', '#search-cinema-provinceId', function (e) {
     options = '<option value="">城市</option>';
   }
 
-  $('#search-cinema-cityId').html(options).chosen();
+  $('#search-cinema-cityId').html(options).chosen('destroy').chosen();
   return false;
 });
 
