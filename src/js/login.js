@@ -84,7 +84,11 @@ $('#form-login').on('submit', function (e) {
       });
 
       Cookies.set('authMenu', allowMenus.join(','));
-      window.location.href = 'index.html';
+
+      var referer = common.getUrlParam().referer;
+      referer = referer ? decodeURIComponent(referer) : 'index.html';
+
+      window.location.href = referer;
     } else {
       var html = '<div class="alert alert-danger" role="alert">' + res.meta.msg + '</div>';
       $(html).prependTo($that)

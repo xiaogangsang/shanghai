@@ -75,11 +75,11 @@ common.init = function (pageName) {
         break;
         case (401):
           errorMsg = jqXHR.status + '：未登录或登陆超时，请尝试重新登陆！';
-          redirectUrl = 'login.html?logout';
+          redirectUrl = 'login.html?logout&referer=' + encodeURIComponent(window.location.href);
         break;
         case (403):
           errorMsg = jqXHR.status + '：没有权限，请尝试重新登陆！';
-          redirectUrl = 'login.html?logout';
+          redirectUrl = 'login.html?logout&referer=' + encodeURIComponent(window.location.href);
         break;
         case (404):
           errorMsg = jqXHR.status + '：服务器暂时无法访问，请稍后再试！';
@@ -103,7 +103,7 @@ common.showMenu = function (pageName) {
     var menuId = +$('#menu-' + pageName).data('id');
     if (!allowMenus.includes(menuId.toString())) {
       common.logout();
-      window.location.href = 'login.html';
+      window.location.href = 'login.html?referer=' + encodeURIComponent(window.location.href);
     }
 
     $('#menu-' + pageName).addClass('active').closest('.panel-collapse').collapse('show');
@@ -122,7 +122,7 @@ common.showMenu = function (pageName) {
 common.checkLogin = function () {
   if (!Cookies.get('authMenu') || Cookies.get('authMenu').length < 1 || Cookies.get('Xtoken') == undefined) {
     common.logout();
-    window.location.href = 'login.html';
+    window.location.href = 'login.html?referer=' + encodeURIComponent(window.location.href);
   }
 };
 
