@@ -114,7 +114,7 @@ $('#dataTable').on('click', '.btn-status', function (e) {
       var statusName = sendData.status == 1 ? '上线' : '下线';
       var btnStatusName = sendData.status == 1 ? '下线' : '上线';
       $btn.data('status', sendData.status).html(btnStatusName);
-      $btn.closest('tr').find('td:nth-child(3)').html('已' + statusName);
+      $btn.closest('tr').find('td:nth-child(4)').html('已' + statusName);
       alert(statusName + '操作成功!');
     } else {
       alert('接口错误：' + res.meta.msg);
