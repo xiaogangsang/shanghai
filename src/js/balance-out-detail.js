@@ -563,7 +563,7 @@ $(document).on('submit', '#popup-detail form', function(e) {
     subsidyType: $('#subsidyType').val(),
     acceptanceAppropriation: $('#acceptanceAppropriation').val(),
     returnFee: $('#returnFee').val(),
-    partner: $('#returnFee').val(),
+    partner: $('#partner').val(),
 
     // 支付活动补贴金额(元)
     subsidyAmountTrd: $('#subsidyAmountTrd').val(),
