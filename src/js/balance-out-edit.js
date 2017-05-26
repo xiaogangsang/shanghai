@@ -459,7 +459,7 @@ $(document).on('submit', '#popup-detail form', function(e) {
     // subsidyType: $('#subsidyType').val(),
     acceptanceAppropriation: $('#acceptanceAppropriation').val(),
     // returnFee: $('#returnFee').val(),
-    // partner: $('#returnFee').val(),
+    partner: $('#partner').val(),
     finalSettleAmount: $('#finalSettleAmount').val(),
     reconciliationStatus: $('#reconciliationStatus').val(),
     shipmentStatus: $('#shipmentStatus').val(),
