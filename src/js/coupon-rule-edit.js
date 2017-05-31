@@ -28,13 +28,14 @@ var _popupDataCache = {
 
 var urlParam = common.getUrlParam();
 var ref = urlParam.ref ? urlParam.ref : 'coupon-rule';
+var isViewing;
 
 $(function () {
 
   setProvince();
   setBrand();
 
-  var isViewing = location.pathname.indexOf('view.html') > -1;
+  isViewing = location.pathname.indexOf('view.html') > -1;
 
   if (urlParam.hid) {
     setEdit(urlParam.hid, false, true);
@@ -90,7 +91,7 @@ $(function () {
   // 是的, 就是这么粗暴, 来咬我啊
   if (isViewing) {
     setInterval(function(){
-      $('#formEdit :input').prop('disabled', true);
+      $('#formEdit :input:not(#btn-set-cinema)').prop('disabled', true);
     }, 100);
   }
 
@@ -352,6 +353,9 @@ $(document).on('click', '#btn-set-cinema', function (event) {
   }
 
   $('#popup-unit-cinema').modal('show');
+  if (isViewing) {
+    $('#popup-unit-cinema form button:not(#btn-cinema-filter):not(.close)').prop('disabled', true);
+  }
 });
 
 $(document).on('change click', '#search-cinema-provinceId', function (e) {
