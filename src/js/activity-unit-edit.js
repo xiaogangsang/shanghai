@@ -32,6 +32,7 @@ var _popupDataCache = {
 var urlParam = common.getUrlParam();
 var ref = urlParam.ref ? urlParam.ref : 'activity-unit';
 var isViewing;
+var isLite = location.pathname.indexOf('lite') >= 0;
 
 // var _loginTypes = [CL:'掌上生活登录', UD: '一网通登录', UA: '一卡通登录', UC: '信用卡登录'];
 
@@ -1615,7 +1616,7 @@ function setupAssessor(budgetSourceId, assessor) {
 
 // 历史记录
 $(function() {
-  if (urlParam.id !== undefined && urlParam.typeCode !== undefined) {
+  if (!isLite && urlParam.id !== undefined && urlParam.typeCode !== undefined) {
 
     var url = 'verification/history';
     

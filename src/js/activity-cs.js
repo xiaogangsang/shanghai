@@ -79,11 +79,13 @@ $('#formSearch').on('submit', function (e) {
   return false;
 });
 
-$('#dataTable').on('click', '.btn-rule', function (event) {
-  event.preventDefault();
-  $('#popup-rule .modal-title').html('活动细则：' + $(this).closest('tr').data('id'));
-  $('#popup-rule .modal-body').html($(this).next('div').html());
-  $('#popup-rule').modal('show');
+$('#dataTable').on('click', '.btn-rule', function (e) {
+  e.preventDefault();
+  // $('#popup-rule .modal-title').html('活动细则：' + $(this).closest('tr').data('id'));
+  // $('#popup-rule .modal-body').html($(this).next('div').html());
+  // $('#popup-rule').modal('show');
+
+  location.href = 'activity-unit-lite-view.html?unitId=' + $(this).closest('tr').data('id');
 });
 
 $('#pager').on('click', '.prev,.next', function (e) {

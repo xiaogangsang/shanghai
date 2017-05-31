@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="images/favicon.ico" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>活动中心</title>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/activity.css">
+</head>
+<body>
+
+  @@include('component/header.tpl')
+
+  <div class="container-fluid">
+
+    <div class="row">
+
+      @@include('component/sidebar.tpl')
+
+      <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+        <ol class="breadcrumb">
+          <li>活动中心</li>
+          <li>活动单元管理</li>
+          <li class="active">查看</li>
+        </ol>
+
+        <section class="activity-unit-edit">
+          <h3>查看活动单元: </h3>
+          <form id="formUnit">
+
+            <div class="edit-section">
+              <h4>基本信息</h4>
+              <div class="form-group col-sm-6">
+                <div class="input-group">
+                  <div class="input-group-addon">活动名称</div>
+                  <input type="text" class="form-control" id="name" required maxlength="20">
+                </div>
+              </div>
+              <div class="form-group col-sm-6">
+                <div class="input-group">
+                  <div class="input-group-addon">所属活动计划</div>
+                  <select class="form-control" id="planId" required data-parsley-errors-container="#error-planId">
+                    <option value="">选择计划</option>
+                  </select>
+                  <div id="error-planId"></div>
+                </div>
+              </div>
+              <div class="form-group col-sm-6">
+                <div class="input-group">
+                  <div class="input-group-addon">开始日期</div>
+                  <input type="text" class="form-control" id="beginDate" required readonly>
+                </div>
+              </div>
+              <div class="form-group col-sm-6">
+                <div class="input-group">
+                  <div class="input-group-addon">结束日期</div>
+                  <input type="text" class="form-control" id="endDate" required readonly>
+                </div>
+              </div>
+              <div class="form-group col-sm-12">
+                <div class="input-group">
+                  <div class="input-group-addon">每日生效时间</div>
+                  <input type="text" class="form-control time-input" maxlength="2" id="beginHH" value="00" data-parsley-pattern="^\d{1,2}$" min="00" max="23" data-parsley-errors-container="#error-dailytime">时
+                  <input type="text" class="form-control time-input" maxlength="2" id="beginMM" value="00" data-parsley-pattern="^\d{1,2}$" min="00" max="59" data-parsley-errors-container="#error-dailytime">分
+                  <input type="text" class="form-control time-input" maxlength="2" id="beginSS" value="00" data-parsley-pattern="^\d{1,2}$" min="00" max="59" data-parsley-errors-container="#error-dailytime">秒
+                  <span> - </span>
+                  <input type="text" class="form-control time-input" maxlength="2" id="endHH" value="23" data-parsley-pattern="^\d{1,2}$" min="00" max="23" data-parsley-errors-container="#error-dailytime">时
+                  <input type="text" class="form-control time-input" maxlength="2" id="endMM" value="59" data-parsley-pattern="^\d{1,2}$" min="00" max="59" data-parsley-errors-container="#error-dailytime">分
+                  <input type="text" class="form-control time-input" maxlength="2" id="endSS" value="59" data-parsley-pattern="^\d{1,2}$" min="00" max="59" data-parsley-errors-container="#error-dailytime">秒
+                  <div id="error-dailytime"></div>
+                </div>
+              </div>
+              <div class="form-group col-sm-12">
+                <div class="input-group">
+                  <div class="input-group-addon">周期重复选择</div>
+                  <div class="checkbox-inline"><label><input type="checkbox" id="repeatedDayAll"><span>全部</span></label></div>
+                  <div class="checkbox-inline"><label><input type="checkbox" name="repeatedDay" value="1" required data-parsley-errors-container="#error-repeatedDay"><span>周一</span></label></div>
+                  <div class="checkbox-inline"><label><input type="checkbox" name="repeatedDay" value="2" required data-parsley-errors-container="#error-repeatedDay"><span>周二</span></label></div>
+                  <div class="checkbox-inline"><label><input type="checkbox" name="repeatedDay" value="3" required data-parsley-errors-container="#error-repeatedDay"><span>周三</span></label></div>
+                  <div class="checkbox-inline"><label><input type="checkbox" name="repeatedDay" value="4" required data-parsley-errors-container="#error-repeatedDay"><span>周四</span></label></div>
+                  <div class="checkbox-inline"><label><input type="checkbox" name="repeatedDay" value="5" required data-parsley-errors-container="#error-repeatedDay"><span>周五</span></label></div>
+                  <div class="checkbox-inline"><label><input type="checkbox" name="repeatedDay" value="6" required data-parsley-errors-container="#error-repeatedDay"><span>周六</span></label></div>
+                  <div class="checkbox-inline"><label><input type="checkbox" name="repeatedDay" value="7" required data-parsley-errors-container="#error-repeatedDay"><span>周日</span></label></div>
+                  <div id="error-repeatedDay"></div>
+                </div>
+              </div>
+<!--               <div class="form-group col-sm-6">
+                <div class="input-group">
+                  <div class="input-group-addon">成本中心类别</div>
+                  <select class="form-control" id="level">
+                    <option></option>
+                    <option value="0">总行</option>
+                    <option value="1">支行</option>
+                    <option value="2">卡中心</option>
+                    <option value="3">卡部</option>
+                    <option value="4">O2O项目组</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group col-sm-6">
+                <div class="input-group">
+                  <div class="input-group-addon">成本中心</div>
+                  <select class="form-control" id="budgetSource" required data-parsley-errors-container="#error-budgetSource">
+                    <option></option>
+                  </select>
+                  <div id="error-budgetSource"></div>
+                </div>
+              </div> -->
+              
+<!--               <div class="form-group col-sm-6">
+                <div class="input-group">
+                  <div class="input-group-addon">万达活动票类</div>
+                  <select class="form-control" id="wandaTicketId">
+                    <option></option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group col-sm-6">
+                <div class="input-group">
+                  <div class="input-group-addon">活动优先级</div>
+                  <input type="text" class="form-control" id="priority" required data-parsley-type="number" readonly>
+                </div>
+              </div>
+              <div class="form-group col-sm-6">
+                <div class="input-group">
+                  <div class="input-group-addon">使用预付款</div>
+                  <div class="checkbox-inline"><label><input type="checkbox" name="advancePayment" value="WANDA"><span>万达</span></label></div>
+                  <div class="checkbox-inline"><label><input type="checkbox" name="advancePayment" value="BAIDU"><span>百度</span></label></div>
+                  <div class="checkbox-inline"><label><input type="checkbox" name="advancePayment" value="WEIPIAO"><span>微票</span></label></div>
+                </div>
+              </div>
+              <div class="form-group col-sm-6">
+                <div class="input-group">
+                  <div class="input-group-addon">签报号</div>
+                  <input type="text" class="form-control" id="signNo">
+                </div>
+              </div> -->
+            </div>
+
+            <div class="edit-section">
+              <h4>活动备注</h4>
+              <div class="form-group col-xs-12">
+                <textarea rows="6" class="form-control" id="remark"></textarea>
+              </div>
+            </div>
+
+            <div class="edit-section pane-activity-type" style="padding-bottom: 15px;">
+              <h4>活动形式</h4>
+              <div class="table-responsive">
+                <table class="table" id="typeTable">
+                  <thead>
+                    <th>
+                      <select id="activityPattern">
+                        <option value="1">固定价</option>
+                        <option value="2">立减</option>
+                        <option value="3">N折</option>
+                        <option value="4">买N减一</option>
+                        <option value="5">积分</option>
+                      </select>
+                    </th>
+                    <th>单张票价区间（最低）</th>
+                    <th>单张票价区间（最高）</th>
+                    <th>操作</th>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><input type="text" class="amount" required placeholder="必填" data-parsley-pattern="^[1-9]{1}\d*.{1}\d{1,2}$|^[1-9]{1}\d*$|^[0].{1}\d{1,2}$"></td>
+                      <td><input type="text" class="lowerBound parsley-range" placeholder="不限" data-parsley-pattern="^[1-9]{1}\d*.{1}\d{1,2}$|^[1-9]{1}\d*$|^[0].{1}\d{1,2}$" data-parsley-ur="0"></td>
+                      <td><input type="text" class="upperBound parsley-range" placeholder="不限" data-parsley-pattern="^[1-9]{1}\d*.{1}\d{1,2}$|^[1-9]{1}\d*$|^[0].{1}\d{1,2}$" data-parsley-ur="0"></td>
+                      <td><button type="button" class="btn btn-xs btn-default btn-type-delete">删除</button></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <button type="button" class="btn btn-default" id="btn-type-add">添加一条规则</button><span class="activity-pattern-tip"></span>
+            </div>
+
+<!--             <div class="edit-section">
+              <h4>活动标记</h4>
+              <div class="form-group col-sm-6">
+                <div class="input-group">
+                  <div class="input-group-addon">影院页</div>
+                  <input type="text" class="form-control" id="cinemaPageDesc" maxlength="10">
+                </div>
+              </div>
+              <div class="form-group col-sm-6">
+                <div class="input-group">
+                  <div class="input-group-addon">活动列表icon</div>
+                  <input type="text" class="form-control" id="activityIcon" maxlength="6">
+                </div>
+              </div>
+              <div class="form-group col-sm-6">
+                <div class="input-group">
+                  <div class="input-group-addon">场次页</div>
+                  <input type="text" class="form-control" id="timetablePageDesc" maxlength="6">
+                </div>
+              </div>
+              <div class="form-group col-sm-6">
+                <div class="input-group">
+                  <div class="input-group-addon">活动列表描述</div>
+                  <input type="text" class="form-control" id="activityDesc" maxlength="15">
+                </div>
+              </div>
+              <div class="form-group col-xs-12">
+                <div class="input-group">
+                  <div class="input-group-addon">跳转链接</div>
+                  <input type="url" class="form-control" id="activityLink">
+                </div>
+              </div>
+              <div class="form-group col-xs-12">
+                <div class="input-group">
+                  <div class="input-group-addon">规则描述</div>
+                  <textarea rows="6" class="form-control" id="activityRuleDesc"></textarea>
+                </div>
+              </div>
+            </div> -->
+
+            <div class="edit-section unit-limitation">
+              <h4>限制条件</h4>
+              <div class="table-responsive">
+                <table class="table">
+                  <tbody>
+                    <!-- <tr>
+                      <th width="100"><button type="button" class="btn btn-default" id="btn-set-daily">活动预算</button></th>
+                      <td id="preview-budget">不限</td>
+                    </tr> -->
+                    <tr>
+                      <th width="100"><button type="button" class="btn btn-default" id="btn-set-custypes">客群</button></th>
+                      <td id="preview-custypes">不限</td>
+                    </tr>
+                    <tr>
+                      <th><button type="button" class="btn btn-default" id="btn-set-special">特殊资格</button></th>
+                      <td id="preview-special">不限</td>
+                    </tr>
+                    <tr>
+                      <th><button type="button" class="btn btn-default" id="btn-set-restriction">单户限购</button></th>
+                      <td id="preview-restriction">不限</td>
+                    </tr>
+                    <tr>
+                      <th><button type="button" class="btn btn-default" id="btn-set-channel">渠道</button></th>
+                      <td id="preview-channel">不限</td>
+                    </tr>
+                    <tr>
+                      <th><button type="button" class="btn btn-default" id="btn-set-movie">影片</button></th>
+                      <td id="preview-movie">不限</td>
+                    </tr>
+                    <tr>
+                      <th><button type="button" class="btn btn-default" id="btn-set-dimen">制式</button></th>
+                      <td id="preview-dimen">不限</td>
+                    </tr>
+                    <tr>
+                      <th><button type="button" class="btn btn-default" id="btn-set-cinema">影院</button></th>
+                      <td id="preview-cinema">不限</td>
+                    </tr>
+                    <tr>
+                      <th><button class="btn btn-default" id="btn-set-timetable">场次</button></th>
+                      <td id="preview-timetable">不限</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- <div class="row">
+              <div class="col-sm-4">
+                <button type="submit" class="btn btn-block btn-primary" disabled>保存</button>
+              </div>
+            </div> -->
+
+          </form>
+
+          <form id="formRemark" style="display: none;">
+            <div class="edit-section">
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-addon">审核备注</div>
+                  <textarea id="remark-input" class="form-control"></textarea>
+                </div>
+              </div>
+            </div>
+
+            <div class="row" style="text-align: center;">
+              <button type="submit" class="btn btn-primary btn-approval" style="padding: 5px 60px;">审核通过</button>
+              <button type="submit" class="btn btn-primary btn-reject" style="padding: 5px 60px; margin-left: 6px;">驳回</button>
+              <!-- <button type="submit" class="btn btn-block btn-primary" disabled>保存</button> -->
+            </div>
+          </form>
+        </section>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="js/vendor.js"></script>
+  <script src="lib/jquery.quicksearch.min.js"></script>
+  <script src="js/activity-unit-edit.js"></script>
+  <script id="type-template" type="text/x-tmpl-mustache">
+    <tr>
+      <td><input type="text" class="amount" required placeholder="必填" data-parsley-pattern="^[1-9]{1}\d*.{1}\d{1,2}$|^[1-9]{1}\d*$|^[0].{1}\d{1,2}$"></td>
+      <td><input type="text" class="lowerBound parsley-range" placeholder="不限" data-parsley-pattern="^[1-9]{1}\d*.{1}\d{1,2}$|^[1-9]{1}\d*$|^[0].{1}\d{1,2}$" data-parsley-ur="{{index}}"></td>
+      <td><input type="text" class="upperBound parsley-range" placeholder="不限" data-parsley-pattern="^[1-9]{1}\d*.{1}\d{1,2}$|^[1-9]{1}\d*$|^[0].{1}\d{1,2}$" data-parsley-ur="{{index}}"></td>
+      <td><button type="button" class="btn btn-xs btn-default btn-type-delete">删除</button></td>
+    </tr>
+  </script>
+  @@include('component/popup-unit-budget.tpl')
+  @@include('component/popup-unit-custypes.tpl')
+  @@include('component/popup-unit-special.tpl')
+  @@include('component/popup-unit-restriction.tpl')
+  @@include('component/popup-unit-channel.tpl')
+  @@include('component/popup-unit-movie.tpl')
+  @@include('component/popup-unit-dimen.tpl')
+  @@include('component/popup-unit-cinema.tpl')
+  @@include('component/popup-unit-timetable.tpl')
+  @@include('component/popup-unit-priority.tpl')
+  @@include('component/approval-history.tpl')
+</body>
+</html>
