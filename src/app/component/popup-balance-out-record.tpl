@@ -68,6 +68,7 @@
                   <select class="form-control" id="record_payTool" required>
                     <option value="1">掌上生活</option>
                     <option value="2">手机银行</option>
+                    <option value="3">招联</option>
                   </select>
                 </div>
               </div>

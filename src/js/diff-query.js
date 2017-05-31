@@ -22,6 +22,8 @@ $(function () {
   $('#search_startTime').val(todayDate);
   $('#search_endTime').val(todayDate);
 
+  $('#search_channelId').html(settlementCommon.optionsHTML(settlementCommon.channel, true));
+
   settlementCommon.fetchBasicData(function (res) {
   	if (res.sign) {
   		_signList = res.sign;
