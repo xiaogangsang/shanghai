@@ -94,10 +94,18 @@ $('#dataTable').on('click', '.btn-edit', function (event) {
   $('#free').val($tr.find('td:nth-child(3)').text());
   $('#status').val($tr.data('status'));
   $('#popup-charge-form').modal('show');
+  $('#free').parsley().validate();
 });
 
 $(document).on('submit','#popup-charge-form', function(e) {
   event.preventDefault();
+
+  $('#free').parsley().validate();
+
+  if (!$('#free').parsley().isValid()) {
+    return false;
+  }
+
   if (_submitting) {
     return false;
   };
@@ -131,3 +139,4 @@ $(document).on('submit','#popup-charge-form', function(e) {
   });
   return false;
 });
+
