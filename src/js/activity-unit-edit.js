@@ -582,6 +582,7 @@ $(document).on('click', '#btn-set-cinema', function (event) {
   }
 
   $('#popup-unit-cinema').modal('show');
+  $('#choosedCount').text(_popupDataCache.cinemas.length);
   if (isViewing) {
     $('#popup-unit-cinema form button:not(#btn-cinema-filter):not(.close)').prop('disabled', true);
   }

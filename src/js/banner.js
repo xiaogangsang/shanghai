@@ -456,6 +456,7 @@ $(document).on('submit', '#popup-banner-form form', function (event) {
       sendData.imageUrl = $('#popup-banner-form #imageUrl').val();
       sendData.link = $('#popup-banner-form #link').val();
     break;
+    case 7:
     case 2:
       sendData.bannerType = ~~$('#popup-banner-form #bannerType').val();
       sendData.bannerName = $('#popup-banner-form #bannerName').val().trim();
@@ -723,6 +724,7 @@ function setModal(bannerData, type) {
         template = $('#edit-home-template').html();
         uploadButton = '#file-upload';
         break;
+      case 7:
       case 2:
         template = $('#edit-hot-template').html();
         data.movies = _movies;
@@ -786,6 +788,7 @@ function setModal(bannerData, type) {
         template = $('#create-home-template').html();
         uploadButton = '#file-upload';
       break;
+      case 7:
       case 2:
         template = $('#create-hot-template').html();
         data.movies = _movies;
