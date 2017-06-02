@@ -16,32 +16,30 @@
 
   <div class="container-fluid">
 
-    <div class="row">
-
       @@include('component/sidebar.tpl')
 
+    <div class="row">
       <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
         <ol class="breadcrumb">
           <li>场次及价格管理</li>
           <li class="active">服务费设置</li>
         </ol>
-
         <div class="content-area">
-
           <div class="table-responsive">
+
             <table class="table table-hover" id="dataTable">
               <thead>
                 <tr>
                   <th>渠道ID</th>
                   <th>渠道</th>
                   <th>服务费</th>
-                  <!-- <th width="80">操作</th> -->
+                  <th width="80">操作</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td colspan="3" align="center">载入中...</td>
+                  <td colspan="4" align="center">载入中...</td>
                 </tr>
               </tbody>
             </table>
@@ -76,17 +74,54 @@
   </script>
   <script id="table-template" type="text/x-tmpl-mustache">
     {{#rows}}
-    <tr data-id="{{channelId}}" data-fee="{{fee}}">
+    <tr data-id="{{channelId}}" data-fee="{{fee}}" data-status="{{status}}"}>
       <td>{{channelId}}</td>
       <td>{{channelName}}</td>
       <td>{{fee}}</td>
-      {{#aaabbbccc}}
       <td><button type="button" class="btn btn-xs btn-default btn-edit">编辑</button></td>
-      {{/aaabbbccc}}
     </tr>
     {{/rows}}
   </script>
 
   <!-- @@include('component/popup-charge-form.tpl') -->
+
+  <div class="modal fade" id="popup-charge-form" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form>
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">编辑服务费</h4>
+          </div>
+          <div class="modal-body">
+            <input type="hidden" id="channelId" value="">
+            <input type="hidden" id="status" value="">
+            <div class="edit-section">
+              <div class="table-responsive">
+                <table class="table">
+                  <tbody>
+                    <tr>
+                      <th width="80">渠道</th>
+                      <td><input type="text" class="form-control" id="channelName" value="" readonly></td>
+                    </tr>
+                    <tr>
+                      <th>服务费</th>
+                      <td><input type="text" class="form-control" id="free" value="" data-parsley-pattern="^\d+(\.\d+)?$" data-parsley-error-message="服务费需为非负整数或小数" required></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">保存</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
 </body>
 </html>

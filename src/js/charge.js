@@ -85,3 +85,58 @@ function setPager(total, pageIndex, rowsSize, pageTotal) {
   var html = Mustache.render(template, data);
   $('#pager').html(html);
 }
+
+$('#dataTable').on('click', '.btn-edit', function (event) {
+  event.preventDefault();
+  var $tr = $(this).closest('tr');
+  $('#channelId').val($tr.find('td:nth-child(1)').text().trim());
+  $('#channelName').val($tr.find('td:nth-child(2)').text().trim());
+  $('#free').val($tr.find('td:nth-child(3)').text());
+  $('#status').val($tr.data('status'));
+  $('#popup-charge-form').modal('show');
+  $('#free').parsley().validate();
+});
+
+$(document).on('submit','#popup-charge-form', function(e) {
+  event.preventDefault();
+
+  $('#free').parsley().validate();
+
+  if (!$('#free').parsley().isValid()) {
+    return false;
+  }
+
+  if (_submitting) {
+    return false;
+  };
+  _submitting = true;
+
+  $('#popup-charge-form input[type=submit]').prop('disabled', true).text('提交中...');
+  var sendData = {
+    channelId: $('#channelId').val(),
+    fee: $('#free').val().trim(),
+    channelName: $('#channelName').val().trim(),
+    status: $('#status').val()
+  };
+
+  var ajaxUrl = common.API_HOST + 'timeTable/feeRuleUpdate';
+  $.ajax({
+    url: ajaxUrl,
+    type: 'POST',
+    dataType: 'json',
+    data: sendData,
+  })
+  .done(function (res) {
+    _submitting = false;
+    if (!!~~res.meta.result) {
+      alert('更新成功！');
+      $('#popup-charge-form').modal('hide');
+      setTableData();
+    } else {
+      alert('接口错误：' + res.meta.msg);
+      $('#popup-charge-form input[type=submit]').prop('disabled', false).text('再试一次');
+    }
+  });
+  return false;
+});
+
