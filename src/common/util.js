@@ -154,7 +154,7 @@ Codec.prototype.dropdownMenuHTML = function(className) {
 util.commentType = new Codec({'1' : '评论', '3' : '回复'});
 
 // 渠道
-util.channel = new Codec({'1' : '掌上生活', '2' : '手机银行'});
+util.channel = new Codec({'1' : '掌上生活', '2' : '手机银行', '3': '招联'});
 
 // 搜索词类型
 util.searchTermType = new Codec({'1' : '搜索词', '2' : '热搜词'});

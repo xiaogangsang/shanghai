@@ -60,8 +60,13 @@ var common = {};
 common.API_HOST = window.location.protocol + '//' + window.location.host + '/MovieOps/';
 
 common.init = function (pageName) {
+
   pageName = pageName || location.pathname.split('/').pop().split('.').shift();
-  common.checkLogin();
+
+  if (!common.checkLogin()) {
+    return false;
+  }
+
   common.setLoginName();
   common.showMenu(pageName);
 
@@ -120,10 +125,14 @@ common.showMenu = function (pageName) {
 };
 
 common.checkLogin = function () {
-  if (!Cookies.get('authMenu') || Cookies.get('authMenu').length < 1 || Cookies.get('Xtoken') == undefined) {
+
+  if (Cookies.get('Xtoken') == undefined) {
     common.logout();
     window.location.href = 'login.html?referer=' + encodeURIComponent(window.location.href);
+    return false;
   }
+
+  return true;
 };
 
 common.setLoginName = function () {

@@ -41,6 +41,7 @@
 						<select class="form-control" id="diff_channelId" value="{{channelId}}" required>
 							<option value="1">掌上生活</option>
 							<option value="2">手机银行</option>
+							<option value="3">招联</option>
 						</select>
 					</div>
 				</div>

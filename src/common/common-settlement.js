@@ -73,7 +73,7 @@ settlementCommon.parseOutReason = function(status) {
 
 
 // 支付渠道
-settlementCommon.payTool = {'1' : '掌上生活', '2' : '手机银行'};
+settlementCommon.payTool = {'1' : '掌上生活', '2' : '手机银行', '3': '招联'};
 
 settlementCommon.parsePayTool = function(status) {
   return this.payTool[status];
@@ -166,7 +166,7 @@ settlementCommon.parseMoneyOutStatus = function(status) {
 
 
 // 支付渠道
-settlementCommon.channel = {'1' : '掌上生活', '2' : '手机银行'};
+settlementCommon.channel = settlementCommon.payTool;
 
 settlementCommon.parseChannel = function(status) {
   return this.channel[status];
