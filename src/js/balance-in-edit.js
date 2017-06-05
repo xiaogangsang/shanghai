@@ -26,17 +26,18 @@ var approval = false;
 var summaryTable = {
   table: $('#summaryTable'),
   keyMap : [
-    {label: '收单订单类型', key: 'acquiringOrderType', parseKey: '.'},
     {label: '渠道', key: 'payTool', parseKey: function(item) {
       return settlementCommon.parseAcquiringPayTool(item.payTool);
     }},
+    {label: '收单商户号', key: 'chargeMerchantNo'},
+    {label: '收单订单类型', key: 'acquiringOrderType', parseKey: '.'},
     {label: '记录数', key: 'totalOrderCount'},
     {label: '用户支付金额', key: 'totalPayAmount'},
+    {label: '服务费', key: 'totalServiceAmount'},
     {label: '常规活动后付款补贴金额', key: 'totalSubsidyAmountO2o'},
     {label: '支付活动后付款补贴金额', key: 'totalSubsidyAmountTrd'},
-    {label: 'O2O应收金额', key: 'totalO2oReceivableAmount'},
-    {label: '实收金额', key: 'totalBankAmount'},
-    {label: '服务费', key: 'totalServiceAmount'}
+    {label: '线上应收金额', key: 'totalO2oReceivableAmount'},
+    {label: '实收用户金额', key: 'totalBankAmount'},
   ]
 };
 
