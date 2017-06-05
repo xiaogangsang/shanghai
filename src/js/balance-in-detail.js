@@ -25,17 +25,18 @@ var _DEBUG = false;
 var summaryTable = {
   table: $('#summaryTable'), 
   keyMap : [
-    {label: '收单订单类型', key: 'acquiringOrderType', parseKey: '.'}, 
     {label: '渠道', key: 'payTool', parseKey: function(item) {
       return settlementCommon.parseAcquiringPayTool(item.payTool);
     }},
+    {label: '收单商户号', key: 'chargeMerchantNo'},
+    {label: '收单订单类型', key: 'acquiringOrderType', parseKey: '.'},
     {label: '记录数', key: 'totalOrderCount'},
     {label: '用户支付金额', key: 'totalPayAmount'},
+    {label: '服务费', key: 'totalServiceAmount'},
     {label: '常规活动后付款补贴金额', key: 'totalSubsidyAmountO2o'},
     {label: '支付活动后付款补贴金额', key: 'totalSubsidyAmountTrd'},
     {label: '线上应收金额', key: 'totalO2oReceivableAmount'},
-    {label: '实收金额', key: 'totalBankAmount'}, 
-    {label: '服务费', key: 'totalServiceAmount'}
+    {label: '实收用户金额', key: 'totalBankAmount'},
   ]
 };
 
@@ -69,7 +70,11 @@ var detailTable = {
     {label: '审核状态', key: 'checkStatus', parseKey: '.'},
     {label: '操作时间', key: 'operateTime'},
     {label: '操作', parseKey: function(item) {
-      return '<button class="btn btn-xs btn-default btn-edit" data-checkstatus="' + item.checkStatus + '">修改</button>';
+      var html = '<button class="btn btn-xs btn-default btn-edit" data-checkstatus="' + item.checkStatus + '">修改</button>';
+      if (item.deleteFlag === 'true') {
+        html += '<button class="btn btn-xs btn-default btn-delete">删除</button>';
+      }
+      return html;
     }}
   ],
   rowAttrs: function(item) {
@@ -426,6 +431,28 @@ $('.complete-commit').click(function(e) {
       }
     });
   }
+});
+
+$('#dataTable').on('click', '.btn-delete', function(e) {
+  e.preventDefault();
+  $('#hud-overlay').show();
+  $.ajax({
+    url: common.API_HOST + 'settlement/acquiring/deleteAcquiringInfo',
+    dataType: 'json',
+    data: {
+      id: $(this).closest('tr').data('id'),
+    },
+  })
+  .done(function(res) {
+    if (!!~~res.meta.result) {
+      $('#formSearch').trigger('submit');
+    } else {
+      alert(res.meta.msg);
+    }
+  })
+  .always(function() {
+    $('#hud-overlay').hide();
+  });
 });
 
 $('#dataTable').on('click', '.btn-edit', function (e) {
