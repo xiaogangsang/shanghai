@@ -435,6 +435,11 @@ $('.complete-commit').click(function(e) {
 
 $('#dataTable').on('click', '.btn-delete', function(e) {
   e.preventDefault();
+
+  if (!confirm('删除后无法恢复，确定要删除该记录吗？')) {
+    return false;
+  }
+
   $('#hud-overlay').show();
   $.ajax({
     url: common.API_HOST + 'settlement/acquiring/deleteAcquiringInfo',
