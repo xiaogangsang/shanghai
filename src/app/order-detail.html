@@ -128,7 +128,7 @@
       </div>
       {{/canReturnTicket}}
     </div>
-    <div class="edit-section">
+    <!-- <div class="edit-section">
       <div class="col-xs-12 col-sm-6"><label>原价(单价)：</label>{{unitPrice}}</div>
       <div class="col-xs-12 col-sm-6"><label>张数：</label>{{ticketNum}}</div>
       <div class="col-xs-12 col-sm-6"><label>结算总价：</label>{{totalSettleAmount}}</div>
@@ -147,6 +147,32 @@
       <div class="col-xs-12 col-sm-6"><label>优惠券名称：</label>{{couponName}}</div>
       <div class="col-xs-12 col-sm-6"><label>优惠券码：</label>{{couponCode}}</div>
       <div class="col-xs-12 col-sm-6"><label>实际拨款金额：</label>{{finalTotalSettleAmount}}</div>
+      <div class="col-xs-12 col-sm-6"><label>商户号：</label>{{merchantNo}}</div>
+      {{#canReturnCoupon}}
+      <div class="col-xs-12" style="text-align: right;"><button class="btn btn-default auth-ctl" id="btn-returnCoupon" data-auth="121" style="display: none">退优惠券</button></div>
+      {{/canReturnCoupon}}
+    </div> -->
+    <div class="edit-section">
+      <div class="col-xs-12 col-sm-6"><label>销售价(单价)：</label>{{unitPrice}}</div>
+      <div class="col-xs-12 col-sm-6"><label>张数：</label>{{ticketNum}}</div>
+      <div class="col-xs-12 col-sm-6"><label>应收大C总金额：</label>{{receiveFromClientTotal}}</div>
+      <div class="col-xs-12 col-sm-6"><label>线上应收大C金额：</label>{{receiveFromClientOnline}}</div>
+      <div class="col-xs-12 col-sm-6"><label>应付商户总金额：</label>{{payToMerchantTotal}}</div>
+      <div class="col-xs-12 col-sm-6"><label>线上应付商户金额：</label>{{payToMerchantOnline}}</div>
+      <div class="col-xs-12 col-sm-6"><label>常规活动补贴金额：</label>{{allowanceAmount}}</div>
+      <div class="col-xs-12 col-sm-6"><label>常规活动补贴付款方式：</label>{{advancePayment}}</div>
+      <div class="col-xs-12 col-sm-6"><label>支付活动补贴金额：</label>{{thdActDiscountAmount}}</div>
+      <div class="col-xs-12 col-sm-6"><label>支付活动补贴付款方式：</label>{{thdActAdvancePayment}}</div>
+      <div class="col-xs-12 col-sm-6"><label>常规活动ID：</label>{{activityId}}</div>
+      <div class="col-xs-12 col-sm-6"><label>常规活动名称：</label>{{activityName}}</div>
+      {{#thdActList}}
+      <div class="col-xs-12 col-sm-6"><label>支付活动ID：</label>{{thdActId}}</div>
+      <div class="col-xs-12 col-sm-6"><label>支付活动名称：</label>{{thdActName}}</div>
+      {{/thdActList}}
+      <div class="col-xs-12 col-sm-6"><label>优惠券规则ID：</label>{{couponId}}</div>
+      <div class="col-xs-12 col-sm-6"><label>优惠券名称：</label>{{couponName}}</div>
+      <div class="col-xs-12"><label>优惠券码：</label>{{couponCode}}</div>
+      <div class="col-xs-12 col-sm-6"><label>票类：</label>{{wandaTicketId}}</div>
       <div class="col-xs-12 col-sm-6"><label>商户号：</label>{{merchantNo}}</div>
       {{#canReturnCoupon}}
       <div class="col-xs-12" style="text-align: right;"><button class="btn btn-default auth-ctl" id="btn-returnCoupon" data-auth="121" style="display: none">退优惠券</button></div>
