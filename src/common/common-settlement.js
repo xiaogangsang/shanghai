@@ -56,7 +56,7 @@ settlementCommon.parseReconciliationStatus = function(status) {
 
 
 // 收单对账失败原因
-settlementCommon.reason = {'1' : '我方缺失', '2' : '对方缺失', '3' : '状态错误', '4' : '金额不符'};
+settlementCommon.reason = {'1' : '我方缺失', '2' : '对方缺失', '3' : '状态错误', '4' : '金额不符', '5' : '重复记录'};
 
 settlementCommon.parseReason = function(status) {
   return this.reason[status];
