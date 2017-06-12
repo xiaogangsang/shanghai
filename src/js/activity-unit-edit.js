@@ -1165,7 +1165,7 @@ function setChannel(channels) {
             previewHtml = '不限';
           } else {
             _(_channels).forEach(function (channel) {
-              if (channels.indexOf(channel.channelId.toString()) < 0) {
+              if (channels.indexOf(channel.channelId) < 0) {
                 channel.checked = false;
               } else {
                 channel.checked = true;
