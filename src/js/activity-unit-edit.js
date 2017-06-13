@@ -38,8 +38,9 @@ var isLite = location.pathname.indexOf('lite') >= 0;
 
 // 渠道判断混乱，这里打个补丁
 // 主要原因是 channelList 接口返回的 channelId 是数值型
-// 其他接口返回的渠道是用字符串型，造成 indexOf 函数无法判断(indexOf 是严格判断 === )
-// array 的 indexOf 不再区分字符串和数字
+// 其他接口返回的渠道有的是用字符串型（注意这里是“有的是”，也就是说我们不确定是字符串还是数值，所以把 _channels的 id 存为字符串也是不行的），
+// 造成 indexOf 函数无法判断(indexOf 是严格判断 === )
+// 解决方案是 array 的 indexOf 不再区分字符串和数字
 var backup = Array.prototype.indexOf;
 Array.prototype.indexOf = function(value) {
   var originalIndex = backup.call(this, value);

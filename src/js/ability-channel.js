@@ -44,6 +44,7 @@ function getUsers() {
       _(res.data.rows).forEach(function (value, key) {
         _users.push({ id: value.id, realName: value.realName, cityAuthority: value.cityAuthority });
       });
+      $('#channelSelect').prop('disabled', false).chosen('destroy').chosen();
     } else {
       alert('接口错误：' + res.meta.msg);
     }
@@ -67,7 +68,7 @@ function setChannel() {
       });
 
       $('#channelSelect').append(htmlChannel);
-      $('#channelSelect').chosen();
+      $('#channelSelect').chosen('destroy').chosen();
     }
   });
 }
