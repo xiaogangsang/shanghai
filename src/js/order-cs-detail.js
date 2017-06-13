@@ -136,6 +136,7 @@ $(function () {
 
         res.data.payOrder.transDetailList = res.data.transDetailList;
         setPayOrder(res.data.payOrder);
+        res.data.bizOrder.actualPayAmount = res.data.payOrder.actualPayAmount;
         setBizOrder(res.data.bizOrder);
       } else {
         alert('接口错误：' + res.meta.msg);
