@@ -770,7 +770,7 @@ $('#formBatch').submit(function(e) {
 });
 
 /************************************************* 批量操作 ***************************************************/
-$('.multi-check-all').change(function(e) {
+$('body').on('change', '.multi-check-all', function(e) {
   e.preventDefault();
   var isChecked = $(this).is(':checked');
 
