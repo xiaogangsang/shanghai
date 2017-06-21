@@ -175,6 +175,49 @@ $('#dataTable').on('click', '.btn-delete', function (e) {
   return false;
 });
 
+$('#dataTable').on('click', '.btn-edit', function(e) {
+  e.preventDefault();
+  $('#popup-comment-offical').remove();
+  var officalReply = $(this).data('offical-reply');
+  var data = {id: $(this).parents('tr').data('id')};
+  if (officalReply) {
+    data['officalReply'] = officalReply;
+  }
+  var template = $('#comment-offical-template').html();
+  Mustache.parse(template);
+  var html = Mustache.render(template, data);
+  $('body').append(html);
+  $('#popup-comment-offical').modal('show');
+});
+
+$(document).on('submit', '#formOfficalReply', function(e) {
+  e.preventDefault();
+  id = $(e.target).data('id');
+
+  var param = {
+    ids: [id],
+    channelId: $('#search_channelId').val(),
+    officialReply: $('#form_officalReply').val(),
+  };
+
+  $.ajax({
+    url: common.API_HOST + 'comment/commentUpdate',
+    type: 'POST',
+    dataType: 'json',
+    contentType: 'application/json; charset=utf-8',
+    data: JSON.stringify(param),
+  })
+  .done(function (res) {
+    if (!!~~res.meta.result) {
+      alert('编辑成功');
+      $('#popup-comment-offical').modal('hide');
+      $('#formSearch').trigger('submit');
+    } else {
+      alert('接口错误：' + res.meta.msg);
+    }
+  });
+});
+
 $(document).on('click', '#btn-delete-multi', function (e) {
   e.preventDefault();
   if ($('.multi-check:checked').length < 1) {
