@@ -1583,7 +1583,7 @@ function setEdit(unitId, isApproval, isHistory) {
       .closest('tr').addClass(unit.data.cinemas.edited ? 'highlight' : '');
 
       //影院黑名单
-      $('#preview-cinema').html(unit.blackCinemas != null && unit.blackCinemas.length > 0 ? '选择了 ' + unit.blackCinemas.length + ' 个影院' : '不限')
+      $('#preview-black-cinema').html(unit.blackCinemas != null && unit.blackCinemas.length > 0 ? '选择了 ' + unit.blackCinemas.length + ' 个影院' : '不限')
       .closest('tr').addClass(unit.data.blackCinemas.edited ? 'highlight' : '');
 
       //场次
