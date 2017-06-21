@@ -100,6 +100,10 @@ $(function () {
         // 查看(我的进件列表(当状态为审核中时不可编辑))
         $('.breadcrumb').html('<li>审核中心</li><li>我的进件列表</li><li class="active">查看</li>');
         $('h3').text('查看活动单元: ' + urlParam.vid);
+      } else if (ref === 'approval-record') {
+        // 查看(我的审核记录)
+        $('.breadcrumb').html('<li>审核中心</li><li>我的审核记录</li><li class="active">查看</li>');
+        $('h3').text('查看活动单元: ' + urlParam.vid);
       }
     } else {
       // 审核的编辑
