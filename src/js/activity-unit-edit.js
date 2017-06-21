@@ -588,7 +588,7 @@ $(document).on('submit', '#popup-unit-dimen form', function (event) {
 $(document).on('click', '#btn-set-cinema', function (event) {
   event.preventDefault();
   showLimitCinamesPanel(_popupDataCache.cinemas, isViewing, function(chosenCinemas) {
-    _popupDataCache.blackCinemas = chosenCinemas;
+    _popupDataCache.cinemas = chosenCinemas;
 
     var previewHtml = chosenCinemas.length > 0 ? '选择了 ' + chosenCinemas.length + ' 个影院' : '不限';
     $('#preview-cinema').html(previewHtml);
@@ -612,7 +612,7 @@ $(document).on('click', '#btn-set-black-cinema', function (event) {
 function showLimitCinamesPanel(cinemas, readonly, completion) {
   cinemas = cinemas || [];
   $('#search-cinema-brandId option ,#search-cinema-provinceId option').prop('selected', false);
-  $('#search-cinema-cityId').html('<option value="">城市</option>');
+  $('#search-cinema-cityId').html('<option value="">城市</option>').chosen('destroy').chosen();
   $('#search-cinema-candidate tbody, #search-cinema-choosed tbody').html('');
   $('#input-cinema-filter, #search-cinema-cinemaName').val('');
   if (cinemas != null && cinemas.length > 0) {
@@ -631,7 +631,7 @@ function showLimitCinamesPanel(cinemas, readonly, completion) {
     $('#popup-unit-cinema form button:not(#btn-cinema-filter):not(.close)').prop('disabled', true);
   }
 
-  $('#popup-unit-cinema form').on('submit', function (event) {
+  $('#popup-unit-cinema form').off('submit').on('submit', function (event) {
     event.preventDefault();
     chosenCinemas = $('#search-cinema-choosed tbody tr').map(function () {
       var cinema = {

@@ -112,7 +112,7 @@ $(function () {
   // 是的, 就是这么粗暴, 来咬我啊
   if (isViewing) {
     setInterval(function(){
-      $('#formEdit :input:not(#btn-set-cinema)').prop('disabled', true);
+      $('#formUnit :input:not(.btn-limit-cinema)').prop('disabled', true);
     }, 100);
   }
 
@@ -358,14 +358,37 @@ $(document).on('submit', '#popup-unit-dimen form', function (event) {
 //影院
 $(document).on('click', '#btn-set-cinema', function (event) {
   event.preventDefault();
+  showLimitCinamesPanel(_popupDataCache.cinemas, isViewing, function(chosenCinemas) {
+    _popupDataCache.cinemas = chosenCinemas;
+
+    var previewHtml = chosenCinemas.length > 0 ? '选择了 ' + chosenCinemas.length + ' 个影院' : '不限';
+    $('#preview-cinema').html(previewHtml);
+  });
+
+  $('#popup-unit-cinema .modal-title').text('影院限制');
+});
+
+//影院黑名单
+$(document).on('click', '#btn-set-black-cinema', function (event) {
+  event.preventDefault();
+  showLimitCinamesPanel(_popupDataCache.blackCinemas, isViewing, function(chosenCinemas) {
+    _popupDataCache.blackCinemas = chosenCinemas;
+
+    var previewHtml = chosenCinemas.length > 0 ? '选择了 ' + chosenCinemas.length + ' 个影院' : '不限';
+    $('#preview-black-cinema').html(previewHtml);
+  });
+  $('#popup-unit-cinema .modal-title').text('影院黑名单');
+});
+
+function showLimitCinamesPanel(cinemas, readonly, completion) {
+  cinemas = cinemas || [];
   $('#search-cinema-brandId option ,#search-cinema-provinceId option').prop('selected', false);
-  $('#search-cinema-cityId').html('<option value="">城市</option>');
+  $('#search-cinema-cityId').html('<option value="">城市</option>').chosen('destroy').chosen();
   $('#search-cinema-candidate tbody, #search-cinema-choosed tbody').html('');
   $('#input-cinema-filter, #search-cinema-cinemaName').val('');
-  if (_popupDataCache.cinemas != null && _popupDataCache.cinemas.length > 0) {
-    $('#choosedCount').text(_popupDataCache.cinemas.length);
+  if (cinemas != null && cinemas.length > 0) {
     var html = '';
-    _(_popupDataCache.cinemas).forEach(function (cinema) {
+    _(cinemas).forEach(function (cinema) {
       html += '<tr data-id="' + cinema.cinemaId + '"><td>' + cinema.cinemaName + '</td><td>' + cinema.cityName + '</td><td>' + cinema.brandName + '</td></tr>';
     });
 
@@ -374,11 +397,32 @@ $(document).on('click', '#btn-set-cinema', function (event) {
   }
 
   $('#popup-unit-cinema').modal('show');
-  $('#choosedCount').text(_popupDataCache.cinemas.length);
-  if (isViewing) {
+  $('#choosedCount').text(cinemas.length);
+  if (readonly) {
     $('#popup-unit-cinema form button:not(#btn-cinema-filter):not(.close)').prop('disabled', true);
   }
-});
+
+  $('#popup-unit-cinema form').off('submit').on('submit', function (event) {
+    event.preventDefault();
+    chosenCinemas = $('#search-cinema-choosed tbody tr').map(function () {
+      var cinema = {
+        cinemaId: $(this).data('id'),
+        cinemaName: $(this).find('td:nth-child(1)').html(),
+        cityName: $(this).find('td:nth-child(2)').html(),
+        brandName: $(this).find('td:nth-child(3)').html(),
+      };
+      return cinema;
+    }).get();
+    
+    $('#popup-unit-cinema').modal('hide');
+
+    if (completion) {
+      completion(chosenCinemas);
+    }
+
+    return false;
+  });
+}
 
 $(document).on('change click', '#search-cinema-provinceId', function (e) {
   var provinceId = parseInt($(this).val());
@@ -500,23 +544,6 @@ $(document).on('click', '#btn-cinema-filter', function (event) {
   $('#search-cinema-choosed tbody tr').show();
 });
 
-$(document).on('submit', '#popup-unit-cinema form', function (event) {
-  event.preventDefault();
-  _popupDataCache.cinemas = $('#search-cinema-choosed tbody tr').map(function () {
-    var cinema = {
-      cinemaId: $(this).data('id'),
-      cinemaName: $(this).find('td:nth-child(1)').html(),
-      cityName: $(this).find('td:nth-child(2)').html(),
-      brandName: $(this).find('td:nth-child(3)').html(),
-    };
-    return cinema;
-  }).get();
-  var previewHtml = _popupDataCache.cinemas.length > 0 ? '选择了 ' + _popupDataCache.cinemas.length + ' 个影院' : '不限';
-  $('#preview-cinema').html(previewHtml);
-  $('#popup-unit-cinema').modal('hide');
-  return false;
-});
-
 //场次
 $(document).on('click', '#btn-set-timetable', function (event) {
   event.preventDefault();
@@ -632,6 +659,7 @@ $(document).on('submit', '#formEdit', function (event) {
     patternList: [],
     films: _popupDataCache.films,
     cinemas: [],
+    blackCinemas: [],
     timetables: _popupDataCache.timetables,
     remarks: $('#remark').val().trim(),
     effectiveDays:$('#effectiveDays').val().trim(),
@@ -661,6 +689,10 @@ $(document).on('submit', '#formEdit', function (event) {
   sendData.patternList.push({ amount: $('#amount').val(), limitNum: $('#limitNum').val(), lowerBound: $('#lowerBound').val(), upperBound: $('#upperBound').val() });
   _(_popupDataCache.cinemas).forEach(function (cinema) {
     sendData.cinemas.push(cinema.cinemaId);
+  });
+
+  _(_popupDataCache.blackCinemas).forEach(function (cinema) {
+    sendData.blackCinemas.push(cinema.cinemaId);
   });
 
   var ajaxUrl, tips;
@@ -1222,6 +1254,11 @@ function setEdit(couponId, isApproval, isHistory) {
       $('#preview-cinema')
       .html(coupon.cinemas != null && coupon.cinemas.length > 0 ? '选择了 ' + coupon.cinemas.length + ' 个影院' : '不限')
       .closest('tr').addClass(coupon.data.cinemas.edited ? 'highlight' : '');
+
+      //影院黑名单
+      $('#preview-black-cinema')
+      .html(coupon.blackCinemas != null && coupon.blackCinemas.length > 0 ? '选择了 ' + coupon.blackCinemas.length + ' 个影院' : '不限')
+      .closest('tr').addClass(coupon.data.blackCinemas && coupon.data.blackCinemas.edited ? 'highlight' : '');
 
       //场次
       setTimeTable(coupon.timetables);
