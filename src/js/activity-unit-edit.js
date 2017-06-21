@@ -593,6 +593,8 @@ $(document).on('click', '#btn-set-cinema', function (event) {
     var previewHtml = chosenCinemas.length > 0 ? '选择了 ' + chosenCinemas.length + ' 个影院' : '不限';
     $('#preview-cinema').html(previewHtml);
   });
+
+  $('#popup-unit-cinema .modal-title').text('影院限制');
 });
 
 //影院黑名单
@@ -604,9 +606,11 @@ $(document).on('click', '#btn-set-black-cinema', function (event) {
     var previewHtml = chosenCinemas.length > 0 ? '选择了 ' + chosenCinemas.length + ' 个影院' : '不限';
     $('#preview-black-cinema').html(previewHtml);
   });
+  $('#popup-unit-cinema .modal-title').text('影院黑名单');
 });
 
 function showLimitCinamesPanel(cinemas, readonly, completion) {
+  cinemas = cinemas || [];
   $('#search-cinema-brandId option ,#search-cinema-provinceId option').prop('selected', false);
   $('#search-cinema-cityId').html('<option value="">城市</option>');
   $('#search-cinema-candidate tbody, #search-cinema-choosed tbody').html('');
@@ -882,6 +886,7 @@ $(document).on('submit', '#formUnit', function (event) {
     dailyBudgetList: _popupDataCache.dailyBudgetList,
     films: _popupDataCache.films,
     cinemas: [],
+    blackCinemas: [],
     timetables: _popupDataCache.timetables,
     remarks: $('#remark').val().trim(),
     operator: $('#assessor').val(),
@@ -950,6 +955,10 @@ $(document).on('submit', '#formUnit', function (event) {
 
   _(_popupDataCache.cinemas).forEach(function (cinema) {
     sendData.cinemas.push(cinema.cinemaId);
+  });
+
+  _(_popupDataCache.blackCinemas).forEach(function (cinema) {
+    sendData.blackCinemas.push(cinema.cinemaId);
   });
 
   var ajaxUrl, tips;
@@ -1584,7 +1593,7 @@ function setEdit(unitId, isApproval, isHistory) {
 
       //影院黑名单
       $('#preview-black-cinema').html(unit.blackCinemas != null && unit.blackCinemas.length > 0 ? '选择了 ' + unit.blackCinemas.length + ' 个影院' : '不限')
-      .closest('tr').addClass(unit.data.blackCinemas.edited ? 'highlight' : '');
+      .closest('tr').addClass(unit.data.blackCinemas && unit.data.blackCinemas.edited ? 'highlight' : '');
 
       //场次
       setTimeTable(unit.timetables);
