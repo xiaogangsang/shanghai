@@ -85,7 +85,7 @@
         <div class="list-group">
           <a href="approval-submitted.html" class="list-group-item" id="menu-approval-submitted" data-id="358" style="display:none">我的进件列表</a>
           <a href="approval-approve.html" class="list-group-item" id="menu-approval-approve" data-id="357" style="display:none">进件审核</a>
-          <a href="approval-record.html" class="list-group-item" id="menu-approval-record" data-id="357" style="display:none">我的审核记录</a>
+          <a href="approval-record.html" class="list-group-item" id="menu-approval-record" data-id="411" style="display:none">我的审核记录</a>
         </div>
       </div>
     </div>
