@@ -1428,6 +1428,30 @@ function setEdit(unitId, isApproval, isHistory) {
         $('#formUnit button[type=submit]').prop('disabled', false);
       }
 
+      if (unit.blackCinemas != null) {
+        $.ajax({
+          url: common.API_HOST + 'common/getCinemasByIds',
+          type: 'POST',
+          dataType: 'json',
+          data: { ids: unit.blackCinemas.join('|') },
+        })
+        .done(function (res) {
+          if (!!~~res.meta.result) {
+            if (res.data == null || res.data.length < 1) {
+              return false;
+            } else {
+              _popupDataCache.blackCinemas = res.data;
+            }
+          } else {
+            alert('接口错误：' + res.meta.msg);
+          }
+
+          $('#formUnit button[type=submit]').prop('disabled', false);
+        });
+      } else {
+        $('#formUnit button[type=submit]').prop('disabled', false);
+      }
+
       _popupDataCache.timetables = unit.timetables;
 
       if (unit.saleLimit == null) {
