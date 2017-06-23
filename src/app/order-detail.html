@@ -148,9 +148,9 @@
       <div class="col-xs-12"><label>优惠券码：</label>{{couponCode}}</div>
       <div class="col-xs-12 col-sm-6"><label>票类：</label>{{wandaTicketId}}</div>
       <div class="col-xs-12 col-sm-6"><label>商户号：</label>{{merchantNo}}</div>
-      {{#canReturnCoupon}}
+      {{#refundCoupon}}
       <div class="col-xs-12" style="text-align: right;"><button class="btn btn-default auth-ctl" id="btn-returnCoupon" data-auth="121" style="display: none">退优惠券</button></div>
-      {{/canReturnCoupon}}
+      {{/refundCoupon}}
     </div>
     <div class="edit-section">
     <div class="col-xs-12 col-sm-6"><label>自助取票机：</label>{{#machineTicket}}{{text}}：{{value}}{{/machineTicket}}</div>
