@@ -19,6 +19,14 @@
           </div>
           <div id="return-coupon" class="form-group">
             <div class="input-group">
+              <div class="input-group-addon">是否退券</div>
+              <div class="radio-inline"><label><input type="radio" name="returnCouponSelect" value="true" required data-parsley-errors-container="#error-returnCouponSelect"><span>是</span></label></div>
+              <div class="radio-inline"><label><input type="radio" name="returnCouponSelect" value="false" required data-parsley-errors-container="#error-returnCouponSelect"><span>否</span></label></div>
+              <div id="error-returnCouponSelect"></div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
               <div class="input-group-addon">退款原因</div>
               <select class="form-control" id="dropdown-reason">
                 <option value="">快速选择一个原因</option>
