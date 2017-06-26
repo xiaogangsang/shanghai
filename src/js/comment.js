@@ -93,7 +93,7 @@ $('#formSearch').on('submit', function (e) {
     _querying = false;
     if (!!~~res.meta.result) {
       if (!res.data.rows || res.data.rows.length <= 0) {
-        $('#dataTable tbody').html('<tr><td colspan="7" align="center">查不到相关数据，请修改查询条件！</td></tr>');
+        $('#dataTable tbody').html('<tr><td colspan="9" align="center">查不到相关数据，请修改查询条件！</td></tr>');
         $('#pager').html('');
       } else {
         useCache = true;

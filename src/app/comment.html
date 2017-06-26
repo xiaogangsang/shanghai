@@ -75,7 +75,7 @@
             <div class="input-group">
               <div class="input-group-addon">类型</div>
               <select class="form-control" id="search_commentType" source-map-key="commentType">
-                
+
               </select>
             </div>
           </div>
@@ -106,12 +106,14 @@
                   <th>影片</th>
                   <th>渠道</th>
                   <th>发表日期</th>
+                  <th>点赞数</th>
+                  <th>星级</th>
                   <th width="80">操作</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td colspan="7" align="center">请点击“查询”按钮！</td>
+                  <td colspan="9" align="center">请点击“查询”按钮！</td>
                 </tr>
               </tbody>
             </table>
@@ -153,6 +155,8 @@
       <td>{{filmName}}</td>
       <td>{{channelName}}</td>
       <td>{{updateTime}}</td>
+      <td>{{likeNum}}</td>
+      <td>{{score}}</td>
       <td><button type="button" class="btn btn-xs btn-default btn-delete">删除</button></td>
     </tr>
     {{/rows}}
