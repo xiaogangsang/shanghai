@@ -192,6 +192,14 @@ $('#dataTable').on('click', '.btn-edit', function(e) {
 
 $(document).on('submit', '#formOfficalReply', function(e) {
   e.preventDefault();
+
+  var content = $('#form_officalReply').val();
+  var limitCount = 255;
+  if (content.length > limitCount) {
+    alert('超过字数限制，最多可输入' + limitCount + '个字');
+    return false;
+  }
+
   id = $(e.target).data('id');
 
   var param = {
@@ -209,7 +217,7 @@ $(document).on('submit', '#formOfficalReply', function(e) {
   })
   .done(function (res) {
     if (!!~~res.meta.result) {
-      alert('编辑成功');
+      alert('发表成功');
       $('#popup-comment-offical').modal('hide');
       $('#formSearch').trigger('submit');
     } else {
