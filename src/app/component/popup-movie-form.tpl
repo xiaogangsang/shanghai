@@ -55,6 +55,38 @@
           <th>评分</th>
           <td colspan="3"><input type="text" class="form-control" id="score" value="{{movie.score}}" required data-parsley-pattern="10|^\d{1}$|^\d{1}.{1}\d{1}$"></td>
         </tr>
+
+        <tr>
+          <th>想看人数</th>
+          <td colspan="3">
+
+          {{#filmWishInfo}}
+          <div class="row">
+          <div class="detail-item col-sm-6 col-md-2">{{channelName}}</div>
+            <div class="detail-item col-sm-6 col-md-4">基础值：<input type="text" id="fakeNum" value="{{fakeNum}}" data-parsley-pattern="^[1-9]\d*$"></div>
+            <div class="detail-item col-sm-6 col-md-6">实际值：{{realWishNum}}</div>
+          </div>
+          {{/filmWishInfo}}
+
+     <!--      <div class="row">
+          <div class="detail-item col-sm-6 col-md-2">掌上生活</div>
+            <div class="detail-item col-sm-6 col-md-4"><span>基础值：</span><input type="text" id="p1_baseValue" data-parsley-pattern="^[1-9]\d*$"></div>
+            <div class="detail-item col-sm-6 col-md-6"><span>实际值：</span>{{movie.score}}</div>
+          </div>
+
+          <div class="row">
+            <div class="detail-item col-sm-6 col-md-2">手机银行</div>
+            <div class="detail-item col-sm-6 col-md-4"><span>基础值：</span><input type="text" id="p2_baseValue" data-parsley-pattern="^[1-9]\d*$"></div>
+            <div class="detail-item col-sm-6 col-md-6"><span>实际值：</span>{{movie.score}}</div>
+          </div>
+
+          <div class="row">
+            <div class="detail-item col-sm-6 col-md-2">招联</div>
+            <div class="detail-item col-sm-6 col-md-4"><span>基础值：</span><input type="text" id="p3_baseValue" data-parsley-pattern="^[1-9]\d*$"></div>
+            <div class="detail-item col-sm-6 col-md-6"><span>实际值：</span>{{movie.score}}</div>
+          </div> -->
+          </td>
+        </tr>
         <tr>
           <th>主演</th>
           <td colspan="3"><input type="text" class="form-control" id="actor" value="{{movie.actor}}" required readonly></td>
