@@ -598,7 +598,7 @@ $(document).on('click', '#btn-set-cinema', function (event) {
     $('#preview-cinema').html(previewHtml);
   });
 
-  $('#popup-unit-cinema .modal-title').text('影院限制');
+  $('#popup-unit-cinema .modal-title').text('影院白名单');
 });
 
 //影院黑名单
