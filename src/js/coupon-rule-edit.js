@@ -1151,7 +1151,8 @@ function setEdit(couponId, isApproval, isHistory) {
       _popupDataCache.timetables = coupon.timetables != null ? coupon.timetables : [];
       _popupDataCache.advancePayment = coupon.advancePayment;
 
-      coupon.cinemas = coupon.cinemas != null ? coupon.cinemas : [];
+      coupon.cinemas = coupon.cinemas || [];
+      coupon.blackCinemas = coupon.blackCinemas || [];
 
       if (coupon.cinemas.length > 0) {
         $.ajax({
