@@ -1408,7 +1408,10 @@ function setEdit(unitId, isApproval, isHistory) {
       _popupDataCache.qualification = unit.qualification != undefined ? unit.qualification[0] : '';
       _popupDataCache.advancePayment = unit.advancePayment;
 
-      if (unit.cinemas != null) {
+      unit.cinemas = unit.cinemas || [];
+      unit.blackCinemas = unit.blackCinemas || [];
+
+      if (unit.cinemas.length > 0) {
         $.ajax({
           url: common.API_HOST + 'common/getCinemasByIds',
           type: 'POST',
@@ -1432,7 +1435,7 @@ function setEdit(unitId, isApproval, isHistory) {
         $('#formUnit button[type=submit]').prop('disabled', false);
       }
 
-      if (unit.blackCinemas != null) {
+      if (unit.blackCinemas.length > 0) {
         $.ajax({
           url: common.API_HOST + 'common/getCinemasByIds',
           type: 'POST',
