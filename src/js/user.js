@@ -155,7 +155,11 @@ $('#dataTable').on('click', '.btn-reset', function (e) {
     })
     .done(function (res) {
       if (!!~~res.meta.result) {
-        alert('密码已重置！');
+        try {
+          alert('密码已重置为：' + res.meta.data.password + '\n请复制该密码并妥善保管！');
+        } catch (err) {
+          alert('接口错误：未生成密码！');
+        }
       } else {
         alert('接口错误：' + res.meta.msg);
       }
@@ -338,9 +342,6 @@ $(document).on('submit', '#popup-user-form form', function(event) {
   if ($('#userId').length > 0) {
     sendData.id = $('#popup-user-form #userId').val();
     ajaxUrl = common.API_HOST + 'security/user/updateUser';
-  } else {
-    sendData.loginId = $.trim($('#popup-user-form #loginId').val());
-    sendData.password = $.trim($('#popup-user-form #password').val());
   }
 
   $.ajax({
@@ -356,7 +357,11 @@ $(document).on('submit', '#popup-user-form form', function(event) {
       if ($('#userId').length > 0) {
         alert('用户已更新！');
       } else {
-        alert('用户已添加！');
+        try {
+          alert('用户已添加！分配的随机密码为：' + res.meta.data.password + '\n请复制该密码并妥善保管！');
+        } catch (err) {
+          alert('接口错误：未生成密码！');
+        }
       }
 
       $('#formSearch').trigger('submit');
