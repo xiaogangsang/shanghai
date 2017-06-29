@@ -188,14 +188,6 @@
             <td><input type="text" class="form-control" id="loginId" required data-parsley-minlength="6"></td>
           </tr>
           <tr>
-            <th>密码</th>
-            <td><input type="password" class="form-control" id="password" required data-parsley-minlength="5"></td>
-          </tr>
-          <tr>
-            <th>确认密码</th>
-            <td><input type="password" class="form-control" required data-parsley-equalto="#password"></td>
-          </tr>
-          <tr>
             <th width="80">姓名</th>
             <td><input type="text" class="form-control" id="realName" required data-parsley-minlength="2"></td>
           </tr>

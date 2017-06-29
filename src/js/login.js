@@ -71,11 +71,17 @@ $('#form-login').on('submit', function (e) {
     },
   })
   .done(function (res) {
-    if (!!~~res.meta.result) {
+    var resultCode = res.meta.result;
+    if (resultCode == 8) {
+      alert('您当前密码为弱密码, 点击"确定"重置密码');
+      Cookies.set('userId', username);
+      window.location.href = 'password.html';
+    } else if (resultCode) {
       Cookies.set('Xtoken', res.data.Xtoken);
       Cookies.set('name', res.data.name);
       Cookies.set('authCity', res.data.cities);
       Cookies.set('authChannel', res.data.channels);
+      Cookies.set('userId', username);
       localStorage.setItem('authFunction', JSON.stringify(res.data.allowMenus));
       // Cookies.set('authFunction', JSON.stringify(res.data.allowMenus));
       var allowMenus = [];

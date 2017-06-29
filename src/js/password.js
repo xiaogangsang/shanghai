@@ -4,7 +4,18 @@ var common = require('common');
 
 $(function () {
 
-  common.init('');
+  // 修改密码不再判断是否登录
+  var loginName = Cookies.get('name') || Cookies.get('userId');
+  if (loginName) {
+    $('#loginName').text(loginName);
+  }
+
+  if (!Cookies.get('userId')) {
+    common.logout();
+    window.location.href = 'login.html';
+  }
+
+  // $('.dropdown-toggle').prop('disabled', true);
 
   $('#form-pwd').parsley();
   var wH = $(window).height();
@@ -21,7 +32,7 @@ $(function () {
           message = '服务器挂了';
         break;
         case (401):
-          message = '登陆ID或密码错误';
+          message = '用户未登录或登录超时';
         break;
         case (403):
           message = '没有权限';
@@ -62,6 +73,7 @@ $('#form-pwd').on('submit', function (e) {
     type: 'POST',
     dataType: 'json',
     data: {
+      userId: Cookies.get('userId'),
       password: password,
       newPassword: newPassword,
       rePassword: rePassword,
