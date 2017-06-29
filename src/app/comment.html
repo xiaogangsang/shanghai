@@ -75,7 +75,6 @@
             <div class="input-group">
               <div class="input-group-addon">类型</div>
               <select class="form-control" id="search_commentType" source-map-key="commentType">
-                
               </select>
             </div>
           </div>
@@ -106,12 +105,14 @@
                   <th>影片</th>
                   <th>渠道</th>
                   <th>发表日期</th>
+                  <th>点赞数</th>
+                  <th>星级</th>
                   <th width="80">操作</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td colspan="7" align="center">请点击“查询”按钮！</td>
+                  <td colspan="9" align="center">请点击“查询”按钮！</td>
                 </tr>
               </tbody>
             </table>
@@ -153,9 +154,49 @@
       <td>{{filmName}}</td>
       <td>{{channelName}}</td>
       <td>{{updateTime}}</td>
-      <td><button type="button" class="btn btn-xs btn-default btn-delete">删除</button></td>
+      <td>{{likeNum}}</td>
+      <td>{{score}}</td>
+      <td>
+        <button type="button" class="btn btn-xs btn-default btn-delete">删除</button>
+        {{#type}}
+          <button type="button" class="btn btn-xs btn-default btn-edit" data-offical-reply="{{officialReply}}" style="margin-left: 10px;">官方回复</button>
+        {{/type}}
+      </td>
     </tr>
     {{/rows}}
+  </script>
+  <script id="comment-offical-template" type="text/x-tmpl-mustache">
+    <div class="modal fade" id="popup-comment-offical">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-lable="Close"><span aria-hidden="true">&times;</span></button>
+            <h5 class="modal-title">编辑官方回复</h5>
+          </div>
+          <div class="modal-body">
+            <div class="container-fluid">
+              <form id="formOfficalReply" data-id={{id}}>
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-addon">回复角色：</div>
+                    <input type="text" class="form-control" value="小招客服" readonly>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-addon">回复话术：</div>
+                    <textarea class="form-control" id="form_officalReply">{{officalReply}}</textarea>
+                  </div>
+                </div>
+                <div class="col-sm-4 col-sm-offset-4">
+                  <button type="submit" class="form-control btn btn-primary">确定</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </script>
 </body>
 </html>
