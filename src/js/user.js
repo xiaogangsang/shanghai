@@ -342,6 +342,8 @@ $(document).on('submit', '#popup-user-form form', function(event) {
   if ($('#userId').length > 0) {
     sendData.id = $('#popup-user-form #userId').val();
     ajaxUrl = common.API_HOST + 'security/user/updateUser';
+  } else {
+    sendData.loginId = $.trim($('#popup-user-form #loginId').val());
   }
 
   $.ajax({
