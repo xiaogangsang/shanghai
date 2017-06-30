@@ -156,7 +156,7 @@ $('#dataTable').on('click', '.btn-reset', function (e) {
     .done(function (res) {
       if (!!~~res.meta.result) {
         try {
-          alert('密码已重置为：' + res.meta.data.password + '\n请复制该密码并妥善保管！');
+          alert('密码已重置为：' + res.data.password + '\n请复制该密码并妥善保管！');
         } catch (err) {
           alert('接口错误：未生成密码！');
         }
@@ -360,7 +360,7 @@ $(document).on('submit', '#popup-user-form form', function(event) {
         alert('用户已更新！');
       } else {
         try {
-          alert('用户已添加！分配的随机密码为：' + res.meta.data.password + '\n请复制该密码并妥善保管！');
+          alert('用户已添加！分配的随机密码为：' + res.data.password + '\n请复制该密码并妥善保管！');
         } catch (err) {
           alert('接口错误：未生成密码！');
         }
