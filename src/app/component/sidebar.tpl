@@ -253,6 +253,15 @@
     </div>
 
     <div class="panel" style="display:none">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#liquidation"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 清算报表管理</a>
+      <div id="liquidation" class="panel-collapse collapse" role="tabpanel">
+        <div class="list-group">
+          <a href="liquidation-report.html" class="list-group-item" id="menu-report" data-id="414" style="display:none">清算报表</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="display:none">
       <a class="collapsed" role="button" data-toggle="collapse" data-parent="#menu" href="#monitor"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> 订单监控</a>
       <div id="monitor" class="panel-collapse collapse" role="tabpanel">
         <div class="list-group">
