@@ -17,7 +17,7 @@
               <div id="error-refundAmountUndertaker"></div>
             </div>
           </div>
-          <div class="form-group">
+          <div id="return-coupon" class="form-group">
             <div class="input-group">
               <div class="input-group-addon">是否退券</div>
               <div class="radio-inline"><label><input type="radio" name="returnCouponSelect" value="true" required data-parsley-errors-container="#error-returnCouponSelect"><span>是</span></label></div>
