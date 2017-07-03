@@ -84,8 +84,6 @@ var Codec = function(dict) {
 	}
 };
 
-util.Codec = Codec;
-
 Codec.prototype.parse = function(key) {
 	return this[key];
 };

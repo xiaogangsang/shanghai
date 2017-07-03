@@ -1,7 +1,6 @@
 'use strict;'
 
 var common = require('common');
-var settlementCommon = require('settlementCommon');
 var util = require('util');
 require('fineUploader');
 
@@ -10,13 +9,6 @@ var _status = [
 { id: 1, name: '正在热映' },
 { id: 2, name: '下映存档' },
 ];
-
-var _filmWishInfo = [
-{ id: 1, name: '掌上生活' },
-{ id: 2, name: '手机银行' },
-{ id: 3, name: '招联' },
-];
-
 var _dimens = {};
 var _pageIndex = 1;
 var _pageSize = 10;
@@ -175,15 +167,6 @@ $(document).on('submit', '#popup-movie-form form', function (e) {
   });
 
   sendData.dimen = dimens.join('/');
-
-  var filmWishInfo = [];
-  $('#popup-movie-form input[name=fakeNum]').each(function(index, val) {
-    var item = {};
-    item.channelId = (index + 1).toString();
-    item.fakeNum = val.value;
-    filmWishInfo.push(item);
-  });
-  sendData.filmWishInfo = JSON.stringify(filmWishInfo);
 
   $.ajax({
     url: common.API_HOST + 'film/standardFilm/saveOrUpdate',
@@ -391,24 +374,7 @@ function setModal(movieData) {
       movieData.previewAfterBought.push(previewURL(poster));
     });
 
-    _(movieData.filmWishInfo).forEach(function (item) {
-        _(_filmWishInfo).forEach(function (value) {
-          if (item.channelId == value.id) {
-            item.channelName = value.name;
-          }
-        });
-    });
-
-        // item.showDate = item.showDate.split(' ')[0];
-        // item.dimenName = item.dimenNames.join(',');
-        // item.associated = item.associationStatus == 1;
-        // item.associationStatus = item.associated ? '已关联' : '未关联';
-    // filmWishInfo .forEach(function (value, key) {
-    //   if (key == channelId) {
-    //     channelId = settlementCommon.parsePayTool(value);
-    //   };
-    // });
-    data = { movie: movieData, dimens: _dimens, status: _status, filmWishInfo:movieData.filmWishInfo};
+    data = { movie: movieData, dimens: _dimens, status: _status };
     template = $('#edit-template').html();
     var html = util.render(template, data);
     $('#popup-movie-form .modal-body').html(html);

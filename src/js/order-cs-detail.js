@@ -98,11 +98,11 @@ $(function () {
           res.data.bizOrder.canReturnTicket = true;
         }
 
-        // res.data.bizOrder.canReturnCoupon = false;
-        // if (res.data.bizOrder.productOrderStatus != '已出票'
-        //   && res.data.bizOrder.couponId != null) {
-        //   res.data.bizOrder.canReturnCoupon = true;
-        // }
+        res.data.bizOrder.canReturnCoupon = false;
+        if (res.data.bizOrder.productOrderStatus != '已出票'
+          && res.data.bizOrder.couponId != null) {
+          res.data.bizOrder.canReturnCoupon = true;
+        }
 
         res.data.bizOrder.canSendSMS = false;
         if (res.data.bizOrder.smsContent != null && res.data.bizOrder.smsContent != '') {

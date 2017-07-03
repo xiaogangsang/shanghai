@@ -93,7 +93,7 @@ $('#formSearch').on('submit', function (e) {
     _querying = false;
     if (!!~~res.meta.result) {
       if (!res.data.rows || res.data.rows.length <= 0) {
-        $('#dataTable tbody').html('<tr><td colspan="9" align="center">查不到相关数据，请修改查询条件！</td></tr>');
+        $('#dataTable tbody').html('<tr><td colspan="7" align="center">查不到相关数据，请修改查询条件！</td></tr>');
         $('#pager').html('');
       } else {
         useCache = true;
@@ -173,57 +173,6 @@ $('#dataTable').on('click', '.btn-delete', function (e) {
   }
 
   return false;
-});
-
-$('#dataTable').on('click', '.btn-edit', function(e) {
-  e.preventDefault();
-  $('#popup-comment-offical').remove();
-  var officalReply = $(this).data('offical-reply');
-  var data = {id: $(this).parents('tr').data('id')};
-  if (officalReply) {
-    data['officalReply'] = officalReply;
-  }
-  var template = $('#comment-offical-template').html();
-  Mustache.parse(template);
-  var html = Mustache.render(template, data);
-  $('body').append(html);
-  $('#popup-comment-offical').modal('show');
-});
-
-$(document).on('submit', '#formOfficalReply', function(e) {
-  e.preventDefault();
-
-  var content = $('#form_officalReply').val();
-  var limitCount = 255;
-  if (content.length > limitCount) {
-    alert('超过字数限制，最多可输入' + limitCount + '个字');
-    return false;
-  }
-
-  id = $(e.target).data('id');
-
-  var param = {
-    ids: [id],
-    channelId: $('#search_channelId').val(),
-    officialReply: $('#form_officalReply').val(),
-  };
-
-  $.ajax({
-    url: common.API_HOST + 'comment/commentUpdate',
-    type: 'POST',
-    dataType: 'json',
-    contentType: 'application/json; charset=utf-8',
-    data: JSON.stringify(param),
-  })
-  .done(function (res) {
-    if (!!~~res.meta.result) {
-      alert('发表成功');
-      $('#popup-comment-offical').modal('hide');
-      $('#formSearch').trigger('submit');
-    } else {
-      alert('接口错误：' + res.meta.msg);
-    }
-  });
 });
 
 $(document).on('click', '#btn-delete-multi', function (e) {

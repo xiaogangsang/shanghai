@@ -1,7 +1,7 @@
 'use strict;'
 
 var common = require('common');
-var util = require('util');
+var settlementCommon = require('settlementCommon');
 
 var _tpList = [];
 var _channelList = [];
@@ -9,7 +9,7 @@ var _channelId;
 var _submitting = false;
 
 $(function () {
-  common.init();
+  common.init('channel');
   queryChannelList();
 });
 
@@ -75,7 +75,7 @@ function queryChannelList () {
   			 channelData[item.channelId] = item.channelName;
   			 (index == 0) ? _channelId = item.channelId : null;
   		});
-  		var channelHtml = (new util.Codec(channelData)).optionsHTML();
+  		var channelHtml = settlementCommon.optionsHTML(channelData, false);
   		$('#channelId').html(channelHtml);
   	}
 	})
@@ -84,7 +84,7 @@ function queryChannelList () {
 $(document).on('change', '#channelId', function(e) {
 	e.preventDefault();
 	_channelId = $('#channelId').val();
-	queryData();
+	queryData()
 });
 
 $(document).on('submit', 'form', function (e) {

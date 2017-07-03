@@ -120,6 +120,16 @@
       </div>
       {{/canReturnTicket}}
     </div>
+    <!-- <div class="edit-section">
+      <div class="col-xs-12 col-sm-6"><label>单价：</label>{{unitPrice}}</div>
+      <div class="col-xs-12 col-sm-6"><label>总价：</label>{{finalTotalSettleAmount}}</div>
+      <div class="col-xs-12 col-sm-6"><label>活动名称：</label>{{activityName}}</div>
+      <div class="col-xs-12 col-sm-6"><label>优惠券名称：</label>{{couponName}}</div>
+      <div class="col-xs-12 col-sm-6"><label>优惠券码：</label>{{couponCode}}</div>
+      {{#canReturnCoupon}}
+      <div class="col-xs-12"><button class="btn btn-default pull-right auth-ctl" id="btn-returnCoupon" data-auth="116" style="display: none">退优惠券</button></div>
+      {{/canReturnCoupon}}
+    </div> -->
     
     <div class="edit-section">
       <div class="col-xs-12 col-sm-6"><label>销售价(单价)：</label>{{unitPrice}}</div>
@@ -130,9 +140,9 @@
       <div class="col-xs-12 col-sm-6"><label>支付活动名称：</label>{{thdActName}}</div>
       <div class="col-xs-12 col-sm-6"><label>优惠券名称：</label>{{couponName}}</div>
       <div class="col-xs-12 col-sm-6"><label>优惠券码：</label>{{couponCode}}</div>
-      {{#refundCoupon}}
+      {{#canReturnCoupon}}
       <div class="col-xs-12"><button class="btn btn-default pull-right auth-ctl" id="btn-returnCoupon" data-auth="116" style="display: none">退优惠券</button></div>
-      {{/refundCoupon}}
+      {{/canReturnCoupon}}
     </div>
 
     <div class="edit-section">

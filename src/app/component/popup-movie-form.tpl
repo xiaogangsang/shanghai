@@ -55,20 +55,6 @@
           <th>评分</th>
           <td colspan="3"><input type="text" class="form-control" id="score" value="{{movie.score}}" required data-parsley-pattern="10|^\d{1}$|^\d{1}.{1}\d{1}$"></td>
         </tr>
-
-        <tr>
-          <th>想看人数</th>
-          <td colspan="3">
-            {{#filmWishInfo}}
-            <div class="row">
-              <div class="detail-item col-sm-6 col-md-2">{{channelName}}</div>
-              <div class="detail-item col-sm-6 col-md-4">基础值：<input type="text" name="fakeNum" id="fakeNum" value="{{
-              fakeNum}}" data-parsley-pattern="^[1-9]\d*$"></div>
-              <div class="detail-item col-sm-6 col-md-6">实际值：{{realWishInfo}}</div>
-            </div>
-            {{/filmWishInfo}}
-          </td>
-        </tr>
         <tr>
           <th>主演</th>
           <td colspan="3"><input type="text" class="form-control" id="actor" value="{{movie.actor}}" required readonly></td>
