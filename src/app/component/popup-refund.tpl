@@ -33,7 +33,7 @@
                 <option value="百度申请退款">百度申请退款</option>
                 <option value="微票申请退款">微票申请退款</option>
               </select>
-              <textarea class="form-control" id="reason" required></textarea>
+              <textarea class="form-control" id="reason" required data-parsley-maxlength="100"></textarea>
             </div>
           </div>
         </div>
