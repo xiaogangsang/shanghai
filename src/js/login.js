@@ -59,6 +59,10 @@ $('#form-login').on('submit', function (e) {
       } else {
         // Xtoken 用来身份验证, 所以我们放在 Cookie 中
         Cookies.set('Xtoken', res.data.Xtoken);
+        Cookies.remove('userId');
+        Cookies.remove('name');
+        Cookies.remove('authFunction');
+        Cookies.remove('authMenu');
         localStorage.setItem('userId', username);
         localStorage.setItem('name', res.data.name);
         localStorage.setItem('authFunction', JSON.stringify(res.data.allowMenus));

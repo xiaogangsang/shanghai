@@ -149,6 +149,7 @@ common.setLoginName = function () {
 common.logout = function () {
   Cookies.remove('Xtoken');
   localStorage.removeItem('name');
+  localStorage.removeItem('userId');
   localStorage.removeItem('authMenu');
   localStorage.removeItem('authFunction');
 };
