@@ -164,6 +164,12 @@
         <button type="button" class="btn btn-xs btn-default btn-edit">编辑</button>
         <button type="button" class="btn btn-xs btn-default btn-reset">重置密码</button>
         <button type="button" class="btn btn-xs btn-default btn-delete">删除</button>
+        {{#enabled == 1}}
+        <button type="button" class="btn btn-xs btn-default btn-lock" url="security/user/lockUser">锁定</button>
+        {{/enabled == 1}}
+        {{#enabled == 2}}
+        <button type="button" class="btn btn-xs btn-default btn-lock" url="security/user/unLockUser">解锁</button>
+        {{/enabled == 2}}
       </td>
     </tr>
     {{/rows}}

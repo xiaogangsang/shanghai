@@ -1,6 +1,7 @@
 'use strict;'
 
 var common = require('common');
+var util = require('util');
 require('fineUploader');
 
 var _pageIndex = 1;
@@ -189,6 +190,29 @@ $('#dataTable').on('click', '.btn-delete', function (e) {
       }
     });
   }
+
+  return false;
+});
+
+$('#dataTable').on('click', '.btn-lock', function (e) {
+  e.preventDefault();
+  var id = $(this).parents('tr').data('id');
+  var url = $(this).attr('url');
+
+  $.ajax({
+    url: common.API_HOST + url,
+    type: 'POST',
+    dataType: 'json',
+    data: { id: id },
+  })
+  .done(function (res) {
+    if (!!~~res.meta.result) {
+      alert('操作成功！');
+      $('#formSearch').trigger('submit');
+    } else {
+      alert('接口错误：' + res.meta.msg);
+    }
+  });
 
   return false;
 });
@@ -450,8 +474,7 @@ function setModal(userData) {
 function setTableData(rows) {
   var data = { rows: rows };
   var template = $('#table-template').html();
-  Mustache.parse(template);
-  var html = Mustache.render(template, data);
+  var html = util.render(template, data);
   $('#dataTable tbody').html(html);
 }
 
