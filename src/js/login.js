@@ -21,28 +21,7 @@ $(function () {
 
   $.ajaxSetup({
     error: function (jqXHR, textStatus, errorThrown) {
-      var message;
-      switch (jqXHR.status){
-        case (500):
-          message = '服务器挂了';
-        break;
-        case (401):
-          message = '登陆ID或密码错误';
-        break;
-        case (403):
-          message = '没有权限';
-        break;
-        case (404):
-          message = '服务器失踪了，请稍后再次';
-        break;
-        case (408):
-          message = '请求超时，请稍后再次';
-        break;
-        default:
-          message = '未知错误';
-        break;
-      }
-      var html = '<div class="alert alert-danger" role="alert">' + message + '</div>';
+      var html = '<div class="alert alert-danger" role="alert">' + jqXHR.responseJSON.meta.msg + '</div>';
       $(html).prependTo($('#form-login'))
               .fadeTo(5000, 1)
               .slideUp(500, function () {$('.alert').alert('close');});
@@ -78,24 +57,28 @@ $('#form-login').on('submit', function (e) {
         Cookies.set('userId', username);
         window.location.href = 'password.html';
       } else {
+        // Xtoken 用来身份验证, 所以我们放在 Cookie 中
         Cookies.set('Xtoken', res.data.Xtoken);
-        Cookies.set('name', res.data.name);
-        Cookies.set('authCity', res.data.cities);
-        Cookies.set('authChannel', res.data.channels);
-        Cookies.set('userId', username);
+        Cookies.remove('userId');
+        Cookies.remove('name');
+        Cookies.remove('authFunction');
+        Cookies.remove('authMenu');
+        localStorage.setItem('userId', username);
+        localStorage.setItem('name', res.data.name);
         localStorage.setItem('authFunction', JSON.stringify(res.data.allowMenus));
-        // Cookies.set('authFunction', JSON.stringify(res.data.allowMenus));
+
         var allowMenus = [];
         $.each(res.data.allowMenus, function (index, menu) {
           allowMenus.push(menu.menuId);
         });
 
-        Cookies.set('authMenu', allowMenus.join(','));
+        localStorage.setItem('authMenu', allowMenus.join(','));
 
-        var referer = common.getUrlParam().referer;
-        referer = referer ? decodeURIComponent(referer) : 'index.html';
+        // var referer = common.getUrlParam().referer;
+        // referer = referer ? decodeURIComponent(referer) : 'index.html';
 
-        window.location.href = referer;
+        // window.location.href = referer;
+        window.location.href = 'index.html';
       }
     } else {
       var html = '<div class="alert alert-danger" role="alert">' + res.meta.msg + '</div>';

@@ -17,7 +17,7 @@
               <div id="error-refundAmountUndertaker"></div>
             </div>
           </div>
-          <div class="form-group">
+          <div id="return-coupon" class="form-group">
             <div class="input-group">
               <div class="input-group-addon">退款原因</div>
               <select class="form-control" id="dropdown-reason">
@@ -25,7 +25,7 @@
                 <option value="百度申请退款">百度申请退款</option>
                 <option value="微票申请退款">微票申请退款</option>
               </select>
-              <textarea class="form-control" id="reason" required></textarea>
+              <textarea class="form-control" id="reason" required data-parsley-maxlength="100"></textarea>
             </div>
           </div>
         </div>

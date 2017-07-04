@@ -25,6 +25,7 @@ var _transOrderStatus = [
 var _channels = {};
 var _sources = {};
 var _submitting = false;
+var _hasCouponCode = false;
 
 $(function () {
   common.init('order');
@@ -95,12 +96,12 @@ $(function () {
           res.data.bizOrder.canReturnTicket = true;
         }
 
-        res.data.bizOrder.canReturnCoupon = false;
-        if (res.data.bizOrder.productOrderStatus != '已出票'
-          && res.data.bizOrder.status != '待支付'
-          && res.data.bizOrder.couponId != null) {
-          res.data.bizOrder.canReturnCoupon = true;
-        }
+        // res.data.bizOrder.canReturnCoupon = false;
+        // if (res.data.bizOrder.productOrderStatus != '已出票'
+        //   && res.data.bizOrder.status != '待支付'
+        //   && res.data.bizOrder.couponId != null) {
+        //   res.data.bizOrder.canReturnCoupon = true;
+        // }
 
         res.data.bizOrder.canSendSMS = false;
         if (res.data.bizOrder.smsContent != null && res.data.bizOrder.smsContent != '') {
@@ -127,6 +128,9 @@ $(function () {
         setPayOrder(res.data.payOrder);
         res.data.bizOrder.actualPayAmount = res.data.payOrder.actualPayAmount;
         setBizOrder(res.data.bizOrder);
+        if (res.data.bizOrder.couponCode != null && res.data.bizOrder.couponCode != ''){
+          _hasCouponCode = true;
+        }
       } else {
         alert('接口错误：' + res.meta.msg);
         window.location.href = 'order.html';
@@ -188,9 +192,13 @@ $(document).on('click', '#btn-sendsms', function (event) {
 $(document).on('click', '#btn-refund', function (event) {
   event.preventDefault();
   $('#popup-refund').modal('show');
+  if (!_hasCouponCode){
+    $('#popup-refund #return-coupon').remove();
+  }
   $('#popup-refund form').parsley();
 
   $('input[name=refundAmountUndertaker]').prop('checked', false);
+  $('input[name=returnCouponSelect]').prop('checked', false);
   $('#popup-refund #reason')[0].value = '';
 
   $('#dropdown-reason').on('change click', function(event) {
@@ -222,6 +230,7 @@ $(document).on('submit', '#popup-refund form', function (event) {
     channelId: $('#channelId').val(),
     refundAmountUndertaker: $('input[name=refundAmountUndertaker]:checked').val(),
     refundReason: $.trim($('#popup-refund textarea').val()),
+    refundCoupon: $('input[name=returnCouponSelect]:checked').val() || false,
   };
   if (sendData.transOrderNo == '' || sendData.productOrderNo == '') {
     alert('非法操作，无法获取订单号！');
