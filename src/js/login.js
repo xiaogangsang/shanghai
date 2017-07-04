@@ -21,28 +21,7 @@ $(function () {
 
   $.ajaxSetup({
     error: function (jqXHR, textStatus, errorThrown) {
-      var message;
-      switch (jqXHR.status){
-        case (500):
-          message = '服务器挂了';
-        break;
-        case (401):
-          message = '登陆ID或密码错误';
-        break;
-        case (403):
-          message = '没有权限';
-        break;
-        case (404):
-          message = '服务器失踪了，请稍后再次';
-        break;
-        case (408):
-          message = '请求超时，请稍后再次';
-        break;
-        default:
-          message = '未知错误';
-        break;
-      }
-      var html = '<div class="alert alert-danger" role="alert">' + message + '</div>';
+      var html = '<div class="alert alert-danger" role="alert">' + jqXHR.responseJSON.meta.msg + '</div>';
       $(html).prependTo($('#form-login'))
               .fadeTo(5000, 1)
               .slideUp(500, function () {$('.alert').alert('close');});
