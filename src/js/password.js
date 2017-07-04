@@ -18,11 +18,11 @@ $(function () {
   // $('.dropdown-toggle').prop('disabled', true);
 
   $('#form-pwd').parsley();
-  var wH = $(window).height();
-  var eH = $('.login').height();
-  if (wH - eH > 0) {
-    $('.password').css('margin-top', (wH - eH) / 2 - 150);
-  }
+  // var wH = $(window).height();
+  // var eH = $('.login').height();
+  // if (wH - eH > 0) {
+  //   $('.password').css('margin-top', (wH - eH) / 2 - 150);
+  // }
 
   $.ajaxSetup({
     error: function (jqXHR, textStatus, errorThrown) {
