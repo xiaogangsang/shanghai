@@ -63,7 +63,7 @@
             <div class="row">
               <div class="detail-item col-sm-6 col-md-2">{{channelName}}</div>
               <div class="detail-item col-sm-6 col-md-4">基础值：<input type="text" name="fakeNum" id="fakeNum" value="{{
-              fakeNum}}" data-parsley-pattern="^[1-9]\d*$"></div>
+              fakeNum}}" data-parsley-pattern="[0-9][0-9]{0,5}"></div>
               <div class="detail-item col-sm-6 col-md-6">实际值：{{realWishInfo}}</div>
             </div>
             {{/filmWishInfo}}
