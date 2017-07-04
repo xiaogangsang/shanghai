@@ -5,12 +5,13 @@ var common = require('common');
 $(function () {
 
   // 修改密码不再判断是否登录
-  var loginName = Cookies.get('name') || Cookies.get('userId');
+  var userId = localStorage.getItem('userId');
+  var loginName = localStorage.getItem('name') || userId;
   if (loginName) {
     $('#loginName').text(loginName);
   }
 
-  if (!Cookies.get('userId')) {
+  if (!userId) {
     common.logout();
     window.location.href = 'login.html';
   }
@@ -18,11 +19,6 @@ $(function () {
   // $('.dropdown-toggle').prop('disabled', true);
 
   $('#form-pwd').parsley();
-  // var wH = $(window).height();
-  // var eH = $('.login').height();
-  // if (wH - eH > 0) {
-  //   $('.password').css('margin-top', (wH - eH) / 2 - 150);
-  // }
 
   $.ajaxSetup({
     error: function (jqXHR, textStatus, errorThrown) {

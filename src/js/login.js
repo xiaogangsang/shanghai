@@ -57,24 +57,24 @@ $('#form-login').on('submit', function (e) {
         Cookies.set('userId', username);
         window.location.href = 'password.html';
       } else {
+        // Xtoken 用来身份验证, 所以我们放在 Cookie 中
         Cookies.set('Xtoken', res.data.Xtoken);
-        Cookies.set('name', res.data.name);
-        Cookies.set('authCity', res.data.cities);
-        Cookies.set('authChannel', res.data.channels);
-        Cookies.set('userId', username);
+        localStorage.setItem('userId', username);
+        localStorage.setItem('name', res.data.name);
         localStorage.setItem('authFunction', JSON.stringify(res.data.allowMenus));
-        // Cookies.set('authFunction', JSON.stringify(res.data.allowMenus));
+
         var allowMenus = [];
         $.each(res.data.allowMenus, function (index, menu) {
           allowMenus.push(menu.menuId);
         });
 
-        Cookies.set('authMenu', allowMenus.join(','));
+        localStorage.setItem('authMenu', allowMenus.join(','));
 
-        var referer = common.getUrlParam().referer;
-        referer = referer ? decodeURIComponent(referer) : 'index.html';
+        // var referer = common.getUrlParam().referer;
+        // referer = referer ? decodeURIComponent(referer) : 'index.html';
 
-        window.location.href = referer;
+        // window.location.href = referer;
+        window.location.href = 'index.html';
       }
     } else {
       var html = '<div class="alert alert-danger" role="alert">' + res.meta.msg + '</div>';

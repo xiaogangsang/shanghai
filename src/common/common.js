@@ -80,11 +80,13 @@ common.init = function (pageName) {
         break;
         case (401):
           errorMsg = jqXHR.status + '：未登录或登陆超时，请尝试重新登陆！';
-          redirectUrl = 'login.html?logout&referer=' + encodeURIComponent(window.location.href);
+          // redirectUrl = 'login.html?logout&referer=' + encodeURIComponent(window.location.href);
+          redirectUrl = 'login.html?logout';
         break;
         case (403):
           errorMsg = jqXHR.status + '：没有权限，请尝试重新登陆！';
-          redirectUrl = 'login.html?logout&referer=' + encodeURIComponent(window.location.href);
+          // redirectUrl = 'login.html?logout&referer=' + encodeURIComponent(window.location.href);
+          redirectUrl = 'login.html?logout';
         break;
         case (404):
           errorMsg = jqXHR.status + '：服务器暂时无法访问，请稍后再试！';
@@ -103,12 +105,13 @@ common.init = function (pageName) {
 };
 
 common.showMenu = function (pageName) {
-  var allowMenus = Cookies.get('authMenu').split(',');
+  var allowMenus = localStorage.getItem('authMenu').split(',');
   if (pageName != undefined && pageName != '' && $('#menu-' + pageName).size() > 0) {
     var menuId = +$('#menu-' + pageName).data('id');
     if (!allowMenus.includes(menuId.toString())) {
       common.logout();
-      window.location.href = 'login.html?referer=' + encodeURIComponent(window.location.href);
+      // window.location.href = 'login.html?referer=' + encodeURIComponent(window.location.href);
+      window.location.href = 'login.html';
     }
 
     $('#menu-' + pageName).addClass('active').closest('.panel-collapse').collapse('show');
@@ -128,7 +131,8 @@ common.checkLogin = function () {
 
   if (Cookies.get('Xtoken') == undefined) {
     common.logout();
-    window.location.href = 'login.html?referer=' + encodeURIComponent(window.location.href);
+    // window.location.href = 'login.html?referer=' + encodeURIComponent(window.location.href);
+    window.location.href = 'login.html';
     return false;
   }
 
@@ -136,7 +140,7 @@ common.checkLogin = function () {
 };
 
 common.setLoginName = function () {
-  var loginName = Cookies.get('name');
+  var loginName = localStorage.getItem('name');
   if (loginName != undefined && loginName != '') {
     $('#loginName').text(loginName);
   }
@@ -144,11 +148,8 @@ common.setLoginName = function () {
 
 common.logout = function () {
   Cookies.remove('Xtoken');
-  Cookies.remove('name');
-  Cookies.remove('authCity');
-  Cookies.remove('authChannel');
-  Cookies.remove('authMenu');
-  // Cookies.remove('authFunction');
+  localStorage.removeItem('name');
+  localStorage.removeItem('authMenu');
   localStorage.removeItem('authFunction');
 };
 
