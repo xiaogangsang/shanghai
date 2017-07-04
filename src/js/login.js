@@ -50,7 +50,7 @@ $('#form-login').on('submit', function (e) {
     },
   })
   .done(function (res) {
-    var resultCode = res.meta.result;
+    var resultCode = ~~res.meta.result;
     if (resultCode) {
       if (res.data.status == 8) {
         alert('您当前密码为弱密码, 点击"确定"重置密码');
