@@ -69,7 +69,7 @@ $('#form-pwd').on('submit', function (e) {
     type: 'POST',
     dataType: 'json',
     data: {
-      userId: Cookies.get('userId'),
+      userId: userId,
       password: password,
       newPassword: newPassword,
       rePassword: rePassword,

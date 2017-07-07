@@ -52,9 +52,11 @@ $('#form-login').on('submit', function (e) {
   .done(function (res) {
     var resultCode = ~~res.meta.result;
     if (resultCode) {
+      Cookies.set('userId', username);
+      localStorage.setItem('userId', username);
+      localStorage.setItem('name', res.data.name);
       if (res.data.status == 8) {
         alert('您当前密码为弱密码, 点击"确定"重置密码');
-        Cookies.set('userId', username);
         window.location.href = 'password.html';
       } else {
         // Xtoken 用来身份验证, 所以我们放在 Cookie 中
@@ -63,8 +65,6 @@ $('#form-login').on('submit', function (e) {
         Cookies.remove('name');
         Cookies.remove('authFunction');
         Cookies.remove('authMenu');
-        localStorage.setItem('userId', username);
-        localStorage.setItem('name', res.data.name);
         localStorage.setItem('authFunction', JSON.stringify(res.data.allowMenus));
 
         var allowMenus = [];
