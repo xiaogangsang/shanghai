@@ -54,7 +54,9 @@ $('#form-login').on('submit', function (e) {
     if (resultCode) {
       Cookies.set('userId', username);
       localStorage.setItem('userId', username);
-      localStorage.setItem('name', res.data.name);
+      if (typeof res.data.name !== 'undefined') {
+        localStorage.setItem('name', res.data.name);
+      }
       if (res.data.status == 8) {
         alert('您当前密码为弱密码, 点击"确定"重置密码');
         window.location.href = 'password.html';

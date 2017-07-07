@@ -1,12 +1,11 @@
-'use strict;'
+'use strict'
 
+var userId = localStorage.getItem('userId');
+var loginName = typeof localStorage.getItem('name') !== 'undefined' ? localStorage.getItem('name') : userId;
 var common = require('common');
 
 $(function () {
-
   // 修改密码不再判断是否登录
-  var userId = localStorage.getItem('userId');
-  var loginName = localStorage.getItem('name') || userId;
   if (loginName) {
     $('#loginName').text(loginName);
   }
