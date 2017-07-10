@@ -11,3 +11,18 @@
 .login .btn {
   border-radius: 0;
 }
+#checkCode_img {
+	width: 35%;
+	height: 34px;
+	margin-left: 10px;
+	position: relative;
+}
+#checkCode {
+	width: 60%;
+	margin-right: 0px;
+	margin-bottom: 30px;
+	border: 1px solid #ccc;
+}
+#error-code {
+	margin-bottom: 20px;
+}

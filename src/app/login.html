@@ -23,6 +23,11 @@
         <div class="form-group">
           <input type="password" class="form-control" name="password" id="password" placeholder="请输入密码" required>
         </div>
+        <div class="input-group">
+          <input type="text" class="form-control" id="checkCode" name="checkCode" placeholder="请输入验证码" required data-parsley-errors-container="#error-code">
+          <img id="checkCode_img" alt="点击刷新验证码" title="看不清楚？点击换一个">
+          <div id="error-code"></div>
+        </div>
         <button type="submit" class="btn btn-block btn-primary">立即登录</button>
       </form>
     </div>
