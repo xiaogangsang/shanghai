@@ -129,7 +129,7 @@ common.showMenu = function (pageName) {
 
 common.checkLogin = function () {
 
-  if (Cookies.get('Xtoken') == undefined) {
+  if (localStorage.getItem('Xtoken') == undefined) {
     common.logout();
     // window.location.href = 'login.html?referer=' + encodeURIComponent(window.location.href);
     window.location.href = 'login.html';
@@ -147,7 +147,7 @@ common.setLoginName = function () {
 };
 
 common.logout = function () {
-  Cookies.remove('Xtoken');
+  localStorage.removeItem('Xtoken');
   localStorage.removeItem('name');
   localStorage.removeItem('userId');
   localStorage.removeItem('authMenu');

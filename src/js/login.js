@@ -8,7 +8,7 @@ $(function () {
     common.logout();
   }
 
-  if (Cookies.get('Xtoken') != undefined) {
+  if (localStorage.getItem('Xtoken') != undefined) {
     window.location.href = 'index.html';
   }
 
@@ -52,7 +52,6 @@ $('#form-login').on('submit', function (e) {
   .done(function (res) {
     var resultCode = ~~res.meta.result;
     if (resultCode) {
-      Cookies.set('userId', username);
       localStorage.setItem('userId', username);
       if (typeof res.data.name !== 'undefined') {
         localStorage.setItem('name', res.data.name);
@@ -62,11 +61,7 @@ $('#form-login').on('submit', function (e) {
         window.location.href = 'password.html';
       } else {
         // Xtoken 用来身份验证, 所以我们放在 Cookie 中
-        Cookies.set('Xtoken', res.data.Xtoken);
-        Cookies.remove('userId');
-        Cookies.remove('name');
-        Cookies.remove('authFunction');
-        Cookies.remove('authMenu');
+        localStorage.setItem('Xtoken', res.data.Xtoken);
         localStorage.setItem('authFunction', JSON.stringify(res.data.allowMenus));
 
         var allowMenus = [];
