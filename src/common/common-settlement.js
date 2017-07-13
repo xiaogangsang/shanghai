@@ -18,7 +18,7 @@
 var settlementCommon = module.exports = {};
 
 // 收单商户
-settlementCommon.merchant = {'1' : '卡中心', '2' : '总行'};
+settlementCommon.merchant = {'1' : '卡中心', '2' : '总行', '3': '招联'};
 
 settlementCommon.parseMerchant = function(status) {
   return this.merchant[status];
