@@ -24,7 +24,7 @@ settlementCommon.parseMerchant = function(status) {
   return this.merchant[status];
 }
 
-settlementCommon.chargeMerchat = {'1' : 'O2O-卡中心', '2' : 'O2O-分行'};
+settlementCommon.chargeMerchat = {'1' : 'O2O-卡中心', '2' : 'O2O-分行', '3': 'O2O-招联'};
 
 settlementCommon.parseChargeMerchant = function(status) {
   return this.chargeMerchat[status];
@@ -81,7 +81,7 @@ settlementCommon.parsePayTool = function(status) {
 
 
 // 收单支付渠道
-settlementCommon.acquiringPayTool = {'1' : 'O2O-卡中心', '2' : 'O2O-分行'};
+settlementCommon.acquiringPayTool = settlementCommon.chargeMerchat;
 
 settlementCommon.parseAcquiringPayTool = function(status) {
   if (status == void 0) {
