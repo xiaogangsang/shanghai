@@ -90,6 +90,7 @@
                   <select class="form-control" id="record_chargeMerchant" required>
                     <option value="1">O2O-卡中心</option>
                     <option value="2">O2O-分行</option>
+                    <option value="3">O2O-招联</option>
                   </select>
                 </div>
               </div>
