@@ -28,7 +28,7 @@ $(function () {
     },
   });
   // 获取验证码
-  getVerificationCode();
+  // getVerificationCode();
 
 });
 
@@ -41,7 +41,7 @@ $('#form-login').on('submit', function (e) {
 
   var username = $.trim($('#username').val());
   var password = $.trim($('#password').val());
-  var verifyCode = $.trim($('#checkCode').val());
+  // var verifyCode = $.trim($('#checkCode').val());
   var $that = $(this);
   $.ajax({
     url: common.API_HOST + 'login',
@@ -50,7 +50,7 @@ $('#form-login').on('submit', function (e) {
     data: {
       username: username,
       password: password,
-      verifyCode: verifyCode,
+      // verifyCode: verifyCode,
     },
   })
   .done(function (res) {
@@ -74,11 +74,6 @@ $('#form-login').on('submit', function (e) {
         });
 
         localStorage.setItem('authMenu', allowMenus.join(','));
-
-        // var referer = common.getUrlParam().referer;
-        // referer = referer ? decodeURIComponent(referer) : 'index.html';
-
-        // window.location.href = referer;
         window.location.href = 'index.html';
       }
     } else {
@@ -88,18 +83,18 @@ $('#form-login').on('submit', function (e) {
               .slideUp(500, function () {$('.alert').alert('close');});
     }
   })
-  .fail(function() {
-    getVerificationCode();// 重新获取验证码
-  });
+  // .fail(function() {
+  //   getVerificationCode();// 重新获取验证码
+  // });
 
   return false;
 });
 
-function getVerificationCode () {
-  var getCodeUrl = common.API_HOST + 'verifyCode';
-  $('#checkCode_img').attr('src',getCodeUrl+'?t='+ new Date().getTime()).show();
-  $('#checkCode_img').click(function(){this.src=getCodeUrl+'?t='+ new Date().getTime();});
-}
+// function getVerificationCode () {
+//   var getCodeUrl = common.API_HOST + 'verifyCode';
+//   $('#checkCode_img').attr('src',getCodeUrl+'?t='+ new Date().getTime()).show();
+//   $('#checkCode_img').click(function(){this.src=getCodeUrl+'?t='+ new Date().getTime();});
+// }
 
 
 
