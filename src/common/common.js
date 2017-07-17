@@ -111,7 +111,7 @@ common.showMenu = function (pageName) {
     if (!allowMenus.includes(menuId.toString())) {
       common.logout();
       // window.location.href = 'login.html?referer=' + encodeURIComponent(window.location.href);
-      window.location.href = 'login.html';
+      window.location.href = 'login.html?logout';
     }
 
     $('#menu-' + pageName).addClass('active').closest('.panel-collapse').collapse('show');

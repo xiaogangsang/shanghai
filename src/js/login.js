@@ -21,7 +21,7 @@ $(function () {
 
   $.ajaxSetup({
     error: function (jqXHR, textStatus, errorThrown) {
-      var html = '<div class="alert alert-danger" role="alert">' + (jqXHR.responseJSON.meta ? jqXHR.responseJSON.meta.msg : '登录接口错误:' + jqXHR.status) + '</div>';
+      var html = '<div class="alert alert-danger" role="alert">' + (jqXHR.responseJSON ? jqXHR.responseJSON.meta.msg : '登录接口错误:' + jqXHR.status) + '</div>';
       $(html).prependTo($('#form-login'))
               .fadeTo(5000, 1)
               .slideUp(500, function () {$('.alert').alert('close');});
