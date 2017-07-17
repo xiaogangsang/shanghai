@@ -132,7 +132,7 @@ common.checkLogin = function () {
   if (localStorage.getItem('Xtoken') == undefined) {
     common.logout();
     // window.location.href = 'login.html?referer=' + encodeURIComponent(window.location.href);
-    window.location.href = 'login.html';
+    window.location.href = 'login.html?logout';
     return false;
   }
 
