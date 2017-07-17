@@ -8,9 +8,9 @@ $(function () {
     common.logout();
   }
 
-  if (localStorage.getItem('Xtoken') != undefined) {
-    window.location.href = 'index.html';
-  }
+  // if (localStorage.getItem('Xtoken') != undefined) {
+  //   window.location.href = 'index.html';
+  // }
 
   $('#form-login').parsley();
   var wH = $(window).height();
